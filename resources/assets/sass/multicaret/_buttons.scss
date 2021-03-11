@@ -1,0 +1,21 @@
+button {
+  outline: none !important;
+}
+
+.btn {
+  font-size: 14px;
+  color: $light;
+  font-family: $headings-font;
+
+  &.disabled {
+    pointer-events: none !important;
+  }
+  &.btn-md {
+    padding-right: 42px;
+    padding-left: 19px;
+    font-weight: 500;
+  }
+  &.btn-lg {
+    padding: .75rem 3rem;
+  }
+}

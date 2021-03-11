@@ -1,0 +1,612 @@
+[
+    {
+        "id": 1,
+        "english_name": "English",
+        "code": "en",
+        "locale_country": "en_EN",
+        "is_rtl": 0,
+        "status": 2,
+        "created_at": "2021-03-10 00:27:17",
+        "updated_at": "2021-03-10 00:27:17"
+    },
+    {
+        "id": 2,
+        "english_name": "Afrikaans",
+        "code": "af",
+        "locale_country": "af_ZA",
+        "is_rtl": 0,
+        "status": 1,
+        "created_at": "2021-03-10 00:27:17",
+        "updated_at": "2021-03-10 00:27:17"
+    },
+    {
+        "id": 3,
+        "english_name": "Azerbaijani",
+        "code": "az",
+        "locale_country": "az_AZ",
+        "is_rtl": 0,
+        "status": 1,
+        "created_at": "2021-03-10 00:27:17",
+        "updated_at": "2021-03-10 00:27:17"
+    },
+    {
+        "id": 4,
+        "english_name": "Indonesian",
+        "code": "id",
+        "locale_country": "id_ID",
+        "is_rtl": 0,
+        "status": 1,
+        "created_at": "2021-03-10 00:27:17",
+        "updated_at": "2021-03-10 00:27:17"
+    },
+    {
+        "id": 5,
+        "english_name": "Malay",
+        "code": "ms",
+        "locale_country": "ms_MY",
+        "is_rtl": 0,
+        "status": 1,
+        "created_at": "2021-03-10 00:27:17",
+        "updated_at": "2021-03-10 00:27:17"
+    },
+    {
+        "id": 6,
+        "english_name": "Javanese",
+        "code": "jv",
+        "locale_country": "jv_ID",
+        "is_rtl": 0,
+        "status": 1,
+        "created_at": "2021-03-10 00:27:17",
+        "updated_at": "2021-03-10 00:27:17"
+    },
+    {
+        "id": 7,
+        "english_name": "Cebuano",
+        "code": "cx",
+        "locale_country": "cx_PH",
+        "is_rtl": 0,
+        "status": 1,
+        "created_at": "2021-03-10 00:27:17",
+        "updated_at": "2021-03-10 00:27:17"
+    },
+    {
+        "id": 8,
+        "english_name": "Bosnian",
+        "code": "bs",
+        "locale_country": "bs_BA",
+        "is_rtl": 0,
+        "status": 1,
+        "created_at": "2021-03-10 00:27:17",
+        "updated_at": "2021-03-10 00:27:17"
+    },
+    {
+        "id": 9,
+        "english_name": "Catalan",
+        "code": "ca",
+        "locale_country": "ca_ES",
+        "is_rtl": 0,
+        "status": 1,
+        "created_at": "2021-03-10 00:27:17",
+        "updated_at": "2021-03-10 00:27:17"
+    },
+    {
+        "id": 10,
+        "english_name": "Czech",
+        "code": "cs",
+        "locale_country": "cs_CZ",
+        "is_rtl": 0,
+        "status": 1,
+        "created_at": "2021-03-10 00:27:17",
+        "updated_at": "2021-03-10 00:27:17"
+    },
+    {
+        "id": 11,
+        "english_name": "Welsh",
+        "code": "cy",
+        "locale_country": "cy_GB",
+        "is_rtl": 0,
+        "status": 1,
+        "created_at": "2021-03-10 00:27:17",
+        "updated_at": "2021-03-10 00:27:17"
+    },
+    {
+        "id": 12,
+        "english_name": "Danish",
+        "code": "da",
+        "locale_country": "da_DK",
+        "is_rtl": 0,
+        "status": 1,
+        "created_at": "2021-03-10 00:27:17",
+        "updated_at": "2021-03-10 00:27:17"
+    },
+    {
+        "id": 13,
+        "english_name": "German",
+        "code": "de",
+        "locale_country": "de_DE",
+        "is_rtl": 0,
+        "status": 1,
+        "created_at": "2021-03-10 00:27:17",
+        "updated_at": "2021-03-10 00:27:17"
+    },
+    {
+        "id": 14,
+        "english_name": "Estonian",
+        "code": "et",
+        "locale_country": "et_EE",
+        "is_rtl": 0,
+        "status": 1,
+        "created_at": "2021-03-10 00:27:17",
+        "updated_at": "2021-03-10 00:27:17"
+    },
+    {
+        "id": 15,
+        "english_name": "Spanish",
+        "code": "es",
+        "locale_country": "es_ES",
+        "is_rtl": 0,
+        "status": 1,
+        "created_at": "2021-03-10 00:27:17",
+        "updated_at": "2021-03-10 00:27:17"
+    },
+    {
+        "id": 16,
+        "english_name": "Basque",
+        "code": "eu",
+        "locale_country": "eu_ES",
+        "is_rtl": 0,
+        "status": 1,
+        "created_at": "2021-03-10 00:27:17",
+        "updated_at": "2021-03-10 00:27:17"
+    },
+    {
+        "id": 17,
+        "english_name": "Filipino",
+        "code": "tl",
+        "locale_country": "tl_PH",
+        "is_rtl": 0,
+        "status": 1,
+        "created_at": "2021-03-10 00:27:17",
+        "updated_at": "2021-03-10 00:27:17"
+    },
+    {
+        "id": 18,
+        "english_name": "French",
+        "code": "fr",
+        "locale_country": "fr_FR",
+        "is_rtl": 0,
+        "status": 1,
+        "created_at": "2021-03-10 00:27:17",
+        "updated_at": "2021-03-10 00:27:17"
+    },
+    {
+        "id": 19,
+        "english_name": "Galician",
+        "code": "gl",
+        "locale_country": "gl_ES",
+        "is_rtl": 0,
+        "status": 1,
+        "created_at": "2021-03-10 00:27:17",
+        "updated_at": "2021-03-10 00:27:17"
+    },
+    {
+        "id": 20,
+        "english_name": "Guarani",
+        "code": "gn",
+        "locale_country": "gn_PY",
+        "is_rtl": 0,
+        "status": 1,
+        "created_at": "2021-03-10 00:27:17",
+        "updated_at": "2021-03-10 00:27:17"
+    },
+    {
+        "id": 21,
+        "english_name": "Croatian",
+        "code": "hr",
+        "locale_country": "hr_HR",
+        "is_rtl": 0,
+        "status": 1,
+        "created_at": "2021-03-10 00:27:17",
+        "updated_at": "2021-03-10 00:27:17"
+    },
+    {
+        "id": 22,
+        "english_name": "Italian",
+        "code": "it",
+        "locale_country": "it_IT",
+        "is_rtl": 0,
+        "status": 1,
+        "created_at": "2021-03-10 00:27:17",
+        "updated_at": "2021-03-10 00:27:17"
+    },
+    {
+        "id": 23,
+        "english_name": "Swahili",
+        "code": "sw",
+        "locale_country": "sw_KE",
+        "is_rtl": 0,
+        "status": 1,
+        "created_at": "2021-03-10 00:27:17",
+        "updated_at": "2021-03-10 00:27:17"
+    },
+    {
+        "id": 24,
+        "english_name": "Latvian",
+        "code": "lv",
+        "locale_country": "lv_LV",
+        "is_rtl": 0,
+        "status": 1,
+        "created_at": "2021-03-10 00:27:17",
+        "updated_at": "2021-03-10 00:27:17"
+    },
+    {
+        "id": 25,
+        "english_name": "Lithuanian",
+        "code": "lt",
+        "locale_country": "lt_LT",
+        "is_rtl": 0,
+        "status": 1,
+        "created_at": "2021-03-10 00:27:17",
+        "updated_at": "2021-03-10 00:27:17"
+    },
+    {
+        "id": 26,
+        "english_name": "Hungarian",
+        "code": "hu",
+        "locale_country": "hu_HU",
+        "is_rtl": 0,
+        "status": 1,
+        "created_at": "2021-03-10 00:27:17",
+        "updated_at": "2021-03-10 00:27:17"
+    },
+    {
+        "id": 27,
+        "english_name": "Dutch",
+        "code": "nl",
+        "locale_country": "nl_NL",
+        "is_rtl": 0,
+        "status": 1,
+        "created_at": "2021-03-10 00:27:17",
+        "updated_at": "2021-03-10 00:27:17"
+    },
+    {
+        "id": 28,
+        "english_name": "Norwegian",
+        "code": "nb",
+        "locale_country": "nb_NO",
+        "is_rtl": 0,
+        "status": 1,
+        "created_at": "2021-03-10 00:27:17",
+        "updated_at": "2021-03-10 00:27:17"
+    },
+    {
+        "id": 29,
+        "english_name": "Polish",
+        "code": "pl",
+        "locale_country": "pl_PL",
+        "is_rtl": 0,
+        "status": 1,
+        "created_at": "2021-03-10 00:27:17",
+        "updated_at": "2021-03-10 00:27:17"
+    },
+    {
+        "id": 30,
+        "english_name": "Portuguese",
+        "code": "pt",
+        "locale_country": "pt_PT",
+        "is_rtl": 0,
+        "status": 1,
+        "created_at": "2021-03-10 00:27:17",
+        "updated_at": "2021-03-10 00:27:17"
+    },
+    {
+        "id": 31,
+        "english_name": "Romanian",
+        "code": "ro",
+        "locale_country": "ro_RO",
+        "is_rtl": 0,
+        "status": 1,
+        "created_at": "2021-03-10 00:27:17",
+        "updated_at": "2021-03-10 00:27:17"
+    },
+    {
+        "id": 32,
+        "english_name": "Albanian",
+        "code": "sq",
+        "locale_country": "sq_AL",
+        "is_rtl": 0,
+        "status": 1,
+        "created_at": "2021-03-10 00:27:17",
+        "updated_at": "2021-03-10 00:27:17"
+    },
+    {
+        "id": 33,
+        "english_name": "Slovak",
+        "code": "sk",
+        "locale_country": "sk_SK",
+        "is_rtl": 0,
+        "status": 1,
+        "created_at": "2021-03-10 00:27:17",
+        "updated_at": "2021-03-10 00:27:17"
+    },
+    {
+        "id": 34,
+        "english_name": "Slovenian",
+        "code": "sl",
+        "locale_country": "sl_SI",
+        "is_rtl": 0,
+        "status": 1,
+        "created_at": "2021-03-10 00:27:17",
+        "updated_at": "2021-03-10 00:27:17"
+    },
+    {
+        "id": 35,
+        "english_name": "Finnish",
+        "code": "fi",
+        "locale_country": "fi_FI",
+        "is_rtl": 0,
+        "status": 1,
+        "created_at": "2021-03-10 00:27:17",
+        "updated_at": "2021-03-10 00:27:17"
+    },
+    {
+        "id": 36,
+        "english_name": "Swedish",
+        "code": "sv",
+        "locale_country": "sv_SE",
+        "is_rtl": 0,
+        "status": 1,
+        "created_at": "2021-03-10 00:27:17",
+        "updated_at": "2021-03-10 00:27:17"
+    },
+    {
+        "id": 37,
+        "english_name": "Vietnamese",
+        "code": "vi",
+        "locale_country": "vi_VN",
+        "is_rtl": 0,
+        "status": 1,
+        "created_at": "2021-03-10 00:27:17",
+        "updated_at": "2021-03-10 00:27:17"
+    },
+    {
+        "id": 38,
+        "english_name": "Turkish",
+        "code": "tr",
+        "locale_country": "tr_TR",
+        "is_rtl": 0,
+        "status": 1,
+        "created_at": "2021-03-10 00:27:17",
+        "updated_at": "2021-03-10 00:27:17"
+    },
+    {
+        "id": 39,
+        "english_name": "Greek",
+        "code": "el",
+        "locale_country": "el_GR",
+        "is_rtl": 0,
+        "status": 1,
+        "created_at": "2021-03-10 00:27:17",
+        "updated_at": "2021-03-10 00:27:17"
+    },
+    {
+        "id": 40,
+        "english_name": "Bulgarian",
+        "code": "bg",
+        "locale_country": "bg_BG",
+        "is_rtl": 0,
+        "status": 1,
+        "created_at": "2021-03-10 00:27:17",
+        "updated_at": "2021-03-10 00:27:17"
+    },
+    {
+        "id": 41,
+        "english_name": "Macedonian",
+        "code": "mk",
+        "locale_country": "mk_MK",
+        "is_rtl": 0,
+        "status": 1,
+        "created_at": "2021-03-10 00:27:17",
+        "updated_at": "2021-03-10 00:27:17"
+    },
+    {
+        "id": 42,
+        "english_name": "Russian",
+        "code": "ru",
+        "locale_country": "ru_RU",
+        "is_rtl": 0,
+        "status": 1,
+        "created_at": "2021-03-10 00:27:17",
+        "updated_at": "2021-03-10 00:27:17"
+    },
+    {
+        "id": 43,
+        "english_name": "Serbian",
+        "code": "sr",
+        "locale_country": "sr_RS",
+        "is_rtl": 0,
+        "status": 1,
+        "created_at": "2021-03-10 00:27:17",
+        "updated_at": "2021-03-10 00:27:17"
+    },
+    {
+        "id": 44,
+        "english_name": "Ukrainian",
+        "code": "uk",
+        "locale_country": "uk_UA",
+        "is_rtl": 0,
+        "status": 1,
+        "created_at": "2021-03-10 00:27:17",
+        "updated_at": "2021-03-10 00:27:17"
+    },
+    {
+        "id": 45,
+        "english_name": "Armenian",
+        "code": "hy",
+        "locale_country": "hy_AM",
+        "is_rtl": 0,
+        "status": 1,
+        "created_at": "2021-03-10 00:27:17",
+        "updated_at": "2021-03-10 00:27:17"
+    },
+    {
+        "id": 46,
+        "english_name": "Hebrew",
+        "code": "he",
+        "locale_country": "he_IL",
+        "is_rtl": 1,
+        "status": 1,
+        "created_at": "2021-03-10 00:27:17",
+        "updated_at": "2021-03-10 00:27:17"
+    },
+    {
+        "id": 47,
+        "english_name": "Urdu",
+        "code": "ur",
+        "locale_country": "ur_PK",
+        "is_rtl": 1,
+        "status": 1,
+        "created_at": "2021-03-10 00:27:17",
+        "updated_at": "2021-03-10 00:27:17"
+    },
+    {
+        "id": 48,
+        "english_name": "Arabic",
+        "code": "ar",
+        "locale_country": "ar_AE",
+        "is_rtl": 1,
+        "status": 2,
+        "created_at": "2021-03-10 00:27:17",
+        "updated_at": "2021-03-10 00:27:17"
+    },
+    {
+        "id": 49,
+        "english_name": "Hindi",
+        "code": "hi",
+        "locale_country": "hi_IN",
+        "is_rtl": 0,
+        "status": 1,
+        "created_at": "2021-03-10 00:27:17",
+        "updated_at": "2021-03-10 00:27:17"
+    },
+    {
+        "id": 50,
+        "english_name": "Bengali",
+        "code": "bn",
+        "locale_country": "bn_IN",
+        "is_rtl": 0,
+        "status": 1,
+        "created_at": "2021-03-10 00:27:17",
+        "updated_at": "2021-03-10 00:27:17"
+    },
+    {
+        "id": 51,
+        "english_name": "Punjabi",
+        "code": "pa",
+        "locale_country": "pa_IN",
+        "is_rtl": 0,
+        "status": 1,
+        "created_at": "2021-03-10 00:27:17",
+        "updated_at": "2021-03-10 00:27:17"
+    },
+    {
+        "id": 52,
+        "english_name": "Tamil",
+        "code": "ta",
+        "locale_country": "ta_IN",
+        "is_rtl": 0,
+        "status": 1,
+        "created_at": "2021-03-10 00:27:17",
+        "updated_at": "2021-03-10 00:27:17"
+    },
+    {
+        "id": 53,
+        "english_name": "Telugu",
+        "code": "te",
+        "locale_country": "te_IN",
+        "is_rtl": 0,
+        "status": 1,
+        "created_at": "2021-03-10 00:27:17",
+        "updated_at": "2021-03-10 00:27:17"
+    },
+    {
+        "id": 54,
+        "english_name": "Kannada",
+        "code": "kn",
+        "locale_country": "kn_IN",
+        "is_rtl": 0,
+        "status": 1,
+        "created_at": "2021-03-10 00:27:17",
+        "updated_at": "2021-03-10 00:27:17"
+    },
+    {
+        "id": 55,
+        "english_name": "Malayalam",
+        "code": "ml",
+        "locale_country": "ml_IN",
+        "is_rtl": 0,
+        "status": 1,
+        "created_at": "2021-03-10 00:27:17",
+        "updated_at": "2021-03-10 00:27:17"
+    },
+    {
+        "id": 56,
+        "english_name": "Sinhala",
+        "code": "si",
+        "locale_country": "si_LK",
+        "is_rtl": 0,
+        "status": 1,
+        "created_at": "2021-03-10 00:27:17",
+        "updated_at": "2021-03-10 00:27:17"
+    },
+    {
+        "id": 57,
+        "english_name": "Thai",
+        "code": "th",
+        "locale_country": "th_TH",
+        "is_rtl": 0,
+        "status": 1,
+        "created_at": "2021-03-10 00:27:17",
+        "updated_at": "2021-03-10 00:27:17"
+    },
+    {
+        "id": 58,
+        "english_name": "Korean",
+        "code": "ko",
+        "locale_country": "ko_KR",
+        "is_rtl": 0,
+        "status": 1,
+        "created_at": "2021-03-10 00:27:17",
+        "updated_at": "2021-03-10 00:27:17"
+    },
+    {
+        "id": 59,
+        "english_name": "Chinese",
+        "code": "zh",
+        "locale_country": "zh_CN",
+        "is_rtl": 0,
+        "status": 1,
+        "created_at": "2021-03-10 00:27:17",
+        "updated_at": "2021-03-10 00:27:17"
+    },
+    {
+        "id": 60,
+        "english_name": "Japanese",
+        "code": "ja",
+        "locale_country": "ja_JP",
+        "is_rtl": 0,
+        "status": 1,
+        "created_at": "2021-03-10 00:27:17",
+        "updated_at": "2021-03-10 00:27:17"
+    },
+    {
+        "id": 61,
+        "english_name": "Kurdish",
+        "code": "ku",
+        "locale_country": "ku_SY",
+        "is_rtl": 1,
+        "status": 2,
+        "created_at": "2021-03-10 00:27:17",
+        "updated_at": "2021-03-10 00:27:17"
+    }
+]

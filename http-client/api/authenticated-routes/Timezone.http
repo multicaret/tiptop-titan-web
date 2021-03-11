@@ -1,0 +1,61 @@
+################## TIMEZONES ##################
+# Get all available Timezones
+GET {{host}}/{{locale}}/spa/timezones
+Accept: application/json
+Content-Type: application/json
+Authorization: Bearer {{token}}
+
+###
+
+### create timezone
+GET {{host}}/{{locale}}/spa/timezones/create
+Accept: application/json
+Content-Type: application/json
+Authorization: Bearer {{token}}
+
+###
+
+### Store
+POST {{host}}/{{locale}}/spa/timezones
+Accept: application/json
+Content-Type: application/json
+Authorization: Bearer {{token}}
+
+{
+    "name": "timezone name",
+    "utc_offset": 2,
+    "dst_offset": -5
+}
+
+###
+
+### Edit timezone
+GET {{host}}/{{locale}}/spa/timezones/420/edit
+Accept: application/json
+Content-Type: application/json
+Authorization: Bearer {{token}}
+
+###
+
+
+### Update timezone
+PATCH {{host}}/{{locale}}/spa/timezones/420
+Accept: application/json
+Content-Type: application/json
+Authorization: Bearer {{token}}
+
+{
+    "name": "timezone name2",
+    "utc_offset": -2,
+    "dst_offset": 7
+}
+
+###
+
+### delete timezone
+DELETE {{host}}/{{locale}}/spa/timezones/419
+Accept: application/json
+Content-Type: application/json
+Authorization: Bearer {{token}}
+
+###

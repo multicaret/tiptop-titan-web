@@ -1,0 +1,15 @@
+[
+    {
+        "id": 1,
+        "country_id": 107,
+        "region_id": 2,
+        "timezone_id": 332,
+        "english_name": "French Village",
+        "population": null,
+        "latitude": null,
+        "longitude": null,
+        "status": 2,
+        "created_at": "2021-03-10 17:37:07",
+        "updated_at": "2021-03-10 17:37:07"
+    }
+]

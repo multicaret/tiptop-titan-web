@@ -1,0 +1,167 @@
+@charset "UTF-8";
+@import 'mixins';
+// Variables
+@import "variables";
+// Bootstrap
+@import '~bootstrap/scss/bootstrap';
+@import '~jquery-ui/themes/base/all.css';
+@import '~owl.carousel/src/scss/owl.carousel';
+@import '~owl.carousel/src/scss/owl.theme.default';
+@import '~sweetalert2/src/sweetalert2';
+@import '_fonts';
+@import '~@fortawesome/fontawesome-free/scss/fontawesome';
+@import '~@fortawesome/fontawesome-free/scss/regular';
+@import '~@fortawesome/fontawesome-free/scss/solid';
+@import '~@fortawesome/fontawesome-free/scss/brands';
+@import '~line-awesome/dist/line-awesome/scss/line-awesome';
+//@import '~jquery-fancybox/source/scss/jquery.fancybox';
+//@import '~jquery.steps/dist/jquery-steps.css';
+@import '~select2/src/scss/core';
+
+/*----------------------------------------------*\
+	- INITIALIZATION
+\*----------------------------------------------*/
+* {
+    letter-spacing: 0 !important;
+}
+
+/* Custom Scrollbar */
+/* width */
+::-webkit-scrollbar {
+    width: 8px;
+}
+
+/* Track */
+::-webkit-scrollbar-track {
+    background-color: transparent;
+}
+
+/* Handle */
+::-webkit-scrollbar-thumb {
+    border-radius: 4px;
+    background-color: $secondary;
+    transition: background-color .3s;
+}
+
+/* Handle on hover */
+::-webkit-scrollbar-thumb:hover {
+    background-color: $primary;
+}
+
+*::-moz-selection {
+    background-color: $warning;
+    color: $secondary;
+}
+
+*::-webkit-selection {
+    background-color: $warning;
+    color: $secondary;
+}
+
+*::selection {
+    background-color: $warning;
+    color: $secondary;
+}
+
+*::-webkit-input-placeholder {
+    font-family: $paragraphs-font;
+    color: #B9BED1;
+    font-size: 13px;
+    font-weight: normal;
+}
+
+*:-ms-input-placeholder {
+    font-family: $paragraphs-font;
+    color: #B9BED1;
+    font-size: 13px;
+    font-weight: normal;
+}
+
+*:-moz-placeholder {
+    font-family: $paragraphs-font;
+    color: #B9BED1;
+    font-size: 13px;
+    font-weight: normal;
+}
+
+*::-moz-placeholder {
+    font-family: $paragraphs-font;
+    color: #B9BED1;
+    font-size: 13px;
+    font-weight: normal;
+}
+
+a {
+    color: $primary;
+
+    &:hover, &:active, &:focus {
+        color: theme-color('primary');
+        text-decoration: none;
+    }
+}
+
+a, button, button span, .btn, .icon {
+    @include transition(all .3s ease);
+}
+
+.btn {
+    font-family: $paragraphs-font;
+    //border-radius: 0 !important;
+}
+
+ins {
+    text-decoration: none;
+}
+
+textarea {
+    resize: vertical;
+}
+
+body {
+    font-family: $paragraphs-font;
+    font-weight: 300;
+    text-transform: none;
+    color: $secondary;
+}
+
+/* Helper Functions */
+
+.flip-rtl-x {
+    transform: scaleX(-1);
+    filter: flipH();
+    -ms-filter: "FlipH";
+    display: inline-block;
+}
+
+.img-fluid-fit-cover {
+    width: 100%;
+    object-fit: cover;
+    height: 250px;
+}
+
+.min-vh-50 {
+    min-height: 50vh !important;
+}
+
+.overlay {
+    &:before {
+        content: "";
+        background: #00000077;
+        position: absolute;
+        width: 100%;
+        height: 100%;
+    }
+}
+
+/* Accordion */
+.accordion .card-header:after {
+    font-family: 'Line Awesome Free';
+    content: "\f068";
+    float: $end-direction;
+    font-weight: 900;
+}
+
+.accordion .card-header.collapsed:after {
+    /* symbol for "collapsed" panels */
+    content: "\f067";
+}

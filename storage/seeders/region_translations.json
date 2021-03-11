@@ -1,0 +1,44 @@
+[
+    {
+        "id": 1,
+        "region_id": 1,
+        "name": "Baghdad",
+        "locale": "en",
+        "slug": null
+    },
+    {
+        "id": 2,
+        "region_id": 1,
+        "name": "بغداد",
+        "locale": "ar",
+        "slug": null
+    },
+    {
+        "id": 3,
+        "region_id": 1,
+        "name": "بغداد",
+        "locale": "ku",
+        "slug": null
+    },
+    {
+        "id": 4,
+        "region_id": 2,
+        "name": "Erbil",
+        "locale": "en",
+        "slug": null
+    },
+    {
+        "id": 5,
+        "region_id": 2,
+        "name": "أربيل",
+        "locale": "ar",
+        "slug": null
+    },
+    {
+        "id": 6,
+        "region_id": 2,
+        "name": "أربيل",
+        "locale": "ku",
+        "slug": null
+    }
+]

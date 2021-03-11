@@ -1,0 +1,52 @@
+/**
+ * Colors
+ */
+@import 'multicaret/colors';
+
+$text: #7e8b96;
+$background-dark: #eceff1;
+
+$primary: #26B4FF;
+$secondary: #5d3b98;
+$bglight: $background-dark;
+$success: $green !default;
+$info: $cyan !default;
+$warning: $yellow !default;
+$danger: $red !default;
+$light: $gray-100 !default;
+$dark: $gray-800 !default;
+
+/* Elements */
+// Buttons
+$btn-padding-y: .75rem;
+$btn-padding-x: 2rem;
+//$btn-border-radius: 100px;
+$btn-padding-y-sm: 5px;
+$btn-line-height-sm: .9;
+$btn-font-weight: 500;
+
+// Pagination
+$navbar-collapse: 993px;
+
+// Navbar color
+$navbar-default-bg: transparent;
+
+// Navbar collapse
+//** Point at which the navbar becomes uncollapsed.
+$grid-float-breakpoint: 993px;
+
+// Fonts
+$headings-font: sans-serif;
+$paragraphs-font: sans-serif;
+
+$owl-image-path: "~owl.carousel/src/img/";
+/*Swal*/
+$swal2-success: $success;
+$swal2-success-border: rgba($success, .3);
+$swal2-error: $danger;
+$swal2-warning: $warning;
+$swal2-info: $info;
+$swal2-question: $secondary;
+$swal2-confirm-button-background-color: $primary;
+
+$enable-rounded: false;

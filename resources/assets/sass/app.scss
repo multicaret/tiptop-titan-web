@@ -1,0 +1,11 @@
+@import 'multicaret/direction-ltr';
+@import 'init';
+@import 'nav';
+
+$headings-font: 'Nunito', sans-serif;
+$paragraphs-font: 'Nunito', sans-serif;
+@import 'main';
+
+select {
+    background-position-x: 95% !important;
+}

@@ -1,0 +1,84 @@
+################## AUTHENTICATION RELATED ##################
+### Login
+POST {{host}}/{{locale}}/spa/login
+Accept: application/json
+Content-Type: application/json
+Authorization: Bearer {{token}}
+{
+  "email": "info@multicaret.com",
+  "password": "NOTsecretATall"
+}
+
+### Register
+POST {{host}}/{{locale}}/spa/register
+Accept: application/json
+Content-Type: application/json
+Authorization: Bearer {{token}}
+#< ./data/example.json
+
+{
+  "name": "John Doe",
+  "email": "example@domain.com",
+  "password": "secret1234",
+  "phone_number": "555",
+  "phone_country_code": "",
+  "dob": 662688000,
+  "gender": "",
+  "locale": ""
+}
+
+
+### Reset Password
+POST {{host}}/{{locale}}/spa/password/reset
+Accept: application/json
+Content-Type: application/json
+Authorization: Bearer {{token}}
+{
+  "email": "info@multicaret.com"
+}
+
+### Languages
+GET {{host}}/{{locale}}/spa/languages
+Accept: application/json
+Content-Type: application/json
+Authorization: Bearer {{token}}
+
+### Timezones
+GET {{host}}/{{locale}}/spa/timezones
+Accept: application/json
+Content-Type: application/json
+Authorization: Bearer {{token}}
+
+### Currencies
+GET {{host}}/{{locale}}/spa/currencies
+Accept: application/json
+Content-Type: application/json
+Authorization: Bearer {{token}}
+
+################## LOGISTICS ##################
+### Countries
+GET {{host}}/{{locale}}/spa/countries
+Accept: application/json
+Content-Type: application/json
+Authorization: Bearer {{token}}
+
+### Regions (225 is the ID of Turkey)
+GET {{host}}/{{locale}}/spa/countries/225/regions
+Accept: application/json
+Content-Type: application/json
+Authorization: Bearer {{token}}
+
+### Cities (225 is the ID of Turkey, 34 is the ID of Istanbul)
+GET {{host}}/{{locale}}/spa/countries/225/regions/34/cities
+Accept: application/json
+Content-Type: application/json
+Authorization: Bearer {{token}}
+
+
+### Get Supported/Enabled locales
+GET {{host}}/{{locale}}/spa/settings/locales
+Accept: application/json
+Content-Type: application/json
+Authorization: Bearer {{token}}
+###
+

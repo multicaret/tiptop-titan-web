@@ -1,0 +1,96 @@
+@import '~vue-multiselect/dist/vue-multiselect.min.css',
+'libs/jquery.fileuploader-theme-gallery.css',
+'libs/fileuploader',
+'~vue-ctk-date-time-picker/dist/vue-ctk-date-time-picker.css',
+'variables',
+'admin-brand';
+
+.btn-primary {
+    background-color: $primary !important;
+
+    &:hover {
+        background-color: $light !important;
+        border-color: $primary !important;
+        color: $primary !important;
+    }
+
+    &:focus {
+        box-shadow: 0 0 0 2px rgba(211, 74, 155, 0.30);
+    }
+}
+
+.b-form-spinbutton {
+    height: unset;
+    margin-right: 5px;
+
+    output {
+        justify-content: center;
+    }
+}
+
+.b-time-header {
+    margin-bottom: 10px;
+}
+
+.verification-inner {
+    max-width: 700px !important;
+}
+
+.complete-profile-avatar {
+    .fileuploader-thumbnails-input-inner {
+        height: 76px;
+    }
+
+    .fileuploader-thumbnails-input {
+        position: inherit;
+    }
+}
+
+.status-hover-on-item {
+    &:hover {
+        background-color: $secondary;
+        color: #ffffff;
+    }
+}
+
+.b-time {
+    padding: 10px;
+
+    .b-time-footer {
+        padding: 10px;
+    }
+}
+
+.b-form-date-calendar {
+    .b-calendar-inner {
+        width: 30vw !important;
+    }
+}
+
+#example-datepicker__outer_ {
+    background-clip: unset !important;
+    border: unset !important;
+}
+
+#birthday-datepicker {
+    display: flex;
+    align-items: center;
+    padding: 0 6px 0 0;
+
+    &:focus {
+        box-shadow: unset !important;
+    }
+}
+
+#birthday-datepicker__value_ {
+    margin: 0 !important;
+}
+
+.b-form-timepicker {
+
+}
+
+.translations-link{
+    border-bottom: dashed 1px $primary;
+    cursor: pointer;
+}

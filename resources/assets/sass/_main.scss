@@ -1,0 +1,74 @@
+/*------------------------------------------------------------------------------------*/
+/* This is main CSS file that contains custom style rules used in this template */
+/*------------------------------------------------------------------------------------*/
+/* Author: MultiCaret TM
+/* Author URI: https://multicaret.com
+/* Copyright: (c) 2020
+/*------------------------------------------------------------------------------------*/
+
+.select2-container {
+    &:focus {
+        outline: none;
+        box-shadow: none;
+    }
+
+    .selection {
+        &:focus {
+            outline: none;
+            box-shadow: none;
+        }
+
+        .select2-selection {
+            border-radius: 0;
+            font-size: 16px;
+            font-weight: normal;
+            font-stretch: normal;
+            font-style: normal;
+            line-height: 1.19;
+            letter-spacing: normal;
+            text-align: $start-direction;
+            min-height: 38px;
+            display: flex;
+            align-items: center;
+            border: solid 1px #ccd8e2;
+
+            &:focus {
+                outline: none;
+                box-shadow: none;
+            }
+        }
+
+        .select2-selection__rendered {
+            color: #a9b4bd;
+        }
+
+        .select2-selection__arrow {
+            top: 5px !important;
+        }
+    }
+
+}
+
+.select2-container--default {
+    width: 100% !important;
+
+    .select2-dropdown {
+        background-color: #ffffff;
+        border: 1px solid #ccd8e2;
+        border-radius: 0;
+        z-index: 99999999;
+    }
+
+    .select2-results__option[aria-selected=true] {
+        background-color: $secondary;
+        color: #ffffff;
+    }
+
+    .select2-results__option {
+        color: #a9b4bd;
+    }
+
+    .select2-results__option--highlighted[aria-selected] {
+        background-color: $secondary;
+    }
+}

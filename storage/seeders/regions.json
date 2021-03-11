@@ -1,0 +1,20 @@
+[
+    {
+        "id": 1,
+        "country_id": 107,
+        "english_name": "Baghdad",
+        "code": 1,
+        "status": 2,
+        "created_at": "2021-03-10 17:37:07",
+        "updated_at": "2021-03-10 17:37:07"
+    },
+    {
+        "id": 2,
+        "country_id": 107,
+        "english_name": "Erbil",
+        "code": 2,
+        "status": 2,
+        "created_at": "2021-03-10 17:37:07",
+        "updated_at": "2021-03-10 17:37:07"
+    }
+]

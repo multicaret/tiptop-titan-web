@@ -1,0 +1,33 @@
+/*----------------------------------------------*\
+	- HELPERS CLASSES
+\*----------------------------------------------*/
+.valign-wrapper {
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-align-items: center;
+  -ms-flex-align: center;
+  align-items: center;
+  @media (max-width: $grid-float-breakpoint) {
+    display: block;
+  }
+  .valign {
+    display: block;
+  }
+}
+
+.container {
+  &.container-lg {
+    @include media-breakpoint-up(lg) {
+      max-width: 1370px;
+    }
+  }
+}
+
+.full-height {
+  height: 100vh;
+}
+
+[data-href] {
+  cursor: pointer;
+}

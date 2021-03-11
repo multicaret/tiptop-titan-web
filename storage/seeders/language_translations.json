@@ -1,0 +1,1082 @@
+[
+    {
+        "id": 1,
+        "language_id": 1,
+        "name": "English",
+        "locale": "en"
+    },
+    {
+        "id": 2,
+        "language_id": 2,
+        "name": "Afrikaans",
+        "locale": "en"
+    },
+    {
+        "id": 3,
+        "language_id": 3,
+        "name": "Azerbaijani",
+        "locale": "en"
+    },
+    {
+        "id": 4,
+        "language_id": 4,
+        "name": "Indonesian",
+        "locale": "en"
+    },
+    {
+        "id": 5,
+        "language_id": 5,
+        "name": "Malay",
+        "locale": "en"
+    },
+    {
+        "id": 6,
+        "language_id": 6,
+        "name": "Javanese",
+        "locale": "en"
+    },
+    {
+        "id": 7,
+        "language_id": 7,
+        "name": "Cebuano",
+        "locale": "en"
+    },
+    {
+        "id": 8,
+        "language_id": 8,
+        "name": "Bosnian",
+        "locale": "en"
+    },
+    {
+        "id": 9,
+        "language_id": 9,
+        "name": "Catalan",
+        "locale": "en"
+    },
+    {
+        "id": 10,
+        "language_id": 10,
+        "name": "Czech",
+        "locale": "en"
+    },
+    {
+        "id": 11,
+        "language_id": 11,
+        "name": "Welsh",
+        "locale": "en"
+    },
+    {
+        "id": 12,
+        "language_id": 12,
+        "name": "Danish",
+        "locale": "en"
+    },
+    {
+        "id": 13,
+        "language_id": 13,
+        "name": "German",
+        "locale": "en"
+    },
+    {
+        "id": 14,
+        "language_id": 14,
+        "name": "Estonian",
+        "locale": "en"
+    },
+    {
+        "id": 15,
+        "language_id": 15,
+        "name": "Spanish",
+        "locale": "en"
+    },
+    {
+        "id": 16,
+        "language_id": 16,
+        "name": "Basque",
+        "locale": "en"
+    },
+    {
+        "id": 17,
+        "language_id": 17,
+        "name": "Filipino",
+        "locale": "en"
+    },
+    {
+        "id": 18,
+        "language_id": 18,
+        "name": "French",
+        "locale": "en"
+    },
+    {
+        "id": 19,
+        "language_id": 19,
+        "name": "Galician",
+        "locale": "en"
+    },
+    {
+        "id": 20,
+        "language_id": 20,
+        "name": "Guarani",
+        "locale": "en"
+    },
+    {
+        "id": 21,
+        "language_id": 21,
+        "name": "Croatian",
+        "locale": "en"
+    },
+    {
+        "id": 22,
+        "language_id": 22,
+        "name": "Italian",
+        "locale": "en"
+    },
+    {
+        "id": 23,
+        "language_id": 23,
+        "name": "Swahili",
+        "locale": "en"
+    },
+    {
+        "id": 24,
+        "language_id": 24,
+        "name": "Latvian",
+        "locale": "en"
+    },
+    {
+        "id": 25,
+        "language_id": 25,
+        "name": "Lithuanian",
+        "locale": "en"
+    },
+    {
+        "id": 26,
+        "language_id": 26,
+        "name": "Hungarian",
+        "locale": "en"
+    },
+    {
+        "id": 27,
+        "language_id": 27,
+        "name": "Dutch",
+        "locale": "en"
+    },
+    {
+        "id": 28,
+        "language_id": 28,
+        "name": "Norwegian",
+        "locale": "en"
+    },
+    {
+        "id": 29,
+        "language_id": 29,
+        "name": "Polish",
+        "locale": "en"
+    },
+    {
+        "id": 30,
+        "language_id": 30,
+        "name": "Portuguese",
+        "locale": "en"
+    },
+    {
+        "id": 31,
+        "language_id": 31,
+        "name": "Romanian",
+        "locale": "en"
+    },
+    {
+        "id": 32,
+        "language_id": 32,
+        "name": "Albanian",
+        "locale": "en"
+    },
+    {
+        "id": 33,
+        "language_id": 33,
+        "name": "Slovak",
+        "locale": "en"
+    },
+    {
+        "id": 34,
+        "language_id": 34,
+        "name": "Slovenian",
+        "locale": "en"
+    },
+    {
+        "id": 35,
+        "language_id": 35,
+        "name": "Finnish",
+        "locale": "en"
+    },
+    {
+        "id": 36,
+        "language_id": 36,
+        "name": "Swedish",
+        "locale": "en"
+    },
+    {
+        "id": 37,
+        "language_id": 37,
+        "name": "Vietnamese",
+        "locale": "en"
+    },
+    {
+        "id": 38,
+        "language_id": 38,
+        "name": "Turkish",
+        "locale": "en"
+    },
+    {
+        "id": 39,
+        "language_id": 39,
+        "name": "Greek",
+        "locale": "en"
+    },
+    {
+        "id": 40,
+        "language_id": 40,
+        "name": "Bulgarian",
+        "locale": "en"
+    },
+    {
+        "id": 41,
+        "language_id": 41,
+        "name": "Macedonian",
+        "locale": "en"
+    },
+    {
+        "id": 42,
+        "language_id": 42,
+        "name": "Russian",
+        "locale": "en"
+    },
+    {
+        "id": 43,
+        "language_id": 43,
+        "name": "Serbian",
+        "locale": "en"
+    },
+    {
+        "id": 44,
+        "language_id": 44,
+        "name": "Ukrainian",
+        "locale": "en"
+    },
+    {
+        "id": 45,
+        "language_id": 45,
+        "name": "Armenian",
+        "locale": "en"
+    },
+    {
+        "id": 46,
+        "language_id": 46,
+        "name": "Hebrew",
+        "locale": "en"
+    },
+    {
+        "id": 47,
+        "language_id": 47,
+        "name": "Urdu",
+        "locale": "en"
+    },
+    {
+        "id": 48,
+        "language_id": 48,
+        "name": "Arabic",
+        "locale": "en"
+    },
+    {
+        "id": 49,
+        "language_id": 49,
+        "name": "Hindi",
+        "locale": "en"
+    },
+    {
+        "id": 50,
+        "language_id": 50,
+        "name": "Bengali",
+        "locale": "en"
+    },
+    {
+        "id": 51,
+        "language_id": 51,
+        "name": "Punjabi",
+        "locale": "en"
+    },
+    {
+        "id": 52,
+        "language_id": 52,
+        "name": "Tamil",
+        "locale": "en"
+    },
+    {
+        "id": 53,
+        "language_id": 53,
+        "name": "Telugu",
+        "locale": "en"
+    },
+    {
+        "id": 54,
+        "language_id": 54,
+        "name": "Kannada",
+        "locale": "en"
+    },
+    {
+        "id": 55,
+        "language_id": 55,
+        "name": "Malayalam",
+        "locale": "en"
+    },
+    {
+        "id": 56,
+        "language_id": 56,
+        "name": "Sinhala",
+        "locale": "en"
+    },
+    {
+        "id": 57,
+        "language_id": 57,
+        "name": "Thai",
+        "locale": "en"
+    },
+    {
+        "id": 58,
+        "language_id": 58,
+        "name": "Korean",
+        "locale": "en"
+    },
+    {
+        "id": 59,
+        "language_id": 59,
+        "name": "Chinese",
+        "locale": "en"
+    },
+    {
+        "id": 60,
+        "language_id": 60,
+        "name": "Japanese",
+        "locale": "en"
+    },
+    {
+        "id": 61,
+        "language_id": 1,
+        "name": "Ingilizce",
+        "locale": "tr"
+    },
+    {
+        "id": 62,
+        "language_id": 2,
+        "name": "Afrikaans",
+        "locale": "tr"
+    },
+    {
+        "id": 63,
+        "language_id": 3,
+        "name": "Azeri",
+        "locale": "tr"
+    },
+    {
+        "id": 64,
+        "language_id": 4,
+        "name": "Endonezya",
+        "locale": "tr"
+    },
+    {
+        "id": 65,
+        "language_id": 5,
+        "name": "Malaya",
+        "locale": "tr"
+    },
+    {
+        "id": 66,
+        "language_id": 6,
+        "name": "Cava",
+        "locale": "tr"
+    },
+    {
+        "id": 67,
+        "language_id": 7,
+        "name": "Cebuano",
+        "locale": "tr"
+    },
+    {
+        "id": 68,
+        "language_id": 8,
+        "name": "Boşnakça",
+        "locale": "tr"
+    },
+    {
+        "id": 69,
+        "language_id": 9,
+        "name": "Katalan",
+        "locale": "tr"
+    },
+    {
+        "id": 70,
+        "language_id": 10,
+        "name": "Çek",
+        "locale": "tr"
+    },
+    {
+        "id": 71,
+        "language_id": 11,
+        "name": "Galler",
+        "locale": "tr"
+    },
+    {
+        "id": 72,
+        "language_id": 12,
+        "name": "Danimarkalı",
+        "locale": "tr"
+    },
+    {
+        "id": 73,
+        "language_id": 13,
+        "name": "Almanca",
+        "locale": "tr"
+    },
+    {
+        "id": 74,
+        "language_id": 14,
+        "name": "Estonyalı",
+        "locale": "tr"
+    },
+    {
+        "id": 75,
+        "language_id": 15,
+        "name": "İspanyol",
+        "locale": "tr"
+    },
+    {
+        "id": 76,
+        "language_id": 16,
+        "name": "Bask",
+        "locale": "tr"
+    },
+    {
+        "id": 77,
+        "language_id": 17,
+        "name": "Filipinli",
+        "locale": "tr"
+    },
+    {
+        "id": 78,
+        "language_id": 18,
+        "name": "Fransızca",
+        "locale": "tr"
+    },
+    {
+        "id": 79,
+        "language_id": 19,
+        "name": "Galicia'ya ait",
+        "locale": "tr"
+    },
+    {
+        "id": 80,
+        "language_id": 20,
+        "name": "Guarani",
+        "locale": "tr"
+    },
+    {
+        "id": 81,
+        "language_id": 21,
+        "name": "Hırvat",
+        "locale": "tr"
+    },
+    {
+        "id": 82,
+        "language_id": 22,
+        "name": "İtalyan",
+        "locale": "tr"
+    },
+    {
+        "id": 83,
+        "language_id": 23,
+        "name": "Svahili",
+        "locale": "tr"
+    },
+    {
+        "id": 84,
+        "language_id": 24,
+        "name": "Letonyalı",
+        "locale": "tr"
+    },
+    {
+        "id": 85,
+        "language_id": 25,
+        "name": "Litvanyalı",
+        "locale": "tr"
+    },
+    {
+        "id": 86,
+        "language_id": 26,
+        "name": "Macarca",
+        "locale": "tr"
+    },
+    {
+        "id": 87,
+        "language_id": 27,
+        "name": "Flemenkçe",
+        "locale": "tr"
+    },
+    {
+        "id": 88,
+        "language_id": 28,
+        "name": "Norveççe",
+        "locale": "tr"
+    },
+    {
+        "id": 89,
+        "language_id": 29,
+        "name": "Lehçe",
+        "locale": "tr"
+    },
+    {
+        "id": 90,
+        "language_id": 30,
+        "name": "Portekizce",
+        "locale": "tr"
+    },
+    {
+        "id": 91,
+        "language_id": 31,
+        "name": "Romen",
+        "locale": "tr"
+    },
+    {
+        "id": 92,
+        "language_id": 32,
+        "name": "Arnavut",
+        "locale": "tr"
+    },
+    {
+        "id": 93,
+        "language_id": 33,
+        "name": "Slovak",
+        "locale": "tr"
+    },
+    {
+        "id": 94,
+        "language_id": 34,
+        "name": "Sloven",
+        "locale": "tr"
+    },
+    {
+        "id": 95,
+        "language_id": 35,
+        "name": "Fince",
+        "locale": "tr"
+    },
+    {
+        "id": 96,
+        "language_id": 36,
+        "name": "İsveççe",
+        "locale": "tr"
+    },
+    {
+        "id": 97,
+        "language_id": 37,
+        "name": "Vietnam",
+        "locale": "tr"
+    },
+    {
+        "id": 98,
+        "language_id": 38,
+        "name": "Türkçe",
+        "locale": "tr"
+    },
+    {
+        "id": 99,
+        "language_id": 39,
+        "name": "Yunan",
+        "locale": "tr"
+    },
+    {
+        "id": 100,
+        "language_id": 40,
+        "name": "Bulgar",
+        "locale": "tr"
+    },
+    {
+        "id": 101,
+        "language_id": 41,
+        "name": "Makedonya",
+        "locale": "tr"
+    },
+    {
+        "id": 102,
+        "language_id": 42,
+        "name": "Rusça",
+        "locale": "tr"
+    },
+    {
+        "id": 103,
+        "language_id": 43,
+        "name": "Sırpça",
+        "locale": "tr"
+    },
+    {
+        "id": 104,
+        "language_id": 44,
+        "name": "Ukrayna",
+        "locale": "tr"
+    },
+    {
+        "id": 105,
+        "language_id": 45,
+        "name": "Ermeni",
+        "locale": "tr"
+    },
+    {
+        "id": 106,
+        "language_id": 46,
+        "name": "İbranice",
+        "locale": "tr"
+    },
+    {
+        "id": 107,
+        "language_id": 47,
+        "name": "Urduca",
+        "locale": "tr"
+    },
+    {
+        "id": 108,
+        "language_id": 48,
+        "name": "Arapça",
+        "locale": "tr"
+    },
+    {
+        "id": 109,
+        "language_id": 49,
+        "name": "Hintçe",
+        "locale": "tr"
+    },
+    {
+        "id": 110,
+        "language_id": 50,
+        "name": "Bengal",
+        "locale": "tr"
+    },
+    {
+        "id": 111,
+        "language_id": 51,
+        "name": "Pencap",
+        "locale": "tr"
+    },
+    {
+        "id": 112,
+        "language_id": 52,
+        "name": "Tamilce",
+        "locale": "tr"
+    },
+    {
+        "id": 113,
+        "language_id": 53,
+        "name": "Telugu",
+        "locale": "tr"
+    },
+    {
+        "id": 114,
+        "language_id": 54,
+        "name": "Kannada",
+        "locale": "tr"
+    },
+    {
+        "id": 115,
+        "language_id": 55,
+        "name": "Malayalam",
+        "locale": "tr"
+    },
+    {
+        "id": 116,
+        "language_id": 56,
+        "name": "Sinhala",
+        "locale": "tr"
+    },
+    {
+        "id": 117,
+        "language_id": 57,
+        "name": "Tayland",
+        "locale": "tr"
+    },
+    {
+        "id": 118,
+        "language_id": 58,
+        "name": "Koreli",
+        "locale": "tr"
+    },
+    {
+        "id": 119,
+        "language_id": 59,
+        "name": "Çince",
+        "locale": "tr"
+    },
+    {
+        "id": 120,
+        "language_id": 60,
+        "name": "Japonca",
+        "locale": "tr"
+    },
+    {
+        "id": 121,
+        "language_id": 1,
+        "name": "الإنجليزية",
+        "locale": "ar"
+    },
+    {
+        "id": 122,
+        "language_id": 2,
+        "name": "الأفريقانية",
+        "locale": "ar"
+    },
+    {
+        "id": 123,
+        "language_id": 3,
+        "name": "الأذربيجانية",
+        "locale": "ar"
+    },
+    {
+        "id": 124,
+        "language_id": 4,
+        "name": "الإندونيسية",
+        "locale": "ar"
+    },
+    {
+        "id": 125,
+        "language_id": 5,
+        "name": "لغة الملايو",
+        "locale": "ar"
+    },
+    {
+        "id": 126,
+        "language_id": 6,
+        "name": "الجاوية",
+        "locale": "ar"
+    },
+    {
+        "id": 127,
+        "language_id": 7,
+        "name": "سيبوانو",
+        "locale": "ar"
+    },
+    {
+        "id": 128,
+        "language_id": 8,
+        "name": "البوسنية",
+        "locale": "ar"
+    },
+    {
+        "id": 129,
+        "language_id": 9,
+        "name": "الكاتالونية",
+        "locale": "ar"
+    },
+    {
+        "id": 130,
+        "language_id": 10,
+        "name": "التشيكية",
+        "locale": "ar"
+    },
+    {
+        "id": 131,
+        "language_id": 11,
+        "name": "الويلزية",
+        "locale": "ar"
+    },
+    {
+        "id": 132,
+        "language_id": 12,
+        "name": "دانماركي",
+        "locale": "ar"
+    },
+    {
+        "id": 133,
+        "language_id": 13,
+        "name": "ألمانية",
+        "locale": "ar"
+    },
+    {
+        "id": 134,
+        "language_id": 14,
+        "name": "الإستونية",
+        "locale": "ar"
+    },
+    {
+        "id": 135,
+        "language_id": 15,
+        "name": "الأسبانية",
+        "locale": "ar"
+    },
+    {
+        "id": 136,
+        "language_id": 16,
+        "name": "لغة الباسك",
+        "locale": "ar"
+    },
+    {
+        "id": 137,
+        "language_id": 17,
+        "name": "الفلبينية",
+        "locale": "ar"
+    },
+    {
+        "id": 138,
+        "language_id": 18,
+        "name": "فرنسي",
+        "locale": "ar"
+    },
+    {
+        "id": 139,
+        "language_id": 19,
+        "name": "الجاليكية",
+        "locale": "ar"
+    },
+    {
+        "id": 140,
+        "language_id": 20,
+        "name": "الغواراني",
+        "locale": "ar"
+    },
+    {
+        "id": 141,
+        "language_id": 21,
+        "name": "الكرواتية",
+        "locale": "ar"
+    },
+    {
+        "id": 142,
+        "language_id": 22,
+        "name": "إيطالي",
+        "locale": "ar"
+    },
+    {
+        "id": 143,
+        "language_id": 23,
+        "name": "السواحيلية",
+        "locale": "ar"
+    },
+    {
+        "id": 144,
+        "language_id": 24,
+        "name": "اللاتفية",
+        "locale": "ar"
+    },
+    {
+        "id": 145,
+        "language_id": 25,
+        "name": "الليتوانية",
+        "locale": "ar"
+    },
+    {
+        "id": 146,
+        "language_id": 26,
+        "name": "المجري",
+        "locale": "ar"
+    },
+    {
+        "id": 147,
+        "language_id": 27,
+        "name": "هولندي",
+        "locale": "ar"
+    },
+    {
+        "id": 148,
+        "language_id": 28,
+        "name": "النرويجية",
+        "locale": "ar"
+    },
+    {
+        "id": 149,
+        "language_id": 29,
+        "name": "تلميع",
+        "locale": "ar"
+    },
+    {
+        "id": 150,
+        "language_id": 30,
+        "name": "البرتغالية",
+        "locale": "ar"
+    },
+    {
+        "id": 151,
+        "language_id": 31,
+        "name": "روماني",
+        "locale": "ar"
+    },
+    {
+        "id": 152,
+        "language_id": 32,
+        "name": "الألبانية",
+        "locale": "ar"
+    },
+    {
+        "id": 153,
+        "language_id": 33,
+        "name": "السلوفاكية",
+        "locale": "ar"
+    },
+    {
+        "id": 154,
+        "language_id": 34,
+        "name": "السلوفينية",
+        "locale": "ar"
+    },
+    {
+        "id": 155,
+        "language_id": 35,
+        "name": "الفنلندية",
+        "locale": "ar"
+    },
+    {
+        "id": 156,
+        "language_id": 36,
+        "name": "السويدية",
+        "locale": "ar"
+    },
+    {
+        "id": 157,
+        "language_id": 37,
+        "name": "الفيتنامية",
+        "locale": "ar"
+    },
+    {
+        "id": 158,
+        "language_id": 38,
+        "name": "اللغة التركية",
+        "locale": "ar"
+    },
+    {
+        "id": 159,
+        "language_id": 39,
+        "name": "اليونانية",
+        "locale": "ar"
+    },
+    {
+        "id": 160,
+        "language_id": 40,
+        "name": "البلغارية",
+        "locale": "ar"
+    },
+    {
+        "id": 161,
+        "language_id": 41,
+        "name": "المقدونية",
+        "locale": "ar"
+    },
+    {
+        "id": 162,
+        "language_id": 42,
+        "name": "الروسية",
+        "locale": "ar"
+    },
+    {
+        "id": 163,
+        "language_id": 43,
+        "name": "صربي",
+        "locale": "ar"
+    },
+    {
+        "id": 164,
+        "language_id": 44,
+        "name": "الأوكرانية",
+        "locale": "ar"
+    },
+    {
+        "id": 165,
+        "language_id": 45,
+        "name": "أرمني",
+        "locale": "ar"
+    },
+    {
+        "id": 166,
+        "language_id": 46,
+        "name": "اللغة العبرية",
+        "locale": "ar"
+    },
+    {
+        "id": 167,
+        "language_id": 47,
+        "name": "الأردية",
+        "locale": "ar"
+    },
+    {
+        "id": 168,
+        "language_id": 48,
+        "name": "عربى",
+        "locale": "ar"
+    },
+    {
+        "id": 169,
+        "language_id": 49,
+        "name": "هندي",
+        "locale": "ar"
+    },
+    {
+        "id": 170,
+        "language_id": 50,
+        "name": "البنغالية",
+        "locale": "ar"
+    },
+    {
+        "id": 171,
+        "language_id": 51,
+        "name": "البنجابية",
+        "locale": "ar"
+    },
+    {
+        "id": 172,
+        "language_id": 52,
+        "name": "التاميل",
+        "locale": "ar"
+    },
+    {
+        "id": 173,
+        "language_id": 53,
+        "name": "التيلجو",
+        "locale": "ar"
+    },
+    {
+        "id": 174,
+        "language_id": 54,
+        "name": "الكانادا",
+        "locale": "ar"
+    },
+    {
+        "id": 175,
+        "language_id": 55,
+        "name": "المالايالامية",
+        "locale": "ar"
+    },
+    {
+        "id": 176,
+        "language_id": 56,
+        "name": "السنهالية",
+        "locale": "ar"
+    },
+    {
+        "id": 177,
+        "language_id": 57,
+        "name": "التايلاندية",
+        "locale": "ar"
+    },
+    {
+        "id": 178,
+        "language_id": 58,
+        "name": "الكورية",
+        "locale": "ar"
+    },
+    {
+        "id": 179,
+        "language_id": 59,
+        "name": "صينى",
+        "locale": "ar"
+    },
+    {
+        "id": 180,
+        "language_id": 60,
+        "name": "اليابانية",
+        "locale": "ar"
+    }
+]

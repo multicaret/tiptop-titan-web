@@ -1,0 +1,35 @@
+@import "multicaret/direction-rtl";
+@import 'init';
+@import 'nav';
+
+$headings-font: 'Almarai', sans-serif;
+$paragraphs-font: 'Almarai', sans-serif;
+@import //'~bootstrap/scss/functions',
+    //'~bootstrap/scss/variables',
+    //'~bootstrap/scss/mixins',
+'libs/bootstrap-rtl' /*,'fonts-arabic'*/
+;
+
+@import "main";
+.dropdown-content {
+    li {
+        &.has-expand-menu-indicator {
+            &::after {
+                content: '\f0d9' !important;
+            }
+        }
+    }
+}
+
+.best-offers-links {
+    ul {
+        li {
+
+            a {
+                &:after {
+                    content: "\f104" !important;
+                }
+            }
+        }
+    }
+}

@@ -1,0 +1,19 @@
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="512" height="512" viewBox="0 0 512 512">
+  <defs>
+    <clipPath id="clip-logo-gray-transparent">
+      <rect width="512" height="512"/>
+    </clipPath>
+  </defs>
+  <g id="logo-gray-transparent" clip-path="url(#clip-logo-gray-transparent)">
+    <g id="Group_18" data-name="Group 18">
+      <path id="Path_45" data-name="Path 45" d="M0,409.6V102.4A102.4,102.4,0,0,1,102.4,0H409.6A102.4,102.4,0,0,1,512,102.4V409.6A102.4,102.4,0,0,1,409.6,512H102.4A102.4,102.4,0,0,1,0,409.6" fill="#bcbcbd"/>
+      <path id="Path_46" data-name="Path 46" d="M182.565,475.919l-22.2,116.505h33.808l10.356-54.341Z" transform="translate(-78.257 -232.248)" fill="#fff"/>
+      <path id="Path_47" data-name="Path 47" d="M291.012,407.589l-31.9-91.676H225.309l42.9,123.31Z" transform="translate(-109.949 -154.165)" fill="#fff"/>
+      <path id="Path_48" data-name="Path 48" d="M376.676,470.936l-70.9,98.08h33.808L364.755,534.2Z" transform="translate(-149.218 -229.817)" fill="#fff"/>
+      <path id="Path_49" data-name="Path 49" d="M546.787,315.914H513.08l-.137.19L475.671,514.341h33.808Z" transform="translate(-232.127 -154.165)" fill="#fff"/>
+      <path id="Path_50" data-name="Path 50" d="M663.281,315.914H629.574l-.137.19L592.165,514.341h33.808Z" transform="translate(-288.976 -154.165)" fill="#fff"/>
+      <path id="Path_51" data-name="Path 51" d="M779.775,315.914H746.068l-.137.19L708.66,514.341h33.808Z" transform="translate(-345.825 -154.165)" fill="#fff"/>
+      <rect id="Rectangle_19" data-name="Rectangle 19" width="511.688" height="511.688" transform="translate(0.002 0.002)" fill="none"/>
+    </g>
+  </g>
+</svg>
