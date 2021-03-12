@@ -224,7 +224,7 @@
                         <div class="form-group {{ $errors->has('address1') ? 'has-error' : '' }}">
                             <label for="address1" class="control-label">Address 1</label>
                             <input type="text" id="address1" name="address1" class="form-control"
-                                   value="{{ old('address1')??optional($user->primaryAddress)->address1 }}">
+                                   value="{{ old('address1')??optional($user->defaultAddress)->address1 }}">
                             @if ($errors->has('address1'))
                                 <span class="help-block">
                                         <b>{{ $errors->first('address1') }}</b>
@@ -237,7 +237,7 @@
                         <div class="form-group {{ $errors->has('address2') ? 'has-error' : '' }}">
                             <label for="address2" class="control-label">Address 2</label>
                             <input type="text" id="address2" name="address2" class="form-control"
-                                   value="{{ old('address2')??optional($user->primaryAddress)->address2 }}">
+                                   value="{{ old('address2')??optional($user->defaultAddress)->address2 }}">
                             @if ($errors->has('address2'))
                                 <span class="help-block">
                                         <b>{{ $errors->first('address2') }}</b>

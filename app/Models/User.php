@@ -2,7 +2,6 @@
 
 namespace App\Models;
 
-use \Illuminate\Database\Eloquent\Relations\BelongsTo as BelongsTo;
 use App\Mail\Welcome;
 use App\Notifications\ResetPassword;
 use App\Traits\HasGender;
@@ -12,6 +11,7 @@ use App\Traits\HasViewCount;
 use Illuminate\Auth\Passwords\CanResetPassword;
 use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Relations\BelongsTo as BelongsTo;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Support\Facades\Mail;
@@ -254,7 +254,7 @@ class User extends Authenticatable implements HasMedia, MustVerifyEmail
     ];
 
     protected $with = [
-        'primaryAddress',
+        'defaultAddress',
 //        'country',
     ];
 
@@ -264,7 +264,7 @@ class User extends Authenticatable implements HasMedia, MustVerifyEmail
         parent::boot();
 
         static::created(function (User $user) {
-            if (app()->environment() == 'production' && !Str::contains($user->username, 'db-seeder-test-')) {
+            if (app()->environment() == 'production' && ! Str::contains($user->username, 'db-seeder-test-')) {
                 Mail::to($user)->send(new Welcome($user));
             }
         });
@@ -452,28 +452,17 @@ class User extends Authenticatable implements HasMedia, MustVerifyEmail
     }
 
 
-    public function primaryAddress()
+    public function defaultAddress()
     {
-        return $this->belongsTo(Location::class, 'id', 'contactable_id')
-                    ->where('contactable_type', User::class)
-                    ->whereNull('alias');
+        return $this->addresses()->where('is_default', true);
     }
 
     /**
-     * @return mixed
-     */
-    public function address()
-    {
-        return $this->belongsTo(Location::class, 'id', 'contactable_id')
-                    ->where('contactable_type', User::class);
-    }
-
-    /**
-     * This model has many comments.
+     * This model has many addresses.
      *
      * @return mixed
      */
-    public function locations()
+    public function addresses()
     {
         return $this->morphMany(Location::class, 'contactable');
     }
@@ -510,7 +499,8 @@ class User extends Authenticatable implements HasMedia, MustVerifyEmail
                    ->where('phone_number', $phoneNumber)->first();
     }
 
-    public function registerMediaCollections(): void{
+    public function registerMediaCollections(): void
+    {
         $this->addMediaCollection('avatar')
              ->singleFile()
              ->registerMediaConversions(function (Media $media) {

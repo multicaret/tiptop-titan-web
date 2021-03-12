@@ -27,7 +27,7 @@ class DatatableController extends AjaxController
             $type = User::ROLE_USER;
         }
 
-        $users = User::with(['primaryAddress'])
+        $users = User::with(['defaultAddress'])
                      ->orderBy('order_column')
                      ->role($type)
                      ->selectRaw('users.*');

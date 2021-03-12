@@ -5,14 +5,13 @@
 Route::middleware('throttle:15')
      ->group(function () {
          /* catalog related */
+         Route::get('/boot', 'HomeController@boot');
          Route::get('/', 'HomeController@root');
+         Route::get('/home', 'HomeController@index');
 
          /* auth related */
          Route::post('login', 'Auth\AuthController@login');
          Route::post('register', 'Auth\AuthController@register');
-         Route::post('password/reset', 'Auth\PasswordController@reset');
-//         Route::post('account/verify', 'Auth\VerificationController@verify');
-//         Route::post('reverify', 'Auth\VerificationController@reverify');
 //         Route::post('auth/{provider}', 'Auth\SocialiteController@handleProvider');
 
          /* generals */

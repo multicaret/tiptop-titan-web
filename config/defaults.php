@@ -22,7 +22,7 @@ return [
     ],
     'city' => [
         'id' => 1,
-        'english_name' => 'French Village',
+        'english_name' => 'Italian Village',
     ],
     'images' => [
         'region_cover' => '/images/region-cover.png',
@@ -30,6 +30,57 @@ return [
         'user_cover' => '/images/user-cover.png',
         'post_cover' => '/images/post-cover.png',
         'taxonomy_cover' => '/images/taxonomy-cover.png',
+        'manufacturer_logo' => '/images/manufacturer-logo.png',
+        'barcode_image' => '/images/barcode-image.png',
+        'chain_logo' => '/images/chain-logo.png',
+    ],
+    'image_conversions' => [
+        'generic_logo' => [
+            '512' => [
+                'width' => 512,
+                'height' => 512,
+            ],
+            '1K' => [
+                'width' => 1024,
+                'height' => 1024,
+            ],
+        ],
+        'generic_cover' => [
+            'SD' => [
+                'width' => 640,
+                'height' => 480,
+            ],
+            'HD' => [
+                'width' => 1280,
+                'height' => 720,
+            ],
+            '1K' => [
+                'width' => 1920,
+                'height' => 1080,
+            ],
+            '2K' => [
+                'width' => 2560,
+                'height' => 1440,
+            ],
+        ],
+        'product_grocery_cover' => [
+            'SD' => [
+                'width' => 480,
+                'height' => 480,
+            ],
+            'HD' => [
+                'width' => 720,
+                'height' => 720,
+            ],
+            '1K' => [
+                'width' => 1080,
+                'height' => 1080,
+            ],
+            '2K' => [
+                'width' => 1440,
+                'height' => 1440,
+            ],
+        ]
     ],
     'date' => [
         'short_format' => 'Y-m-d',
@@ -38,6 +89,17 @@ return [
     'geolocation' => [
         'latitude' => 36.195238,
         'longitude' => 43.993914,
+    ],
+    'workingHours' => [
+        'opensAt' => "09:00",
+        'closesAt' => "11:00",
+        'weekends' => [3, 4],
+    ],
+    'colors' => [
+        'chain_primary_color' => '#d82518',
+        'chain_secondary_color' => '#F9CB39',
+        'qr_code_forecolor' => '#000000',
+        'qr_code_backcolor' => '#FFFFFF',
     ],
     'social_media_providers' => [
         'facebook' => ['id' => null, 'url' => null],
@@ -137,5 +199,5 @@ return [
         'owner' => [
             'name' => 'Owner',
         ]
-    ]
+    ],
 ];

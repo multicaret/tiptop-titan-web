@@ -2,6 +2,10 @@
 
 namespace Database\Seeders;
 
+use App\Models\Branch;
+use App\Models\BranchTranslation;
+use App\Models\Chain;
+use App\Models\ChainTranslation;
 use App\Models\Post;
 use App\Models\PostTranslation;
 use App\Models\Preference;
@@ -9,6 +13,7 @@ use App\Models\PreferenceTranslation;
 use App\Models\Taxonomy;
 use App\Models\TaxonomyTranslation;
 use App\Models\User;
+use App\Models\WorkingHour;
 use DB;
 use File;
 use Illuminate\Database\Seeder;
@@ -54,6 +59,8 @@ class DatabaseSeeder extends Seeder
         $this->preferences($appHost);
         $this->posts($super);
         $this->taxonomies($super);
+        $this->chains($super);
+        $this->branches($super);
 
 //        factory(App\Models\User::class, 10)->create();
 //        factory(App\Models\Location::class, 10)->create();
@@ -98,7 +105,7 @@ class DatabaseSeeder extends Seeder
                         'title' => 'العام',
                     ],
                     [
-                        'locale' => 'tr',
+                        'locale' => 'ku',
                         'title' => 'Genal',
                     ]
                 ]
@@ -140,8 +147,8 @@ class DatabaseSeeder extends Seeder
                         'content' => file_get_contents(storage_path('seeders/static-pages/about-ar.html')),
                     ],
                     [
-                        'locale' => 'tr',
-                        'title' => 'Hakkinda',
+                        'locale' => 'ku',
+                        'title' => 'من نحن',
                         'content' => file_get_contents(storage_path('seeders/static-pages/about-tr.html')),
                     ],
                 ]
@@ -160,7 +167,7 @@ class DatabaseSeeder extends Seeder
                         'content' => '',
                     ],
                     [
-                        'locale' => 'tr',
+                        'locale' => 'ku',
                         'title' => 'Bize Ulaşın',
                         'content' => '',
                     ],
@@ -180,7 +187,7 @@ class DatabaseSeeder extends Seeder
                         'content' => '',
                     ],
                     [
-                        'locale' => 'tr',
+                        'locale' => 'ku',
                         'title' => 'SSS',
                         'content' => '',
                     ],
@@ -200,7 +207,7 @@ class DatabaseSeeder extends Seeder
                         'content' => '',
                     ],
                     [
-                        'locale' => 'tr',
+                        'locale' => 'ku',
                         'title' => 'Gizlilik Politikası',
                         'content' => '',
                     ],
@@ -220,7 +227,7 @@ class DatabaseSeeder extends Seeder
                         'content' => file_get_contents(storage_path('seeders/static-pages/terms-ar.html')),
                     ],
                     [
-                        'locale' => 'tr',
+                        'locale' => 'ku',
                         'title' => 'Şartlar ve Koşullar',
                         'content' => file_get_contents(storage_path('seeders/static-pages/terms-tr.html')),
                     ],
@@ -522,5 +529,77 @@ class DatabaseSeeder extends Seeder
 
         echo PHP_EOL.PHP_EOL.'Use the following access token for '.$admin->email.':'.PHP_EOL;
         echo 'Bearer '.$admin->createToken(strtolower(config('app.name')))->accessToken.PHP_EOL.PHP_EOL;
+    }
+
+    private function chains($super)
+    {
+        $chain = new Chain();
+        $chain->creator_id = $super->id;
+        $chain->editor_id = $super->id;
+        $chain->region_id = config('defaults.region.id');
+        $chain->city_id = config('defaults.city.id');
+        $chain->currency_id = config('defaults.currency.id');
+        $chain->type = Chain::TYPE_GROCERY;
+        $chain->primary_phone_number = "+964539551234";
+        $chain->secondary_phone_number = "+964539551234";
+        $chain->whatsapp_phone_number = "+964539551234";
+        $chain->status = Chain::STATUS_PUBLISHED;
+        $chain->save();
+
+        foreach (config('localization.supported-locales') as $locale) {
+            $translation = new ChainTranslation();
+            $translation->chain_id = $chain->id;
+            $translation->locale = $locale;
+            $translation->title = "TipTop Market";
+            $translation->save();
+        }
+    }
+
+    private function branches($super)
+    {
+        $branches = [
+            'TipTop Market branch 1',
+            'TipTop Market branch 2',
+            'TipTop Market branch 3',
+        ];
+        foreach ($branches as $branchIndex => $branchName) {
+            $item = new Branch();
+            $item->chain_id = 1;
+            $item->creator_id = $super->id;
+            $item->editor_id = $super->id;
+            $item->region_id = config('defaults.region.id');
+            $item->city_id = config('defaults.city.id');
+            $item->type = Branch::TYPE_GROCERY;
+
+            $item->minimum_order = 500 * ($branchIndex + 1);
+            $item->under_minimum_order_delivery_fee = 200 * ($branchIndex + 1);
+            $item->fixed_delivery_fee = 2000;
+            $item->primary_phone_number = "+964539551234";
+            $item->secondary_phone_number = "+964539551234";
+            $item->whatsapp_phone_number = "+964539551234";
+            $item->latitude = config('defaults.geolocation.latitude') + ($branchIndex / 100);
+            $item->longitude = config('defaults.geolocation.longitude') + ($branchIndex / 100);
+            $item->status = Branch::STATUS_PUBLISHED;
+            $item->save();
+
+            foreach (config('localization.supported-locales') as $locale) {
+                $translation = new BranchTranslation();
+                $translation->branch_id = $item->id;
+                $translation->locale = $locale;
+                $translation->title = $branchName;
+                $translation->save();
+            }
+
+            foreach (Branch::getDefaultWorkingHours() as $defaultWorkingHour) {
+                $doctorWorkHour = new WorkingHour();
+                $doctorWorkHour->day = $defaultWorkingHour->day;
+                $doctorWorkHour->workable_id = $item->id;
+                $doctorWorkHour->workable_type = Branch::class;
+                $doctorWorkHour->opens_at = $defaultWorkingHour->opens_at;
+                $doctorWorkHour->closes_at = $defaultWorkingHour->closes_at;
+                $doctorWorkHour->is_day_off = $defaultWorkingHour->is_day_off;
+                $doctorWorkHour->save();
+            }
+        }
     }
 }

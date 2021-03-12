@@ -193,6 +193,7 @@ class Post extends Model implements HasMedia, ShouldHaveTypes
     {
         return $this->belongsTo(User::class, 'editor_id');
     }
+
     public function categories()
     {
         return $this->tags()->where('type', Taxonomy::TYPE_POST_CATEGORY);

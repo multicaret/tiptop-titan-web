@@ -2,6 +2,11 @@
 
 return [
 
+    'app-channels' => [
+        'grocery' => 'grocery',
+        'food' => 'food',
+        'carrefour' => 'carrefour',
+    ],
     /*
     |--------------------------------------------------------------------------
     | Application Name
@@ -39,7 +44,7 @@ return [
     |
     */
 
-    'debug' => (bool)env('APP_DEBUG', false),
+    'debug' => (bool) env('APP_DEBUG', false),
 
     /*
     |--------------------------------------------------------------------------

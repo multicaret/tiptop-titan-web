@@ -104,16 +104,17 @@ class Preference extends Model implements HasMedia
      */
     public static function getAll(): Collection
     {
-        return cache()->tags('preferences')->rememberForever(localization()->getCurrentLocale().'.preferences', function () {
-            $preferences = Preference::all();
-            $preferences->map(function (Preference $preference) {
-                if ($preference->type == 'file') {
-                    $preference->value = $preference->getValue();
-                }
-            });
+        return cache()->tags('preferences')->rememberForever(localization()->getCurrentLocale().'.preferences',
+            function () {
+                $preferences = Preference::all();
+                $preferences->map(function (Preference $preference) {
+                    if ($preference->type == 'file') {
+                        $preference->value = $preference->getValue();
+                    }
+                });
 
-            return $preferences;
-        });
+                return $preferences;
+            });
     }
 
     /**

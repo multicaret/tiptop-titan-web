@@ -29,7 +29,7 @@ trait HasMediaTrait
                         'type' => $media->mime_type,
                         'size' => $media->size,
                         'file' => $media->getFullUrl($mainFileConversion),
-                        'thumbnail' => $media->getFullUrl('thumbnail'),
+                        'thumbnail' => $media->getFullUrl('HD'),
                         'data' => [
                             'extension' => explode('/', $media->mime_type)[1],
                             'listProps' => [

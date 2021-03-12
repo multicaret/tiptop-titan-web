@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreateBranchesTable extends Migration
+class CreateChainsTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,27 +13,25 @@ class CreateBranchesTable extends Migration
      */
     public function up()
     {
-        Schema::create('branches', function (Blueprint $table) {
+        Schema::create('chains', function (Blueprint $table) {
             $table->id();
             $table->char('uuid', 10)->unique();
-            $table->unsignedBigInteger('chain_id')->index();
             $table->unsignedBigInteger('creator_id')->index();
             $table->unsignedBigInteger('editor_id');
             $table->unsignedBigInteger('region_id')->nullable();
             $table->unsignedBigInteger('city_id')->nullable();
-            $table->float('minimum_order')->default(0);
-            $table->float('under_minimum_order_delivery_fee')->nullable();
-            $table->float('fixed_delivery_fee')->nullable();
+            $table->unsignedBigInteger('currency_id')->nullable()->default(config('defaults.currency.id'));
+            $table->unsignedTinyInteger('type')->default(\App\Models\Chain::TYPE_FOOD)->comment('1:Market, 2: Food');
             $table->string('primary_phone_number')->nullable();
             $table->string('secondary_phone_number')->nullable();
             $table->string('whatsapp_phone_number')->nullable();
-            $table->unsignedInteger('order_column')->nullable();
-            $table->unsignedTinyInteger('type')->default(\App\Models\Branch::TYPE_FOOD)->comment('1:Market, 2: Food');
-            $table->decimal('latitude', 11, 8)->nullable();
-            $table->decimal('longitude', 11, 8)->nullable();
+            $table->string('primary_color')->default(config('defaults.colors.chain_primary_color'));
+            $table->string('secondary_color')->default(config('defaults.colors.chain_secondary_color'));
+            $table->unsignedTinyInteger('number_of_items_on_mobile_grid_view')->default(3);
             $table->decimal('avg_rating', 3)->default(0);
             $table->unsignedInteger('rating_count')->default(0);
             $table->integer('view_count')->default(1);
+            $table->unsignedInteger('order_column')->nullable();
             $table->integer('status')->default(1)->nullable();
             $table->timestamps();
             $table->softDeletes();
@@ -42,7 +40,7 @@ class CreateBranchesTable extends Migration
             $table->foreign('editor_id')->references('id')->on('users')->onDelete('cascade');
             $table->foreign('region_id')->references('id')->on('regions')->onDelete('set null');
             $table->foreign('city_id')->references('id')->on('cities')->onDelete('set null');
-            $table->foreign('chain_id')->references('id')->on('chains')->onDelete('cascade');
+            $table->foreign('currency_id')->references('id')->on('currencies')->onDelete('set null');
         });
     }
 
@@ -53,6 +51,6 @@ class CreateBranchesTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('branches');
+        Schema::dropIfExists('chains');
     }
 }

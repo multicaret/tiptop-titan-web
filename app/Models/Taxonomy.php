@@ -120,7 +120,8 @@ class Taxonomy extends Node implements HasMedia, ShouldHaveTypes, TranslatableCo
 
     const TYPE_POST_CATEGORY = 1;
     const TYPE_TAG = 2;
-    const TYPE_USER_PROFESSION = 5;
+    const TYPE_GROCERY_CATEGORY = 3;
+    const TYPE_FOOD_CATEGORY = 4;
 
     protected $fillable = ['title', 'description', 'parent_id', 'type', 'order_column'];
     protected $translatedAttributes = ['title', 'description'];
@@ -152,30 +153,52 @@ class Taxonomy extends Node implements HasMedia, ShouldHaveTypes, TranslatableCo
      */
     public function scopeTags($query)
     {
-        return $query->whereIn('type', [self::TYPE_TAG]);
+        return $query->where('type', self::TYPE_TAG);
     }
 
     /**
-     * Scope a query to only include tags taxonomies for post only.
+     * Scope a query to only include tags taxonomies for grocery categories.
      *
      * @param  \Illuminate\Database\Eloquent\Builder  $query
      *
      * @return \Illuminate\Database\Eloquent\Builder
      */
-    public function scopePostTags($query)
+    public function scopeGroceryCategories($query): \Illuminate\Database\Eloquent\Builder
     {
-        return $query->where('type', '=', self::TYPE_TAG);
+        return $query->where('type', '=', self::TYPE_GROCERY_CATEGORY);
+    }
+
+    /**
+     * Scope a query to only include tags taxonomies for food categories.
+     *
+     * @param  \Illuminate\Database\Eloquent\Builder  $query
+     *
+     * @return \Illuminate\Database\Eloquent\Builder
+     */
+    public function scopeFoodCategories($query): \Illuminate\Database\Eloquent\Builder
+    {
+        return $query->where('type', '=', self::TYPE_FOOD_CATEGORY);
     }
 
 
-    public function creator()
+    public function creator(): \Illuminate\Database\Eloquent\Relations\BelongsTo
     {
         return $this->belongsTo(User::class, 'creator_id');
     }
 
-    public function editor()
+    public function editor(): \Illuminate\Database\Eloquent\Relations\BelongsTo
     {
         return $this->belongsTo(User::class, 'editor_id');
+    }
+
+    public function upSellsProducts(): \Illuminate\Database\Eloquent\Relations\BelongsToMany
+    {
+        return $this->belongsToMany(Product::class, 'category_product_up_sell', 'category_id', 'product_id');
+    }
+
+    public function crossSellsProducts(): \Illuminate\Database\Eloquent\Relations\BelongsToMany
+    {
+        return $this->belongsToMany(Product::class, 'category_product_cross_sell', 'category_id', 'product_id');
     }
 
     public function hasChildren()
@@ -220,7 +243,7 @@ class Taxonomy extends Node implements HasMedia, ShouldHaveTypes, TranslatableCo
         return [
             self::TYPE_POST_CATEGORY => 'category',
             self::TYPE_TAG => 'tag',
-            self::TYPE_USER_PROFESSION => 'user-profession',
+            self::TYPE_GROCERY_CATEGORY => 'grocery',
         ];
     }
 
@@ -310,8 +333,11 @@ class Taxonomy extends Node implements HasMedia, ShouldHaveTypes, TranslatableCo
     public function getCoverAttribute()
     {
         $cover = url(config('defaults.images.taxonomy_cover'));
-        if ($this->type == self::TYPE_USER_PROFESSION) {
-            $cover = url(config('defaults.images.taxonomy_cover'));
+        if ($this->type == self::TYPE_GROCERY_CATEGORY) {
+            $cover = url(config('defaults.images.grocery_category_cover'));
+        }
+        if ($this->type == self::TYPE_FOOD_CATEGORY) {
+            $cover = url(config('defaults.images.food_category_cover'));
         }
 
         if ($this->hasMedia('cover')) {
@@ -356,7 +382,8 @@ class Taxonomy extends Node implements HasMedia, ShouldHaveTypes, TranslatableCo
         $urls = [
             self::TYPE_POST_CATEGORY => 'categories.show',
             self::TYPE_TAG => 'tags.show',
-            self::TYPE_USER_PROFESSION => 'user-profession.show',
+//            self::TYPE_GROCERY_CATEGORY => 'grocery-categories.show',
+//            self::TYPE_FOOD_CATEGORY => 'food-categories.show',
         ];
 
         $routeName = 'categories.show';

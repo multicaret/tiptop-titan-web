@@ -18,12 +18,13 @@ class Translation extends Model
     const STATUS_PUBLISHED = 2;
     const STATUS_INACTIVE = 3;
 
-    protected $fillable = ['key','group', 'value'];
+    protected $fillable = ['key', 'group', 'value'];
     protected $with = ['translations'];
     protected $translatedAttributes = ['value'];
 
-    public function scopeGroup($query, $groupName) {
-        return $query->where('group' , $groupName);
+    public function scopeGroup($query, $groupName)
+    {
+        return $query->where('group', $groupName);
     }
 
     public static function getTranslationGroupsFromFiles(): array
@@ -37,6 +38,7 @@ class Translation extends Model
                 return pathinfo($file, PATHINFO_FILENAME);
             })->toArray();
         }
+
         return $allGroupsFiles;
     }
 }

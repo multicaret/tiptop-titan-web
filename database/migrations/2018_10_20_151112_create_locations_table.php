@@ -1,5 +1,6 @@
 <?php
 
+use App\Models\Location;
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
@@ -41,8 +42,10 @@ class CreateLocationsTable extends Migration
             $table->string('company')->nullable();
             $table->string('vat')->nullable()->comment('value added tax');
             $table->string('vat_office')->nullable();
-            $table->unsignedTinyInteger('type')->default(1)->comment('1: Address, 2: Contact');
-            $table->unsignedTinyInteger('status')->default(1)->comment('0:incomplete, 1:draft, 2:published, 3:Inactive, 4..n:CUSTOM');
+            $table->boolean('is_default')->default(false);
+            $table->unsignedTinyInteger('type')->default(Location::TYPE_ADDRESS)->comment('1: Address, 2: Contact');
+            $table->unsignedTinyInteger('kind')->default(Location::KIND_HOME)->comment('1: Home, 2: Work, 3:Other');
+            $table->unsignedTinyInteger('status')->default(Location::STATUS_DRAFT)->comment('0:incomplete, 1:draft, 2:published, 3:Inactive, 4..n:CUSTOM');
             $table->timestamps();
             $table->softDeletes();
 

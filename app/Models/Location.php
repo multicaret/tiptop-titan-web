@@ -112,12 +112,9 @@ class Location extends Model
     const TYPE_ADDRESS = 1;
     const TYPE_CONTACT = 2;
 
-
-    protected $with = [
-        'country',
-        'region',
-        'city'
-    ];
+    const KIND_HOME = 1;
+    const KIND_WORK = 2;
+    const KIND_OTHER = 3;
 
     /**
      * The attributes that should be cast to native types.
@@ -129,6 +126,13 @@ class Location extends Model
         'longitude' => 'double',
         'phones' => 'object',
         'emails' => 'object',
+        'is_default' => 'boolean',
+    ];
+
+    protected $with = [
+        'country',
+        'region',
+        'city'
     ];
 
     /**

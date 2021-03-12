@@ -20,7 +20,7 @@ class CreatePostsTable extends Migration
             $table->unsignedBigInteger('editor_id');
             $table->unsignedBigInteger('category_id')->nullable();
             $table->unsignedTinyInteger('type')->default(1)->comment('1:Article, 2:Page, 3:Testimonial, 4..n: CUSTOM');
-            $table->decimal('avg_rating', 3, 2)->default(0);
+            $table->decimal('avg_rating', 3)->default(0);
             $table->unsignedInteger('rating_count')->default(0);
             $table->integer('view_count')->default(1);
             $table->unsignedInteger('order_column')->nullable();
