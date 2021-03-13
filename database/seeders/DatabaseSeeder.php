@@ -115,12 +115,193 @@ class DatabaseSeeder extends Seeder
                     ]
                 ]
             ],
+            [
+                'type' => Taxonomy::TYPE_GROCERY_CATEGORY,
+                'translations' => [
+                    [
+                        'locale' => 'en',
+                        'title' => 'Fruits & Veges',
+                    ],
+                    [
+                        'locale' => 'ar',
+                        'title' => 'خضروات وفواكه',
+                    ],
+                    [
+                        'locale' => 'ku',
+                        'title' => 'خضروات وفواكه',
+                    ]
+                ]
+            ],
+            [
+                'type' => Taxonomy::TYPE_GROCERY_CATEGORY,
+                'translations' => [
+                    [
+                        'locale' => 'en',
+                        'title' => 'Beverages',
+                    ],
+                    [
+                        'locale' => 'ar',
+                        'title' => 'مشاريب',
+                    ],
+                    [
+                        'locale' => 'ku',
+                        'title' => 'مشاريب',
+                    ]
+                ]
+            ],
+            [
+                'type' => Taxonomy::TYPE_GROCERY_CATEGORY,
+                'parent_id' => 2,
+                'translations' => [
+                    [
+                        'locale' => 'en',
+                        'title' => 'Fruits',
+                    ],
+                    [
+                        'locale' => 'ar',
+                        'title' => 'فواكة',
+                    ],
+                    [
+                        'locale' => 'ku',
+                        'title' => 'فواكة',
+                    ]
+                ]
+            ],
+            [
+                'type' => Taxonomy::TYPE_GROCERY_CATEGORY,
+                'parent_id' => 2,
+                'translations' => [
+                    [
+                        'locale' => 'en',
+                        'title' => 'Veges',
+                    ],
+                    [
+                        'locale' => 'ar',
+                        'title' => 'خضروات',
+                    ],
+                    [
+                        'locale' => 'ku',
+                        'title' => 'خضروات',
+                    ]
+                ]
+            ],
+            [
+                'type' => Taxonomy::TYPE_GROCERY_CATEGORY,
+                'parent_id' => 3,
+                'translations' => [
+                    [
+                        'locale' => 'en',
+                        'title' => 'Water',
+                    ],
+                    [
+                        'locale' => 'ar',
+                        'title' => '',
+                    ],
+                    [
+                        'locale' => 'ku',
+                        'title' => '',
+                    ]
+                ]
+            ],
+            [
+                'type' => Taxonomy::TYPE_GROCERY_CATEGORY,
+                'parent_id' => 3,
+                'translations' => [
+                    [
+                        'locale' => 'en',
+                        'title' => 'Soda',
+                    ],
+                    [
+                        'locale' => 'ar',
+                        'title' => '',
+                    ],
+                    [
+                        'locale' => 'ku',
+                        'title' => '',
+                    ]
+                ]
+            ],
+            [
+                'type' => Taxonomy::TYPE_GROCERY_CATEGORY,
+                'parent_id' => 3,
+                'translations' => [
+                    [
+                        'locale' => 'en',
+                        'title' => 'Juice',
+                    ],
+                    [
+                        'locale' => 'ar',
+                        'title' => '',
+                    ],
+                    [
+                        'locale' => 'ku',
+                        'title' => '',
+                    ]
+                ]
+            ],
+            [
+                'type' => Taxonomy::TYPE_GROCERY_CATEGORY,
+                'parent_id' => 3,
+                'translations' => [
+                    [
+                        'locale' => 'en',
+                        'title' => 'Ayran & Kefir',
+                    ],
+                    [
+                        'locale' => 'ar',
+                        'title' => '',
+                    ],
+                    [
+                        'locale' => 'ku',
+                        'title' => '',
+                    ]
+                ]
+            ],
+            [
+                'type' => Taxonomy::TYPE_GROCERY_CATEGORY,
+                'parent_id' => 3,
+                'translations' => [
+                    [
+                        'locale' => 'en',
+                        'title' => 'Tea',
+                    ],
+                    [
+                        'locale' => 'ar',
+                        'title' => '',
+                    ],
+                    [
+                        'locale' => 'ku',
+                        'title' => '',
+                    ]
+                ]
+            ],
+            [
+                'type' => Taxonomy::TYPE_GROCERY_CATEGORY,
+                'parent_id' => 3,
+                'translations' => [
+                    [
+                        'locale' => 'en',
+                        'title' => 'Coffee',
+                    ],
+                    [
+                        'locale' => 'ar',
+                        'title' => '    ',
+                    ],
+                    [
+                        'locale' => 'ku',
+                        'title' => '',
+                    ]
+                ]
+            ],
         ];
 
 
         foreach ($taxonomies as $item) {
             $taxonomy = new Taxonomy();
             $taxonomy->type = $item['type'];
+            if (array_key_exists('parent_id', $item)) {
+                $taxonomy->parent_id = $item['parent_id'];
+            }
             $taxonomy->creator_id = $super->id;
             $taxonomy->editor_id = $super->id;
             $taxonomy->save();
