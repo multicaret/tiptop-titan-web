@@ -6,6 +6,7 @@ use App\Models\Branch;
 use App\Models\BranchTranslation;
 use App\Models\Chain;
 use App\Models\ChainTranslation;
+use App\Models\PaymentMethod;
 use App\Models\Post;
 use App\Models\PostTranslation;
 use App\Models\Preference;
@@ -64,6 +65,7 @@ class DatabaseSeeder extends Seeder
         $this->chains($super);
         $this->branches($super);
         $this->products($super);
+        $this->paymentMethods($super);
 
         // Todo: This line is not being executed, but leave it please, bitches!
         \DB::raw("
@@ -1014,5 +1016,25 @@ class DatabaseSeeder extends Seeder
                 $translation->save();
             }
         }
+    }
+
+
+    private function paymentMethods($user)
+    {
+        $paymentMethod = new PaymentMethod();
+        $paymentMethod->creator_id = $user->id;
+        $paymentMethod->editor_id = $user->id;
+        $paymentMethod->title = 'COD';
+        $paymentMethod->description = null;
+        $paymentMethod->instructions = null;
+        $paymentMethod->save();
+
+        $paymentMethod = new PaymentMethod();
+        $paymentMethod->creator_id = $user->id;
+        $paymentMethod->editor_id = $user->id;
+        $paymentMethod->title = 'CCOD';
+        $paymentMethod->description = null;
+        $paymentMethod->instructions = null;
+        $paymentMethod->save();
     }
 }

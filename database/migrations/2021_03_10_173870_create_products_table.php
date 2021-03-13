@@ -45,6 +45,7 @@ class CreateProductsTable extends Migration
             $table->timestamp('custom_banner_ended_at')->nullable();
             $table->unsignedTinyInteger('on_mobile_grid_tile_weight')->default(3);
             $table->timestamps();
+            $table->softDeletes();
 
             $table->foreign('creator_id')->references('id')->on('users')->onDelete('cascade');
             $table->foreign('editor_id')->references('id')->on('users')->onDelete('cascade');

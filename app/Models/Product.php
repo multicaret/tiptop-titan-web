@@ -9,6 +9,7 @@ use App\Traits\HasUuid;
 use App\Traits\HasViewCount;
 use Astrotomic\Translatable\Translatable;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\SoftDeletes;
 use Spatie\MediaLibrary\HasMedia;
 use Spatie\MediaLibrary\MediaCollections\Models\Media;
 
@@ -16,6 +17,7 @@ class Product extends Model implements HasMedia
 {
     use HasMediaTrait,
         Translatable,
+        SoftDeletes,
         HasViewCount,
         HasUuid,
         HasStatuses;
@@ -99,6 +101,11 @@ class Product extends Model implements HasMedia
     public function tags(): \Illuminate\Database\Eloquent\Relations\BelongsToMany
     {
         return $this->belongsToMany(Taxonomy::class, 'product_tag', 'product_id', 'tag_id');
+    }
+
+    public function baskets(): \Illuminate\Database\Eloquent\Relations\BelongsToMany
+    {
+        return $this->belongsToMany(Basket::class, 'basket_product', 'product_id', 'basket_id');
     }
 
 
