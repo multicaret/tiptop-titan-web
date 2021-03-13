@@ -1,0 +1,12 @@
+################## BLOG ##################
+### Get all blog posts
+GET {{host}}/{{locale}}/api/v1/blog
+Accept: application/json
+Content-Type: application/json
+Authorization: Bearer {{token}}
+
+### Show a blog posts
+GET {{host}}/{{locale}}/api/v1/blog/1
+Accept: application/json
+Content-Type: application/json
+Authorization: Bearer {{token}}

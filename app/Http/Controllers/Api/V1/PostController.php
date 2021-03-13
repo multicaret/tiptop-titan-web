@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Api\V1;
 
 use App\Http\Controllers\Api\BaseApiController;
+use App\Http\Resources\BlogResource;
 use App\Http\Resources\FaqResource;
 use App\Http\Resources\PostResource;
 use App\Http\Resources\TaxonomyResource;
@@ -187,6 +188,25 @@ class PostController extends BaseApiController
         $post = Post::where('type', Post::TYPE_FAQ)->find($id);
         if ( ! empty($post)) {
             return new FaqResource($post);
+        }
+
+        return $this->respondNotFound();
+    }
+
+    //____ BLOG ____//
+    public function blogIndex()
+    {
+
+        $builder = Post::where('type', Post::TYPE_ARTICLE);
+
+        return BlogResource::collection($builder->get());
+    }
+
+    public function blogShow($id)
+    {
+        $post = Post::where('type', Post::TYPE_ARTICLE)->find($id);
+        if ( ! empty($post)) {
+            return new BlogResource($post);
         }
 
         return $this->respondNotFound();
