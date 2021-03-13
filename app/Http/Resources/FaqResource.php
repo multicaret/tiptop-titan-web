@@ -25,8 +25,8 @@ class FaqResource extends JsonResource
                 'formatted' => $this->content,
             ],
             'views' => [
-                'raw' => $this->views,
-                'formatted' => Controller::numberToReadable($this->views),
+                'raw' => $this->view_count,
+                'formatted' => Controller::numberToReadable($this->view_count),
             ],
             'createdAt' => [
                 'formatted' => $this->created_at->format(config('defaults.date.short_format')),
