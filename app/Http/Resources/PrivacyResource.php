@@ -6,7 +6,7 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\Resources\Json\JsonResource;
 
 /** @mixin \App\Models\Post */
-class FaqResource extends JsonResource
+class PrivacyResource extends JsonResource
 {
     /**
      * Transform the resource into an array.
@@ -19,24 +19,14 @@ class FaqResource extends JsonResource
     {
         return [
             'id' => (int) $this->id,
-            'question' => $this->title,
-            'answer' => [
+            'title' => $this->title,
+            'content' => [
                 'raw' => strip_tags($this->content),
                 'formatted' => $this->content,
             ],
             'views' => [
                 'raw' => $this->view_count,
                 'formatted' => Controller::numberToReadable($this->view_count),
-            ],
-            'createdAt' => [
-                'formatted' => $this->created_at->format(config('defaults.date.short_format')),
-                'diffForHumans' => $this->created_at->diffForHumans(),
-                'timestamp' => $this->created_at->timestamp,
-            ],
-            'updatedAt' => [
-                'formatted' => $this->updated_at->format(config('defaults.date.short_format')),
-                'diffForHumans' => $this->updated_at->diffForHumans(),
-                'timestamp' => $this->updated_at->timestamp,
             ],
         ];
     }
