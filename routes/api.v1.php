@@ -20,6 +20,7 @@ Route::middleware('throttle:15')
          /* generals */
          Route::get('faqs', 'PostController@faqIndex');
          Route::get('faqs/{id}', 'PostController@faqShow');
+         Route::get('privacy', 'PostController@privacy');
 
          /* misc. */
          Route::post('logs/create', 'LogController@store');

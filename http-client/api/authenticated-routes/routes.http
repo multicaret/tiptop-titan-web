@@ -64,6 +64,12 @@ Accept: application/json
 Content-Type: application/json
 Authorization: Bearer {{token}}
 
+### privacy
+GET {{host}}/{{locale}}/api/v1/privacy
+Accept: application/json
+Content-Type: application/json
+Authorization: Bearer {{token}}
+
 ### log
 POST {{host}}/{{locale}}/api/v1/logs/create
 Accept: application/json
