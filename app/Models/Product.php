@@ -31,6 +31,8 @@ class Product extends Model implements HasMedia
 
     protected $with = [
         'translations',
+        'tags',
+        'masterCategory'
     ];
 
     protected $fillable = ['order_column'];
