@@ -1,19 +1,19 @@
 ################## POSTS ##################
 # Get all Posts
-GET {{host}}/{{locale}}/spa/posts?type=article
+GET {{host}}/{{locale}}/api/v1/posts?type=article
 Accept: application/json
 Content-Type: application/json
 Authorization: Bearer {{token}}
 ###
 
 # Get all available types for Posts
-GET {{host}}/{{locale}}/spa/posts/types
+GET {{host}}/{{locale}}/api/v1/posts/types
 Accept: application/json
 Content-Type: application/json
 Authorization: Bearer {{token}}
 
 ### create post ?type=category
-GET {{host}}/{{locale}}/spa/posts/create?type=page
+GET {{host}}/{{locale}}/api/v1/posts/create?type=page
 Accept: application/json
 Content-Type: application/json
 Authorization: Bearer {{token}}
@@ -21,7 +21,7 @@ Authorization: Bearer {{token}}
 ###
 
 ### Store
-POST {{host}}/{{locale}}/spa/posts
+POST {{host}}/{{locale}}/api/v1/posts
 Accept: application/json
 Content-Type: application/json
 Authorization: Bearer {{token}}
@@ -49,7 +49,7 @@ Authorization: Bearer {{token}}
 ###
 
 ### Edit post
-GET {{host}}/{{locale}}/spa/posts/7/edit?type=article
+GET {{host}}/{{locale}}/api/v1/posts/7/edit?type=article
 Accept: application/json
 Content-Type: application/json
 Authorization: Bearer {{token}}
@@ -58,7 +58,7 @@ Authorization: Bearer {{token}}
 
 
 ### Update post
-PATCH {{host}}/{{locale}}/spa/posts/10
+PATCH {{host}}/{{locale}}/api/v1/posts/10
 Accept: application/json
 Content-Type: application/json
 Authorization: Bearer {{token}}
@@ -86,7 +86,7 @@ Authorization: Bearer {{token}}
 ###
 
 ### delete post
-DELETE {{host}}/{{locale}}/spa/posts/12
+DELETE {{host}}/{{locale}}/api/v1/posts/12
 Accept: application/json
 Content-Type: application/json
 Authorization: Bearer {{token}}

@@ -1,6 +1,6 @@
 ################## TIMEZONES ##################
 # Get all available Timezones
-GET {{host}}/{{locale}}/spa/timezones
+GET {{host}}/{{locale}}/api/v1/timezones
 Accept: application/json
 Content-Type: application/json
 Authorization: Bearer {{token}}
@@ -8,7 +8,7 @@ Authorization: Bearer {{token}}
 ###
 
 ### create timezone
-GET {{host}}/{{locale}}/spa/timezones/create
+GET {{host}}/{{locale}}/api/v1/timezones/create
 Accept: application/json
 Content-Type: application/json
 Authorization: Bearer {{token}}
@@ -16,7 +16,7 @@ Authorization: Bearer {{token}}
 ###
 
 ### Store
-POST {{host}}/{{locale}}/spa/timezones
+POST {{host}}/{{locale}}/api/v1/timezones
 Accept: application/json
 Content-Type: application/json
 Authorization: Bearer {{token}}
@@ -30,7 +30,7 @@ Authorization: Bearer {{token}}
 ###
 
 ### Edit timezone
-GET {{host}}/{{locale}}/spa/timezones/420/edit
+GET {{host}}/{{locale}}/api/v1/timezones/420/edit
 Accept: application/json
 Content-Type: application/json
 Authorization: Bearer {{token}}
@@ -39,7 +39,7 @@ Authorization: Bearer {{token}}
 
 
 ### Update timezone
-PATCH {{host}}/{{locale}}/spa/timezones/420
+PATCH {{host}}/{{locale}}/api/v1/timezones/420
 Accept: application/json
 Content-Type: application/json
 Authorization: Bearer {{token}}
@@ -53,7 +53,7 @@ Authorization: Bearer {{token}}
 ###
 
 ### delete timezone
-DELETE {{host}}/{{locale}}/spa/timezones/419
+DELETE {{host}}/{{locale}}/api/v1/timezones/419
 Accept: application/json
 Content-Type: application/json
 Authorization: Bearer {{token}}

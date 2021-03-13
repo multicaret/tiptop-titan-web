@@ -1,18 +1,18 @@
 ################## SETTINGS ##################
-GET {{host}}/{{locale}}/spa/settings
+GET {{host}}/{{locale}}/api/v1/settings
 Accept: application/json
 Content-Type: application/json
 Authorization: Bearer {{token}}
 
 ### Defaults
-GET {{host}}/{{locale}}/spa/settings/defaults
+GET {{host}}/{{locale}}/api/v1/settings/defaults
 Accept: application/json
 Content-Type: application/json
 Authorization: Bearer {{token}}
 
 
 ### Edit profile
-POST {{host}}/{{locale}}/spa/profile
+POST {{host}}/{{locale}}/api/v1/profile
 Accept: application/json
 Content-Type: application/json
 Authorization: Bearer {{token}}
@@ -31,7 +31,7 @@ Authorization: Bearer {{token}}
 
 
 ### Logout
-POST {{host}}/{{locale}}/spa/logout
+POST {{host}}/{{locale}}/api/v1/logout
 Accept: application/json
 Content-Type: application/json
 Authorization: Bearer {{token}}

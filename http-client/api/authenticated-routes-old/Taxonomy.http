@@ -1,13 +1,13 @@
 ################## TAXONOMIES ##################
 ### Types of Taxonomies
 # Get all available types for taxonomies
-GET {{host}}/{{locale}}/spa/taxonomies/types
+GET {{host}}/{{locale}}/api/v1/taxonomies/types
 Accept: application/json
 Content-Type: application/json
 Authorization: Bearer {{token}}
 
 ### Taxonomies ?type=category
-GET {{host}}/{{locale}}/spa/taxonomies?type=category
+GET {{host}}/{{locale}}/api/v1/taxonomies?type=category
 Accept: application/json
 Content-Type: application/json
 Authorization: Bearer {{token}}
@@ -15,7 +15,7 @@ Authorization: Bearer {{token}}
 ###
 
 ### create taxonomy ?type=category
-GET {{host}}/{{locale}}/spa/taxonomies/create?type=category
+GET {{host}}/{{locale}}/api/v1/taxonomies/create?type=category
 Accept: application/json
 Content-Type: application/json
 Authorization: Bearer {{token}}
@@ -23,7 +23,7 @@ Authorization: Bearer {{token}}
 ###
 
 ### Store
-POST {{host}}/{{locale}}/spa/taxonomies
+POST {{host}}/{{locale}}/api/v1/taxonomies
 Accept: application/json
 Content-Type: application/json
 Authorization: Bearer {{token}}
@@ -46,14 +46,14 @@ Authorization: Bearer {{token}}
 ###
 
 ### Edit taxonomy
-GET {{host}}/{{locale}}/spa/taxonomies/1/edit?type=category
+GET {{host}}/{{locale}}/api/v1/taxonomies/1/edit?type=category
 Accept: application/json
 Content-Type: application/json
 Authorization: Bearer {{token}}
 ###
 
 ### Update taxonomy
-PATCH {{host}}/{{locale}}/spa/taxonomies/25
+PATCH {{host}}/{{locale}}/api/v1/taxonomies/25
 Accept: application/json
 Content-Type: application/json
 Authorization: Bearer {{token}}
@@ -81,7 +81,7 @@ Authorization: Bearer {{token}}
 ###
 
 ### delete taxonomy
-DELETE {{host}}/{{locale}}/spa/taxonomies/7
+DELETE {{host}}/{{locale}}/api/v1/taxonomies/7
 Accept: application/json
 Content-Type: application/json
 Authorization: Bearer {{token}}
