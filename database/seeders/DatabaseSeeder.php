@@ -238,7 +238,7 @@ class DatabaseSeeder extends Seeder
                     ],
                     [
                         'locale' => 'ku',
-                        'title' => '',
+                        'title' => 'عصائر',
                     ]
                 ]
             ],
@@ -252,11 +252,11 @@ class DatabaseSeeder extends Seeder
                     ],
                     [
                         'locale' => 'ar',
-                        'title' => '',
+                        'title' => 'ألبان وكفر',
                     ],
                     [
                         'locale' => 'ku',
-                        'title' => '',
+                        'title' => 'ألبان وكفر',
                     ]
                 ]
             ],
@@ -270,11 +270,11 @@ class DatabaseSeeder extends Seeder
                     ],
                     [
                         'locale' => 'ar',
-                        'title' => '',
+                        'title' => 'شاي',
                     ],
                     [
                         'locale' => 'ku',
-                        'title' => '',
+                        'title' => 'شاي',
                     ]
                 ]
             ],
@@ -292,7 +292,7 @@ class DatabaseSeeder extends Seeder
                     ],
                     [
                         'locale' => 'ku',
-                        'title' => '',
+                        'title' => 'قهوة',
                     ]
                 ]
             ],
