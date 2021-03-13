@@ -12,52 +12,6 @@ Accept: application/json
 Content-Type: application/json
 Authorization: Bearer {{token}}
 
-### products
-GET {{host}}/{{locale}}/api/v1/categories/2/products
-Accept: application/json
-Content-Type: application/json
-Authorization: Bearer {{token}}
-
-### log in
-POST {{host}}/{{locale}}/api/v1/login
-Accept: application/json
-Content-Type: application/json
-Authorization: Bearer {{token}}
-
-{
-    "email": "demo@trytiptop.app",
-    "password": "secret"
-}
-
-### register
-POST {{host}}/{{locale}}/api/v1/register
-Accept: application/json
-Content-Type: application/json
-Authorization: Bearer {{token}}
-
-{
-    "name": "new user",
-    "email": "new-user@trytiptop.com",
-    "password": "secret1234",
-    "phone_number": "5555555555",
-    "phone_country_code": "964",
-    "dob": "1994-06-16",
-    "gender": "Female",
-    "locale": "en"
-}
-
-### faqs
-GET {{host}}/{{locale}}/api/v1/faqs
-Accept: application/json
-Content-Type: application/json
-Authorization: Bearer {{token}}
-
-### faq
-GET {{host}}/{{locale}}/api/v1/faqs/1
-Accept: application/json
-Content-Type: application/json
-Authorization: Bearer {{token}}
-
 ### log
 POST {{host}}/{{locale}}/api/v1/logs/create
 Accept: application/json
@@ -83,13 +37,4 @@ Authorization: Bearer {{token}}
     "dob": "1994-06-16",
     "gender": "Male",
     "locale": "en"
-}
-
-### Reset Password (NOT WORKING)
-POST {{host}}/{{locale}}/api/v1/password/reset
-Accept: application/json
-Content-Type: application/json
-Authorization: Bearer {{token}}
-{
-  "email": "info@multicaret.com"
 }

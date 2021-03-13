@@ -1,0 +1,14 @@
+################## FAQ ##################
+### faqs
+GET {{host}}/{{locale}}/api/v1/faqs
+Accept: application/json
+Content-Type: application/json
+Authorization: Bearer {{token}}
+
+
+# This one makes no sense but I'm keeping it
+### faq
+GET {{host}}/{{locale}}/api/v1/faqs/1
+Accept: application/json
+Content-Type: application/json
+Authorization: Bearer {{token}}

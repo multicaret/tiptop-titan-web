@@ -173,7 +173,7 @@ class PostController extends BaseApiController
         ]);
     }
 
-    //faq
+    //____ FAQ ____//
     public function faqIndex()
     {
 
@@ -184,6 +184,11 @@ class PostController extends BaseApiController
 
     public function faqShow($id)
     {
-        return new FaqResource(Post::find($id));
+        $post = Post::where('type', Post::TYPE_FAQ)->find($id);
+        if ( ! empty($post)) {
+            return new FaqResource($post);
+        }
+
+        return $this->respondNotFound();
     }
 }
