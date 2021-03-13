@@ -144,6 +144,7 @@ class AuthController extends BaseApiController
         $user->currency_id = config('defaults.currency.id');
         list($user->first, $user->last) = User::extractFirstAndLastNames($request->input('name'));
         $user->password = bcrypt($request->input('password'));
+//        todo: Check if the username should have random numbers like that
         $user->username = strstr($request->input('email'), '@', 1).rand(1000, 9999);
         $user->email = $request->input('email');
         $user->phone_number = $request->input('phone_number');
