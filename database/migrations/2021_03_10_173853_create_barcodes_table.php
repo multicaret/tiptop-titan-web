@@ -15,15 +15,13 @@ class CreateBarcodesTable extends Migration
     {
         Schema::create('barcodes', function (Blueprint $table) {
             $table->id();
-            $table->unsignedBigInteger('chain_id')->index();
+            $table->unsignedBigInteger('country_id')->default(config('defaults.country.id'));
             $table->unsignedBigInteger('creator_id')->index();
             $table->unsignedBigInteger('editor_id');
             $table->unsignedBigInteger('code');
             $table->timestamps();
 
-            $table->unique(['chain_id', 'code']);
-
-            $table->foreign('chain_id')->references('id')->on('chains')->onDelete('cascade');
+            $table->foreign('country_id')->references('id')->on('countries')->onDelete('cascade');
             $table->foreign('creator_id')->references('id')->on('users')->onDelete('cascade');
             $table->foreign('editor_id')->references('id')->on('users')->onDelete('cascade');
         });

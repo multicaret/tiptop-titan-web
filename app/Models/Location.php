@@ -176,6 +176,29 @@ class Location extends Model
         }
     }
 
+
+    public function getKind()
+    {
+        switch ($this->type) {
+            case self::KIND_OTHER:
+                return [
+                    'title' => strings('api.address_kind_Other'),
+                    'icon' => 'other.png',
+                ];
+            case self::KIND_WORK:
+                return [
+                    'title' => strings('api.address_kind_Work'),
+                    'icon' => 'work.png',
+                ];
+            case self::KIND_HOME:
+            default:
+                return [
+                    'title' => strings('api.address_kind_Home'),
+                    'icon' => 'home.png',
+                ];
+        }
+    }
+
     /**
      * Get all of the owning contactable models.
      */

@@ -21,9 +21,9 @@ class CreateBranchesTable extends Migration
             $table->unsignedBigInteger('editor_id');
             $table->unsignedBigInteger('region_id')->nullable();
             $table->unsignedBigInteger('city_id')->nullable();
-            $table->float('minimum_order')->default(0);
-            $table->float('under_minimum_order_delivery_fee')->nullable();
-            $table->float('fixed_delivery_fee')->nullable();
+            $table->float('minimum_order')->default(0); // 50
+            $table->float('under_minimum_order_delivery_fee')->default(0); // 10
+            $table->float('fixed_delivery_fee')->default(0); // 5
             $table->string('primary_phone_number')->nullable();
             $table->string('secondary_phone_number')->nullable();
             $table->string('whatsapp_phone_number')->nullable();

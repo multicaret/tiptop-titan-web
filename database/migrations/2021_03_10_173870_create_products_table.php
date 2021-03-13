@@ -23,9 +23,11 @@ class CreateProductsTable extends Migration
             $table->unsignedBigInteger('category_id')->index();
             $table->unsignedBigInteger('unit_id')->nullable();
             $table->unsignedFloat('price')->nullable();
-            $table->unsignedFloat('old_price')->nullable();
+            $table->unsignedFloat('price_discount_amount')->nullable();
+            $table->boolean('price_discount_by_percentage')->nullable()->comment('true: percentage, false: fixed amount');
             $table->unsignedBigInteger('quantity')->nullable();
             $table->string('sku')->nullable();
+            $table->unsignedBigInteger('upc')->nullable();
             $table->boolean('is_storage_tracking_enabled')->nullable(true);
             $table->unsignedFloat('width')->nullable()->comment('x');
             $table->unsignedFloat('height')->nullable()->comment('y');
@@ -37,10 +39,10 @@ class CreateProductsTable extends Migration
             $table->unsignedInteger('rating_count')->default(0);
             $table->integer('view_count')->default(1);
             $table->integer('status')->default(1)->nullable();
-            $table->timestamp('old_price_began_at')->nullable();
-            $table->timestamp('old_price_finishes_at')->nullable();
-            $table->timestamp('custom_banner_begins_at')->nullable();
-            $table->timestamp('custom_banner_ends_at')->nullable();
+            $table->timestamp('price_discount_began_at')->nullable();
+            $table->timestamp('price_discount_finished_at')->nullable();
+            $table->timestamp('custom_banner_began_at')->nullable();
+            $table->timestamp('custom_banner_ended_at')->nullable();
             $table->unsignedTinyInteger('on_mobile_grid_tile_weight')->default(3);
             $table->timestamps();
 

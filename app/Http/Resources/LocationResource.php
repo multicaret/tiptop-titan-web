@@ -66,6 +66,7 @@ class LocationResource extends JsonResource
                 'office' => $this->vat_office
             ],
             'type' => $this->getType(),
+            'kind' => $this->getKind(),
             /*'contactable' => [
                 'object' => $type,
                 'contactable' => new $contactableResource($this->contactable),

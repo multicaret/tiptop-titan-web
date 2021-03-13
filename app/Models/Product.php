@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Http\Controllers\Controller;
 use App\Traits\HasMediaTrait;
 use App\Traits\HasStatuses;
 use App\Traits\HasUuid;
@@ -38,14 +39,18 @@ class Product extends Model implements HasMedia
         'cover',
         'gallery',
         'price_formatted',
-        'old_price_formatted',
+        'discounted_price',
+        'discounted_price_formatted',
     ];
 
     protected $casts = [
-        'old_price' => 'float',
+        'price_discount_amount' => 'float',
         'price' => 'float',
-        'old_price_began_at' => 'timestamp',
-        'old_price_finishes_at' => 'timestamp',
+        'price_discount_by_percentage' => 'boolean',
+        'price_discount_began_at' => 'timestamp',
+        'price_discount_finished_at' => 'timestamp',
+        'custom_banner_began_at' => 'timestamp',
+        'custom_banner_ended_at' => 'timestamp',
     ];
 
     public function creator()
@@ -224,9 +229,20 @@ class Product extends Model implements HasMedia
         return Currency::format($this->price);
     }
 
-    public function getOldPriceFormattedAttribute()
+    public function getDiscountedPrice()
     {
-        return Currency::format($this->old_price);
+        if ($this->price_discount_by_percentage) {
+            $discountAmount = Controller::deductPercentage($this->price, $this->price_discount_amount);
+        } else {
+            $discountAmount = $this->price - $this->price_discount_amount;
+        }
+
+        return $this->price - $discountAmount;
+    }
+
+    public function getDiscountedPriceFormattedAttribute(): string
+    {
+        return Currency::format($this->discounted_price);
     }
 
 

@@ -7,13 +7,20 @@ use App\Http\Controllers\Api\BaseApiController;
 use App\Http\Resources\LocationResource;
 use App\Http\Resources\TaxonomyResource;
 use App\Models\Taxonomy;
+use Illuminate\Http\Request;
 
 class HomeController extends BaseApiController
 {
-    public function boot()
+    public function boot(Request $request)
     {
+        $forceUpdateMethod = 'disabled';
+        // Example
+        if ($request->input('build_number') < 25) {
+            $forceUpdateMethod = 'hard';
+        }
+
         return $this->respond([
-            'force-update' => 'disabled', // soft,hard,disabled
+            'force-update' => $forceUpdateMethod, // soft,hard,disabled
             'dialog' => [
                 'title' => 'Dialog Title Bro',
                 'description' => 'This is a test example of a dialog message body',
@@ -48,17 +55,26 @@ class HomeController extends BaseApiController
         $sharedResponse = [
             'addresses' => $addresses,
             'slides' => $slides,
-            'estimated_arrival_time' => "30-45",
+            'estimated_arrival_time' => [
+                'value' => '30-45',
+                'unit' => 'min',
+            ],
         ];
 
         if ($channel == config('app.app-channels.grocery')) {
             $groceryParentCategories = Taxonomy::groceries()->root()->get();
             $categories = TaxonomyResource::collection($groceryParentCategories);
 
-            // Todo: it should be based on which branch the user has selected
-            $sharedResponse['estimated_arrival_time'] = "10-20";
+            if ( ! is_null($user) && ! is_null($selectedAddress = $request->input('selected_address'))) {
+                // here is the currently selected address: $selectedAddress
+                $selectedBranch = Branch::first();
+                $branch = new BranchResource($selectedBranch);
+            }
+            // Always in grocery the EA is 20-30
+            $sharedResponse['estimated_arrival_time']['value'] = '20-30';
             $response = [
                 'categories' => $categories,
+                'branch' => $branch,
             ];
         } else {
             $response = [];
