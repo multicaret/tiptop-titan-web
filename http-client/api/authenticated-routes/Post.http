@@ -1,0 +1,34 @@
+################## BLOG ##################
+### Get all blog posts
+GET {{host}}/{{locale}}/api/v1/blog
+Accept: application/json
+Content-Type: application/json
+Authorization: Bearer {{token}}
+
+### Show a blog posts
+GET {{host}}/{{locale}}/api/v1/blog/1
+Accept: application/json
+Content-Type: application/json
+Authorization: Bearer {{token}}
+
+################## PRIVACY ##################
+### privacy
+GET {{host}}/{{locale}}/api/v1/privacy
+Accept: application/json
+Content-Type: application/json
+Authorization: Bearer {{token}}
+
+################## FAQ ##################
+### faqs
+GET {{host}}/{{locale}}/api/v1/faqs
+Accept: application/json
+Content-Type: application/json
+Authorization: Bearer {{token}}
+
+
+# This one makes no sense but I'm keeping it
+### faq
+GET {{host}}/{{locale}}/api/v1/faqs/1
+Accept: application/json
+Content-Type: application/json
+Authorization: Bearer {{token}}
