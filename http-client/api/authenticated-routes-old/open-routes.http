@@ -1,6 +1,6 @@
 ################## AUTHENTICATION RELATED ##################
 ### Login
-POST {{host}}/{{locale}}/spa/login
+POST {{host}}/{{locale}}/api/v1/login
 Accept: application/json
 Content-Type: application/json
 Authorization: Bearer {{token}}
@@ -10,7 +10,7 @@ Authorization: Bearer {{token}}
 }
 
 ### Register
-POST {{host}}/{{locale}}/spa/register
+POST {{host}}/{{locale}}/api/v1/register
 Accept: application/json
 Content-Type: application/json
 Authorization: Bearer {{token}}
@@ -29,7 +29,7 @@ Authorization: Bearer {{token}}
 
 
 ### Reset Password
-POST {{host}}/{{locale}}/spa/password/reset
+POST {{host}}/{{locale}}/api/v1/password/reset
 Accept: application/json
 Content-Type: application/json
 Authorization: Bearer {{token}}
@@ -38,45 +38,45 @@ Authorization: Bearer {{token}}
 }
 
 ### Languages
-GET {{host}}/{{locale}}/spa/languages
+GET {{host}}/{{locale}}/api/v1/languages
 Accept: application/json
 Content-Type: application/json
 Authorization: Bearer {{token}}
 
 ### Timezones
-GET {{host}}/{{locale}}/spa/timezones
+GET {{host}}/{{locale}}/api/v1/timezones
 Accept: application/json
 Content-Type: application/json
 Authorization: Bearer {{token}}
 
 ### Currencies
-GET {{host}}/{{locale}}/spa/currencies
+GET {{host}}/{{locale}}/api/v1/currencies
 Accept: application/json
 Content-Type: application/json
 Authorization: Bearer {{token}}
 
 ################## LOGISTICS ##################
 ### Countries
-GET {{host}}/{{locale}}/spa/countries
+GET {{host}}/{{locale}}/api/v1/countries
 Accept: application/json
 Content-Type: application/json
 Authorization: Bearer {{token}}
 
 ### Regions (225 is the ID of Turkey)
-GET {{host}}/{{locale}}/spa/countries/225/regions
+GET {{host}}/{{locale}}/api/v1/countries/225/regions
 Accept: application/json
 Content-Type: application/json
 Authorization: Bearer {{token}}
 
 ### Cities (225 is the ID of Turkey, 34 is the ID of Istanbul)
-GET {{host}}/{{locale}}/spa/countries/225/regions/34/cities
+GET {{host}}/{{locale}}/api/v1/countries/225/regions/34/cities
 Accept: application/json
 Content-Type: application/json
 Authorization: Bearer {{token}}
 
 
 ### Get Supported/Enabled locales
-GET {{host}}/{{locale}}/spa/settings/locales
+GET {{host}}/{{locale}}/api/v1/settings/locales
 Accept: application/json
 Content-Type: application/json
 Authorization: Bearer {{token}}
