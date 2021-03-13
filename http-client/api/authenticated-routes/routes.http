@@ -18,6 +18,12 @@ Accept: application/json
 Content-Type: application/json
 Authorization: Bearer {{token}}
 
+### product show
+GET {{host}}/{{locale}}/api/v1/products/1
+Accept: application/json
+Content-Type: application/json
+Authorization: Bearer {{token}}
+
 ### log in
 POST {{host}}/{{locale}}/api/v1/login
 Accept: application/json
