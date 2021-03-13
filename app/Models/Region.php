@@ -9,59 +9,6 @@ use Illuminate\Database\Eloquent\Model;
 use Spatie\MediaLibrary\HasMedia;
 use Spatie\MediaLibrary\MediaCollections\Models\Media;
 
-/**
- * App\Models\Region
- *
- * @property int $id
- * @property int $country_id
- * @property string $english_name
- * @property string|null $code
- * @property int|null $status
- * @property \Illuminate\Support\Carbon|null $created_at
- * @property \Illuminate\Support\Carbon|null $updated_at
- * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\City[] $cities
- * @property-read int|null $cities_count
- * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\Location[] $contacts
- * @property-read int|null $contacts_count
- * @property-read \App\Models\Country $country
- * @property-read mixed $cover
- * @property-read mixed $gallery
- * @property-read mixed $is_published
- * @property-read mixed $status_name
- * @property-read \Spatie\MediaLibrary\MediaCollections\Models\Collections\MediaCollection|Media[] $media
- * @property-read int|null $media_count
- * @property-read \App\Models\RegionTranslation|null $translation
- * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\RegionTranslation[] $translations
- * @property-read int|null $translations_count
- * @method static \Illuminate\Database\Eloquent\Builder|Region draft()
- * @method static \Illuminate\Database\Eloquent\Builder|Region inactive()
- * @method static \Illuminate\Database\Eloquent\Builder|Region incomplete()
- * @method static \Illuminate\Database\Eloquent\Builder|Region listsTranslations($translationField)
- * @method static \Illuminate\Database\Eloquent\Builder|Region newModelQuery()
- * @method static \Illuminate\Database\Eloquent\Builder|Region newQuery()
- * @method static \Illuminate\Database\Eloquent\Builder|Region notPublished()
- * @method static \Illuminate\Database\Eloquent\Builder|Region notTranslatedIn($locale = null)
- * @method static \Illuminate\Database\Eloquent\Builder|Region orWhereTranslation($translationField, $value, $locale = null)
- * @method static \Illuminate\Database\Eloquent\Builder|Region orWhereTranslationLike($translationField, $value, $locale = null)
- * @method static \Illuminate\Database\Eloquent\Builder|Region orderByTranslation($translationField, $sortMethod = 'asc')
- * @method static \Illuminate\Database\Eloquent\Builder|Region published()
- * @method static \Illuminate\Database\Eloquent\Builder|Region query()
- * @method static \Illuminate\Database\Eloquent\Builder|Region translated()
- * @method static \Illuminate\Database\Eloquent\Builder|Region translatedIn($locale = null)
- * @method static \Illuminate\Database\Eloquent\Builder|Region whereCode($value)
- * @method static \Illuminate\Database\Eloquent\Builder|Region whereCountryId($value)
- * @method static \Illuminate\Database\Eloquent\Builder|Region whereCreatedAt($value)
- * @method static \Illuminate\Database\Eloquent\Builder|Region whereEnglishName($value)
- * @method static \Illuminate\Database\Eloquent\Builder|Region whereId($value)
- * @method static \Illuminate\Database\Eloquent\Builder|Region whereStatus($value)
- * @method static \Illuminate\Database\Eloquent\Builder|Region whereTranslation($translationField, $value, $locale = null, $method = 'whereHas', $operator = '=')
- * @method static \Illuminate\Database\Eloquent\Builder|Region whereTranslationLike($translationField, $value, $locale = null)
- * @method static \Illuminate\Database\Eloquent\Builder|Region whereUpdatedAt($value)
- * @method static \Illuminate\Database\Eloquent\Builder|Region withTranslation()
- * @mixin \Eloquent
- * @property int|null $order_column
- * @method static \Illuminate\Database\Eloquent\Builder|Region whereOrderColumn($value)
- */
 class Region extends Model implements HasMedia
 {
     use HasMediaTrait,
