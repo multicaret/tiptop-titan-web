@@ -1,0 +1,12 @@
+################## PRODUCT ##################
+### products index
+GET {{host}}/{{locale}}/api/v1/categories/2/products
+Accept: application/json
+Content-Type: application/json
+Authorization: Bearer {{token}}
+
+### product show
+GET {{host}}/{{locale}}/api/v1/products/1
+Accept: application/json
+Content-Type: application/json
+Authorization: Bearer {{token}}

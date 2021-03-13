@@ -120,17 +120,20 @@ class Taxonomy extends Node implements HasMedia, ShouldHaveTypes, TranslatableCo
 
     public function products(): \Illuminate\Database\Eloquent\Relations\BelongsToMany
     {
-        return $this->belongsToMany(Product::class, 'category_product', 'category_id', 'product_id');
+        return $this->belongsToMany(Product::class, 'category_product', 'category_id', 'product_id')
+                    ->withTimestamps();
     }
 
     public function upSellsProducts(): \Illuminate\Database\Eloquent\Relations\BelongsToMany
     {
-        return $this->belongsToMany(Product::class, 'category_product_up_sell', 'category_id', 'product_id');
+        return $this->belongsToMany(Product::class, 'category_product_up_sell', 'category_id', 'product_id')
+                    ->withTimestamps();
     }
 
     public function crossSellsProducts(): \Illuminate\Database\Eloquent\Relations\BelongsToMany
     {
-        return $this->belongsToMany(Product::class, 'category_product_cross_sell', 'category_id', 'product_id');
+        return $this->belongsToMany(Product::class, 'category_product_cross_sell', 'category_id', 'product_id')
+                    ->withTimestamps();
     }
 
     public function hasChildren()

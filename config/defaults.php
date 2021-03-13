@@ -33,6 +33,7 @@ return [
         'manufacturer_logo' => '/images/manufacturer-logo.png',
         'barcode_image' => '/images/barcode-image.png',
         'chain_logo' => '/images/chain-logo.png',
+        'payment_method_logo' => '/images/payment-method-logo.png',
     ],
     'image_conversions' => [
         'generic_logo' => [
