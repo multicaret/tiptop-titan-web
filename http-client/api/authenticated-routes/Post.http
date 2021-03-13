@@ -1,25 +1,25 @@
 ################## BLOG ##################
-### Get all blog posts
+### blog posts index
 GET {{host}}/{{locale}}/api/v1/blog
 Accept: application/json
 Content-Type: application/json
 Authorization: Bearer {{token}}
 
-### Show a blog posts
+### blog posts show
 GET {{host}}/{{locale}}/api/v1/blog/1
 Accept: application/json
 Content-Type: application/json
 Authorization: Bearer {{token}}
 
 ################## PRIVACY ##################
-### privacy
+### privacy show
 GET {{host}}/{{locale}}/api/v1/privacy
 Accept: application/json
 Content-Type: application/json
 Authorization: Bearer {{token}}
 
 ################## FAQ ##################
-### faqs
+### faq index
 GET {{host}}/{{locale}}/api/v1/faqs
 Accept: application/json
 Content-Type: application/json
@@ -27,7 +27,7 @@ Authorization: Bearer {{token}}
 
 
 # This one makes no sense but I'm keeping it
-### faq
+### faq show
 GET {{host}}/{{locale}}/api/v1/faqs/1
 Accept: application/json
 Content-Type: application/json
