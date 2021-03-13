@@ -22,6 +22,7 @@ class CreateProductTranslationsTable extends Migration
             $table->text('excerpt')->nullable();
             $table->text('notes')->nullable();
             $table->string('custom_banner_text')->nullable();
+            $table->string('unit_text')->nullable();
 
             $table->unique(['product_id', 'locale']);
             $table->foreign('product_id')->references('id')->on('products')->onDelete('cascade');

@@ -10,9 +10,9 @@ use App\Models\Taxonomy;
 class CategoryController extends BaseApiController
 {
 
-    public function index($category)
+    public function products($groceryCategory)
     {
-        $parent = Taxonomy::find($category);
+        $parent = Taxonomy::find($groceryCategory);
 
         return $this->respond([
             'parent' => new GroceryCategoryParentResource($parent),

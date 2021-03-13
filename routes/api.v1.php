@@ -9,7 +9,7 @@ Route::middleware('throttle:15')
          Route::get('/', 'HomeController@root');
          Route::get('/home', 'HomeController@index');
 
-         Route::get('categories/{category}/products', 'CategoryController@products');
+         Route::get('categories/{groceryCategory}/products', 'CategoryController@products');
 
          /* auth related */
          Route::post('login', 'Auth\AuthController@login');

@@ -26,6 +26,9 @@ class Product extends Model implements HasMedia
     const STATUS_INACTIVE = 3;
     const STATUS_INACTIVE_SEASONABLE = 4;
 
+    const TYPE_GROCERY = 1;
+    const TYPE_FOOD = 2;
+
     protected $with = [
         'translations',
     ];
@@ -182,7 +185,7 @@ class Product extends Model implements HasMedia
 
     public function registerMediaCollections(): void
     {
-        $isGrocery = $this->type === Product::TYPE;
+        $isGrocery = $this->type === Product::TYPE_GROCERY;
 
         $this->addMediaCollection('cover')
              ->singleFile()

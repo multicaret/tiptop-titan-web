@@ -10,6 +10,8 @@ use App\Models\Post;
 use App\Models\PostTranslation;
 use App\Models\Preference;
 use App\Models\PreferenceTranslation;
+use App\Models\Product;
+use App\Models\ProductTranslation;
 use App\Models\Taxonomy;
 use App\Models\TaxonomyTranslation;
 use App\Models\User;
@@ -61,6 +63,7 @@ class DatabaseSeeder extends Seeder
         $this->taxonomies($super);
         $this->chains($super);
         $this->branches($super);
+        $this->products($super);
 
         // Todo: This line is not being executed, but leave it please, bitches!
         \DB::raw("
@@ -195,11 +198,11 @@ class DatabaseSeeder extends Seeder
                     ],
                     [
                         'locale' => 'ar',
-                        'title' => '',
+                        'title' => 'ماء',
                     ],
                     [
                         'locale' => 'ku',
-                        'title' => '',
+                        'title' => 'ماء',
                     ]
                 ]
             ],
@@ -213,11 +216,11 @@ class DatabaseSeeder extends Seeder
                     ],
                     [
                         'locale' => 'ar',
-                        'title' => '',
+                        'title' => 'صودا',
                     ],
                     [
                         'locale' => 'ku',
-                        'title' => '',
+                        'title' => 'صودا',
                     ]
                 ]
             ],
@@ -231,7 +234,7 @@ class DatabaseSeeder extends Seeder
                     ],
                     [
                         'locale' => 'ar',
-                        'title' => '',
+                        'title' => 'عصائر',
                     ],
                     [
                         'locale' => 'ku',
@@ -285,7 +288,7 @@ class DatabaseSeeder extends Seeder
                     ],
                     [
                         'locale' => 'ar',
-                        'title' => '    ',
+                        'title' => 'قهوة',
                     ],
                     [
                         'locale' => 'ku',
@@ -304,6 +307,7 @@ class DatabaseSeeder extends Seeder
             }
             $taxonomy->creator_id = $super->id;
             $taxonomy->editor_id = $super->id;
+            $taxonomy->status = Taxonomy::STATUS_PUBLISHED;
             $taxonomy->save();
             foreach ($item['translations'] as $translation) {
                 $taxonomyTranslation = new TaxonomyTranslation();
@@ -785,6 +789,229 @@ class DatabaseSeeder extends Seeder
                 $doctorWorkHour->closes_at = $defaultWorkingHour->closes_at;
                 $doctorWorkHour->is_day_off = $defaultWorkingHour->is_day_off;
                 $doctorWorkHour->save();
+            }
+        }
+    }
+
+    private function products($super)
+    {
+        $products = [
+            [
+                'name' => 'Kuzeydan 5L',
+                'category_id' => 6,
+            ],
+            [
+                'name' => 'Kuzeydan 1.5L',
+                'category_id' => 6,
+            ],
+            [
+                'name' => 'Erikli 5L',
+                'category_id' => 6,
+            ],
+            [
+                'name' => 'Erikli 1L',
+                'category_id' => 6,
+            ],
+            [
+                'name' => 'Coca-Cola',
+                'category_id' => 7,
+            ],
+            [
+                'name' => 'Coca-Cola Sugar-Free',
+                'category_id' => 7,
+            ],
+            [
+                'name' => 'Coca-Cola Light',
+                'category_id' => 7,
+            ],
+            [
+                'name' => 'Coca-Cola Energy',
+                'category_id' => 7,
+            ],
+            [
+                'name' => 'Coca-Cola Lime',
+                'category_id' => 7,
+            ],
+            [
+                'name' => 'Coca-Cola 1L',
+                'category_id' => 7,
+            ],
+            [
+                'name' => 'Coca-Cola Light 1L',
+                'category_id' => 7,
+            ],
+            [
+                'name' => 'Pepsi Coke',
+                'category_id' => 7,
+            ],
+            [
+                'name' => 'Pepsi Max',
+                'category_id' => 7,
+            ],
+            [
+                'name' => 'Pepsi Twist',
+                'category_id' => 7,
+            ],
+            [
+                'name' => 'Cappy Puply Orange 1L',
+                'category_id' => 8,
+            ],
+            [
+                'name' => 'Exotic Orange',
+                'category_id' => 8,
+            ],
+            [
+                'name' => 'Exotic Lemonada',
+                'category_id' => 8,
+            ],
+            [
+                'name' => 'Exotic Orange & Pomegrande',
+                'category_id' => 8,
+            ],
+            [
+                'name' => 'Eker Ayran',
+                'category_id' => 9,
+            ],
+            [
+                'name' => 'Ayran Glass Bottle',
+                'category_id' => 9,
+            ],
+            [
+                'name' => 'Ayran Young Bottle',
+                'category_id' => 9,
+            ],
+            [
+                'name' => 'Eker Ayran',
+                'category_id' => 9,
+            ],
+            [
+                'name' => 'Activia Papaya & Pumpkin Kefir',
+                'category_id' => 9,
+            ],
+            [
+                'name' => 'Imported Bananas',
+                'category_id' => 4,
+            ],
+            [
+                'name' => 'Strawberry',
+                'category_id' => 4,
+            ],
+            [
+                'name' => 'Tangerines',
+                'category_id' => 4,
+            ],
+            [
+                'name' => 'Oranges',
+                'category_id' => 4,
+            ],
+            [
+                'name' => 'Juice Oranges',
+                'category_id' => 4,
+            ],
+            [
+                'name' => 'Red Apples',
+                'category_id' => 4,
+            ],
+            [
+                'name' => 'Granny Smith Apples',
+                'category_id' => 4,
+            ],
+            [
+                'name' => 'Santa Maria Pear',
+                'category_id' => 4,
+            ],
+            [
+                'name' => 'Gold Kiwi',
+                'category_id' => 4,
+            ],
+            [
+                'name' => 'Kiwi',
+                'category_id' => 4,
+            ],
+            [
+                'name' => 'Pomegranta',
+                'category_id' => 4,
+            ],
+            [
+                'name' => 'Pomegranta Seed',
+                'category_id' => 4,
+            ],
+            [
+                'name' => 'Blueberries',
+                'category_id' => 4,
+            ],
+            [
+                'name' => 'Cocktail Tomatoes',
+                'category_id' => 5,
+            ],
+            [
+                'name' => 'Grape Tomatoes',
+                'category_id' => 5,
+            ],
+            [
+                'name' => 'Cucumbers',
+                'category_id' => 5,
+            ],
+            [
+                'name' => 'Lemons',
+                'category_id' => 5,
+            ],
+            [
+                'name' => 'Thin Peppers',
+                'category_id' => 5,
+            ],
+            [
+                'name' => 'Sweet Red Pepper',
+                'category_id' => 5,
+            ],
+            [
+                'name' => 'Onions',
+                'category_id' => 5,
+            ],
+        ];
+
+        // foreach filling products
+        foreach ($products as $product) {
+            $item = new Product();
+            $item->creator_id = $item->editor_id = 1;
+            $item->chain_id = 1;
+            $item->branch_id = rand(1, 3);
+            $item->category_id = $product['category_id'];
+            $item->unit_id = 1;
+            $item->price = rand(1000, 20000);
+            $item->price_discount_amount = rand(0, 100);
+            $item->price_discount_by_percentage = rand(0, 1);
+            $item->quantity = rand(5, 100);
+            $item->sku = "000SKU123".rand(1, 000);
+//            $item->upc = "123456789012";
+            $item->is_storage_tracking_enabled = true;
+            $item->width = 20.5;
+            $item->height = 10.0;
+            $item->depth = 5;
+            $item->weight = 5.5;
+            $item->avg_rating = 4.6;
+            $item->rating_count = 3.5;
+            $item->view_count = 400;
+            $item->status = Product::STATUS_PUBLISHED;
+//            $item->price_discount_began_at = ;
+//            $item->price_discount_finished_at = ;
+//            $item->custom_banner_began_at = ;
+//            $item->custom_banner_ended_at = ;
+//            $item->on_mobile_grid_tile_weight = ;
+            $item->save();
+            DB::table('category_product')->insert([
+                'category_id' => $product['category_id'],
+                'product_id' => $item->id,
+                'created_at' => now(),
+                'updated_at' => now(),
+            ]);
+
+            foreach (config('localization.supported-locales') as $locale) {
+                $translation = new ProductTranslation();
+                $translation->product_id = $item->id;
+                $translation->locale = $locale;
+                $translation->title = $product['name'];
+                $translation->save();
             }
         }
     }
