@@ -87,13 +87,13 @@ return [
         'normal_format' => 'd M Y',
     ],
     'geolocation' => [
-        'latitude' => 36.195238,
-        'longitude' => 43.993914,
+        'latitude' => 43.993914,
+        'longitude' => 36.195238,
     ],
     'workingHours' => [
         'opensAt' => "09:00",
         'closesAt' => "11:00",
-        'weekends' => [3, 4],
+        'weekends' => [6, 0],
     ],
     'colors' => [
         'chain_primary_color' => '#d82518',

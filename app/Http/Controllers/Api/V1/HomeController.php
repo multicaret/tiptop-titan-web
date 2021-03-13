@@ -4,9 +4,13 @@ namespace App\Http\Controllers\Api\V1;
 
 
 use App\Http\Controllers\Api\BaseApiController;
+use App\Http\Resources\BranchResource;
 use App\Http\Resources\LocationResource;
 use App\Http\Resources\TaxonomyResource;
+use App\Models\Branch;
 use App\Models\Taxonomy;
+use App\Models\User;
+use App\Models\WorkingHour;
 use Illuminate\Http\Request;
 
 class HomeController extends BaseApiController
@@ -39,16 +43,17 @@ class HomeController extends BaseApiController
     public function index(Request $request)
     {
         $channel = strtolower($request->input('channel'));
-        $user = auth()->user();
-        $slides = $addresses = [];
+        $user = /*auth()->user()*/
+            User::first();
+        $response = $slides = $addresses = [];
 
-        $usersLatitude = $request->latitude;
-        $usersLongitude = $request->latitude;
+        $userLatitude = $request->latitude;
+        $userLongitude = $request->longitude;
 
         if ( ! is_null($user)) {
-            $addresses = LocationResource::collection($user->addresses());
-            $user->latitude = $usersLatitude;
-            $user->longitude = $usersLongitude;
+            $addresses = LocationResource::collection($user->addresses);
+            $user->latitude = $userLatitude;
+            $user->longitude = $userLongitude;
             $user->save();
         }
 
@@ -62,20 +67,41 @@ class HomeController extends BaseApiController
         ];
 
         if ($channel == config('app.app-channels.grocery')) {
-            $groceryParentCategories = Taxonomy::groceries()->root()->get();
+            $response = [
+                'branch' => null,
+                'distance' => null,
+                'hasAvailableBranchesNow' => false,
+                'categories' => [],
+            ];
+
+            $groceryParentCategories = Taxonomy::groceryCategories()->parents()->get();
             $categories = TaxonomyResource::collection($groceryParentCategories);
+            $response['categories'] = $categories;
 
             if ( ! is_null($user) && ! is_null($selectedAddress = $request->input('selected_address'))) {
-                // here is the currently selected address: $selectedAddress
-                $selectedBranch = Branch::first();
-                $branch = new BranchResource($selectedBranch);
+                /*$selectedAddress = Location::find($selectedAddress);
+                $selectedAddress->latitude;
+                $selectedAddress->longitude;*/
+                $branchesOrderedByDistance = Branch::published()
+                                                   ->selectRaw('branches.id, DISTANCE_BETWEEN(latitude,longitude,?,?) as distance',
+                                                       [$request->latitude, $request->longitude])
+                                                   ->orderBy('distance')
+                                                   ->get();
+
+                foreach ($branchesOrderedByDistance as $branchOrderedByDistance) {
+                    $branch = Branch::find($branchOrderedByDistance->id);
+                    $branchWorkingHours = WorkingHour::retrieve($branch);
+                    if ($branchWorkingHours['isOpen']) {
+                        $response['distance'] = $branchOrderedByDistance->distance;
+                        $response['hasAvailableBranchesNow'] = true;
+                        $response['branch'] = new BranchResource($branch);
+                        break;
+                    }
+                }
             }
-            // Always in grocery the EA is 20-30
+            // Always in grocery the EA is 20-30, for dynamic values use "->distance" attribute from above.
             $sharedResponse['estimated_arrival_time']['value'] = '20-30';
-            $response = [
-                'categories' => $categories,
-                'branch' => $branch,
-            ];
+
         } else {
             $response = [];
         }

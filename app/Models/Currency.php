@@ -75,8 +75,8 @@ class Currency extends Model
             $currency->thousands_separator);
 
         return $currency->is_symbol_after ?
-            sprintf('%s %s', $number_formatted, $currency->symbol) :
-            sprintf('%s %s', $currency->symbol, $number_formatted);
+            sprintf('<sup>%s</sup> %s', $number_formatted, $currency->symbol) :
+            sprintf('%s <sup>%s</sup>', $currency->symbol, $number_formatted);
     }
 
 

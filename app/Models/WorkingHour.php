@@ -8,6 +8,10 @@ use Illuminate\Database\Eloquent\Model;
 
 class WorkingHour extends Model
 {
+    protected $casts = [
+        'is_day_off' => 'boolean',
+    ];
+
     public function workable()
     {
         return $this->morphTo();
@@ -75,6 +79,10 @@ class WorkingHour extends Model
 
                 $workingHours['isOpen'] = $today_opens_at->eq($today_closes_at)/* if CARBON eq true, thus, this place is open 24Hours */
                     || (Carbon::now()->gt($today_opens_at) && Carbon::now()->lt($today_closes_at));
+
+                if ($todayWorkingHours->is_day_off) {
+                    $workingHours['isOpen'] = false;
+                }
             }
         }
         $workingHours['schedule'] = WorkingHourResource::collection($object->workingHours);

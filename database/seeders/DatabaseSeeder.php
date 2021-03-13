@@ -62,6 +62,11 @@ class DatabaseSeeder extends Seeder
         $this->chains($super);
         $this->branches($super);
 
+        // Todo: This line is not being executed, but leave it please, bitches!
+        \DB::raw("
+            CREATE FUNCTION `DISTANCE_BETWEEN`(lat1 DOUBLE, lon1 DOUBLE, lat2 DOUBLE, lon2 DOUBLE) RETURNS double DETERMINISTIC RETURN ACOS( SIN(lat1*PI()/180)*SIN(lat2*PI()/180) + COS(lat1*PI()/180)*COS(lat2*PI()/180)*COS(lon2*PI()/180-lon1*PI()/180) ) * 6371;
+        ");
+
 //        factory(App\Models\User::class, 10)->create();
 //        factory(App\Models\Location::class, 10)->create();
 
@@ -577,8 +582,8 @@ class DatabaseSeeder extends Seeder
             $item->primary_phone_number = "+964539551234";
             $item->secondary_phone_number = "+964539551234";
             $item->whatsapp_phone_number = "+964539551234";
-            $item->latitude = config('defaults.geolocation.latitude') + ($branchIndex / 100);
-            $item->longitude = config('defaults.geolocation.longitude') + ($branchIndex / 100);
+            $item->latitude = config('defaults.geolocation.latitude') + ($branchIndex / 50);
+            $item->longitude = config('defaults.geolocation.longitude') + ($branchIndex / 50);
             $item->status = Branch::STATUS_PUBLISHED;
             $item->save();
 

@@ -47,6 +47,19 @@ class Taxonomy extends Node implements HasMedia, ShouldHaveTypes, TranslatableCo
 
 
     /**
+     * Scope a query to only include only parents.
+     *
+     * @param  \Illuminate\Database\Eloquent\Builder  $query
+     *
+     * @return \Illuminate\Database\Eloquent\Builder
+     */
+    public function scopeParents($query)
+    {
+        return $query->whereNull('parent_id');
+    }
+
+
+    /**
      * Scope a query to only include category taxonomies.
      *
      * @param  \Illuminate\Database\Eloquent\Builder  $query
