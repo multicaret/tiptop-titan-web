@@ -1,6 +1,6 @@
 ################## CURRENCIES ##################
 # Get all available Currencies
-GET {{host}}/{{locale}}/spa/currencies
+GET {{host}}/{{locale}}/api/v1/currencies
 Accept: application/json
 Content-Type: application/json
 Authorization: Bearer {{token}}
@@ -8,7 +8,7 @@ Authorization: Bearer {{token}}
 ###
 
 ### create currency
-GET {{host}}/{{locale}}/spa/currencies/create
+GET {{host}}/{{locale}}/api/v1/currencies/create
 Accept: application/json
 Content-Type: application/json
 Authorization: Bearer {{token}}
@@ -16,7 +16,7 @@ Authorization: Bearer {{token}}
 ###
 
 ### Store
-POST {{host}}/{{locale}}/spa/currencies
+POST {{host}}/{{locale}}/api/v1/currencies
 Accept: application/json
 Content-Type: application/json
 Authorization: Bearer {{token}}
@@ -35,7 +35,7 @@ Authorization: Bearer {{token}}
 ###
 
 ### Edit currency
-GET {{host}}/{{locale}}/spa/currencies/54/edit
+GET {{host}}/{{locale}}/api/v1/currencies/54/edit
 Accept: application/json
 Content-Type: application/json
 Authorization: Bearer {{token}}
@@ -44,7 +44,7 @@ Authorization: Bearer {{token}}
 
 
 ### Update currency
-PATCH {{host}}/{{locale}}/spa/currencies/59
+PATCH {{host}}/{{locale}}/api/v1/currencies/59
 Accept: application/json
 Content-Type: application/json
 Authorization: Bearer {{token}}
@@ -63,7 +63,7 @@ Authorization: Bearer {{token}}
 ###
 
 ### delete currency
-DELETE {{host}}/{{locale}}/spa/currencies/58
+DELETE {{host}}/{{locale}}/api/v1/currencies/58
 Accept: application/json
 Content-Type: application/json
 Authorization: Bearer {{token}}

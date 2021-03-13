@@ -1,13 +1,13 @@
 ################## PREFERENCES ##################
 # Get all preferences
-GET {{host}}/{{locale}}/spa/preferences
+GET {{host}}/{{locale}}/api/v1/preferences
 Accept: application/json
 Content-Type: application/json
 Authorization: Bearer {{token}}
 ###
 
 ### Store
-POST {{host}}/{{locale}}/spa/preferences
+POST {{host}}/{{locale}}/api/v1/preferences
 Accept: application/json
 Content-Type: application/json
 Authorization: Bearer {{token}}

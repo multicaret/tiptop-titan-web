@@ -1,0 +1,40 @@
+################## Misc ##################
+
+### boot
+GET {{host}}/{{locale}}/api/v1/boot
+Accept: application/json
+Content-Type: application/json
+Authorization: Bearer {{token}}
+
+### home
+GET {{host}}/{{locale}}/api/v1/home?latitude=36.20339842006327&longitude=44.00734072932359&channel=grocery&selected_address=1
+Accept: application/json
+Content-Type: application/json
+Authorization: Bearer {{token}}
+
+### log
+POST {{host}}/{{locale}}/api/v1/logs/create
+Accept: application/json
+Content-Type: application/json
+Authorization: Bearer {{token}}
+
+{
+    "data": "idk"
+}
+
+### Edit profile
+POST {{host}}/{{locale}}/api/v1/profile
+Accept: application/json
+Content-Type: application/json
+Authorization: Bearer {{token}}
+
+{
+    "name": "new user2",
+    "email": "new-user2@trytiptop.com",
+    "password": "secret1234",
+    "phone_number": "5555555556",
+    "phone_country_code": "964",
+    "dob": "1994-06-16",
+    "gender": "Male",
+    "locale": "en"
+}

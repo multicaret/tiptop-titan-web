@@ -1,28 +1,34 @@
-################## REGIONS ##################
-# Get all regions
-GET {{host}}/{{locale}}/spa/countries/225/regions
+################## COUNTRIES ##################
+# Get all countries
+GET {{host}}/{{locale}}/api/v1/countries
 Accept: application/json
 Content-Type: application/json
 Authorization: Bearer {{token}}
 ###
 
-### create region
-GET {{host}}/{{locale}}/spa/countries/225/regions/create
+### create country
+GET {{host}}/{{locale}}/api/v1/countries/create
 Accept: application/json
 Content-Type: application/json
 Authorization: Bearer {{token}}
 ###
 
 ### Store
-POST {{host}}/{{locale}}/spa/countries/225/regions
+POST {{host}}/{{locale}}/api/v1/countries
 Accept: application/json
 Content-Type: application/json
 Authorization: Bearer {{token}}
 
 {
-  "country_id": 12,
+  "currency_id": 4,
+  "language_id": 2,
+  "timezone_id": 332,
   "english_name": "TEST",
-  "code": 1,
+  "alpha2_code": "TE",
+  "alpha3_code": "TES",
+  "numeric_code": 4,
+  "phone_code": 92,
+  "status": 1,
   "translations": {
     "en": {
       "name": "name",
@@ -37,31 +43,37 @@ Authorization: Bearer {{token}}
 
 ###
 
-### Edit region
-GET {{host}}/{{locale}}/spa/countries/225/regions/81/edit
+### Edit country
+GET {{host}}/{{locale}}/api/v1/countries/255/edit
 Accept: application/json
 Content-Type: application/json
 Authorization: Bearer {{token}}
 ###
 
 ###THESE DON'T WORK YET
-### Update region
-PATCH {{host}}/{{locale}}/spa/countries/42/regions/81
+### Update country
+PATCH {{host}}/{{locale}}/api/v1/countries/256
 Accept: application/json
 Content-Type: application/json
 Authorization: Bearer {{token}}
 
 {
-  "country_id": 14,
+  "currency_id": 1,
+  "language_id": 4,
+  "timezone_id": 13,
   "english_name": "TEST2",
-  "code": 2,
+  "alpha2_code": "T2",
+  "alpha3_code": "TE2",
+  "numeric_code": 1,
+  "phone_code": 97,
+  "status": 1,
   "translations": {
     "en": {
       "name": "name2",
       "slug": "slug2"
     },
     "ar": {
-      "name": "2سوسو",
+      "name": "سوسو2",
       "slug": "بابا2"
     }
   }
@@ -69,8 +81,8 @@ Authorization: Bearer {{token}}
 
 ###
 
-### delete region
-DELETE {{host}}/{{locale}}/spa/countries/225/regions/83
+### delete country
+DELETE {{host}}/{{locale}}/api/v1/countries/257
 Accept: application/json
 Content-Type: application/json
 Authorization: Bearer {{token}}

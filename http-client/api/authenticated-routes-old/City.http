@@ -1,20 +1,20 @@
 ################## CITIES ##################
 # Get all cities
-GET {{host}}/{{locale}}/spa/countries/225/regions/50/cities
+GET {{host}}/{{locale}}/api/v1/countries/225/regions/50/cities
 Accept: application/json
 Content-Type: application/json
 Authorization: Bearer {{token}}
 ###
 
 ### create city
-GET {{host}}/{{locale}}/spa/countries/225/regions/50/cities/create
+GET {{host}}/{{locale}}/api/v1/countries/225/regions/50/cities/create
 Accept: application/json
 Content-Type: application/json
 Authorization: Bearer {{token}}
 ###
 
 ### Store
-POST {{host}}/{{locale}}/spa/countries/225/regions/50/cities
+POST {{host}}/{{locale}}/api/v1/countries/225/regions/50/cities
 Accept: application/json
 Content-Type: application/json
 Authorization: Bearer {{token}}
@@ -44,7 +44,7 @@ Authorization: Bearer {{token}}
 ###
 
 ### Edit city
-GET {{host}}/{{locale}}/spa/countries/225/regions/50/cities/70/edit
+GET {{host}}/{{locale}}/api/v1/countries/225/regions/50/cities/70/edit
 Accept: application/json
 Content-Type: application/json
 Authorization: Bearer {{token}}
@@ -52,7 +52,7 @@ Authorization: Bearer {{token}}
 
 ###THESE DON'T WORK YET
 ### Update city
-PATCH {{host}}/{{locale}}/spa/countries/42/regions/50/cities/1180
+PATCH {{host}}/{{locale}}/api/v1/countries/42/regions/50/cities/1180
 Accept: application/json
 Content-Type: application/json
 Authorization: Bearer {{token}}
@@ -82,7 +82,7 @@ Authorization: Bearer {{token}}
 ###
 
 ### delete city
-DELETE {{host}}/{{locale}}/spa/countries/225/regions/50/cities/1181
+DELETE {{host}}/{{locale}}/api/v1/countries/225/regions/50/cities/1181
 Accept: application/json
 Content-Type: application/json
 Authorization: Bearer {{token}}
