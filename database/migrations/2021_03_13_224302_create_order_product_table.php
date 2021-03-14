@@ -17,6 +17,7 @@ class CreateOrderProductTable extends Migration
             $table->id();
             $table->unsignedBigInteger('order_id')->index();
             $table->unsignedBigInteger('product_id')->index();
+            $table->unsignedSmallInteger('quantity')->default(1);
             $table->json('product_object');
             $table->timestamps();
 
