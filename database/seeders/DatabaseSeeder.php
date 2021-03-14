@@ -67,8 +67,13 @@ class DatabaseSeeder extends Seeder
         $this->products($super);
         $this->paymentMethods($super);
 
-        // Todo: This line is not being executed, but leave it please, bitches!
-        DB::unprepared("CREATE FUNCTION `DISTANCE_BETWEEN`(lat1 DOUBLE, lon1 DOUBLE, lat2 DOUBLE, lon2 DOUBLE) RETURNS double DETERMINISTIC RETURN ACOS( SIN(lat1*PI()/180)*SIN(lat2*PI()/180) + COS(lat1*PI()/180)*COS(lat2*PI()/180)*COS(lon2*PI()/180-lon1*PI()/180) ) * 6371;");
+        /*
+            Todo: This line needs root user privileges,
+             so please copy and paste it in your machine of you don't have it already
+        DB::unprepared("
+            CREATE FUNCTION `DISTANCE_BETWEEN`(lat1 DOUBLE, lon1 DOUBLE, lat2 DOUBLE, lon2 DOUBLE) RETURNS double DETERMINISTIC RETURN ACOS( SIN(lat1*PI()/180)*SIN(lat2*PI()/180) + COS(lat1*PI()/180)*COS(lat2*PI()/180)*COS(lon2*PI()/180-lon1*PI()/180) ) * 6371;
+        ");
+        */
 
 //        factory(App\Models\User::class, 10)->create();
 //        factory(App\Models\Location::class, 10)->create();
