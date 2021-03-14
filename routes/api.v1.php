@@ -10,8 +10,10 @@ Route::middleware('throttle:15')
          Route::get('/home', 'HomeController@index');
 
          Route::get('categories/{groceryCategory}/products', 'CategoryController@products');
-         Route::get('products/{id}', 'productController@show');
-         Route::get('products', 'productController@searchProducts');
+         Route::get('products/{id}', 'ProductController@show');
+         Route::get('products', 'ProductController@searchProducts');
+
+         Route::post('baskets/addRemoveProduct', 'BasketController@addRemoveProduct');
 
          /* auth related */
          Route::post('login', 'Auth\AuthController@login');
@@ -29,6 +31,7 @@ Route::middleware('throttle:15')
          Route::get('blog', 'PostController@blogIndex');
          Route::get('blog/{id}', 'PostController@blogShow');
          Route::get('privacy', 'PostController@privacy');
+         Route::get('about-us', 'PostController@aboutUs');
 
          /* misc. */
          Route::post('logs/create', 'LogController@store');
@@ -37,6 +40,11 @@ Route::middleware('throttle:15')
 /* Protected Endpoints */
 Route::middleware('auth:api')
      ->group(function () {
+//         Route::get('profile/addresses', 'AddressController@index');
+//         Route::get('profile/addresses/create', 'AddressController@create');
+//         Route::post('profile/addresses', 'AddressController@store');
+//         Route::post('profile/addresses/destroy', 'AddressController@store');
+         Route::resource('profile/addresses', 'AddressController')->except(['edit', 'update']);
          Route::post('profile', 'Auth\AuthController@profile');
          Route::post('password/update', 'Auth\PasswordController@update');
 

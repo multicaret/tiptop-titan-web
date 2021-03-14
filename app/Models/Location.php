@@ -84,24 +84,32 @@ class Location extends Model
         }
     }
 
+    public static function getKinds(): array
+    {
+        return [
+            self::KIND_HOME => 'home',
+            self::KIND_WORK => 'work',
+            self::KIND_OTHER => 'other',
+        ];
+    }
 
     public function getKind()
     {
         switch ($this->type) {
             case self::KIND_OTHER:
                 return [
-                    'title' => strings('api.address_kind_Other'),
+                    'title' => trans('api.address_kind_Other'),
                     'icon' => 'other.png',
                 ];
             case self::KIND_WORK:
                 return [
-                    'title' => strings('api.address_kind_Work'),
+                    'title' => trans('api.address_kind_Work'),
                     'icon' => 'work.png',
                 ];
             case self::KIND_HOME:
             default:
                 return [
-                    'title' => strings('api.address_kind_Home'),
+                    'title' => trans('api.address_kind_Home'),
                     'icon' => 'home.png',
                 ];
         }
