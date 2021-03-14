@@ -28,6 +28,17 @@ Authorization: Bearer {{token}}
     "notes": "The elevator is not working lol"
 }
 
+### addresses store
+POST {{host}}/{{locale}}/api/v1/profile/addresses/change-selected-address
+Accept: application/json
+Content-Type: application/json
+Authorization: Bearer {{token}}
+
+{
+    "latitude": 40.8489891,
+    "longitude": 29.1192525
+}
+
 ### delete user
 DELETE {{host}}/{{locale}}/api/v1/profile/addresses/4
 Accept: application/json

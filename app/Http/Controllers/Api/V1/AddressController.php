@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Api\V1;
 
 use App\Http\Controllers\Api\BaseApiController;
 use App\Http\Resources\LocationResource;
+use App\Models\Branch;
 use App\Models\Location;
 use Illuminate\Http\Request;
 
@@ -79,6 +80,24 @@ class AddressController extends BaseApiController
                 'type' => 'success',
                 'text' => 'Successfully Deleted',
             ]);
+        }
+
+        return $this->respond([
+            'type' => 'error',
+            'text' => 'There seems to be a problem',
+        ]);
+    }
+
+    public function changeSelectedAddress(Request $request)
+    {
+        [$distance, $branch] = Branch::getClosestAvailableBranch($request->latitude, $request->longitude);
+        if ( ! is_null($distance)) {
+            $sharedResponse['estimated_arrival_time']['value'] = '20-30';
+            $response['distance'] = $distance;
+            $response['branch'] = $branch;
+            $response['hasAvailableBranchesNow'] = true;
+
+            return $this->respond(array_merge($sharedResponse, $response));
         }
 
         return $this->respond([
