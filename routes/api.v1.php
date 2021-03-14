@@ -15,6 +15,11 @@ Route::middleware('throttle:15')
          Route::post('login', 'Auth\AuthController@login');
          Route::post('register', 'Auth\AuthController@register');
 //         Route::post('auth/{provider}', 'Auth\SocialiteController@handleProvider');
+         Route::get('otp/methods', 'OtpController@methods')->name('otp.methods');
+         Route::get('otp/init-validation', 'OtpController@init')->name('otp.init');
+         Route::get('otp/check-validation/{reference}', 'OtpController@check')->name('otp.check');
+         Route::post('otp/sms-send', 'OtpController@otpSmsSend')->name('otp.sms-send');
+         Route::post('otp/sms-validate', 'OtpController@otpSmsValidate')->name('otp.sms-validate');
 
          /* generals */
          Route::get('faqs', 'PostController@faqIndex');
