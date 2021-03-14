@@ -1,4 +1,6 @@
-################## Methods ##################
+################## OTP ##################
+
+#### Get All Methods
 GET {{host}}/{{locale}}/api/v1/otp/methods
 Accept: application/json
 Content-Type: application/json
