@@ -1,8 +1,38 @@
 ################## Order/Checkout ##################
 
 
-### Get About page
+#### Get checkout data.
 GET {{host}}/{{locale}}/api/v1/checkout
 Accept: application/json
 Content-Type: application/json
 Authorization: Bearer {{token}}
+
+
+#### Store checkout data. Required fields [chain_id, branch_id, basket_id, payment_method_id, address_id].
+POST /{{locale}}/api/v1/checkout
+Accept: application/json
+Content-Type: application/json
+Authorization: Bearer {{token}}
+
+
+{
+    "chain_id": "0",
+    "branch_id" : "0",
+    "basket_id" :  "0",
+    "payment_method_id" : "0",
+    "address_id" :  "0",
+    "previous_order_id":  null,
+    "total": null,
+    "coupon_discount_amount":  null,
+    "delivery_fee": null,
+    "grand_total":  null,
+    "private_payment_method_commission": null,
+    "private_total":  null,
+    "private_delivery_fee": null,
+    "private_grand_total":  null,
+    "avg_rating": null,
+    "rating_count":  null,
+    "completed_at": null,
+    "notes":  null,
+    "status": null,
+}
