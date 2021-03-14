@@ -6,7 +6,7 @@ use App\Http\Controllers\Api\BaseApiController;
 use App\Http\Resources\BlogResource;
 use App\Http\Resources\FaqResource;
 use App\Http\Resources\PostResource;
-use App\Http\Resources\PrivacyResource;
+use App\Http\Resources\StaticPageResource;
 use App\Http\Resources\TaxonomyResource;
 use App\Models\Post;
 use App\Models\PostTranslation;
@@ -213,8 +213,13 @@ class PostController extends BaseApiController
         return $this->respondNotFound();
     }
 
-    public function privacy()
+    public function privacy(): StaticPageResource
     {
-        return new PrivacyResource(Post::find(Post::PRIVACY_PAGE_ID));
+        return new StaticPageResource(Post::find(Post::PRIVACY_PAGE_ID));
+    }
+
+    public function aboutUs(): StaticPageResource
+    {
+        return new StaticPageResource(Post::find(Post::ABOUT_PAGE_ID));
     }
 }

@@ -10,8 +10,10 @@ Route::middleware('throttle:15')
          Route::get('/home', 'HomeController@index');
 
          Route::get('categories/{groceryCategory}/products', 'CategoryController@products');
-         Route::get('products/{id}', 'productController@show');
-         Route::get('products', 'productController@searchProducts');
+         Route::get('products/{id}', 'ProductController@show');
+         Route::get('products', 'ProductController@searchProducts');
+
+         Route::post('baskets/addRemoveProduct', 'BasketController@addRemoveProduct');
 
          /* auth related */
          Route::post('login', 'Auth\AuthController@login');
@@ -29,6 +31,7 @@ Route::middleware('throttle:15')
          Route::get('blog', 'PostController@blogIndex');
          Route::get('blog/{id}', 'PostController@blogShow');
          Route::get('privacy', 'PostController@privacy');
+         Route::get('about-us', 'PostController@aboutUs');
 
          /* misc. */
          Route::post('logs/create', 'LogController@store');
@@ -44,6 +47,7 @@ Route::middleware('auth:api')
          Route::resource('profile/addresses', 'AddressController')->except(['edit', 'update']);
          Route::post('profile', 'Auth\AuthController@profile');
          Route::post('password/update', 'Auth\PasswordController@update');
+         Route::get('checkout', 'OrderController@checkoutCreate');
 
 //         Route::get('users', 'UserController@index');
 //         Route::get('users/{id}', 'UserController@show');

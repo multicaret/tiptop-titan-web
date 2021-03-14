@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Http\Resources\BranchResource;
 use App\Traits\HasMediaTrait;
 use App\Traits\HasStatuses;
 use App\Traits\HasUuid;
@@ -68,4 +69,25 @@ class Branch extends Model implements HasMedia
     }
 
 
+    public static function getClosestAvailableBranch($latitude, $longitude): array
+    {
+        $distance = $branch = null;
+        $branchesOrderedByDistance = Branch::published()
+                                           ->selectRaw('branches.id, DISTANCE_BETWEEN(latitude,longitude,?,?) as distance',
+                                               [$latitude, $longitude])
+                                           ->orderBy('distance')
+                                           ->get();
+
+        foreach ($branchesOrderedByDistance as $branchOrderedByDistance) {
+            $branch = Branch::find($branchOrderedByDistance->id);
+            $branchWorkingHours = WorkingHour::retrieve($branch);
+            if ($branchWorkingHours['isOpen']) {
+                $distance = $branchOrderedByDistance->distance;
+                $branch = new BranchResource($branch);
+                break;
+            }
+        }
+
+        return [$distance, $branch];
+    }
 }

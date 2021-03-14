@@ -34,6 +34,7 @@ return [
         'barcode_image' => '/images/barcode-image.png',
         'chain_logo' => '/images/chain-logo.png',
         'payment_method_logo' => '/images/payment-method-logo.png',
+        'grocery_category_cover' => '/images/grocery-category-cover.png',
     ],
     'image_conversions' => [
         'generic_logo' => [

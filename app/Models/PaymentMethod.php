@@ -8,9 +8,10 @@ use Astrotomic\Translatable\Translatable;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Spatie\Image\Manipulations;
+use Spatie\MediaLibrary\HasMedia;
 use Spatie\MediaLibrary\MediaCollections\Models\Media;
 
-class PaymentMethod extends Model
+class PaymentMethod extends Model implements HasMedia
 {
     use Translatable,
         SoftDeletes,

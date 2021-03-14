@@ -128,23 +128,6 @@ class DatabaseSeeder extends Seeder
                 'translations' => [
                     [
                         'locale' => 'en',
-                        'title' => 'Fruits & Veges',
-                    ],
-                    [
-                        'locale' => 'ar',
-                        'title' => 'خضروات وفواكه',
-                    ],
-                    [
-                        'locale' => 'ku',
-                        'title' => 'خضروات وفواكه',
-                    ]
-                ]
-            ],
-            [
-                'type' => Taxonomy::TYPE_GROCERY_CATEGORY,
-                'translations' => [
-                    [
-                        'locale' => 'en',
                         'title' => 'Beverages',
                     ],
                     [
@@ -159,43 +142,6 @@ class DatabaseSeeder extends Seeder
             ],
             [
                 'type' => Taxonomy::TYPE_GROCERY_CATEGORY,
-                'parent_id' => 2,
-                'translations' => [
-                    [
-                        'locale' => 'en',
-                        'title' => 'Fruits',
-                    ],
-                    [
-                        'locale' => 'ar',
-                        'title' => 'فواكة',
-                    ],
-                    [
-                        'locale' => 'ku',
-                        'title' => 'فواكة',
-                    ]
-                ]
-            ],
-            [
-                'type' => Taxonomy::TYPE_GROCERY_CATEGORY,
-                'parent_id' => 2,
-                'translations' => [
-                    [
-                        'locale' => 'en',
-                        'title' => 'Veges',
-                    ],
-                    [
-                        'locale' => 'ar',
-                        'title' => 'خضروات',
-                    ],
-                    [
-                        'locale' => 'ku',
-                        'title' => 'خضروات',
-                    ]
-                ]
-            ],
-            [
-                'type' => Taxonomy::TYPE_GROCERY_CATEGORY,
-                'parent_id' => 3,
                 'translations' => [
                     [
                         'locale' => 'en',
@@ -213,7 +159,299 @@ class DatabaseSeeder extends Seeder
             ],
             [
                 'type' => Taxonomy::TYPE_GROCERY_CATEGORY,
-                'parent_id' => 3,
+                'translations' => [
+                    [
+                        'locale' => 'en',
+                        'title' => 'Fruits & Veges',
+                    ],
+                    [
+                        'locale' => 'ar',
+                        'title' => 'خضروات وفواكه',
+                    ],
+                    [
+                        'locale' => 'ku',
+                        'title' => 'خضروات وفواكه',
+                    ]
+                ]
+            ],
+            [
+                'type' => Taxonomy::TYPE_GROCERY_CATEGORY,
+                'translations' => [
+                    [
+                        'locale' => 'en',
+                        'title' => 'Baked Goods',
+                    ],
+                    [
+                        'locale' => 'ar',
+                        'title' => 'منتجات فرن',
+                    ],
+                    [
+                        'locale' => 'ku',
+                        'title' => 'منتجات فرن',
+                    ]
+                ]
+            ],
+            [
+                'type' => Taxonomy::TYPE_GROCERY_CATEGORY,
+                'translations' => [
+                    [
+                        'locale' => 'en',
+                        'title' => 'Food',
+                    ],
+                    [
+                        'locale' => 'ar',
+                        'title' => 'طعام',
+                    ],
+                    [
+                        'locale' => 'ku',
+                        'title' => 'طعام',
+                    ]
+                ]
+            ],
+            [
+                'type' => Taxonomy::TYPE_GROCERY_CATEGORY,
+                'translations' => [
+                    [
+                        'locale' => 'en',
+                        'title' => 'Snacks',
+                    ],
+                    [
+                        'locale' => 'ar',
+                        'title' => 'Snacks',
+                    ],
+                    [
+                        'locale' => 'ku',
+                        'title' => 'Snacks',
+                    ]
+                ]
+            ],
+            [
+                'type' => Taxonomy::TYPE_GROCERY_CATEGORY,
+                'translations' => [
+                    [
+                        'locale' => 'en',
+                        'title' => 'Ice Cream',
+                    ],
+                    [
+                        'locale' => 'ar',
+                        'title' => 'Ice Cream',
+                    ],
+                    [
+                        'locale' => 'ku',
+                        'title' => 'Ice Cream',
+                    ]
+                ]
+            ],
+            [
+                'type' => Taxonomy::TYPE_GROCERY_CATEGORY,
+                'translations' => [
+                    [
+                        'locale' => 'en',
+                        'title' => 'Read to eat',
+                    ],
+                    [
+                        'locale' => 'ar',
+                        'title' => 'جاهز للأكل',
+                    ],
+                    [
+                        'locale' => 'ku',
+                        'title' => 'جاهز للأكل',
+                    ]
+                ]
+            ],
+            [
+                'type' => Taxonomy::TYPE_GROCERY_CATEGORY,
+                'translations' => [
+                    [
+                        'locale' => 'en',
+                        'title' => 'Dairy & Deli',
+                    ],
+                    [
+                        'locale' => 'ar',
+                        'title' => 'ألبان و بيض',
+                    ],
+                    [
+                        'locale' => 'ku',
+                        'title' => 'Dairy & Deli',
+                    ]
+                ]
+            ],
+            [
+                'type' => Taxonomy::TYPE_GROCERY_CATEGORY,
+                'translations' => [
+                    [
+                        'locale' => 'en',
+                        'title' => 'Personal Care',
+                    ],
+                    [
+                        'locale' => 'ar',
+                        'title' => 'عناية شخصية',
+                    ],
+                    [
+                        'locale' => 'ku',
+                        'title' => 'عناية شخصية',
+                    ]
+                ]
+            ],
+            [
+                'type' => Taxonomy::TYPE_GROCERY_CATEGORY,
+                'translations' => [
+                    [
+                        'locale' => 'en',
+                        'title' => 'Home Care',
+                    ],
+                    [
+                        'locale' => 'ar',
+                        'title' => 'Home Care',
+                    ],
+                    [
+                        'locale' => 'ku',
+                        'title' => 'Home Care',
+                    ]
+                ]
+            ],
+            [
+                'type' => Taxonomy::TYPE_GROCERY_CATEGORY,
+                'translations' => [
+                    [
+                        'locale' => 'en',
+                        'title' => 'Home & Living',
+                    ],
+                    [
+                        'locale' => 'ar',
+                        'title' => 'Home & Living',
+                    ],
+                    [
+                        'locale' => 'ku',
+                        'title' => 'Home & Living',
+                    ]
+                ]
+            ],
+            [
+                'type' => Taxonomy::TYPE_GROCERY_CATEGORY,
+                'translations' => [
+                    [
+                        'locale' => 'en',
+                        'title' => 'Tech',
+                    ],
+                    [
+                        'locale' => 'ar',
+                        'title' => 'Tech',
+                    ],
+                    [
+                        'locale' => 'ku',
+                        'title' => 'Tech',
+                    ]
+                ]
+            ],
+            [
+                'type' => Taxonomy::TYPE_GROCERY_CATEGORY,
+                'translations' => [
+                    [
+                        'locale' => 'en',
+                        'title' => 'Pet Food',
+                    ],
+                    [
+                        'locale' => 'ar',
+                        'title' => 'Pet Food',
+                    ],
+                    [
+                        'locale' => 'ku',
+                        'title' => 'Pet Food',
+                    ]
+                ]
+            ],
+            [
+                'type' => Taxonomy::TYPE_GROCERY_CATEGORY,
+                'translations' => [
+                    [
+                        'locale' => 'en',
+                        'title' => 'Baby Care',
+                    ],
+                    [
+                        'locale' => 'ar',
+                        'title' => 'Baby Care',
+                    ],
+                    [
+                        'locale' => 'ku',
+                        'title' => 'Baby Care',
+                    ]
+                ]
+            ],
+            [
+                'type' => Taxonomy::TYPE_GROCERY_CATEGORY,
+                'translations' => [
+                    [
+                        'locale' => 'en',
+                        'title' => 'Apparel',
+                    ],
+                    [
+                        'locale' => 'ar',
+                        'title' => 'Apparel',
+                    ],
+                    [
+                        'locale' => 'ku',
+                        'title' => 'Apparel',
+                    ]
+                ]
+            ],
+            [
+                'type' => Taxonomy::TYPE_GROCERY_CATEGORY,
+                'parent_id' => 4,
+                'translations' => [
+                    [
+                        'locale' => 'en',
+                        'title' => 'Fruits',
+                    ],
+                    [
+                        'locale' => 'ar',
+                        'title' => 'فواكة',
+                    ],
+                    [
+                        'locale' => 'ku',
+                        'title' => 'فواكة',
+                    ]
+                ]
+            ],
+            [
+                'type' => Taxonomy::TYPE_GROCERY_CATEGORY,
+                'parent_id' => 4,
+                'translations' => [
+                    [
+                        'locale' => 'en',
+                        'title' => 'Veges',
+                    ],
+                    [
+                        'locale' => 'ar',
+                        'title' => 'خضروات',
+                    ],
+                    [
+                        'locale' => 'ku',
+                        'title' => 'خضروات',
+                    ]
+                ]
+            ],
+            [
+                'type' => Taxonomy::TYPE_GROCERY_CATEGORY,
+                'parent_id' => 2,
+                'translations' => [
+                    [
+                        'locale' => 'en',
+                        'title' => 'Water',
+                    ],
+                    [
+                        'locale' => 'ar',
+                        'title' => 'ماء',
+                    ],
+                    [
+                        'locale' => 'ku',
+                        'title' => 'ماء',
+                    ]
+                ]
+            ],
+            [
+                'type' => Taxonomy::TYPE_GROCERY_CATEGORY,
+                'parent_id' => 2,
                 'translations' => [
                     [
                         'locale' => 'en',
@@ -231,7 +469,7 @@ class DatabaseSeeder extends Seeder
             ],
             [
                 'type' => Taxonomy::TYPE_GROCERY_CATEGORY,
-                'parent_id' => 3,
+                'parent_id' => 2,
                 'translations' => [
                     [
                         'locale' => 'en',
@@ -249,7 +487,7 @@ class DatabaseSeeder extends Seeder
             ],
             [
                 'type' => Taxonomy::TYPE_GROCERY_CATEGORY,
-                'parent_id' => 3,
+                'parent_id' => 2,
                 'translations' => [
                     [
                         'locale' => 'en',
@@ -267,7 +505,7 @@ class DatabaseSeeder extends Seeder
             ],
             [
                 'type' => Taxonomy::TYPE_GROCERY_CATEGORY,
-                'parent_id' => 3,
+                'parent_id' => 2,
                 'translations' => [
                     [
                         'locale' => 'en',
@@ -285,7 +523,7 @@ class DatabaseSeeder extends Seeder
             ],
             [
                 'type' => Taxonomy::TYPE_GROCERY_CATEGORY,
-                'parent_id' => 3,
+                'parent_id' => 2,
                 'translations' => [
                     [
                         'locale' => 'en',

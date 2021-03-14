@@ -6,7 +6,7 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\Resources\Json\JsonResource;
 
 /** @mixin \App\Models\Post */
-class PrivacyResource extends JsonResource
+class StaticPageResource extends JsonResource
 {
     /**
      * Transform the resource into an array.
