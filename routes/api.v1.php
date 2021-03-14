@@ -29,6 +29,7 @@ Route::middleware('throttle:15')
          Route::get('blog', 'PostController@blogIndex');
          Route::get('blog/{id}', 'PostController@blogShow');
          Route::get('privacy', 'PostController@privacy');
+         Route::get('about-us', 'PostController@aboutUs');
 
          /* misc. */
          Route::post('logs/create', 'LogController@store');
