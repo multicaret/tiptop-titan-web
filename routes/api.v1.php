@@ -32,6 +32,11 @@ Route::middleware('throttle:15')
 /* Protected Endpoints */
 Route::middleware('auth:api')
      ->group(function () {
+//         Route::get('profile/addresses', 'AddressController@index');
+//         Route::get('profile/addresses/create', 'AddressController@create');
+//         Route::post('profile/addresses', 'AddressController@store');
+//         Route::post('profile/addresses/destroy', 'AddressController@store');
+         Route::resource('profile/addresses', 'AddressController')->except(['edit', 'update']);
          Route::post('profile', 'Auth\AuthController@profile');
          Route::post('password/update', 'Auth\PasswordController@update');
 
