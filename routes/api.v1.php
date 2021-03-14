@@ -48,6 +48,7 @@ Route::middleware('auth:api')
          Route::post('profile', 'Auth\AuthController@profile');
          Route::post('password/update', 'Auth\PasswordController@update');
          Route::get('checkout', 'OrderController@checkoutCreate');
+         Route::post('checkout', 'OrderController@checkoutStore');
 
 //         Route::get('users', 'UserController@index');
 //         Route::get('users/{id}', 'UserController@show');
