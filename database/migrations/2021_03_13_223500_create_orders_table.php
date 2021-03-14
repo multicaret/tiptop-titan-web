@@ -1,5 +1,6 @@
 <?php
 
+use App\Models\Order;
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
@@ -32,10 +33,22 @@ class CreateOrdersTable extends Migration
             $table->unsignedFloat('private_total')->default(0);
             $table->unsignedFloat('private_delivery_fee')->default(0);
             $table->unsignedFloat('private_grand_total')->default(0);
+            $table->decimal('avg_rating', 3)->default(0);
+            $table->unsignedInteger('rating_count')->default(0);
             $table->timestamp('completed_at')->nullable();
-            $table->timestamp('payment_completed_at')->nullable();
             $table->text('notes')->nullable();
+            $table->unsignedTinyInteger('status')->default(Order::STATUS_DRAFT)
+                  ->comment("
+            0: Cancelled,
+            1: Draft,
+            6: Waiting Courier,
+            10: Preparing,
+            16: On the way,
+            18: At the address,
+            20: Delivered,
+            ");
             $table->timestamps();
+            $table->softDeletes();
 
             $table->foreign('user_id')->references('id')->on('users');
             $table->foreign('chain_id')->references('id')->on('chains');

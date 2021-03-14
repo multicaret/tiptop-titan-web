@@ -3,9 +3,20 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\SoftDeletes;
 
 class Order extends Model
 {
+
+    use SoftDeletes;
+
+    const STATUS_CANCELLED = 0;
+    const STATUS_DRAFT = 1;
+    const STATUS_WAITING_COURIER = 6;
+    const STATUS_PREPARING = 10;
+    const STATUS_ON_THE_WAY = 16;
+    const STATUS_AT_THE_ADDRESS = 18;
+    const STATUS_DELIVERED = 20;
 
     protected $casts = [
         'total' => 'float',
@@ -16,6 +27,7 @@ class Order extends Model
         'private_total' => 'float',
         'private_delivery_fee' => 'float',
         'private_grand_total' => 'float',
+        'completed_at' => 'timestamp',
     ];
 
     protected static function boot()
