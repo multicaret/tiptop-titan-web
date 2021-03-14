@@ -1,0 +1,40 @@
+################## OTP ##################
+
+#### Get All Methods
+GET {{host}}/{{locale}}/api/v1/otp/methods
+Accept: application/json
+Content-Type: application/json
+
+####  Init validation for whatsapp or telegram. Required.
+GET {{host}}/{{locale}}/api/v1/otp/init-validation?method=whatsapp
+Accept: application/json
+Content-Type: application/json
+
+
+#### Check/Validation. [`reference`]. Required.
+GET {{host}}/{{locale}}/api/v1/otp/check-validation/{reference}
+Accept: application/json
+Content-Type: application/json
+
+
+#### SMS Send
+POST {{host}}/{{locale}}/api/v1/otp/sms-send
+Accept: application/json
+Content-Type: application/json
+
+{
+    "country_code": "TR",
+    "phone_number": "+905394420000"
+}
+
+#### SMS Validation Code
+POST {{host}}/{{locale}}/api/v1/otp/sms-validate
+Accept: application/json
+Content-Type: application/json
+
+{
+    "country_code": "TR",
+    "phone_number": "+905394420000",
+    "code": "398036",
+    "reference": "3e02b1a1906ee143aed99c5b94b349fa74465d88"
+}

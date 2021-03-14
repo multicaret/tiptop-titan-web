@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Api\V1;
 use App\Http\Controllers\Api\BaseApiController;
 use App\Http\Resources\BlogResource;
 use App\Http\Resources\FaqResource;
+use App\Http\Resources\PageResource;
 use App\Http\Resources\PostResource;
 use App\Http\Resources\PrivacyResource;
 use App\Http\Resources\TaxonomyResource;
@@ -216,5 +217,10 @@ class PostController extends BaseApiController
     public function privacy()
     {
         return new PrivacyResource(Post::find(Post::PRIVACY_PAGE_ID));
+    }
+
+    public function aboutUs(): PageResource
+    {
+        return new PageResource(Post::find(Post::ABOUT_PAGE_ID));
     }
 }

@@ -19,6 +19,11 @@ Route::middleware('throttle:15')
          Route::post('login', 'Auth\AuthController@login');
          Route::post('register', 'Auth\AuthController@register');
 //         Route::post('auth/{provider}', 'Auth\SocialiteController@handleProvider');
+         Route::get('otp/methods', 'OtpController@methods')->name('otp.methods');
+         Route::get('otp/init-validation', 'OtpController@init')->name('otp.init');
+         Route::get('otp/check-validation/{reference}', 'OtpController@check')->name('otp.check');
+         Route::post('otp/sms-send', 'OtpController@otpSmsSend')->name('otp.sms-send');
+         Route::post('otp/sms-validate', 'OtpController@otpSmsValidate')->name('otp.sms-validate');
 
          /* generals */
          Route::get('faqs', 'PostController@faqIndex');
@@ -26,6 +31,7 @@ Route::middleware('throttle:15')
          Route::get('blog', 'PostController@blogIndex');
          Route::get('blog/{id}', 'PostController@blogShow');
          Route::get('privacy', 'PostController@privacy');
+         Route::get('about-us', 'PostController@aboutUs');
 
          /* misc. */
          Route::post('logs/create', 'LogController@store');
@@ -34,6 +40,11 @@ Route::middleware('throttle:15')
 /* Protected Endpoints */
 Route::middleware('auth:api')
      ->group(function () {
+//         Route::get('profile/addresses', 'AddressController@index');
+//         Route::get('profile/addresses/create', 'AddressController@create');
+//         Route::post('profile/addresses', 'AddressController@store');
+//         Route::post('profile/addresses/destroy', 'AddressController@store');
+         Route::resource('profile/addresses', 'AddressController')->except(['edit', 'update']);
          Route::post('profile', 'Auth\AuthController@profile');
          Route::post('password/update', 'Auth\PasswordController@update');
 

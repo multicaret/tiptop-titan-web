@@ -1,0 +1,36 @@
+################## ADDRESS ##################
+### addresses index
+GET {{host}}/{{locale}}/api/v1/profile/addresses
+Accept: application/json
+Content-Type: application/json
+Authorization: Bearer {{token}}
+
+### addresses create
+GET {{host}}/{{locale}}/api/v1/profile/addresses/create
+Accept: application/json
+Content-Type: application/json
+Authorization: Bearer {{token}}
+
+### addresses store
+POST {{host}}/{{locale}}/api/v1/profile/addresses
+Accept: application/json
+Content-Type: application/json
+Authorization: Bearer {{token}}
+
+{
+    "kind": "2",
+    "name": "Home",
+    "building": "15",
+    "floor": "58",
+    "apartment": "581",
+    "latitude": 40.8489891,
+    "longitude": 29.1192525,
+    "notes": "The elevator is not working lol"
+
+}
+
+### delete user
+DELETE {{host}}/{{locale}}/api/v1/profile/addresses/4
+Accept: application/json
+Content-Type: application/json
+Authorization: Bearer {{token}}
