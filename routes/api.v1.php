@@ -13,6 +13,8 @@ Route::middleware('throttle:15')
          Route::get('products/{id}', 'ProductController@show');
          Route::get('products', 'ProductController@searchProducts');
 
+         Route::post('baskets/addRemoveProduct', 'BasketController@addRemoveProduct');
+
          /* auth related */
          Route::post('login', 'Auth\AuthController@login');
          Route::post('register', 'Auth\AuthController@register');

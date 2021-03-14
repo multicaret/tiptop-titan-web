@@ -30,6 +30,24 @@ Accept: application/json
 Content-Type: application/json
 Authorization: Bearer {{token}}
 
+// create baskets
+// add proudct baskets
+
+
+### add remove Product
+POST {{host}}/{{locale}}/api/v1/baskets/addRemoveProduct
+Accept: application/json
+Content-Type: application/json
+Authorization: Bearer {{token}}
+
+{
+    "product_id": "1",
+    "chain_id": "1",
+    "branch_id": "3",
+    "add": "2"
+}
+
+
 ### log in
 POST {{host}}/{{locale}}/api/v1/login
 Accept: application/json
