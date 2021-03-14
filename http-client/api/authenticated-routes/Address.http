@@ -26,7 +26,6 @@ Authorization: Bearer {{token}}
     "latitude": 40.8489891,
     "longitude": 29.1192525,
     "notes": "The elevator is not working lol"
-
 }
 
 ### delete user
