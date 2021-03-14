@@ -97,6 +97,66 @@ namespace App\Models{
 
 namespace App\Models{
 /**
+ * App\Models\Basket
+ *
+ * @property int $id
+ * @property int $user_id
+ * @property int $chain_id
+ * @property int $branch_id
+ * @property-read int|null $products_count
+ * @property int|null $crm_id
+ * @property int|null $crm_user_id
+ * @property int $status 0:In Progress, 1: Completed
+ * @property \Illuminate\Support\Carbon|null $created_at
+ * @property \Illuminate\Support\Carbon|null $updated_at
+ * @property-read \App\Models\Branch $branch
+ * @property-read \App\Models\Chain $chain
+ * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\Product[] $products
+ * @property-read \App\Models\User $user
+ * @method static \Illuminate\Database\Eloquent\Builder|Basket newModelQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder|Basket newQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder|Basket query()
+ * @method static \Illuminate\Database\Eloquent\Builder|Basket whereBranchId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Basket whereChainId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Basket whereCreatedAt($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Basket whereCrmId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Basket whereCrmUserId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Basket whereId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Basket whereProductsCount($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Basket whereStatus($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Basket whereUpdatedAt($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Basket whereUserId($value)
+ */
+	class Basket extends \Eloquent {}
+}
+
+namespace App\Models{
+/**
+ * App\Models\BasketProduct
+ *
+ * @property int $id
+ * @property int $basket_id
+ * @property int $product_id
+ * @property int $quantity
+ * @property array $product_object
+ * @property \Illuminate\Support\Carbon|null $created_at
+ * @property \Illuminate\Support\Carbon|null $updated_at
+ * @method static \Illuminate\Database\Eloquent\Builder|BasketProduct newModelQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder|BasketProduct newQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder|BasketProduct query()
+ * @method static \Illuminate\Database\Eloquent\Builder|BasketProduct whereBasketId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|BasketProduct whereCreatedAt($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|BasketProduct whereId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|BasketProduct whereProductId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|BasketProduct whereProductObject($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|BasketProduct whereQuantity($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|BasketProduct whereUpdatedAt($value)
+ */
+	class BasketProduct extends \Eloquent {}
+}
+
+namespace App\Models{
+/**
  * App\Models\Branch
  *
  * @property int $id
@@ -647,6 +707,70 @@ namespace App\Models{
 
 namespace App\Models{
 /**
+ * App\Models\Coupon
+ *
+ * @property int $id
+ * @property int $creator_id
+ * @property int $editor_id
+ * @property int $currency_id
+ * @property int|null $discount_by_percentage true: percentage, false: fixed amount
+ * @property float|null $discount_amount
+ * @property int|null $total_usage_count
+ * @property int $usage_count_by_same_user
+ * @property string|null $expired_at
+ * @property string $code
+ * @property int $status 0:incomplete, 1:draft, 2:published, 3:Inactive, 4..n:CUSTOM
+ * @property \Illuminate\Support\Carbon|null $created_at
+ * @property \Illuminate\Support\Carbon|null $updated_at
+ * @property string|null $deleted_at
+ * @method static \Illuminate\Database\Eloquent\Builder|Coupon newModelQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder|Coupon newQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder|Coupon query()
+ * @method static \Illuminate\Database\Eloquent\Builder|Coupon whereCode($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Coupon whereCreatedAt($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Coupon whereCreatorId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Coupon whereCurrencyId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Coupon whereDeletedAt($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Coupon whereDiscountAmount($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Coupon whereDiscountByPercentage($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Coupon whereEditorId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Coupon whereExpiredAt($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Coupon whereId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Coupon whereStatus($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Coupon whereTotalUsageCount($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Coupon whereUpdatedAt($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Coupon whereUsageCountBySameUser($value)
+ */
+	class Coupon extends \Eloquent {}
+}
+
+namespace App\Models{
+/**
+ * App\Models\CouponInstance
+ *
+ * @property int $id
+ * @property int $coupon_id
+ * @property int $redeemer_id
+ * @property int $redeemed_at
+ * @property \Illuminate\Support\Carbon|null $created_at
+ * @property \Illuminate\Support\Carbon|null $updated_at
+ * @property-read \App\Models\Coupon $coupon
+ * @property-read \App\Models\User $redeemer
+ * @method static \Illuminate\Database\Eloquent\Builder|CouponInstance newModelQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder|CouponInstance newQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder|CouponInstance query()
+ * @method static \Illuminate\Database\Eloquent\Builder|CouponInstance whereCouponId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|CouponInstance whereCreatedAt($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|CouponInstance whereId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|CouponInstance whereRedeemedAt($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|CouponInstance whereRedeemerId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|CouponInstance whereUpdatedAt($value)
+ */
+	class CouponInstance extends \Eloquent {}
+}
+
+namespace App\Models{
+/**
  * App\Models\Currency
  *
  * @property int $id
@@ -1048,6 +1172,175 @@ namespace App\Models{
 
 namespace App\Models{
 /**
+ * App\Models\Order
+ *
+ * @property int $id
+ * @property int $reference_code
+ * @property int $user_id
+ * @property int $chain_id
+ * @property int $branch_id
+ * @property int $basket_id
+ * @property int $payment_method_id
+ * @property int $address_id
+ * @property int|null $coupon_id
+ * @property int|null $previous_order_id
+ * @property float $total
+ * @property float $coupon_discount_amount
+ * @property float $delivery_fee
+ * @property float $grand_total
+ * @property float $private_payment_method_commission
+ * @property float $private_total
+ * @property float $private_delivery_fee
+ * @property float $private_grand_total
+ * @property string $avg_rating
+ * @property int $rating_count
+ * @property int|null $completed_at
+ * @property string|null $notes
+ * @property int $status 
+ *             0: Cancelled,
+ *             1: Draft,
+ *             6: Waiting Courier,
+ *             10: Preparing,
+ *             16: On the way,
+ *             18: At the address,
+ *             20: Delivered,
+ * @property \Illuminate\Support\Carbon|null $created_at
+ * @property \Illuminate\Support\Carbon|null $updated_at
+ * @property \Illuminate\Support\Carbon|null $deleted_at
+ * @property-read \App\Models\Basket $basket
+ * @property-read \App\Models\Branch $branch
+ * @property-read \App\Models\Chain $chain
+ * @property-read \App\Models\Coupon|null $coupon
+ * @property-read \App\Models\PaymentMethod $paymentMethod
+ * @property-read Order|null $previousOrder
+ * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\Product[] $products
+ * @property-read int|null $products_count
+ * @property-read \App\Models\User $user
+ * @method static \Illuminate\Database\Eloquent\Builder|Order newModelQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder|Order newQuery()
+ * @method static \Illuminate\Database\Query\Builder|Order onlyTrashed()
+ * @method static \Illuminate\Database\Eloquent\Builder|Order query()
+ * @method static \Illuminate\Database\Eloquent\Builder|Order whereAddressId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Order whereAvgRating($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Order whereBasketId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Order whereBranchId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Order whereChainId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Order whereCompletedAt($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Order whereCouponDiscountAmount($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Order whereCouponId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Order whereCreatedAt($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Order whereDeletedAt($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Order whereDeliveryFee($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Order whereGrandTotal($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Order whereId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Order whereNotes($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Order wherePaymentMethodId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Order wherePreviousOrderId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Order wherePrivateDeliveryFee($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Order wherePrivateGrandTotal($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Order wherePrivatePaymentMethodCommission($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Order wherePrivateTotal($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Order whereRatingCount($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Order whereReferenceCode($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Order whereStatus($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Order whereTotal($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Order whereUpdatedAt($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Order whereUserId($value)
+ * @method static \Illuminate\Database\Query\Builder|Order withTrashed()
+ * @method static \Illuminate\Database\Query\Builder|Order withoutTrashed()
+ */
+	class Order extends \Eloquent {}
+}
+
+namespace App\Models{
+/**
+ * App\Models\OrderProduct
+ *
+ * @method static \Illuminate\Database\Eloquent\Builder|OrderProduct newModelQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder|OrderProduct newQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder|OrderProduct query()
+ */
+	class OrderProduct extends \Eloquent {}
+}
+
+namespace App\Models{
+/**
+ * App\Models\PaymentMethod
+ *
+ * @property int $id
+ * @property int $creator_id
+ * @property int $editor_id
+ * @property int $status 0:incomplete, 1:draft, 2:published, 3:Inactive, 4..n:CUSTOM
+ * @property \Illuminate\Support\Carbon|null $created_at
+ * @property \Illuminate\Support\Carbon|null $updated_at
+ * @property \Illuminate\Support\Carbon|null $deleted_at
+ * @property-read \App\Models\User $creator
+ * @property-read \App\Models\User $editor
+ * @property-read mixed $is_published
+ * @property-read bool $logo
+ * @property-read mixed $status_name
+ * @property-read \Spatie\MediaLibrary\MediaCollections\Models\Collections\MediaCollection|\Spatie\MediaLibrary\MediaCollections\Models\Media[] $media
+ * @property-read int|null $media_count
+ * @property-read \App\Models\PaymentMethodTranslation|null $translation
+ * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\PaymentMethodTranslation[] $translations
+ * @property-read int|null $translations_count
+ * @method static \Illuminate\Database\Eloquent\Builder|PaymentMethod draft()
+ * @method static \Illuminate\Database\Eloquent\Builder|PaymentMethod inactive()
+ * @method static \Illuminate\Database\Eloquent\Builder|PaymentMethod incomplete()
+ * @method static \Illuminate\Database\Eloquent\Builder|PaymentMethod listsTranslations(string $translationField)
+ * @method static \Illuminate\Database\Eloquent\Builder|PaymentMethod newModelQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder|PaymentMethod newQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder|PaymentMethod notPublished()
+ * @method static \Illuminate\Database\Eloquent\Builder|PaymentMethod notTranslatedIn(?string $locale = null)
+ * @method static \Illuminate\Database\Query\Builder|PaymentMethod onlyTrashed()
+ * @method static \Illuminate\Database\Eloquent\Builder|PaymentMethod orWhereTranslation(string $translationField, $value, ?string $locale = null)
+ * @method static \Illuminate\Database\Eloquent\Builder|PaymentMethod orWhereTranslationLike(string $translationField, $value, ?string $locale = null)
+ * @method static \Illuminate\Database\Eloquent\Builder|PaymentMethod orderByTranslation(string $translationField, string $sortMethod = 'asc')
+ * @method static \Illuminate\Database\Eloquent\Builder|PaymentMethod published()
+ * @method static \Illuminate\Database\Eloquent\Builder|PaymentMethod query()
+ * @method static \Illuminate\Database\Eloquent\Builder|PaymentMethod translated()
+ * @method static \Illuminate\Database\Eloquent\Builder|PaymentMethod translatedIn(?string $locale = null)
+ * @method static \Illuminate\Database\Eloquent\Builder|PaymentMethod whereCreatedAt($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|PaymentMethod whereCreatorId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|PaymentMethod whereDeletedAt($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|PaymentMethod whereEditorId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|PaymentMethod whereId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|PaymentMethod whereStatus($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|PaymentMethod whereTranslation(string $translationField, $value, ?string $locale = null, string $method = 'whereHas', string $operator = '=')
+ * @method static \Illuminate\Database\Eloquent\Builder|PaymentMethod whereTranslationLike(string $translationField, $value, ?string $locale = null)
+ * @method static \Illuminate\Database\Eloquent\Builder|PaymentMethod whereUpdatedAt($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|PaymentMethod withTranslation()
+ * @method static \Illuminate\Database\Query\Builder|PaymentMethod withTrashed()
+ * @method static \Illuminate\Database\Query\Builder|PaymentMethod withoutTrashed()
+ */
+	class PaymentMethod extends \Eloquent implements \Spatie\MediaLibrary\HasMedia {}
+}
+
+namespace App\Models{
+/**
+ * App\Models\PaymentMethodTranslation
+ *
+ * @property int $id
+ * @property int $payment_method_id
+ * @property string|null $title
+ * @property string|null $description
+ * @property mixed|null $instructions
+ * @property string $locale
+ * @method static \Illuminate\Database\Eloquent\Builder|PaymentMethodTranslation newModelQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder|PaymentMethodTranslation newQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder|PaymentMethodTranslation query()
+ * @method static \Illuminate\Database\Eloquent\Builder|PaymentMethodTranslation whereDescription($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|PaymentMethodTranslation whereId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|PaymentMethodTranslation whereInstructions($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|PaymentMethodTranslation whereLocale($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|PaymentMethodTranslation wherePaymentMethodId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|PaymentMethodTranslation whereTitle($value)
+ */
+	class PaymentMethodTranslation extends \Eloquent {}
+}
+
+namespace App\Models{
+/**
  * App\Models\Post
  *
  * @property int $id
@@ -1270,8 +1563,11 @@ namespace App\Models{
  * @property int $on_mobile_grid_tile_weight
  * @property \Illuminate\Support\Carbon|null $created_at
  * @property \Illuminate\Support\Carbon|null $updated_at
+ * @property \Illuminate\Support\Carbon|null $deleted_at
  * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\Barcode[] $barcodes
  * @property-read int|null $barcodes_count
+ * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\Basket[] $baskets
+ * @property-read int|null $baskets_count
  * @property-read \App\Models\Branch $branch
  * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\Taxonomy[] $categories
  * @property-read int|null $categories_count
@@ -1304,6 +1600,7 @@ namespace App\Models{
  * @method static \Illuminate\Database\Eloquent\Builder|Product newQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|Product notPublished()
  * @method static \Illuminate\Database\Eloquent\Builder|Product notTranslatedIn(?string $locale = null)
+ * @method static \Illuminate\Database\Query\Builder|Product onlyTrashed()
  * @method static \Illuminate\Database\Eloquent\Builder|Product orWhereTranslation(string $translationField, $value, ?string $locale = null)
  * @method static \Illuminate\Database\Eloquent\Builder|Product orWhereTranslationLike(string $translationField, $value, ?string $locale = null)
  * @method static \Illuminate\Database\Eloquent\Builder|Product orderByTranslation(string $translationField, string $sortMethod = 'asc')
@@ -1319,6 +1616,7 @@ namespace App\Models{
  * @method static \Illuminate\Database\Eloquent\Builder|Product whereCreatorId($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Product whereCustomBannerBeganAt($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Product whereCustomBannerEndedAt($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Product whereDeletedAt($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Product whereDepth($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Product whereEditorId($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Product whereHeight($value)
@@ -1346,6 +1644,8 @@ namespace App\Models{
  * @method static \Illuminate\Database\Eloquent\Builder|Product whereWeight($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Product whereWidth($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Product withTranslation()
+ * @method static \Illuminate\Database\Query\Builder|Product withTrashed()
+ * @method static \Illuminate\Database\Query\Builder|Product withoutTrashed()
  */
 	class Product extends \Eloquent implements \Spatie\MediaLibrary\HasMedia {}
 }
@@ -1383,6 +1683,7 @@ namespace App\Models{
  * @property string|null $excerpt
  * @property string|null $notes
  * @property string|null $custom_banner_text
+ * @property string|null $unit_text
  * @method static \Illuminate\Database\Eloquent\Builder|ProductTranslation newModelQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|ProductTranslation newQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|ProductTranslation query()
@@ -1394,6 +1695,7 @@ namespace App\Models{
  * @method static \Illuminate\Database\Eloquent\Builder|ProductTranslation whereNotes($value)
  * @method static \Illuminate\Database\Eloquent\Builder|ProductTranslation whereProductId($value)
  * @method static \Illuminate\Database\Eloquent\Builder|ProductTranslation whereTitle($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|ProductTranslation whereUnitText($value)
  */
 	class ProductTranslation extends \Eloquent {}
 }
@@ -1594,6 +1896,8 @@ namespace App\Models{
  * @property-read Taxonomy|null $parent
  * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\Post[] $posts
  * @property-read int|null $posts_count
+ * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\Product[] $products
+ * @property-read int|null $products_count
  * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\Post[] $tagPosts
  * @property-read int|null $tag_posts_count
  * @property-read \App\Models\TaxonomyTranslation|null $translation
@@ -1787,6 +2091,7 @@ namespace App\Models{
  * @property int|null $country_id
  * @property int|null $region_id
  * @property int|null $city_id
+ * @property int|null $selected_address_id
  * @property string|null $latitude
  * @property string|null $longitude
  * @property string $avg_rating
@@ -1881,6 +2186,7 @@ namespace App\Models{
  * @method static \Illuminate\Database\Eloquent\Builder|User whereRatingCount($value)
  * @method static \Illuminate\Database\Eloquent\Builder|User whereRegionId($value)
  * @method static \Illuminate\Database\Eloquent\Builder|User whereRememberToken($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|User whereSelectedAddressId($value)
  * @method static \Illuminate\Database\Eloquent\Builder|User whereSettings($value)
  * @method static \Illuminate\Database\Eloquent\Builder|User whereSocialNetworks($value)
  * @method static \Illuminate\Database\Eloquent\Builder|User whereStatus($value)
@@ -1904,7 +2210,7 @@ namespace App\Models{
  * @property int $day
  * @property string|null $opens_at
  * @property string|null $closes_at
- * @property int $is_day_off
+ * @property bool $is_day_off
  * @property \Illuminate\Support\Carbon|null $created_at
  * @property \Illuminate\Support\Carbon|null $updated_at
  * @property-read \Illuminate\Database\Eloquent\Model|\Eloquent $workable
