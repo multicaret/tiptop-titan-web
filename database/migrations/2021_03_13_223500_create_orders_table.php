@@ -20,6 +20,7 @@ class CreateOrdersTable extends Migration
             $table->unsignedBigInteger('chain_id')->index();
             $table->unsignedBigInteger('branch_id')->index();
             $table->unsignedBigInteger('payment_method_id')->index();
+            $table->unsignedBigInteger('address_id')->index();
             $table->unsignedBigInteger('coupon_id')->nullable();
             $table->unsignedBigInteger('previous_order_id')->nullable();
             $table->unsignedFloat('total')->default(0);
