@@ -9,6 +9,9 @@ use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 class Basket extends Model
 {
 
+    const STATUS_IN_PROGRESS = 0;
+    const STATUS_COMPLETED = 1;
+
     public function user(): BelongsTo
     {
         return $this->belongsTo(User::class);
@@ -27,10 +30,12 @@ class Basket extends Model
     public function products(): BelongsToMany
     {
         return $this->belongsToMany(Product::class, 'basket_product', 'basket_id', 'product_id')
+                    ->withPivot('quantity')
+                    ->withPivot('product_object')
                     ->withTimestamps();
     }
 
-    public function retrieveInstance($chainId, $branchId, $userId = null): Basket
+    public function retrieve($chainId, $branchId, $userId = null, $status = self::STATUS_IN_PROGRESS): Basket
     {
         if (is_null($userId)) {
             $userId = auth()->id();
@@ -38,15 +43,13 @@ class Basket extends Model
 
         if (is_null($basket = Basket::where('user_id', $userId)
                                     ->where('branch_id', $branchId)
+                                    ->where('status', $status)
                                     ->first())) {
             $basket = new Basket();
-            $basket->user_id = $userId;
-            $basket->branch_id = $branchId;
-            $basket->branch_id = $branchId;
             $basket->chain_id = $chainId;
+            $basket->branch_id = $branchId;
+            $basket->user_id = $userId;
             $basket->save();
-        }else{
-            // Todo: basket products handling goes here
         }
 
         return $basket;
