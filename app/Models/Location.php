@@ -87,32 +87,24 @@ class Location extends Model
     public static function getKinds(): array
     {
         return [
-            self::KIND_HOME => 'home',
-            self::KIND_WORK => 'work',
-            self::KIND_OTHER => 'other',
+            self::KIND_HOME => [
+                'title' => trans('api.address_kind_Other'),
+                'icon' => 'other.png',
+            ],
+            self::KIND_WORK => [
+                'title' => trans('api.address_kind_Work'),
+                'icon' => 'work.png',
+            ],
+            self::KIND_OTHER => [
+                'title' => trans('api.address_kind_Home'),
+                'icon' => 'home.png',
+            ],
         ];
     }
 
     public function getKind()
     {
-        switch ($this->type) {
-            case self::KIND_OTHER:
-                return [
-                    'title' => trans('api.address_kind_Other'),
-                    'icon' => 'other.png',
-                ];
-            case self::KIND_WORK:
-                return [
-                    'title' => trans('api.address_kind_Work'),
-                    'icon' => 'work.png',
-                ];
-            case self::KIND_HOME:
-            default:
-                return [
-                    'title' => trans('api.address_kind_Home'),
-                    'icon' => 'home.png',
-                ];
-        }
+        return self::getKinds()[$this->type];
     }
 
     /**
