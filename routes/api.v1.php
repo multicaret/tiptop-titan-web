@@ -50,6 +50,8 @@ Route::middleware('auth:api')
          Route::post('password/update', 'Auth\PasswordController@update');
          Route::get('orders/checkout', 'OrderController@checkoutCreate');
          Route::get('orders', 'OrderController@index');
+         Route::get('checkout', 'OrderController@checkoutCreate');
+         Route::post('checkout', 'OrderController@checkoutStore');
 
 //         Route::get('users', 'UserController@index');
 //         Route::get('users/{id}', 'UserController@show');
