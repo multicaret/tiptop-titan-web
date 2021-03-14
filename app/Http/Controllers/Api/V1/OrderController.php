@@ -64,6 +64,7 @@ class OrderController extends BaseApiController
         $request->validate($validationData);
 
         $newOrder = new Order();
+        $newOrder->user_id = $request->input('user_id');
         $newOrder->chain_id = $request->input('chain_id');
         $newOrder->branch_id = $request->input('branch_id');
         $newOrder->basket_id = $request->input('basket_id');

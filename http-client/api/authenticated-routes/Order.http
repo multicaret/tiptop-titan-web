@@ -12,30 +12,31 @@ Content-Type: application/json
 Authorization: Bearer {{token}}
 
 #### Store checkout data. Required fields [chain_id, branch_id, basket_id, payment_method_id, address_id].
-POST /{{locale}}/api/v1/orders
+POST {{host}}/{{locale}}/api/v1/orders/checkout
 Accept: application/json
 Content-Type: application/json
 Authorization: Bearer {{token}}
 
 
 {
-    "chain_id": "0",
-    "branch_id" : "0",
-    "basket_id" :  "0",
-    "payment_method_id" : "0",
-    "address_id" :  "0",
-    "previous_order_id":  null,
-    "total": null,
-    "coupon_discount_amount":  null,
-    "delivery_fee": null,
-    "grand_total":  null,
-    "private_payment_method_commission": null,
-    "private_total":  null,
-    "private_delivery_fee": null,
-    "private_grand_total":  null,
-    "avg_rating": null,
-    "rating_count":  null,
+    "chain_id": "1",
+    "user_id": "1",
+    "branch_id" : "1",
+    "basket_id" :  "1",
+    "payment_method_id" : "1",
+    "address_id" :  "1",
+    "previous_order_id":  1,
+    "total": 100,
+    "coupon_discount_amount":  100,
+    "delivery_fee": 100,
+    "grand_total":  100,
+    "private_payment_method_commission": 100,
+    "private_total":  100,
+    "private_delivery_fee": 100,
+    "private_grand_total":  100,
+    "avg_rating": 4.5,
+    "rating_count":  100,
     "completed_at": null,
     "notes":  null,
-    "status": null,
+    "status": 1
 }
