@@ -1,0 +1,7 @@
+################## Pages ##################
+
+
+### Get About page
+GET {{host}}/{{locale}}/api/v1/about-us
+Accept: application/json
+Content-Type: application/json
