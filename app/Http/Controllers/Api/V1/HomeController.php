@@ -4,13 +4,11 @@ namespace App\Http\Controllers\Api\V1;
 
 
 use App\Http\Controllers\Api\BaseApiController;
-use App\Http\Resources\BranchResource;
 use App\Http\Resources\GroceryCategoryParentIndexResource;
 use App\Http\Resources\LocationResource;
 use App\Models\Branch;
 use App\Models\Taxonomy;
 use App\Models\User;
-use App\Models\WorkingHour;
 use Illuminate\Http\Request;
 
 class HomeController extends BaseApiController
@@ -81,21 +79,13 @@ class HomeController extends BaseApiController
                 /*$selectedAddress = Location::find($selectedAddress);
                 $selectedAddress->latitude;
                 $selectedAddress->longitude;*/
-                $branchesOrderedByDistance = Branch::published()
-                                                   ->selectRaw('branches.id, DISTANCE_BETWEEN(latitude,longitude,?,?) as distance',
-                                                       [$request->latitude, $request->longitude])
-                                                   ->orderBy('distance')
-                                                   ->get();
-
-                foreach ($branchesOrderedByDistance as $branchOrderedByDistance) {
-                    $branch = Branch::find($branchOrderedByDistance->id);
-                    $branchWorkingHours = WorkingHour::retrieve($branch);
-                    if ($branchWorkingHours['isOpen']) {
-                        $response['distance'] = $branchOrderedByDistance->distance;
-                        $response['hasAvailableBranchesNow'] = true;
-                        $response['branch'] = new BranchResource($branch);
-                        break;
-                    }
+                [$distance, $branch] = Branch::getClosestAvailableBranch($request->latitude, $request->longitude);
+                if ( ! is_null($distance)) {
+                    $response['distance'] = $distance;
+                }
+                if ( ! is_null($distance)) {
+                    $response['branch'] = $branch;
+                    $response['hasAvailableBranchesNow'] = true;
                 }
             }
             // Always in grocery the EA is 20-30, for dynamic values use "->distance" attribute from above.
