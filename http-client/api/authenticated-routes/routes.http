@@ -6,11 +6,23 @@ Accept: application/json
 Content-Type: application/json
 Authorization: Bearer {{token}}
 
+{
+    "platform": "iOS",
+    "build_number": 251
+}
+
 ### home
-GET {{host}}/{{locale}}/api/v1/home?latitude=36.20339842006327&longitude=44.00734072932359&channel=grocery&selected_address=1
+GET {{host}}/{{locale}}/api/v1/home
 Accept: application/json
 Content-Type: application/json
 Authorization: Bearer {{token}}
+
+{
+    "latitude": 36.20339842006327,
+    "longitude": 44.00734072932359,
+    "channel": "grocery",
+    "selected_address_id": 1
+}
 
 ### products
 GET {{host}}/{{locale}}/api/v1/categories/2/products
@@ -18,17 +30,9 @@ Accept: application/json
 Content-Type: application/json
 Authorization: Bearer {{token}}
 
-### log in
-POST {{host}}/{{locale}}/api/v1/login
-Accept: application/json
-Content-Type: application/json
-Authorization: Bearer {{token}}
 
-{
-    "email": "demo@trytiptop.app",
-    "password": "secret"
-}
 
+// Todo: This not should be /register, it should be /complete-profile, First change it as code then here.
 ### register
 POST {{host}}/{{locale}}/api/v1/register
 Accept: application/json
@@ -36,14 +40,13 @@ Content-Type: application/json
 Authorization: Bearer {{token}}
 
 {
-    "name": "new user",
-    "email": "new-user@trytiptop.com",
-    "password": "secret1234",
+    "name": "New User",
+    "email": "new-user@trytiptop.app",
     "phone_number": "5555555555",
     "phone_country_code": "964",
-    "dob": "1994-06-16",
-    "gender": "Female",
-    "locale": "en"
+    "locale": "en",
+    "region_id": 2,
+    "city_id": 1
 }
 
 ### faqs
@@ -83,19 +86,9 @@ Authorization: Bearer {{token}}
 {
     "name": "new user2",
     "email": "new-user2@trytiptop.com",
-    "password": "secret1234",
     "phone_number": "5555555556",
     "phone_country_code": "964",
     "dob": "1994-06-16",
     "gender": "Male",
     "locale": "en"
-}
-
-### Reset Password (NOT WORKING)
-POST {{host}}/{{locale}}/api/v1/password/reset
-Accept: application/json
-Content-Type: application/json
-Authorization: Bearer {{token}}
-{
-  "email": "info@multicaret.com"
 }

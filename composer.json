@@ -29,6 +29,7 @@
         "socialiteproviders/google": "^4.1",
         "spatie/laravel-medialibrary": "^9.4",
         "spatie/laravel-permission": "^3.18",
+        "verifykit/verifykit-sdk-php": "^1.2",
         "yajra/laravel-datatables-oracle": "^9.15"
     },
     "require-dev": {

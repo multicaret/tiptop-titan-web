@@ -77,7 +77,7 @@ class HomeController extends BaseApiController
             $groceryParentCategories = Taxonomy::published()->groceryCategories()->parents()->get();
             $response['categories'] = GroceryCategoryParentIndexResource::collection($groceryParentCategories);
 
-            if ( ! is_null($user) && ! is_null($selectedAddress = $request->input('selected_address'))) {
+            if ( ! is_null($user) && ! is_null($selectedAddress = $request->input('selected_address_id'))) {
                 /*$selectedAddress = Location::find($selectedAddress);
                 $selectedAddress->latitude;
                 $selectedAddress->longitude;*/
