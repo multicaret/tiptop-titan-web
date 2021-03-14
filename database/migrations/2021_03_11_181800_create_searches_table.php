@@ -17,8 +17,8 @@ class CreateSearchesTable extends Migration
             $table->id();
             $table->string('term');
             $table->unsignedBigInteger('count')->default(1);
-            $table->unsignedBigInteger('chain_id');
-            $table->unsignedBigInteger('branch_id');
+            $table->unsignedBigInteger('chain_id')->index();
+            $table->unsignedBigInteger('branch_id')->index();
             $table->timestamps();
 
             $table->foreign('chain_id')->references('id')->on('chains')->onDelete('cascade');

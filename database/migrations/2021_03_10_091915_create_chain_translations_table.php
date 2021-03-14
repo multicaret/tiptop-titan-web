@@ -15,7 +15,7 @@ class CreateChainTranslationsTable extends Migration
     {
         Schema::create('chain_translations', function (Blueprint $table) {
             $table->id();
-            $table->unsignedBigInteger('chain_id');
+            $table->unsignedBigInteger('chain_id')->index();
             $table->string('title');
             $table->string('description')->nullable();
             $table->string('locale')->index();

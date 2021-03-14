@@ -1,20 +1,20 @@
 ################## USERS ##################
 # Get all users
-GET {{host}}/{{locale}}/spa/users
+GET {{host}}/{{locale}}/api/v1/users
 Accept: application/json
 Content-Type: application/json
 Authorization: Bearer {{token}}
 ###
 
 ### create user
-GET {{host}}/{{locale}}/spa/users/create
+GET {{host}}/{{locale}}/api/v1/users/create
 Accept: application/json
 Content-Type: application/json
 Authorization: Bearer {{token}}
 ###
 
 ### Store
-POST {{host}}/{{locale}}/spa/users
+POST {{host}}/{{locale}}/api/v1/users
 Accept: application/json
 Content-Type: application/json
 Authorization: Bearer {{token}}
@@ -47,7 +47,7 @@ Authorization: Bearer {{token}}
 ###
 
 ### Edit user
-GET {{host}}/{{locale}}/spa/users/7/edit
+GET {{host}}/{{locale}}/api/v1/users/7/edit
 Accept: application/json
 Content-Type: application/json
 Authorization: Bearer {{token}}
@@ -55,7 +55,7 @@ Authorization: Bearer {{token}}
 
 ###THESE DON'T WORK YET
 ### Update user
-PATCH {{host}}/{{locale}}/spa/users/7
+PATCH {{host}}/{{locale}}/api/v1/users/7
 Accept: application/json
 Content-Type: application/json
 Authorization: Bearer {{token}}
@@ -86,7 +86,7 @@ Authorization: Bearer {{token}}
 ###
 
 ### delete user
-DELETE {{host}}/{{locale}}/spa/users/71
+DELETE {{host}}/{{locale}}/api/v1/users/71
 Accept: application/json
 Content-Type: application/json
 Authorization: Bearer {{token}}

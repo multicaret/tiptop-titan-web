@@ -10,6 +10,8 @@ Route::middleware('throttle:15')
          Route::get('/home', 'HomeController@index');
 
          Route::get('categories/{groceryCategory}/products', 'CategoryController@products');
+         Route::get('products/{id}', 'productController@show');
+         Route::get('products', 'productController@searchProducts');
 
          /* auth related */
          Route::post('login', 'Auth\AuthController@login');
@@ -24,6 +26,9 @@ Route::middleware('throttle:15')
          /* generals */
          Route::get('faqs', 'PostController@faqIndex');
          Route::get('faqs/{id}', 'PostController@faqShow');
+         Route::get('blog', 'PostController@blogIndex');
+         Route::get('blog/{id}', 'PostController@blogShow');
+         Route::get('privacy', 'PostController@privacy');
 
          /* misc. */
          Route::post('logs/create', 'LogController@store');

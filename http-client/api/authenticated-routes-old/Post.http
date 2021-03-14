@@ -1,0 +1,94 @@
+################## POSTS ##################
+# Get all Posts
+GET {{host}}/{{locale}}/api/v1/posts?type=article
+Accept: application/json
+Content-Type: application/json
+Authorization: Bearer {{token}}
+###
+
+# Get all available types for Posts
+GET {{host}}/{{locale}}/api/v1/posts/types
+Accept: application/json
+Content-Type: application/json
+Authorization: Bearer {{token}}
+
+### create post ?type=category
+GET {{host}}/{{locale}}/api/v1/posts/create?type=page
+Accept: application/json
+Content-Type: application/json
+Authorization: Bearer {{token}}
+
+###
+
+### Store
+POST {{host}}/{{locale}}/api/v1/posts
+Accept: application/json
+Content-Type: application/json
+Authorization: Bearer {{token}}
+
+{
+  "translations": {
+    "en": {
+      "title": "Store Title",
+      "content": "Store Content",
+      "excerpt": "Store Excerpt",
+      "notes": "Store Notes"
+    },
+    "ar": {
+      "title": "سوسو",
+      "content": "بابا",
+      "excerpt": "غ",
+      "notes": "غ"
+    }
+  },
+  "type": "article",
+  "category_id": 1,
+  "icon": "f6d5 fas fa-dragon"
+}
+
+###
+
+### Edit post
+GET {{host}}/{{locale}}/api/v1/posts/7/edit?type=article
+Accept: application/json
+Content-Type: application/json
+Authorization: Bearer {{token}}
+
+###
+
+
+### Update post
+PATCH {{host}}/{{locale}}/api/v1/posts/10
+Accept: application/json
+Content-Type: application/json
+Authorization: Bearer {{token}}
+
+{
+  "translations": {
+    "en": {
+      "title": "Edit Title",
+      "content": "Edit Content",
+      "excerpt": "Edit Excerpt",
+      "notes": "Edit Notes"
+    },
+    "ar": {
+      "title": "كوكو",
+      "content": "ماما",
+      "excerpt": "ض",
+      "notes": "ض"
+    }
+  },
+  "type": "article",
+  "category_id": 1,
+  "icon": "f6d5 fas fa-dragon"
+}
+
+###
+
+### delete post
+DELETE {{host}}/{{locale}}/api/v1/posts/12
+Accept: application/json
+Content-Type: application/json
+Authorization: Bearer {{token}}
+
+###

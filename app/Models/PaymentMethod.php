@@ -4,17 +4,18 @@ namespace App\Models;
 
 use App\Traits\HasMediaTrait;
 use App\Traits\HasStatuses;
-use App\Traits\HasViewCount;
+use Astrotomic\Translatable\Translatable;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\SoftDeletes;
 use Spatie\Image\Manipulations;
-use Spatie\MediaLibrary\HasMedia;
 use Spatie\MediaLibrary\MediaCollections\Models\Media;
 
-class Manufacturer extends Model implements HasMedia
+class PaymentMethod extends Model
 {
-    use HasMediaTrait,
-        HasStatuses,
-        HasViewCount;
+    use Translatable,
+        SoftDeletes,
+        HasMediaTrait,
+        HasStatuses;
 
     const STATUS_INCOMPLETE = 0;
     const STATUS_DRAFT = 1;
@@ -25,24 +26,28 @@ class Manufacturer extends Model implements HasMedia
         'logo',
     ];
 
-    /**
-     * Get the logo attribute.
-     *
-     * @param  string  $logo
-     *
-     * @return bool
-     */
-    public function getLogoAttribute()
+    protected $casts = [
+        'instructions' => 'json'
+    ];
+
+    protected $with = [
+        'translations',
+    ];
+    protected $translatedAttributes = [
+        'title',
+        'description',
+        'instructions'
+    ];
+
+    public function creator()
     {
-        $logo = url(config('defaults.images.manufacturer_logo'));
-
-        if ( ! is_null($media = $this->getFirstMedia('logo'))) {
-            $logo = $media->getFullUrl('1K');
-        }
-
-        return $logo;
+        return $this->belongsTo(User::class, 'creator_id');
     }
 
+    public function editor()
+    {
+        return $this->belongsTo(User::class, 'editor_id');
+    }
 
     public function registerMediaCollections(): void
     {
@@ -61,4 +66,21 @@ class Manufacturer extends Model implements HasMedia
 
     }
 
+    /**
+     * Get the logo attribute.
+     *
+     * @param  string  $logo
+     *
+     * @return bool
+     */
+    public function getLogoAttribute()
+    {
+        $logo = url(config('defaults.images.payment_method_logo'));
+
+        if ( ! is_null($media = $this->getFirstMedia('logo'))) {
+            $logo = $media->getFullUrl('1K');
+        }
+
+        return $logo;
+    }
 }
