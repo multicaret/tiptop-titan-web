@@ -33,6 +33,7 @@ class CreateUsersTable extends Migration
             $table->unsignedBigInteger('country_id')->nullable();
             $table->unsignedBigInteger('region_id')->nullable();
             $table->unsignedBigInteger('city_id')->nullable();
+            $table->unsignedBigInteger('selected_address_id')->nullable();
             $table->decimal('latitude', 11, 8)->nullable();
             $table->decimal('longitude', 11, 8)->nullable();
             $table->decimal('avg_rating', 3)->default(0);

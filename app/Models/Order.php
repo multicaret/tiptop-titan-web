@@ -18,6 +18,15 @@ class Order extends Model
         'private_grand_total' => 'float',
     ];
 
+    protected static function boot()
+    {
+        parent::boot();
+
+        static::creating(function ($query) {
+            $query->reference_code = time();
+        });
+    }
+
     public function user(): \Illuminate\Database\Eloquent\Relations\BelongsTo
     {
         return $this->belongsTo(User::class);
@@ -51,7 +60,7 @@ class Order extends Model
 
     public function previousOrder(): \Illuminate\Database\Eloquent\Relations\BelongsTo
     {
-        return $this->belongsTo(self::class,'previous_order_id');
+        return $this->belongsTo(self::class, 'previous_order_id');
     }
 
     public function products(): \Illuminate\Database\Eloquent\Relations\BelongsToMany
