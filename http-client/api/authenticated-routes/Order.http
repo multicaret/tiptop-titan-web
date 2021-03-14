@@ -1,8 +1,12 @@
 ################## Order/Checkout ##################
+### Get checkout info
+GET {{host}}/{{locale}}/api/v1/orders/checkout
+Accept: application/json
+Content-Type: application/json
+Authorization: Bearer {{token}}
 
-
-### Get About page
-GET {{host}}/{{locale}}/api/v1/checkout
+### Get previous orders
+GET {{host}}/{{locale}}/api/v1/orders
 Accept: application/json
 Content-Type: application/json
 Authorization: Bearer {{token}}

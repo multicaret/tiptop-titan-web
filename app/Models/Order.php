@@ -27,7 +27,7 @@ class Order extends Model
         'private_total' => 'float',
         'private_delivery_fee' => 'float',
         'private_grand_total' => 'float',
-        'completed_at' => 'timestamp',
+        'completed_at' => 'datetime',
     ];
 
     protected static function boot()
@@ -63,6 +63,11 @@ class Order extends Model
     public function paymentMethod(): \Illuminate\Database\Eloquent\Relations\BelongsTo
     {
         return $this->belongsTo(PaymentMethod::class);
+    }
+
+    public function address(): \Illuminate\Database\Eloquent\Relations\BelongsTo
+    {
+        return $this->belongsTo(Location::class);
     }
 
     public function coupon(): \Illuminate\Database\Eloquent\Relations\BelongsTo

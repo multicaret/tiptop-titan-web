@@ -12,6 +12,7 @@ use Illuminate\Auth\Passwords\CanResetPassword;
 use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Relations\BelongsTo as BelongsTo;
+use Illuminate\Database\Eloquent\Relations\HasMany as HasMany;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Support\Facades\Mail;
@@ -294,6 +295,10 @@ class User extends Authenticatable implements HasMedia, MustVerifyEmail
         return $this->hasRole(self::ROLE_ANALYST);
     }
 
+    public function order(): HasMany
+    {
+        return $this->hasMany(Order::class, 'user_id');
+    }
 
     public function language(): BelongsTo
     {
