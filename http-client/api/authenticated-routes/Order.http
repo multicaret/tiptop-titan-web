@@ -1,0 +1,8 @@
+################## Order/Checkout ##################
+
+
+### Get About page
+GET {{host}}/{{locale}}/api/v1/checkout
+Accept: application/json
+Content-Type: application/json
+Authorization: Bearer {{token}}
