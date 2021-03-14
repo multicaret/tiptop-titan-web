@@ -269,7 +269,7 @@ class Taxonomy extends Node implements HasMedia, ShouldHaveTypes, TranslatableCo
     {
         $cover = url(config('defaults.images.taxonomy_cover'));
         if ($this->type == self::TYPE_GROCERY_CATEGORY) {
-            $cover = url(config('defaults.images.grocery_category_cover'));
+            $cover = url(config('defaults.images.grocery_category_cover')).'?v=1';
         }
         if ($this->type == self::TYPE_FOOD_CATEGORY) {
             $cover = url(config('defaults.images.food_category_cover'));
