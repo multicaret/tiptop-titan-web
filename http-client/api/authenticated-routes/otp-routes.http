@@ -24,7 +24,7 @@ Content-Type: application/json
 
 {
     "country_code": "TR",
-    "phone_number": "+905394420000"
+    "phone_number": "+905395534325"
 }
 
 #### SMS Validation Code
@@ -34,7 +34,7 @@ Content-Type: application/json
 
 {
     "country_code": "TR",
-    "phone_number": "+905394420000",
-    "code": "398036",
-    "reference": "3e02b1a1906ee143aed99c5b94b349fa74465d88"
+    "phone_number": "+905395534325",
+    "code": "480468",
+    "reference": "b830bdc2288265ff945ec43592742428f043dd13"
 }
