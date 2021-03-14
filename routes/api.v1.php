@@ -47,6 +47,7 @@ Route::middleware('auth:api')
          Route::resource('profile/addresses', 'AddressController')->except(['edit', 'update']);
          Route::post('profile', 'Auth\AuthController@profile');
          Route::post('password/update', 'Auth\PasswordController@update');
+         Route::get('checkout', 'OrderController@checkoutCreate');
 
 //         Route::get('users', 'UserController@index');
 //         Route::get('users/{id}', 'UserController@show');
