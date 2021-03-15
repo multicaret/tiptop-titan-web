@@ -16,6 +16,12 @@ class ProductResource extends JsonResource
         return [
             'id' => $this->id,
             'uuid' => $this->uuid,
+            'title' => $this->title,
+            'description' => $this->description,
+            'excerpt' => $this->excerpt,
+            'notes' => $this->notes,
+            'customBannerText' => $this->custom_banner_text,
+            'unitText' => $this->unit_text,
             'quantity' => $this->quantity,
             'sku' => $this->sku,
             'upc' => $this->upc,
