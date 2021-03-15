@@ -35,7 +35,7 @@ class Basket extends Model
                     ->withTimestamps();
     }
 
-    public function retrieve($chainId, $branchId, $userId = null, $status = self::STATUS_IN_PROGRESS): Basket
+    public static function retrieve($chainId, $branchId, $userId = null, $status = self::STATUS_IN_PROGRESS): Basket
     {
         if (is_null($userId)) {
             $userId = auth()->id();
@@ -49,6 +49,7 @@ class Basket extends Model
             $basket->chain_id = $chainId;
             $basket->branch_id = $branchId;
             $basket->user_id = $userId;
+            $basket->status = $status;
             $basket->save();
         }
 

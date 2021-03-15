@@ -13,7 +13,6 @@ Route::middleware('throttle:15')
          Route::get('products/{id}', 'ProductController@show');
          Route::get('products', 'ProductController@searchProducts');
 
-         Route::post('baskets/addRemoveProduct', 'BasketController@addRemoveProduct');
 
          /* auth related */
          Route::post('login', 'Auth\AuthController@login');
@@ -49,6 +48,7 @@ Route::middleware('auth:api')
          Route::post('profile', 'Auth\AuthController@profile');
          Route::post('password/update', 'Auth\PasswordController@update');
          Route::get('checkout', 'OrderController@checkoutCreate');
+         Route::post('baskets/addRemoveProduct', 'BasketController@addRemoveProduct');
 
 //         Route::get('users', 'UserController@index');
 //         Route::get('users/{id}', 'UserController@show');

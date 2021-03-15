@@ -103,7 +103,7 @@ namespace App\Models{
  * @property int $user_id
  * @property int $chain_id
  * @property int $branch_id
- * @property-read int|null $products_count
+ * @property int|null $products_count
  * @property int|null $crm_id
  * @property int|null $crm_user_id
  * @property int $status 0:In Progress, 1: Completed
@@ -1196,7 +1196,7 @@ namespace App\Models{
  * @property int $rating_count
  * @property int|null $completed_at
  * @property string|null $notes
- * @property int $status 
+ * @property int $status
  *             0: Cancelled,
  *             1: Draft,
  *             6: Waiting Courier,

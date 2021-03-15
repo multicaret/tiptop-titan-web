@@ -44,6 +44,7 @@ Authorization: Bearer {{token}}
     "email": "new-user@trytiptop.app",
     "phone_number": "5555555555",
     "phone_country_code": "964",
+    "password": "secret",
     "locale": "en",
     "region_id": 2,
     "city_id": 1
