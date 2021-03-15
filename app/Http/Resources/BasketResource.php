@@ -23,6 +23,7 @@ class BasketResource extends JsonResource
             'userId' => $this->user_id,
             'chainId' => $this->chain_id,
             'branchId' => $this->branch_id,
+            'products' => ProductMiniResource::collection($this->products),
         ];
     }
 }
