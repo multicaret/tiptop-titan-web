@@ -47,7 +47,7 @@ Route::middleware('auth:api')
          Route::post('profile/addresses/change-selected-address', 'AddressController@changeSelectedAddress');
          Route::post('profile', 'Auth\AuthController@profile');
          Route::post('password/update', 'Auth\PasswordController@update');
-         Route::get('orders', 'OrderController@index');
+         Route::resource('orders', 'OrderController')->except(['edit', 'update']);
          Route::get('orders/checkout', 'OrderController@checkoutCreate');
          Route::post('orders/checkout', 'OrderController@checkoutStore');
          Route::post('baskets/addRemoveProduct', 'BasketController@addRemoveProduct');

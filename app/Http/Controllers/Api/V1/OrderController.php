@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Api\V1;
 
 use App\Http\Controllers\Api\BaseApiController;
 use App\Http\Resources\OrderIndexResource;
+use App\Http\Resources\OrderShowResource;
 use App\Models\Basket;
 use App\Models\Order;
 use App\Models\PaymentMethod;
@@ -23,14 +24,34 @@ class OrderController extends BaseApiController
         return $this->respondNotFound();
     }
 
-    public function show(Order $order)
+    public function show($id)
     {
-        //
+        $order = Order::find($id);
+        if (!is_null($order )) {
+            return new OrderShowResource($order);
+
+        }
+
+        return $this->respondNotFound();
     }
 
-    public function destroy(Order $order)
+    public function destroy($id)
     {
-        //
+        $order = Order::find($id);
+
+        if (is_null($order)) {
+            return $this->respondNotFound();
+        } elseif ($order->delete()) {
+            return $this->respond([
+                'type' => 'success',
+                'text' => 'Successfully Deleted',
+            ]);
+        }
+
+        return $this->respond([
+            'type' => 'error',
+            'text' => 'There seems to be a problem',
+        ]);
     }
 
 
