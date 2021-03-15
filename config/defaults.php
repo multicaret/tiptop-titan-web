@@ -30,6 +30,7 @@ return [
         'user_cover' => '/images/user-cover.png',
         'post_cover' => '/images/post-cover.png',
         'taxonomy_cover' => '/images/taxonomy-cover.png',
+        'product_cover' => '/images/taxonomy-cover.png',
         'manufacturer_logo' => '/images/manufacturer-logo.png',
         'barcode_image' => '/images/barcode-image.png',
         'chain_logo' => '/images/chain-logo.png',

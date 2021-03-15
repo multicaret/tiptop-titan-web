@@ -162,28 +162,12 @@ class Product extends Model implements HasMedia
 
     public function getCoverFullAttribute()
     {
-        $image = config('defaults.images.product_cover');
-
-        if ( ! is_null($media = $this->getFirstMedia('gallery'))) {
-            $image = $media->getUrl();
-        }
-
-        if ( ! is_null($media = $this->getFirstMedia('cover'))) {
-            $image = $media->getUrl();
-        }
-
-        return url($image);
+        return $this->getFirstMediaUrl('cover', config('defaults.image_conversions.product_grocery_cover.HD'));
     }
 
     public function getThumbnailAttribute()
     {
-        $image = config('defaults.images.product_cover_small');
-
-        if ( ! is_null($media = $this->getFirstMedia('cover'))) {
-            $image = $media->getUrl('thumbnail');
-        }
-
-        return url($image);
+        return $this->getFirstMediaUrl('cover', config('defaults.image_conversions.product_grocery_cover.SD'));
     }
 
     public function getGalleryAttribute()
@@ -195,8 +179,9 @@ class Product extends Model implements HasMedia
     public function registerMediaCollections(): void
     {
         $isGrocery = $this->type === Product::TYPE_GROCERY;
-
+        $fallBackImageUrl = config('defaults.images.product_cover');
         $this->addMediaCollection('cover')
+             ->useFallbackUrl(url($fallBackImageUrl))
              ->singleFile()
              ->withResponsiveImages()
              ->registerMediaConversions(function (Media $media) use ($isGrocery) {
