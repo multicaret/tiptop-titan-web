@@ -51,6 +51,7 @@ Route::middleware('auth:api')
          Route::get('orders/checkout', 'OrderController@checkoutCreate');
          Route::post('orders/checkout', 'OrderController@checkoutStore');
          Route::post('baskets/addRemoveProduct', 'BasketController@addRemoveProduct');
+         Route::post('baskets/clearBasket', 'BasketController@clearBasket');
 
 //         Route::get('users', 'UserController@index');
 //         Route::get('users/{id}', 'UserController@show');

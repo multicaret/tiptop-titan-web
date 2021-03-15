@@ -30,3 +30,10 @@ Authorization: Bearer {{token}}
     "is_adding": "1",
     "status": "0"
 }
+
+###  clear basket
+POST {{host}}/{{locale}}/api/v1/baskets/clearBasket
+Accept: application/json
+Content-Type: application/json
+Authorization: Bearer {{token}}
+

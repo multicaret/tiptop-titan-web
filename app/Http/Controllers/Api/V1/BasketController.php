@@ -46,4 +46,24 @@ class BasketController extends BaseApiController
         ]);
     }
 
+    public function clearBasket(Request $request)
+    {
+        $basket = Basket::whereUserId(auth()->id())->whereStatus(Basket::STATUS_IN_PROGRESS)->first();
+        if ( ! is_null($basket)) {
+            $basket->products()->delete();
+
+            $basket->delete();
+
+            return $this->respond([
+                'type' => 'success',
+                'text' => 'Successfully Deleted',
+            ]);
+        }
+
+        return $this->respond([
+            'type' => 'error',
+            'text' => 'There isn\'t a basket to delete',
+        ]);
+
+    }
 }
