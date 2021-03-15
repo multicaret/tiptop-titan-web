@@ -25,6 +25,7 @@ class CreateTaxonomiesTable extends Migration
             $table->integer('left');
             $table->integer('right');
             $table->integer('depth')->nullable();
+            $table->decimal('step')->default(1);
             $table->unsignedInteger('order_column')->nullable();
             $table->unsignedTinyInteger('status')->default(1)->comment('0:incomplete, 1:draft, 2:published, 3:Inactive, 4..n:CUSTOM');
             $table->timestamps();
