@@ -43,6 +43,7 @@ Route::middleware('auth:api')
 //         Route::get('profile/addresses/create', 'AddressController@create');
 //         Route::post('profile/addresses', 'AddressController@store');
 //         Route::post('profile/addresses/destroy', 'AddressController@store');
+         Route::post('logout', 'Auth\AuthController@logout');
          Route::resource('profile/addresses', 'AddressController')->except(['edit', 'update']);
          Route::post('profile/addresses/change-selected-address', 'AddressController@changeSelectedAddress');
          Route::post('profile', 'Auth\AuthController@profile');
