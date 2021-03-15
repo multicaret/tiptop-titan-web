@@ -4,7 +4,7 @@ namespace App\Http\Controllers\Api\V1;
 
 
 use App\Http\Controllers\Api\BaseApiController;
-use App\Http\Resources\GroceryCategoryParentIndexResource;
+use App\Http\Resources\GroceryCategoryParentResource;
 use App\Http\Resources\LocationResource;
 use App\Models\Branch;
 use App\Models\Taxonomy;
@@ -72,8 +72,11 @@ class HomeController extends BaseApiController
                 'categories' => [],
             ];
 
-            $groceryParentCategories = Taxonomy::published()->groceryCategories()->parents()->get();
-            $response['categories'] = GroceryCategoryParentIndexResource::collection($groceryParentCategories);
+            $response['categories'] = cache()->rememberForever('all_grocery_categories_with_products', function () {
+                $groceryParentCategories = Taxonomy::published()->groceryCategories()->parents()->get();
+
+                return GroceryCategoryParentResource::collection($groceryParentCategories);
+            });;
 
             if ( ! is_null($user) && ! is_null($selectedAddress = $request->input('selected_address_id'))) {
                 /*$selectedAddress = Location::find($selectedAddress);
