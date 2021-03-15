@@ -9,6 +9,12 @@ Authorization: Bearer {{token}}
     "password": "secret"
 }
 
+### log out
+POST {{host}}/{{locale}}/api/v1/logout
+Accept: application/json
+Content-Type: application/json
+Authorization: Bearer {{token}}
+
 ### register
 POST {{host}}/{{locale}}/api/v1/register
 Accept: application/json

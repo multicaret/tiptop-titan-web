@@ -189,14 +189,14 @@ class AuthController extends BaseApiController
      *
      * @return Json
      */
-    public function logout(Request $request)
+    public function logout()
     {
         $user = auth()->user();
         $user->update([
             'last_logged_out_at' => now()
         ]);
         if ($user->token()->delete()) {
-            return $this->respondWithMessage(trans('strings.successfully_logged_out'));
+            return $this->respondWithMessage(trans('auth.successfully_logged_out'));
         }
 
         return $this->setStatusCode(Response::HTTP_INTERNAL_SERVER_ERROR)
