@@ -46,7 +46,7 @@ class ProductResource extends JsonResource
             'depth' => $this->depth,
             'weight' => $this->weight,
 
-            'unit' => new TaxonomyResource($this->unit),
+            'unit' => new UnitResource($this->unit),
         ];
     }
 }
