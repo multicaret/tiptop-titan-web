@@ -4,6 +4,8 @@ namespace App\Http\Controllers\Api\V1;
 
 
 use App\Http\Controllers\Api\BaseApiController;
+use App\Http\Resources\UserResource;
+use App\Models\User;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -49,22 +51,23 @@ class OtpController extends BaseApiController
         $validationMethod = $request->input('method', 'whatsapp'); // whatsapp or telegram. Required.
 
         $lang = localization()->getCurrentLocale();
-        $deeplink = !$request->exists('qrCode');
+        $deeplink = ! $request->exists('qrCode');
         $vfk = $this->getVFK();
-        $validationStart = $vfk->startValidation($validationMethod, $lang, $deeplink, !$deeplink);
+        $validationStart = $vfk->startValidation($validationMethod, $lang, $deeplink, ! $deeplink);
         $response = [
             $deeplink ? 'deeplink' : 'qrCode' => $validationStart->getDeeplink(),
             'reference' => $validationStart->getReference(),
         ];
+
         return $this->respond($response);
     }
 
-    public function check($reference): JsonResponse
+    public function check($reference, Request $request): JsonResponse
     {
         try {
             $vfk = $this->getVFK();
             $validationCheck = $vfk->checkValidation($reference);
-            if (!$validationCheck->getValidationStatus()) {
+            if ( ! $validationCheck->getValidationStatus()) {
                 $errorMessage = $validationCheck->getErrorMessage();
                 $statusCode = $validationCheck->getHttpStatusCode();
             }
@@ -77,12 +80,44 @@ class OtpController extends BaseApiController
             return $this->setStatusCode($statusCode)->respondWithMessage($errorMessage);
         }
 
+        $validationStatus = isset($validationCheck) ? $validationCheck->getValidationStatus() : false;
 
-        $response = [
-            'validationStatus' => isset($validationCheck) ? $validationCheck->getValidationStatus() : false,
-            'sessionId' => isset($validationCheck) ? $validationCheck->getSessionId() : null,// session id for the validation result
-            'appPlatform' => isset($validationCheck) ? $validationCheck->getAppPlatform() : null, // web, android or ios
-        ];
+        if ($validationStatus) {
+            $phoneCountryCode = $request->phone_country_code;
+            $phoneNumber = $request->phone_number;
+            // new user has been verified
+            if (is_null($user = User::getUserByPhone($phoneCountryCode, $phoneNumber))) {
+                $user = new User();
+                $user->phone_country_code = $phoneCountryCode;
+                $user->phone_number = $phoneNumber;
+                $user->email = $phoneNumber.'@phone.com';
+                $user->username = $phoneNumber;
+            }
+            $user->last_logged_in_at = now();
+            $user->save();
+
+            $accessToken = $user->createToken(strtolower(config('app.name')))->accessToken;
+
+            $response = [
+                'user' => new UserResource($user),
+                'accessToken' => $accessToken,
+                'validationStatus' => $validationStatus,
+                'sessionId' => isset($validationCheck) ? $validationCheck->getSessionId() : null,
+                // session id for the validation result
+                'appPlatform' => isset($validationCheck) ? $validationCheck->getAppPlatform() : null,
+                // web, android or ios
+            ];
+        } else {
+            $response = [
+                'user' => null,
+                'accessToken' => null,
+                'validationStatus' => $validationStatus,
+                'sessionId' => isset($validationCheck) ? $validationCheck->getSessionId() : null,
+                // session id for the validation result
+                'appPlatform' => isset($validationCheck) ? $validationCheck->getAppPlatform() : null,
+                // web, android or ios
+            ];
+        }
 
         return $this->respond($response);
 
@@ -159,6 +194,7 @@ class OtpController extends BaseApiController
                         'validationType' => $result->getValidationType(),
                         'validationDate' => $result->getValidationDate()->format('Y-m-d H:i:s'),
                     ];
+
                     return $this->respond($response);
                 } else {
                     $errorMessage = $result->getErrorMessage().", error code : ".$result->getErrorCode();
@@ -188,6 +224,7 @@ class OtpController extends BaseApiController
     {
         try {
             [$serverKey, $clientIp] = $this->getServerKeyAndClientIP();
+
             return new Web($serverKey, $clientIp);
         } catch (ServerKeyEmptyException $e) {
             return $e;
@@ -198,6 +235,7 @@ class OtpController extends BaseApiController
     {
         $serverKey = env('VERIFYKIT_SERVER_KEY');
         $clientIp = request()->ip();
+
         return [$serverKey, $clientIp];
     }
 }
