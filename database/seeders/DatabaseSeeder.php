@@ -1061,175 +1061,175 @@ class DatabaseSeeder extends Seeder
         $products = [
             [
                 'name' => 'Kuzeydan 5L',
-                'category_id' => 20,
+                'category_id' => 19,
             ],
             [
                 'name' => 'Kuzeydan 1.5L',
-                'category_id' => 20,
+                'category_id' => 19,
             ],
             [
                 'name' => 'Erikli 5L',
-                'category_id' => 20,
+                'category_id' => 19,
             ],
             [
                 'name' => 'Erikli 1L',
-                'category_id' => 20,
+                'category_id' => 19,
             ],
             [
                 'name' => 'Coca-Cola',
-                'category_id' => 21,
+                'category_id' => 20,
             ],
             [
                 'name' => 'Coca-Cola Sugar-Free',
-                'category_id' => 21,
+                'category_id' => 20,
             ],
             [
                 'name' => 'Coca-Cola Light',
-                'category_id' => 21,
+                'category_id' => 20,
             ],
             [
                 'name' => 'Coca-Cola Energy',
-                'category_id' => 21,
+                'category_id' => 20,
             ],
             [
                 'name' => 'Coca-Cola Lime',
-                'category_id' => 21,
+                'category_id' => 20,
             ],
             [
                 'name' => 'Coca-Cola 1L',
-                'category_id' => 21,
+                'category_id' => 20,
             ],
             [
                 'name' => 'Coca-Cola Light 1L',
-                'category_id' => 21,
+                'category_id' => 20,
             ],
             [
                 'name' => 'Pepsi Coke',
-                'category_id' => 21,
+                'category_id' => 20,
             ],
             [
                 'name' => 'Pepsi Max',
-                'category_id' => 21,
+                'category_id' => 20,
             ],
             [
                 'name' => 'Pepsi Twist',
-                'category_id' => 21,
+                'category_id' => 20,
             ],
             [
                 'name' => 'Cappy Puply Orange 1L',
-                'category_id' => 22,
+                'category_id' => 21,
             ],
             [
                 'name' => 'Exotic Orange',
-                'category_id' => 22,
+                'category_id' => 21,
             ],
             [
                 'name' => 'Exotic Lemonada',
-                'category_id' => 22,
+                'category_id' => 21,
             ],
             [
                 'name' => 'Exotic Orange & Pomegrande',
+                'category_id' => 21,
+            ],
+            [
+                'name' => 'Eker Ayran',
+                'category_id' => 22,
+            ],
+            [
+                'name' => 'Ayran Glass Bottle',
+                'category_id' => 22,
+            ],
+            [
+                'name' => 'Ayran Young Bottle',
                 'category_id' => 22,
             ],
             [
                 'name' => 'Eker Ayran',
-                'category_id' => 23,
-            ],
-            [
-                'name' => 'Ayran Glass Bottle',
-                'category_id' => 23,
-            ],
-            [
-                'name' => 'Ayran Young Bottle',
-                'category_id' => 23,
-            ],
-            [
-                'name' => 'Eker Ayran',
-                'category_id' => 23,
+                'category_id' => 22,
             ],
             [
                 'name' => 'Activia Papaya & Pumpkin Kefir',
-                'category_id' => 23,
+                'category_id' => 22,
             ],
             [
                 'name' => 'Imported Bananas',
-                'category_id' => 18,
+                'category_id' => 17,
             ],
             [
                 'name' => 'Strawberry',
-                'category_id' => 18,
+                'category_id' => 17,
             ],
             [
                 'name' => 'Tangerines',
-                'category_id' => 18,
+                'category_id' => 17,
             ],
             [
                 'name' => 'Oranges',
-                'category_id' => 18,
+                'category_id' => 17,
             ],
             [
                 'name' => 'Juice Oranges',
-                'category_id' => 18,
+                'category_id' => 17,
             ],
             [
                 'name' => 'Red Apples',
-                'category_id' => 18,
+                'category_id' => 17,
             ],
             [
                 'name' => 'Granny Smith Apples',
-                'category_id' => 18,
+                'category_id' => 17,
             ],
             [
                 'name' => 'Santa Maria Pear',
-                'category_id' => 18,
+                'category_id' => 17,
             ],
             [
                 'name' => 'Gold Kiwi',
-                'category_id' => 18,
+                'category_id' => 17,
             ],
             [
                 'name' => 'Kiwi',
-                'category_id' => 18,
+                'category_id' => 17,
             ],
             [
                 'name' => 'Pomegranta',
-                'category_id' => 18,
+                'category_id' => 17,
             ],
             [
                 'name' => 'Pomegranta Seed',
-                'category_id' => 18,
+                'category_id' => 17,
             ],
             [
                 'name' => 'Blueberries',
-                'category_id' => 18,
+                'category_id' => 17,
             ],
             [
                 'name' => 'Cocktail Tomatoes',
-                'category_id' => 13,
+                'category_id' => 18,
             ],
             [
                 'name' => 'Grape Tomatoes',
-                'category_id' => 13,
+                'category_id' => 18,
             ],
             [
                 'name' => 'Cucumbers',
-                'category_id' => 13,
+                'category_id' => 18,
             ],
             [
                 'name' => 'Lemons',
-                'category_id' => 13,
+                'category_id' => 18,
             ],
             [
                 'name' => 'Thin Peppers',
-                'category_id' => 13,
+                'category_id' => 18,
             ],
             [
                 'name' => 'Sweet Red Pepper',
-                'category_id' => 13,
+                'category_id' => 18,
             ],
             [
                 'name' => 'Onions',
-                'category_id' => 13,
+                'category_id' => 18,
             ],
         ];
 
