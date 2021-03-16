@@ -88,6 +88,7 @@ class OtpController extends BaseApiController
             // new user has been verified
             if (is_null($user = User::getUserByPhone($phoneCountryCode, $phoneNumber))) {
                 $user = new User();
+                $user->first = $phoneCountryCode;
                 $user->phone_country_code = $phoneCountryCode;
                 $user->phone_number = $phoneNumber;
                 $user->email = $phoneNumber.'@phone.com';
