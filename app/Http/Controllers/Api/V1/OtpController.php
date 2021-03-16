@@ -86,13 +86,15 @@ class OtpController extends BaseApiController
             $phoneCountryCode = $request->phone_country_code;
             $phoneNumber = $request->phone_number;
             // new user has been verified
+            $newUser = false;
             if (is_null($user = User::getUserByPhone($phoneCountryCode, $phoneNumber))) {
                 $user = new User();
-                $user->first = $phoneCountryCode;
+                $user->first = '00'.$phoneCountryCode.$phoneNumber;
                 $user->phone_country_code = $phoneCountryCode;
                 $user->phone_number = $phoneNumber;
-                $user->email = $phoneNumber.'@phone.com';
+                $user->email = $phoneNumber.'@otp';
                 $user->username = $phoneNumber;
+                $newUser = true;
             }
             $user->last_logged_in_at = now();
             $user->save();
@@ -100,6 +102,7 @@ class OtpController extends BaseApiController
             $accessToken = $user->createToken(strtolower(config('app.name')))->accessToken;
 
             $response = [
+                'newUser' => $newUser,
                 'user' => new UserResource($user),
                 'accessToken' => $accessToken,
                 'validationStatus' => $validationStatus,
@@ -110,6 +113,7 @@ class OtpController extends BaseApiController
             ];
         } else {
             $response = [
+                'newUser' => $newUser,
                 'user' => null,
                 'accessToken' => null,
                 'validationStatus' => $validationStatus,
