@@ -128,40 +128,6 @@ class DatabaseSeeder extends Seeder
                 'translations' => [
                     [
                         'locale' => 'en',
-                        'title' => 'Beverages',
-                    ],
-                    [
-                        'locale' => 'ar',
-                        'title' => 'مشاريب',
-                    ],
-                    [
-                        'locale' => 'ku',
-                        'title' => 'مشاريب',
-                    ]
-                ]
-            ],
-            [
-                'type' => Taxonomy::TYPE_GROCERY_CATEGORY,
-                'translations' => [
-                    [
-                        'locale' => 'en',
-                        'title' => 'Water',
-                    ],
-                    [
-                        'locale' => 'ar',
-                        'title' => 'ماء',
-                    ],
-                    [
-                        'locale' => 'ku',
-                        'title' => 'ماء',
-                    ]
-                ]
-            ],
-            [
-                'type' => Taxonomy::TYPE_GROCERY_CATEGORY,
-                'translations' => [
-                    [
-                        'locale' => 'en',
                         'title' => 'Fruits & Veges',
                     ],
                     [
@@ -171,6 +137,23 @@ class DatabaseSeeder extends Seeder
                     [
                         'locale' => 'ku',
                         'title' => 'خضروات وفواكه',
+                    ]
+                ]
+            ],
+            [
+                'type' => Taxonomy::TYPE_GROCERY_CATEGORY,
+                'translations' => [
+                    [
+                        'locale' => 'en',
+                        'title' => 'Beverages',
+                    ],
+                    [
+                        'locale' => 'ar',
+                        'title' => 'مشاريب',
+                    ],
+                    [
+                        'locale' => 'ku',
+                        'title' => 'مشاريب',
                     ]
                 ]
             ],
@@ -397,6 +380,7 @@ class DatabaseSeeder extends Seeder
             ],
             [
                 'type' => Taxonomy::TYPE_GROCERY_CATEGORY,
+                'parent_id' => 2,
                 'translations' => [
                     [
                         'locale' => 'en',
@@ -414,6 +398,7 @@ class DatabaseSeeder extends Seeder
             ],
             [
                 'type' => Taxonomy::TYPE_GROCERY_CATEGORY,
+                'parent_id' => 2,
                 'translations' => [
                     [
                         'locale' => 'en',
@@ -431,7 +416,7 @@ class DatabaseSeeder extends Seeder
             ],
             [
                 'type' => Taxonomy::TYPE_GROCERY_CATEGORY,
-                'parent_id' => 2,
+                'parent_id' => 3,
                 'translations' => [
                     [
                         'locale' => 'en',
@@ -449,7 +434,7 @@ class DatabaseSeeder extends Seeder
             ],
             [
                 'type' => Taxonomy::TYPE_GROCERY_CATEGORY,
-                'parent_id' => 2,
+                'parent_id' => 3,
                 'translations' => [
                     [
                         'locale' => 'en',
@@ -467,7 +452,7 @@ class DatabaseSeeder extends Seeder
             ],
             [
                 'type' => Taxonomy::TYPE_GROCERY_CATEGORY,
-                'parent_id' => 2,
+                'parent_id' => 3,
                 'translations' => [
                     [
                         'locale' => 'en',
@@ -485,7 +470,7 @@ class DatabaseSeeder extends Seeder
             ],
             [
                 'type' => Taxonomy::TYPE_GROCERY_CATEGORY,
-                'parent_id' => 2,
+                'parent_id' => 3,
                 'translations' => [
                     [
                         'locale' => 'en',
@@ -503,7 +488,7 @@ class DatabaseSeeder extends Seeder
             ],
             [
                 'type' => Taxonomy::TYPE_GROCERY_CATEGORY,
-                'parent_id' => 2,
+                'parent_id' => 3,
                 'translations' => [
                     [
                         'locale' => 'en',
@@ -521,7 +506,7 @@ class DatabaseSeeder extends Seeder
             ],
             [
                 'type' => Taxonomy::TYPE_GROCERY_CATEGORY,
-                'parent_id' => 2,
+                'parent_id' => 3,
                 'translations' => [
                     [
                         'locale' => 'en',
@@ -537,6 +522,43 @@ class DatabaseSeeder extends Seeder
                     ]
                 ]
             ],
+            [
+                'type' => Taxonomy::TYPE_GROCERY_CATEGORY,
+                'parent_id' => 3,
+                'translations' => [
+                    [
+                        'locale' => 'en',
+                        'title' => '',
+                    ],
+                    [
+                        'locale' => 'ar',
+                        'title' => '',
+                    ],
+                    [
+                        'locale' => 'ku',
+                        'title' => '',
+                    ]
+                ]
+            ],
+            /*            [
+                            'type' => Taxonomy::TYPE_GROCERY_CATEGORY,
+                            'parent_id' => 4,
+                            'translations' => [
+                                [
+                                    'locale' => 'en',
+                                    'title' => '',
+
+                                ],
+                                [
+                                    'locale' => 'ar',
+                                    'title' => '',
+                                ],
+                                [
+                                    'locale' => 'ku',
+                                    'title' => '',
+                                ]
+                            ]
+                        ],*/
         ];
 
 
