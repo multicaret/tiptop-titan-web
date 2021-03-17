@@ -34,9 +34,13 @@ class BasketController extends BaseApiController
             $basketProduct->quantity = 1;
             $basketProduct->save();
         }
-        if (!is_null($basketProduct)) {
+        if ( ! is_null($basketProduct)) {
             $quantity = isset($delete) && ! ! $delete ? 0 : $basketProduct->quantity;
         }
+
+        $basket->products_count = $basket->products()->count();
+        $basket->save();
+
         if (isset($quantity)) {
             return $this->respond([
                 'basket' => new BasketResource($basket),
