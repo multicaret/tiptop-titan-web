@@ -27,6 +27,11 @@ class Basket extends Model
         return $this->belongsTo(Branch::class);
     }
 
+    public function basketProducts()
+    {
+        return $this->hasMany(BasketProduct::class, 'basket_id');
+    }
+
     public function products(): BelongsToMany
     {
         return $this->belongsToMany(Product::class, 'basket_product', 'basket_id', 'product_id')

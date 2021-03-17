@@ -44,7 +44,6 @@ class BasketController extends BaseApiController
         if (isset($quantity)) {
             return $this->respond([
                 'basket' => new BasketResource($basket),
-                'quantity' => $quantity,
             ]);
         }
 

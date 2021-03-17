@@ -25,7 +25,7 @@ class CreateProductsTable extends Migration
             $table->unsignedFloat('price')->nullable();
             $table->unsignedFloat('price_discount_amount')->nullable();
             $table->boolean('price_discount_by_percentage')->nullable()->comment('true: percentage, false: fixed amount');
-            $table->unsignedBigInteger('quantity')->nullable();
+            $table->unsignedBigInteger('available_quantity')->nullable();
             $table->string('sku')->nullable();
             $table->unsignedBigInteger('upc')->nullable();
             $table->boolean('is_storage_tracking_enabled')->nullable(true);

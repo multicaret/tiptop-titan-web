@@ -22,7 +22,7 @@ class ProductResource extends JsonResource
             'notes' => $this->notes,
             'customBannerText' => $this->custom_banner_text,
             'unitText' => $this->unit_text,
-            'quantity' => $this->quantity,
+            'availableQuantity' => $this->available_quantity,
             'sku' => $this->sku,
             'upc' => $this->upc,
             'minimumOrderableQuantity' => $this->minimum_orderable_quantity,
