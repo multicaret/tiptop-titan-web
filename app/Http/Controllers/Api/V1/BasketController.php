@@ -15,35 +15,36 @@ class BasketController extends BaseApiController
     {
         $basket = Basket::retrieve($request->input('chain_id'), $request->input('branch_id'));
 
-        if (is_null($basketProduct = BasketProduct::where('basket_id', $basket->id)
-                                                  ->where('product_id', $request->input('product_id'))
-                                                  ->first())) {
+        if ( ! is_null($basketProduct = BasketProduct::where('basket_id', $basket->id)
+                                                     ->where('product_id', $request->input('product_id'))
+                                                     ->first())) {
+            if ($request->input('is_adding') == true) {
+                $basketProduct->increment('quantity');
+            } else {
+                if ($basketProduct->quantity == 1) {
+                    $delete = $basketProduct->delete();
+                } else {
+                    $basketProduct->decrement('quantity');
+                }
+            }
+        } elseif ($request->input('is_adding') == true) {
             $basketProduct = new BasketProduct();
             $basketProduct->basket_id = $basket->id;
             $basketProduct->product_id = $request->input('product_id');
             $basketProduct->quantity = 1;
             $basketProduct->save();
-        } else {
-            if ($request->input('is_adding') == true) {
-                $basketProduct->increment('quantity');
-            } else {
-                if ($basketProduct->quantity == 1) {
-                    $basketProduct->delete();
-                } else {
-                    $basketProduct->decrement('quantity');
-                }
-            }
-            $basketProduct->save();
+        }
+        if (!is_null($basketProduct)) {
+            $quantity = isset($delete) && ! ! $delete ? 0 : $basketProduct->quantity;
+        }
+        if (isset($quantity)) {
+            return $this->respond([
+                'basket' => new BasketResource($basket),
+                'quantity' => $quantity,
+            ]);
         }
 
-        $basket->products_count = $basket->products()->count();
-        $basket->save();
-
-
-        return $this->respond([
-            'basket' => new BasketResource($basket),
-            'quantity' => $basketProduct->quantity,
-        ]);
+        return $this->respondNotFound([]);
     }
 
     public function clearBasket(Request $request)
