@@ -18,7 +18,7 @@ class CreateBasketProductTable extends Migration
             $table->unsignedBigInteger('basket_id')->index();
             $table->unsignedBigInteger('product_id')->index();
             $table->unsignedSmallInteger('quantity')->default(1);
-            $table->json('product_object');
+            $table->json('product_object')->nullable();
             $table->timestamps();
 
             $table->foreign('basket_id')->references('id')->on('baskets')->onDelete('cascade');
