@@ -18,7 +18,6 @@ class ProductMiniResource extends JsonResource
             'uuid' => $this->uuid,
             'title' => $this->title,
             'customBannerText' => $this->custom_banner_text,
-            'unitText' => $this->unit_text,
             'quantity' => $this->quantity,
             'minimumOrderableQuantity' => $this->minimum_orderable_quantity,
             'price' => [
@@ -34,6 +33,7 @@ class ProductMiniResource extends JsonResource
                 'gallery' => $this->gallery,
             ],
             'weight' => $this->weight,
+            'unit' => new UnitResource($this->unit),
         ];
     }
 }
