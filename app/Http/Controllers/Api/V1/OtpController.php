@@ -94,6 +94,8 @@ class OtpController extends BaseApiController
                 $user->phone_number = $phoneNumber;
                 $user->email = $phoneNumber.'@otp';
                 $user->username = $phoneNumber;
+                $user->approved_at = now();
+                $user->phone_verified_at = now();
                 $newUser = true;
             }
             $user->last_logged_in_at = now();

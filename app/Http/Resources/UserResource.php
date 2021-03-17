@@ -51,10 +51,10 @@ class UserResource extends JsonResource
                 'diffForHumans' => optional($this->approved_at)->diffForHumans(),
                 'timestamp' => optional($this->approved_at)->timestamp,
             ],
-            'verifiedAt' => [
-                'formatted' => optional($this->verified_at)->format(config('defaults.date.short_format')),
-                'diffForHumans' => optional($this->verified_at)->diffForHumans(),
-                'timestamp' => optional($this->verified_at)->timestamp,
+            'phoneVerifiedAt' => [
+                'formatted' => optional($this->phone_verified_at)->format(config('defaults.date.short_format')),
+                'diffForHumans' => optional($this->phone_verified_at)->diffForHumans(),
+                'timestamp' => optional($this->phone_verified_at)->timestamp,
             ],
             'suspendedAt' => [
                 'formatted' => optional($this->suspended_at)->format(config('defaults.date.short_format')),
