@@ -946,6 +946,10 @@ class DatabaseSeeder extends Seeder
             'city_id' => config('defaults.city.id'),
             'currency_id' => config('defaults.currency.id'),
             'remember_token' => Str::random(10),
+            'approved_at' => now(),
+            'phone_verified_at' => now(),
+            'email_verified_at' => now(),
+            'last_logged_in_at' => now(),
         ]);
         $super->assignRole('Super');
 
@@ -961,6 +965,10 @@ class DatabaseSeeder extends Seeder
             'city_id' => config('defaults.city.id'),
             'currency_id' => config('defaults.currency.id'),
             'remember_token' => Str::random(10),
+            'approved_at' => now(),
+            'phone_verified_at' => now(),
+            'email_verified_at' => now(),
+            'last_logged_in_at' => now(),
         ]);
         $admin->assignRole('Admin');
 
