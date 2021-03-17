@@ -51,8 +51,8 @@ Route::middleware('auth:api')
          Route::resource('orders', 'OrderController')->except(['edit', 'update']);
          Route::get('orders/checkout', 'OrderController@checkoutCreate');
          Route::post('orders/checkout', 'OrderController@checkoutStore');
-         Route::post('baskets/addRemoveProduct', 'BasketController@addRemoveProduct');
-         Route::post('baskets/clearBasket', 'BasketController@clearBasket');
+         Route::post('basket/add-remove-product', 'BasketController@addRemoveProduct');
+         Route::post('basket/clear-basket', 'BasketController@clearBasket');
 
 //         Route::get('users', 'UserController@index');
 //         Route::get('users/{id}', 'UserController@show');
