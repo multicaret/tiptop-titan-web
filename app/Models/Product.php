@@ -149,12 +149,12 @@ class Product extends Model implements HasMedia
         $image = config('defaults.images.product_cover');
 
         if ( ! is_null($media = $this->getFirstMedia('gallery'))) {
-            $image = $media->getUrl('medium');
+            $image = $media->getUrl('1K');
         }
 
         if ( ! is_null($media = $this->getFirstMedia('cover'))) {
             //$media->responsive_images
-            $image = $media->getUrl('medium');
+            $image = $media->getUrl('1K');
         }
 
         return url($image);

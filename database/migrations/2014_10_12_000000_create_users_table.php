@@ -28,11 +28,11 @@ class CreateUsersTable extends Migration
             $table->decimal('wallet_reserved_total')->default(0);
             $table->decimal('wallet_free_total')->default(0);
             $table->unsignedBigInteger('profession_id')->nullable();
-            $table->unsignedBigInteger('language_id')->nullable()->comment('Native language ID');
-            $table->unsignedBigInteger('currency_id')->nullable();
-            $table->unsignedBigInteger('country_id')->nullable();
-            $table->unsignedBigInteger('region_id')->nullable();
-            $table->unsignedBigInteger('city_id')->nullable();
+            $table->unsignedBigInteger('language_id')->nullable()->comment('Native language ID')->default(config('defaults.language.id'));
+            $table->unsignedBigInteger('currency_id')->nullable()->default(config('defaults.currency.id'));
+            $table->unsignedBigInteger('country_id')->nullable()->default(config('defaults.country.id'));
+            $table->unsignedBigInteger('region_id')->nullable()->default(config('defaults.region.id'));
+            $table->unsignedBigInteger('city_id')->nullable()->default(config('defaults.city.id'));
             $table->unsignedBigInteger('selected_address_id')->nullable();
             $table->decimal('latitude', 11, 8)->nullable();
             $table->decimal('longitude', 11, 8)->nullable();

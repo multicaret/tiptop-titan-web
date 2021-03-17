@@ -26,6 +26,7 @@ class UserResource extends JsonResource
             'email' => $this->email,
             'phone' => $this->phone_number,
             'phoneCode' => $this->phone_country_code,
+            'phoneInternational' => $this->international_phone,
             'bio' => [
                 'raw' => strip_tags($this->bio),
                 'formatted' => $this->bio,
