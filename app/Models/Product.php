@@ -162,17 +162,17 @@ class Product extends Model implements HasMedia
 
     public function getCoverFullAttribute()
     {
-        return $this->getFirstMediaUrl('cover', config('defaults.image_conversions.product_grocery_cover.HD'));
+        return $this->getFirstMediaUrl('cover', 'HD');
     }
 
     public function getThumbnailAttribute()
     {
-        return $this->getFirstMediaUrl('cover', config('defaults.image_conversions.product_grocery_cover.SD'));
+        return $this->getFirstMediaUrl('cover', 'SD');
     }
 
     public function getGalleryAttribute()
     {
-        return $this->getMediaForUploader('gallery', 'medium');
+        return $this->getMediaForUploader('gallery', 'HD');
     }
 
 
