@@ -47,13 +47,13 @@ class HomeController extends BaseApiController
         $response = $slides = $addresses = [];
         $basket = null;
 
-        $userLatitude = $request->latitude;
-        $userLongitude = $request->longitude;
+        $latitude = $request->latitude;
+        $longitude = $request->longitude;
 
         if ( ! is_null($user)) {
             $addresses = LocationResource::collection($user->addresses);
-            $user->latitude = $userLatitude;
-            $user->longitude = $userLongitude;
+            $user->latitude = $latitude;
+            $user->longitude = $longitude;
             $user->save();
         }
 
@@ -83,22 +83,25 @@ class HomeController extends BaseApiController
 
             if ( ! is_null($user) && ! is_null($selectedAddress = $request->input('selected_address_id'))) {
                 /*$selectedAddress = Location::find($selectedAddress);
-                $selectedAddress->latitude;
-                $selectedAddress->longitude;*/
-                [$distance, $branch] = Branch::getClosestAvailableBranch($request->latitude, $request->longitude);
-                if ( ! is_null($distance)) {
-                    $response['distance'] = $distance;
-                }
-                if ( ! is_null($branch)) {
-                    $response['branch'] = new BranchResource($branch);
-                    $response['hasAvailableBranchesNow'] = true;
-                    $userBasket = Basket::retrieve($branch->chain_id, $branch->id, $user->id);
-                    $basket = new BasketResource($userBasket);
-                    $sharedResponse['basket'] = $basket;
-                } else {
-                    // It's too late no branch is open for now, so sorry
-                }
+                $selectedAddress->latitude = $latitude;
+                $selectedAddress->longitude = $longitude;
+                $selectedAddress->save();*/
             }
+
+            [$distance, $branch] = Branch::getClosestAvailableBranch($latitude, $longitude);
+            if ( ! is_null($distance)) {
+                $response['distance'] = $distance;
+            }
+            if ( ! is_null($branch)) {
+                $response['branch'] = new BranchResource($branch);
+                $response['hasAvailableBranchesNow'] = true;
+                $userBasket = Basket::retrieve($branch->chain_id, $branch->id, $user->id);
+                $basket = new BasketResource($userBasket);
+                $sharedResponse['basket'] = $basket;
+            } else {
+                // It's too late no branch is open for now, so sorry
+            }
+
             // Always in grocery the EA is 20-30, for dynamic values use "->distance" attribute from above.
             $sharedResponse['estimated_arrival_time']['value'] = '20-30';
 
