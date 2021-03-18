@@ -89,7 +89,7 @@ class OtpController extends BaseApiController
             $newUser = false;
             if (is_null($user = User::getUserByPhone($phoneCountryCode, $phoneNumber))) {
                 $user = new User();
-                $user->first = '00'.$phoneCountryCode.$phoneNumber;
+                $user->first = $phoneCountryCode.$phoneNumber;
                 $user->phone_country_code = $phoneCountryCode;
                 $user->phone_number = $phoneNumber;
                 $user->email = $phoneNumber.'@otp';
