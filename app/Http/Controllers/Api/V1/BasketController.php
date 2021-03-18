@@ -46,8 +46,10 @@ class BasketController extends BaseApiController
         if ( ! is_null($basketProduct)) {
             $quantity = isset($delete) && ! ! $delete ? 0 : $basketProduct->quantity;
         }
-
         $basket->products_count = $basket->products()->count();
+
+        $basket->total += $basketProduct->product->getDiscountedPrice();
+        $basket->without_discount_total += $basketProduct->product->price;
         $basket->save();
 
         if (isset($quantity)) {

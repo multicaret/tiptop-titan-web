@@ -103,7 +103,9 @@ namespace App\Models{
  * @property int $user_id
  * @property int $chain_id
  * @property int $branch_id
- * @property-read int|null $products_count
+ * @property float $total
+ * @property float $without_discount_total
+ * @property int|null $products_count
  * @property int|null $crm_id
  * @property int|null $crm_user_id
  * @property int $status 0:In Progress, 1: Completed
@@ -126,8 +128,10 @@ namespace App\Models{
  * @method static \Illuminate\Database\Eloquent\Builder|Basket whereId($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Basket whereProductsCount($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Basket whereStatus($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Basket whereTotal($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Basket whereUpdatedAt($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Basket whereUserId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Basket whereWithoutDiscountTotal($value)
  */
 	class Basket extends \Eloquent {}
 }
@@ -1200,7 +1204,7 @@ namespace App\Models{
  * @property int $rating_count
  * @property \Illuminate\Support\Carbon|null $completed_at
  * @property string|null $notes
- * @property int $status 
+ * @property int $status
  *             0: Cancelled,
  *             1: Draft,
  *             6: Waiting Courier,
