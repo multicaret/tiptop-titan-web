@@ -73,10 +73,7 @@ class BasketController extends BaseApiController
             ]);
         }
 
-        return $this->respond([
-            'type' => 'error',
-            'text' => 'There isn\'t a basket to delete',
-        ]);
+        return $this->respondValidationFails('There isn\'t a basket to delete');
 
     }
 }
