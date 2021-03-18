@@ -43,7 +43,7 @@ class HomeController extends BaseApiController
     public function index(Request $request)
     {
         $channel = strtolower($request->input('channel'));
-        $user = auth('api')->user();
+        $user = auth('sanctum')->user();
         $response = $slides = $addresses = [];
         $basket = null;
 
