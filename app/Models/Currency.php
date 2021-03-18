@@ -74,8 +74,15 @@ class Currency extends Model
         $number_formatted = number_format($amount, $decimals, $currency->decimal_separator,
             $currency->thousands_separator);
 
+        $symbol = $currency->symbol;
+        if (localization()->getCurrentLocale() == 'en') {
+            if ($currencyCode == config('defaults.currency.code')) {
+                $symbol = 'IQD';
+            }
+        }
+
         return $currency->is_symbol_after ?
-            $number_formatted.$currency->symbol : $currency->symbol.$number_formatted;
+            $number_formatted.$symbol : $symbol.$number_formatted;
     }
 
 
