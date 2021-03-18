@@ -105,7 +105,7 @@ namespace App\Models{
  * @property int $branch_id
  * @property float $total
  * @property float $without_discount_total
- * @property int|null $products_count
+ * @property-read int|null $products_count
  * @property int|null $crm_id
  * @property int|null $crm_user_id
  * @property int $status 0:In Progress, 1: Completed
@@ -144,7 +144,7 @@ namespace App\Models{
  * @property int $basket_id
  * @property int $product_id
  * @property int $quantity
- * @property array $product_object
+ * @property array|null $product_object
  * @property \Illuminate\Support\Carbon|null $created_at
  * @property \Illuminate\Support\Carbon|null $updated_at
  * @property-read \App\Models\Basket $basket
@@ -1204,7 +1204,7 @@ namespace App\Models{
  * @property int $rating_count
  * @property \Illuminate\Support\Carbon|null $completed_at
  * @property string|null $notes
- * @property int $status
+ * @property int $status 
  *             0: Cancelled,
  *             1: Draft,
  *             6: Waiting Courier,
@@ -1551,7 +1551,7 @@ namespace App\Models{
  * @property float|null $price
  * @property float|null $price_discount_amount
  * @property bool|null $price_discount_by_percentage true: percentage, false: fixed amount
- * @property int|null $quantity
+ * @property int|null $available_quantity
  * @property string|null $sku
  * @property int|null $upc
  * @property int|null $is_storage_tracking_enabled
@@ -1618,6 +1618,7 @@ namespace App\Models{
  * @method static \Illuminate\Database\Eloquent\Builder|Product query()
  * @method static \Illuminate\Database\Eloquent\Builder|Product translated()
  * @method static \Illuminate\Database\Eloquent\Builder|Product translatedIn(?string $locale = null)
+ * @method static \Illuminate\Database\Eloquent\Builder|Product whereAvailableQuantity($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Product whereAvgRating($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Product whereBranchId($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Product whereCategoryId($value)
@@ -1640,7 +1641,6 @@ namespace App\Models{
  * @method static \Illuminate\Database\Eloquent\Builder|Product wherePriceDiscountBeganAt($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Product wherePriceDiscountByPercentage($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Product wherePriceDiscountFinishedAt($value)
- * @method static \Illuminate\Database\Eloquent\Builder|Product whereQuantity($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Product whereRatingCount($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Product whereSku($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Product whereStatus($value)
@@ -2126,8 +2126,6 @@ namespace App\Models{
  * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\Location[] $addresses
  * @property-read int|null $addresses_count
  * @property-read \App\Models\City|null $city
- * @property-read \Illuminate\Database\Eloquent\Collection|\Laravel\Passport\Client[] $clients
- * @property-read int|null $clients_count
  * @property-read \App\Models\Country|null $country
  * @property-read \App\Models\Currency|null $currency
  * @property-read mixed $analyst
@@ -2155,10 +2153,11 @@ namespace App\Models{
  * @property-read \App\Models\Region|null $region
  * @property-read \Illuminate\Database\Eloquent\Collection|\Spatie\Permission\Models\Role[] $roles
  * @property-read int|null $roles_count
- * @property-read \Illuminate\Database\Eloquent\Collection|\Laravel\Passport\Token[] $tokens
+ * @property-read \Illuminate\Database\Eloquent\Collection|\Laravel\Sanctum\PersonalAccessToken[] $tokens
  * @property-read int|null $tokens_count
  * @method static \Illuminate\Database\Eloquent\Builder|User active()
  * @method static \Illuminate\Database\Eloquent\Builder|User draft()
+ * @method static \Database\Factories\UserFactory factory(...$parameters)
  * @method static \Illuminate\Database\Eloquent\Builder|User inActive()
  * @method static \Illuminate\Database\Eloquent\Builder|User incomplete()
  * @method static \Illuminate\Database\Eloquent\Builder|User managers()
