@@ -32,10 +32,10 @@ class ProductResource extends JsonResource
                 'amount' => $this->price,
                 'amountFormatted' => $this->price_formatted,
             ],
-            'discountedPrice' => ! is_null($this->discounted_price) ?? [
-                    'amount' => $this->discounted_price,
-                    'amountFormatted' => $this->discounted_price_formatted,
-                ],
+            'discountedPrice' => is_null($this->discounted_price) ? null : [
+                'amount' => $this->discounted_price,
+                'amountFormatted' => $this->discounted_price_formatted,
+            ],
             'barcodes' => $this->barcodes,
             'media' => [
                 'cover' => $this->cover,
