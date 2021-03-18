@@ -19,7 +19,16 @@ class BasketController extends BaseApiController
                                                      ->where('product_id', $request->input('product_id'))
                                                      ->first())) {
             if ($request->input('is_adding') == true) {
-                $basketProduct->increment('quantity');
+                if ($basketProduct->product->is_storage_tracking_enabled) {
+                    if ($basketProduct->product->available_quantity > $basketProduct->quantity) {
+                        $basketProduct->increment('quantity');
+                    } else {
+                        return $this->respondValidationFails('The requested product is currently unavailable');
+                    }
+                } else {
+                    $basketProduct->increment('quantity');
+                }
+
             } else {
                 if ($basketProduct->quantity == 1) {
                     $delete = $basketProduct->delete();
