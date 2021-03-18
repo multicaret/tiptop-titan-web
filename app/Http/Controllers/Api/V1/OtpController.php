@@ -82,11 +82,12 @@ class OtpController extends BaseApiController
 
         $validationStatus = isset($validationCheck) ? $validationCheck->getValidationStatus() : false;
 
+        $newUser = false;
         if ($validationStatus) {
             $phoneCountryCode = $request->phone_country_code;
             $phoneNumber = $request->phone_number;
+            $deviceName = $request->input('device_name', 'New Device');
             // new user has been verified
-            $newUser = false;
             if (is_null($user = User::getUserByPhone($phoneCountryCode, $phoneNumber))) {
                 $user = new User();
                 $user->first = $phoneCountryCode.$phoneNumber;
@@ -101,7 +102,7 @@ class OtpController extends BaseApiController
             $user->last_logged_in_at = now();
             $user->save();
 
-            $accessToken = $user->createToken(strtolower(config('app.name')))->accessToken;
+            $accessToken = $user->createToken($deviceName)->plainTextToken;
 
             $response = [
                 'newUser' => $newUser,

@@ -90,7 +90,7 @@ class HomeController extends BaseApiController
                 $response['branch'] = new BranchResource($branch);
                 $response['hasAvailableBranchesNow'] = true;
 
-                if ( ! is_null($user) && ! is_null($selectedAddress = $request->input('selected_address_id'))) {
+                if ( ! is_null($user) /*&& ! is_null($selectedAddress = $request->input('selected_address_id'))*/) {
                     /*$selectedAddress = Location::find($selectedAddress);
                     $selectedAddress->latitude = $latitude;
                     $selectedAddress->longitude = $longitude;
