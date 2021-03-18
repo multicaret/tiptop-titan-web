@@ -983,13 +983,12 @@ class DatabaseSeeder extends Seeder
     private function apiAccessTokensSeeder($super, $admin): void
     {
         exec('php artisan optimize:clear');
-        exec('php artisan passport:install');
 
         echo PHP_EOL.PHP_EOL.'Use the following access token for '.$super->email.':'.PHP_EOL;
-        echo 'Bearer '.$super->createToken(strtolower(config('app.name')))->accessToken.PHP_EOL.PHP_EOL;
+        echo 'Bearer '.$super->createToken('DB seeder device')->plainTextToken.PHP_EOL.PHP_EOL;
 
         echo PHP_EOL.PHP_EOL.'Use the following access token for '.$admin->email.':'.PHP_EOL;
-        echo 'Bearer '.$admin->createToken(strtolower(config('app.name')))->accessToken.PHP_EOL.PHP_EOL;
+        echo 'Bearer '.$admin->createToken('DB seeder device')->plainTextToken.PHP_EOL.PHP_EOL;
     }
 
     private function chains($super)

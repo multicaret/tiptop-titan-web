@@ -92,7 +92,8 @@ class AuthController extends BaseApiController
             $user->update([
                 'last_logged_in_at' => now()
             ]);
-            $accessToken = $user->createToken(strtolower(config('app.name')))->accessToken;
+            $deviceName = $request->input('device_name', 'New Device');
+            $accessToken = $user->createToken($deviceName)->plainTextToken;
 
             return $this->respond([
                 'user' => new UserResource($user),
@@ -142,7 +143,7 @@ class AuthController extends BaseApiController
         $user->language_id = ! is_null($language) ? $language->id : config('defaults.language.id');
         $user->country_id = config('defaults.country.id');
         $user->currency_id = config('defaults.currency.id');
-        list($user->first, $user->last) = User::extractFirstAndLastNames($request->input('name'));
+        [$user->first, $user->last] = User::extractFirstAndLastNames($request->input('name'));
         $user->password = bcrypt($request->input('password'));
 //        todo: Check if the username should have random numbers like that
         $user->username = strstr($request->input('email'), '@', 1).rand(1000, 9999);
@@ -167,7 +168,8 @@ class AuthController extends BaseApiController
         \DB::commit();
 
         if ( ! empty($user)) {
-            $accessToken = $user->createToken(config('app.name'))->accessToken;
+            $deviceName = $request->input('device_name', 'New Device');
+            $accessToken = $user->createToken($deviceName)->plainTextToken;
             event(new Registered($user));
 
             return $this->respond([
@@ -195,7 +197,7 @@ class AuthController extends BaseApiController
         $user->update([
             'last_logged_out_at' => now()
         ]);
-        if ($user->token()->delete()) {
+        if ($user->user()->currentAccessToken()->delete()) {
             return $this->respondWithMessage(trans('auth.successfully_logged_out'));
         }
 
@@ -235,7 +237,7 @@ class AuthController extends BaseApiController
         })->where('code', $request->input('locale', config('defaults.language.code')))->first();
         $user->language_id = ! is_null($language) ? $language->id : config('defaults.language.id');
 
-        list($user->first, $user->last) = User::extractFirstAndLastNames($request->input('name'));
+        [$user->first, $user->last] = User::extractFirstAndLastNames($request->input('name'));
         $user->email = $request->input('email');
         $user->phone_number = $request->input('phone_number');
         $user->phone_country_code = $request->input('phone_country_code');

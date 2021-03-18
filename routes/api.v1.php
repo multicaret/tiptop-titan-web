@@ -37,7 +37,7 @@ Route::middleware('throttle:15')
      });
 
 /* Protected Endpoints */
-Route::middleware('auth:api')
+Route::middleware('auth:sanctum')
      ->group(function () {
 //         Route::get('profile/addresses', 'AddressController@index');
 //         Route::get('profile/addresses/create', 'AddressController@create');

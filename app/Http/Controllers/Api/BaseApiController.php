@@ -2,7 +2,6 @@
 
 namespace App\Http\Controllers\Api;
 
-use App\Traits\PassportToken;
 use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
 use Illuminate\Foundation\Bus\DispatchesJobs;
 use Illuminate\Foundation\Validation\ValidatesRequests;
@@ -11,7 +10,7 @@ use Symfony\Component\HttpFoundation\Response;
 
 class BaseApiController extends Controller
 {
-    use AuthorizesRequests, DispatchesJobs, ValidatesRequests, PassportToken;
+    use AuthorizesRequests, DispatchesJobs, ValidatesRequests;
 
     const PAGINATION = 30;
     const NOTIFICATION_LED_COLOR = '34495e';
