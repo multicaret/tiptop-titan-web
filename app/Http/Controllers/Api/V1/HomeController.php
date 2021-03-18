@@ -43,8 +43,9 @@ class HomeController extends BaseApiController
     public function index(Request $request)
     {
         $channel = strtolower($request->input('channel'));
-        $user = User::first();
-        $response = $slides = $addresses = [];  $basket = null;
+        $user = auth()->user();
+        $response = $slides = $addresses = [];
+        $basket = null;
 
         $userLatitude = $request->latitude;
         $userLongitude = $request->longitude;
