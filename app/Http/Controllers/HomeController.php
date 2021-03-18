@@ -15,12 +15,12 @@ class HomeController extends Controller
     public function staticMap()
     {
         $apiKey = env('GOOGLE_MAPS_API');
-        $zoom = 15;
+        $zoom = 14;
         $dimensions = '414x212';
 
         $marker1LocationLatitude = config('defaults.geolocation.latitude') + 0.001;
         $marker1LocationLongitude = config('defaults.geolocation.longitude') + 0.001;
-        $marker1 = urlencode("color:blue|label:S|{$marker1LocationLatitude},{$marker1LocationLongitude}");
+        $marker1 = urlencode("color:blue|label:Me|{$marker1LocationLatitude},{$marker1LocationLongitude}");
         $marker2LocationLatitude = config('defaults.geolocation.latitude') + 0.002;
         $marker2LocationLongitude = config('defaults.geolocation.longitude') + 0.002;
         $marker2IconUrl = "http://titan.trytiptop.app/favicon.png?2";
