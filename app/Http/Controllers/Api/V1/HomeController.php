@@ -5,12 +5,12 @@ namespace App\Http\Controllers\Api\V1;
 
 use App\Http\Controllers\Api\BaseApiController;
 use App\Http\Resources\BasketResource;
+use App\Http\Resources\BranchResource;
 use App\Http\Resources\GroceryCategoryParentResource;
 use App\Http\Resources\LocationResource;
 use App\Models\Basket;
 use App\Models\Branch;
 use App\Models\Taxonomy;
-use App\Models\User;
 use Illuminate\Http\Request;
 
 class HomeController extends BaseApiController
@@ -51,17 +51,15 @@ class HomeController extends BaseApiController
         $userLongitude = $request->longitude;
 
         if ( ! is_null($user)) {
-            $userBasket = Basket::whereUserId($user->id)->whereStatus(Basket::STATUS_IN_PROGRESS)->first();
             $addresses = LocationResource::collection($user->addresses);
             $user->latitude = $userLatitude;
             $user->longitude = $userLongitude;
             $user->save();
-            $basket = new BasketResource($userBasket);
         }
 
         $sharedResponse = [
             'addresses' => $addresses,
-            'basket' => $basket,
+            'basket' => null,
             'slides' => $slides,
             'estimated_arrival_time' => [
                 'value' => '30-45',
@@ -91,9 +89,14 @@ class HomeController extends BaseApiController
                 if ( ! is_null($distance)) {
                     $response['distance'] = $distance;
                 }
-                if ( ! is_null($distance)) {
-                    $response['branch'] = $branch;
+                if ( ! is_null($branch)) {
+                    $response['branch'] = new BranchResource($branch);
                     $response['hasAvailableBranchesNow'] = true;
+                    $userBasket = Basket::retrieve($branch->chain_id, $branch->id, $user->id);
+                    $basket = new BasketResource($userBasket);
+                    $sharedResponse['basket'] = $basket;
+                } else {
+                    // It's too late no branch is open for now, so sorry
                 }
             }
             // Always in grocery the EA is 20-30, for dynamic values use "->distance" attribute from above.

@@ -83,7 +83,6 @@ class Branch extends Model implements HasMedia
             $branchWorkingHours = WorkingHour::retrieve($branch);
             if ($branchWorkingHours['isOpen']) {
                 $distance = $branchOrderedByDistance->distance;
-                $branch = new BranchResource($branch);
                 break;
             }
         }
