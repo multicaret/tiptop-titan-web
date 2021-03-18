@@ -65,7 +65,7 @@ class Currency extends Model
         return $this->hasMany(Country::class);
     }
 
-    public static function format($amount, $currencyCode = null, $decimals = 2)
+    public static function format($amount, $currencyCode = null, $decimals = 0)
     {
         if (is_null($currencyCode)) {
             $currencyCode = config('defaults.currency.code');
