@@ -20,4 +20,6 @@ Route::get('blog', 'BlogController@index')->name('blog.index');
 Route::get('blog/{post}', 'BlogController@show')->name('blog.show');
 
 
+Route::get('static-map', 'HomeController@staticMap');
+
 Route::get('foo', 'HomeController@foo');
