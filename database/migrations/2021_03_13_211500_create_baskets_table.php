@@ -19,6 +19,8 @@ class CreateBasketsTable extends Migration
             $table->unsignedBigInteger('user_id')->index();
             $table->unsignedBigInteger('chain_id')->index();
             $table->unsignedBigInteger('branch_id')->index();
+            $table->unsignedFloat('total')->default(0);
+            $table->unsignedFloat('without_discount_total')->default(0);
             $table->unsignedInteger('products_count')->default(0);
             $table->unsignedBigInteger('crm_id')->nullable();
             $table->unsignedBigInteger('crm_user_id')->nullable();

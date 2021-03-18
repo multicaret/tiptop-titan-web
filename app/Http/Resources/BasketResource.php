@@ -2,6 +2,7 @@
 
 namespace App\Http\Resources;
 
+use App\Models\Currency;
 use Illuminate\Http\Resources\Json\JsonResource;
 
 /** @mixin \App\Models\Basket */
@@ -16,6 +17,14 @@ class BasketResource extends JsonResource
         return [
             'id' => $this->id,
             'productsCount' => $this->products_count,
+            'total' => [
+                'raw' => $this->total,
+                'formatted' => Currency::format($this->total),
+            ],
+            'withoutDiscountTotal' => [
+                'raw' => $this->without_discount_total,
+                'formatted' => Currency::format($this->without_discount_total),
+            ],
             'status' => $this->status,
             'createdAt' => $this->created_at,
             'updatedAt' => $this->updated_at,
