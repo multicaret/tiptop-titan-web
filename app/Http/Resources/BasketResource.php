@@ -16,7 +16,7 @@ class BasketResource extends JsonResource
     {
         return [
             'id' => $this->id,
-            'productsCount' => $this->products_count,
+            'productsCount' => $this->products()->count(),
             'total' => [
                 'raw' => $this->total,
                 'formatted' => Currency::format($this->total),
