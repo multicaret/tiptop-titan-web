@@ -103,12 +103,14 @@ namespace App\Models{
  * @property int $user_id
  * @property int $chain_id
  * @property int $branch_id
- * @property int|null $products_count
+ * @property-read int|null $products_count
  * @property int|null $crm_id
  * @property int|null $crm_user_id
  * @property int $status 0:In Progress, 1: Completed
  * @property \Illuminate\Support\Carbon|null $created_at
  * @property \Illuminate\Support\Carbon|null $updated_at
+ * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\BasketProduct[] $basketProducts
+ * @property-read int|null $basket_products_count
  * @property-read \App\Models\Branch $branch
  * @property-read \App\Models\Chain $chain
  * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\Product[] $products
@@ -138,9 +140,11 @@ namespace App\Models{
  * @property int $basket_id
  * @property int $product_id
  * @property int $quantity
- * @property array $product_object
+ * @property array|null $product_object
  * @property \Illuminate\Support\Carbon|null $created_at
  * @property \Illuminate\Support\Carbon|null $updated_at
+ * @property-read \App\Models\Basket $basket
+ * @property-read \App\Models\Product $product
  * @method static \Illuminate\Database\Eloquent\Builder|BasketProduct newModelQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|BasketProduct newQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|BasketProduct query()
@@ -1194,9 +1198,9 @@ namespace App\Models{
  * @property float $private_grand_total
  * @property string $avg_rating
  * @property int $rating_count
- * @property int|null $completed_at
+ * @property \Illuminate\Support\Carbon|null $completed_at
  * @property string|null $notes
- * @property int $status
+ * @property int $status 
  *             0: Cancelled,
  *             1: Draft,
  *             6: Waiting Courier,
@@ -1207,6 +1211,7 @@ namespace App\Models{
  * @property \Illuminate\Support\Carbon|null $created_at
  * @property \Illuminate\Support\Carbon|null $updated_at
  * @property \Illuminate\Support\Carbon|null $deleted_at
+ * @property-read \App\Models\Location $address
  * @property-read \App\Models\Basket $basket
  * @property-read \App\Models\Branch $branch
  * @property-read \App\Models\Chain $chain
@@ -1542,7 +1547,7 @@ namespace App\Models{
  * @property float|null $price
  * @property float|null $price_discount_amount
  * @property bool|null $price_discount_by_percentage true: percentage, false: fixed amount
- * @property int|null $quantity
+ * @property int|null $available_quantity
  * @property string|null $sku
  * @property int|null $upc
  * @property int|null $is_storage_tracking_enabled
@@ -1608,6 +1613,7 @@ namespace App\Models{
  * @method static \Illuminate\Database\Eloquent\Builder|Product query()
  * @method static \Illuminate\Database\Eloquent\Builder|Product translated()
  * @method static \Illuminate\Database\Eloquent\Builder|Product translatedIn(?string $locale = null)
+ * @method static \Illuminate\Database\Eloquent\Builder|Product whereAvailableQuantity($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Product whereAvgRating($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Product whereBranchId($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Product whereCategoryId($value)
@@ -1630,7 +1636,6 @@ namespace App\Models{
  * @method static \Illuminate\Database\Eloquent\Builder|Product wherePriceDiscountBeganAt($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Product wherePriceDiscountByPercentage($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Product wherePriceDiscountFinishedAt($value)
- * @method static \Illuminate\Database\Eloquent\Builder|Product whereQuantity($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Product whereRatingCount($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Product whereSku($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Product whereStatus($value)
@@ -1876,6 +1881,7 @@ namespace App\Models{
  * @property int $left
  * @property int $right
  * @property int|null $depth
+ * @property string $step
  * @property int|null $order_column
  * @property int $status 0:incomplete, 1:draft, 2:published, 3:Inactive, 4..n:CUSTOM
  * @property \Illuminate\Support\Carbon|null $created_at
@@ -1943,6 +1949,7 @@ namespace App\Models{
  * @method static \Illuminate\Database\Eloquent\Builder|Taxonomy whereParentId($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Taxonomy whereRight($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Taxonomy whereStatus($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Taxonomy whereStep($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Taxonomy whereTranslation(string $translationField, $value, ?string $locale = null, string $method = 'whereHas', string $operator = '=')
  * @method static \Illuminate\Database\Eloquent\Builder|Taxonomy whereTranslationLike(string $translationField, $value, ?string $locale = null)
  * @method static \Illuminate\Database\Eloquent\Builder|Taxonomy whereType($value)
@@ -2136,6 +2143,8 @@ namespace App\Models{
  * @property-read int|null $media_count
  * @property-read \Illuminate\Notifications\DatabaseNotificationCollection|\Illuminate\Notifications\DatabaseNotification[] $notifications
  * @property-read int|null $notifications_count
+ * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\Order[] $order
+ * @property-read int|null $order_count
  * @property-read \Illuminate\Database\Eloquent\Collection|\Spatie\Permission\Models\Permission[] $permissions
  * @property-read int|null $permissions_count
  * @property-read \App\Models\Region|null $region

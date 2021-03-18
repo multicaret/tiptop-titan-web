@@ -1252,7 +1252,7 @@ class DatabaseSeeder extends Seeder
             $item->price = rand(1000, 20000);
             $item->price_discount_amount = rand(0, 100);
             $item->price_discount_by_percentage = rand(0, 1);
-            $item->quantity = rand(5, 100);
+            $item->available_quantity = rand(5, 100);
             $item->sku = "000SKU123".rand(1, 000);
 //            $item->upc = "123456789012";
             $item->is_storage_tracking_enabled = true;
