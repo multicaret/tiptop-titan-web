@@ -9,8 +9,7 @@ use Illuminate\Database\Eloquent\Model;
 
 class Translation extends Model
 {
-    use HasFactory,
-        Translatable,
+    use Translatable,
         HasStatuses;
 
     const STATUS_INCOMPLETE = 0;
