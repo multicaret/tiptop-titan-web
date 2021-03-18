@@ -4,8 +4,10 @@ namespace App\Http\Controllers\Api\V1;
 
 
 use App\Http\Controllers\Api\BaseApiController;
+use App\Http\Resources\BasketResource;
 use App\Http\Resources\GroceryCategoryParentResource;
 use App\Http\Resources\LocationResource;
+use App\Models\Basket;
 use App\Models\Branch;
 use App\Models\Taxonomy;
 use App\Models\User;
@@ -41,22 +43,24 @@ class HomeController extends BaseApiController
     public function index(Request $request)
     {
         $channel = strtolower($request->input('channel'));
-        $user = /*auth()->user()*/
-            User::first();
-        $response = $slides = $addresses = [];
+        $user = User::first();
+        $response = $slides = $addresses = [];  $basket = null;
 
         $userLatitude = $request->latitude;
         $userLongitude = $request->longitude;
 
         if ( ! is_null($user)) {
+            $userBasket = Basket::whereUserId($user->id)->whereStatus(Basket::STATUS_IN_PROGRESS)->first();
             $addresses = LocationResource::collection($user->addresses);
             $user->latitude = $userLatitude;
             $user->longitude = $userLongitude;
             $user->save();
+            $basket = new BasketResource($userBasket);
         }
 
         $sharedResponse = [
             'addresses' => $addresses,
+            'basket' => $basket,
             'slides' => $slides,
             'estimated_arrival_time' => [
                 'value' => '30-45',
