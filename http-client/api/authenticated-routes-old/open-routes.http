@@ -4,9 +4,10 @@ POST {{host}}/{{locale}}/api/v1/login
 Accept: application/json
 Content-Type: application/json
 Authorization: Bearer {{token}}
+
 {
-  "email": "info@multicaret.com",
-  "password": "NOTsecretATall"
+    "email": "demo@trytiptop.app",
+    "password": "secret"
 }
 
 ### Register
@@ -17,14 +18,14 @@ Authorization: Bearer {{token}}
 #< ./data/example.json
 
 {
-  "name": "John Doe",
-  "email": "example@domain.com",
-  "password": "secret1234",
-  "phone_number": "555",
-  "phone_country_code": "",
-  "dob": 662688000,
-  "gender": "",
-  "locale": ""
+    "name": "John Doe",
+    "email": "example@domain.com",
+    "password": "secret1234",
+    "phone_number": "555",
+    "phone_country_code": "",
+    "dob": 662688000,
+    "gender": "",
+    "locale": ""
 }
 
 
@@ -80,5 +81,6 @@ GET {{host}}/{{locale}}/api/v1/settings/locales
 Accept: application/json
 Content-Type: application/json
 Authorization: Bearer {{token}}
+
 ###
 
