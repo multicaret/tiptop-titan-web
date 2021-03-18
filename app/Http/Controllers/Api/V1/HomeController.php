@@ -81,12 +81,6 @@ class HomeController extends BaseApiController
                 return GroceryCategoryParentResource::collection($groceryParentCategories);
             });;
 
-            if ( ! is_null($user) && ! is_null($selectedAddress = $request->input('selected_address_id'))) {
-                /*$selectedAddress = Location::find($selectedAddress);
-                $selectedAddress->latitude = $latitude;
-                $selectedAddress->longitude = $longitude;
-                $selectedAddress->save();*/
-            }
 
             [$distance, $branch] = Branch::getClosestAvailableBranch($latitude, $longitude);
             if ( ! is_null($distance)) {
@@ -95,11 +89,20 @@ class HomeController extends BaseApiController
             if ( ! is_null($branch)) {
                 $response['branch'] = new BranchResource($branch);
                 $response['hasAvailableBranchesNow'] = true;
-                $userBasket = Basket::retrieve($branch->chain_id, $branch->id, $user->id);
-                $basket = new BasketResource($userBasket);
-                $sharedResponse['basket'] = $basket;
+
+                if ( ! is_null($user) && ! is_null($selectedAddress = $request->input('selected_address_id'))) {
+                    /*$selectedAddress = Location::find($selectedAddress);
+                    $selectedAddress->latitude = $latitude;
+                    $selectedAddress->longitude = $longitude;
+                    $selectedAddress->save();*/
+                    $userBasket = Basket::retrieve($branch->chain_id, $branch->id, $user->id);
+                    $basket = new BasketResource($userBasket);
+                    $sharedResponse['basket'] = $basket;
+                }
             } else {
                 // It's too late no branch is open for now, so sorry
+                // No Branch
+                // No Basket
             }
 
             // Always in grocery the EA is 20-30, for dynamic values use "->distance" attribute from above.
