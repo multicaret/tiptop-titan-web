@@ -23,7 +23,10 @@ class BasketController extends BaseApiController
                     if ($basketProduct->product->available_quantity > $basketProduct->quantity) {
                         $basketProduct->increment('quantity');
                     } else {
-                        return $this->respondValidationFails('The requested product is currently unavailable');
+                        return $this->respondValidationFails(
+                            'The requested product is currently unavailable',
+                            ['availableQuantity' => $basketProduct->product->available_quantity],
+                        );
                     }
                 } else {
                     $basketProduct->increment('quantity');
