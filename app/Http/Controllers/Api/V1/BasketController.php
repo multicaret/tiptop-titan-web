@@ -48,7 +48,7 @@ class BasketController extends BaseApiController
         }
         $basket->products_count = $basket->products()->count();
 
-        $basket->total += $basketProduct->product->getDiscountedPrice();
+        $basket->total += $basketProduct->product->discounted_price;
         $basket->without_discount_total += $basketProduct->product->price;
         $basket->save();
 
