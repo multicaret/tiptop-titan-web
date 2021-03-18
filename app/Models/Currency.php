@@ -81,8 +81,8 @@ class Currency extends Model
             }
         }
 
-        return $currency->is_symbol_after ?
-            $number_formatted.$symbol : $symbol.$number_formatted;
+        return vsprintf("%s %s", $currency->is_symbol_after ?
+            [$number_formatted, $symbol] : [$symbol, $number_formatted]);
     }
 
 
