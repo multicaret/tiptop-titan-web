@@ -21,7 +21,6 @@ class CreateBasketsTable extends Migration
             $table->unsignedBigInteger('branch_id')->index();
             $table->double('total')->default(0);
             $table->double('without_discount_total')->default(0);
-            $table->unsignedInteger('products_count')->default(0);
             $table->unsignedBigInteger('crm_id')->nullable();
             $table->unsignedBigInteger('crm_user_id')->nullable();
             $table->unsignedTinyInteger('status')->default(Basket::STATUS_IN_PROGRESS)->comment('0:In Progress, 1: Completed');
