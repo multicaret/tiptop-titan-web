@@ -226,15 +226,19 @@ class Product extends Model implements HasMedia
         return Currency::format($this->price);
     }
 
-    public function getDiscountedPrice()
+    public function getDiscountedPriceAttribute()
     {
-        if ($this->price_discount_by_percentage) {
-            $discountAmount = Controller::deductPercentage($this->price, $this->price_discount_amount);
-        } else {
-            $discountAmount = $this->price - $this->price_discount_amount;
-        }
+        if ( ! is_null($this->price_discount_amount) || $this->price_discount_amount != 0) {
+            if ($this->price_discount_by_percentage) {
+                $discountAmount = Controller::deductPercentage($this->price, $this->price_discount_amount);
+            } else {
+                $discountAmount = $this->price - $this->price_discount_amount;
+            }
 
-        return $this->price - $discountAmount;
+            return $this->price - $discountAmount;
+        } else {
+            return null;
+        }
     }
 
     public function getDiscountedPriceFormattedAttribute(): string

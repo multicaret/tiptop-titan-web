@@ -144,7 +144,7 @@ namespace App\Models{
  * @property int $basket_id
  * @property int $product_id
  * @property int $quantity
- * @property array|null $product_object
+ * @property array $product_object
  * @property \Illuminate\Support\Carbon|null $created_at
  * @property \Illuminate\Support\Carbon|null $updated_at
  * @property-read \App\Models\Basket $basket
@@ -1551,7 +1551,7 @@ namespace App\Models{
  * @property float|null $price
  * @property float|null $price_discount_amount
  * @property bool|null $price_discount_by_percentage true: percentage, false: fixed amount
- * @property int|null $available_quantity
+ * @property int|null $quantity
  * @property string|null $sku
  * @property int|null $upc
  * @property int|null $is_storage_tracking_enabled
@@ -1585,6 +1585,7 @@ namespace App\Models{
  * @property-read \App\Models\User $editor
  * @property-read mixed $cover
  * @property-read mixed $cover_full
+ * @property-read mixed $discounted_price
  * @property-read string $discounted_price_formatted
  * @property-read mixed $gallery
  * @property-read mixed $is_published
@@ -1617,7 +1618,6 @@ namespace App\Models{
  * @method static \Illuminate\Database\Eloquent\Builder|Product query()
  * @method static \Illuminate\Database\Eloquent\Builder|Product translated()
  * @method static \Illuminate\Database\Eloquent\Builder|Product translatedIn(?string $locale = null)
- * @method static \Illuminate\Database\Eloquent\Builder|Product whereAvailableQuantity($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Product whereAvgRating($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Product whereBranchId($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Product whereCategoryId($value)
@@ -1640,6 +1640,7 @@ namespace App\Models{
  * @method static \Illuminate\Database\Eloquent\Builder|Product wherePriceDiscountBeganAt($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Product wherePriceDiscountByPercentage($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Product wherePriceDiscountFinishedAt($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Product whereQuantity($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Product whereRatingCount($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Product whereSku($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Product whereStatus($value)
