@@ -23,7 +23,10 @@ class BasketController extends BaseApiController
                     if ($basketProduct->product->available_quantity > $basketProduct->quantity) {
                         $basketProduct->increment('quantity');
                     } else {
-                        return $this->respondValidationFails('The requested product is currently unavailable');
+                        return $this->respondValidationFails(
+                            'The requested product is currently unavailable',
+                            ['availableQuantity' => $basketProduct->product->available_quantity],
+                        );
                     }
                 } else {
                     $basketProduct->increment('quantity');
@@ -45,11 +48,12 @@ class BasketController extends BaseApiController
         }
         if ( ! is_null($basketProduct)) {
             $quantity = isset($delete) && ! ! $delete ? 0 : $basketProduct->quantity;
+            $basket->total += $basketProduct->product->discounted_price;
+            $basket->without_discount_total += $basketProduct->product->price;
         }
         $basket->products_count = $basket->products()->count();
 
-        $basket->total += $basketProduct->product->discounted_price;
-        $basket->without_discount_total += $basketProduct->product->price;
+
         $basket->save();
 
         if (isset($quantity)) {

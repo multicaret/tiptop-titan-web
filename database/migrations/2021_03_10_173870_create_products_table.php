@@ -22,8 +22,8 @@ class CreateProductsTable extends Migration
             $table->unsignedBigInteger('branch_id')->index()->nullalbe();
             $table->unsignedBigInteger('category_id')->index();
             $table->unsignedBigInteger('unit_id')->nullable();
-            $table->unsignedFloat('price')->nullable();
-            $table->unsignedFloat('price_discount_amount')->nullable();
+            $table->double('price')->nullable();
+            $table->double('price_discount_amount')->nullable();
             $table->boolean('price_discount_by_percentage')->nullable()->comment('true: percentage, false: fixed amount');
             $table->unsignedBigInteger('available_quantity')->nullable();
             $table->string('sku')->nullable();
