@@ -30,7 +30,6 @@ Route::middleware('throttle:15')
          Route::get('terms-and-conditions', 'PostController@terms');
          Route::get('about-us', 'PostController@aboutUs');
          Route::get('faq', 'PostController@faq');
-         Route::get('terms', 'PostController@terms');
 
          /* misc. */
          Route::post('logs/create', 'LogController@store');
