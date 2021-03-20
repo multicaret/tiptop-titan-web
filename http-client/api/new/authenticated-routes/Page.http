@@ -8,11 +8,16 @@ Authorization: Bearer {{token}}
 ###
 
 # blog - show
-GET {{host}}/{{locale}}/api/v1/blog/6
+GET {{host}}/{{locale}}/api/v1/blog/5
 Accept: application/json
 Content-Type: application/json
 Authorization: Bearer {{token}}
 ###
+
+### faq - index
+GET {{host}}/{{locale}}/api/v1/faq
+Accept: application/json
+Content-Type: application/json
 
 ### about - index
 GET {{host}}/{{locale}}/api/v1/about-us
@@ -20,16 +25,11 @@ Accept: application/json
 Content-Type: application/json
 
 ### privacy - index
-GET {{host}}/{{locale}}/api/v1/privacy
-Accept: application/json
-Content-Type: application/json
-
-### faq - index
-GET {{host}}/{{locale}}/api/v1/faq
+GET {{host}}/{{locale}}/api/v1/privacy-policy
 Accept: application/json
 Content-Type: application/json
 
 ### terms - index
-GET {{host}}/{{locale}}/api/v1/terms
+GET {{host}}/{{locale}}/api/v1/terms-and-conditions
 Accept: application/json
 Content-Type: application/json
