@@ -9,7 +9,7 @@ class HomeController extends Controller
 {
     public function index()
     {
-        return redirect()->route('admin.index');
+        return view('frontend.home');
     }
 
     public function staticMap()
@@ -38,7 +38,7 @@ class HomeController extends Controller
     public function foo()
     {
         $super = User::first();
-
+        dd($super->name);
 
     }
 }
