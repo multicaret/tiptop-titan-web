@@ -6,6 +6,7 @@ namespace App\Http\Controllers\Api\V1;
 use App\Http\Controllers\Api\BaseApiController;
 use App\Http\Resources\UserResource;
 use App\Models\User;
+use Illuminate\Auth\Events\Registered;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -103,7 +104,7 @@ class OtpController extends BaseApiController
             $user->save();
 
             $accessToken = $user->createToken($deviceName)->plainTextToken;
-
+            event(new Registered($user));
             $response = [
                 'newUser' => $newUser,
                 'user' => new UserResource($user),

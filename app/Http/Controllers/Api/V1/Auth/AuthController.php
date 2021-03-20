@@ -4,13 +4,8 @@ namespace App\Http\Controllers\Api\V1\Auth;
 
 use App\Http\Controllers\Api\BaseApiController;
 use App\Http\Resources\UserResource;
-use App\Models\Language;
 use App\Models\Preference;
-use App\Models\User;
-use Carbon\Carbon;
-use Illuminate\Auth\Events\Registered;
 use Illuminate\Http\Request;
-use Illuminate\Support\Str;
 use Illuminate\Validation\Rule;
 use Symfony\Component\HttpFoundation\Response;
 
@@ -127,6 +122,7 @@ class AuthController extends BaseApiController
         return $this->setStatusCode(Response::HTTP_INTERNAL_SERVER_ERROR)
                     ->respondWithMessage(__('It seems like there is an error, please try again later!'));
     }
+
 
     /**
      * Get the phone related essential validation rules.

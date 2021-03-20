@@ -14,29 +14,3 @@ POST {{host}}/{{locale}}/api/v1/logout
 Accept: application/json
 Content-Type: application/json
 Authorization: Bearer {{token}}
-
-### register
-POST {{host}}/{{locale}}/api/v1/register
-Accept: application/json
-Content-Type: application/json
-Authorization: Bearer {{token}}
-
-{
-    "name": "new user",
-    "email": "new-user@trytiptop.com",
-    "password": "secret1234",
-    "phone_number": "5555555555",
-    "phone_country_code": "964",
-    "dob": "1994-06-16",
-    "gender": "Female",
-    "locale": "en"
-}
-
-### Reset Password (NOT WORKING)
-POST {{host}}/{{locale}}/api/v1/password/reset
-Accept: application/json
-Content-Type: application/json
-Authorization: Bearer {{token}}
-{
-  "email": "info@multicaret.com"
-}
