@@ -602,7 +602,7 @@ class DatabaseSeeder extends Seeder
                     [
                         'locale' => 'ku',
                         'title' => 'من نحن',
-                        'content' => file_get_contents(storage_path('seeders/static-pages/about-tr.html')),
+                        'content' => file_get_contents(storage_path('seeders/static-pages/about-ku.html')),
                     ],
                 ]
             ],
@@ -612,37 +612,37 @@ class DatabaseSeeder extends Seeder
                     [
                         'locale' => 'en',
                         'title' => 'Contact Us',
-                        'content' => '',
+                        'content' => file_get_contents(storage_path('seeders/static-pages/contact-en.html'))
                     ],
                     [
                         'locale' => 'ar',
                         'title' => 'إتصل بنا',
-                        'content' => '',
+                        'content' => file_get_contents(storage_path('seeders/static-pages/contact-ar.html'))
                     ],
                     [
                         'locale' => 'ku',
                         'title' => 'Bize Ulaşın',
-                        'content' => '',
+                        'content' => file_get_contents(storage_path('seeders/static-pages/contact-ku.html'))
                     ],
                 ]
             ],
             [
-                'type' => Post::TYPE_PAGE,
+                'type' => Post::TYPE_FAQ,
                 'translations' => [
                     [
                         'locale' => 'en',
                         'title' => 'FAQ',
-                        'content' => '',
+                        'content' => file_get_contents(storage_path('seeders/static-pages/faq-en.html'))
                     ],
                     [
                         'locale' => 'ar',
                         'title' => 'الأسئلة الشائعة',
-                        'content' => '',
+                        'content' => file_get_contents(storage_path('seeders/static-pages/faq-ar.html'))
                     ],
                     [
                         'locale' => 'ku',
                         'title' => 'SSS',
-                        'content' => '',
+                        'content' => file_get_contents(storage_path('seeders/static-pages/faq-ku.html'))
                     ],
                 ]
             ],
@@ -652,17 +652,17 @@ class DatabaseSeeder extends Seeder
                     [
                         'locale' => 'en',
                         'title' => 'Privacy Policy',
-                        'content' => '',
+                        'content' => file_get_contents(storage_path('seeders/static-pages/privacy-en.html'))
                     ],
                     [
                         'locale' => 'ar',
                         'title' => 'سياسة الخصوصية',
-                        'content' => '',
+                        'content' => file_get_contents(storage_path('seeders/static-pages/privacy-ar.html'))
                     ],
                     [
                         'locale' => 'ku',
                         'title' => 'Gizlilik Politikası',
-                        'content' => '',
+                        'content' => file_get_contents(storage_path('seeders/static-pages/privacy-ku.html'))
                     ],
                 ]
             ],
@@ -682,10 +682,30 @@ class DatabaseSeeder extends Seeder
                     [
                         'locale' => 'ku',
                         'title' => 'Şartlar ve Koşullar',
-                        'content' => file_get_contents(storage_path('seeders/static-pages/terms-tr.html')),
+                        'content' => file_get_contents(storage_path('seeders/static-pages/terms-ku.html')),
                     ],
                 ]
             ],
+            [
+                'type' => Post::TYPE_ARTICLE,
+                'translations' => [
+                    [
+                        'locale' => 'en',
+                        'title' => 'Blog',
+                        'content' => file_get_contents(storage_path('seeders/static-pages/blog-en.html')),
+                    ],
+                    [
+                        'locale' => 'ar',
+                        'title' => 'المدونة',
+                        'content' => file_get_contents(storage_path('seeders/static-pages/blog-ar.html')),
+                    ],
+                    [
+                        'locale' => 'ku',
+                        'title' => 'المدونة',
+                        'content' => file_get_contents(storage_path('seeders/static-pages/blog-ku.html')),
+                    ],
+                ]
+            ]
         ];
 
 
