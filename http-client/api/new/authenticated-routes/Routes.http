@@ -78,18 +78,3 @@ Authorization: Bearer {{token}}
     "data": "idk"
 }
 
-### Edit profile
-POST {{host}}/{{locale}}/api/v1/profile
-Accept: application/json
-Content-Type: application/json
-Authorization: Bearer {{token}}
-
-{
-    "name": "new user2",
-    "email": "new-user2@trytiptop.com",
-    "phone_number": "5555555556",
-    "phone_country_code": "964",
-    "dob": "1994-06-16",
-    "gender": "Male",
-    "locale": "en"
-}

@@ -1,0 +1,20 @@
+################## User ##################
+
+### profile - edit (substitute to show)
+GET {{host}}/{{locale}}/api/v1/profile/edit
+Accept: application/json
+Content-Type: application/json
+Authorization: Bearer {{token}}
+
+### profile - update
+PUT {{host}}/{{locale}}/api/v1/profile
+Accept: application/json
+Content-Type: application/json
+Authorization: Bearer {{token}}
+
+{
+    "full_name": "Mohammad Kawsara",
+    "email": "mkwsra@tiptop.com",
+    "city_id": "1",
+    "region_id": "1"
+}
