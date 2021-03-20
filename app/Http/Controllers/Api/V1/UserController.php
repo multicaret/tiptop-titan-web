@@ -54,6 +54,7 @@ class UserController extends BaseApiController
         if ($validator->fails()) {
             return $this->respondValidationFails($validator->errors());
         }
+
         \DB::beginTransaction();
         [$user->first, $user->last] = User::extractFirstAndLastNames($request->full_name);
         if ($request->email) {
@@ -74,10 +75,7 @@ class UserController extends BaseApiController
             $user->addMediaFromRequest('avatar')
                  ->toMediaCollection('avatar');
         }
-        /*if ( ! empty($avatar = $request->input('avatar'))
-            && Str::contains($avatar, 'base64,')) {
-            $user->addMediaFromBase64($avatar)->toMediaCollection('avatar');
-        }*/
+
         \DB::commit();
 
         return $this->respond([
