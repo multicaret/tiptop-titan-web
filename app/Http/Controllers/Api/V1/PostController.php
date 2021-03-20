@@ -176,22 +176,11 @@ class PostController extends BaseApiController
     }
 
     //____ FAQ ____//
-    public function faqIndex()
+    public function faq()
     {
-
         $builder = Post::where('type', Post::TYPE_FAQ);
 
         return FaqResource::collection($builder->get());
-    }
-
-    public function faqShow($id)
-    {
-        $post = Post::where('type', Post::TYPE_FAQ)->find($id);
-        if ( ! empty($post)) {
-            return new FaqResource($post);
-        }
-
-        return $this->respondNotFound();
     }
 
     //____ BLOG ____//

@@ -24,13 +24,13 @@ Route::middleware('throttle:15')
          Route::post('otp/sms-validate', 'OtpController@otpSmsValidate')->name('otp.sms-validate');
 
          /* generals */
-         Route::get('faqs', 'PostController@faqIndex');
-         Route::get('faqs/{id}', 'PostController@faqShow');
          Route::get('blog', 'PostController@blogIndex');
          Route::get('blog/{id}', 'PostController@blogShow');
          Route::get('privacy-policy', 'PostController@privacy');
          Route::get('terms-and-conditions', 'PostController@terms');
          Route::get('about-us', 'PostController@aboutUs');
+         Route::get('faq', 'PostController@faq');
+         Route::get('terms', 'PostController@terms');
 
          /* misc. */
          Route::post('logs/create', 'LogController@store');

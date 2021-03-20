@@ -1,7 +1,35 @@
 ################## Pages ##################
 
+# blog - index
+GET {{host}}/{{locale}}/api/v1/blog
+Accept: application/json
+Content-Type: application/json
+Authorization: Bearer {{token}}
+###
 
-### Get About page
+# blog - show
+GET {{host}}/{{locale}}/api/v1/blog/6
+Accept: application/json
+Content-Type: application/json
+Authorization: Bearer {{token}}
+###
+
+### about - index
 GET {{host}}/{{locale}}/api/v1/about-us
+Accept: application/json
+Content-Type: application/json
+
+### privacy - index
+GET {{host}}/{{locale}}/api/v1/privacy
+Accept: application/json
+Content-Type: application/json
+
+### faq - index
+GET {{host}}/{{locale}}/api/v1/faq
+Accept: application/json
+Content-Type: application/json
+
+### terms - index
+GET {{host}}/{{locale}}/api/v1/terms
 Accept: application/json
 Content-Type: application/json

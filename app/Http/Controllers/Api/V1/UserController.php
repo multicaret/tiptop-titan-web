@@ -63,12 +63,13 @@ class UserController extends BaseApiController
         }
         $user->region_id = $request->region_id;
         $user->city_id = $request->city_id;
-        /*if ($request->has('mobile_app') && $request->input('mobile_app')) {
+
+        if ($request->has('mobile_app') && $request->input('mobile_app')) {
             $user->mobile_app = json_decode($request->mobile_app);
         }
         if ($request->has('settings') && $request->input('settings')) {
             $user->settings = json_decode($request->settings);
-        }*/
+        }
         $user->save();
 
         if ($request->hasFile('avatar')) {
