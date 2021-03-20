@@ -4,7 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Relations\Pivot;
 
-class BasketProduct extends Pivot
+class CartProduct extends Pivot
 {
     protected $casts = [
         'product_object' => 'json',
@@ -15,8 +15,8 @@ class BasketProduct extends Pivot
         return $this->belongsTo(Product::class, 'product_id');
     }
 
-    public function basket()
+    public function cart()
     {
-        return $this->belongsTo(Basket::class, 'basket_id');
+        return $this->belongsTo(Cart::class, 'cart_id');
     }
 }

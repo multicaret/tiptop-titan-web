@@ -5,7 +5,7 @@ namespace App\Http\Resources;
 use Illuminate\Http\Resources\Json\JsonResource;
 
 /** @mixin \App\Models\Product */
-class BasketProductResource extends JsonResource
+class CartProductResource extends JsonResource
 {
     /**
      * @param  \Illuminate\Http\Request  $request

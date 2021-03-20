@@ -4,11 +4,11 @@ namespace App\Http\Controllers\Api\V1;
 
 
 use App\Http\Controllers\Api\BaseApiController;
-use App\Http\Resources\BasketResource;
+use App\Http\Resources\CartResource;
 use App\Http\Resources\BranchResource;
 use App\Http\Resources\GroceryCategoryParentResource;
 use App\Http\Resources\LocationResource;
-use App\Models\Basket;
+use App\Models\Cart;
 use App\Models\Branch;
 use App\Models\Taxonomy;
 use Illuminate\Http\Request;
@@ -45,7 +45,7 @@ class HomeController extends BaseApiController
         $channel = strtolower($request->input('channel'));
         $user = auth('sanctum')->user();
         $response = $slides = $addresses = [];
-        $basket = null;
+        $cart = null;
 
         $latitude = $request->latitude;
         $longitude = $request->longitude;
@@ -59,7 +59,7 @@ class HomeController extends BaseApiController
 
         $sharedResponse = [
             'addresses' => $addresses,
-            'basket' => null,
+            'cart' => null,
             'slides' => $slides,
             'estimated_arrival_time' => [
                 'value' => '30-45',
@@ -95,14 +95,14 @@ class HomeController extends BaseApiController
                     $selectedAddress->latitude = $latitude;
                     $selectedAddress->longitude = $longitude;
                     $selectedAddress->save();*/
-                    $userBasket = Basket::retrieve($branch->chain_id, $branch->id, $user->id);
-                    $basket = new BasketResource($userBasket);
-                    $sharedResponse['basket'] = $basket;
+                    $userCart = Cart::retrieve($branch->chain_id, $branch->id, $user->id);
+                    $cart = new CartResource($userCart);
+                    $sharedResponse['cart'] = $cart;
                 }
             } else {
                 // It's too late no branch is open for now, so sorry
                 // No Branch
-                // No Basket
+                // No Cart
             }
 
             // Always in grocery the EA is 20-30, for dynamic values use "->distance" attribute from above.

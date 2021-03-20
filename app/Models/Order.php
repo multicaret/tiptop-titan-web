@@ -55,9 +55,9 @@ class Order extends Model
     }
 
 
-    public function basket(): \Illuminate\Database\Eloquent\Relations\BelongsTo
+    public function cart(): \Illuminate\Database\Eloquent\Relations\BelongsTo
     {
-        return $this->belongsTo(Basket::class);
+        return $this->belongsTo(Cart::class);
     }
 
     public function paymentMethod(): \Illuminate\Database\Eloquent\Relations\BelongsTo

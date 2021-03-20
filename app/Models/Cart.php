@@ -6,7 +6,7 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 
-class Basket extends Model
+class Cart extends Model
 {
 
     const STATUS_IN_PROGRESS = 0;
@@ -27,37 +27,37 @@ class Basket extends Model
         return $this->belongsTo(Branch::class);
     }
 
-    public function basketProducts()
+    public function cartProducts()
     {
-        return $this->hasMany(BasketProduct::class, 'basket_id');
+        return $this->hasMany(CartProduct::class, 'cart_id');
     }
 
     public function products(): BelongsToMany
     {
-        return $this->belongsToMany(Product::class, 'basket_product', 'basket_id', 'product_id')
+        return $this->belongsToMany(Product::class, 'cart_product', 'cart_id', 'product_id')
                     ->withPivot('quantity')
                     ->withPivot('product_object')
                     ->withTimestamps();
     }
 
-    public static function retrieve($chainId, $branchId, $userId = null, $status = self::STATUS_IN_PROGRESS): Basket
+    public static function retrieve($chainId, $branchId, $userId = null, $status = self::STATUS_IN_PROGRESS): Cart
     {
         if (is_null($userId)) {
             $userId = auth()->id();
         }
 
-        if (is_null($basket = Basket::where('user_id', $userId)
+        if (is_null($cart = Cart::where('user_id', $userId)
                                     ->where('branch_id', $branchId)
                                     ->where('status', $status)
                                     ->first())) {
-            $basket = new Basket();
-            $basket->chain_id = $chainId;
-            $basket->branch_id = $branchId;
-            $basket->user_id = $userId;
-            $basket->status = $status;
-            $basket->save();
+            $cart = new Cart();
+            $cart->chain_id = $chainId;
+            $cart->branch_id = $branchId;
+            $cart->user_id = $userId;
+            $cart->status = $status;
+            $cart->save();
         }
 
-        return $basket;
+        return $cart;
     }
 }

@@ -18,7 +18,7 @@ Content-Type: application/json
 
 
 ###  remove or add product
-POST {{host}}/{{locale}}/api/v1/baskets/add-remove-product
+POST {{host}}/{{locale}}/api/v1/carts/add-remove-product
 Accept: application/json
 Content-Type: application/json
 Authorization: Bearer {{token}}
@@ -31,8 +31,8 @@ Authorization: Bearer {{token}}
     "status": "0"
 }
 
-###  clear basket
-POST {{host}}/{{locale}}/api/v1/baskets/clear-basket
+###  clear cart
+POST {{host}}/{{locale}}/api/v1/carts/clear-cart
 Accept: application/json
 Content-Type: application/json
 Authorization: Bearer {{token}}

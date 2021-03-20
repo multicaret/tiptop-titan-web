@@ -29,7 +29,7 @@ class OrderShowResource extends JsonResource
                 'diffForHumans' => $this->completed_at->diffForHumans(),
                 'timestamp' => $this->completed_at->timestamp,
             ],
-            'basket' => new BasketResource($this->basket),
+            'cart' => new CartResource($this->cart),
             'paymentBreakdown' => [
                 'total' => [
                     'raw' => $this->grand_total,

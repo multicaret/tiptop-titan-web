@@ -6,7 +6,7 @@ use App\Http\Controllers\Api\BaseApiController;
 use App\Http\Resources\BasketResource;
 use App\Http\Resources\OrderIndexResource;
 use App\Http\Resources\OrderShowResource;
-use App\Models\Basket;
+use App\Models\Cart;
 use App\Models\Order;
 use App\Models\PaymentMethod;
 use Illuminate\Http\JsonResponse;
@@ -90,7 +90,7 @@ class OrderController extends BaseApiController
         $validationData = [
             "chain_id" => 'required',
             "branch_id" => 'required',
-            "basket_id" => 'required',
+            "cart_id" => 'required',
             "payment_method_id" => 'required',
             "address_id" => 'required',
         ];
@@ -100,7 +100,7 @@ class OrderController extends BaseApiController
         $newOrder->user_id = $request->input('user_id');
         $newOrder->chain_id = $request->input('chain_id');
         $newOrder->branch_id = $request->input('branch_id');
-        $newOrder->basket_id = $request->input('basket_id');
+        $newOrder->cart_id = $request->input('cart_id');
         $newOrder->payment_method_id = $request->input('payment_method_id');
         $newOrder->address_id = $request->input('address_id');
         $newOrder->previous_order_id = $request->input('previous_order_id');
@@ -120,9 +120,9 @@ class OrderController extends BaseApiController
         $newOrder->save();
 
         // Todo: work on payment method & do it.
-        $basket = Basket::find($newOrder->basket_id);
-        $basket->status = Basket::STATUS_COMPLETED;
-        $basket->save();
+        $cart = Cart::find($newOrder->cart_id);
+        $cart->status = Cart::STATUS_COMPLETED;
+        $cart->save();
 
         $response = [
             'order' => $newOrder

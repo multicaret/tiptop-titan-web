@@ -105,9 +105,9 @@ class Product extends Model implements HasMedia
         return $this->belongsToMany(Taxonomy::class, 'product_tag', 'product_id', 'tag_id');
     }
 
-    public function baskets(): \Illuminate\Database\Eloquent\Relations\BelongsToMany
+    public function carts(): \Illuminate\Database\Eloquent\Relations\BelongsToMany
     {
-        return $this->belongsToMany(Basket::class, 'basket_product', 'product_id', 'basket_id');
+        return $this->belongsToMany(Cart::class, 'cart_product', 'product_id', 'cart_id');
     }
 
 
