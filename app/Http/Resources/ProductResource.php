@@ -17,9 +17,18 @@ class ProductResource extends JsonResource
             'id' => $this->id,
             'uuid' => $this->uuid,
             'title' => $this->title,
-            'description' => $this->description,
-            'excerpt' => $this->excerpt,
-            'notes' => $this->notes,
+            'description' => [
+                'raw' => strip_tags($this->description),
+                'formatted' => $this->description,
+            ],
+            'excerpt' => [
+                'raw' => strip_tags($this->excerpt),
+                'formatted' => $this->excerpt,
+            ],
+            'notes' => [
+                'raw' => strip_tags($this->notes),
+                'formatted' => $this->notes,
+            ],
             'customBannerText' => $this->custom_banner_text,
             'unitText' => $this->unit_text,
             'availableQuantity' => $this->available_quantity,
