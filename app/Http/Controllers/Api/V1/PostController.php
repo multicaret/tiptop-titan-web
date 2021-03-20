@@ -218,6 +218,11 @@ class PostController extends BaseApiController
         return new StaticPageResource(Post::find(Post::PRIVACY_PAGE_ID));
     }
 
+    public function terms(): StaticPageResource
+    {
+        return new StaticPageResource(Post::find(Post::TERMS_PAGE_ID));
+    }
+
     public function aboutUs(): StaticPageResource
     {
         return new StaticPageResource(Post::find(Post::ABOUT_PAGE_ID));

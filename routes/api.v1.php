@@ -28,7 +28,8 @@ Route::middleware('throttle:15')
          Route::get('faqs/{id}', 'PostController@faqShow');
          Route::get('blog', 'PostController@blogIndex');
          Route::get('blog/{id}', 'PostController@blogShow');
-         Route::get('privacy', 'PostController@privacy');
+         Route::get('privacy-policy', 'PostController@privacy');
+         Route::get('terms-and-conditions', 'PostController@terms');
          Route::get('about-us', 'PostController@aboutUs');
 
          /* misc. */
