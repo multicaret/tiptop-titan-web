@@ -5,11 +5,9 @@ namespace App\Http\Controllers\Api\V1;
 
 use App\Http\Controllers\Api\BaseApiController;
 use App\Http\Resources\CityResource;
-use App\Http\Resources\CountryResource;
 use App\Http\Resources\RegionResource;
 use App\Http\Resources\UserResource;
 use App\Models\City;
-use App\Models\Country;
 use App\Models\Location;
 use App\Models\Region;
 use App\Models\User;
@@ -106,10 +104,7 @@ class UserController extends BaseApiController
     {
         $user = auth()->user();
         $data = $this->essentialData();
-        return $this->respond($data);
-//        $user->load(['country', 'region', 'city']);
-//        $data['user'] = $user;
-        $user = new UserResource(User::find($user));
+        $user = new UserResource($user);
         $data['user'] = $user;
 
         return $this->respond($data);
@@ -126,8 +121,10 @@ class UserController extends BaseApiController
 
         $request->validate($validationRules);
         [$user->first, $user->last] = User::extractFirstAndLastNames($request->full_name);
-        $user->email = $request->email;
-        $user->username = strstr($request->email, '@', 1);
+        if ($request->email) {
+            $user->email = $request->email;
+            $user->username = strstr($request->email, '@', 1);
+        }
         $user->region_id = $request->region_id;
         $user->city_id = $request->city_id;
         $user->save();
@@ -164,26 +161,12 @@ class UserController extends BaseApiController
     private function essentialData()
     {
         return [
-            'roles' => [
-                User::ROLE_SUPER => trans('strings.'.User::ROLE_SUPER),
-                User::ROLE_ADMIN => trans('strings.'.User::ROLE_ADMIN),
-                User::ROLE_EDITOR => trans('strings.'.User::ROLE_EDITOR),
-                User::ROLE_USER => trans('strings.'.User::ROLE_USER),
-            ],
-//            'countries' => CountryResource::collection(Country::all()),
             'regions' => RegionResource::collection(
-                Region::where('country_id', config('defaults.country.id'))->get()
+                Region::getAllOfCountry(config('defaults.country.id'))
             ),
             'cities' => CityResource::collection(
-                City::where('region_id', config('defaults.region.id'))->get()
+                City::getAllOfRegion(config('defaults.region.id'))
             ),
-            'phoneTypes' => (object) [
-                "Mobile",
-                "WhatsApp Mobile",
-                "Work Phone",
-                "Work Mobile",
-                "Home Phone"
-            ],
         ];
     }
 }
