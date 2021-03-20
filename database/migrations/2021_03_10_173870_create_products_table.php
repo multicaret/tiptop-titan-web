@@ -37,7 +37,8 @@ class CreateProductsTable extends Migration
             $table->unsignedInteger('order_column')->nullable();
             $table->decimal('avg_rating', 3)->default(0);
             $table->unsignedInteger('rating_count')->default(0);
-            $table->integer('view_count')->default(1);
+            $table->unsignedBigInteger('search_count')->default(1);
+            $table->unsignedBigInteger('view_count')->default(1);
             $table->integer('status')->default(1)->nullable();
             $table->timestamp('price_discount_began_at')->nullable();
             $table->timestamp('price_discount_finished_at')->nullable();
