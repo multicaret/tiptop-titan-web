@@ -49,10 +49,8 @@ class Post extends Model implements HasMedia, ShouldHaveTypes
     //These values are hardcoded here because they are part of the DB seeder
     const ABOUT_PAGE_ID = 1;
     const CONTACT_PAGE_ID = 2;
-    const FAQ_PAGE_ID = 3;
-    const PRIVACY_PAGE_ID = 4;
-    const TERMS_PAGE_ID = 5;
-    const SERVICES_PAGE_ID = 6;
+    const PRIVACY_PAGE_ID = 3;
+    const TERMS_PAGE_ID = 4;
     /**
      * The attributes that are mass assignable.
      *
