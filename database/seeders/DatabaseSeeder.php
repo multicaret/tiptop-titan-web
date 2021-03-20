@@ -631,18 +631,58 @@ class DatabaseSeeder extends Seeder
                 'translations' => [
                     [
                         'locale' => 'en',
-                        'title' => 'FAQ',
-                        'content' => file_get_contents(storage_path('seeders/static-pages/faq-en.html'))
+                        'title' => 'adipisicing elit. Ad atque beatae eos impedit quaerat sequi?',
+                        'content' => "eligendi hic illo libero maiores pariatur porro vel voluptatem voluptates"
                     ],
                     [
                         'locale' => 'ar',
-                        'title' => 'الأسئلة الشائعة',
-                        'content' => file_get_contents(storage_path('seeders/static-pages/faq-ar.html'))
+                        'title' => 'كونسيكتيتور أدايبا يسكينج أليايت,سيت دو أيوسمود تيمبور؟',
+                        'content' => "دو أيوسمود تيمبور ماجنا أليكيوا . يوت انيم أد مينيم فينايم,كيواس نوستريد أكسير أكس أيا كوممودو"
                     ],
                     [
                         'locale' => 'ku',
-                        'title' => 'SSS',
-                        'content' => file_get_contents(storage_path('seeders/static-pages/faq-ku.html'))
+                        'title' => 'كونسيكتيتور أدايبا يسكينج أليايت,سيت دو أيوسمود تيمبور؟',
+                        'content' => "دو أيوسمود تيمبور ماجنا أليكيوا . يوت انيم أد مينيم فينايم,كيواس نوستريد أكسير أكس أيا كوممودو"
+                    ],
+                ]
+            ],
+            [
+                'type' => Post::TYPE_FAQ,
+                'translations' => [
+                    [
+                        'locale' => 'en',
+                        'title' => 'adipisicing elit. Ad atque beatae eos impedit quaerat sequi?',
+                        'content' => "eligendi hic illo libero maiores pariatur porro vel voluptatem voluptates"
+                    ],
+                    [
+                        'locale' => 'ar',
+                        'title' => 'كونسيكتيتور أدايبا يسكينج أليايت,سيت دو أيوسمود تيمبور؟',
+                        'content' => "دو أيوسمود تيمبور ماجنا أليكيوا . يوت انيم أد مينيم فينايم,كيواس نوستريد أكسير أكس أيا كوممودو"
+                    ],
+                    [
+                        'locale' => 'ku',
+                        'title' => 'كونسيكتيتور أدايبا يسكينج أليايت,سيت دو أيوسمود تيمبور؟',
+                        'content' => "دو أيوسمود تيمبور ماجنا أليكيوا . يوت انيم أد مينيم فينايم,كيواس نوستريد أكسير أكس أيا كوممودو"
+                    ],
+                ]
+            ],
+            [
+                'type' => Post::TYPE_FAQ,
+                'translations' => [
+                    [
+                        'locale' => 'en',
+                        'title' => 'adipisicing elit. Ad atque beatae eos impedit quaerat sequi?',
+                        'content' => "eligendi hic illo libero maiores pariatur porro vel voluptatem voluptates"
+                    ],
+                    [
+                        'locale' => 'ar',
+                        'title' => 'كونسيكتيتور أدايبا يسكينج أليايت,سيت دو أيوسمود تيمبور؟',
+                        'content' => "دو أيوسمود تيمبور ماجنا أليكيوا . يوت انيم أد مينيم فينايم,كيواس نوستريد أكسير أكس أيا كوممودو"
+                    ],
+                    [
+                        'locale' => 'ku',
+                        'title' => 'كونسيكتيتور أدايبا يسكينج أليايت,سيت دو أيوسمود تيمبور؟',
+                        'content' => "دو أيوسمود تيمبور ماجنا أليكيوا . يوت انيم أد مينيم فينايم,كيواس نوستريد أكسير أكس أيا كوممودو"
                     ],
                 ]
             ],
