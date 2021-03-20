@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Api\V1;
 
 use App\Http\Controllers\Api\BaseApiController;
+use App\Http\Resources\BasketResource;
 use App\Http\Resources\OrderIndexResource;
 use App\Http\Resources\OrderShowResource;
 use App\Models\Basket;
@@ -55,8 +56,18 @@ class OrderController extends BaseApiController
     }
 
 
-    public function checkoutCreate(): JsonResponse
+    public function checkoutCreate(Request $request): JsonResponse
     {
+        $validationData = [
+            "chain_id" => 'required',
+            "branch_id" => 'required',
+        ];
+        $request->validate($validationData);
+
+        $branchId = $request->input('branch_id');
+        $chainId = $request->input('chain_id');
+        $userBasket = Basket::retrieve($chainId, $branchId, auth()->id());
+        $basket = new BasketResource($userBasket);
         $paymentMethods = PaymentMethod::all()->map(function ($method) {
             return [
                 'title' => $method->title,
@@ -66,7 +77,8 @@ class OrderController extends BaseApiController
             ];
         });
         $response = [
-            'paymentMethods' => $paymentMethods
+            'paymentMethods' => $paymentMethods,
+            'basket' => $basket
         ];
 
         return $this->respond($response);

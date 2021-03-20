@@ -48,9 +48,9 @@ Route::middleware('auth:sanctum')
          Route::post('profile/addresses/change-selected-address', 'AddressController@changeSelectedAddress');
          Route::post('profile', 'Auth\AuthController@profile');
 //         Route::post('password/update', 'Auth\PasswordController@update');
-         Route::resource('orders', 'OrderController')->except(['edit', 'update']);
          Route::get('orders/checkout', 'OrderController@checkoutCreate');
          Route::post('orders/checkout', 'OrderController@checkoutStore');
+         Route::resource('orders', 'OrderController')->except(['edit', 'update']);
          Route::post('baskets/add-remove-product', 'BasketController@addRemoveProduct');
          Route::post('baskets/clear-basket', 'BasketController@clearBasket');
 
