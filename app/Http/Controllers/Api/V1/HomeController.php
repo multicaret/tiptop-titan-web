@@ -79,7 +79,7 @@ class HomeController extends BaseApiController
                 $groceryParentCategories = Taxonomy::published()->groceryCategories()->parents()->get();
 
                 return GroceryCategoryParentResource::collection($groceryParentCategories);
-            });;
+            });
 
 
             [$distance, $branch] = Branch::getClosestAvailableBranch($latitude, $longitude);

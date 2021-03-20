@@ -5,6 +5,11 @@ Accept: application/json
 Content-Type: application/json
 Authorization: Bearer {{token}}
 
+{
+    "chain_id": "1",
+    "branch_id": "1"
+}
+
 ### Previous orders index
 GET {{host}}/{{locale}}/api/v1/orders
 Accept: application/json
