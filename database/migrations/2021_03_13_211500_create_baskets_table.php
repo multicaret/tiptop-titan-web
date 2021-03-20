@@ -26,9 +26,9 @@ class CreateBasketsTable extends Migration
             $table->unsignedTinyInteger('status')->default(Basket::STATUS_IN_PROGRESS)->comment('0:In Progress, 1: Completed');
             $table->timestamps();
 
-            $table->foreign('user_id')->references('id')->on('users');
-            $table->foreign('chain_id')->references('id')->on('chains');
-            $table->foreign('branch_id')->references('id')->on('branches');
+            $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
+            $table->foreign('chain_id')->references('id')->on('chains')->onDelete('cascade');;
+            $table->foreign('branch_id')->references('id')->on('branches')->onDelete('cascade');;
         });
     }
 
