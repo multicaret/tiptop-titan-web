@@ -50,10 +50,10 @@ class CreateOrdersTable extends Migration
             $table->timestamps();
             $table->softDeletes();
 
-            $table->foreign('user_id')->references('id')->on('users');
-            $table->foreign('chain_id')->references('id')->on('chains');
-            $table->foreign('branch_id')->references('id')->on('branches');
-            $table->foreign('basket_id')->references('id')->on('baskets');
+            $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
+            $table->foreign('chain_id')->references('id')->on('chains')->onDelete('cascade');
+            $table->foreign('branch_id')->references('id')->on('branches')->onDelete('cascade');
+            $table->foreign('basket_id')->references('id')->on('baskets')->onDelete('cascade');
             $table->foreign('payment_method_id')->references('id')->on('payment_methods');
             $table->foreign('coupon_id')->references('id')->on('coupons');
             $table->foreign('previous_order_id')->references('id')->on('orders');
