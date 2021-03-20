@@ -16,7 +16,6 @@ Route::middleware('throttle:15')
 
          /* auth related */
          Route::post('login', 'Auth\AuthController@login');
-         Route::post('register', 'Auth\AuthController@register');
 //         Route::post('auth/{provider}', 'Auth\SocialiteController@handleProvider');
          Route::get('otp/methods', 'OtpController@methods')->name('otp.methods');
          Route::get('otp/init-validation', 'OtpController@init')->name('otp.init');
@@ -39,26 +38,17 @@ Route::middleware('throttle:15')
 /* Protected Endpoints */
 Route::middleware('auth:sanctum')
      ->group(function () {
-//         Route::get('profile/addresses', 'AddressController@index');
-//         Route::get('profile/addresses/create', 'AddressController@create');
-//         Route::post('profile/addresses', 'AddressController@store');
-//         Route::post('profile/addresses/destroy', 'AddressController@store');
          Route::post('logout', 'Auth\AuthController@logout');
          Route::resource('profile/addresses', 'AddressController')->except(['edit', 'update']);
          Route::post('profile/addresses/change-selected-address', 'AddressController@changeSelectedAddress');
-         Route::post('profile', 'Auth\AuthController@profile');
          Route::get('profile/edit', 'UserController@edit');
          Route::put('profile', 'UserController@update');
-//         Route::resource('profile', 'UserController')->only('edit', 'update');
-//         Route::post('password/update', 'Auth\PasswordController@update');
          Route::resource('orders', 'OrderController')->except(['edit', 'update']);
          Route::get('orders/checkout', 'OrderController@checkoutCreate');
          Route::post('orders/checkout', 'OrderController@checkoutStore');
          Route::post('carts/add-remove-product', 'CartController@addRemoveProduct');
          Route::post('carts/clear-cart', 'CartController@clearCart');
 
-//         Route::get('users', 'UserController@index');
-//         Route::get('users/{id}', 'UserController@show');
 //         Route::get('taxonomies', 'TaxonomyController@index');
 //         Route::get('taxonomies/{id}', 'TaxonomyController@show');
      });

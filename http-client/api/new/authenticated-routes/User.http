@@ -6,7 +6,7 @@ Accept: application/json
 Content-Type: application/json
 Authorization: Bearer {{token}}
 
-### profile - update
+### profile - update (complete-profile)
 PUT {{host}}/{{locale}}/api/v1/profile
 Accept: application/json
 Content-Type: application/json

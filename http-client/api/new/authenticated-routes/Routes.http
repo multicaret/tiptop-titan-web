@@ -30,26 +30,6 @@ Accept: application/json
 Content-Type: application/json
 Authorization: Bearer {{token}}
 
-
-
-// Todo: This not should be /register, it should be /complete-profile, First change it as code then here.
-### register
-POST {{host}}/{{locale}}/api/v1/register
-Accept: application/json
-Content-Type: application/json
-Authorization: Bearer {{token}}
-
-{
-    "name": "New User",
-    "email": "new-user@trytiptop.app",
-    "phone_number": "5555555555",
-    "phone_country_code": "964",
-    "password": "secret",
-    "locale": "en",
-    "region_id": 2,
-    "city_id": 1
-}
-
 ### faqs
 GET {{host}}/{{locale}}/api/v1/faqs
 Accept: application/json
