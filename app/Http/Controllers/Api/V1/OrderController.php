@@ -3,7 +3,7 @@
 namespace App\Http\Controllers\Api\V1;
 
 use App\Http\Controllers\Api\BaseApiController;
-use App\Http\Resources\BasketResource;
+use App\Http\Resources\CartResource;
 use App\Http\Resources\OrderIndexResource;
 use App\Http\Resources\OrderShowResource;
 use App\Models\Cart;
@@ -66,8 +66,8 @@ class OrderController extends BaseApiController
 
         $branchId = $request->input('branch_id');
         $chainId = $request->input('chain_id');
-        $userBasket = Basket::retrieve($chainId, $branchId, auth()->id());
-        $basket = new BasketResource($userBasket);
+        $userBasket = Cart::retrieve($chainId, $branchId, auth()->id());
+        $basket = new CartResource($userBasket);
         $paymentMethods = PaymentMethod::all()->map(function ($method) {
             return [
                 'title' => $method->title,
