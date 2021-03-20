@@ -1130,6 +1130,7 @@ class DatabaseSeeder extends Seeder
             [
                 'name' => 'Kuzeydan 5L',
                 'category_id' => 19,
+                'gallery' => config("defaults.product_gallery"),
             ],
             [
                 'name' => 'Kuzeydan 1.5L',
@@ -1342,7 +1343,14 @@ class DatabaseSeeder extends Seeder
                 $translation->product_id = $item->id;
                 $translation->locale = $locale;
                 $translation->title = $product['name'];
+                $translation->description = file_get_contents(storage_path('seeders/product_description.html'));
                 $translation->save();
+            }
+            if (array_key_exists("gallery", $product)) {
+                $gallery = $product["gallery"];
+                foreach ($gallery as $image) {
+                    $item->addMediaFromUrl(asset($image))->toMediaCollection("gallery");
+                }
             }
         }
     }
