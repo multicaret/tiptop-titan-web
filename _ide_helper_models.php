@@ -97,74 +97,6 @@ namespace App\Models{
 
 namespace App\Models{
 /**
- * App\Models\Basket
- *
- * @property int $id
- * @property int $user_id
- * @property int $chain_id
- * @property int $branch_id
- * @property float $total
- * @property float $without_discount_total
- * @property-read int|null $products_count
- * @property int|null $crm_id
- * @property int|null $crm_user_id
- * @property int $status 0:In Progress, 1: Completed
- * @property \Illuminate\Support\Carbon|null $created_at
- * @property \Illuminate\Support\Carbon|null $updated_at
- * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\BasketProduct[] $basketProducts
- * @property-read int|null $basket_products_count
- * @property-read \App\Models\Branch $branch
- * @property-read \App\Models\Chain $chain
- * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\Product[] $products
- * @property-read \App\Models\User $user
- * @method static \Illuminate\Database\Eloquent\Builder|Basket newModelQuery()
- * @method static \Illuminate\Database\Eloquent\Builder|Basket newQuery()
- * @method static \Illuminate\Database\Eloquent\Builder|Basket query()
- * @method static \Illuminate\Database\Eloquent\Builder|Basket whereBranchId($value)
- * @method static \Illuminate\Database\Eloquent\Builder|Basket whereChainId($value)
- * @method static \Illuminate\Database\Eloquent\Builder|Basket whereCreatedAt($value)
- * @method static \Illuminate\Database\Eloquent\Builder|Basket whereCrmId($value)
- * @method static \Illuminate\Database\Eloquent\Builder|Basket whereCrmUserId($value)
- * @method static \Illuminate\Database\Eloquent\Builder|Basket whereId($value)
- * @method static \Illuminate\Database\Eloquent\Builder|Basket whereProductsCount($value)
- * @method static \Illuminate\Database\Eloquent\Builder|Basket whereStatus($value)
- * @method static \Illuminate\Database\Eloquent\Builder|Basket whereTotal($value)
- * @method static \Illuminate\Database\Eloquent\Builder|Basket whereUpdatedAt($value)
- * @method static \Illuminate\Database\Eloquent\Builder|Basket whereUserId($value)
- * @method static \Illuminate\Database\Eloquent\Builder|Basket whereWithoutDiscountTotal($value)
- */
-	class Basket extends \Eloquent {}
-}
-
-namespace App\Models{
-/**
- * App\Models\BasketProduct
- *
- * @property int $id
- * @property int $basket_id
- * @property int $product_id
- * @property int $quantity
- * @property array|null $product_object
- * @property \Illuminate\Support\Carbon|null $created_at
- * @property \Illuminate\Support\Carbon|null $updated_at
- * @property-read \App\Models\Basket $basket
- * @property-read \App\Models\Product $product
- * @method static \Illuminate\Database\Eloquent\Builder|BasketProduct newModelQuery()
- * @method static \Illuminate\Database\Eloquent\Builder|BasketProduct newQuery()
- * @method static \Illuminate\Database\Eloquent\Builder|BasketProduct query()
- * @method static \Illuminate\Database\Eloquent\Builder|BasketProduct whereBasketId($value)
- * @method static \Illuminate\Database\Eloquent\Builder|BasketProduct whereCreatedAt($value)
- * @method static \Illuminate\Database\Eloquent\Builder|BasketProduct whereId($value)
- * @method static \Illuminate\Database\Eloquent\Builder|BasketProduct whereProductId($value)
- * @method static \Illuminate\Database\Eloquent\Builder|BasketProduct whereProductObject($value)
- * @method static \Illuminate\Database\Eloquent\Builder|BasketProduct whereQuantity($value)
- * @method static \Illuminate\Database\Eloquent\Builder|BasketProduct whereUpdatedAt($value)
- */
-	class BasketProduct extends \Eloquent {}
-}
-
-namespace App\Models{
-/**
  * App\Models\Branch
  *
  * @property int $id
@@ -316,6 +248,37 @@ namespace App\Models{
  * @method static \Illuminate\Database\Eloquent\Builder|BranchTranslation whereTitle($value)
  */
 	class BranchTranslation extends \Eloquent {}
+}
+
+namespace App\Models{
+/**
+ * App\Models\Cart
+ *
+ * @property-read \App\Models\Branch $branch
+ * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\CartProduct[] $cartProducts
+ * @property-read int|null $cart_products_count
+ * @property-read \App\Models\Chain $chain
+ * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\Product[] $products
+ * @property-read int|null $products_count
+ * @property-read \App\Models\User $user
+ * @method static \Illuminate\Database\Eloquent\Builder|Cart newModelQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder|Cart newQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder|Cart query()
+ */
+	class Cart extends \Eloquent {}
+}
+
+namespace App\Models{
+/**
+ * App\Models\CartProduct
+ *
+ * @property-read \App\Models\Cart $cart
+ * @property-read \App\Models\Product $product
+ * @method static \Illuminate\Database\Eloquent\Builder|CartProduct newModelQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder|CartProduct newQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder|CartProduct query()
+ */
+	class CartProduct extends \Eloquent {}
 }
 
 namespace App\Models{
@@ -1216,8 +1179,8 @@ namespace App\Models{
  * @property \Illuminate\Support\Carbon|null $updated_at
  * @property \Illuminate\Support\Carbon|null $deleted_at
  * @property-read \App\Models\Location $address
- * @property-read \App\Models\Basket $basket
  * @property-read \App\Models\Branch $branch
+ * @property-read \App\Models\Cart $cart
  * @property-read \App\Models\Chain $chain
  * @property-read \App\Models\Coupon|null $coupon
  * @property-read \App\Models\PaymentMethod $paymentMethod
@@ -1575,9 +1538,9 @@ namespace App\Models{
  * @property \Illuminate\Support\Carbon|null $deleted_at
  * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\Barcode[] $barcodes
  * @property-read int|null $barcodes_count
- * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\Basket[] $baskets
- * @property-read int|null $baskets_count
  * @property-read \App\Models\Branch $branch
+ * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\Cart[] $carts
+ * @property-read int|null $carts_count
  * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\Taxonomy[] $categories
  * @property-read int|null $categories_count
  * @property-read \App\Models\Chain $chain

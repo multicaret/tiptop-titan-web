@@ -51,8 +51,8 @@ Route::middleware('auth:sanctum')
          Route::resource('orders', 'OrderController')->except(['edit', 'update']);
          Route::get('orders/checkout', 'OrderController@checkoutCreate');
          Route::post('orders/checkout', 'OrderController@checkoutStore');
-         Route::post('baskets/add-remove-product', 'BasketController@addRemoveProduct');
-         Route::post('baskets/clear-basket', 'BasketController@clearBasket');
+         Route::post('carts/add-remove-product', 'CartController@addRemoveProduct');
+         Route::post('carts/clear-cart', 'CartController@clearCart');
 
 //         Route::get('users', 'UserController@index');
 //         Route::get('users/{id}', 'UserController@show');

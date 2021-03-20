@@ -20,7 +20,7 @@ class CreateOrdersTable extends Migration
             $table->unsignedBigInteger('user_id')->index();
             $table->unsignedBigInteger('chain_id')->index();
             $table->unsignedBigInteger('branch_id')->index();
-            $table->unsignedBigInteger('basket_id')->index();
+            $table->unsignedBigInteger('cart_id')->index();
             $table->unsignedBigInteger('payment_method_id')->index();
             $table->unsignedBigInteger('address_id')->index();
             $table->unsignedBigInteger('coupon_id')->nullable();
@@ -53,7 +53,7 @@ class CreateOrdersTable extends Migration
             $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
             $table->foreign('chain_id')->references('id')->on('chains')->onDelete('cascade');
             $table->foreign('branch_id')->references('id')->on('branches')->onDelete('cascade');
-            $table->foreign('basket_id')->references('id')->on('baskets')->onDelete('cascade');
+            $table->foreign('cart_id')->references('id')->on('carts')->onDelete('cascade');
             $table->foreign('payment_method_id')->references('id')->on('payment_methods');
             $table->foreign('coupon_id')->references('id')->on('coupons');
             $table->foreign('previous_order_id')->references('id')->on('orders');

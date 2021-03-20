@@ -5,8 +5,8 @@ namespace App\Http\Resources;
 use App\Models\Currency;
 use Illuminate\Http\Resources\Json\JsonResource;
 
-/** @mixin \App\Models\Basket */
-class BasketResource extends JsonResource
+/** @mixin \App\Models\Cart */
+class CartResource extends JsonResource
 {
     /**
      * @param  \Illuminate\Http\Request  $request
@@ -32,7 +32,7 @@ class BasketResource extends JsonResource
             'userId' => $this->user_id,
             'chainId' => $this->chain_id,
             'branchId' => $this->branch_id,
-            'products' => BasketProductResource::collection($this->basketProducts),
+            'products' => CartProductResource::collection($this->cartProducts),
         ];
     }
 }
