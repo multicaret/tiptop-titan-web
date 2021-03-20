@@ -48,8 +48,13 @@ class BasketController extends BaseApiController
         }
         if ( ! is_null($basketProduct)) {
             $quantity = isset($delete) && ! ! $delete ? 0 : $basketProduct->quantity;
-            $basket->total += $basketProduct->product->discounted_price;
-            $basket->without_discount_total += $basketProduct->product->price;
+            if ($request->input('is_adding') == true) {
+                $basket->total += $basketProduct->product->discounted_price;
+                $basket->without_discount_total += $basketProduct->product->price;
+            } else {
+                $basket->total -= $basketProduct->product->discounted_price;
+                $basket->without_discount_total -= $basketProduct->product->price;
+            }
         }
 
         $basket->save();
