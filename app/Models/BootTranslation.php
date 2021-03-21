@@ -2,13 +2,10 @@
 
 namespace App\Models;
 
-use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
 class BootTranslation extends Model
 {
-    use HasFactory;
-
     public $timestamps = false;
 
     protected $fillable = ['title', 'data_translated'];
@@ -24,11 +21,10 @@ class BootTranslation extends Model
         static::creating(function (BootTranslation $bootTranslation) {
             $dataTranslated = [
                 'alert' => [
-                    [
-                        'title' => '',
-                        'message' => '',
-                    ],
+                    'title' => '',
+                    'message' => '',
                 ],
+                'foo' => 'bar',
             ];
             $bootTranslation->data_translated = $dataTranslated;
         });

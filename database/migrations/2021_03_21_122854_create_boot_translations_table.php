@@ -17,10 +17,8 @@ class CreateBootTranslationsTable extends Migration
             $table->id();
             $table->unsignedBigInteger('boot_id');
             $table->string('title')->nullable();
-            $table->text('description')->nullable();
-            $table->json('instructions')->nullable();
-            $table->string('locale')->index();
             $table->json('data_translated')->nullable();
+            $table->string('locale')->index();
 
             $table->unique(['boot_id', 'locale']);
 
