@@ -178,7 +178,7 @@ class Product extends Model implements HasMedia
 
     public function registerMediaCollections(): void
     {
-        $isGrocery = $this->type === Product::TYPE_GROCERY;
+        $isGrocery = $this->type === self::TYPE_GROCERY;
         $fallBackImageUrl = config('defaults.images.product_cover');
         $this->addMediaCollection('cover')
              ->useFallbackUrl(url($fallBackImageUrl))

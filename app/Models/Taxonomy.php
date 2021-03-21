@@ -43,6 +43,7 @@ class Taxonomy extends Node implements HasMedia, ShouldHaveTypes, TranslatableCo
 
     protected $appends = [
         'cover',
+        'cover_small',
     ];
 
 
@@ -255,12 +256,26 @@ class Taxonomy extends Node implements HasMedia, ShouldHaveTypes, TranslatableCo
 
     public function registerMediaCollections(): void
     {
+        /*$isGroceryCategory = $this->type === self::TYPE_GROCERY_CATEGORY;*/
+        $fallBackImageUrl = config('defaults.images.taxonomy_cover');
         $this->addMediaCollection('cover')
+             ->useFallbackUrl(url($fallBackImageUrl))
              ->singleFile()
-             ->registerMediaConversions(function (Media $media) {
-                 $this->addMediaConversion('thumbnail')
-                      ->width(256)
-                      ->height(256);
+             ->withResponsiveImages()
+             ->registerMediaConversions(function (Media $media) /*use ($isGroceryCategory)*/ {
+                 /*if ($isGroceryCategory) {
+                     foreach (config('defaults.image_conversions.generic_cover') as $conversionName => $dimensions) {
+                         $this->addMediaConversion($conversionName)
+                              ->width($dimensions['width'])
+                              ->height($dimensions['height']);
+                     }
+                 } else {*/
+                 foreach (config('defaults.image_conversions.generic_cover') as $conversionName => $dimensions) {
+                     $this->addMediaConversion($conversionName)
+                          ->width($dimensions['width'])
+                          ->height($dimensions['height']);
+                 }
+//                 }
              });
     }
 
@@ -269,14 +284,31 @@ class Taxonomy extends Node implements HasMedia, ShouldHaveTypes, TranslatableCo
     {
         $cover = url(config('defaults.images.taxonomy_cover'));
         if ($this->type == self::TYPE_GROCERY_CATEGORY) {
-            $cover = url(config('defaults.images.grocery_category_cover')).'?v=1';
+            $cover = url(config('defaults.images.grocery_category_cover')).'?v=2';
         }
         if ($this->type == self::TYPE_FOOD_CATEGORY) {
             $cover = url(config('defaults.images.food_category_cover'));
         }
 
         if ($this->hasMedia('cover')) {
-            $cover = $this->getFirstMedia('cover')->getFullUrl();
+            $cover = $this->getFirstMedia('cover')->getFullUrl('1K');
+        }
+
+        return $cover;
+    }
+
+    public function getCoverSmallAttribute()
+    {
+        $cover = url(config('defaults.images.taxonomy_cover'));
+        if ($this->type == self::TYPE_GROCERY_CATEGORY) {
+            $cover = url(config('defaults.images.grocery_category_cover')).'?v=2';
+        }
+        if ($this->type == self::TYPE_FOOD_CATEGORY) {
+            $cover = url(config('defaults.images.food_category_cover'));
+        }
+
+        if ($this->hasMedia('cover')) {
+            $cover = $this->getFirstMedia('cover')->getFullUrl('SD');
         }
 
         return $cover;

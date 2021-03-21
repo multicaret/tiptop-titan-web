@@ -27,7 +27,7 @@ class GroceryCategoryChildResource extends JsonResource
                 'formatted' => $this->description,
             ],
             'cover' => $this->cover,
-            'thumbnail' => $this->thumbnail,
+            'thumbnail' => $this->cover_small,
             'products' => ProductResource::collection($this->products),
         ];
     }

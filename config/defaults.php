@@ -38,6 +38,7 @@ return [
         'chain_logo' => '/images/chain-logo.png',
         'payment_method_logo' => '/images/payment-method-logo.png',
         'grocery_category_cover' => '/images/grocery-category-cover.png',
+        'food_category_cover' => '/images/grocery-category-cover.png',
     ],
     'product_gallery' => [
         "/images/potato.jpeg",

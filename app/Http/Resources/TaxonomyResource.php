@@ -40,7 +40,7 @@ class TaxonomyResource extends JsonResource
             'hasChildren' => $this->hasChildren(),
             'childrenCount' => $this->children()->count(),
             'cover' => $this->cover,
-            'thumbnail' => $this->thumbnail,
+            'thumbnail' => $this->cover_small,
             'createdAt' => [
                 'formatted' => $this->created_at->format(config('defaults.date.short_format')),
                 'diffForHumans' => $this->created_at->diffForHumans(),

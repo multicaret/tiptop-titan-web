@@ -99,6 +99,40 @@ namespace App\Models{
 /**
  * App\Models\Boot
  *
+ * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\BootTranslation[] $translations
+ * @property-read int|null $translations_count
+ * @method static \Illuminate\Database\Eloquent\Builder|Boot listsTranslations(string $translationField)
+ * @method static \Illuminate\Database\Eloquent\Builder|Boot newModelQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder|Boot newQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder|Boot notTranslatedIn(?string $locale = null)
+ * @method static \Illuminate\Database\Eloquent\Builder|Boot orWhereTranslation(string $translationField, $value, ?string $locale = null)
+ * @method static \Illuminate\Database\Eloquent\Builder|Boot orWhereTranslationLike(string $translationField, $value, ?string $locale = null)
+ * @method static \Illuminate\Database\Eloquent\Builder|Boot orderByTranslation(string $translationField, string $sortMethod = 'asc')
+ * @method static \Illuminate\Database\Eloquent\Builder|Boot query()
+ * @method static \Illuminate\Database\Eloquent\Builder|Boot translated()
+ * @method static \Illuminate\Database\Eloquent\Builder|Boot translatedIn(?string $locale = null)
+ * @method static \Illuminate\Database\Eloquent\Builder|Boot whereTranslation(string $translationField, $value, ?string $locale = null, string $method = 'whereHas', string $operator = '=')
+ * @method static \Illuminate\Database\Eloquent\Builder|Boot whereTranslationLike(string $translationField, $value, ?string $locale = null)
+ * @method static \Illuminate\Database\Eloquent\Builder|Boot withTranslation()
+ */
+	class Boot extends \Eloquent {}
+}
+
+namespace App\Models{
+/**
+ * App\Models\BootTranslation
+ *
+ * @method static \Illuminate\Database\Eloquent\Builder|BootTranslation newModelQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder|BootTranslation newQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder|BootTranslation query()
+ */
+	class BootTranslation extends \Eloquent {}
+}
+
+namespace App\Models{
+/**
+ * App\Models\Boot
+ *
  * @property int $id
  * @property int $build_number
  * @property int $application_type 1:customer, 2:restaurant, 3:driver
@@ -1264,7 +1298,7 @@ namespace App\Models{
  * @property int $rating_count
  * @property \Illuminate\Support\Carbon|null $completed_at
  * @property string|null $notes
- * @property int $status 
+ * @property int $status
  *             0: Cancelled,
  *             1: Draft,
  *             6: Waiting Courier,
@@ -2024,6 +2058,7 @@ namespace App\Models{
  * @property-read int|null $cross_sells_products_count
  * @property-read \App\Models\User $editor
  * @property-read mixed $cover
+ * @property-read mixed $cover_small
  * @property-read mixed $is_published
  * @property-read mixed $link
  * @property-read mixed $status_name
