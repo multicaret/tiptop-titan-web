@@ -255,12 +255,26 @@ class Taxonomy extends Node implements HasMedia, ShouldHaveTypes, TranslatableCo
 
     public function registerMediaCollections(): void
     {
+        /*$isGroceryCategory = $this->type === self::TYPE_GROCERY_CATEGORY;*/
+        $fallBackImageUrl = config('defaults.images.taxonomy_cover');
         $this->addMediaCollection('cover')
+             ->useFallbackUrl(url($fallBackImageUrl))
              ->singleFile()
-             ->registerMediaConversions(function (Media $media) {
-                 $this->addMediaConversion('thumbnail')
-                      ->width(256)
-                      ->height(256);
+             ->withResponsiveImages()
+             ->registerMediaConversions(function (Media $media) /*use ($isGroceryCategory)*/ {
+                 /*if ($isGroceryCategory) {
+                     foreach (config('defaults.image_conversions.generic_cover') as $conversionName => $dimensions) {
+                         $this->addMediaConversion($conversionName)
+                              ->width($dimensions['width'])
+                              ->height($dimensions['height']);
+                     }
+                 } else {*/
+                 foreach (config('defaults.image_conversions.generic_cover') as $conversionName => $dimensions) {
+                     $this->addMediaConversion($conversionName)
+                          ->width($dimensions['width'])
+                          ->height($dimensions['height']);
+                 }
+//                 }
              });
     }
 
