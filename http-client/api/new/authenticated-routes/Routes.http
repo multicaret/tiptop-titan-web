@@ -58,3 +58,9 @@ Authorization: Bearer {{token}}
     "data": "idk"
 }
 
+### countries with flags
+GET {{host}}/{{locale}}/api/v1/countries-with-flags?all=true
+Accept: application/json
+Content-Type: application/json
+Authorization: Bearer {{token}}
+
