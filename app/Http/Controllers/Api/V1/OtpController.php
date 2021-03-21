@@ -83,28 +83,12 @@ class OtpController extends BaseApiController
 
         $validationStatus = isset($validationCheck) ? $validationCheck->getValidationStatus() : false;
 
-        $newUser = false;
         if ($validationStatus) {
             $phoneCountryCode = $request->phone_country_code;
             $phoneNumber = $request->phone_number;
             $deviceName = $request->input('device_name', 'New Device');
-            // new user has been verified
-            if (is_null($user = User::getUserByPhone($phoneCountryCode, $phoneNumber))) {
-                $user = new User();
-                $user->first = $phoneCountryCode.$phoneNumber;
-                $user->phone_country_code = $phoneCountryCode;
-                $user->phone_number = $phoneNumber;
-                $user->email = $phoneNumber.'@otp';
-                $user->username = $phoneNumber;
-                $user->approved_at = now();
-                $user->phone_verified_at = now();
-                $newUser = true;
-            }
-            $user->last_logged_in_at = now();
-            $user->save();
-
-            $accessToken = $user->createToken($deviceName)->plainTextToken;
-            event(new Registered($user));
+            [$user, $newUser, $accessToken] = $this->registerUserIfNotFoundByPhone($phoneCountryCode, $phoneNumber,
+                $deviceName);
             $response = [
                 'newUser' => $newUser,
                 'user' => new UserResource($user),
@@ -117,14 +101,14 @@ class OtpController extends BaseApiController
             ];
         } else {
             $response = [
-                'newUser' => $newUser,
+                'newUser' => false,
                 'user' => null,
                 'accessToken' => null,
                 'validationStatus' => $validationStatus,
-                'sessionId' => isset($validationCheck) ? $validationCheck->getSessionId() : null,
                 // session id for the validation result
-                'appPlatform' => isset($validationCheck) ? $validationCheck->getAppPlatform() : null,
+                'sessionId' => isset($validationCheck) ? $validationCheck->getSessionId() : null,
                 // web, android or ios
+                'appPlatform' => isset($validationCheck) ? $validationCheck->getAppPlatform() : null,
             ];
         }
 
@@ -176,32 +160,48 @@ class OtpController extends BaseApiController
     {
         $validationData = [
             "phone_number" => 'required',
+            "phone_country_code" => 'required',
             "country_code" => 'required',
             "code" => 'required',
             "reference" => 'required',
         ];
         $request->validate($validationData);
 
-
         $statusCode = Response::HTTP_BAD_REQUEST;
         $phoneNumber = $request->input('phone_number');
+        $phoneCountryCode = $request->input('phone_country_code');
         $countryCode = $request->input('country_code');
         $code = $request->input('code');
         $reference = $request->input('reference');
+        $deviceName = $request->input('device_name', 'New Device');
 
 
         try {
             $vfkWeb = $this->getVFK();
-            $otpCheck = $vfkWeb->checkOtp($phoneNumber, $countryCode, $reference, $code);
+            $otpCheck = $vfkWeb->checkOtp($phoneCountryCode.$phoneNumber, $countryCode, $reference, $code);
             if ($otpCheck->getValidationStatus()) {
                 [$serverKey, $clientIp] = $this->getServerKeyAndClientIP();
                 $VFK = new VerifyKit($serverKey, $clientIp);
                 $result = $VFK->getResult($otpCheck->getSessionId());
                 if ($result->isSuccess()) {
-                    $response = [
+                    /*$response = [
                         'phoneNumber' => $result->getPhoneNumber(),
                         'validationType' => $result->getValidationType(),
                         'validationDate' => $result->getValidationDate()->format('Y-m-d H:i:s'),
+                    ];*/
+
+                    [$user, $newUser, $accessToken] = $this->registerUserIfNotFoundByPhone($phoneCountryCode,
+                        $phoneNumber,
+                        $deviceName);
+                    $response = [
+                        'newUser' => $newUser,
+                        'user' => new UserResource($user),
+                        'accessToken' => $accessToken,
+                        'validationStatus' => $result->isSuccess(),
+                        // session id for the validation result
+                        'sessionId' => isset($validationCheck) ? $validationCheck->getSessionId() : null,
+                        // web, android or ios
+                        'appPlatform' => isset($validationCheck) ? $validationCheck->getAppPlatform() : null,
                     ];
 
                     return $this->respond($response);
@@ -246,5 +246,35 @@ class OtpController extends BaseApiController
         $clientIp = request()->ip();
 
         return [$serverKey, $clientIp];
+    }
+
+    /**
+     * @param $phoneCountryCode
+     * @param $phoneNumber
+     * @param $deviceName
+     * @return array
+     */
+    private function registerUserIfNotFoundByPhone($phoneCountryCode, $phoneNumber, $deviceName): array
+    {
+        $newUser = false;
+// new user has been verified
+        if (is_null($user = User::getUserByPhone($phoneCountryCode, $phoneNumber))) {
+            $user = new User();
+            $user->first = $phoneCountryCode.$phoneNumber;
+            $user->phone_country_code = $phoneCountryCode;
+            $user->phone_number = $phoneNumber;
+            $user->email = $phoneNumber.'@otp';
+            $user->username = $phoneNumber;
+            $user->approved_at = now();
+            $user->phone_verified_at = now();
+            $newUser = true;
+        }
+        $user->last_logged_in_at = now();
+        $user->save();
+
+        $accessToken = $user->createToken($deviceName)->plainTextToken;
+        event(new Registered($user));
+
+        return [$user, $newUser, $accessToken];
     }
 }
