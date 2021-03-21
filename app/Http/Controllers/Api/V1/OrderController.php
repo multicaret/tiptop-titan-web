@@ -3,9 +3,9 @@
 namespace App\Http\Controllers\Api\V1;
 
 use App\Http\Controllers\Api\BaseApiController;
-use App\Http\Resources\CartResource;
 use App\Http\Resources\OrderIndexResource;
 use App\Http\Resources\OrderShowResource;
+use App\Models\Branch;
 use App\Models\Cart;
 use App\Models\Order;
 use App\Models\PaymentMethod;
@@ -18,7 +18,7 @@ class OrderController extends BaseApiController
     public function index(Request $request)
     {
         $previousOrders = auth()->user()->order->whereNotNull('completed_at');
-        if (!is_null($previousOrders)) {
+        if ( ! is_null($previousOrders)) {
             return OrderIndexResource::collection($previousOrders);
         }
 
@@ -28,7 +28,7 @@ class OrderController extends BaseApiController
     public function show($id)
     {
         $order = Order::find($id);
-        if (!is_null($order )) {
+        if ( ! is_null($order)) {
             return new OrderShowResource($order);
 
         }
@@ -66,8 +66,17 @@ class OrderController extends BaseApiController
 
         $branchId = $request->input('branch_id');
         $chainId = $request->input('chain_id');
-        $userBasket = Cart::retrieve($chainId, $branchId, auth()->id());
-        $basket = new CartResource($userBasket);
+        $userCart = Cart::retrieve($chainId, $branchId, auth()->id());
+        $branch = Branch::find($branchId);
+        $underMinimumOrderDeliveryFee = $branch->under_minimum_order_delivery_fee;
+        $minimumOrder = $branch->minimum_order;
+        $deliveryFee = null;
+        if ($userCart->total >= $minimumOrder) {
+            $deliveryFee = $branch->fixed_delivery_fee;
+        } else {
+            $deliveryFee = $underMinimumOrderDeliveryFee;
+        }
+
         $paymentMethods = PaymentMethod::all()->map(function ($method) {
             return [
                 'title' => $method->title,
@@ -76,9 +85,12 @@ class OrderController extends BaseApiController
                 'logo' => $method->logo,
             ];
         });
+        $grandTotal = !is_null($deliveryFee) ? $deliveryFee + $userCart->total : $userCart->total;
         $response = [
             'paymentMethods' => $paymentMethods,
-            'basket' => $basket
+            'deliveryFee' => $deliveryFee,
+            'total' => $userCart->total,
+            'grandTotal' => $grandTotal
         ];
 
         return $this->respond($response);
@@ -127,6 +139,7 @@ class OrderController extends BaseApiController
         $response = [
             'order' => $newOrder
         ];
+
         return $this->respond($response);
     }
 
