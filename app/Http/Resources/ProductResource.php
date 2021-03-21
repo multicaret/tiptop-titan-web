@@ -41,7 +41,7 @@ class ProductResource extends JsonResource
                 'amount' => $this->price,
                 'amountFormatted' => $this->price_formatted,
             ],
-            'discountedPrice' => $this->discounted_price = 0 ? null : [
+            'discountedPrice' => $this->discounted_price === 0 ? null : [
                 'amount' => $this->discounted_price,
                 'amountFormatted' => $this->discounted_price_formatted,
             ],
