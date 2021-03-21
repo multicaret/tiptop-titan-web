@@ -1,14 +1,16 @@
 @extends('layouts.frontend')
 @section('title',__('Home'))
 @section('content')
-    @foreach(range(1,99) as $foo)
-        <h4>{{$foo}}</h4>
-        <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Eligendi eum iure minima porro quis quo recusandae
-           sed sunt temporibus vitae! Accusantium, aperiam at dicta dignissimos ipsam labore laboriosam nam sint!</p>
-    @endforeach
     <style>
+        #zsiqbtn {
+            float: left !important;
+            width: 100%;
+        }
+
         #siqbtndiv {
-            display: none !important;
+            /*display: none !important;*/
+            width: 100% !important;
+            /*z-index: 9247483648 !important;*/
         }
     </style>
 
@@ -33,35 +35,52 @@
 
     <script>
 
-
         $zoho.salesiq.ready = function (e) {
-            $zoho.salesiq.visitor.getGeoDetails();
+
+            $zoho.salesiq.chat.theme('orange');
+
+            $zoho.salesiq.chatbutton.texts([
+                ["Hello, How can i help you?", "TipTop"],
+                ["Leave your message", "TipTop"]
+            ]);
+            $zoho.salesiq.floatbutton.position("left");
+
 
             $zoho.salesiq.language("{{localization()->getCurrentLocale()}}");
+            $zoho.salesiq.visitor.getGeoDetails();
 
 
             $zoho.salesiq.floatwindow.minimize(function (e) {
-                $zoho.salesiq.chat.start();
+                // $zoho.salesiq.chat.start();
+                $("#siqbtndiv").show();
+                // $zoho.salesiq.chatbutton.visible("show");
                 return false;
             });
 
+            $zoho.salesiq.floatwindow.close(function () {
+                $("#siqbtndiv").show();
+                // $zoho.salesiq.chatbutton.visible("show");
+            });
+
+
             // alert("Ready!");
-            setTimeout(function () {
-                $zoho.salesiq.chat.start();
-
-
-                // $("#siqiframe").hide()
-                // console.log("children");
-                // $("#siqiframe div.win_close").css('overflow', 'none');
-                // console.log();
-            }, 2000);
+            // setTimeout(function () {
+            //     $zoho.salesiq.chat.start();
+            // $("#siqiframe").hide()
+            // console.log("children");
+            // $("#siqiframe div.win_close").css('overflow', 'none');
+            // console.log();
+            // }, 2000);
+            $zoho.salesiq.chatbutton.click(function () {
+                $zoho.salesiq.chatbutton.visible("hide");
+                $("#siqbtndiv").hide();
+            });
         }
 
+
         $zoho.salesiq.afterReady = function (visitorgeoinfo) {
-
             console.log("visitorgeoinfo", visitorgeoinfo);
-
-            $zoho.salesiq.floatbutton.visible("hide");
+            // $zoho.salesiq.floatbutton.visible("hide");
 
             // if(visitorgeoinfo.Country == "UNITED STATES")   {
             //     $zoho.salesiq.floatbutton.visible("hide");
@@ -69,7 +88,7 @@
         }
     </script>
 
-    {{--<script src="https://code.jquery.com/jquery-3.6.0.min.js"
-            integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script>--}}
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"
+            integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script>
 
 @endsection
