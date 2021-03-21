@@ -128,7 +128,7 @@ class DatabaseSeeder extends Seeder
                 'translations' => [
                     [
                         'locale' => 'en',
-                        'title' => 'Fruits & Veges',
+                        'title' => 'Fruits & Veggies',
                     ],
                     [
                         'locale' => 'ar',
@@ -230,7 +230,7 @@ class DatabaseSeeder extends Seeder
                 'translations' => [
                     [
                         'locale' => 'en',
-                        'title' => 'Read to eat',
+                        'title' => 'Ready to eat',
                     ],
                     [
                         'locale' => 'ar',
@@ -567,10 +567,15 @@ class DatabaseSeeder extends Seeder
             $taxonomy->type = $item['type'];
             if (array_key_exists('parent_id', $item)) {
                 $taxonomy->parent_id = $item['parent_id'];
+            } else {
+                if ($item['type'] == Taxonomy::TYPE_GROCERY_CATEGORY) {
+                    $taxonomy->addMediaFromUrl(asset("/images/product-categories/{$item['translations'][0]['title']}.png"))->toMediaCollection("cover");
+                }
             }
             $taxonomy->creator_id = $super->id;
             $taxonomy->editor_id = $super->id;
             $taxonomy->status = Taxonomy::STATUS_PUBLISHED;
+
             $taxonomy->save();
             foreach ($item['translations'] as $translation) {
                 $taxonomyTranslation = new TaxonomyTranslation();
