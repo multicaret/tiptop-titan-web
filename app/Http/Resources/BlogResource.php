@@ -36,6 +36,7 @@ class BlogResource extends JsonResource
                 'raw' => $this->views,
                 'formatted' => Controller::numberToReadable($this->views),
             ],
+            'cover' => $this->cover,
             'createdAt' => [
                 'formatted' => $this->created_at->format(config('defaults.date.short_format')),
                 'diffForHumans' => $this->created_at->diffForHumans(),
