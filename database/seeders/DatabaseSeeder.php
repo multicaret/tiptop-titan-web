@@ -602,7 +602,7 @@ class DatabaseSeeder extends Seeder
                     [
                         'locale' => 'ku',
                         'title' => 'من نحن',
-                        'content' => file_get_contents(storage_path('seeders/static-pages/about-tr.html')),
+                        'content' => file_get_contents(storage_path('seeders/static-pages/about-ku.html')),
                     ],
                 ]
             ],
@@ -612,39 +612,19 @@ class DatabaseSeeder extends Seeder
                     [
                         'locale' => 'en',
                         'title' => 'Contact Us',
-                        'content' => '',
+                        'content' => file_get_contents(storage_path('seeders/static-pages/contact-en.html'))
                     ],
                     [
                         'locale' => 'ar',
                         'title' => 'إتصل بنا',
-                        'content' => '',
+                        'content' => file_get_contents(storage_path('seeders/static-pages/contact-ar.html'))
                     ],
                     [
                         'locale' => 'ku',
                         'title' => 'Bize Ulaşın',
-                        'content' => '',
+                        'content' => file_get_contents(storage_path('seeders/static-pages/contact-ku.html'))
                     ],
-                ]
-            ],
-            [
-                'type' => Post::TYPE_PAGE,
-                'translations' => [
-                    [
-                        'locale' => 'en',
-                        'title' => 'FAQ',
-                        'content' => '',
-                    ],
-                    [
-                        'locale' => 'ar',
-                        'title' => 'الأسئلة الشائعة',
-                        'content' => '',
-                    ],
-                    [
-                        'locale' => 'ku',
-                        'title' => 'SSS',
-                        'content' => '',
-                    ],
-                ]
+                ],
             ],
             [
                 'type' => Post::TYPE_PAGE,
@@ -652,17 +632,17 @@ class DatabaseSeeder extends Seeder
                     [
                         'locale' => 'en',
                         'title' => 'Privacy Policy',
-                        'content' => '',
+                        'content' => file_get_contents(storage_path('seeders/static-pages/privacy-en.html'))
                     ],
                     [
                         'locale' => 'ar',
                         'title' => 'سياسة الخصوصية',
-                        'content' => '',
+                        'content' => file_get_contents(storage_path('seeders/static-pages/privacy-ar.html'))
                     ],
                     [
                         'locale' => 'ku',
                         'title' => 'Gizlilik Politikası',
-                        'content' => '',
+                        'content' => file_get_contents(storage_path('seeders/static-pages/privacy-ku.html'))
                     ],
                 ]
             ],
@@ -682,7 +662,88 @@ class DatabaseSeeder extends Seeder
                     [
                         'locale' => 'ku',
                         'title' => 'Şartlar ve Koşullar',
-                        'content' => file_get_contents(storage_path('seeders/static-pages/terms-tr.html')),
+                        'content' => file_get_contents(storage_path('seeders/static-pages/terms-ku.html')),
+                    ],
+                ]
+            ],
+            [
+                'type' => Post::TYPE_ARTICLE,
+                'translations' => [
+                    [
+                        'locale' => 'en',
+                        'title' => 'Blog',
+                        'content' => file_get_contents(storage_path('seeders/static-pages/blog-en.html')),
+                    ],
+                    [
+                        'locale' => 'ar',
+                        'title' => 'المدونة',
+                        'content' => file_get_contents(storage_path('seeders/static-pages/blog-ar.html')),
+                    ],
+                    [
+                        'locale' => 'ku',
+                        'title' => 'المدونة',
+                        'content' => file_get_contents(storage_path('seeders/static-pages/blog-ku.html')),
+                    ],
+                ]
+            ],
+            //FAQ. Put any other posts behind it because its postition doesn't matter
+            [
+                'type' => Post::TYPE_FAQ,
+                'translations' => [
+                    [
+                        'locale' => 'en',
+                        'title' => 'adipisicing elit. Ad atque beatae eos impedit quaerat sequi?',
+                        'content' => "eligendi hic illo libero maiores pariatur porro vel voluptatem voluptates"
+                    ],
+                    [
+                        'locale' => 'ar',
+                        'title' => 'كونسيكتيتور أدايبا يسكينج أليايت,سيت دو أيوسمود تيمبور؟',
+                        'content' => "دو أيوسمود تيمبور ماجنا أليكيوا . يوت انيم أد مينيم فينايم,كيواس نوستريد أكسير أكس أيا كوممودو"
+                    ],
+                    [
+                        'locale' => 'ku',
+                        'title' => 'كونسيكتيتور أدايبا يسكينج أليايت,سيت دو أيوسمود تيمبور؟',
+                        'content' => "دو أيوسمود تيمبور ماجنا أليكيوا . يوت انيم أد مينيم فينايم,كيواس نوستريد أكسير أكس أيا كوممودو"
+                    ],
+                ]
+            ],
+            [
+                'type' => Post::TYPE_FAQ,
+                'translations' => [
+                    [
+                        'locale' => 'en',
+                        'title' => 'adipisicing elit. Ad atque beatae eos impedit quaerat sequi?',
+                        'content' => "eligendi hic illo libero maiores pariatur porro vel voluptatem voluptates"
+                    ],
+                    [
+                        'locale' => 'ar',
+                        'title' => 'كونسيكتيتور أدايبا يسكينج أليايت,سيت دو أيوسمود تيمبور؟',
+                        'content' => "دو أيوسمود تيمبور ماجنا أليكيوا . يوت انيم أد مينيم فينايم,كيواس نوستريد أكسير أكس أيا كوممودو"
+                    ],
+                    [
+                        'locale' => 'ku',
+                        'title' => 'كونسيكتيتور أدايبا يسكينج أليايت,سيت دو أيوسمود تيمبور؟',
+                        'content' => "دو أيوسمود تيمبور ماجنا أليكيوا . يوت انيم أد مينيم فينايم,كيواس نوستريد أكسير أكس أيا كوممودو"
+                    ],
+                ]
+            ],
+            [
+                'type' => Post::TYPE_FAQ,
+                'translations' => [
+                    [
+                        'locale' => 'en',
+                        'title' => 'adipisicing elit. Ad atque beatae eos impedit quaerat sequi?',
+                        'content' => "eligendi hic illo libero maiores pariatur porro vel voluptatem voluptates"
+                    ],
+                    [
+                        'locale' => 'ar',
+                        'title' => 'كونسيكتيتور أدايبا يسكينج أليايت,سيت دو أيوسمود تيمبور؟',
+                        'content' => "دو أيوسمود تيمبور ماجنا أليكيوا . يوت انيم أد مينيم فينايم,كيواس نوستريد أكسير أكس أيا كوممودو"
+                    ],
+                    [
+                        'locale' => 'ku',
+                        'title' => 'كونسيكتيتور أدايبا يسكينج أليايت,سيت دو أيوسمود تيمبور؟',
+                        'content' => "دو أيوسمود تيمبور ماجنا أليكيوا . يوت انيم أد مينيم فينايم,كيواس نوستريد أكسير أكس أيا كوممودو"
                     ],
                 ]
             ],
@@ -1069,6 +1130,7 @@ class DatabaseSeeder extends Seeder
             [
                 'name' => 'Kuzeydan 5L',
                 'category_id' => 19,
+                'gallery' => config("defaults.product_gallery"),
             ],
             [
                 'name' => 'Kuzeydan 1.5L',
@@ -1281,7 +1343,14 @@ class DatabaseSeeder extends Seeder
                 $translation->product_id = $item->id;
                 $translation->locale = $locale;
                 $translation->title = $product['name'];
+                $translation->description = file_get_contents(storage_path('seeders/product_description.html'));
                 $translation->save();
+            }
+            if (array_key_exists("gallery", $product)) {
+                $gallery = $product["gallery"];
+                foreach ($gallery as $image) {
+                    $item->addMediaFromUrl(asset($image))->toMediaCollection("gallery");
+                }
             }
         }
     }

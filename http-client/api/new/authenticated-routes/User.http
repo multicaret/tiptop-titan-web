@@ -1,12 +1,12 @@
 ################## User ##################
 
-### profile - edit (substitute to show)
+### profile - edit (also works as show)
 GET {{host}}/{{locale}}/api/v1/profile/edit
 Accept: application/json
 Content-Type: application/json
 Authorization: Bearer {{token}}
 
-### profile - update
+### profile - update (complete-profile)
 PUT {{host}}/{{locale}}/api/v1/profile
 Accept: application/json
 Content-Type: application/json

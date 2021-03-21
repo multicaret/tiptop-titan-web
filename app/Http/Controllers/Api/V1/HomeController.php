@@ -4,12 +4,13 @@ namespace App\Http\Controllers\Api\V1;
 
 
 use App\Http\Controllers\Api\BaseApiController;
-use App\Http\Resources\CartResource;
 use App\Http\Resources\BranchResource;
+use App\Http\Resources\CartResource;
 use App\Http\Resources\GroceryCategoryParentResource;
 use App\Http\Resources\LocationResource;
-use App\Models\Cart;
+use App\Models\Boot;
 use App\Models\Branch;
+use App\Models\Cart;
 use App\Models\Taxonomy;
 use Illuminate\Http\Request;
 
@@ -18,20 +19,16 @@ class HomeController extends BaseApiController
     public function boot(Request $request)
     {
         $forceUpdateMethod = 'disabled';
-        // Example
-        if ($request->input('build_number') < 25) {
-            $forceUpdateMethod = 'hard';
-        }
+        $buildNumber = $request->input('build_number');
+        $platform = $request->input('platform');
+
+        $bootConfigurations = Boot::where('platform_type', $platform)
+                                  ->where('build_number', $buildNumber)
+                                  ->first();
 
         return $this->respond([
             'force-update' => $forceUpdateMethod, // soft,hard,disabled
-            'dialog' => [
-                'title' => 'Dialog Title Bro',
-                'description' => 'This is a test example of a dialog message body',
-            ],
-            'config' => [
-                'foo' => 'bar'
-            ],
+            'configurations' => $bootConfigurations,
         ]);
     }
 

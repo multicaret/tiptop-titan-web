@@ -90,14 +90,24 @@ class AddressController extends BaseApiController
 
     public function changeSelectedAddress(Request $request)
     {
+        $response = [
+            'distance' => null,
+            'branch' => null,
+            'hasAvailableBranchesNow' => false,
+            'estimated_arrival_time' => [
+                'value' => '30-45',
+                'unit' => 'min',
+            ],
+        ];
+
         [$distance, $branch] = Branch::getClosestAvailableBranch($request->latitude, $request->longitude);
         if ( ! is_null($distance)) {
-            $sharedResponse['estimated_arrival_time']['value'] = '20-30';
+            $response['estimated_arrival_time']['value'] = '20-30';
             $response['distance'] = $distance;
             $response['branch'] = $branch;
             $response['hasAvailableBranchesNow'] = true;
 
-            return $this->respond(array_merge($sharedResponse, $response));
+            return $this->respond($response);
         }
 
         return $this->respond([
