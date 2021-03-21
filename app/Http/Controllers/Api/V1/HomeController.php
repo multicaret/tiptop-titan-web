@@ -8,9 +8,11 @@ use App\Http\Resources\BranchResource;
 use App\Http\Resources\CartResource;
 use App\Http\Resources\GroceryCategoryParentResource;
 use App\Http\Resources\LocationResource;
+use App\Http\Resources\SlideResource;
 use App\Models\Boot;
 use App\Models\Branch;
 use App\Models\Cart;
+use App\Models\Slide;
 use App\Models\Taxonomy;
 use Illuminate\Http\Request;
 
@@ -41,7 +43,8 @@ class HomeController extends BaseApiController
     {
         $channel = strtolower($request->input('channel'));
         $user = auth('sanctum')->user();
-        $response = $slides = $addresses = [];
+        $response = $addresses = [];
+        $slides = SlideResource::collection(Slide::all());
         $cart = null;
 
         $latitude = $request->latitude;

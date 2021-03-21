@@ -131,6 +131,67 @@ namespace App\Models{
 
 namespace App\Models{
 /**
+ * App\Models\Boot
+ *
+ * @property int $id
+ * @property int $build_number
+ * @property int $application_type 1:customer, 2:restaurant, 3:driver
+ * @property int $platform_type 1:ios, 2:android, 3..n:CUSTOM
+ * @property int $update_method 0:disabled, 1:soft, 2:hard
+ * @property array|null $data
+ * @property \Illuminate\Support\Carbon|null $created_at
+ * @property \Illuminate\Support\Carbon|null $updated_at
+ * @property-read \App\Models\BootTranslation|null $translation
+ * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\BootTranslation[] $translations
+ * @property-read int|null $translations_count
+ * @method static \Illuminate\Database\Eloquent\Builder|Boot listsTranslations(string $translationField)
+ * @method static \Illuminate\Database\Eloquent\Builder|Boot newModelQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder|Boot newQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder|Boot notTranslatedIn(?string $locale = null)
+ * @method static \Illuminate\Database\Eloquent\Builder|Boot orWhereTranslation(string $translationField, $value, ?string $locale = null)
+ * @method static \Illuminate\Database\Eloquent\Builder|Boot orWhereTranslationLike(string $translationField, $value, ?string $locale = null)
+ * @method static \Illuminate\Database\Eloquent\Builder|Boot orderByTranslation(string $translationField, string $sortMethod = 'asc')
+ * @method static \Illuminate\Database\Eloquent\Builder|Boot query()
+ * @method static \Illuminate\Database\Eloquent\Builder|Boot translated()
+ * @method static \Illuminate\Database\Eloquent\Builder|Boot translatedIn(?string $locale = null)
+ * @method static \Illuminate\Database\Eloquent\Builder|Boot whereApplicationType($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Boot whereBuildNumber($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Boot whereCreatedAt($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Boot whereData($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Boot whereId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Boot wherePlatformType($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Boot whereTranslation(string $translationField, $value, ?string $locale = null, string $method = 'whereHas', string $operator = '=')
+ * @method static \Illuminate\Database\Eloquent\Builder|Boot whereTranslationLike(string $translationField, $value, ?string $locale = null)
+ * @method static \Illuminate\Database\Eloquent\Builder|Boot whereUpdateMethod($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Boot whereUpdatedAt($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Boot withTranslation()
+ */
+	class Boot extends \Eloquent {}
+}
+
+namespace App\Models{
+/**
+ * App\Models\BootTranslation
+ *
+ * @property int $id
+ * @property int $boot_id
+ * @property string|null $title
+ * @property array|null $data_translated
+ * @property string $locale
+ * @method static \Illuminate\Database\Eloquent\Builder|BootTranslation newModelQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder|BootTranslation newQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder|BootTranslation query()
+ * @method static \Illuminate\Database\Eloquent\Builder|BootTranslation whereBootId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|BootTranslation whereDataTranslated($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|BootTranslation whereId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|BootTranslation whereLocale($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|BootTranslation whereTitle($value)
+ */
+	class BootTranslation extends \Eloquent {}
+}
+
+namespace App\Models{
+/**
  * App\Models\Branch
  *
  * @property int $id
@@ -288,6 +349,17 @@ namespace App\Models{
 /**
  * App\Models\Cart
  *
+ * @property int $id
+ * @property int $user_id
+ * @property int $chain_id
+ * @property int $branch_id
+ * @property float $total
+ * @property float $without_discount_total
+ * @property int|null $crm_id
+ * @property int|null $crm_user_id
+ * @property int $status 0:In Progress, 1: Completed
+ * @property \Illuminate\Support\Carbon|null $created_at
+ * @property \Illuminate\Support\Carbon|null $updated_at
  * @property-read \App\Models\Branch $branch
  * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\CartProduct[] $cartProducts
  * @property-read int|null $cart_products_count
@@ -298,6 +370,17 @@ namespace App\Models{
  * @method static \Illuminate\Database\Eloquent\Builder|Cart newModelQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|Cart newQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|Cart query()
+ * @method static \Illuminate\Database\Eloquent\Builder|Cart whereBranchId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Cart whereChainId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Cart whereCreatedAt($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Cart whereCrmId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Cart whereCrmUserId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Cart whereId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Cart whereStatus($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Cart whereTotal($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Cart whereUpdatedAt($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Cart whereUserId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Cart whereWithoutDiscountTotal($value)
  */
 	class Cart extends \Eloquent {}
 }
@@ -306,11 +389,25 @@ namespace App\Models{
 /**
  * App\Models\CartProduct
  *
+ * @property int $id
+ * @property int $cart_id
+ * @property int $product_id
+ * @property int $quantity
+ * @property array|null $product_object
+ * @property \Illuminate\Support\Carbon|null $created_at
+ * @property \Illuminate\Support\Carbon|null $updated_at
  * @property-read \App\Models\Cart $cart
  * @property-read \App\Models\Product $product
  * @method static \Illuminate\Database\Eloquent\Builder|CartProduct newModelQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|CartProduct newQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|CartProduct query()
+ * @method static \Illuminate\Database\Eloquent\Builder|CartProduct whereCartId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|CartProduct whereCreatedAt($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|CartProduct whereId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|CartProduct whereProductId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|CartProduct whereProductObject($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|CartProduct whereQuantity($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|CartProduct whereUpdatedAt($value)
  */
 	class CartProduct extends \Eloquent {}
 }
@@ -1184,7 +1281,7 @@ namespace App\Models{
  * @property int $user_id
  * @property int $chain_id
  * @property int $branch_id
- * @property int $basket_id
+ * @property int $cart_id
  * @property int $payment_method_id
  * @property int $address_id
  * @property int|null $coupon_id
@@ -1201,7 +1298,7 @@ namespace App\Models{
  * @property int $rating_count
  * @property \Illuminate\Support\Carbon|null $completed_at
  * @property string|null $notes
- * @property int $status 
+ * @property int $status
  *             0: Cancelled,
  *             1: Draft,
  *             6: Waiting Courier,
@@ -1228,8 +1325,8 @@ namespace App\Models{
  * @method static \Illuminate\Database\Eloquent\Builder|Order query()
  * @method static \Illuminate\Database\Eloquent\Builder|Order whereAddressId($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Order whereAvgRating($value)
- * @method static \Illuminate\Database\Eloquent\Builder|Order whereBasketId($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Order whereBranchId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Order whereCartId($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Order whereChainId($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Order whereCompletedAt($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Order whereCouponDiscountAmount($value)
@@ -1560,6 +1657,7 @@ namespace App\Models{
  * @property int|null $order_column
  * @property string $avg_rating
  * @property int $rating_count
+ * @property int $search_count
  * @property int $view_count
  * @property int|null $status
  * @property int|null $price_discount_began_at
@@ -1639,6 +1737,7 @@ namespace App\Models{
  * @method static \Illuminate\Database\Eloquent\Builder|Product wherePriceDiscountByPercentage($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Product wherePriceDiscountFinishedAt($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Product whereRatingCount($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Product whereSearchCount($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Product whereSku($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Product whereStatus($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Product whereTranslation(string $translationField, $value, ?string $locale = null, string $method = 'whereHas', string $operator = '=')
@@ -1841,6 +1940,69 @@ namespace App\Models{
  * @method static \Illuminate\Database\Eloquent\Builder|Search whereUpdatedAt($value)
  */
 	class Search extends \Eloquent {}
+}
+
+namespace App\Models{
+/**
+ * App\Models\Slide
+ *
+ * @property int $id
+ * @property string|null $link_value
+ * @property int $link_type
+ * @property \Illuminate\Support\Carbon|null $created_at
+ * @property \Illuminate\Support\Carbon|null $updated_at
+ * @property-read mixed $image
+ * @property-read mixed $image_full
+ * @property-read mixed $thumbnail
+ * @property-read \Spatie\MediaLibrary\MediaCollections\Models\Collections\MediaCollection|\Spatie\MediaLibrary\MediaCollections\Models\Media[] $media
+ * @property-read int|null $media_count
+ * @property-read \App\Models\SlideTranslation|null $translation
+ * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\SlideTranslation[] $translations
+ * @property-read int|null $translations_count
+ * @method static \Illuminate\Database\Eloquent\Builder|Slide listsTranslations(string $translationField)
+ * @method static \Illuminate\Database\Eloquent\Builder|Slide newModelQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder|Slide newQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder|Slide notTranslatedIn(?string $locale = null)
+ * @method static \Illuminate\Database\Query\Builder|Slide onlyTrashed()
+ * @method static \Illuminate\Database\Eloquent\Builder|Slide orWhereTranslation(string $translationField, $value, ?string $locale = null)
+ * @method static \Illuminate\Database\Eloquent\Builder|Slide orWhereTranslationLike(string $translationField, $value, ?string $locale = null)
+ * @method static \Illuminate\Database\Eloquent\Builder|Slide orderByTranslation(string $translationField, string $sortMethod = 'asc')
+ * @method static \Illuminate\Database\Eloquent\Builder|Slide query()
+ * @method static \Illuminate\Database\Eloquent\Builder|Slide translated()
+ * @method static \Illuminate\Database\Eloquent\Builder|Slide translatedIn(?string $locale = null)
+ * @method static \Illuminate\Database\Eloquent\Builder|Slide whereCreatedAt($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Slide whereId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Slide whereLinkType($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Slide whereLinkValue($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Slide whereTranslation(string $translationField, $value, ?string $locale = null, string $method = 'whereHas', string $operator = '=')
+ * @method static \Illuminate\Database\Eloquent\Builder|Slide whereTranslationLike(string $translationField, $value, ?string $locale = null)
+ * @method static \Illuminate\Database\Eloquent\Builder|Slide whereUpdatedAt($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Slide withTranslation()
+ * @method static \Illuminate\Database\Query\Builder|Slide withTrashed()
+ * @method static \Illuminate\Database\Query\Builder|Slide withoutTrashed()
+ */
+	class Slide extends \Eloquent implements \Spatie\MediaLibrary\HasMedia {}
+}
+
+namespace App\Models{
+/**
+ * App\Models\SlideTranslation
+ *
+ * @property int $id
+ * @property int $slide_id
+ * @property string $locale
+ * @property string|null $title
+ * @property string|null $description
+ * @method static \Illuminate\Database\Eloquent\Builder|SlideTranslation newModelQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder|SlideTranslation newQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder|SlideTranslation query()
+ * @method static \Illuminate\Database\Eloquent\Builder|SlideTranslation whereDescription($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|SlideTranslation whereId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|SlideTranslation whereLocale($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|SlideTranslation whereSlideId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|SlideTranslation whereTitle($value)
+ */
+	class SlideTranslation extends \Eloquent {}
 }
 
 namespace App\Models{
