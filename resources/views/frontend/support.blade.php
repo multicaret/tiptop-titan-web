@@ -4,10 +4,12 @@
     <style>
         #zsiqbtn {
             float: left !important;
+            width: 100%;
         }
 
         #siqbtndiv {
             /*display: none !important;*/
+            width: 100% !important;
             /*z-index: 9247483648 !important;*/
         }
     </style>
@@ -36,7 +38,6 @@
         $zoho.salesiq.ready = function (e) {
 
             $zoho.salesiq.chat.theme('orange');
-            $zoho.salesiq.chatbutton.width("300");
 
             $zoho.salesiq.chatbutton.texts([
                 ["Hello, How can i help you?", "TipTop"],
