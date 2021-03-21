@@ -13,6 +13,8 @@ use App\Models\Preference;
 use App\Models\PreferenceTranslation;
 use App\Models\Product;
 use App\Models\ProductTranslation;
+use App\Models\Slide;
+use App\Models\SlideTranslation;
 use App\Models\Taxonomy;
 use App\Models\TaxonomyTranslation;
 use App\Models\User;
@@ -61,6 +63,7 @@ class DatabaseSeeder extends Seeder
         [$super, $admin] = $this->users();
         $this->preferences($appHost);
         $this->posts($super);
+        $this->slides($super);
         $this->taxonomies($super);
         $this->chains($super);
         $this->branches($super);
@@ -769,6 +772,77 @@ class DatabaseSeeder extends Seeder
                     $postTranslation->$column = $value;
                 }
                 $postTranslation->save();
+            }
+        }
+    }
+
+    private function slides(User $super)
+    {
+        $slides = [
+            [
+                'link_value' => 'https://example.com',
+                'link_type' => Slide::TYPE_DEEPLINK,
+                'image' => config('defaults.images.slider_image'),
+                'translations' => [
+                    [
+                        'locale' => 'en',
+                        'title' => 'Slide 1',
+                        'description' => file_get_contents(storage_path('seeders/slides/slide-en.html')),
+                    ],
+                    [
+                        'locale' => 'ar',
+                        'title' => 'ما هو لوريم',
+                        'description' => file_get_contents(storage_path('seeders/slides/slide-ar.html')),
+                    ],
+                    [
+                        'locale' => 'ku',
+                        'title' => 'slider 1',
+                        'description' => file_get_contents(storage_path('seeders/static-pages/about-ku.html')),
+                    ],
+                ]
+            ],
+            [
+                'link_value' => 'https://example.com',
+                'link_type' => Slide::TYPE_EXTERNAL,
+                'image' => config('defaults.images.slider_image_2'),
+                'translations' => [
+                    [
+                        'locale' => 'en',
+                        'title' => 'Slide 2',
+                        'description' => file_get_contents(storage_path('seeders/slides/slide-en.html')),
+                    ],
+                    [
+                        'locale' => 'ar',
+                        'title' => 'ما هو لوريم',
+                        'description' => file_get_contents(storage_path('seeders/slides/slide-ar.html')),
+                    ],
+                    [
+                        'locale' => 'ku',
+                        'title' => 'slider 2',
+                        'description' => file_get_contents(storage_path('seeders/slides/slide-ku.html')),
+                    ],
+                ]
+            ],
+        ];
+
+
+        foreach ($slides as $item) {
+            $slide = new Slide();
+            $slide->link_value = $item['link_value'];
+            $slide->link_type = $item['link_type'];
+            $slide->creator_id = $super->id;
+            $slide->editor_id = $super->id;
+            $slide->save();
+            foreach ($item['translations'] as $translation) {
+                $slideTranslation = new SlideTranslation();
+                $slideTranslation->slide_id = $slide->id;
+                foreach ($translation as $column => $value) {
+                    $slideTranslation->$column = $value;
+                }
+                $slideTranslation->save();
+            }
+            if (isset($item['image'])) {
+                $slide->addMediaFromUrl(asset($item['image']))->toMediaCollection("image");
             }
         }
     }
