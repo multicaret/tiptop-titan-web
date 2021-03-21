@@ -97,6 +97,40 @@ namespace App\Models{
 
 namespace App\Models{
 /**
+ * App\Models\Boot
+ *
+ * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\BootTranslation[] $translations
+ * @property-read int|null $translations_count
+ * @method static \Illuminate\Database\Eloquent\Builder|Boot listsTranslations(string $translationField)
+ * @method static \Illuminate\Database\Eloquent\Builder|Boot newModelQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder|Boot newQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder|Boot notTranslatedIn(?string $locale = null)
+ * @method static \Illuminate\Database\Eloquent\Builder|Boot orWhereTranslation(string $translationField, $value, ?string $locale = null)
+ * @method static \Illuminate\Database\Eloquent\Builder|Boot orWhereTranslationLike(string $translationField, $value, ?string $locale = null)
+ * @method static \Illuminate\Database\Eloquent\Builder|Boot orderByTranslation(string $translationField, string $sortMethod = 'asc')
+ * @method static \Illuminate\Database\Eloquent\Builder|Boot query()
+ * @method static \Illuminate\Database\Eloquent\Builder|Boot translated()
+ * @method static \Illuminate\Database\Eloquent\Builder|Boot translatedIn(?string $locale = null)
+ * @method static \Illuminate\Database\Eloquent\Builder|Boot whereTranslation(string $translationField, $value, ?string $locale = null, string $method = 'whereHas', string $operator = '=')
+ * @method static \Illuminate\Database\Eloquent\Builder|Boot whereTranslationLike(string $translationField, $value, ?string $locale = null)
+ * @method static \Illuminate\Database\Eloquent\Builder|Boot withTranslation()
+ */
+	class Boot extends \Eloquent {}
+}
+
+namespace App\Models{
+/**
+ * App\Models\BootTranslation
+ *
+ * @method static \Illuminate\Database\Eloquent\Builder|BootTranslation newModelQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder|BootTranslation newQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder|BootTranslation query()
+ */
+	class BootTranslation extends \Eloquent {}
+}
+
+namespace App\Models{
+/**
  * App\Models\Branch
  *
  * @property int $id
@@ -1862,6 +1896,7 @@ namespace App\Models{
  * @property-read int|null $cross_sells_products_count
  * @property-read \App\Models\User $editor
  * @property-read mixed $cover
+ * @property-read mixed $cover_small
  * @property-read mixed $is_published
  * @property-read mixed $link
  * @property-read mixed $status_name

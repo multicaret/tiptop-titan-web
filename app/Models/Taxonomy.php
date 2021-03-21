@@ -43,6 +43,7 @@ class Taxonomy extends Node implements HasMedia, ShouldHaveTypes, TranslatableCo
 
     protected $appends = [
         'cover',
+        'cover_small',
     ];
 
 
@@ -290,7 +291,24 @@ class Taxonomy extends Node implements HasMedia, ShouldHaveTypes, TranslatableCo
         }
 
         if ($this->hasMedia('cover')) {
-            $cover = $this->getFirstMedia('cover')->getFullUrl();
+            $cover = $this->getFirstMedia('cover')->getFullUrl('1K');
+        }
+
+        return $cover;
+    }
+
+    public function getCoverSmallAttribute()
+    {
+        $cover = url(config('defaults.images.taxonomy_cover'));
+        if ($this->type == self::TYPE_GROCERY_CATEGORY) {
+            $cover = url(config('defaults.images.grocery_category_cover')).'?v=2';
+        }
+        if ($this->type == self::TYPE_FOOD_CATEGORY) {
+            $cover = url(config('defaults.images.food_category_cover'));
+        }
+
+        if ($this->hasMedia('cover')) {
+            $cover = $this->getFirstMedia('cover')->getFullUrl('SD');
         }
 
         return $cover;

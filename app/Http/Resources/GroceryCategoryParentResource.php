@@ -27,7 +27,7 @@ class GroceryCategoryParentResource extends JsonResource
             'hasChildren' => $this->hasChildren(),
             'children' => GroceryCategoryChildResource::collection($this->children),
             'cover' => $this->cover,
-            'thumbnail' => $this->thumbnail,
+            'thumbnail' => $this->cover_small,
         ];
     }
 }

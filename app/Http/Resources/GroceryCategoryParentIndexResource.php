@@ -27,7 +27,7 @@ class GroceryCategoryParentIndexResource extends JsonResource
             ],
             'hasChildren' => $this->hasChildren(),
             'cover' => $this->cover,
-            'thumbnail' => $this->thumbnail,
+            'thumbnail' => $this->cover_small,
         ];
     }
 }
