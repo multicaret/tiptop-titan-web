@@ -19,8 +19,8 @@ class SlideResource extends JsonResource
                 'raw' => strip_tags($this->description),
                 'formatted' => $this->description,
             ],
-            'link_value' => $this->link_value,
-            'link_type' => $this->link_type,
+            'linkValue' => $this->link_value,
+            'linkType' => $this->link_type,
             'image' => $this->image,
         ];
     }
