@@ -19,6 +19,8 @@ Route::get('pages/{page}', 'PageController@show')->name('pages.show');
 Route::get('blog', 'BlogController@index')->name('blog.index');
 Route::get('blog/{post}', 'BlogController@show')->name('blog.show');
 
+Route::view('support', 'frontend.support')->name('support');
+
 
 Route::get('static-map', 'HomeController@staticMap');
 
