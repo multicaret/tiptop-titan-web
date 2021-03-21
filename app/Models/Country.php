@@ -16,6 +16,10 @@ class Country extends Model
     const STATUS_PUBLISHED = 2;
     const STATUS_INACTIVE = 3;
 
+
+    const IRAQ_COUNTRY_ID = 107;
+    const TURKEY_COUNTRY_ID = 225;
+
     protected $translatedAttributes = ['name', 'slug'];
     protected $fillable = ['name', 'slug'];
     protected $with = ['translations'];
