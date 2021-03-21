@@ -1,6 +1,11 @@
 @extends('layouts.frontend')
 @section('title',__('Home'))
 @section('content')
+    @foreach(range(1,99) as $foo)
+        <h4>{{$foo}}</h4>
+        <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Eligendi eum iure minima porro quis quo recusandae
+           sed sunt temporibus vitae! Accusantium, aperiam at dicta dignissimos ipsam labore laboriosam nam sint!</p>
+    @endforeach
     <style>
         #siqbtndiv {
             display: none !important;
