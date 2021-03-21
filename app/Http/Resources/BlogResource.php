@@ -24,6 +24,14 @@ class BlogResource extends JsonResource
                 'raw' => strip_tags($this->content),
                 'formatted' => $this->content,
             ],
+            'excerpt' => [
+                'raw' => strip_tags($this->excerpt),
+                'formatted' => $this->excerpt,
+            ],
+            'notes' => [
+                'raw' => strip_tags($this->notes),
+                'formatted' => $this->notes,
+            ],
             'views' => [
                 'raw' => $this->views,
                 'formatted' => Controller::numberToReadable($this->views),

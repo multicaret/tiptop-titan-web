@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Api\V1;
 
 use App\Http\Controllers\Api\BaseApiController;
 use App\Http\Resources\CountryResource;
+use App\Http\Resources\CountryWithFlagResource;
 use App\Http\Resources\CurrencyResource;
 use App\Http\Resources\LanguageResource;
 use App\Http\Resources\TimezoneResource;
@@ -12,7 +13,9 @@ use App\Models\CountryTranslation;
 use App\Models\Currency;
 use App\Models\Language;
 use App\Models\Timezone;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Storage;
 
 class CountryController extends BaseApiController
 {
@@ -24,6 +27,39 @@ class CountryController extends BaseApiController
     public function index()
     {
         return CountryResource::collection(Country::getAll());
+    }
+
+    /**
+     * Display a listing of the resource.
+     *
+     * @return \Illuminate\Http\Resources\Json\AnonymousResourceCollection
+     */
+    public function countreisWithFlags(Request $request)
+    {
+
+        if ($request->has('all')) {
+            $countries = Country::getAll();
+        } else {
+            $countries = Country::whereIn('id', [Country::IRAQ_COUNTRY_ID, Country::TURKEY_COUNTRY_ID])->get();
+        }
+        foreach ($countries as $country) {
+            if ( ! empty($country->alpha3_code)) {
+                $countryFlagUrl = 'https://restcountries.eu/data/'.strtolower($country->alpha3_code).'.svg';
+                $filename = basename($countryFlagUrl);
+                if ( ! \Storage::disk('public')->exists('flags/'.$filename)) {
+                    try {
+                        \Storage::disk('public')->put('flags/'.$filename, file_get_contents($countryFlagUrl));
+                    } catch (\Exception $e) {
+                        dd($country->id, $e->getMessage(), $countryFlagUrl);
+                    }
+                }
+                $flagPath = asset('flags/'.$filename);
+                $country->flag = $flagPath;
+            }
+        }
+
+
+        return CountryWithFlagResource::collection($countries);
     }
 
     /**

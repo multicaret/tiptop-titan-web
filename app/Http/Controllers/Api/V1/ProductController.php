@@ -44,7 +44,7 @@ class ProductController extends BaseApiController
             });
         })->get();
 
-        return ProductResource::collection($products);
+        return $this->respond(ProductResource::collection($products));
     }
 
 }
