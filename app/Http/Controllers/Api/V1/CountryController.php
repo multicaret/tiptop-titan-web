@@ -32,7 +32,7 @@ class CountryController extends BaseApiController
     /**
      * Display a listing of the resource.
      *
-     * @return \Illuminate\Http\Resources\Json\AnonymousResourceCollection
+     * @return \Illuminate\Http\JsonResponse
      */
     public function countreisWithFlags(Request $request)
     {
@@ -59,7 +59,7 @@ class CountryController extends BaseApiController
         }
 
 
-        return CountryWithFlagResource::collection($countries);
+        return $this->respond(CountryWithFlagResource::collection($countries));
     }
 
     /**

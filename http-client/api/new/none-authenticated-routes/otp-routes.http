@@ -34,7 +34,8 @@ Content-Type: application/json
 
 {
     "country_code": "TR",
-    "phone_number": "+905395534325",
+    "phone_country_code": "+90",
+    "phone_number": "5395534325",
     "code": "480468",
     "reference": "b830bdc2288265ff945ec43592742428f043dd13"
 }
