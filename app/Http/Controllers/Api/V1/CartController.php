@@ -71,15 +71,16 @@ class CartController extends BaseApiController
     public function clearCart(Request $request)
     {
         $cart = Cart::whereUserId(auth()->id())->whereStatus(Cart::STATUS_IN_PROGRESS)->first();
+
         if ( ! is_null($cart)) {
-            $cart->products()->delete();
+            CartProduct::whereCartId($cart->id)->delete();
+            try {
+                $cart->delete();
+            } catch (\Exception $e) {
+                dd($e->getMessage());
+            }
 
-            $cart->delete();
-
-            return $this->respond([
-                'type' => 'success',
-                'text' => 'Successfully Deleted',
-            ]);
+            return $this->respond(['type' => 'success', 'text' => 'Successfully Deleted',]);
         }
 
         return $this->respondValidationFails('There isn\'t a cart to delete');
