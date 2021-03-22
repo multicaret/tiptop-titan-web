@@ -65,6 +65,8 @@ class OtpController extends BaseApiController
 
     public function check($reference, Request $request): JsonResponse
     {
+        $mobileDataRequest = $request->input('mobile_app');
+        $mobileAppData = json_decode($mobileDataRequest);
         try {
             $vfk = $this->getVFK();
             $validationCheck = $vfk->checkValidation($reference);
@@ -80,15 +82,31 @@ class OtpController extends BaseApiController
         if (isset($errorMessage) && isset($statusCode)) {
             return $this->setStatusCode($statusCode)->respondWithMessage($errorMessage);
         }
-
+        $deviceName = isset($mobileAppData->device) ? $mobileAppData->device->model : 'New Device';
         $validationStatus = isset($validationCheck) ? $validationCheck->getValidationStatus() : false;
 
         if ($validationStatus) {
             $phoneCountryCode = $request->phone_country_code;
             $phoneNumber = $request->phone_number;
-            $deviceName = $request->input('device_name', 'New Device');
-            [$user, $newUser, $accessToken] = $this->registerUserIfNotFoundByPhone($phoneCountryCode, $phoneNumber,
-                $deviceName);
+//            $deviceName = $request->input('device_name', 'New Device');
+            // new user has been verified
+            if (is_null($user = User::getUserByPhone($phoneCountryCode, $phoneNumber))) {
+                $user = new User();
+                $user->first = $phoneCountryCode.$phoneNumber;
+                $user->phone_country_code = $phoneCountryCode;
+                $user->phone_number = $phoneNumber;
+                $user->email = $phoneNumber.'@otp';
+                $user->username = $phoneNumber;
+                $user->mobile_app = $mobileDataRequest;
+                $user->approved_at = now();
+                $user->phone_verified_at = now();
+                $newUser = true;
+            }
+            $user->last_logged_in_at = now();
+            $user->save();
+
+            $accessToken = $user->createToken($deviceName)->plainTextToken;
+            event(new Registered($user));
             $response = [
                 'newUser' => $newUser,
                 'user' => new UserResource($user),
