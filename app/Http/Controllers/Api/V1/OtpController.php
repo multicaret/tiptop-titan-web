@@ -65,6 +65,8 @@ class OtpController extends BaseApiController
 
     public function check($reference, Request $request): JsonResponse
     {
+        $mobileDataRequest = $request->input('mobile_app');
+        $mobileAppData = json_decode($mobileDataRequest);
         try {
             $vfk = $this->getVFK();
             $validationCheck = $vfk->checkValidation($reference);
@@ -87,7 +89,8 @@ class OtpController extends BaseApiController
         if ($validationStatus) {
             $phoneCountryCode = $request->phone_country_code;
             $phoneNumber = $request->phone_number;
-            $deviceName = $request->input('device_name', 'New Device');
+//            $deviceName = $request->input('device_name', 'New Device');
+            $deviceName = isset($mobileAppData->device) ? $mobileAppData->device->model : 'New Device';
             // new user has been verified
             if (is_null($user = User::getUserByPhone($phoneCountryCode, $phoneNumber))) {
                 $user = new User();
@@ -96,6 +99,7 @@ class OtpController extends BaseApiController
                 $user->phone_number = $phoneNumber;
                 $user->email = $phoneNumber.'@otp';
                 $user->username = $phoneNumber;
+                $user->mobile_app = $mobileDataRequest;
                 $user->approved_at = now();
                 $user->phone_verified_at = now();
                 $newUser = true;
