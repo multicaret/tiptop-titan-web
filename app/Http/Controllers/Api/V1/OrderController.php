@@ -131,6 +131,7 @@ class OrderController extends BaseApiController
             $deliveryFee = $underMinimumOrderDeliveryFee;
         }
 
+        \DB::beginTransaction();
         $newOrder = new Order();
         $newOrder->user_id = auth()->id();
         $newOrder->chain_id = $request->input('chain_id');
@@ -140,17 +141,16 @@ class OrderController extends BaseApiController
         $newOrder->address_id = $request->input('address_id');
         $newOrder->total = $userCart->total;
         $newOrder->delivery_fee = $deliveryFee;
-//        $newOrder->previous_order_id = $request->input('previous_order_id');
-//        $newOrder->coupon_discount_amount = $deliveryFee;
-//        $newOrder->private_total = $request->input('private_total');
-//        $newOrder->private_delivery_fee = $request->input('private_delivery_fee');
-//        $newOrder->private_grand_total = $request->input('private_grand_total');
-        $newOrder->completed_at = now();
         $newOrder->grand_total = $userCart->total + $deliveryFee;
+//        $newOrder->coupon_discount_amount = $deliveryFee;
+        $newOrder->private_total = $newOrder->total;
+        $newOrder->private_delivery_fee = $newOrder->delivery_fee;
+        $newOrder->private_grand_total = $newOrder->grand_total;
+        $newOrder->completed_at = now();
 //        $newOrder->private_payment_method_commission = $request->input('private_payment_method_commission');
 //        $newOrder->avg_rating = $request->input('avg_rating');
 //        $newOrder->rating_count = $request->input('rating_count');
-//        $newOrder->notes = $request->input('notes');
+        $newOrder->notes = $request->input('notes');
         $newOrder->status = Order::STATUS_DELIVERED;
         $newOrder->save();
 
@@ -158,6 +158,7 @@ class OrderController extends BaseApiController
         $cart = Cart::find($newOrder->cart_id);
         $cart->status = Cart::STATUS_COMPLETED;
         $cart->save();
+        \DB::commit();
 
         return $this->respond(new OrderIndexResource($newOrder));
     }
