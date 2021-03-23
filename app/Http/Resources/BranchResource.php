@@ -16,7 +16,7 @@ class BranchResource extends JsonResource
     {
 
         return [
-            'id' => $this->id,
+            'id' => (int) $this->id,
             'regionId' => $this->region_id,
             'cityId' => $this->city_id,
             'minimumOrder' => [

@@ -18,7 +18,7 @@ class GroceryCategoryChildResource extends JsonResource
     {
 
         return [
-            'id' => $this->id,
+            'id' => (int) $this->id,
             'type' => $this->getCorrectTypeName(),
             'icon' => $this->icon,
             'title' => $this->title,

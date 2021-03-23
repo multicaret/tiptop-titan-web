@@ -19,7 +19,7 @@ class OrderIndexResource extends JsonResource
     public function toArray($request)
     {
         return [
-            'id' => $this->id,
+            'id' => (int) $this->id,
 //            TODO: uncommitted it when you work on addresses
 //            'address' => [
 //                'icon' => $this->address->icon,

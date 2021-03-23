@@ -15,7 +15,7 @@ class CartResource extends JsonResource
     public function toArray($request)
     {
         return [
-            'id' => $this->id,
+            'id' => (int) $this->id,
             'productsCount' => $this->products()->count(),
             'total' => [
                 'raw' => $this->total,

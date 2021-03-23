@@ -34,7 +34,7 @@ class LocationResource extends JsonResource
         }*/
 
         return [
-            'id' => $this->id,
+            'id' => (int) $this->id,
 //            'user' => new UserResource($this->user),
 //            'editor' => new UserResource($this->editor),
             'country' => new CountryResource($this->country),

@@ -18,7 +18,7 @@ class OrderShowResource extends JsonResource
     public function toArray($request)
     {
         return [
-            'id' => $this->id,
+            'id' => (int) $this->id,
             'address' => [
                 'icon' => $this->address->icon,
                 'alias' => $this->address->name,
