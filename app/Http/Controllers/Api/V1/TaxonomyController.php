@@ -8,7 +8,6 @@ use App\Http\Resources\FaqResource;
 use App\Http\Resources\TaxonomyResource;
 use App\Models\Taxonomy;
 use App\Models\TaxonomyTranslation;
-use App\Models\User;
 use Illuminate\Http\Request;
 
 class TaxonomyController extends BaseApiController
@@ -139,9 +138,14 @@ class TaxonomyController extends BaseApiController
         $taxonomy = Taxonomy::find($taxonomy);
 
         $defaultLocale = localization()->getDefaultLocale();
-        $request->validate([
+        $validationRules = [
             "translations.{$defaultLocale}.title" => 'required',
-        ]);
+        ];
+
+        $validator = validator()->make($request->all(), $validationRules);
+        if ($validator->fails()) {
+            return $this->respondValidationFails($validator->errors());
+        }
 
         $taxonomy->editor_id = auth()->id();
         if ($request->has('icon')) {

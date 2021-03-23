@@ -136,11 +136,15 @@ class OtpController extends BaseApiController
 
     public function otpSmsSend(Request $request): JsonResponse
     {
-        $validationData = [
-            "phone_number" => 'required',
-            "country_code" => 'required',
+        $validationRules = [
+            'phone_number' => 'required',
+            'country_code' => 'required',
         ];
-        $request->validate($validationData);
+
+        $validator = validator()->make($request->all(), $validationRules);
+        if ($validator->fails()) {
+            return $this->respondValidationFails($validator->errors());
+        }
 
         // For OTP verification to work best, you should send us the MCC and MNC code of the sim card in the user's device.
         $mcc = '999'; // Mobile Country Code (MCC) of the sim card in the user's device. Default value is '999'. Not required.
@@ -176,14 +180,18 @@ class OtpController extends BaseApiController
 
     public function otpSmsValidate(Request $request): JsonResponse
     {
-        $validationData = [
-            "phone_number" => 'required',
-            "phone_country_code" => 'required',
-            "country_code" => 'required',
-            "code" => 'required',
-            "reference" => 'required',
+        $validationRules = [
+            'phone_number' => 'required',
+            'phone_country_code' => 'required',
+            'country_code' => 'required',
+            'code' => 'required',
+            'reference' => 'required',
         ];
-        $request->validate($validationData);
+
+        $validator = validator()->make($request->all(), $validationRules);
+        if ($validator->fails()) {
+            return $this->respondValidationFails($validator->errors());
+        }
 
 
         $statusCode = Response::HTTP_BAD_REQUEST;

@@ -35,12 +35,19 @@ class AddressController extends BaseApiController
 
     public function store(Request $request)
     {
+        $rules = [
+            'alias' => 'required',
+            'region_id' => 'required',
+            'city_id' => 'required',
+            'address1' => 'required',
+        ];
+
+        $validator = validator()->make($request->all(), $rules);
+        if ($validator->fails()) {
+            return $this->respondValidationFails($validator->errors());
+        }
+
         \DB::beginTransaction();
-        /*$request->validate([
-            'first' => 'required|min:3|max:60',
-            'email' => 'required|email|min:3|max:255|unique:users,email',
-//            'password' => 'required|string|min:6|confirmed',
-        ]);*/
         $user_id = auth()->user()->id;
         $address = new Location();
         $address->creator_id = $user_id;
@@ -63,10 +70,7 @@ class AddressController extends BaseApiController
 
         \DB::commit();
 
-        return $this->respond([
-            'success' => true,
-            'message' => 'Successfully Stored',
-        ]);
+        return $this->respondWithMessage(__('strings.successfully_updated'));
     }
 
     public function destroy($address)
@@ -76,10 +80,7 @@ class AddressController extends BaseApiController
         if (is_null($address)) {
             return $this->respondNotFound();
         } elseif ($address->delete()) {
-            return $this->respond([
-                'type' => 'success',
-                'text' => 'Successfully Deleted',
-            ]);
+            return $this->respondWithMessage(__('strings.successfully_deleted'));
         }
 
         return $this->respond([
