@@ -17,9 +17,14 @@ class PaymentMethodResource extends JsonResource
             'id' => $this->id,
             'logo' => $this->logo,
             'title' => $this->title,
-            'description' => $this->description,
-            'instructions' => $this->instructions,
-
+            'description' => [
+                'raw' => strip_tags($this->description),
+                'formatted' => $this->description,
+            ],
+            'instructions' => [
+                'raw' => strip_tags($this->instructions),
+                'formatted' => $this->instructions,
+            ],
         ];
     }
 }
