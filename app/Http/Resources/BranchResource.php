@@ -34,8 +34,8 @@ class BranchResource extends JsonResource
             'primaryPhoneNumber' => $this->primary_phone_number,
             'secondaryPhoneNumber' => $this->secondary_phone_number,
             'whatsappPhoneNumber' => $this->whatsapp_phone_number,
-            'latitude' => $this->latitude,
-            'longitude' => $this->longitude,
+            'latitude' => (float) $this->latitude,
+            'longitude' => (float) $this->longitude,
             'chain' => new ChainResource($this->chain),
         ];
     }
