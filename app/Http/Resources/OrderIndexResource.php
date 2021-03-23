@@ -2,6 +2,7 @@
 
 namespace App\Http\Resources;
 
+use App\Models\Cart;
 use App\Models\Currency;
 use Illuminate\Http\Resources\Json\JsonResource;
 
@@ -33,6 +34,7 @@ class OrderIndexResource extends JsonResource
                 'raw' => $this->grand_total,
                 'formatted' => Currency::format($this->grand_total),
             ],
+            'cart' => new CartResource($this->cart),
         ];
     }
 }
