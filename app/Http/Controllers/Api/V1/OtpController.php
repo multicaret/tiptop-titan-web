@@ -85,10 +85,10 @@ class OtpController extends BaseApiController
         $deviceName = isset($mobileAppData->device) ? $mobileAppData->device->model : 'New Device';
         $validationStatus = isset($validationCheck) ? $validationCheck->getValidationStatus() : false;
 
+        $newUser = false;
         if ($validationStatus) {
             $phoneCountryCode = $request->phone_country_code;
             $phoneNumber = $request->phone_number;
-//            $deviceName = $request->input('device_name', 'New Device');
             // new user has been verified
             if (is_null($user = User::getUserByPhone($phoneCountryCode, $phoneNumber))) {
                 $user = new User();
@@ -119,7 +119,7 @@ class OtpController extends BaseApiController
             ];
         } else {
             $response = [
-                'newUser' => false,
+                'newUser' => $newUser,
                 'user' => null,
                 'accessToken' => null,
                 'validationStatus' => $validationStatus,
@@ -185,14 +185,16 @@ class OtpController extends BaseApiController
         ];
         $request->validate($validationData);
 
+
         $statusCode = Response::HTTP_BAD_REQUEST;
         $phoneNumber = $request->input('phone_number');
         $phoneCountryCode = $request->input('phone_country_code');
         $countryCode = $request->input('country_code');
         $code = $request->input('code');
         $reference = $request->input('reference');
-        $deviceName = $request->input('device_name', 'New Device');
-
+        $mobileDataRequest = $request->input('mobile_app');
+        $mobileAppData = json_decode($mobileDataRequest);
+        $deviceName = isset($mobileAppData->device) ? $mobileAppData->device->model : 'New Device';
 
         try {
             $vfkWeb = $this->getVFK();
