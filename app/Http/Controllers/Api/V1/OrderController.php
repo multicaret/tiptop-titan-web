@@ -47,11 +47,16 @@ class OrderController extends BaseApiController
 
     public function create(Request $request): JsonResponse
     {
-        $validationData = [
-            "chain_id" => 'required',
-            "branch_id" => 'required',
+        $validationRules = [
+            'chain_id' => 'required',
+            'branch_id' => 'required',
         ];
-        $request->validate($validationData);
+
+        $validator = validator()->make($request->all(), $validationRules);
+        if ($validator->fails()) {
+            return $this->respondValidationFails($validator->errors());
+        }
+
         // TODO: work on it later with Suheyl
         $branchId = $request->input('branch_id');
         $chainId = $request->input('chain_id');
@@ -98,14 +103,18 @@ class OrderController extends BaseApiController
 
     public function store(Request $request): JsonResponse
     {
-        $validationData = [
-            "chain_id" => 'required',
-            "branch_id" => 'required',
-            "cart_id" => 'required',
-            "payment_method_id" => 'required',
-            "address_id" => 'required',
+        $validationRules = [
+            'chain_id' => 'required',
+            'branch_id' => 'required',
+            'cart_id' => 'required',
+            'payment_method_id' => 'required',
+            'address_id' => 'required',
         ];
-        $request->validate($validationData);
+
+        $validator = validator()->make($request->all(), $validationRules);
+        if ($validator->fails()) {
+            return $this->respondValidationFails($validator->errors());
+        }
 
         $userCart = Cart::whereId($request->input('cart_id'))->first();
         $branch = $userCart->branch;

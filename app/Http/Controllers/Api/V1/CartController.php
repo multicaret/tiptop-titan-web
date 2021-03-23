@@ -13,19 +13,36 @@ class CartController extends BaseApiController
 {
     public function adjustQuantity(Request $request)
     {
-        $cart = Cart::retrieve($request->input('chain_id'), $request->input('branch_id'));
+        $validationRules = [
+            'chain_id' => 'required',
+            'branch_id' => 'required',
+            'product_id' => 'required',
+        ];
+
+        $validator = validator()->make($request->all(), $validationRules);
+        if ($validator->fails()) {
+            return $this->respondValidationFails($validator->errors());
+        }
+
+        $chainId = $request->input('chain_id');
+        $branchId = $request->input('branch_id');
+        $productId = $request->input('product_id');
+        $isAddingMethod = $request->input('is_adding');
+        $cart = Cart::retrieve($chainId, $branchId);
 
         if ( ! is_null($cartProduct = CartProduct::where('cart_id', $cart->id)
-                                                 ->where('product_id', $request->input('product_id'))
+                                                 ->where('product_id', $productId)
                                                  ->first())) {
-            if ($request->input('is_adding') == true) {
+            if ($isAddingMethod == true) {
                 if ($cartProduct->product->is_storage_tracking_enabled) {
                     if ($cartProduct->product->available_quantity > $cartProduct->quantity) {
                         $cartProduct->increment('quantity');
                     } else {
                         return $this->respondValidationFails(
                             'The requested product is currently unavailable',
-                            ['availableQuantity' => $cartProduct->product->available_quantity],
+                            [
+                                'availableQuantity' => $cartProduct->product->available_quantity
+                            ],
                         );
                     }
                 } else {
@@ -39,16 +56,16 @@ class CartController extends BaseApiController
                     $cartProduct->decrement('quantity');
                 }
             }
-        } elseif ($request->input('is_adding') == true) {
+        } elseif ($isAddingMethod == true) {
             $cartProduct = new CartProduct();
             $cartProduct->cart_id = $cart->id;
-            $cartProduct->product_id = $request->input('product_id');
+            $cartProduct->product_id = $productId;
             $cartProduct->quantity = 1;
             $cartProduct->save();
         }
         if ( ! is_null($cartProduct)) {
             $quantity = isset($delete) && ! ! $delete ? 0 : $cartProduct->quantity;
-            if ($request->input('is_adding') == true) {
+            if ($isAddingMethod == true) {
                 $cart->total += $cartProduct->product->discounted_price;
                 $cart->without_discount_total += $cartProduct->product->price;
             } else {

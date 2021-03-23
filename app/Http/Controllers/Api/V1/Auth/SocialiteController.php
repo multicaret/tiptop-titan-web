@@ -34,11 +34,15 @@ class SocialiteController extends BaseApiController
             return abort(Response::HTTP_NOT_FOUND);
         }
 
-        $request->validate([
+        $validationRules = [
             'id' => 'required',
             'token' => 'required',
-//            'name' => 'required',
-        ]);
+        ];
+
+        $validator = validator()->make($request->all(), $validationRules);
+        if ($validator->fails()) {
+            return $this->respondValidationFails($validator->errors());
+        }
 
         if (empty($request->email)) {
             try {

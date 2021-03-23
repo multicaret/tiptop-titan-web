@@ -51,10 +51,14 @@ class PostController extends BaseApiController
         \DB::beginTransaction();
         $defaultLocale = localization()->getDefaultLocale();
 
-//        $request->validate([
-////            "{$defaultLocale}.title" => 'required',
-////            "{$defaultLocale}.content" => 'required'
-////        ]);
+        /*$validationRules = [
+            '' => 'required',
+        ];
+
+        $validator = validator()->make($request->all(), $validationRules);
+        if ($validator->fails()) {
+            return $this->respondValidationFails($validator->errors());
+        }*/
 
         $post = new Post();
         $post->creator_id = $post->editor_id = auth()->id();
@@ -109,10 +113,14 @@ class PostController extends BaseApiController
     {
         $defaultLocale = localization()->getDefaultLocale();
 
-//        $request->validate([
-//            "{$defaultLocale}.title" => 'required',
-//            "{$defaultLocale}.content" => 'required'
-//        ]);
+        /*$validationRules = [
+            '' => 'required',
+        ];
+
+        $validator = validator()->make($request->all(), $validationRules);
+        if ($validator->fails()) {
+            return $this->respondValidationFails($validator->errors());
+        }*/
 
         $post = Post::find($post);
         $post->category_id = $request->category_id;

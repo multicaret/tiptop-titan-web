@@ -33,7 +33,7 @@ Authorization: Bearer {{token}}
 }
 
 ### Order delete
-DELETE {{host}}/{{locale}}/api/v1/orders/1
+POST {{host}}/{{locale}}/api/v1/orders/1/delete
 Accept: application/json
 Content-Type: application/json
 Authorization: Bearer {{token}}

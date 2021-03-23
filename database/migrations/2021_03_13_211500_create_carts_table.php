@@ -19,8 +19,8 @@ class CreateCartsTable extends Migration
             $table->unsignedBigInteger('user_id')->index();
             $table->unsignedBigInteger('chain_id')->index();
             $table->unsignedBigInteger('branch_id')->index();
-            $table->double('total')->default(0);
-            $table->double('without_discount_total')->default(0);
+            $table->unsignedDouble('total')->default(0);
+            $table->unsignedDouble('without_discount_total')->default(0);
             $table->unsignedBigInteger('crm_id')->nullable();
             $table->unsignedBigInteger('crm_user_id')->nullable();
             $table->unsignedTinyInteger('status')->default(Cart::STATUS_IN_PROGRESS)->comment('0:In Progress, 1: Completed');

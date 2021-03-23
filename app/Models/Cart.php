@@ -12,6 +12,11 @@ class Cart extends Model
     const STATUS_IN_PROGRESS = 0;
     const STATUS_COMPLETED = 1;
 
+    protected $casts = [
+        'total' => 'double',
+        'without_discount_total' => 'double',
+    ];
+
     public function user(): BelongsTo
     {
         return $this->belongsTo(User::class);
@@ -47,9 +52,9 @@ class Cart extends Model
         }
 
         if (is_null($cart = Cart::where('user_id', $userId)
-                                    ->where('branch_id', $branchId)
-                                    ->where('status', $status)
-                                    ->first())) {
+                                ->where('branch_id', $branchId)
+                                ->where('status', $status)
+                                ->first())) {
             $cart = new Cart();
             $cart->chain_id = $chainId;
             $cart->branch_id = $branchId;
