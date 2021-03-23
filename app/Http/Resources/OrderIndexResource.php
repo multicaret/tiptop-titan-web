@@ -39,6 +39,7 @@ class OrderIndexResource extends JsonResource
                 'formatted' => Currency::format($this->grand_total),
             ],
             'cart' => new CartResource($this->cart),
+            'paymentMethod' => new PaymentMethodResource($this->paymentMethod),
         ];
     }
 }
