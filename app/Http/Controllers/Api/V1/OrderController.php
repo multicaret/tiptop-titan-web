@@ -119,27 +119,39 @@ class OrderController extends BaseApiController
         ];
         $request->validate($validationData);
 
+        $userCart = Cart::whereId($request->input('cart_id'))->first();
+        $branch = $userCart->branch;
+        $minimumOrder = $branch->minimum_order;
+        $underMinimumOrderDeliveryFee = $branch->under_minimum_order_delivery_fee;
+
+        $deliveryFee = null;
+        if ($userCart->total >= $minimumOrder) {
+            $deliveryFee = $branch->fixed_delivery_fee;
+        } else {
+            $deliveryFee = $underMinimumOrderDeliveryFee;
+        }
+
         $newOrder = new Order();
-        $newOrder->user_id = $request->input('user_id');
+        $newOrder->user_id = auth()->id();
         $newOrder->chain_id = $request->input('chain_id');
         $newOrder->branch_id = $request->input('branch_id');
         $newOrder->cart_id = $request->input('cart_id');
         $newOrder->payment_method_id = $request->input('payment_method_id');
         $newOrder->address_id = $request->input('address_id');
-        $newOrder->previous_order_id = $request->input('previous_order_id');
-        $newOrder->total = $request->input('total');
-        $newOrder->coupon_discount_amount = $request->input('coupon_discount_amount');
-        $newOrder->delivery_fee = $request->input('delivery_fee');
-        $newOrder->grand_total = $request->input('grand_total');
-        $newOrder->private_payment_method_commission = $request->input('private_payment_method_commission');
-        $newOrder->private_total = $request->input('private_total');
-        $newOrder->private_delivery_fee = $request->input('private_delivery_fee');
-        $newOrder->private_grand_total = $request->input('private_grand_total');
-        $newOrder->avg_rating = $request->input('avg_rating');
-        $newOrder->rating_count = $request->input('rating_count');
-        $newOrder->completed_at = $request->input('completed_at');
-        $newOrder->notes = $request->input('notes');
-        $newOrder->status = $request->input('status');
+        $newOrder->total = $userCart->total;
+        $newOrder->delivery_fee = $deliveryFee;
+//        $newOrder->previous_order_id = $request->input('previous_order_id');
+//        $newOrder->coupon_discount_amount = $deliveryFee;
+//        $newOrder->private_total = $request->input('private_total');
+//        $newOrder->private_delivery_fee = $request->input('private_delivery_fee');
+//        $newOrder->private_grand_total = $request->input('private_grand_total');
+        $newOrder->completed_at = now();
+//        $newOrder->grand_total = $request->input('grand_total');
+//        $newOrder->private_payment_method_commission = $request->input('private_payment_method_commission');
+//        $newOrder->avg_rating = $request->input('avg_rating');
+//        $newOrder->rating_count = $request->input('rating_count');
+//        $newOrder->notes = $request->input('notes');
+        $newOrder->status = Order::STATUS_DELIVERED;
         $newOrder->save();
 
         // Todo: work on payment method & do it.
