@@ -7,6 +7,7 @@ use App\Http\Resources\OrderIndexResource;
 use App\Http\Resources\OrderShowResource;
 use App\Models\Branch;
 use App\Models\Cart;
+use App\Models\Currency;
 use App\Models\Order;
 use App\Models\PaymentMethod;
 use Illuminate\Http\JsonResponse;
@@ -88,9 +89,18 @@ class OrderController extends BaseApiController
         $grandTotal = !is_null($deliveryFee) ? $deliveryFee + $userCart->total : $userCart->total;
         $response = [
             'paymentMethods' => $paymentMethods,
-            'deliveryFee' => $deliveryFee,
-            'total' => $userCart->total,
-            'grandTotal' => $grandTotal
+            'deliveryFee' => [
+                'amount' => $deliveryFee,
+                'amountFormatted' => Currency::format($deliveryFee),
+            ],
+            'total' => [
+                'amount' => $userCart->total,
+                'amountFormatted' => Currency::format($userCart->total),
+            ],
+            'grandTotal' => [
+                'amount' => $grandTotal,
+                'amountFormatted' => Currency::format($grandTotal),
+            ]
         ];
 
         return $this->respond($response);
