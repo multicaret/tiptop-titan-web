@@ -51,13 +51,17 @@ class Product extends Model implements HasMedia
     ];
 
     protected $casts = [
-        'price_discount_amount' => 'float',
-        'price' => 'float',
+        'price_discount_amount' => 'double',
+        'price' => 'double',
         'price_discount_by_percentage' => 'boolean',
         'price_discount_began_at' => 'timestamp',
         'price_discount_finished_at' => 'timestamp',
         'custom_banner_began_at' => 'timestamp',
         'custom_banner_ended_at' => 'timestamp',
+        'width' => 'float',
+        'height' => 'float',
+        'depth' => 'float',
+        'weight' => 'float',
     ];
 
     public function creator()

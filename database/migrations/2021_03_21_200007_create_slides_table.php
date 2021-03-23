@@ -1,5 +1,6 @@
 <?php
 
+use App\Models\Slide;
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
@@ -19,7 +20,7 @@ class CreateSlidesTable extends Migration
             $table->unsignedBigInteger('editor_id');
             $table->char('uuid', 10)->unique();
             $table->string('link_value')->nullable();
-            $table->unsignedTinyInteger('link_type')->default(1);
+            $table->unsignedTinyInteger('link_type')->default(Slide::TYPE_EXTERNAL);
             $table->timestamps();
             $table->softDeletes();
 

@@ -19,7 +19,7 @@ class CreateCouponsTable extends Migration
             $table->unsignedBigInteger('editor_id');
             $table->unsignedBigInteger('currency_id')->default(config('defaults.currency.id'));
             $table->boolean('discount_by_percentage')->nullable()->comment('true: percentage, false: fixed amount');
-            $table->unsignedFloat('discount_amount')->nullable();
+            $table->unsignedDouble('discount_amount')->nullable();
             $table->unsignedInteger('total_usage_count')->nullable();
             $table->unsignedInteger('usage_count_by_same_user')->default(1);
             $table->timestamp('expired_at')->nullable();
