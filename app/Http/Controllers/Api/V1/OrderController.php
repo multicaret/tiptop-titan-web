@@ -80,13 +80,14 @@ class OrderController extends BaseApiController
 
         $paymentMethods = PaymentMethod::all()->map(function ($method) {
             return [
+                'id' => $method->id,
                 'title' => $method->title,
                 'description' => $method->description,
                 'instructions' => $method->instructions,
                 'logo' => $method->logo,
             ];
         });
-        $grandTotal = !is_null($deliveryFee) ? $deliveryFee + $userCart->total : $userCart->total;
+        $grandTotal = ! is_null($deliveryFee) ? $deliveryFee + $userCart->total : $userCart->total;
         $response = [
             'paymentMethods' => $paymentMethods,
             'deliveryFee' => [

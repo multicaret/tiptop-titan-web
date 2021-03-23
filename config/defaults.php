@@ -32,7 +32,7 @@ return [
         'taxonomy_cover' => '/images/taxonomy-cover.png',
         'product_cover' => '/images/product-cover.png',
         'slider_image' => '/images/slide-1.png',
-        'slider_image_2' => '/images/slide-2.jpeg',
+        'slider_image_2' => '/images/slide-2.png',
         'manufacturer_logo' => '/images/manufacturer-logo.png',
         'barcode_image' => '/images/barcode-image.png',
         'chain_logo' => '/images/chain-logo.png',
