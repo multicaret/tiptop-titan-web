@@ -7,7 +7,7 @@ use App\Models\Currency;
 use Illuminate\Http\Resources\Json\JsonResource;
 
 /** @mixin \App\Models\Order */
-class OrderIndexResource extends JsonResource
+class OrderResource extends JsonResource
 {
     /**
      * Transform the resource into an array.

@@ -3,8 +3,7 @@
 namespace App\Http\Controllers\Api\V1;
 
 use App\Http\Controllers\Api\BaseApiController;
-use App\Http\Resources\OrderIndexResource;
-use App\Http\Resources\OrderShowResource;
+use App\Http\Resources\OrderResource;
 use App\Models\Branch;
 use App\Models\Cart;
 use App\Models\Currency;
@@ -20,18 +19,7 @@ class OrderController extends BaseApiController
     {
         $previousOrders = auth()->user()->order->whereNotNull('completed_at');
         if ( ! is_null($previousOrders)) {
-            return $this->respond(OrderIndexResource::collection($previousOrders));
-        }
-
-        return $this->respondNotFound();
-    }
-
-    public function show($id)
-    {
-        $order = Order::find($id);
-        if ( ! is_null($order)) {
-            return new OrderShowResource($order);
-
+            return $this->respond(OrderResource::collection($previousOrders));
         }
 
         return $this->respondNotFound();
@@ -57,7 +45,7 @@ class OrderController extends BaseApiController
     }
 
 
-    public function checkoutCreate(Request $request): JsonResponse
+    public function create(Request $request): JsonResponse
     {
         $validationData = [
             "chain_id" => 'required',
@@ -108,7 +96,7 @@ class OrderController extends BaseApiController
     }
 
 
-    public function checkoutStore(Request $request): JsonResponse
+    public function store(Request $request): JsonResponse
     {
         $validationData = [
             "chain_id" => 'required',
@@ -160,7 +148,7 @@ class OrderController extends BaseApiController
         $cart->save();
         \DB::commit();
 
-        return $this->respond(new OrderIndexResource($newOrder));
+        return $this->respond(new OrderResource($newOrder));
     }
 
 
