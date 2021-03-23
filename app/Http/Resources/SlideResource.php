@@ -14,7 +14,7 @@ class SlideResource extends JsonResource
     public function toArray($request)
     {
         return [
-            'title' => (int) $this->title,
+            'title' => $this->title,
             'description' => [
                 'raw' => strip_tags($this->description),
                 'formatted' => $this->description,
