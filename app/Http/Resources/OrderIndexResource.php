@@ -19,10 +19,11 @@ class OrderIndexResource extends JsonResource
     {
         return [
             'id' => $this->id,
-            'address' => [
-                'icon' => $this->address->icon,
-                'alias' => $this->address->name,
-            ],
+//            TODO: uncommitted it when you work on addresses
+//            'address' => [
+//                'icon' => $this->address->icon,
+//                'alias' => $this->address->name,
+//            ],
             'completedAt' => [
                 'formatted' => $this->completed_at->format(config('defaults.date.short_format')),
                 'diffForHumans' => $this->completed_at->diffForHumans(),

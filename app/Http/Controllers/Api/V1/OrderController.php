@@ -146,7 +146,7 @@ class OrderController extends BaseApiController
 //        $newOrder->private_delivery_fee = $request->input('private_delivery_fee');
 //        $newOrder->private_grand_total = $request->input('private_grand_total');
         $newOrder->completed_at = now();
-//        $newOrder->grand_total = $request->input('grand_total');
+        $newOrder->grand_total = $userCart->total + $deliveryFee;
 //        $newOrder->private_payment_method_commission = $request->input('private_payment_method_commission');
 //        $newOrder->avg_rating = $request->input('avg_rating');
 //        $newOrder->rating_count = $request->input('rating_count');
