@@ -11,13 +11,13 @@ use Illuminate\Http\Request;
 
 class CartController extends BaseApiController
 {
-    public function addRemoveProduct(Request $request)
+    public function adjustQuantity(Request $request)
     {
         $cart = Cart::retrieve($request->input('chain_id'), $request->input('branch_id'));
 
         if ( ! is_null($cartProduct = CartProduct::where('cart_id', $cart->id)
-                                                     ->where('product_id', $request->input('product_id'))
-                                                     ->first())) {
+                                                 ->where('product_id', $request->input('product_id'))
+                                                 ->first())) {
             if ($request->input('is_adding') == true) {
                 if ($cartProduct->product->is_storage_tracking_enabled) {
                     if ($cartProduct->product->available_quantity > $cartProduct->quantity) {
@@ -68,19 +68,24 @@ class CartController extends BaseApiController
         return $this->respondNotFound([]);
     }
 
-    public function clearCart(Request $request)
+    public function destroy(Request $request)
     {
-        $cart = Cart::whereUserId(auth()->id())->whereStatus(Cart::STATUS_IN_PROGRESS)->first();
+        $chainId = $request->input('chain_id');
+        $branchId = $request->input('branch_id');
+        $cart = Cart::whereChainId($chainId)
+                    ->whereBranchId($branchId)
+                    ->whereUserId(auth()->id())
+                    ->whereStatus(Cart::STATUS_IN_PROGRESS)
+                    ->first();
 
         if ( ! is_null($cart)) {
-            CartProduct::whereCartId($cart->id)->delete();
             try {
                 $cart->delete();
             } catch (\Exception $e) {
                 dd($e->getMessage());
             }
 
-            return $this->respond(['type' => 'success', 'text' => 'Successfully Deleted',]);
+            return $this->respondWithMessage('Successfully Deleted');
         }
 
         return $this->respondValidationFails('There isn\'t a cart to delete');
