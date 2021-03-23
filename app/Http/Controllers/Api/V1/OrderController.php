@@ -159,11 +159,7 @@ class OrderController extends BaseApiController
         $cart->status = Cart::STATUS_COMPLETED;
         $cart->save();
 
-        $response = [
-            'order' => $newOrder
-        ];
-
-        return $this->respond($response);
+        return $this->respond(new OrderIndexResource($newOrder));
     }
 
 
