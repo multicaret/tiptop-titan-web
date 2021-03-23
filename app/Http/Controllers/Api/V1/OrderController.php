@@ -20,7 +20,7 @@ class OrderController extends BaseApiController
     {
         $previousOrders = auth()->user()->order->whereNotNull('completed_at');
         if ( ! is_null($previousOrders)) {
-            return OrderIndexResource::collection($previousOrders);
+            return $this->respond(OrderIndexResource::collection($previousOrders));
         }
 
         return $this->respondNotFound();
