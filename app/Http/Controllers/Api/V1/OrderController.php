@@ -91,16 +91,16 @@ class OrderController extends BaseApiController
         $response = [
             'paymentMethods' => $paymentMethods,
             'deliveryFee' => [
-                'amount' => $deliveryFee,
-                'amountFormatted' => Currency::format($deliveryFee),
+                'raw' => $deliveryFee,
+                'formatted' => Currency::format($deliveryFee),
             ],
             'total' => [
-                'amount' => $userCart->total,
-                'amountFormatted' => Currency::format($userCart->total),
+                'raw' => (double) $userCart->total,
+                'formatted' => Currency::format($userCart->total),
             ],
             'grandTotal' => [
-                'amount' => $grandTotal,
-                'amountFormatted' => Currency::format($grandTotal),
+                'raw' => (double) $grandTotal,
+                'formatted' => Currency::format($grandTotal),
             ]
         ];
 

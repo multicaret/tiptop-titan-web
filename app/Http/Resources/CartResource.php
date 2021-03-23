@@ -22,7 +22,7 @@ class CartResource extends JsonResource
                 'formatted' => Currency::format($this->total),
             ],
             'withoutDiscountTotal' => [
-                'raw' => $this->without_discount_total,
+                'raw' => (double) $this->without_discount_total,
                 'formatted' => Currency::format($this->without_discount_total),
             ],
             'status' => $this->status,
