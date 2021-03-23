@@ -30,6 +30,10 @@ class OrderIndexResource extends JsonResource
                 'diffForHumans' => $this->completed_at->diffForHumans(),
                 'timestamp' => $this->completed_at->timestamp,
             ],
+            'deliveryFee' => [
+                'raw' => $this->branch->fixed_delivery_fee,
+                'formatted' => Currency::format($this->branch->fixed_delivery_fee),
+            ],
             'grandTotal' => [
                 'raw' => $this->grand_total,
                 'formatted' => Currency::format($this->grand_total),
