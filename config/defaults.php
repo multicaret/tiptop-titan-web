@@ -2,8 +2,8 @@
 return [
     'user' => [
         'mobile_app' => [
-            'versionCode' => 0,
-            'versionNumber' => 0,
+            'versionCode' => "0",
+            'versionNumber' => "0",
             'device' => [
                 'manufacturer' => '',
                 'model' => '',
