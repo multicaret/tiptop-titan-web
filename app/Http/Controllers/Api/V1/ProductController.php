@@ -21,37 +21,4 @@ class ProductController extends BaseApiController
         return $this->respondNotFound();
     }
 
-
-    public function searchProducts(Request $request)
-    {
-        $searchQuery = $request->input('q');
-        if (is_null($searchQuery)) {
-            return $this->setStatusCode(400)->respond([
-                'success' => true,
-                'message' => __('Empty search has been provided'),
-            ]);
-        }
-
-        $products = Product::whereHas('translations', function ($query) use ($searchQuery) {
-            $query->where('title', 'like', "%".$searchQuery."%");
-        })
-                           ->orWhereHas('tags', function ($query) use ($searchQuery) {
-                               $query->whereHas('translations', function ($query) use ($searchQuery) {
-                                   $query->where('title', 'like', "%".$searchQuery."%");
-                               });
-                           })
-                           ->orWhereHas('masterCategory', function ($query) use ($searchQuery) {
-                               $query->whereHas('translations', function ($query) use ($searchQuery) {
-                                   $query->where('title', 'like', "%".$searchQuery."%");
-                               });
-                           })
-                           ->get();
-
-        if ($products->count()) {
-            return $this->respond(ProductResource::collection($products));
-        }
-
-        return $this->respondNotFound('No results for your search');
-    }
-
 }

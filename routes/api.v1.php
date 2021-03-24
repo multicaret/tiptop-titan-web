@@ -11,7 +11,8 @@ Route::middleware('throttle:15')
 
          Route::get('categories/{groceryCategory}/products', 'CategoryController@products');
          Route::get('products/{id}', 'ProductController@show');
-         Route::get('products', 'ProductController@searchProducts');
+         Route::get('search', 'SearchController@index');
+         Route::get('search/products', 'SearchController@searchProducts');
 
 
          /* auth related */
