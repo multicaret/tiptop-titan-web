@@ -17,7 +17,7 @@ class OrderController extends BaseApiController
 
     public function index(Request $request)
     {
-        $previousOrders = auth()->user()->order->whereNotNull('completed_at');
+        $previousOrders = auth()->user()->orders()->whereNotNull('completed_at')->latest()->get();
         if ( ! is_null($previousOrders)) {
             return $this->respond(OrderResource::collection($previousOrders));
         }

@@ -295,7 +295,7 @@ class User extends Authenticatable implements HasMedia, MustVerifyEmail
         return $this->hasRole(self::ROLE_ANALYST);
     }
 
-    public function order(): HasMany
+    public function orders(): HasMany
     {
         return $this->hasMany(Order::class, 'user_id');
     }
