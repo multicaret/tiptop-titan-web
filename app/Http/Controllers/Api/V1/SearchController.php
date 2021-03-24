@@ -30,7 +30,8 @@ class SearchController extends BaseApiController
         $terms = Search::whereChainId($chainId)
                        ->whereBranchId($branchId)
                        ->whereLocale(localization()->getCurrentLocale())
-                       ->orderBy('count')
+                       ->orderByDesc('count')
+                       ->latest()
                        ->take(5)
                        ->get();
 
