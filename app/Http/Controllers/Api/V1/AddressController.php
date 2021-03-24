@@ -29,7 +29,23 @@ class AddressController extends BaseApiController
 
         return $this->respond([
             'addresses' => LocationResource::collection($addresses),
-            'kinds' => Location::getKinds(),
+            'kinds' => [
+                [
+                    'id' => Location::KIND_HOME,
+                    'title' => trans('api.address_kind_Home'),
+                    'icon' => asset(config('defaults.images.address_home_icon')),
+                ],
+                [
+                    'id' => Location::KIND_WORK,
+                    'title' => trans('api.address_kind_Work'),
+                    'icon' => asset(config('defaults.images.address_work_icon')),
+                ],
+                [
+                    'id' => Location::KIND_OTHER,
+                    'title' => trans('api.address_kind_Other'),
+                    'icon' => asset(config('defaults.images.address_other_icon')),
+                ],
+            ],
         ]);
     }
 

@@ -88,7 +88,6 @@ class Location extends Model
     {
         return [
             self::KIND_HOME => [
-
                 'title' => trans('api.address_kind_Home'),
                 'icon' => asset(config('defaults.images.address_home_icon')),
             ],
