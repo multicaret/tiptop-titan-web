@@ -99,6 +99,21 @@ class OtpController extends BaseApiController
                 $user->username = $phoneNumber;
                 if ( ! is_null($mobileDataRequest)) {
                     $user->mobile_app = $mobileAppData;
+                } else {
+                    $user->mobile_app = '
+                        {
+                            "versionCode": "0",
+                            "versionNumber": "0",
+                            "device": {
+                                "manufacturer": "",
+                                "model": "",
+                                "platform": "",
+                                "serial": "",
+                                "uuid": "",
+                                "version": ""
+                            }
+                        }
+                    ';
                 }
                 $user->approved_at = now();
                 $user->phone_verified_at = now();
