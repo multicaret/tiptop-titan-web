@@ -71,7 +71,7 @@ class OrderController extends BaseApiController
             $deliveryFee = $underMinimumOrderDeliveryFee;
         }
 
-        $paymentMethods = PaymentMethod::all()->map(function ($method) {
+        $paymentMethods = PaymentMethod::published()->get()->map(function ($method) {
             return [
                 'id' => $method->id,
                 'title' => $method->title,
