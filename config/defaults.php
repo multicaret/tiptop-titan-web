@@ -39,6 +39,9 @@ return [
         'payment_method_logo' => '/images/payment-method-logo.png',
         'grocery_category_cover' => '/images/grocery-category-cover.png',
         'food_category_cover' => '/images/grocery-category-cover.png',
+        'address_home_icon' => '/images/address-home-icon.png',
+        'address_work_icon' => '/images/address-work-icon.png',
+        'address_other_icon' => '/images/address-other-icon.png',
     ],
     'product_gallery' => [
         "/images/potato.jpeg",
