@@ -158,8 +158,10 @@ class OrderController extends BaseApiController
 
         // Deduct the purchased quantity from the available quantity of each product.
         foreach ($cart->products as $product) {
-            $product->available_quantity = $product->available_quantity - $product->pivot->quantity;
-            $product->save();
+            if ($product->is_storage_tracking_enabled) {
+                $product->available_quantity = $product->available_quantity - $product->pivot->quantity;
+                $product->save();
+            }
         }
 
         \DB::commit();
