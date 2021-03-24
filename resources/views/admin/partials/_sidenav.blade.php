@@ -5,7 +5,7 @@
         {{--
          use this class (.side-nav-logo) if you want to change the logo if sidenav collapsed
         --}}
-        <img src="/images/logo.svg" alt="@preferences('app_title')" width="50px"
+        <img src="/images/logo.jpeg" alt="@preferences('app_title')" width="50px"
              class="">
         <a href="{{route('admin.index')}}" class="app-brand-text demo sidenav-text font-weight-normal ml-2">
             @preferences('app_title')
