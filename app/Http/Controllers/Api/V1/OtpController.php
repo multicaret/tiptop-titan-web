@@ -97,7 +97,7 @@ class OtpController extends BaseApiController
                 $user->phone_number = $phoneNumber;
                 $user->email = $phoneNumber.'@otp';
                 $user->username = $phoneNumber;
-                $user->mobile_app = $mobileDataRequest;
+                $user->mobile_app = ! is_null($mobileDataRequest) ? $mobileAppData : null;
                 $user->approved_at = now();
                 $user->phone_verified_at = now();
                 $newUser = true;
