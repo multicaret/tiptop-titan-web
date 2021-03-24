@@ -47,7 +47,7 @@ class UserController extends BaseApiController
         }
         $validationRules = [
             'full_name' => 'required|min:5|max:60',
-            'email' => 'email|min:3|max:255|unique:users,email,'.$user->id,
+            'email' => 'nullable|email|min:3|max:255|unique:users,email,'.$user->id,
         ];
 
         $validator = validator()->make($request->all(), $validationRules);
