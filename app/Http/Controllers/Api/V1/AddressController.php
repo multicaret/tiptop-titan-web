@@ -4,9 +4,14 @@ namespace App\Http\Controllers\Api\V1;
 
 
 use App\Http\Controllers\Api\BaseApiController;
+use App\Http\Resources\CityResource;
 use App\Http\Resources\LocationResource;
+use App\Http\Resources\RegionResource;
 use App\Models\Branch;
+use App\Models\City;
 use App\Models\Location;
+use App\Models\Region;
+use App\Models\User;
 use Illuminate\Http\Request;
 
 class AddressController extends BaseApiController
@@ -22,14 +27,31 @@ class AddressController extends BaseApiController
         $addresses = $user->addresses()->get();
         $this->respond($addresses);
 
-        return LocationResource::collection($addresses);
+        return $this->respond([
+            'addresses' => LocationResource::collection($addresses),
+            'kinds' => Location::getKinds(),
+        ]);
     }
 
     public function create(Request $request)
     {
-        $data = $this->essentialData();
+        // TODO: get the nearest address to this latitude longitude
+//        $latitude = $request->input('latitude');
+//        $longitude = $request->input('longitude');
 
-        return $this->respond($data);
+        $address = Location::first();
+        $regions = Region::whereCountryId(config('defaults.country.id'))->get();
+
+        $cities = City::whereCountryId(config('defaults.country.id'))->get();
+
+
+        return $this->respond(
+            [
+                'address' => new LocationResource($address),
+                'regions' => RegionResource::collection($regions),
+                'cities' => CityResource::collection($cities),
+            ]
+        );
 
     }
 
@@ -48,21 +70,21 @@ class AddressController extends BaseApiController
         }
 
         \DB::beginTransaction();
-        $user_id = auth()->user()->id;
+        $userId = auth()->user()->id;
         $address = new Location();
-        $address->creator_id = $user_id;
-        $address->editor_id = $user_id;
+        $address->creator_id = $userId;
+        $address->editor_id = $userId;
         $address->country_id = isset($request->country_id) ? $request->country_id : config('defaults.country.id');
-        $address->region_id = isset($request->region_id) ? $request->region_id : config('defaults.region.id');
+        $address->region_id = $request->input('region_id');
+        $address->city_id = $request->input('city_id');
         $address->contactable_type = User::class;
-        $address->contactable_id = $user_id;
-
-        $address->city_id = isset($request->city_id) ? $request->city_id : config('defaults.city.id');
+        $address->contactable_id = $userId;
         $address->kind = $request->kind;
-        $address->name = $request->name;
-        $address->building = $request->building;
-        $address->floor = $request->floor;
-        $address->apartment = $request->flat;
+        $address->address1 = $request->address1;
+        $address->alias = $request->alias;
+//        $address->building = $request->building;
+//        $address->floor = $request->floor;
+//        $address->apartment = $request->flat;
         $address->latitude = $request->latitude;
         $address->longitude = $request->longitude;
         $address->notes = $request->directions;
@@ -83,10 +105,7 @@ class AddressController extends BaseApiController
             return $this->respondWithMessage(__('strings.successfully_deleted'));
         }
 
-        return $this->respond([
-            'type' => 'error',
-            'text' => 'There seems to be a problem',
-        ]);
+        return $this->respondValidationFails('There seems to be a problem');
     }
 
     public function changeSelectedAddress(Request $request)
@@ -117,11 +136,11 @@ class AddressController extends BaseApiController
         ]);
     }
 
-    private function essentialData()
-    {
-        return [
-            'kinds' => Location::getKinds()
-        ];
-    }
+    /*  private function essentialData()
+      {
+          return [
+              'kinds' => Location::getKinds()
+          ];
+      }*/
 
 }

@@ -88,23 +88,24 @@ class Location extends Model
     {
         return [
             self::KIND_HOME => [
-                'title' => trans('api.address_kind_Other'),
-                'icon' => 'other.png',
+
+                'title' => trans('api.address_kind_Home'),
+                'icon' => asset(config('defaults.images.address_home_icon')),
             ],
             self::KIND_WORK => [
                 'title' => trans('api.address_kind_Work'),
-                'icon' => 'work.png',
+                'icon' => asset(config('defaults.images.address_work_icon')),
             ],
             self::KIND_OTHER => [
-                'title' => trans('api.address_kind_Home'),
-                'icon' => 'home.png',
+                'title' => trans('api.address_kind_Other'),
+                'icon' => asset(config('defaults.images.address_other_icon')),
             ],
         ];
     }
 
     public function getKind()
     {
-        return self::getKinds()[$this->type];
+        return self::getKinds()[$this->kind];
     }
 
     /**

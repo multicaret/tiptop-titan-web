@@ -11,6 +11,11 @@ Accept: application/json
 Content-Type: application/json
 Authorization: Bearer {{token}}
 
+{
+    "latitude": 40.8489891,
+    "longitude": 29.1192525
+}
+
 ### addresses store
 POST {{host}}/{{locale}}/api/v1/profile/addresses
 Accept: application/json
@@ -19,12 +24,12 @@ Authorization: Bearer {{token}}
 
 {
     "kind": "2",
-    "name": "Home",
-    "building": "15",
-    "floor": "58",
-    "apartment": "581",
+    "alias": "Home",
+    "region_id": 1,
+    "city_id": 1,
     "latitude": 40.8489891,
     "longitude": 29.1192525,
+    "address1": "Şişli merkiz sk NO: 14 / B  23231",
     "notes": "The elevator is not working lol"
 }
 
