@@ -155,6 +155,13 @@ class OrderController extends BaseApiController
         $cart = Cart::find($newOrder->cart_id);
         $cart->status = Cart::STATUS_COMPLETED;
         $cart->save();
+
+        // Deduct the purchased quantity from the available quantity of each product.
+        foreach ($cart->products as $product) {
+            $product->available_quantity = $product->available_quantity - $product->pivot->quantity;
+            $product->save();
+        }
+
         \DB::commit();
 
         return $this->respond(new OrderResource($newOrder));
