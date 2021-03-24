@@ -44,7 +44,7 @@ Route::middleware('auth:sanctum')
          Route::resource('profile/addresses', 'AddressController')->except(['edit', 'update']);
          Route::post('profile/addresses/change-selected-address', 'AddressController@changeSelectedAddress');
          Route::get('profile/edit', 'UserController@edit');
-         Route::put('profile', 'UserController@update');
+         Route::post('profile', 'UserController@update');
 
          // Orders
          Route::get('orders', 'OrderController@index');
