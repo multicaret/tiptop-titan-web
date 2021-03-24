@@ -34,17 +34,24 @@ class ProductController extends BaseApiController
 
         $products = Product::whereHas('translations', function ($query) use ($searchQuery) {
             $query->where('title', 'like', "%".$searchQuery."%");
-        })->orWhereHas('tags', function ($query) use ($searchQuery) {
-            $query->whereHas('translations', function ($query) use ($searchQuery) {
-                $query->where('title', 'like', "%".$searchQuery."%");
-            });
-        })->orWhereHas('masterCategory', function ($query) use ($searchQuery) {
-            $query->whereHas('translations', function ($query) use ($searchQuery) {
-                $query->where('title', 'like', "%".$searchQuery."%");
-            });
-        })->get();
+        })
+                           ->orWhereHas('tags', function ($query) use ($searchQuery) {
+                               $query->whereHas('translations', function ($query) use ($searchQuery) {
+                                   $query->where('title', 'like', "%".$searchQuery."%");
+                               });
+                           })
+                           ->orWhereHas('masterCategory', function ($query) use ($searchQuery) {
+                               $query->whereHas('translations', function ($query) use ($searchQuery) {
+                                   $query->where('title', 'like', "%".$searchQuery."%");
+                               });
+                           })
+                           ->get();
 
-        return $this->respond(ProductResource::collection($products));
+        if ($products->count()) {
+            return $this->respond(ProductResource::collection($products));
+        }
+
+        return $this->respondNotFound('No results for your search');
     }
 
 }
