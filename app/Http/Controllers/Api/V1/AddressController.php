@@ -44,7 +44,7 @@ class AddressController extends BaseApiController
 
 
         $selectedRegion = Region::whereCountryId(config('defaults.country.id'))->first();
-        $selectedCity = City::whereCountryId(config('defaults.country.id'))->first();
+        $selectedCity = City::whereRegionId($selectedRegion->id)->first();
 
         return $this->respond(
             [
