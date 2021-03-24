@@ -1,5 +1,28 @@
 <?php
 return [
+    'user' => [
+        'mobile_app' => [
+            'versionCode' => 0,
+            'versionNumber' => 0,
+            'device' => [
+                'manufacturer' => '',
+                'model' => '',
+                'platform' => '',
+                'serial' => '',
+                'uuid' => '',
+                'version' => '',
+            ],
+        ],
+        'settings' => [
+            'notifications' => [
+                'db' => 1,
+                'mail' => 1,
+                'push_mobile_all' => 1,
+                'push_mobile_ads' => 1,
+                'push_web_all' => 1,
+            ],
+        ],
+    ],
     'language' => [
         'id' => 1,
         'code' => 'en',

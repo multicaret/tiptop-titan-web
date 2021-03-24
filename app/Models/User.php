@@ -76,36 +76,6 @@ class User extends Authenticatable implements HasMedia, MustVerifyEmail
     ];
 
     /**
-     * The model's default values for attributes.
-     *
-     * @var array
-     */
-    protected $attributes = [
-        'mobile_app' => '{
-            "versionCode": "0",
-            "versionNumber": "0",
-            "device": {
-                "manufacturer": "",
-                "model": "",
-                "platform": "",
-                "serial": "",
-                "uuid": "",
-                "version": ""
-            }
-        }',
-        'settings' => '{
-            "notifications": {
-                "db": 1,
-                "mail": 1,
-                "push_mobile_all": 1,
-                "push_mobile_ads": 1,
-                "push_web_all": 1
-            }
-        }',
-    ];
-
-
-    /**
      * The attributes that should be hidden for arrays.
      *
      * @var array
@@ -136,6 +106,14 @@ class User extends Authenticatable implements HasMedia, MustVerifyEmail
         static::created(function (User $user) {
             if (app()->environment() == 'production' && ! Str::contains($user->username, 'db-seeder-test-')) {
                 Mail::to($user)->send(new Welcome($user));
+            }
+        });
+        static::creating(function (User $user) {
+            if (is_null($user->mobile_app)) {
+                $user->mobile_app = json_decode(json_encode(config('defaults.user.mobile_app')));
+            }
+            if (is_null($user->settings)) {
+                $user->settings = json_decode(json_encode(config('defaults.user.settings')));
             }
         });
     }
