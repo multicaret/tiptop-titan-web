@@ -33,7 +33,7 @@ Route::prefix('datatables')->name('datatables.')->group(function () {
     Route::get('translations', 'DatatableController@translationList')->name('translations');
 });
 
-Route::post('status-toggle', 'AjaxController@statusToggle')->name('statusToggle');
+Route::post('change-status', 'AjaxController@statusChange')->name('statuses.change');
 
 
 Route::group(['prefix' => 'search'], function () {
