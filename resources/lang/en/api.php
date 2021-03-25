@@ -1,7 +1,7 @@
 <?php
 
 return [
-    'address_kind_Other' => 'Address Kind Other',
-    'address_kind_Work' => 'Address Kind Work',
-    'address_kind_Home' => 'Address Kind Home'
+    'address_kind_Other' => 'Other',
+    'address_kind_Work' => 'Work',
+    'address_kind_Home' => 'Home'
 ];
