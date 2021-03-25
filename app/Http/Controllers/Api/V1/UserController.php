@@ -46,7 +46,7 @@ class UserController extends BaseApiController
             return $this->respondNotFound();
         }
         $validationRules = [
-            'full_name' => 'required|min:5|max:60',
+            'full_name' => 'required|min:3|max:60',
             'email' => 'nullable|email|min:3|max:255|unique:users,email,'.$user->id,
         ];
 
