@@ -19,14 +19,14 @@ class Order extends Model
     const STATUS_DELIVERED = 20;
 
     protected $casts = [
-        'total' => 'float',
-        'coupon_discount_amount' => 'float',
-        'delivery_fee' => 'float',
-        'grand_total' => 'float',
-        'private_payment_method_commission' => 'float',
-        'private_total' => 'float',
-        'private_delivery_fee' => 'float',
-        'private_grand_total' => 'float',
+        'total' => 'double',
+        'coupon_discount_amount' => 'double',
+        'delivery_fee' => 'double',
+        'grand_total' => 'double',
+        'private_payment_method_commission' => 'double',
+        'private_total' => 'double',
+        'private_delivery_fee' => 'double',
+        'private_grand_total' => 'double',
         'completed_at' => 'datetime',
     ];
 

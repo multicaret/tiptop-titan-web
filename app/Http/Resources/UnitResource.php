@@ -18,7 +18,7 @@ class UnitResource extends JsonResource
     {
 
         return [
-            'id' => $this->id,
+            'id' => (int) $this->id,
             'title' => $this->title,
             'step' => $this->step,
         ];

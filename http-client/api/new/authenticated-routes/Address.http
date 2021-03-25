@@ -20,9 +20,9 @@ Authorization: Bearer {{token}}
 {
     "kind": "2",
     "name": "Home",
-    "building": "15",
-    "floor": "58",
-    "apartment": "581",
+    "region_id": "15",
+    "city_id": "15",
+    "address1": "Şişli merkiz sk NO: 14 / B  23231",
     "latitude": 40.8489891,
     "longitude": 29.1192525,
     "notes": "The elevator is not working lol"

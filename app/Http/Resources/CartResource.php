@@ -15,14 +15,14 @@ class CartResource extends JsonResource
     public function toArray($request)
     {
         return [
-            'id' => $this->id,
+            'id' => (int) $this->id,
             'productsCount' => $this->products()->count(),
             'total' => [
                 'raw' => $this->total,
                 'formatted' => Currency::format($this->total),
             ],
             'withoutDiscountTotal' => [
-                'raw' => $this->without_discount_total,
+                'raw' => (double) $this->without_discount_total,
                 'formatted' => Currency::format($this->without_discount_total),
             ],
             'status' => $this->status,

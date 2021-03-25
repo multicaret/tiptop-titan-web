@@ -18,7 +18,7 @@ class WorkingHourResource extends JsonResource
     public function toArray($request)
     {
         return [
-            'id' => $this->id,
+            'id' => (int) $this->id,
             'day' => trans('strings.working_day_'.$this->day),
             'opensAt' => Carbon::parse($this->opens_at)->format('H:i'),
             'closesAt' => Carbon::parse($this->closes_at)->format('H:i'),

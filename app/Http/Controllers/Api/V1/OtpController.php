@@ -65,8 +65,6 @@ class OtpController extends BaseApiController
 
     public function check($reference, Request $request): JsonResponse
     {
-        $mobileDataRequest = $request->input('mobile_app');
-        $mobileAppData = json_decode($mobileDataRequest);
         try {
             $vfk = $this->getVFK();
             $validationCheck = $vfk->checkValidation($reference);
@@ -82,31 +80,19 @@ class OtpController extends BaseApiController
         if (isset($errorMessage) && isset($statusCode)) {
             return $this->setStatusCode($statusCode)->respondWithMessage($errorMessage);
         }
-        $deviceName = isset($mobileAppData->device) ? $mobileAppData->device->model : 'New Device';
         $validationStatus = isset($validationCheck) ? $validationCheck->getValidationStatus() : false;
 
+        $newUser = false;
         if ($validationStatus) {
             $phoneCountryCode = $request->phone_country_code;
             $phoneNumber = $request->phone_number;
-//            $deviceName = $request->input('device_name', 'New Device');
-            // new user has been verified
-            if (is_null($user = User::getUserByPhone($phoneCountryCode, $phoneNumber))) {
-                $user = new User();
-                $user->first = $phoneCountryCode.$phoneNumber;
-                $user->phone_country_code = $phoneCountryCode;
-                $user->phone_number = $phoneNumber;
-                $user->email = $phoneNumber.'@otp';
-                $user->username = $phoneNumber;
-                $user->mobile_app = $mobileDataRequest;
-                $user->approved_at = now();
-                $user->phone_verified_at = now();
-                $newUser = true;
-            }
-            $user->last_logged_in_at = now();
-            $user->save();
+            $mobileDataRequest = $request->input('mobile_app');
 
-            $accessToken = $user->createToken($deviceName)->plainTextToken;
-            event(new Registered($user));
+            [$user, $newUser, $accessToken] = $this->registerUserIfNotFoundByPhone(
+                $phoneCountryCode,
+                $phoneNumber,
+                $mobileDataRequest
+            );
             $response = [
                 'newUser' => $newUser,
                 'user' => new UserResource($user),
@@ -119,7 +105,7 @@ class OtpController extends BaseApiController
             ];
         } else {
             $response = [
-                'newUser' => false,
+                'newUser' => $newUser,
                 'user' => null,
                 'accessToken' => null,
                 'validationStatus' => $validationStatus,
@@ -136,11 +122,15 @@ class OtpController extends BaseApiController
 
     public function otpSmsSend(Request $request): JsonResponse
     {
-        $validationData = [
-            "phone_number" => 'required',
-            "country_code" => 'required',
+        $validationRules = [
+            'phone_number' => 'required',
+            'country_code' => 'required',
         ];
-        $request->validate($validationData);
+
+        $validator = validator()->make($request->all(), $validationRules);
+        if ($validator->fails()) {
+            return $this->respondValidationFails($validator->errors());
+        }
 
         // For OTP verification to work best, you should send us the MCC and MNC code of the sim card in the user's device.
         $mcc = '999'; // Mobile Country Code (MCC) of the sim card in the user's device. Default value is '999'. Not required.
@@ -176,14 +166,19 @@ class OtpController extends BaseApiController
 
     public function otpSmsValidate(Request $request): JsonResponse
     {
-        $validationData = [
-            "phone_number" => 'required',
-            "phone_country_code" => 'required',
-            "country_code" => 'required',
-            "code" => 'required',
-            "reference" => 'required',
+        $validationRules = [
+            'phone_number' => 'required',
+            'phone_country_code' => 'required',
+            'country_code' => 'required',
+            'code' => 'required',
+            'reference' => 'required',
         ];
-        $request->validate($validationData);
+
+        $validator = validator()->make($request->all(), $validationRules);
+        if ($validator->fails()) {
+            return $this->respondValidationFails($validator->errors());
+        }
+
 
         $statusCode = Response::HTTP_BAD_REQUEST;
         $phoneNumber = $request->input('phone_number');
@@ -191,8 +186,6 @@ class OtpController extends BaseApiController
         $countryCode = $request->input('country_code');
         $code = $request->input('code');
         $reference = $request->input('reference');
-        $deviceName = $request->input('device_name', 'New Device');
-
 
         try {
             $vfkWeb = $this->getVFK();
@@ -208,9 +201,13 @@ class OtpController extends BaseApiController
                         'validationDate' => $result->getValidationDate()->format('Y-m-d H:i:s'),
                     ];*/
 
-                    [$user, $newUser, $accessToken] = $this->registerUserIfNotFoundByPhone($phoneCountryCode,
+                    $mobileDataRequest = $request->input('mobile_app');
+
+                    [$user, $newUser, $accessToken] = $this->registerUserIfNotFoundByPhone(
+                        $phoneCountryCode,
                         $phoneNumber,
-                        $deviceName);
+                        $mobileDataRequest
+                    );
                     $response = [
                         'newUser' => $newUser,
                         'user' => new UserResource($user),
@@ -269,22 +266,27 @@ class OtpController extends BaseApiController
     /**
      * @param $phoneCountryCode
      * @param $phoneNumber
-     * @param $deviceName
+     * @param $mobileDataRequest
      * @return array
      */
-    private function registerUserIfNotFoundByPhone($phoneCountryCode, $phoneNumber, $deviceName): array
+    private function registerUserIfNotFoundByPhone($phoneCountryCode, $phoneNumber, $mobileDataRequest): array
     {
+        $mobileAppData = json_decode($mobileDataRequest);
+        $deviceName = isset($mobileAppData->device) ? $mobileAppData->device->model : 'New Device';
         $newUser = false;
-// new user has been verified
+        // new user has been verified
         if (is_null($user = User::getUserByPhone($phoneCountryCode, $phoneNumber))) {
             $user = new User();
-            $user->first = $phoneCountryCode.$phoneNumber;
+            $user->first = $phoneNumber;
             $user->phone_country_code = $phoneCountryCode;
             $user->phone_number = $phoneNumber;
-            $user->email = $phoneNumber.'@otp';
+//            $user->email = $phoneNumber.'@otp';
             $user->username = $phoneNumber;
             $user->approved_at = now();
             $user->phone_verified_at = now();
+            if ( ! is_null($mobileDataRequest) && ! is_null($mobileAppData)) {
+                $user->mobile_app = $mobileAppData;
+            }
             $newUser = true;
         }
         $user->last_logged_in_at = now();

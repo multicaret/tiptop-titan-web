@@ -99,40 +99,6 @@ namespace App\Models{
 /**
  * App\Models\Boot
  *
- * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\BootTranslation[] $translations
- * @property-read int|null $translations_count
- * @method static \Illuminate\Database\Eloquent\Builder|Boot listsTranslations(string $translationField)
- * @method static \Illuminate\Database\Eloquent\Builder|Boot newModelQuery()
- * @method static \Illuminate\Database\Eloquent\Builder|Boot newQuery()
- * @method static \Illuminate\Database\Eloquent\Builder|Boot notTranslatedIn(?string $locale = null)
- * @method static \Illuminate\Database\Eloquent\Builder|Boot orWhereTranslation(string $translationField, $value, ?string $locale = null)
- * @method static \Illuminate\Database\Eloquent\Builder|Boot orWhereTranslationLike(string $translationField, $value, ?string $locale = null)
- * @method static \Illuminate\Database\Eloquent\Builder|Boot orderByTranslation(string $translationField, string $sortMethod = 'asc')
- * @method static \Illuminate\Database\Eloquent\Builder|Boot query()
- * @method static \Illuminate\Database\Eloquent\Builder|Boot translated()
- * @method static \Illuminate\Database\Eloquent\Builder|Boot translatedIn(?string $locale = null)
- * @method static \Illuminate\Database\Eloquent\Builder|Boot whereTranslation(string $translationField, $value, ?string $locale = null, string $method = 'whereHas', string $operator = '=')
- * @method static \Illuminate\Database\Eloquent\Builder|Boot whereTranslationLike(string $translationField, $value, ?string $locale = null)
- * @method static \Illuminate\Database\Eloquent\Builder|Boot withTranslation()
- */
-	class Boot extends \Eloquent {}
-}
-
-namespace App\Models{
-/**
- * App\Models\BootTranslation
- *
- * @method static \Illuminate\Database\Eloquent\Builder|BootTranslation newModelQuery()
- * @method static \Illuminate\Database\Eloquent\Builder|BootTranslation newQuery()
- * @method static \Illuminate\Database\Eloquent\Builder|BootTranslation query()
- */
-	class BootTranslation extends \Eloquent {}
-}
-
-namespace App\Models{
-/**
- * App\Models\Boot
- *
  * @property int $id
  * @property int $build_number
  * @property int $application_type 1:customer, 2:restaurant, 3:driver
@@ -1298,7 +1264,7 @@ namespace App\Models{
  * @property int $rating_count
  * @property \Illuminate\Support\Carbon|null $completed_at
  * @property string|null $notes
- * @property int $status
+ * @property int $status 
  *             0: Cancelled,
  *             1: Draft,
  *             6: Waiting Courier,
@@ -1373,6 +1339,7 @@ namespace App\Models{
  * @property int $id
  * @property int $creator_id
  * @property int $editor_id
+ * @property float $base_commission
  * @property int $status 0:incomplete, 1:draft, 2:published, 3:Inactive, 4..n:CUSTOM
  * @property \Illuminate\Support\Carbon|null $created_at
  * @property \Illuminate\Support\Carbon|null $updated_at
@@ -1403,6 +1370,7 @@ namespace App\Models{
  * @method static \Illuminate\Database\Eloquent\Builder|PaymentMethod query()
  * @method static \Illuminate\Database\Eloquent\Builder|PaymentMethod translated()
  * @method static \Illuminate\Database\Eloquent\Builder|PaymentMethod translatedIn(?string $locale = null)
+ * @method static \Illuminate\Database\Eloquent\Builder|PaymentMethod whereBaseCommission($value)
  * @method static \Illuminate\Database\Eloquent\Builder|PaymentMethod whereCreatedAt($value)
  * @method static \Illuminate\Database\Eloquent\Builder|PaymentMethod whereCreatorId($value)
  * @method static \Illuminate\Database\Eloquent\Builder|PaymentMethod whereDeletedAt($value)
@@ -1920,6 +1888,7 @@ namespace App\Models{
  * App\Models\Search
  *
  * @property int $id
+ * @property string $locale
  * @property string $term
  * @property int $count
  * @property int $chain_id
@@ -1936,6 +1905,7 @@ namespace App\Models{
  * @method static \Illuminate\Database\Eloquent\Builder|Search whereCount($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Search whereCreatedAt($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Search whereId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Search whereLocale($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Search whereTerm($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Search whereUpdatedAt($value)
  */
@@ -1947,10 +1917,14 @@ namespace App\Models{
  * App\Models\Slide
  *
  * @property int $id
+ * @property int $creator_id
+ * @property int $editor_id
+ * @property string $uuid
  * @property string|null $link_value
  * @property int $link_type
  * @property \Illuminate\Support\Carbon|null $created_at
  * @property \Illuminate\Support\Carbon|null $updated_at
+ * @property \Illuminate\Support\Carbon|null $deleted_at
  * @property-read mixed $image
  * @property-read mixed $image_full
  * @property-read mixed $thumbnail
@@ -1971,12 +1945,16 @@ namespace App\Models{
  * @method static \Illuminate\Database\Eloquent\Builder|Slide translated()
  * @method static \Illuminate\Database\Eloquent\Builder|Slide translatedIn(?string $locale = null)
  * @method static \Illuminate\Database\Eloquent\Builder|Slide whereCreatedAt($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Slide whereCreatorId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Slide whereDeletedAt($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Slide whereEditorId($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Slide whereId($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Slide whereLinkType($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Slide whereLinkValue($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Slide whereTranslation(string $translationField, $value, ?string $locale = null, string $method = 'whereHas', string $operator = '=')
  * @method static \Illuminate\Database\Eloquent\Builder|Slide whereTranslationLike(string $translationField, $value, ?string $locale = null)
  * @method static \Illuminate\Database\Eloquent\Builder|Slide whereUpdatedAt($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Slide whereUuid($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Slide withTranslation()
  * @method static \Illuminate\Database\Query\Builder|Slide withTrashed()
  * @method static \Illuminate\Database\Query\Builder|Slide withoutTrashed()
@@ -2306,8 +2284,8 @@ namespace App\Models{
  * @property-read int|null $media_count
  * @property-read \Illuminate\Notifications\DatabaseNotificationCollection|\Illuminate\Notifications\DatabaseNotification[] $notifications
  * @property-read int|null $notifications_count
- * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\Order[] $order
- * @property-read int|null $order_count
+ * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\Order[] $orders
+ * @property-read int|null $orders_count
  * @property-read \Illuminate\Database\Eloquent\Collection|\Spatie\Permission\Models\Permission[] $permissions
  * @property-read int|null $permissions_count
  * @property-read \App\Models\Region|null $region

@@ -18,7 +18,7 @@ class PageResource extends JsonResource
     public function toArray($request)
     {
         return [
-            'id' => $this->id,
+            'id' => (int) $this->id,
             'title' => $this->title,
             'content' => [
                 'raw' => strip_tags($this->content),

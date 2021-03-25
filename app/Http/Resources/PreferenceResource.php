@@ -17,7 +17,7 @@ class PreferenceResource extends JsonResource
     public function toArray($request)
     {
         return [
-            'id' => $this->id,
+            'id' => (int) $this->id,
             'key' => $this->key,
             'title' => trans('strings.'.$this->key),
             'value' => $this->type == 'file' ? url($this->value) : $this->value,

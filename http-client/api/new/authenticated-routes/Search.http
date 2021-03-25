@@ -1,0 +1,16 @@
+### get search terms (search index)
+GET {{host}}/{{locale}}/api/v1/search
+Accept: application/json
+Content-Type: application/json
+
+{
+    "chain_id": 1,
+    "branch_id": 1
+}
+
+
+
+### search products
+GET {{host}}/{{locale}}/api/v1/search/products?q=Cappy Puply
+Accept: application/json
+Content-Type: application/json

@@ -2,6 +2,7 @@
 
 namespace App\Http\Resources;
 
+use App\Models\Currency;
 use Illuminate\Http\Resources\Json\JsonResource;
 
 /** @mixin \App\Models\Product */
@@ -14,7 +15,7 @@ class ProductResource extends JsonResource
     public function toArray($request)
     {
         return [
-            'id' => $this->id,
+            'id' => (int) $this->id,
             'uuid' => $this->uuid,
             'title' => $this->title,
             'description' => [
@@ -38,12 +39,12 @@ class ProductResource extends JsonResource
             'avgRating' => $this->avg_rating,
             'ratingCount' => $this->rating_count,
             'price' => [
-                'amount' => $this->price,
-                'amountFormatted' => $this->price_formatted,
+                'raw' => (double) $this->price,
+                'formatted' => $this->price_formatted,
             ],
             'discountedPrice' => $this->discounted_price === 0 ? null : [
-                'amount' => $this->discounted_price,
-                'amountFormatted' => $this->discounted_price_formatted,
+                'raw' => (double) $this->discounted_price,
+                'formatted' => $this->discounted_price_formatted,
             ],
             'barcodes' => $this->barcodes,
             'media' => [

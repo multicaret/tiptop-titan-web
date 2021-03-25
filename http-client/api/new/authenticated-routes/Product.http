@@ -11,14 +11,10 @@ Accept: application/json
 Content-Type: application/json
 Authorization: Bearer {{token}}
 
-### search products
-GET {{host}}/{{locale}}/api/v1/products?q=Cappy Puply
-Accept: application/json
-Content-Type: application/json
 
 
 ###  remove or add product
-POST {{host}}/{{locale}}/api/v1/carts/add-remove-product
+POST {{host}}/{{locale}}/api/v1/carts/{cart}/products/adjust-quantity
 Accept: application/json
 Content-Type: application/json
 Authorization: Bearer {{token}}
@@ -32,7 +28,7 @@ Authorization: Bearer {{token}}
 }
 
 ###  clear cart
-POST {{host}}/{{locale}}/api/v1/carts/clear-cart
+POST {{host}}/{{locale}}/api/v1/carts/{cart}/delete
 Accept: application/json
 Content-Type: application/json
 Authorization: Bearer {{token}}

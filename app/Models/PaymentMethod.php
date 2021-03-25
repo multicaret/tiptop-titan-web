@@ -28,7 +28,8 @@ class PaymentMethod extends Model implements HasMedia
     ];
 
     protected $casts = [
-        'instructions' => 'json'
+        'instructions' => 'json',
+        'base_commission' => 'double',
     ];
 
     protected $with = [

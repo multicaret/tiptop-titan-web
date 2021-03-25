@@ -69,6 +69,22 @@ class AjaxController extends Controller
         );
     }
 
+
+    public function statusChange(Request $request)
+    {
+        $modelName = $request->relatedModel;
+        $objectName = $modelName::find($request->itemId);
+
+        $objectName->status = $request->status;
+        $objectName->save();
+
+        return $this->respond([
+            'isSuccess' => true,
+            'message' => "Successfully updated",
+            'currentStatus' => $request->relatedModel::getAllStatusesRich()[$objectName->status],
+        ]);
+    }
+
     public function statusToggle(Request $request)
     {
         $request->validate([

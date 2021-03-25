@@ -17,7 +17,7 @@ class CurrencyResource extends JsonResource
     public function toArray($request)
     {
         return [
-            'id' => $this->id,
+            'id' => (int) $this->id,
             'name' => $this->english_name,
             'code' => $this->code,
             'symbol' => $this->symbol,
