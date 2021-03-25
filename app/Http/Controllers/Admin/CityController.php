@@ -46,6 +46,11 @@ class CityController extends Controller
                 'title' => trans('strings.region'),
             ],
             [
+                'data' => 'status',
+                'name' => 'status',
+                'title' => 'Status',
+            ],
+            [
                 'data' => 'created_at',
                 'name' => 'created_at',
                 'title' => trans('strings.create_date')

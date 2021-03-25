@@ -138,4 +138,50 @@
             );
         });
     </script>
+    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+    <script>
+        function changeItemStatus(event, modelId = null) {
+            event.preventDefault();
+            const actionButton = $(event.target);
+            const postUrl = actionButton.attr('href');
+            const url = new URL(postUrl);
+            const oldStatus = url.searchParams.get("status");
+            axios.post(postUrl)
+                .then((response) => {
+                    showToast(response.data.isSuccess ? 'success' : 'error', response.data.message);
+                    if (response.data.isSuccess) {
+                        const currentStatus = response.data.currentStatus;
+                        let dropdownButton = actionButton.parent().parent().find('button');
+                        dropdownButton.find(".button-text").html(currentStatus['title']);
+                        dropdownButton.attr('class', function (i, c) {
+                            return c.replace(/(^|\s)btn-\S+/g, ' btn-' + currentStatus['class']);
+                        });
+                        {{--if (modelId && currentStatus.id === @json(\App\Models\Post::STATUS_INACTIVE)) {--}}
+                        {{--    $(`#model-id-${modelId}`).hide();--}}
+                        {{--    $(`#edit-action-button-id-${modelId}`).hide();--}}
+                        {{--} else {--}}
+                        {{--    $(`#model-id-${modelId}`).show();--}}
+                        {{--    $(`#edit-action-button-id-${modelId}`).show();--}}
+                        {{--}--}}
+                        {{--if(oldStatus == '1') {--}}
+                        {{--    $(`#btn-status-${modelId}-1`).addClass('d-none');--}}
+                        {{--    $(`#btn-status-${modelId}-0`).removeClass('d-none');--}}
+                        {{--} else {--}}
+                        {{--    $(`#btn-status-${modelId}-0`).addClass('d-none');--}}
+                        {{--    $(`#btn-status-${modelId}-1`).removeClass('d-none');--}}
+                        {{--}--}}
+                    }
+                }, () => {
+                    showToast('error', 'Server Error, try later!');
+                });
+        }
+
+        function showToast(type, message) {
+            window.toast.fire({
+                icon: type,
+                type: type,
+                title: message,
+            });
+        }
+    </script>
 @endpush

@@ -15,7 +15,7 @@ use Yajra\DataTables\DataTables;
 class DatatableController extends AjaxController
 {
     /**
-     * @param Request $request
+     * @param  Request  $request
      *
      * @return mixed
      * @throws \Exception
@@ -23,7 +23,7 @@ class DatatableController extends AjaxController
     public function users(Request $request)
     {
         $type = Str::ucfirst($request->type);
-        if (!in_array($type, User::getAllRoles())) {
+        if ( ! in_array($type, User::getAllRoles())) {
             $type = User::ROLE_USER;
         }
 
@@ -33,50 +33,62 @@ class DatatableController extends AjaxController
                      ->selectRaw('users.*');
 
         return DataTables::of($users)
-            ->editColumn('action', function ($user) {
-                $data = [];
-                if (auth()->user()->role == User::ROLE_SUPER || auth()->user()->role != User::ROLE_SUPER) {
-                    $data = [
-                        'editAction' => route('admin.users.edit', [$user, 'type' => request('type')]),
-                        'deleteAction' => route('admin.users.destroy', $user),
-                    ];
-                }
+                         ->editColumn('action', function ($user) {
+                             $data = [];
+                             if (auth()->user()->role == User::ROLE_SUPER || auth()->user()->role != User::ROLE_SUPER) {
+                                 $data = [
+                                     'modelId' => $user->id,
+                                     'editAction' => route('admin.users.edit', [$user, 'type' => request('type')]),
+                                     'deleteAction' => route('admin.users.destroy', $user),
+                                 ];
+                             }
 
-                return view('admin.components.datatables._row-actions', $data)->render();
-            })
-            ->editColumn('order_column', function ($item) {
-                return view('admin.components.datatables._row-reorder')->render();
-            })
-            ->editColumn('last_logged_in_at', function ($item) {
-                if (!is_null($item->last_logged_in_at)) {
-                    return view('admin.components.datatables._date', [
-                        'date' => $item->last_logged_in_at
-                    ])->render();
-                }
+                             return view('admin.components.datatables._row-actions', $data)->render();
+                         })
+                         ->editColumn('status', function ($user) {
+                             $currentStatus = User::getAllStatusesRich()[$user->status];
+                             $data = [
+                                 'item' => $user,
+                                 'currentStatus' => $currentStatus,
+                             ];
 
-                return "<i>Never</i>";
-            })
-            ->editColumn('created_at', function ($item) {
-                return view('admin.components.datatables._date', [
-                    'date' => $item->created_at
-                ])->render();
-            })
-            ->rawColumns([
-                'action',
-                'order_column',
-                'created_at',
-                'last_logged_in_at',
-            ])
-            ->setRowAttr([
-                'row-id' => function ($user) {
-                    return $user->id;
-                }
-            ])
-            ->make(true);
+                             return view('admin.components.datatables._row-actions-status', $data)
+                                 ->render();
+                         })
+                         ->editColumn('order_column', function ($item) {
+                             return view('admin.components.datatables._row-reorder')->render();
+                         })
+                         ->editColumn('last_logged_in_at', function ($item) {
+                             if ( ! is_null($item->last_logged_in_at)) {
+                                 return view('admin.components.datatables._date', [
+                                     'date' => $item->last_logged_in_at
+                                 ])->render();
+                             }
+
+                             return "<i>Never</i>";
+                         })
+                         ->editColumn('created_at', function ($item) {
+                             return view('admin.components.datatables._date', [
+                                 'date' => $item->created_at
+                             ])->render();
+                         })
+                         ->rawColumns([
+                             'action',
+                             'order_column',
+                             'created_at',
+                             'last_logged_in_at',
+                             'status',
+                         ])
+                         ->setRowAttr([
+                             'row-id' => function ($user) {
+                                 return $user->id;
+                             }
+                         ])
+                         ->make(true);
     }
 
     /**
-     * @param Request $request
+     * @param  Request  $request
      *
      * @return mixed
      * @throws \Exception
@@ -89,48 +101,48 @@ class DatatableController extends AjaxController
                               ->where('type', $correctType);
 
         return DataTables::of($taxonomies)
-            ->editColumn('action', function ($taxonomy) {
-                $data = [
-                    'editAction' => route('admin.taxonomies.edit', [
-                        $taxonomy->uuid,
-                        'type' => request('type')
-                    ]),
-                    'deleteAction' => route('admin.taxonomies.destroy', [
-                        $taxonomy->uuid,
-                        'type' => request('type')
-                    ]),
-                ];
+                         ->editColumn('action', function ($taxonomy) {
+                             $data = [
+                                 'editAction' => route('admin.taxonomies.edit', [
+                                     $taxonomy->uuid,
+                                     'type' => request('type')
+                                 ]),
+                                 'deleteAction' => route('admin.taxonomies.destroy', [
+                                     $taxonomy->uuid,
+                                     'type' => request('type')
+                                 ]),
+                             ];
 
-                return view('admin.components.datatables._row-actions', $data)->render();
-            })
-            ->editColumn('order_column', function ($item) {
-                return view('admin.components.datatables._row-reorder')->render();
-            })
-            ->editColumn('created_at', function ($item) {
-                return view('admin.components.datatables._date', [
-                    'date' => $item->created_at
-                ])->render();
-            })
-            ->editColumn('status', function ($item) {
-                return view('admin.components.datatables._status', [
-                    'status' => $item->status
-                ])->render();
-            })
-            ->rawColumns([
-                'action',
-                'order_column',
-                'created_at'
-            ])
-            ->setRowAttr([
-                'row-id' => function ($taxonomy) {
-                    return $taxonomy->id;
-                }
-            ])
-            ->make(true);
+                             return view('admin.components.datatables._row-actions', $data)->render();
+                         })
+                         ->editColumn('order_column', function ($item) {
+                             return view('admin.components.datatables._row-reorder')->render();
+                         })
+                         ->editColumn('created_at', function ($item) {
+                             return view('admin.components.datatables._date', [
+                                 'date' => $item->created_at
+                             ])->render();
+                         })
+                         ->editColumn('status', function ($item) {
+                             return view('admin.components.datatables._status', [
+                                 'status' => $item->status
+                             ])->render();
+                         })
+                         ->rawColumns([
+                             'action',
+                             'order_column',
+                             'created_at'
+                         ])
+                         ->setRowAttr([
+                             'row-id' => function ($taxonomy) {
+                                 return $taxonomy->id;
+                             }
+                         ])
+                         ->make(true);
     }
 
     /**
-     * @param Request $request
+     * @param  Request  $request
      *
      * @return mixed
      * @throws \Exception
@@ -138,44 +150,54 @@ class DatatableController extends AjaxController
     public function posts(Request $request)
     {
         $posts = Post::orderBy('order_column')
-        ->where('type', Post::getCorrectType($request->type))
-            ->selectRaw('posts.*');
+                     ->where('type', Post::getCorrectType($request->type))
+                     ->selectRaw('posts.*');
 
         return DataTables::of($posts)
-            ->editColumn('action', function ($post) {
-                $data = [
-                    'editAction' => route('admin.posts.edit', [
-                        $post->uuid,
-                        'type' => request('type')
-                    ]),
-                    'deleteAction' => route('admin.posts.destroy', [
-                        $post->uuid,
-                        'type' => request('type')
-                    ]),
-                ];
+                         ->editColumn('action', function ($post) {
+                             $data = [
+                                 'editAction' => route('admin.posts.edit', [
+                                     $post->uuid,
+                                     'type' => request('type')
+                                 ]),
+                                 'deleteAction' => route('admin.posts.destroy', [
+                                     $post->uuid,
+                                     'type' => request('type')
+                                 ]),
+                             ];
 
-                return view('admin.components.datatables._row-actions', $data)->render();
-            })
-            ->editColumn('order_column', function ($item) {
-                return view('admin.components.datatables._row-reorder')->render();
-            })
-            ->editColumn('created_at', function ($item) {
-                return view('admin.components.datatables._date', [
-                    'date' => $item->created_at
-                ])->render();
-            })
-            ->rawColumns([
-                'action',
-                'order_column',
-                'excerpt',
-                'created_at'
-            ])
-            ->setRowAttr([
-                'row-id' => function ($post) {
-                    return $post->id;
-                }
-            ])
-            ->make(true);
+                             return view('admin.components.datatables._row-actions', $data)->render();
+                         })
+                         ->editColumn('status', function ($post) {
+                             $currentStatus = Post::getAllStatusesRich()[$post->status];
+                             $data = [
+                                 'item' => $post,
+                                 'currentStatus' => $currentStatus,
+                             ];
+                             return view('admin.components.datatables._row-actions-status', $data)
+                                 ->render();
+                         })
+                         ->editColumn('order_column', function ($item) {
+                             return view('admin.components.datatables._row-reorder')->render();
+                         })
+                         ->editColumn('created_at', function ($item) {
+                             return view('admin.components.datatables._date', [
+                                 'date' => $item->created_at
+                             ])->render();
+                         })
+                         ->rawColumns([
+                             'action',
+                             'order_column',
+                             'excerpt',
+                             'created_at',
+                             'status',
+                         ])
+                         ->setRowAttr([
+                             'row-id' => function ($post) {
+                                 return $post->id;
+                             }
+                         ])
+                         ->make(true);
     }
 
     public function reorder(Request $request)
@@ -188,6 +210,7 @@ class DatatableController extends AjaxController
             ]);
         }
     }
+
     public function cities(Request $request)
     {
         $cities = City::selectRaw('cities.*')->with('translations', 'region.translations');
@@ -203,6 +226,16 @@ class DatatableController extends AjaxController
 
                              return view('admin.components.datatables._row-actions', $data)->render();
                          })
+                         ->editColumn('status', function ($post) {
+                             $currentStatus = Post::getAllStatusesRich()[$post->status];
+                             $data = [
+                                 'item' => $post,
+                                 'currentStatus' => $currentStatus,
+                             ];
+
+                             return view('admin.components.datatables._row-actions-status', $data)
+                                 ->render();
+                         })
                          ->editColumn('created_at', function ($item) {
                              return view('admin.components.datatables._date', [
                                  'date' => $item->created_at
@@ -210,7 +243,8 @@ class DatatableController extends AjaxController
                          })
                          ->rawColumns([
                              'action',
-                             'created_at'
+                             'created_at',
+                             'status',
                          ])
                          ->setRowAttr([
                              'row-id' => function ($city) {
@@ -235,6 +269,16 @@ class DatatableController extends AjaxController
 
                              return view('admin.components.datatables._row-actions', $data)->render();
                          })
+                         ->editColumn('status', function ($post) {
+                             $currentStatus = Post::getAllStatusesRich()[$post->status];
+                             $data = [
+                                 'item' => $post,
+                                 'currentStatus' => $currentStatus,
+                             ];
+
+                             return view('admin.components.datatables._row-actions-status', $data)
+                                 ->render();
+                         })
                          ->editColumn('created_at', function ($item) {
                              return view('admin.components.datatables._date', [
                                  'date' => $item->created_at
@@ -242,7 +286,8 @@ class DatatableController extends AjaxController
                          })
                          ->rawColumns([
                              'action',
-                             'created_at'
+                             'created_at',
+                             'status',
                          ])
                          ->setRowAttr([
                              'row-id' => function ($region) {
@@ -255,30 +300,33 @@ class DatatableController extends AjaxController
     public function translationList(Request $request)
     {
         $group = $request->input('group_by');
-        $transitions = is_null($group) ? Translation::on(): Translation::on()->group($group);
+        $transitions = is_null($group) ? Translation::on() : Translation::on()->group($group);
         $of = DataTables::of($transitions);
         $rawColumns = [
             'action',
             'order_column'
         ];
         foreach (localization()->getSupportedLocalesKeys() as $key) {
-            array_push($rawColumns, $key . "_value");
-            $of->editColumn($key . "_value", function ($transition) use ($key) {
+            array_push($rawColumns, $key."_value");
+            $of->editColumn($key."_value", function ($transition) use ($key) {
                 $hasTranslation = $transition->hasTranslation($key);
                 $value = $hasTranslation ? $transition->getTranslation($key)->value : '';
+
                 return view('admin.components.datatables._row-transition-value', [
                     'id' => $transition->id,
                     'value' => $value,
                     'localeKey' => $key,
-                    'is_empty' => !$hasTranslation,
+                    'is_empty' => ! $hasTranslation,
                 ])->render();
             })->filterColumn($key."_value", function ($builderData, $search) use ($key) {
                 if (strpos(Str::lower($search), 'empty') !== false) {
                     return $builderData->notTranslatedIn($key);
                 }
+
                 return $builderData->whereTranslationLike('value', "%$search", $key);
             });
         }
+
         return $of
             ->editColumn('action', function ($transition) {
             })

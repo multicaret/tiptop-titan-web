@@ -1465,12 +1465,12 @@ class DatabaseSeeder extends Seeder
         $paymentMethod = new PaymentMethod();
         $paymentMethod->creator_id = $user->id;
         $paymentMethod->editor_id = $user->id;
-        $paymentMethod->title = 'Credit Card on Delivery';
+        $paymentMethod->title = 'Mobile Wallet (FastPay)';
         $paymentMethod->description = null;
         $paymentMethod->instructions = null;
         $paymentMethod->status = PaymentMethod::STATUS_INACTIVE;
         $paymentMethod->save();
-        $paymentMethod->translateOrNew('ar')->title = 'بطاقة بنك عند الباب';
+        $paymentMethod->translateOrNew('ar')->title = 'محفظة فاست باي';
         $paymentMethod->save();
         $paymentMethod->addMediaFromUrl(asset('/images/payment-methods/mobile-gateway-payment.png'))->toMediaCollection('logo');
     }

@@ -17,7 +17,7 @@ class OrderController extends BaseApiController
 
     public function index(Request $request)
     {
-        $previousOrders = auth()->user()->order->whereNotNull('completed_at');
+        $previousOrders = auth()->user()->orders()->whereNotNull('completed_at')->latest()->get();
         if ( ! is_null($previousOrders)) {
             return $this->respond(OrderResource::collection($previousOrders));
         }
@@ -71,7 +71,7 @@ class OrderController extends BaseApiController
             $deliveryFee = $underMinimumOrderDeliveryFee;
         }
 
-        $paymentMethods = PaymentMethod::all()->map(function ($method) {
+        $paymentMethods = PaymentMethod::published()->get()->map(function ($method) {
             return [
                 'id' => $method->id,
                 'title' => $method->title,
@@ -155,6 +155,15 @@ class OrderController extends BaseApiController
         $cart = Cart::find($newOrder->cart_id);
         $cart->status = Cart::STATUS_COMPLETED;
         $cart->save();
+
+        // Deduct the purchased quantity from the available quantity of each product.
+        foreach ($cart->products as $product) {
+            if ($product->is_storage_tracking_enabled) {
+                $product->available_quantity = $product->available_quantity - $product->pivot->quantity;
+                $product->save();
+            }
+        }
+
         \DB::commit();
 
         return $this->respond(new OrderResource($newOrder));

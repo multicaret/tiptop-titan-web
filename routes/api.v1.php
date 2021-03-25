@@ -11,7 +11,8 @@ Route::middleware('throttle:15')
 
          Route::get('categories/{groceryCategory}/products', 'CategoryController@products');
          Route::get('products/{id}', 'ProductController@show');
-         Route::get('products', 'ProductController@searchProducts');
+         Route::get('search', 'SearchController@index');
+         Route::get('search/products', 'SearchController@searchProducts');
 
 
          /* auth related */
@@ -43,7 +44,7 @@ Route::middleware('auth:sanctum')
          Route::resource('profile/addresses', 'AddressController')->except(['edit', 'update']);
          Route::post('profile/addresses/change-selected-address', 'AddressController@changeSelectedAddress');
          Route::get('profile/edit', 'UserController@edit');
-         Route::put('profile', 'UserController@update');
+         Route::post('profile', 'UserController@update');
 
          // Orders
          Route::get('orders', 'OrderController@index');

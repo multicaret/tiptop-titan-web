@@ -17,6 +17,11 @@ class GroceryCategoryChildResource extends JsonResource
     public function toArray($request)
     {
 
+        $products = $this->products()
+                         ->where('available_quantity', '>', 0)
+                         ->orWhere('is_storage_tracking_enabled', false)
+                         ->get();
+
         return [
             'id' => (int) $this->id,
             'type' => $this->getCorrectTypeName(),
@@ -28,7 +33,7 @@ class GroceryCategoryChildResource extends JsonResource
             ],
             'cover' => $this->cover,
             'thumbnail' => $this->cover_small,
-            'products' => ProductResource::collection($this->products),
+            'products' => ProductResource::collection($products),
         ];
     }
 }

@@ -95,4 +95,30 @@ trait HasStatuses
             self::STATUS_INACTIVE => 'inactive',
         ];
     }
+
+    public static function getAllStatusesRich(): array
+    {
+        return [
+            self::STATUS_PUBLISHED => [
+                'id' => self::STATUS_PUBLISHED,
+                'title' => trans("strings.published"),
+                'class' => 'primary',
+            ],
+            self::STATUS_DRAFT => [
+                'id' => self::STATUS_DRAFT,
+                'title' => trans("strings.draft"),
+                'class' => 'light',
+            ],
+            self::STATUS_INCOMPLETE => [
+                'id' => self::STATUS_INCOMPLETE,
+                'title' => trans("strings.incomplete"),
+                'class' => 'warning',
+            ],
+            self::STATUS_INACTIVE => [
+                'id' => self::STATUS_INACTIVE,
+                'title' => trans("strings.inactive"),
+                'class' => 'dark',
+            ],
+        ];
+    }
 }
