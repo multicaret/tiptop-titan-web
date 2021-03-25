@@ -63,8 +63,11 @@ return [
         'grocery_category_cover' => '/images/grocery-category-cover.png',
         'food_category_cover' => '/images/grocery-category-cover.png',
         'address_home_icon' => '/images/address-home-icon.png',
+        'address_home_marker_icon' => '/images/address-home-marker-icon.png',
         'address_work_icon' => '/images/address-work-icon.png',
+        'address_work_marker_icon' => '/images/address-work-marker-icon.png',
         'address_other_icon' => '/images/address-other-icon.png',
+        'address_other_marker_icon' => '/images/address-other-marker-icon.png',
     ],
     'product_gallery' => [
         "/images/potato.jpeg",

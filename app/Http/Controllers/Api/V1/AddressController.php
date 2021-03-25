@@ -34,16 +34,19 @@ class AddressController extends BaseApiController
                     'id' => Location::KIND_HOME,
                     'title' => trans('api.address_kind_Home'),
                     'icon' => asset(config('defaults.images.address_home_icon')),
+                    'markerIcon' => asset(config('defaults.images.address_home_marker_icon')),
                 ],
                 [
                     'id' => Location::KIND_WORK,
                     'title' => trans('api.address_kind_Work'),
                     'icon' => asset(config('defaults.images.address_work_icon')),
+                    'markerIcon' => asset(config('defaults.images.address_work_marker_icon')),
                 ],
                 [
                     'id' => Location::KIND_OTHER,
                     'title' => trans('api.address_kind_Other'),
                     'icon' => asset(config('defaults.images.address_other_icon')),
+                    'markerIcon' => asset(config('defaults.images.address_other_marker_icon')),
                 ],
             ],
         ]);
