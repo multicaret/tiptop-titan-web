@@ -46,6 +46,8 @@ Route::middleware('auth:sanctum')
          Route::post('profile/addresses/change-selected-address', 'AddressController@changeSelectedAddress');
          Route::get('profile/edit', 'UserController@edit');
          Route::post('profile', 'UserController@update');
+         Route::get('profile/favorites', 'UserController@favorites');
+         Route::post('products/{product}/interact', 'UserController@interact');
 
          // Orders
          Route::get('orders', 'OrderController@index');
@@ -55,7 +57,6 @@ Route::middleware('auth:sanctum')
          Route::post('carts/{cart}/products/adjust-quantity', 'CartController@adjustQuantity');
          Route::post('carts/{cart}/delete', 'CartController@destroy');
 
-         Route::post('products/{product}/interact', 'ProductController@interact');
 
 //         Route::get('taxonomies', 'TaxonomyController@index');
 //         Route::get('taxonomies/{id}', 'TaxonomyController@show');
