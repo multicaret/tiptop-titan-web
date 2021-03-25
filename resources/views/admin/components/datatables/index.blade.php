@@ -40,6 +40,7 @@
                             'searchable' => false,
                             'className' => 'reorder',
                             'targets' => '0',
+                            'width' => '5',
             ]);
 
             $columns = array_values(array_merge($columns,
@@ -50,7 +51,8 @@
                     'data' => 'action',
                     'name' => 'action',
                     'orderable' => false,
-                    'searchable' => false
+                    'searchable' => false,
+                    'width' => '10',
                 ]
             ]
              ) );

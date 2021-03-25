@@ -5,6 +5,7 @@ namespace App\Models;
 use App\Contracts\ShouldHaveTypes;
 use App\Traits\HasMediaTrait;
 use App\Traits\HasStatuses;
+use App\Traits\HasTags;
 use App\Traits\HasTypes;
 use App\Traits\HasUuid;
 use App\Traits\HasViewCount;
@@ -82,6 +83,11 @@ class Taxonomy extends Node implements HasMedia, ShouldHaveTypes, TranslatableCo
     public function scopeTags($query)
     {
         return $query->where('type', self::TYPE_TAG);
+    }
+
+    public function scopePostTags($query)
+    {
+        return $query->where('type', '=', self::TYPE_TAG);
     }
 
     /**

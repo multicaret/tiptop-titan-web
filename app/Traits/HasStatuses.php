@@ -112,7 +112,7 @@ trait HasStatuses
             self::STATUS_INCOMPLETE => [
                 'id' => self::STATUS_INCOMPLETE,
                 'title' => trans("strings.incomplete"),
-                'class' => 'warning',
+                'class' => 'danger',
             ],
             self::STATUS_INACTIVE => [
                 'id' => self::STATUS_INACTIVE,

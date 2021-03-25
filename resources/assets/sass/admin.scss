@@ -90,7 +90,20 @@
 
 }
 
-.translations-link{
+.translations-link {
     border-bottom: dashed 1px $primary;
     cursor: pointer;
+}
+
+.slide-thumbnail {
+    width: 100%;
+    height: 80px;
+    object-fit: cover;
+}
+
+.slide-thumbnail-parent {
+    width: 100%;
+    margin-bottom: 6px;
+    border-radius: 6px;
+    overflow: hidden;
 }

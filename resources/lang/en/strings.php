@@ -185,4 +185,17 @@ return [
     'working_day_5' => 'Friday',
     'working_day_6' => 'Saturday',
     'working_day_7' => 'Sunday',
+
+    'start_date' => 'Start Date',
+    'expire_date' => 'End Date',
+    'phase' => 'Phase',
+    'time_left' => 'Time Left',
+    'slide' => 'Slide',
+    'alt-tag' => 'Alt-Tag',
+    'link_type' => 'Link Type',
+    'link_value' => 'Link Value',
+    'thumbnail' => 'Thumbnail',
+    'future_slide_phase' => 'Future Slide Phase',
+    'active_slide_phase' => 'Active Slide Phase',
+    'over_slide_phase' => 'Over Slide Phase',
 ];

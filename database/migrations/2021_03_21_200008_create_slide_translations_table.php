@@ -16,9 +16,8 @@ class CreateSlideTranslationsTable extends Migration
         Schema::create('slide_translations', function (Blueprint $table) {
             $table->id();
             $table->unsignedBigInteger('slide_id');
+            $table->text('alt_tag');
             $table->string('locale')->index();
-            $table->string('title')->nullable();
-            $table->text('description')->nullable();
 
             $table->unique(['slide_id', 'locale']);
 
