@@ -3,6 +3,7 @@
 namespace App\Http\Resources;
 
 use App\Http\Controllers\Controller;
+use App\Models\Product;
 use Illuminate\Http\Resources\Json\JsonResource;
 
 /** @mixin \App\Models\User */
@@ -77,6 +78,7 @@ class UserResource extends JsonResource
             'country' => new CountryResource($this->country),
             'region' => new RegionResource($this->region),
             'city' => new CityResource($this->city),
+            'favoritedProduct' => new ProductResource($this->favorites(Product::class)->get()),
         ];
     }
 }

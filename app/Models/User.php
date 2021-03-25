@@ -18,6 +18,7 @@ use Illuminate\Notifications\Notifiable;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Str;
 use Laravel\Sanctum\HasApiTokens;
+use Multicaret\Acquaintances\Traits\CanFavorite;
 use Spatie\Image\Manipulations;
 use Spatie\MediaLibrary\HasMedia;
 use Spatie\MediaLibrary\MediaCollections\Models\Media;
@@ -34,7 +35,8 @@ class User extends Authenticatable implements HasMedia, MustVerifyEmail
         HasGender,
         HasStatuses,
         HasRoles,
-        HasFactory;
+        HasFactory,
+        CanFavorite;
 
     const ROLE_SUPER = 'Super';
     const ROLE_ADMIN = 'Admin';

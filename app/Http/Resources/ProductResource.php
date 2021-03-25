@@ -3,6 +3,7 @@
 namespace App\Http\Resources;
 
 use App\Models\Currency;
+use App\Models\User;
 use Illuminate\Http\Resources\Json\JsonResource;
 
 /** @mixin \App\Models\Product */
@@ -14,6 +15,9 @@ class ProductResource extends JsonResource
      */
     public function toArray($request)
     {
+
+        $isFavorited = ! is_null(auth()->id()) ? $this->isFavoritedBy(auth()->user()) : false;
+
         return [
             'id' => (int) $this->id,
             'uuid' => $this->uuid,
@@ -55,6 +59,7 @@ class ProductResource extends JsonResource
             'height' => $this->height,
             'depth' => $this->depth,
             'weight' => $this->weight,
+            'isFavorited' => $isFavorited,
 
             'unit' => new UnitResource($this->unit),
         ];
