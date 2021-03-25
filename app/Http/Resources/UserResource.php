@@ -78,7 +78,6 @@ class UserResource extends JsonResource
             'country' => new CountryResource($this->country),
             'region' => new RegionResource($this->region),
             'city' => new CityResource($this->city),
-            'favoritedProduct' => new ProductResource($this->favorites(Product::class)->get()),
         ];
     }
 }
