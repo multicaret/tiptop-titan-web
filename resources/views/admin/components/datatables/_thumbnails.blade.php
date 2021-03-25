@@ -1,6 +1,6 @@
-@foreach($thumbnails as $thumbnail)
-    <div class="slide-thumbnail-parent">
-        <img class="slide-thumbnail" src="{{$thumbnail['image']}}"
-             alt="thumbnail" data-toggle='tooltip' title="{{isset($thumbnail['tooltip']) ? $thumbnail['tooltip'] : 'thumbnail'}}" />
-    </div>
-@endforeach
+<div class="slide-thumbnail-parent">
+    <img class="slide-thumbnail" src="{{$imageUrl}}"
+         alt="{{$tooltip}}"
+         @if(!is_null($tooltip)) data-toggle='tooltip' @endif
+         title="{{$tooltip}}"/>
+</div>

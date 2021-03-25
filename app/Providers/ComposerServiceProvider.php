@@ -169,7 +169,7 @@ class ComposerServiceProvider extends ServiceProvider
                     'children' => [
                         [
                             'title' => 'Slides',
-                            'icon' => 'fas fa-slide',
+                            'icon' => 'fas fa-images',
                             'route' => route('admin.slides.index'),
                         ],
                         [

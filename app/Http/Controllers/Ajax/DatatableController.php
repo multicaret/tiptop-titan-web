@@ -315,52 +315,41 @@ class DatatableController extends AjaxController
 
                              return view('admin.components.datatables._row-actions', $data)->render();
                          })
-            /*->editColumn('begins_at', function ($item) {
-                if ( ! is_null($item->begins_at)) {
-                    return view('admin.components.datatables._date', [
-                        'date' => $item->begins_at
-                    ])->render();
-                }
-            })
-            ->editColumn('expires_at', function ($item) {
-                if ( ! is_null($item->expires_at)) {
-                    {
-                        return view('admin.components.datatables._date', [
-                            'date' => $item->expires_at
-                        ])->render();
-                    }
-                }
-            })*/
-                         ->editColumn('time_left', function ($item) {
-                if ( ! is_null($item->expires_at)) {
-                    return view('admin.components.datatables._time-left', [
-                        'expires_at' => $item->expires_at
-                    ])->render();
-                }
-
-                return null;
-            })
-                         ->editColumn('phase', function ($item) {
-
-
+                         ->editColumn('begins_at', function ($item) {
+                             if ( ! is_null($item->begins_at)) {
+                                 return view('admin.components.datatables._date', [
+                                     'date' => $item->begins_at
+                                 ])->render();
+                             }
+                         })
+                         ->editColumn('expires_at', function ($item) {
+                             if ( ! is_null($item->expires_at)) {
+                                 {
+                                     return view('admin.components.datatables._date', [
+                                         'date' => $item->expires_at
+                                     ])->render();
+                                 }
+                             }
+                         })
+                         ->editColumn('state', function ($item) {
                              $colorArray = [
-                                 'future' => [
-                                     'color' => '#0090f0',
-                                     'text' => __('strings.future_slide_phase'),
+                                 'scheduled' => [
+                                     'color' => '#0CB4F0',
+                                     'text' => __('strings.scheduled'),
                                      'icon' => 'fas fa-clock'
                                  ],
                                  'active' => [
-                                     'color' => '#63d134',
-                                     'text' => __('strings.active_slide_phase'),
+                                     'color' => '#4F9234',
+                                     'text' => __('strings.active'),
                                      'icon' => 'fas fa-play'
                                  ],
-                                 'over' => [
+                                 'expired' => [
                                      'color' => '#CE4F4B',
-                                     'text' => __('strings.over_slide_phase'),
+                                     'text' => __('strings.expired'),
                                      'icon' => 'fas fa-clipboard-check'
                                  ],
                                  'n/a' => [
-                                     'color' => 'black',
+                                     'color' => '#1F2024',
                                      'text' => __('strings.always_on'),
                                      'icon' => 'fas fa-infinity'
                                  ],
@@ -369,24 +358,32 @@ class DatatableController extends AjaxController
 
                              switch ($now) {
                                  case $now->lt($item->begins_at):
-                                     $phase = $colorArray['future'];
-
+                                     $state = $colorArray['scheduled'];
                                      break;
                                  case $now->lt($item->expires_at):
-                                     $phase = $colorArray['active'];
+                                     $state = $colorArray['active'];
                                      break;
                                  case $now->gt($item->expires_at):
-                                     $phase = $colorArray['over'];
+                                     $state = $colorArray['expired'];
                                      break;
                                  case is_null($item->begins_at) || is_null($item->expires_at):
-                                     $phase = $colorArray['n/a'];
+                                     $state = $colorArray['n/a'];
                                      break;
                              }
-                             $color = $phase['color'];
-                             $tooltipText = $phase['text'];
-                             $icon = $phase['icon'];
+                             $color = $state['color'];
+                             $title = $state['text'];
+                             $icon = $state['icon'];
 
-                             return "<i class='$icon' data-toggle='tooltip' title=$tooltipText style='color:$color'></i>";
+                             if ( ! is_null($item->expires_at)) {
+                                 return view('admin.components.datatables._time-left', [
+                                     'title' => $title,
+                                     'tooltip' => Str::kebab($item->expires_at->diffForHumans(\Carbon\Carbon::now())),
+                                     'icon' => $icon,
+                                     'color' => $color,
+                                 ])->render();
+                             }
+
+                             return null;
                          })
                          ->editColumn('status', function ($item) {
                              $currentStatus = Post::getAllStatusesRich()[$item->status];
@@ -399,16 +396,20 @@ class DatatableController extends AjaxController
                                  ->render();
                          })
                          ->editColumn('thumbnail', function (Slide $item) {
-                             $array = $item->getTranslationsArray();
-                             foreach ($array as $locale => $value) {
-                                 $thumbnails[] = [
-                                     'tooltip' => $locale.' - '.$value['alt_tag'],
-                                     'image' => $value['image']
-                                 ];
+                             $image = config('defaults.images.slider_image');
+                             $altTag = null;
+                             $translations = $item->translations->filter(function ($translation) {
+                                 return $translation->image != url(config('defaults.images.slider_image'));
+                             })->first();
+
+                             if (!is_null($translations)) {
+                                 $image = $translations->image;
+                                 $altTag = $translations->alt_tag;
                              }
 
                              return view('admin.components.datatables._thumbnails', [
-                                 'thumbnails' => $thumbnails
+                                 'imageUrl' => $image,
+                                 'tooltip' => $altTag,
                              ])->render();
                          })
                          ->editColumn('created_at', function ($item) {
@@ -422,7 +423,7 @@ class DatatableController extends AjaxController
                              'status',
                              'begins_at',
                              'expires_at',
-                             'phase',
+                             'state',
                              'time_left',
                              'thumbnail',
                          ])
