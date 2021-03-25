@@ -42,13 +42,18 @@ class SearchController extends BaseApiController
 
     public function searchProducts(Request $request)
     {
-        $searchQuery = $request->input('q');
-        if (is_null($searchQuery)) {
-            return $this->setStatusCode(400)->respond([
-                'success' => true,
-                'message' => __('Empty search has been provided'),
-            ]);
+        $validationRules = [
+            'chain_id' => 'required',
+            'branch_id' => 'required',
+            'q' => 'required|min:2|max:255',
+        ];
+
+        $validator = validator()->make($request->all(), $validationRules);
+        if ($validator->fails()) {
+            return $this->respondValidationFails($validator->errors());
         }
+
+        $searchQuery = $request->input('q');
 
         $products = Product::whereHas('translations', function ($query) use ($searchQuery) {
             $query->where('title', 'like', "%".$searchQuery."%");
@@ -65,11 +70,26 @@ class SearchController extends BaseApiController
                            })
                            ->get();
 
-        if ($products->count()) {
-            return $this->respond(ProductResource::collection($products));
+        if ($products->count() == 0) {
+            return $this->respondNotFound('No results for your search');
         }
 
-        return $this->respondNotFound('No results for your search');
+        $chainId = $request->input('chain_id');
+        $branchId = $request->input('branch_id');
+        // Storing the search term.
+        if (is_null($search = Search::whereChainId($chainId)
+                                    ->whereBranchId($branchId)
+                                    ->whereTerm($searchQuery)
+                                    ->first())) {
+            $search->chain_id = $chainId;
+            $search->branch_id = $branchId;
+            $search->term = $searchQuery;
+            $search->save();
+        } else {
+            $search->increment('count');
+        }
+
+        return $this->respond(ProductResource::collection($products));
     }
 
 }
