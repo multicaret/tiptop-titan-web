@@ -245,44 +245,39 @@ class Post extends Model implements HasMedia, ShouldHaveTypes
 
     public function getCoverAttribute()
     {
-        $image = config('defaults.images.post_cover');
-
-        if ( ! is_null($media = $this->getFirstMedia('cover'))) {
-            $image = $media->getUrl();
-        }
-        if ( ! is_null($media = $this->getFirstMedia('gallery'))) {
-            $image = $media->getUrl();
-        }
-
-        return url($image);
+        return $this->getFirstMediaUrl('cover', 'HD');
     }
 
     public function getGalleryAttribute()
     {
-        return $this->getMediaForUploader('gallery');
+        return $this->getMediaForUploader('gallery', 'HD');
     }
 
     public function registerMediaCollections(): void
     {
+        $fallBackImageUrl = config('defaults.images.post_cover');
         $this->addMediaCollection('cover')
-             ->singleFile();
-
-        $this->addMediaCollection('gallery');
-    }
-
-    public function registerMediaConversions(Media $media = null): void
-    {
-        $this->addMediaConversion('medium')
-             ->width(1280)
-             ->height(873)
-             ->performOnCollections('cover', 'gallery')
-             ->nonQueued();
-
-        $this->addMediaConversion('thumbnail')
-             ->width(480)
-             ->height(270)
-             ->performOnCollections('cover', 'gallery')
-             ->nonQueued();
+             ->useFallbackUrl(url($fallBackImageUrl))
+             ->singleFile()
+             ->withResponsiveImages()
+             ->registerMediaConversions(function ($media) {
+                 foreach (config('defaults.image_conversions.generic_cover') as $conversionName => $dimensions) {
+                     $this->addMediaConversion($conversionName)
+                          ->width($dimensions['width'])
+                          ->height($dimensions['height']);
+                 }
+             });
+        $this->addMediaCollection('gallery')
+             ->useFallbackUrl(url($fallBackImageUrl))
+             ->singleFile()
+             ->withResponsiveImages()
+             ->registerMediaConversions(function ($media) {
+                 foreach (config('defaults.image_conversions.generic_cover') as $conversionName => $dimensions) {
+                     $this->addMediaConversion($conversionName)
+                          ->width($dimensions['width'])
+                          ->height($dimensions['height']);
+                 }
+             });
     }
 
     public function getLinkAttribute()
