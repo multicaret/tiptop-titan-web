@@ -780,46 +780,44 @@ class DatabaseSeeder extends Seeder
     {
         $slides = [
             [
+                'title' => 'Slide 1',
+                'description' => file_get_contents(storage_path('seeders/slides/slide-en.html')),
                 'link_value' => 'https://example.com',
                 'link_type' => Slide::TYPE_DEEPLINK,
                 'image' => config('defaults.images.slider_image'),
                 'translations' => [
                     [
                         'locale' => 'en',
-                        'title' => 'Slide 1',
-                        'description' => file_get_contents(storage_path('seeders/slides/slide-en.html')),
+                        'alt_tag' => 'slide-tag',
                     ],
                     [
                         'locale' => 'ar',
-                        'title' => 'ما هو لوريم',
-                        'description' => file_get_contents(storage_path('seeders/slides/slide-ar.html')),
+                        'alt_tag' => 'slide-tag',
                     ],
                     [
                         'locale' => 'ku',
-                        'title' => 'slider 1',
-                        'description' => file_get_contents(storage_path('seeders/static-pages/about-ku.html')),
+                        'alt_tag' => 'slide-tag',
                     ],
                 ]
             ],
             [
+                'title' => 'Slide 2',
+                'description' => file_get_contents(storage_path('seeders/slides/slide-en.html')),
                 'link_value' => 'https://example.com',
                 'link_type' => Slide::TYPE_EXTERNAL,
                 'image' => config('defaults.images.slider_image_2'),
                 'translations' => [
                     [
                         'locale' => 'en',
-                        'title' => 'Slide 2',
-                        'description' => file_get_contents(storage_path('seeders/slides/slide-en.html')),
+                        'alt_tag' => 'slide-tag2',
                     ],
                     [
                         'locale' => 'ar',
-                        'title' => 'ما هو لوريم',
-                        'description' => file_get_contents(storage_path('seeders/slides/slide-ar.html')),
+                        'alt_tag' => 'slide-tag2',
                     ],
                     [
                         'locale' => 'ku',
-                        'title' => 'slider 2',
-                        'description' => file_get_contents(storage_path('seeders/slides/slide-ku.html')),
+                        'alt_tag' => 'slide-tag2',
                     ],
                 ]
             ],
@@ -828,6 +826,8 @@ class DatabaseSeeder extends Seeder
 
         foreach ($slides as $item) {
             $slide = new Slide();
+            $slide->title = $item['title'];
+            $slide->description = $item['description'];
             $slide->link_value = $item['link_value'];
             $slide->link_type = $item['link_type'];
             $slide->creator_id = $super->id;
@@ -841,9 +841,10 @@ class DatabaseSeeder extends Seeder
                 }
                 $slideTranslation->save();
             }
-            if (isset($item['image'])) {
+
+            /*if (isset($item['image'])) {
                 $slide->addMediaFromUrl(asset($item['image']))->toMediaCollection("image");
-            }
+            }*/
         }
     }
 
