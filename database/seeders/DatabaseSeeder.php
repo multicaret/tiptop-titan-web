@@ -1054,6 +1054,18 @@ class DatabaseSeeder extends Seeder
                     ],
                 ]
             ],
+            'Support' => [
+                'type' => 'section',
+                'notes' => 'Support section',
+                'group_name' => 'support_section',
+                'icon' => 'lnr lnr-user',
+                'children' => [
+                    'support_number' => [
+                        'type' => 'text',
+                        'value' => '',
+                    ],
+                ]
+            ],
         ];
 
         echo PHP_EOL.'Inserting Preferences'.PHP_EOL;
