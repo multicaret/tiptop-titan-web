@@ -33,3 +33,15 @@ Accept: application/json
 Content-Type: application/json
 Authorization: Bearer {{token}}
 
+
+###  favorite
+POST {{host}}/{{locale}}/api/v1/products/1/interact
+Accept: application/json
+Content-Type: application/json
+Authorization: Bearer {{token}}
+
+#unfavorite #favorite
+
+{
+    "action": "favorite"
+}

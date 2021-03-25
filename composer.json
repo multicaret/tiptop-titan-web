@@ -24,6 +24,7 @@
         "laravel/tinker": "^2.5",
         "laravel/ui": "^3.2",
         "laravelcollective/html": "^6.2",
+        "multicaret/laravel-acquaintances": "^3.4",
         "predis/predis": "^1.1",
         "socialiteproviders/facebook": "^4.1",
         "socialiteproviders/google": "^4.1",

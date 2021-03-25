@@ -10,6 +10,7 @@ use App\Traits\HasViewCount;
 use Astrotomic\Translatable\Translatable;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
+use Multicaret\Acquaintances\Traits\CanBeFavorited;
 use Spatie\MediaLibrary\HasMedia;
 use Spatie\MediaLibrary\MediaCollections\Models\Media;
 
@@ -20,7 +21,8 @@ class Product extends Model implements HasMedia
         SoftDeletes,
         HasViewCount,
         HasUuid,
-        HasStatuses;
+        HasStatuses,
+        CanBeFavorited;
 
     const STATUS_INCOMPLETE = 0;
     const STATUS_DRAFT = 1;
