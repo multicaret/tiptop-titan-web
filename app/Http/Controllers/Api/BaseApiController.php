@@ -45,7 +45,7 @@ class BaseApiController extends Controller
 
     public function respondWithMessage($message)
     {
-        return $this->respond(null, null, $message);
+        return $this->respond(null, '', $message);
     }
 
     public function respondValidationFails($errors, $data = null)
