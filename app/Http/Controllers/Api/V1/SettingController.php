@@ -54,6 +54,18 @@ class SettingController extends BaseApiController
         ]);
     }
 
+    /**
+     * @param  Request  $request
+     *
+     * @return \Illuminate\Http\JsonResponse
+     */
+    public function support(Request $request)
+    {
+        return $this->respond([
+            'supportNumber' => Preference::retrieveValue('support_number'),
+        ]);
+    }
+
     public function locales()
     {
         $locales = localization()->getSupportedLocales();
