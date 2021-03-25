@@ -11,10 +11,6 @@ Accept: application/json
 Content-Type: application/json
 Authorization: Bearer {{token}}
 
-### search products
-GET {{host}}/{{locale}}/api/v1/products?q=Cappy Puply
-Accept: application/json
-Content-Type: application/json
 
 
 ###  remove or add product
