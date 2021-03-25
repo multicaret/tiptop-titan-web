@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use App\Traits\HasMediaTrait;
+use App\Traits\HasStatuses;
 use App\Traits\HasUuid;
 use Astrotomic\Translatable\Translatable;
 use Illuminate\Database\Eloquent\Model;
@@ -10,12 +11,17 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 use Spatie\MediaLibrary\HasMedia;
 use Spatie\MediaLibrary\MediaCollections\Models\Media;
 
-class Slide extends Model implements HasMedia
+class Slide extends Model
 {
     use SoftDeletes,
         HasUuid,
         Translatable,
-        HasMediaTrait;
+        HasStatuses;
+
+    const STATUS_INCOMPLETE = 0;
+    const STATUS_DRAFT = 1;
+    const STATUS_PUBLISHED = 2;
+    const STATUS_INACTIVE = 3;
 
     const TYPE_EXTERNAL = 1;
     const TYPE_UNIVERSAL = 2;
@@ -24,50 +30,22 @@ class Slide extends Model implements HasMedia
 
     protected $with = ['translations'];
 
-    protected $translatedAttributes = ['title', 'description'];
+    protected $translatedAttributes = ['alt_tag','image'];
 
-    protected $fillable = ['link_value', 'link_type'];
+    protected $fillable = ['title', 'description', 'link_value', 'link_type', 'begins_at', 'expires_at', 'status'];
 
-    protected $appends = [
-        'image',
+    protected $casts = [
+        'begins_at' => 'datetime',
+        'expires_at' => 'datetime',
     ];
 
-    public function getImageAttribute()
+    public static function getTypesArray(): array
     {
-        $image = config('defaults.images.slider_image');
-
-        if ( ! is_null($media = $this->getFirstMedia('image'))) {
-            $image = $media->getUrl('1K');
-        }
-
-        return url($image);
+        return [
+            self::TYPE_EXTERNAL => 'external',
+            self::TYPE_UNIVERSAL => 'universal',
+            self::TYPE_DEFERRED_DEEPLINK => 'deferred-deeplink',
+            self::TYPE_DEEPLINK => 'deeplink',
+        ];
     }
-
-    public function getImageFullAttribute()
-    {
-        return $this->getFirstMediaUrl('image', 'HD');
-    }
-
-    public function getThumbnailAttribute()
-    {
-        return $this->getFirstMediaUrl('image', 'SD');
-    }
-
-
-    public function registerMediaCollections(): void
-    {
-        $fallBackImageUrl = config('defaults.images.slider_image');
-        $this->addMediaCollection('image')
-             ->useFallbackUrl(url($fallBackImageUrl))
-             ->singleFile()
-             ->withResponsiveImages()
-             ->registerMediaConversions(function (Media $media) {
-                 foreach (config('defaults.image_conversions.generic_cover') as $conversionName => $dimensions) {
-                     $this->addMediaConversion($conversionName)
-                          ->width($dimensions['width'])
-                          ->height($dimensions['height']);
-                 }
-             });
-    }
-
 }

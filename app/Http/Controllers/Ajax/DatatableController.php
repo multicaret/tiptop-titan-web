@@ -5,9 +5,11 @@ namespace App\Http\Controllers\Ajax;
 use App\Models\City;
 use App\Models\Post;
 use App\Models\Region;
+use App\Models\Slide;
 use App\Models\Taxonomy;
 use App\Models\Translation;
 use App\Models\User;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Str;
 use Yajra\DataTables\DataTables;
@@ -174,6 +176,7 @@ class DatatableController extends AjaxController
                                  'item' => $post,
                                  'currentStatus' => $currentStatus,
                              ];
+
                              return view('admin.components.datatables._row-actions-status', $data)
                                  ->render();
                          })
@@ -297,6 +300,141 @@ class DatatableController extends AjaxController
                          ->make(true);
     }
 
+    public function slides(Request $request)
+    {
+        $slides = Slide::selectRaw('slides.*');
+
+        return DataTables::of($slides)
+                         ->editColumn('action', function ($slide) {
+                             $data = [
+                                 'editAction' => route('admin.slides.edit', $slide),
+                                 'deleteAction' => route('admin.slides.destroy', [
+                                     $slide->uuid,
+                                 ]),
+                             ];
+
+                             return view('admin.components.datatables._row-actions', $data)->render();
+                         })
+            /*->editColumn('begins_at', function ($item) {
+                if ( ! is_null($item->begins_at)) {
+                    return view('admin.components.datatables._date', [
+                        'date' => $item->begins_at
+                    ])->render();
+                }
+            })
+            ->editColumn('expires_at', function ($item) {
+                if ( ! is_null($item->expires_at)) {
+                    {
+                        return view('admin.components.datatables._date', [
+                            'date' => $item->expires_at
+                        ])->render();
+                    }
+                }
+            })*/
+                         ->editColumn('time_left', function ($item) {
+                if ( ! is_null($item->expires_at)) {
+                    return view('admin.components.datatables._time-left', [
+                        'expires_at' => $item->expires_at
+                    ])->render();
+                }
+
+                return null;
+            })
+                         ->editColumn('phase', function ($item) {
+
+
+                             $colorArray = [
+                                 'future' => [
+                                     'color' => '#0090f0',
+                                     'text' => __('strings.future_slide_phase'),
+                                     'icon' => 'fas fa-clock'
+                                 ],
+                                 'active' => [
+                                     'color' => '#63d134',
+                                     'text' => __('strings.active_slide_phase'),
+                                     'icon' => 'fas fa-play'
+                                 ],
+                                 'over' => [
+                                     'color' => '#CE4F4B',
+                                     'text' => __('strings.over_slide_phase'),
+                                     'icon' => 'fas fa-clipboard-check'
+                                 ],
+                                 'n/a' => [
+                                     'color' => 'black',
+                                     'text' => __('strings.always_on'),
+                                     'icon' => 'fas fa-infinity'
+                                 ],
+                             ];
+                             $now = Carbon::now();
+
+                             switch ($now) {
+                                 case $now->lt($item->begins_at):
+                                     $phase = $colorArray['future'];
+
+                                     break;
+                                 case $now->lt($item->expires_at):
+                                     $phase = $colorArray['active'];
+                                     break;
+                                 case $now->gt($item->expires_at):
+                                     $phase = $colorArray['over'];
+                                     break;
+                                 case is_null($item->begins_at) || is_null($item->expires_at):
+                                     $phase = $colorArray['n/a'];
+                                     break;
+                             }
+                             $color = $phase['color'];
+                             $tooltipText = $phase['text'];
+                             $icon = $phase['icon'];
+
+                             return "<i class='$icon' data-toggle='tooltip' title=$tooltipText style='color:$color'></i>";
+                         })
+                         ->editColumn('status', function ($item) {
+                             $currentStatus = Post::getAllStatusesRich()[$item->status];
+                             $data = [
+                                 'item' => $item,
+                                 'currentStatus' => $currentStatus,
+                             ];
+
+                             return view('admin.components.datatables._row-actions-status', $data)
+                                 ->render();
+                         })
+                         ->editColumn('thumbnail', function (Slide $item) {
+                             $array = $item->getTranslationsArray();
+                             foreach ($array as $locale => $value) {
+                                 $thumbnails[] = [
+                                     'tooltip' => $locale.' - '.$value['alt_tag'],
+                                     'image' => $value['image']
+                                 ];
+                             }
+
+                             return view('admin.components.datatables._thumbnails', [
+                                 'thumbnails' => $thumbnails
+                             ])->render();
+                         })
+                         ->editColumn('created_at', function ($item) {
+                             return view('admin.components.datatables._date', [
+                                 'date' => $item->created_at
+                             ])->render();
+                         })
+                         ->rawColumns([
+                             'action',
+                             'created_at',
+                             'status',
+                             'begins_at',
+                             'expires_at',
+                             'phase',
+                             'time_left',
+                             'thumbnail',
+                         ])
+                         ->setRowAttr([
+                             'row-id' => function ($slide) {
+                                 return $slide->id;
+                             }
+                         ])
+                         ->make(true);
+    }
+
+
     public function translationList(Request $request)
     {
         $group = $request->input('group_by');
@@ -323,7 +461,7 @@ class DatatableController extends AjaxController
                     return $builderData->notTranslatedIn($key);
                 }
 
-                return $builderData->whereTranslationLike('value', "%$search", $key);
+                return $builderData->whereTranslationLike('value', " % $search", $key);
             });
         }
 

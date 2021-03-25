@@ -7,7 +7,7 @@
     </button>
     <div class="dropdown-menu">
         @foreach(get_class($item)::getAllStatusesRich() as $status)
-            <a id="btn-status-{{$item->id}}-{{$status['id']}}" class="dropdown-item {{$status['id'] == $item->status ? 'd-none' : ''}}" onclick="changeItemStatus(event, {{$item->id}})"
+            <a id="btn-status-{{$item->id}}-{{$status['id']}}" class="dropdown-item" onclick="changeItemStatus(event, {{$item->id}})"
                href="{{ route('ajax.statuses.change',
                     ['itemId'=>$item->id,
                     'relatedModel'=>get_class($item),

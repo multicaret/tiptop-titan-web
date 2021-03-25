@@ -1,0 +1,255 @@
+<?php
+
+namespace App\Http\Controllers\Admin;
+
+use App\Http\Controllers\Controller;
+use App\Models\Region;
+use App\Models\Slide;
+use App\Models\SlideTranslation;
+use Illuminate\Http\Request;
+use Illuminate\View\View;
+use function PHPUnit\Framework\isEmpty;
+
+class SlideController extends Controller
+{
+
+    function __construct()
+    {
+//        $this->middleware('permission:slide.permissions.index', ['only' => ['index', 'store']]);
+//        $this->middleware('permission:slide.permissions.create', ['only' => ['create', 'store']]);
+//        $this->middleware('permission:slide.permissions.edit', ['only' => ['edit', 'update']]);
+//        $this->middleware('permission:slide.permissions.destroy', ['only' => ['destroy']]);
+    }
+
+    /**
+     * Display a listing of the resource.
+     *
+     * @param  Request  $request
+     *
+     * @return View
+     */
+    public function index(Request $request)
+    {
+        $columns = [
+            [
+                'data' => 'id',
+                'name' => 'id',
+                'title' => trans('strings.id'),
+                'width' => '1',
+            ],
+            [
+                'data' => 'thumbnail',
+                'title' => trans('strings.thumbnail'),
+                'width' => '10',
+            ],
+            [
+                'data' => 'title',
+                'name' => 'title',
+                'title' => trans('strings.title'),
+                'width' => '40',
+            ],
+            /*[
+                'data' => 'begins_at',
+                'name' => 'begins_at',
+                'title' => trans('strings.start_date'),
+                'width' => '10',
+            ],
+            [
+                'data' => 'expires_at',
+                'name' => 'expires_at',
+                'title' => trans('strings.expire_date'),
+                'width' => '10',
+            ],*/
+            [
+                'data' => 'phase',
+                'name' => 'phase',
+                'title' => trans('strings.phase'),
+                'searchable' => false,
+                'bSortable' => false,
+                'width' => '10',
+            ],
+            [
+                'data' => 'time_left',
+                'name' => 'time_left',
+                'title' => trans('strings.time_left'),
+                'searchable' => false,
+                'bSortable' => false,
+                'width' => '10',
+            ],
+            [
+                'data' => 'status',
+                'name' => 'status',
+                'title' => 'Status',
+                'width' => '10',
+            ],
+            [
+                'data' => 'created_at',
+                'name' => 'created_at',
+                'title' => trans('strings.create_date'),
+                'width' => '10',
+            ],
+        ];
+
+        return view('admin.slides.index', compact('columns'));
+    }
+
+    /**
+     * Show the form for creating a new resource.
+     *
+     * @param  Request  $request
+     *
+     * @return View
+     */
+    public function create(Request $request)
+    {
+        $data = $this->essentialData($request);
+        $data['slide'] = new Slide();
+
+        return view('admin.slides.form', $data);
+    }
+
+    /**
+     * Store a newly created resource in storage.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     *
+     * @return \Illuminate\Http\RedirectResponse
+     */
+    public function store(Request $request)
+    {
+        $request->validate($this->validationRules());
+
+        $slide = new Slide();
+        $this->saveLogic($request, $slide);
+
+        return redirect()
+            ->route('admin.slides.index')
+            ->with('message', [
+                'type' => 'Success',
+                'text' => __('strings.successfully_created'),
+            ]);
+    }
+
+    /**
+     * Show the form for editing the specified resource.
+     *
+     * @param  Slide  $slide
+     *
+     * @param  Request  $request
+     *
+     * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
+     */
+    public function edit(Slide $slide, Request $request)
+    {
+        $data = $this->essentialData($request);
+        $data['slide'] = $slide;
+
+        return view('admin.slides.form', $data);
+    }
+
+    /**
+     * Update the specified resource in storage.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @param  Slide  $slide
+     *
+     * @return \Illuminate\Http\RedirectResponse
+     */
+    public function update(Request $request, Slide $slide)
+    {
+        $this->saveLogic($request, $slide, true);
+
+        return redirect()
+            ->route('admin.slides.index')
+            ->with('message', [
+                'type' => 'Success',
+                'text' => 'Edited successfully',
+            ]);
+    }
+
+    /**
+     * Remove the specified resource from storage.
+     *
+     * @param  Slide  $slide
+     *
+     * @return \Illuminate\Http\RedirectResponse
+     * @throws \Exception
+     */
+    public function destroy(Slide $slide)
+    {
+        $slide->delete();
+
+        return back()->with('message', [
+            'type' => 'Success',
+            'text' => 'Successfully Deleted',
+        ]);
+    }
+
+    private function essentialData(Request $request): array
+    {
+        $linkTypes = Slide::getTypesArray();
+
+
+        return compact('linkTypes');
+    }
+
+    private function validationRules(): array
+    {
+        $defaultLocale = localization()->getDefaultLocale();
+
+        return [
+//            "{$defaultLocale}.title" => 'required',
+//            "old_price" => 'required|numeric|min:1',
+        ];
+    }
+
+
+    private function saveLogic($request, Slide $slide, bool $isUpdating = false)
+    {
+        \DB::beginTransaction();
+        if ( ! $isUpdating) {
+            $slide->creator_id = auth()->id();
+        }
+        $slide->editor_id = auth()->id();
+        $slide->title = $request->input('title');
+        $slide->description = $request->input('description');
+        $slide->link_type = $request->input('link_type');
+        $slide->link_value = $request->input('link_value');
+        $slide->linkage = $request->input('linkage');
+        $slide->begins_at = $request->input('begins_at');
+        $slide->expires_at = $request->input('expires_at');
+        $slide->status = $request->input('status');
+        $slide->save();
+        // Filling translations
+
+        foreach (localization()->getSupportedLocales() as $key => $value) {
+            $slide->translateOrNew($key)->alt_tag = $request->input($key.'.alt_tag');
+            $inputKey = $key.".image";
+            if ($request->has($inputKey)) {
+                $slideTranslation = SlideTranslation::whereSlideId($slide->id)
+                                                    ->where('locale', \Str::beforeLast($key, '.'))
+                                                    ->first();
+
+                $this->handleSubmittedSingleMedia($key.".image", $request, $slideTranslation);
+            }
+        }
+        $slide->save();
+
+        $allFiles = \Arr::dot($request->allFiles());
+        foreach ($allFiles as $tempKey => $file) {
+            $slideTranslation = SlideTranslation::whereSlideId($slide->id)
+                                                ->where('locale', \Str::beforeLast($tempKey, '.'))
+                                                ->first();
+            if ( ! is_null($slideTranslation->addMediaFromRequest($tempKey))) {
+                $slideTranslation->addMediaFromRequest($tempKey)
+                                 ->toMediaCollection('image');
+            }
+
+        }
+//        dd($slide->toArray());
+//        $slide->???()->sync($request->???);
+
+        \DB::commit();
+    }
+
+}

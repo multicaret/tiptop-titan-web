@@ -168,6 +168,11 @@ class ComposerServiceProvider extends ServiceProvider
                     'title' => '',
                     'children' => [
                         [
+                            'title' => 'Slides',
+                            'icon' => 'fas fa-slide',
+                            'route' => route('admin.slides.index'),
+                        ],
+                        [
                             'title' => 'Translations',
                             'icon' => 'fas fa-language',
                             'route' => route('admin.translations.index'),
