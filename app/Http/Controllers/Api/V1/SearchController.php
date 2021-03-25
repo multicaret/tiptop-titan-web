@@ -71,7 +71,7 @@ class SearchController extends BaseApiController
                            ->get();
 
         if ($products->count() == 0) {
-            return $this->respondNotFound('No results for your search');
+            return $this->respondWithMessage('No results for your search');
         }
 
         $chainId = $request->input('chain_id');
