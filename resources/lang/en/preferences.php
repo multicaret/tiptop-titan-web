@@ -53,5 +53,7 @@ return [
     'JS or any other code to be placed at the end of the head tag' => 'JS or any other code to be placed at the end of the <code>&lt;head&gt;</code> tag',
     'JS or any other code to be placed at the top of the body tag' => 'JS or any other code to be placed at the top of the <code>&lt;body&gt;</code> tag',
 
+    'support_number' => 'Support number',
+
     '' => '',
 ];

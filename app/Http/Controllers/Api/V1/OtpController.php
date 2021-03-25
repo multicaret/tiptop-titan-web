@@ -272,7 +272,7 @@ class OtpController extends BaseApiController
     private function registerUserIfNotFoundByPhone($phoneCountryCode, $phoneNumber, $mobileDataRequest): array
     {
         $mobileAppData = json_decode($mobileDataRequest);
-        $deviceName = isset($mobileAppData->device) ? $mobileAppData->device->model : 'New Device';
+        $deviceName = isset($mobileAppData->device) ? $mobileAppData->device->name : 'New Device';
         $newUser = false;
         // new user has been verified
         if (is_null($user = User::getUserByPhone($phoneCountryCode, $phoneNumber))) {

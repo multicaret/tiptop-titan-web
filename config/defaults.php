@@ -6,6 +6,7 @@ return [
             'buildNumber' => 0,
             'device' => [
                 'manufacturer' => '',
+                'name' => '',
                 'model' => '',
                 'platform' => '',
                 'serial' => '',
