@@ -83,6 +83,7 @@ class SearchController extends BaseApiController
                                     ->whereTerm($searchQuery)
                                     ->first())) {
             $search = new Search();
+            $search->locale = localization()->getCurrentLocale();
             $search->chain_id = $chainId;
             $search->branch_id = $branchId;
             $search->term = $searchQuery;
