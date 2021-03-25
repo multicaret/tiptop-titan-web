@@ -90,6 +90,7 @@ class SearchController extends BaseApiController
             $search->save();
         } else {
             $search->increment('count');
+            $search->save();
         }
 
         return $this->respond(ProductResource::collection($products));
