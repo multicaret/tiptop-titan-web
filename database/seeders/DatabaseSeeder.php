@@ -1182,7 +1182,7 @@ class DatabaseSeeder extends Seeder
             $item->editor_id = $super->id;
             $item->region_id = config('defaults.region.id');
             $item->city_id = config('defaults.city.id');
-            $item->type = Branch::TYPE_GROCERY;
+            $item->type = Branch::TYPE_GROCERY_BRANCH;
 
             $item->minimum_order = 500 * ($branchIndex + 1);
             $item->under_minimum_order_delivery_fee = 200 * ($branchIndex + 1);

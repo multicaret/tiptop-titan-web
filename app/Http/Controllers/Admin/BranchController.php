@@ -3,20 +3,21 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
-use App\Models\Region;
 use App\Models\Chain;
+use App\Models\Region;
+use App\Models\Branch;
 use Illuminate\Http\Request;
 use Illuminate\View\View;
 
-class ChainController extends Controller
+class BranchController extends Controller
 {
 
     function __construct()
     {
-//        $this->middleware('permission:chain.permissions.index', ['only' => ['index', 'store']]);
-//        $this->middleware('permission:chain.permissions.create', ['only' => ['create', 'store']]);
-//        $this->middleware('permission:chain.permissions.edit', ['only' => ['edit', 'update']]);
-//        $this->middleware('permission:chain.permissions.destroy', ['only' => ['destroy']]);
+//        $this->middleware('permission:branch.permissions.index', ['only' => ['index', 'store']]);
+//        $this->middleware('permission:branch.permissions.create', ['only' => ['create', 'store']]);
+//        $this->middleware('permission:branch.permissions.edit', ['only' => ['edit', 'update']]);
+//        $this->middleware('permission:branch.permissions.destroy', ['only' => ['destroy']]);
     }
 
     /**
@@ -34,13 +35,21 @@ class ChainController extends Controller
                 'data' => 'id',
                 'name' => 'id',
                 'title' => trans('strings.id'),
-                'width' => '1',
+                'width' => '20',
             ],
             [
                 'data' => 'title',
                 'name' => 'translations.title',
                 'title' => trans('strings.title'),
                 'width' => '40',
+            ],
+            [
+                'data' => 'chain',
+                'name' => 'chain',
+                'title' => 'Chain',
+                'searchable' => false,
+                'bSortable' => false,
+                'width' => '10',
             ],
             [
                 'data' => 'region',
@@ -66,7 +75,7 @@ class ChainController extends Controller
             ],
         ];
 
-        return view('admin.chains.index', compact('columns', 'typeName'));
+        return view('admin.branches.index', compact('columns', 'typeName'));
     }
 
     /**
@@ -78,12 +87,15 @@ class ChainController extends Controller
      */
     public function create(Request $request)
     {
-        $chain = new Chain();
-        $regions = Region::whereCountryId(config('defaults.country.id'))->get();
-        $typeName = Chain::getCorrectTypeName($request->type, false);
-        $type = Chain::getCorrectType($request->type);
+        $typeName = Branch::getCorrectTypeName($request->type, false);
+        $type = Branch::getCorrectType($request->type);
 
-        return view('admin.chains.form', compact('chain', 'regions', 'typeName', 'type'));
+        $branch = new Branch();
+        $regions = Region::whereCountryId(config('defaults.country.id'))->get();
+        $chains = Chain::whereType($type)->get();
+        $branch->chain = Chain::whereType($type)->first();
+
+        return view('admin.branches.form', compact('branch', 'regions', 'chains', 'typeName', 'type'));
     }
 
     /**
@@ -97,12 +109,12 @@ class ChainController extends Controller
     {
         $request->validate($this->validationRules());
 
-        $chain = new Chain();
-        $chain->creator_id = $chain->editor_id = auth()->id();
-        $this->storeUpdateLogic($request, $chain);
+        $branch = new Branch();
+        $branch->creator_id = $branch->editor_id = auth()->id();
+        $this->storeUpdateLogic($request, $branch);
 
         return redirect()
-            ->route('admin.chains.index', ['type' => $request->type])
+            ->route('admin.branches.index', ['type' => $request->type])
             ->with('message', [
                 'type' => 'Success',
                 'text' => __('strings.successfully_created'),
@@ -112,37 +124,39 @@ class ChainController extends Controller
     /**
      * Show the form for editing the specified resource.
      *
-     * @param  Chain  $chain
+     * @param  Branch  $branch
      *
      * @param  Request  $request
      *
      * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
      */
-    public function edit(Chain $chain, Request $request)
+    public function edit(Branch $branch, Request $request)
     {
-        $typeName = Chain::getCorrectTypeName($request->type, false);
-        $type = Chain::getCorrectType($request->type);
-        $regions = Region::whereCountryId(config('defaults.country.id'))->get();
-        $chain->load(['region', 'city']);
+        $typeName = Branch::getCorrectTypeName($request->type, false);
+        $type = Branch::getCorrectType($request->type);
 
-        return view('admin.chains.form', compact('chain', 'regions', 'typeName', 'type'));
+        $regions = Region::whereCountryId(config('defaults.country.id'))->get();
+        $branch->load(['region', 'city', 'chain']);
+        $chains = Chain::whereType($type)->get();
+
+        return view('admin.branches.form', compact('branch', 'regions', 'typeName', 'type', 'chains'));
     }
 
     /**
      * Update the specified resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
-     * @param  Chain  $chain
+     * @param  Branch  $branch
      *
      * @return \Illuminate\Http\RedirectResponse
      */
-    public function update(Request $request, Chain $chain)
+    public function update(Request $request, Branch $branch)
     {
-        $chain->editor_id = auth()->id();
-        $this->storeUpdateLogic($request, $chain);
+        $branch->editor_id = auth()->id();
+        $this->storeUpdateLogic($request, $branch);
 
         return redirect()
-            ->route('admin.chains.index', ['type' => $request->type])
+            ->route('admin.branches.index', ['type' => $request->type])
             ->with('message', [
                 'type' => 'Success',
                 'text' => 'Edited successfully',
@@ -152,14 +166,14 @@ class ChainController extends Controller
     /**
      * Remove the specified resource from storage.
      *
-     * @param  Chain  $chain
+     * @param  Branch  $branch
      *
      * @return \Illuminate\Http\RedirectResponse
      * @throws \Exception
      */
-    public function destroy(Chain $chain)
+    public function destroy(Branch $branch)
     {
-        $chain->delete();
+        $branch->delete();
 
         return back()->with('message', [
             'type' => 'Success',
@@ -179,32 +193,34 @@ class ChainController extends Controller
     }
 
 
-    private function storeUpdateLogic(Request $request, Chain $chain)
+    private function storeUpdateLogic(Request $request, Branch $branch)
     {
         $region = json_decode($request->region);
         $city = json_decode($request->city);
+        $chain = json_decode($request->chain);
         \DB::beginTransaction();
-        $chain->city_id = isset($city) ? $city->id : null;
-        $chain->region_id = isset($region) ? $region->id : null;
-        $chain->primary_phone_number = $request->input('primary_phone_number');
-        $chain->secondary_phone_number = $request->input('secondary_phone_number');
-        $chain->whatsapp_phone_number = $request->input('whatsapp_phone_number');
-//        $chain->primary_color = $request->input('primary_color');
-//        $chain->secondary_color = $request->input('secondary_color');
-        $chain->type = Chain::getCorrectType($request->type);
-        $chain->status = $request->input('status');
-        $chain->save();
+        $branch->chain_id = $chain->id;
+        $branch->city_id = isset($city) ? $city->id : null;
+        $branch->region_id = isset($region) ? $region->id : null;
+        $branch->latitude = $request->input('latitude');
+        $branch->longitude = $request->input('longitude');
+        $branch->minimum_order = $request->input('minimum_order');
+        $branch->under_minimum_order_delivery_fee = $request->input('under_minimum_order_delivery_fee');
+        $branch->fixed_delivery_fee = $request->input('fixed_delivery_fee');
+        $branch->primary_phone_number = $request->input('primary_phone_number');
+        $branch->secondary_phone_number = $request->input('secondary_phone_number');
+        $branch->whatsapp_phone_number = $request->input('whatsapp_phone_number');
+        $branch->type = Branch::getCorrectType($request->type);
+        $branch->status = $request->input('status');
+        $branch->save();
 
         foreach (localization()->getSupportedLocales() as $key => $value) {
             if ($request->input($key.'.title')) {
-                $chain->translateOrNew($key)->title = $request->input($key.'.title');
-                $chain->translateOrNew($key)->description = $request->input($key.'.description');
+                $branch->translateOrNew($key)->title = $request->input($key.'.title');
+                $branch->translateOrNew($key)->description = $request->input($key.'.description');
             }
         }
-        $chain->save();
-        $this->handleSubmittedSingleMedia('cover', $request, $chain);
-        $this->handleSubmittedSingleMedia('logo', $request, $chain);
-        $this->handleSubmittedMedia($request, 'gallery', $chain, 'gallery');
+        $branch->save();
         \DB::commit();
     }
 

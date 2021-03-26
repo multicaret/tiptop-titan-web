@@ -89,10 +89,10 @@ trait HasStatuses
     public static function getStatusesArray(): array
     {
         return [
-            self::STATUS_INCOMPLETE => 'incomplete',
-            self::STATUS_DRAFT => 'draft',
-            self::STATUS_PUBLISHED => 'published',
-            self::STATUS_INACTIVE => 'inactive',
+            self::STATUS_INCOMPLETE => 'Incomplete',
+            self::STATUS_DRAFT => 'Draft',
+            self::STATUS_PUBLISHED => 'Published',
+            self::STATUS_INACTIVE => 'Inactive',
         ];
     }
 

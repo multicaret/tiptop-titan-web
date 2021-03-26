@@ -2,6 +2,7 @@
 
 namespace App\Providers;
 
+use App\Models\Branch;
 use App\Models\Chain;
 use App\Models\Currency;
 use App\Models\Language;
@@ -113,7 +114,7 @@ class ComposerServiceProvider extends ServiceProvider
             [
                 'children' => [
                     [
-                        'title' => trans('strings.chains'),
+                        'title' => 'Market Chains',
                         'icon' => 'fas fa-link',
                         'routeName' => 'admin.index',
                         'subChildren' => [

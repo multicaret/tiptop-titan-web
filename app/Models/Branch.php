@@ -5,11 +5,13 @@ namespace App\Models;
 use App\Http\Resources\BranchResource;
 use App\Traits\HasMediaTrait;
 use App\Traits\HasStatuses;
+use App\Traits\HasTypes;
 use App\Traits\HasUuid;
 use App\Traits\HasViewCount;
 use App\Traits\HasWorkingHours;
 use Astrotomic\Translatable\Translatable;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo as BelongsTo;
 use Spatie\MediaLibrary\HasMedia;
 
 class Branch extends Model implements HasMedia
@@ -19,15 +21,16 @@ class Branch extends Model implements HasMedia
         Translatable,
         HasStatuses,
         HasWorkingHours,
-        HasViewCount;
+        HasViewCount,
+        HasTypes;
 
     const STATUS_INCOMPLETE = 0;
     const STATUS_DRAFT = 1;
     const STATUS_PUBLISHED = 2;
     const STATUS_INACTIVE = 3;
 
-    const TYPE_GROCERY = 1;
-    const TYPE_FOOD = 2;
+    const TYPE_GROCERY_BRANCH = 1;
+    const TYPE_FOOD_BRANCH = 2;
 
     protected $fillable = ['title', 'description'];
     protected $with = ['translations'];
@@ -69,6 +72,16 @@ class Branch extends Model implements HasMedia
     }
 
 
+    public function region(): BelongsTo
+    {
+        return $this->belongsTo(Region::class);
+    }
+
+    public function city(): BelongsTo
+    {
+        return $this->belongsTo(City::class);
+    }
+
     public static function getClosestAvailableBranch($latitude, $longitude): array
     {
         $distance = $branch = null;
@@ -89,4 +102,16 @@ class Branch extends Model implements HasMedia
 
         return [$distance, $branch];
     }
+
+    /**
+     * @return array
+     */
+    public static function getTypesArray(): array
+    {
+        return [
+            self::TYPE_GROCERY_BRANCH => 'grocery-branch',
+            self::TYPE_FOOD_BRANCH => 'food-branch',
+        ];
+    }
+
 }
