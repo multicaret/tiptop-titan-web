@@ -115,6 +115,27 @@ class ComposerServiceProvider extends ServiceProvider
             [
                 'children' => [
                     [
+                        'title' => 'Essentials',
+                        'icon' => 'fas fa-hamburger',
+                        'routeName' => 'admin.index',
+                        'params' => ['type' => 'collapse'],
+                        'subChildren' => [
+                            [
+                                'title' => 'Products',
+                                'icon' => 'fas fa-hamburger',
+                                'params' => [
+                                    'type' =>
+                                        'foo',
+                                ],
+                                'routeName' => 'admin.chains.index',
+                            ],
+                        ]
+                    ]
+                ]
+            ],
+            [
+                'children' => [
+                    [
                         'title' => 'Chains',
                         'icon' => 'fas fa-link',
                         'routeName' => 'admin.index',
@@ -131,7 +152,7 @@ class ComposerServiceProvider extends ServiceProvider
                             ],
                             [
                                 'title' => 'Food Chains',
-                                'icon' => 'fas fa-hamburger',
+                                'icon' => 'fas fa-utensils',
                                 'params' => [
                                     'type' => Chain::getCorrectTypeName(Chain::TYPE_FOOD, false),
                                 ],
@@ -151,7 +172,7 @@ class ComposerServiceProvider extends ServiceProvider
                         'subChildren' => [
                             [
                                 'title' => 'Market Branches',
-                                'icon' => 'fas fa-code-branch',
+                                'icon' => 'fas fa-carrot',
                                 'params' => [
                                     'type' => Branch::getCorrectTypeName(Branch::TYPE_GROCERY_BRANCH, false),
                                 ],
@@ -159,7 +180,7 @@ class ComposerServiceProvider extends ServiceProvider
                             ],
                             [
                                 'title' => 'Food Branches',
-                                'icon' => 'fas fa-code-branch',
+                                'icon' => 'fas fa-utensils',
                                 'params' => [
                                     'type' => Branch::getCorrectTypeName(Branch::TYPE_FOOD_BRANCH, false),
                                 ],
@@ -172,11 +193,16 @@ class ComposerServiceProvider extends ServiceProvider
             [
                 'children' => [
                     [
-                        'title' => trans('strings.posts'),
+                        'title' => trans('strings.content_management'),
                         'icon' => 'fas fa-newspaper',
                         'routeName' => 'admin.index',
                         'params' => ['type' => 'collapse'],
                         'subChildren' => [
+                            [
+                                'title' => 'Slides',
+                                'icon' => 'fas fa-images',
+                                'routeName' => 'admin.slides.index',
+                            ],
                             [
                                 'title' => 'Articles',
                                 'icon' => 'fas fa-pencil-alt',
@@ -330,7 +356,8 @@ class ComposerServiceProvider extends ServiceProvider
      *
      * @return string
      */
-    protected function bodyClasses($classes = null) {
+    protected function bodyClasses($classes = null)
+    {
         if ( ! is_array($classes)) {
             $classes = [];
         }
