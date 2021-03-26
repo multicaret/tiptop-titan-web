@@ -202,4 +202,6 @@ return [
     'always_on' => 'Always On',
     'chain' => 'Chain',
     'groceries' => 'Groceries',
+    'logistics' => 'Logistics',
+    'users' => 'Users',
 ];

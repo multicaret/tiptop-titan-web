@@ -175,39 +175,51 @@ class ComposerServiceProvider extends ServiceProvider
                 ]
             ],
             [
-                'title' => 'Logistics',
                 'children' => [
                     [
-                        'title' => trans('strings.regions'),
-                        'icon' => 'fas fa-map-signs',
-                        'routeName' => 'admin.regions.index',
-                    ],
-                    [
-                        'title' => trans('strings.cities'),
-                        'icon' => 'fas fa-city',
-                        'routeName' => 'admin.cities.index',
-                    ],
+                        'title' => trans('strings.logistics'),
+                        'icon' => 'fas fa-globe',
+                        'routeName' => 'admin.index',
+                        'subChildren' => [
+                            [
+                                'title' => trans('strings.regions'),
+                                'icon' => 'fas fa-map-signs',
+                                'routeName' => 'admin.regions.index',
+                            ],
+                            [
+                                'title' => trans('strings.cities'),
+                                'icon' => 'fas fa-city',
+                                'routeName' => 'admin.cities.index',
+                            ],
+                        ]
+                    ]
                 ]
             ],
             [
-                'title' => 'Accounts',
                 'children' => [
                     [
-                        'title' => 'Users',
+                        'title' => trans('strings.accounts'),
                         'icon' => 'fas fa-user-alt',
-                        'routeName' => 'admin.users.index',
-                        'params' => ['type' => \App\Models\User::ROLE_USER],
-                    ],
-                    [
-                        'title' => 'Admins',
-                        'icon' => 'fas fa-user-astronaut',
-                        'routeName' => 'admin.users.index',
-                        'params' => ['type' => \App\Models\User::ROLE_ADMIN],
-                    ],
-                    [
-                        'title' => 'Roles',
-                        'icon' => 'fas fa-user-cog',
-                        'routeName' => 'admin.roles.index'
+                        'routeName' => 'admin.index',
+                        'subChildren' => [
+                            [
+                                'title' => 'Users',
+                                'icon' => 'fas fa-user-alt',
+                                'routeName' => 'admin.users.index',
+                                'params' => ['type' => \App\Models\User::ROLE_USER],
+                            ],
+                            [
+                                'title' => 'Admins',
+                                'icon' => 'fas fa-user-astronaut',
+                                'routeName' => 'admin.users.index',
+                                'params' => ['type' => \App\Models\User::ROLE_ADMIN],
+                            ],
+                            [
+                                'title' => 'Roles',
+                                'icon' => 'fas fa-user-cog',
+                                'routeName' => 'admin.roles.index'
+                            ]
+                        ]
                     ]
                 ]
             ],
@@ -232,26 +244,6 @@ class ComposerServiceProvider extends ServiceProvider
                 ]
             ],
             [
-                'title' => trans('strings.users'),
-                'children' => [
-                    [
-                        'title' => trans('strings.users'),
-                        'icon' => 'fas fa-tag',
-                        'routeName' => 'admin.index',
-                        'subChildren' => [
-                            [
-                                'title' => trans('strings.doctor_titles'),
-                                'icon' => 'fas fa-stethoscope',
-                                'routeName' => 'admin.slides.index',
-                                'params' => [
-                                    'type' => Taxonomy::getCorrectTypeName(Taxonomy::TYPE_FOOD_CATEGORY, false)
-                                ],
-                            ],
-                        ]
-                    ]
-                ]
-            ],
-            [
                 'title' => trans('strings.taxonomies'),
                 'children' => [
                     [
@@ -260,16 +252,16 @@ class ComposerServiceProvider extends ServiceProvider
                         'routeName' => 'admin.index',
                         'subChildren' => [
                             [
-                                'title' => trans('strings.specialties'),
+                                'title' => trans('strings.taxonomies'),
                                 'routeName' => 'admin.taxonomies.index',
                                 'params' => [
                                     'type' => Taxonomy::getCorrectTypeName(Taxonomy::TYPE_GROCERY_CATEGORY, false)
                                 ],
-                                'icon' => 'fas fa-book-medical',
+                                'icon' => 'fas fa-tag',
                             ],
                             [
-                                'title' => trans('strings.doctor_titles'),
-                                'icon' => 'fas fa-stethoscope',
+                                'title' => trans('strings.taxonomies'),
+                                'icon' => 'fas fa-tag',
                                 'routeName' => 'admin.taxonomies.index',
                                 'params' => [
                                     'type' => Taxonomy::getCorrectTypeName(Taxonomy::TYPE_POST_CATEGORY, false)
@@ -277,23 +269,24 @@ class ComposerServiceProvider extends ServiceProvider
                             ],
                         ]
                     ]
-            ]
+                ]
             ],
         ]);
+
         return $links;
-}
+    }
 
 
-/**
- * Register the application services.
- *
- * @return void
- */
-public
-function register()
-{
-    //
-}
+    /**
+     * Register the application services.
+     *
+     * @return void
+     */
+    public
+    function register()
+    {
+        //
+    }
 
     private function getSubChildren(array $children)
     {
@@ -309,26 +302,27 @@ function register()
     }
 
 
-/**
- * Display the classes for the body element.
- *
- * @param  array  $classes  One or more classes to add to the class list.
- *
- * @return string
- */
-protected
-function bodyClasses($classes = null)
-{
-    if ( ! is_array($classes)) {
-        $classes = [];
+    /**
+     * Display the classes for the body element.
+     *
+     * @param  array  $classes  One or more classes to add to the class list.
+     *
+     * @return string
+     */
+    protected
+    function bodyClasses(
+        $classes = null
+    ) {
+        if ( ! is_array($classes)) {
+            $classes = [];
+        }
+
+        $classes[] = auth()->check() ? 'logged-in' : 'guest';
+
+        $classes[] = str_replace('.', '-', \Route::currentRouteName());
+
+        return implode(' ', $classes);
     }
-
-    $classes[] = auth()->check() ? 'logged-in' : 'guest';
-
-    $classes[] = str_replace('.', '-', \Route::currentRouteName());
-
-    return implode(' ', $classes);
-}
 
     private function initSidenavLinks(): array
     {
