@@ -19,7 +19,6 @@ class OrderController extends BaseApiController
     {
         $validationRules = [
             'chain_id' => 'required',
-            'branch_id' => 'required',
         ];
 
         $validator = validator()->make($request->all(), $validationRules);
@@ -29,11 +28,9 @@ class OrderController extends BaseApiController
 
         $user = auth()->user();
         $chainId = $request->input('chain_id');
-        $branchId = $request->input('branch_id');
 
         $previousOrders = Order::whereUserid($user->id)
                                ->whereChainId($chainId)
-                               ->whereBranchId($branchId)
                                ->whereNotNull('completed_at')
                                ->latest()
                                ->get();
