@@ -86,6 +86,7 @@ class ComposerServiceProvider extends ServiceProvider
                         'title' => trans('strings.taxonomies'),
                         'icon' => 'fas fa-list',
                         'routeName' => 'admin.index',
+                        'params' => ['type' => 'collapse'],
                         'subChildren' => [
                             [
                                 'title' => 'Categories',
@@ -117,6 +118,7 @@ class ComposerServiceProvider extends ServiceProvider
                         'title' => 'Chains',
                         'icon' => 'fas fa-link',
                         'routeName' => 'admin.index',
+                        'params' => ['type' => 'collapse'],
                         'subChildren' => [
                             [
                                 'title' => 'Market Chains',
@@ -145,6 +147,7 @@ class ComposerServiceProvider extends ServiceProvider
                         'title' => trans('strings.branches'),
                         'icon' => 'fas fa-code-branch',
                         'routeName' => 'admin.index',
+                        'params' => ['type' => 'collapse'],
                         'subChildren' => [
                             [
                                 'title' => 'Market Branches',
@@ -172,6 +175,7 @@ class ComposerServiceProvider extends ServiceProvider
                         'title' => trans('strings.posts'),
                         'icon' => 'fas fa-newspaper',
                         'routeName' => 'admin.index',
+                        'params' => ['type' => 'collapse'],
                         'subChildren' => [
                             [
                                 'title' => 'Articles',
@@ -225,6 +229,7 @@ class ComposerServiceProvider extends ServiceProvider
                         'title' => trans('strings.logistics'),
                         'icon' => 'fas fa-globe',
                         'routeName' => 'admin.index',
+                        'params' => ['type' => 'collapse'],
                         'subChildren' => [
                             [
                                 'title' => trans('strings.regions'),
@@ -246,6 +251,7 @@ class ComposerServiceProvider extends ServiceProvider
                         'title' => trans('strings.accounts'),
                         'icon' => 'fas fa-user-alt',
                         'routeName' => 'admin.index',
+                        'params' => ['type' => 'collapse'],
                         'subChildren' => [
                             [
                                 'title' => 'Users',
