@@ -2,7 +2,11 @@
 @section('title', 'Branches')
 @section('content')
     <h4 class="d-flex justify-content-between align-items-center w-100 font-weight-bold py-3 mb-4">
-        Branches
+        @if($typeName == 'grocery-branch')
+            Market Branches
+        @else
+            Food Branches
+        @endif
         <a href="{{ route('admin.branches.create',['type'=> request()->type]) }}">
             <button type="button" class="btn btn-primary rounded-pill d-block">
                 <span class="ion ion-md-add"></span>

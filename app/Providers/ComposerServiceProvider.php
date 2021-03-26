@@ -2,6 +2,7 @@
 
 namespace App\Providers;
 
+use App\Models\Branch;
 use App\Models\Chain;
 use App\Models\Currency;
 use App\Models\Language;
@@ -109,7 +110,7 @@ class ComposerServiceProvider extends ServiceProvider
                 'title' => 'Chains',
                 'children' => [
                     [
-                        'title' => 'Groceries Chains',
+                        'title' => 'Market Chains',
                         'icon' => 'fas fa-link',
                         'params' => [
                             'type' =>
@@ -118,12 +119,33 @@ class ComposerServiceProvider extends ServiceProvider
                         'routeName' => 'admin.chains.index',
                     ],
                     [
-                        'title' => 'Foods Chains',
+                        'title' => 'Food Chains',
                         'icon' => 'fas fa-link',
                         'params' => [
                             'type' => Chain::getCorrectTypeName(Chain::TYPE_FOOD, false),
                         ],
                         'routeName' => 'admin.chains.index',
+                    ],
+                ]
+            ],
+            [
+                'title' => 'Branches',
+                'children' => [
+                    [
+                        'title' => 'Market Branches',
+                        'icon' => 'fas fa-code-branch',
+                        'params' => [
+                            'type' => Branch::getCorrectTypeName(Branch::TYPE_GROCERY_BRANCH, false),
+                        ],
+                        'routeName' => 'admin.branches.index',
+                    ],
+                    [
+                        'title' => 'Food Branches',
+                        'icon' => 'fas fa-code-branch',
+                        'params' => [
+                            'type' => Branch::getCorrectTypeName(Branch::TYPE_FOOD_BRANCH, false),
+                        ],
+                        'routeName' => 'admin.branches.index',
                     ],
                 ]
             ],
@@ -277,23 +299,24 @@ class ComposerServiceProvider extends ServiceProvider
                             ],
                         ]
                     ]
-            ]
+                ]
             ],
         ]);
+
         return $links;
-}
+    }
 
 
-/**
- * Register the application services.
- *
- * @return void
- */
-public
-function register()
-{
-    //
-}
+    /**
+     * Register the application services.
+     *
+     * @return void
+     */
+    public
+    function register()
+    {
+        //
+    }
 
     private function getSubChildren(array $children)
     {
@@ -309,26 +332,27 @@ function register()
     }
 
 
-/**
- * Display the classes for the body element.
- *
- * @param  array  $classes  One or more classes to add to the class list.
- *
- * @return string
- */
-protected
-function bodyClasses($classes = null)
-{
-    if ( ! is_array($classes)) {
-        $classes = [];
+    /**
+     * Display the classes for the body element.
+     *
+     * @param  array  $classes  One or more classes to add to the class list.
+     *
+     * @return string
+     */
+    protected
+    function bodyClasses(
+        $classes = null
+    ) {
+        if ( ! is_array($classes)) {
+            $classes = [];
+        }
+
+        $classes[] = auth()->check() ? 'logged-in' : 'guest';
+
+        $classes[] = str_replace('.', '-', \Route::currentRouteName());
+
+        return implode(' ', $classes);
     }
-
-    $classes[] = auth()->check() ? 'logged-in' : 'guest';
-
-    $classes[] = str_replace('.', '-', \Route::currentRouteName());
-
-    return implode(' ', $classes);
-}
 
     private function initSidenavLinks(): array
     {

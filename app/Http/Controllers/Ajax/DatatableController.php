@@ -404,7 +404,7 @@ class DatatableController extends AjaxController
                                  return $translation->image != url(config('defaults.images.slider_image'));
                              })->first();
 
-                             if (!is_null($translations)) {
+                             if ( ! is_null($translations)) {
                                  $image = $translations->image;
                                  $altTag = $translations->alt_tag;
                              }
@@ -483,7 +483,8 @@ class DatatableController extends AjaxController
 
     public function branches(Request $request)
     {
-        $branches = Branch::selectRaw('branches.*');
+
+        $branches = Branch::whereType(Branch::getCorrectType($request->type))->selectRaw('branches.*');
 
         return DataTables::of($branches)
                          ->editColumn('action', function ($branch) {

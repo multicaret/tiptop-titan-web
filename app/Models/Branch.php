@@ -29,8 +29,8 @@ class Branch extends Model implements HasMedia
     const STATUS_PUBLISHED = 2;
     const STATUS_INACTIVE = 3;
 
-    const TYPE_GROCERY = 1;
-    const TYPE_FOOD = 2;
+    const TYPE_GROCERY_BRANCH = 1;
+    const TYPE_FOOD_BRANCH = 2;
 
     protected $fillable = ['title', 'description'];
     protected $with = ['translations'];
@@ -72,7 +72,6 @@ class Branch extends Model implements HasMedia
     }
 
 
-
     public function region(): BelongsTo
     {
         return $this->belongsTo(Region::class);
@@ -110,8 +109,8 @@ class Branch extends Model implements HasMedia
     public static function getTypesArray(): array
     {
         return [
-            self::TYPE_GROCERY => 'grocery',
-            self::TYPE_FOOD => 'food',
+            self::TYPE_GROCERY_BRANCH => 'grocery-branch',
+            self::TYPE_FOOD_BRANCH => 'food-branch',
         ];
     }
 

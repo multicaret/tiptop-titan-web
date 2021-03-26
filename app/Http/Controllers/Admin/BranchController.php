@@ -35,7 +35,7 @@ class BranchController extends Controller
                 'data' => 'id',
                 'name' => 'id',
                 'title' => trans('strings.id'),
-                'width' => '1',
+                'width' => '20',
             ],
             [
                 'data' => 'title',
@@ -137,7 +137,7 @@ class BranchController extends Controller
 
         $regions = Region::whereCountryId(config('defaults.country.id'))->get();
         $branch->load(['region', 'city', 'chain']);
-        $chains = Branch::whereType($type)->get();
+        $chains = Chain::whereType($type)->get();
 
         return view('admin.branches.form', compact('branch', 'regions', 'typeName', 'type', 'chains'));
     }
@@ -210,7 +210,7 @@ class BranchController extends Controller
         $branch->primary_phone_number = $request->input('primary_phone_number');
         $branch->secondary_phone_number = $request->input('secondary_phone_number');
         $branch->whatsapp_phone_number = $request->input('whatsapp_phone_number');
-        $branch->type = Branch::getCorrectType(1);
+        $branch->type = Branch::getCorrectType($request->type);
         $branch->status = $request->input('status');
         $branch->save();
 
