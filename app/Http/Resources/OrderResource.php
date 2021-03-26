@@ -2,7 +2,6 @@
 
 namespace App\Http\Resources;
 
-use App\Models\Cart;
 use App\Models\Currency;
 use Illuminate\Http\Resources\Json\JsonResource;
 
@@ -20,11 +19,7 @@ class OrderResource extends JsonResource
     {
         return [
             'id' => (int) $this->id,
-//            TODO: uncommitted it when you work on addresses
-//            'address' => [
-//                'icon' => $this->address->icon,
-//                'alias' => $this->address->name,
-//            ],
+            'address' => new LocationResource($this->address),
             'completedAt' => [
                 'formatted' => $this->completed_at->format(config('defaults.date.short_format')),
                 'diffForHumans' => $this->completed_at->diffForHumans(),
