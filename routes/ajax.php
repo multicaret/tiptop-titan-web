@@ -32,6 +32,7 @@ Route::prefix('datatables')->name('datatables.')->group(function () {
     Route::get('regions', 'DatatableController@regions')->name('regions');
     Route::get('slides', 'DatatableController@slides')->name('slides');
     Route::get('translations', 'DatatableController@translationList')->name('translations');
+    Route::get('chains', 'DatatableController@chains')->name('chains');
 });
 
 Route::post('change-status', 'AjaxController@statusChange')->name('statuses.change');

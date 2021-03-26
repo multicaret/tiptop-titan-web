@@ -86,6 +86,16 @@ class ComposerServiceProvider extends ServiceProvider
                     ]
                 ],
                 [
+                    'title' => 'Chains',
+                    'children' => [
+                        [
+                            'title' => 'Chains',
+                            'icon' => 'fas fa-link',
+                            'route' => route('admin.chains.index'),
+                        ],
+                    ]
+                ],
+                [
                     'title' => 'Posts',
                     'children' => [
                         [
