@@ -38,7 +38,7 @@ class ChainController extends Controller
             ],
             [
                 'data' => 'title',
-                'name' => 'title',
+                'name' => 'translations.title',
                 'title' => trans('strings.title'),
                 'width' => '40',
             ],
@@ -169,7 +169,7 @@ class ChainController extends Controller
         $defaultLocale = localization()->getDefaultLocale();
 
         return [
-//            "{$defaultLocale}.title" => 'required',
+            "{$defaultLocale}.title" => 'required',
 //            "old_price" => 'required|numeric|min:1',
         ];
     }
@@ -180,8 +180,8 @@ class ChainController extends Controller
         $region = json_decode($request->region);
         $city = json_decode($request->city);
         \DB::beginTransaction();
-        $chain->city_id = $city->id;
-        $chain->region_id = $region->id;
+        $chain->city_id = isset($region) ? $city->id : null;
+        $chain->region_id = isset($region) ? $region->id : null;
         /*$request->input('type')*/
         $chain->type = Chain::TYPE_GROCERY;
         $chain->primary_phone_number = $request->input('primary_phone_number');
@@ -202,7 +202,6 @@ class ChainController extends Controller
         $this->handleSubmittedSingleMedia('cover', $request, $chain);
         $this->handleSubmittedSingleMedia('logo', $request, $chain);
         $this->handleSubmittedMedia($request, 'gallery', $chain, 'gallery');
-
         \DB::commit();
     }
 
