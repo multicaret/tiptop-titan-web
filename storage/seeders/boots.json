@@ -1,0 +1,12 @@
+[
+    {
+        "id": 1,
+        "build_number": 1,
+        "application_type": 1,
+        "platform_type": "ios",
+        "update_method": 0,
+        "data": "{\"image\": \"https://img-sharesprites.flaticon.com/pack/0/111/111038-emotions-rounded_3x2.jpg\", \"clear_local_storage\": 1, \"apple_store_link_app_id\": \"\", \"android_store_link_package\": \"app.trytiptop.customer\"}",
+        "created_at": "2021-03-26 04:06:40",
+        "updated_at": "2021-03-26 04:06:40"
+    }
+]

@@ -42,10 +42,17 @@ Route::middleware('throttle:15')
 Route::middleware('auth:sanctum')
      ->group(function () {
          Route::post('logout', 'Auth\AuthController@logout');
-         Route::resource('profile/addresses', 'AddressController')->except(['edit', 'update']);
+
+         // Profile Addresses
+         Route::get('profile/addresses', 'AddressController@index');
+         Route::get('profile/addresses/create', 'AddressController@create');
+         Route::post('profile/addresses', 'AddressController@store');
+         Route::post('profile/addresses/{address}/delete', 'AddressController@destroy');
          Route::post('profile/addresses/change-selected-address', 'AddressController@changeSelectedAddress');
+         // Profile Essentials
          Route::get('profile/edit', 'UserController@edit');
          Route::post('profile', 'UserController@update');
+         // Favorites
          Route::get('profile/favorites', 'UserController@favorites');
          Route::post('products/{product}/interact', 'UserController@interact');
 

@@ -38,8 +38,6 @@ class LocationResource extends JsonResource
 
         return [
             'id' => (int) $this->id,
-//            'user' => new UserResource($this->user),
-//            'editor' => new UserResource($this->editor),
             'country' => new CountryResource($this->country),
             'region' => new RegionResource($this->region),
             'city' => new CityResource($this->city),
@@ -69,11 +67,6 @@ class LocationResource extends JsonResource
 //                'number' => $this->vat,
 //                'office' => $this->vat_office
 //            ],
-//            'type' => $this->getType(),
-            /*'contactable' => [
-                'object' => $type,
-                'contactable' => new $contactableResource($this->contactable),
-            ],*/
             'createdAt' => [
                 'formatted' => $this->created_at->format(config('defaults.date.short_format')),
                 'diffForHumans' => $this->created_at->diffForHumans(),
