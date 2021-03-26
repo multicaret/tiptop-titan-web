@@ -33,10 +33,11 @@ class LocationResource extends JsonResource
                 $type = $contactableResource = null;
         }*/
 
+        $kind = $this->getKind();
+        $kind['id'] = $this->kind;
+
         return [
             'id' => (int) $this->id,
-//            'user' => new UserResource($this->user),
-//            'editor' => new UserResource($this->editor),
             'country' => new CountryResource($this->country),
             'region' => new RegionResource($this->region),
             'city' => new CityResource($this->city),
@@ -54,7 +55,7 @@ class LocationResource extends JsonResource
                 'raw' => strip_tags($this->notes),
                 'formatted' => $this->notes,
             ],
-            'kind' => $this->getKind(),
+            'kind' => $kind,
 //            'phones' => $this->phones,
 //            'mobiles' => $this->mobiles,
 //            'emails' => $this->emails,
@@ -66,11 +67,6 @@ class LocationResource extends JsonResource
 //                'number' => $this->vat,
 //                'office' => $this->vat_office
 //            ],
-//            'type' => $this->getType(),
-            /*'contactable' => [
-                'object' => $type,
-                'contactable' => new $contactableResource($this->contactable),
-            ],*/
             'createdAt' => [
                 'formatted' => $this->created_at->format(config('defaults.date.short_format')),
                 'diffForHumans' => $this->created_at->diffForHumans(),

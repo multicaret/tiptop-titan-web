@@ -200,5 +200,6 @@ return [
     'scheduled' => 'Scheduled',
     'expired' => 'Expired',
     'always_on' => 'Always On',
-
+    'chain' => 'Chain',
+    'groceries' => 'Groceries',
 ];

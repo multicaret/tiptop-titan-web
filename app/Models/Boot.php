@@ -20,9 +20,13 @@ class Boot extends Model
     const TYPE_PLATFORM_IOS = 1;
     const TYPE_PLATFORM_ANDROID = 2;
 
+    const FORCE_UPDATE_METHOD_DISABLED = 0;
+    const FORCE_UPDATE_METHOD_SOFT = 1;
+    const FORCE_UPDATE_METHOD_HARD = 2;
+
+
     protected $translatedAttributes = ['title', 'data_translated'];
     protected $fillable = ['data', 'title', 'data_translated'];
-    protected $with = ['translations'];
     protected $casts = ['data' => 'json'];
 
 }

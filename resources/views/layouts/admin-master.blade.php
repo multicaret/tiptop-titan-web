@@ -19,6 +19,7 @@
 
     <!-- Icons. Uncomment required icon fonts -->
     <link rel="stylesheet" href="{{ asset('/admin-assets/fonts/fontawesome.css') }}">
+    <link rel="stylesheet" href="{{ asset('/admin-assets/css/custom.css') }}">
     <link rel="stylesheet" href="{{ asset('/admin-assets/fonts/ionicons.css') }}">
     <link rel="stylesheet" href="{{ asset('/admin-assets/fonts/linearicons.css') }}">
     {{--    <link rel="stylesheet" href="{{ asset('/admin-assets/fonts/open-iconic.css') }}">--}}
@@ -151,6 +152,8 @@
     @yield('container')
 </div>
 
+
+<script src="https://cdn.jsdelivr.net/npm/vue@2.6.12/dist/vue.js"></script>
 <!-- Core scripts -->
 <script src="{{ asset('js/admin.js') }}"></script>
 <script src="{{ asset('/admin-assets/js/sidenav.js') }}"></script>

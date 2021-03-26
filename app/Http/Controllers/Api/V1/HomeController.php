@@ -4,34 +4,47 @@ namespace App\Http\Controllers\Api\V1;
 
 
 use App\Http\Controllers\Api\BaseApiController;
+use App\Http\Resources\BootResource;
 use App\Http\Resources\BranchResource;
 use App\Http\Resources\CartResource;
 use App\Http\Resources\GroceryCategoryParentResource;
-use App\Http\Resources\LocationResource;
 use App\Http\Resources\SlideResource;
 use App\Models\Boot;
 use App\Models\Branch;
 use App\Models\Cart;
+use App\Models\Location;
 use App\Models\Slide;
 use App\Models\Taxonomy;
 use Illuminate\Http\Request;
 
 class HomeController extends BaseApiController
 {
-    public function boot(Request $request)
+    public function boot(Request $request): \Illuminate\Http\JsonResponse
     {
-        $forceUpdateMethod = 'disabled';
+        /*$validationRules = [
+            'build_number' => 'required|numeric',
+            'platform' => 'required|min:3|max:20',
+        ];
+
+        $validator = validator()->make($request->all(), $validationRules);
+        if ($validator->fails()) {
+            return $this->respondValidationFails($validator->errors());
+        }*/
+
+        $forceUpdateMethod = Boot::FORCE_UPDATE_METHOD_DISABLED;
         $buildNumber = $request->input('build_number');
         $platform = $request->input('platform');
 
-        $bootConfigurations = Boot::where('platform_type', $platform)
+        $bootConfigurations = Boot::where('platform_type', strtolower($platform))
                                   ->where('build_number', $buildNumber)
                                   ->first();
 
-        return $this->respond([
-            'force-update' => $forceUpdateMethod, // soft,hard,disabled
-            'configurations' => $bootConfigurations,
-        ]);
+//dd($bootConfigurations->data_translated);
+        if ( ! is_null($bootConfigurations)) {
+            return $this->respond(new BootResource($bootConfigurations));
+        }
+
+        return $this->respondWithMessage('Things are fine, pass you twat!');
     }
 
     public function root()
@@ -41,24 +54,27 @@ class HomeController extends BaseApiController
 
     public function index(Request $request)
     {
+        $validationRules = [
+            'channel' => 'required',
+            'latitude' => 'required',
+            'longitude' => 'required',
+        ];
+
+        $validator = validator()->make($request->all(), $validationRules);
+        if ($validator->fails()) {
+            return $this->respondValidationFails($validator->errors());
+        }
+
+
         $channel = strtolower($request->input('channel'));
         $user = auth('sanctum')->user();
-//        $response = $addresses = [];
         $slides = SlideResource::collection(Slide::all());
         $cart = null;
 
-        $latitude = $request->latitude;
-        $longitude = $request->longitude;
-
-/*        if ( ! is_null($user)) {
-            $addresses = LocationResource::collection($user->addresses);
-            $user->latitude = $latitude;
-            $user->longitude = $longitude;
-            $user->save();
-        }*/
+        $latitude = $request->input('latitude');
+        $longitude = $request->input('longitude');
 
         $sharedResponse = [
-//            'addresses' => $addresses,
             'cart' => null,
             'slides' => $slides,
             'estimated_arrival_time' => [
@@ -82,6 +98,12 @@ class HomeController extends BaseApiController
             });
 
 
+            if ( ! is_null($user) && ! is_null($selectedAddress = $request->input('selected_address_id'))) {
+                $selectedAddress = Location::find($selectedAddress);
+                $latitude = $selectedAddress->latitude;
+                $longitude = $selectedAddress->longitude;
+            }
+
             [$distance, $branch] = Branch::getClosestAvailableBranch($latitude, $longitude);
             if ( ! is_null($distance)) {
                 $response['distance'] = $distance;
@@ -90,16 +112,12 @@ class HomeController extends BaseApiController
                 $response['branch'] = new BranchResource($branch);
                 $response['hasAvailableBranchesNow'] = true;
 
-                if ( ! is_null($user) /*&& ! is_null($selectedAddress = $request->input('selected_address_id'))*/) {
-                    /*$selectedAddress = Location::find($selectedAddress);
-                    $selectedAddress->latitude = $latitude;
-                    $selectedAddress->longitude = $longitude;
-                    $selectedAddress->save();*/
+                if ( ! is_null($user)) {
                     $userCart = Cart::retrieve($branch->chain_id, $branch->id, $user->id);
                     $cart = new CartResource($userCart);
                     $sharedResponse['cart'] = $cart;
                 }
-            } else {
+//            } else {
                 // It's too late no branch is open for now, so sorry
                 // No Branch
                 // No Cart

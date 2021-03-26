@@ -5,9 +5,11 @@ namespace App\Http\Controllers\Api\V1;
 
 use App\Http\Controllers\Api\BaseApiController;
 use App\Http\Resources\CityResource;
+use App\Http\Resources\ProductResource;
 use App\Http\Resources\RegionResource;
 use App\Http\Resources\UserResource;
 use App\Models\City;
+use App\Models\Product;
 use App\Models\Region;
 use App\Models\User;
 use Illuminate\Http\Request;
@@ -100,6 +102,42 @@ class UserController extends BaseApiController
             'type' => 'error',
             'text' => 'There seems to be a problem',
         ]);
+    }
+
+    public function interact($productID, Request $request)
+    {
+        $product = Product::find($productID);
+        $user = auth()->user();
+        switch ($request->action) {
+            case 'favorite':
+                if ( ! $user->hasFavorited($product)) {
+                    $user->favorite($product);
+
+                    return $this->respondWithMessage(__('api.product_added_to_wishlist_successfully'));
+                }
+                break;
+            case 'unfavorite':
+                if ($user->hasFavorited($product)) {
+                    $user->unfavorite($product);
+
+                    return $this->respondWithMessage(__('api.product_removed_from_wishlist_successfully'));
+                }
+                break;
+        }
+
+        return $this->respondValidationFails(__('api.interaction_failed_please_check_parameters'));
+    }
+
+    public function favorites()
+    {
+        $user = auth()->user();
+        if (auth()->check()) {
+            return $this->respond([
+                'products' => ProductResource::collection($user->favorites(Product::class)->get()),
+            ]);
+        }
+
+        return $this->respondNotFound();
     }
 
     private function essentialData()

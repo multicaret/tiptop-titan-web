@@ -1,0 +1,16 @@
+[
+    {
+        "id": 1,
+        "boot_id": 1,
+        "title": "Title in English",
+        "data_translated": "{\"dialog\": {\"title\": \"Update please\", \"content\": \"Lorem ipsum dolor sit amet, consectetur adipisicing elit. Architecto at autem consequuntur dignissimos et facilis incidunt iste laborum nisi obcaecati placeat, porro qui recusandae, reprehenderit sapiente unde, voluptas voluptatem voluptatibus.\"}}",
+        "locale": "en"
+    },
+    {
+        "id": 2,
+        "boot_id": 1,
+        "title": "عنوان بالعربي",
+        "data_translated": "{\"dialog\": {\"title\": \"تحتاج إلى تحديث\", \"content\": \"Lorem ipsum dolor sit amet, consectetur adipisicing elit. Architecto at autem consequuntur dignissimos et facilis incidunt iste laborum nisi obcaecati placeat, porro qui recusandae, reprehenderit sapiente unde, voluptas voluptatem voluptatibus.\"}}",
+        "locale": "ar"
+    }
+]

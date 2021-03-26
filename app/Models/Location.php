@@ -6,6 +6,7 @@ use App\Scopes\ActiveScope;
 use App\Traits\HasStatuses;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
+use Illuminate\Support\Str;
 
 class Location extends Model
 {
@@ -100,6 +101,21 @@ class Location extends Model
                 'icon' => asset(config('defaults.images.address_other_icon')),
             ],
         ];
+    }
+
+    public static function getKindsForMaps(): array
+    {
+        $kindsForMaps = [];
+        foreach (self::getKinds() as $id => $kind) {
+            $kindsForMaps[] = [
+                'id' => $id,
+                'title' => $kind['title'],
+                'icon' => asset($kind['icon']),
+                'markerIcon' => asset(Str::replaceLast('-icon', '-marker-icon', $kind['icon'])),
+            ];
+        }
+
+        return $kindsForMaps;
     }
 
     public function getKind()
