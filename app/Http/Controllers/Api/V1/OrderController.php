@@ -29,7 +29,7 @@ class OrderController extends BaseApiController
         $user = auth()->user();
         $chainId = $request->input('chain_id');
 
-        $previousOrders = Order::whereUserid($user->id)
+        $previousOrders = Order::whereUserId($user->id)
                                ->whereChainId($chainId)
                                ->whereNotNull('completed_at')
                                ->latest()
