@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Ajax;
 
+use App\Models\Branch;
 use App\Models\Chain;
 use App\Models\City;
 use App\Models\Post;
@@ -474,6 +475,54 @@ class DatatableController extends AjaxController
                          ->setRowAttr([
                              'row-id' => function ($chain) {
                                  return $chain->id;
+                             }
+                         ])
+                         ->make(true);
+    }
+
+    public function branches(Request $request)
+    {
+        $branches = Branch::selectRaw('branches.*');
+
+        return DataTables::of($branches)
+                         ->editColumn('action', function ($branch) {
+                             $data = [
+                                 'editAction' => route('admin.branches.edit', [
+                                     $branch->uuid,
+                                     'type' => request('type')
+                                 ]),
+                                 'deleteAction' => route('admin.branches.destroy', [
+                                     $branch->uuid,
+                                     'type' => request('type')
+                                 ]),
+                             ];
+
+                             return view('admin.components.datatables._row-actions', $data)->render();
+                         })
+                         ->editColumn('region', function ($branch) {
+                             return ! is_null($branch->region) ? $branch->region->name : '';
+                         })
+                         ->editColumn('city', function ($branch) {
+                             return ! is_null($branch->city) ? $branch->city->name : '';
+                         })
+                         ->editColumn('chain', function ($branch) {
+                             return ! is_null($branch->chain) ? $branch->chain->title : '';
+                         })
+                         ->editColumn('created_at', function ($branch) {
+                             return view('admin.components.datatables._date', [
+                                 'date' => $branch->created_at
+                             ])->render();
+                         })
+                         ->rawColumns([
+                             'action',
+                             'chain',
+                             'region',
+                             'city',
+                             'created_at',
+                         ])
+                         ->setRowAttr([
+                             'row-id' => function ($branch) {
+                                 return $branch->id;
                              }
                          ])
                          ->make(true);
