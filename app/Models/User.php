@@ -40,11 +40,17 @@ class User extends Authenticatable implements HasMedia, MustVerifyEmail
 
     const ROLE_SUPER = 'Super';
     const ROLE_ADMIN = 'Admin';
+    const ROLE_SUPERVISOR = 'Supervisor';
+    const ROLE_AGENT = 'Agent';
+    const ROLE_CONTENT_EDITOR = 'Content Editor';
+    const ROLE_MARKETER = 'Marketer';
+    const ROLE_BRANCH_OWNER = 'Branch Owner';
+    const ROLE_BRANCH_MANAGER = 'Branch Manager';
     const ROLE_EDITOR = 'Editor';
     const ROLE_TRANSLATOR = 'Translator';
-    const ROLE_ANALYST = 'Analyst';
+    const ROLE_RESTAURANT_DRIVER = 'Restaurant Driver';
+    const ROLE_TIPTOP_DRIVER = 'Tiptop Driver';
     const ROLE_USER = 'User';
-    const ROLE_OWNER = 'Owner';
 
     const STATUS_INCOMPLETE = 0;
     const STATUS_DRAFT = 1;
@@ -395,12 +401,19 @@ class User extends Authenticatable implements HasMedia, MustVerifyEmail
     public static function getAllRoles()
     {
         return [
+            'super' => self::ROLE_SUPER,
             'admin' => self::ROLE_ADMIN,
+            'supervisor' => self::ROLE_SUPERVISOR,
+            'agent' => self::ROLE_AGENT,
+            'content_editor' => self::ROLE_CONTENT_EDITOR,
+            'marketer' => self::ROLE_MARKETER,
+            'branch_owner' => self::ROLE_BRANCH_OWNER,
+            'branch_manager' => self::ROLE_BRANCH_MANAGER,
             'editor' => self::ROLE_EDITOR,
             'translator' => self::ROLE_TRANSLATOR,
-            'analyst' => self::ROLE_ANALYST,
+            'restaurant_driver' => self::ROLE_RESTAURANT_DRIVER,
+            'tiptop_driver' => self::ROLE_TIPTOP_DRIVER,
             'user' => self::ROLE_USER,
-            'owner' => self::ROLE_OWNER,
         ];
     }
 
