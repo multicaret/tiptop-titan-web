@@ -3,6 +3,7 @@
 namespace App\Http\Resources;
 
 use App\Models\Currency;
+use App\Models\Location;
 use Illuminate\Http\Resources\Json\JsonResource;
 
 /** @mixin \App\Models\Order */
@@ -19,7 +20,7 @@ class OrderResource extends JsonResource
     {
         return [
             'id' => (int) $this->id,
-            'address' => new LocationResource($this->address),
+            'address' => new LocationResource(Location::withTrashed()->where('id', $this->address_id)->first()),
             'completedAt' => [
                 'formatted' => $this->completed_at->format(config('defaults.date.short_format')),
                 'diffForHumans' => $this->completed_at->diffForHumans(),
