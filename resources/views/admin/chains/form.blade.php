@@ -15,9 +15,9 @@
 
     <div class="mb-4">
         @if(!is_null($chain->id))
-            <h5>Editing chain - {{ $chain->name }}</h5>
+            <h5>Editing Chain - {{ $chain->name }}</h5>
         @else
-            <h5>{{trans('strings.add_new')}} {{trans('strings.chain')}}</h5>
+            <h5>{{trans('strings.add_new')}} Chain</h5>
         @endif
     </div>
 
