@@ -1054,7 +1054,7 @@ class DatabaseSeeder extends Seeder
                     ],
                 ]
             ],
-            'support' => [
+            'Support' => [
                 'type' => 'section',
                 'notes' => 'Support section',
                 'group_name' => 'support_section',
