@@ -12,6 +12,7 @@ use App\Http\Resources\SlideResource;
 use App\Models\Boot;
 use App\Models\Branch;
 use App\Models\Cart;
+use App\Models\Location;
 use App\Models\Slide;
 use App\Models\Taxonomy;
 use Illuminate\Http\Request;
@@ -94,6 +95,12 @@ class HomeController extends BaseApiController
             });
 
 
+            if ( ! is_null($user) && ! is_null($selectedAddress = $request->input('selected_address_id'))) {
+                $selectedAddress = Location::find($selectedAddress);
+                $latitude = $selectedAddress->latitude;
+                $longitude = $selectedAddress->longitude;
+            }
+
             [$distance, $branch] = Branch::getClosestAvailableBranch($latitude, $longitude);
             if ( ! is_null($distance)) {
                 $response['distance'] = $distance;
@@ -102,16 +109,12 @@ class HomeController extends BaseApiController
                 $response['branch'] = new BranchResource($branch);
                 $response['hasAvailableBranchesNow'] = true;
 
-                if ( ! is_null($user) /*&& ! is_null($selectedAddress = $request->input('selected_address_id'))*/) {
-                    /*$selectedAddress = Location::find($selectedAddress);
-                    $selectedAddress->latitude = $latitude;
-                    $selectedAddress->longitude = $longitude;
-                    $selectedAddress->save();*/
+                if ( ! is_null($user)) {
                     $userCart = Cart::retrieve($branch->chain_id, $branch->id, $user->id);
                     $cart = new CartResource($userCart);
                     $sharedResponse['cart'] = $cart;
                 }
-            } else {
+//            } else {
                 // It's too late no branch is open for now, so sorry
                 // No Branch
                 // No Cart
