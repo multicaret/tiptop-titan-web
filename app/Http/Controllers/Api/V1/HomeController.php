@@ -59,10 +59,6 @@ class HomeController extends BaseApiController
             'latitude' => 'required',
             'longitude' => 'required',
         ];
-        $user = auth('sanctum')->user();
-        if ( ! is_null($user)) {
-            $validationRules['selected_address_id'] = 'required';
-        }
 
         $validator = validator()->make($request->all(), $validationRules);
         if ($validator->fails()) {
@@ -71,6 +67,7 @@ class HomeController extends BaseApiController
 
 
         $channel = strtolower($request->input('channel'));
+        $user = auth('sanctum')->user();
         $slides = SlideResource::collection(Slide::all());
         $cart = null;
 
