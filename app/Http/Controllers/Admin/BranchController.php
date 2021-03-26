@@ -152,6 +152,7 @@ class BranchController extends Controller
      */
     public function update(Request $request, Branch $branch)
     {
+        $request->validate($this->validationRules());
         $branch->editor_id = auth()->id();
         $this->storeUpdateLogic($request, $branch);
 
@@ -188,7 +189,9 @@ class BranchController extends Controller
 
         return [
             "{$defaultLocale}.title" => 'required',
-//            "old_price" => 'required|numeric|min:1',
+            "minimum_order" => 'required',
+            "under_minimum_order_delivery_fee" => 'required',
+            "fixed_delivery_fee" => 'required',
         ];
     }
 
