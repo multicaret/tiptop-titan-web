@@ -54,13 +54,28 @@ class HomeController extends BaseApiController
 
     public function index(Request $request)
     {
-        $channel = strtolower($request->input('channel'));
+        $validationRules = [
+            'channel' => 'required',
+            'latitude' => 'required',
+            'longitude' => 'required',
+        ];
         $user = auth('sanctum')->user();
+        if ( ! is_null($user)) {
+            $validationRules['selected_address_id'] = 'required';
+        }
+
+        $validator = validator()->make($request->all(), $validationRules);
+        if ($validator->fails()) {
+            return $this->respondValidationFails($validator->errors());
+        }
+
+
+        $channel = strtolower($request->input('channel'));
         $slides = SlideResource::collection(Slide::all());
         $cart = null;
 
-        $latitude = $request->latitude;
-        $longitude = $request->longitude;
+        $latitude = $request->input('latitude');
+        $longitude = $request->input('longitude');
 
         $sharedResponse = [
             'cart' => null,
