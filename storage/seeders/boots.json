@@ -1,0 +1,12 @@
+[
+    {
+        "id": 1,
+        "build_number": 1,
+        "application_type": 1,
+        "platform_type": "ios",
+        "update_method": 1,
+        "data": "{\"image\": \"https://img-sharesprites.flaticon.com/pack/0/111/111038-emotions-rounded_3x2.jpg\"}",
+        "created_at": "2021-03-26 04:06:40",
+        "updated_at": "2021-03-26 04:06:40"
+    }
+]
