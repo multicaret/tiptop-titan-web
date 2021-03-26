@@ -204,4 +204,6 @@ return [
     'groceries' => 'Groceries',
     'logistics' => 'Logistics',
     'users' => 'Users',
+    'chains' => 'Chains',
+    'posts' => 'Posts',
 ];

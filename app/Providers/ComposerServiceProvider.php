@@ -81,119 +81,115 @@ class ComposerServiceProvider extends ServiceProvider
         $links = [];
         $links = array_merge($links, [
             [
-                'title' => 'Taxonomies',
                 'children' => [
                     [
-                        'title' => 'Categories',
-                        'icon' => 'fas fa-tag',
-                        'type' => 'fas fa-tag',
-                        'params' => [
-                            'type' =>
-                                \App\Models\Taxonomy::getCorrectTypeName(\App\Models\Taxonomy::TYPE_POST_CATEGORY,
-                                    false)
-                        ],
-                        'routeName' => 'admin.taxonomies.index',
-                    ],
-                    [
-                        'title' => 'Tags',
-                        'icon' => 'fas fa-tag',
-                        'params' => [
-                            'type' =>
-                                \App\Models\Taxonomy::getCorrectTypeName(\App\Models\Taxonomy::TYPE_TAG,
-                                    false),
-                        ],
-                        'routeName' => 'admin.taxonomies.index',
-                    ],
+                        'title' => trans('strings.taxonomies'),
+                        'icon' => 'fas fa-list',
+                        'routeName' => 'admin.index',
+                        'subChildren' => [
+                            [
+                                'title' => 'Categories',
+                                'icon' => 'fas fa-shapes',
+                                'params' => [
+                                    'type' =>
+                                        \App\Models\Taxonomy::getCorrectTypeName(\App\Models\Taxonomy::TYPE_POST_CATEGORY,
+                                            false)
+                                ],
+                                'routeName' => 'admin.taxonomies.index',
+                            ],
+                            [
+                                'title' => 'Tags',
+                                'icon' => 'fas fa-tag',
+                                'params' => [
+                                    'type' =>
+                                        \App\Models\Taxonomy::getCorrectTypeName(\App\Models\Taxonomy::TYPE_TAG,
+                                            false),
+                                ],
+                                'routeName' => 'admin.taxonomies.index',
+                            ],
+                        ]
+                    ]
                 ]
             ],
             [
-                'title' => 'Chains',
                 'children' => [
                     [
                         'title' => 'Market Chains',
                         'icon' => 'fas fa-link',
-                        'params' => [
-                            'type' =>
-                                Chain::getCorrectTypeName(Chain::TYPE_GROCERY, false),
-                        ],
-                        'routeName' => 'admin.chains.index',
-                    ],
-                    [
-                        'title' => 'Food Chains',
-                        'icon' => 'fas fa-link',
-                        'params' => [
-                            'type' => Chain::getCorrectTypeName(Chain::TYPE_FOOD, false),
-                        ],
-                        'routeName' => 'admin.chains.index',
-                    ],
+                        'routeName' => 'admin.index',
+                        'subChildren' => [
+                            [
+                                'title' => 'Groceries Chains',
+                                'icon' => 'fas fa-carrot',
+                                'params' => [
+                                    'type' =>
+                                        Chain::getCorrectTypeName(Chain::TYPE_GROCERY, false),
+                                ],
+                                'routeName' => 'admin.chains.index',
+                            ],
+                            [
+                                'title' => 'Foods Chains',
+                                'icon' => 'fas fa-hamburger',
+                                'params' => [
+                                    'type' => Chain::getCorrectTypeName(Chain::TYPE_FOOD, false),
+                                ],
+                                'routeName' => 'admin.chains.index',
+                            ],
+                        ]
+                    ]
                 ]
             ],
             [
-                'title' => 'Branches',
                 'children' => [
                     [
-                        'title' => 'Market Branches',
-                        'icon' => 'fas fa-code-branch',
-                        'params' => [
-                            'type' => Branch::getCorrectTypeName(Branch::TYPE_GROCERY_BRANCH, false),
-                        ],
-                        'routeName' => 'admin.branches.index',
-                    ],
-                    [
-                        'title' => 'Food Branches',
-                        'icon' => 'fas fa-code-branch',
-                        'params' => [
-                            'type' => Branch::getCorrectTypeName(Branch::TYPE_FOOD_BRANCH, false),
-                        ],
-                        'routeName' => 'admin.branches.index',
-                    ],
-                ]
-            ],
-            [
-                'title' => 'Posts',
-                'children' => [
-                    [
-                        'title' => 'Articles',
-                        'icon' => 'fas fa-pencil-alt',
-                        'routeName' => 'admin.posts.index',
-                        'params' => ['type' => 'article'],
-                    ],
-                    [
-                        'title' => 'Portfolio',
-                        'icon' => 'fas fa-image',
-                        'routeName' => 'admin.posts.index',
-                        'params' => ['type' => 'portfolio'],
-                    ],
-                    [
-                        'title' => 'News',
+                        'title' => trans('strings.posts'),
                         'icon' => 'fas fa-newspaper',
-                        'routeName' => 'admin.posts.index',
-                        'params' => ['type' => Post::getCorrectTypeName(Post::TYPE_NEWS, false)],
-                    ],
-                    [
-                        'title' => 'Pages',
-                        'icon' => 'fas fa-file',
-                        'routeName' => 'admin.posts.index',
-                        'params' => ['type' => Post::getCorrectTypeName(Post::TYPE_PAGE, false)],
-                    ],
-                    [
-                        'title' => 'FAQ',
-                        'icon' => 'fas fa-question-circle',
-                        'routeName' => 'admin.posts.index',
-                        'params' => ['type' => Post::getCorrectTypeName(Post::TYPE_FAQ, false)],
-                    ],
-                    [
-                        'title' => 'Services',
-                        'icon' => 'fas fa-suitcase',
-                        'routeName' => 'admin.posts.index',
-                        'params' => ['type' => 'service'],
-                    ],
-                    [
-                        'title' => 'Testimonials',
-                        'icon' => 'far fa-grin-stars',
-                        'routeName' => 'admin.posts.index',
-                        'params' => ['type' => Post::getCorrectTypeName(Post::TYPE_TESTIMONIAL_USER, false)],
-                    ],
+                        'routeName' => 'admin.index',
+                        'subChildren' => [
+                            [
+                                'title' => 'Articles',
+                                'icon' => 'fas fa-pencil-alt',
+                                'routeName' => 'admin.posts.index',
+                                'params' => ['type' => 'article'],
+                            ],
+                            /*[
+                                'title' => 'Portfolio',
+                                'icon' => 'fas fa-image',
+                                'routeName' => 'admin.posts.index',
+                                'params' => ['type' => 'portfolio'],
+                            ],*/
+                            /*[
+                                'title' => 'News',
+                                'icon' => 'fas fa-newspaper',
+                                'routeName' => 'admin.posts.index',
+                                'params' => ['type' => Post::getCorrectTypeName(Post::TYPE_NEWS, false)],
+                            ],*/
+                            [
+                                'title' => 'Pages',
+                                'icon' => 'fas fa-file',
+                                'routeName' => 'admin.posts.index',
+                                'params' => ['type' => Post::getCorrectTypeName(Post::TYPE_PAGE, false)],
+                            ],
+                            [
+                                'title' => 'FAQ',
+                                'icon' => 'fas fa-question-circle',
+                                'routeName' => 'admin.posts.index',
+                                'params' => ['type' => Post::getCorrectTypeName(Post::TYPE_FAQ, false)],
+                            ],
+                            /*[
+                                'title' => 'Services',
+                                'icon' => 'fas fa-suitcase',
+                                'routeName' => 'admin.posts.index',
+                                'params' => ['type' => 'service'],
+                            ],*/
+                            /*[
+                                'title' => 'Testimonials',
+                                'icon' => 'far fa-grin-stars',
+                                'routeName' => 'admin.posts.index',
+                                'params' => ['type' => Post::getCorrectTypeName(Post::TYPE_TESTIMONIAL_USER, false)],
+                            ],*/
+                        ]
+                    ]
                 ]
             ],
             [
@@ -246,53 +242,23 @@ class ComposerServiceProvider extends ServiceProvider
                 ]
             ],
             [
-                'title' => '',
                 'children' => [
-                    /*                    [
-                                            'title' => 'Slides',
-                                            'icon' => 'fas fa-images',
-                                            'routeName' => 'admin.slides.index',
-                                        ]*/
                     [
                         'title' => 'Translations',
                         'icon' => 'fas fa-language',
                         'routeName' => 'admin.translations.index',
                     ],
+                ]
+            ],
+            [
+                'children' => [
                     [
                         'title' => 'Preferences',
                         'icon' => 'fas fa-cog',
                         'routeName' => 'admin.preferences.index',
                     ],
                 ]
-            ],
-            [
-                'title' => trans('strings.taxonomies'),
-                'children' => [
-                    [
-                        'title' => trans('strings.taxonomies'),
-                        'icon' => 'fas fa-tag',
-                        'routeName' => 'admin.index',
-                        'subChildren' => [
-                            [
-                                'title' => trans('strings.taxonomies'),
-                                'routeName' => 'admin.taxonomies.index',
-                                'params' => [
-                                    'type' => Taxonomy::getCorrectTypeName(Taxonomy::TYPE_GROCERY_CATEGORY, false)
-                                ],
-                                'icon' => 'fas fa-tag',
-                            ],
-                            [
-                                'title' => trans('strings.taxonomies'),
-                                'icon' => 'fas fa-tag',
-                                'routeName' => 'admin.taxonomies.index',
-                                'params' => [
-                                    'type' => Taxonomy::getCorrectTypeName(Taxonomy::TYPE_POST_CATEGORY, false)
-                                ],
-                            ],
-                        ]
-                    ]
-                ]
-            ],
+            ]
         ]);
 
         return $links;
