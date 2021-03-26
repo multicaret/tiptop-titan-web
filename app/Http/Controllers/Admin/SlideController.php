@@ -40,7 +40,7 @@ class SlideController extends Controller
             [
                 'data' => 'thumbnail',
                 'title' => trans('strings.thumbnail'),
-                'width' => '10',
+                'width' => '1',
             ],
             [
                 'data' => 'title',
@@ -48,7 +48,7 @@ class SlideController extends Controller
                 'title' => trans('strings.title'),
                 'width' => '40',
             ],
-            /*[
+            [
                 'data' => 'begins_at',
                 'name' => 'begins_at',
                 'title' => trans('strings.start_date'),
@@ -59,35 +59,27 @@ class SlideController extends Controller
                 'name' => 'expires_at',
                 'title' => trans('strings.expire_date'),
                 'width' => '10',
-            ],*/
+            ],
             [
-                'data' => 'phase',
-                'name' => 'phase',
-                'title' => trans('strings.phase'),
+                'data' => 'state',
+                'name' => 'state',
+                'title' => trans('strings.state'),
                 'searchable' => false,
                 'bSortable' => false,
                 'width' => '10',
             ],
-            [
-                'data' => 'time_left',
-                'name' => 'time_left',
-                'title' => trans('strings.time_left'),
-                'searchable' => false,
-                'bSortable' => false,
-                'width' => '10',
-            ],
-            [
+            /*[
                 'data' => 'status',
                 'name' => 'status',
                 'title' => 'Status',
                 'width' => '10',
-            ],
-            [
+            ],*/
+            /*[
                 'data' => 'created_at',
                 'name' => 'created_at',
                 'title' => trans('strings.create_date'),
                 'width' => '10',
-            ],
+            ],*/
         ];
 
         return view('admin.slides.index', compact('columns'));
@@ -230,7 +222,7 @@ class SlideController extends Controller
                                                     ->where('locale', \Str::beforeLast($key, '.'))
                                                     ->first();
 
-                $this->handleSubmittedSingleMedia($key.".image", $request, $slideTranslation);
+//                $this->handleSubmittedSingleMedia($key.".image", $request, $slideTranslation); todo: fix this. It's the delete logic but it breaks storing
             }
         }
         $slide->save();

@@ -37,7 +37,7 @@
                             </a>
                         @endcan
                         @can('role.permissions.destroy')
-                            @if($role->id > 5)
+                            @if($role->id > 10)
                                     <a href="#!" data-delete data-toggle="tooltip" title="{{trans('strings.delete')}}">
                                         &nbsp;<i class="far fa-trash-alt text-danger"></i>&nbsp;
                                     </a>

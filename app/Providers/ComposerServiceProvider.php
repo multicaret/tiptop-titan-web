@@ -7,9 +7,13 @@ use App\Models\Currency;
 use App\Models\Language;
 use App\Models\Post;
 use App\Models\Preference;
+use App\Models\Taxonomy;
+use App\Models\User;
 use App\Scopes\ActiveScope;
 use Illuminate\Http\Request;
+use Illuminate\Support\Arr;
 use Illuminate\Support\ServiceProvider;
+use Illuminate\Support\Str;
 
 class ComposerServiceProvider extends ServiceProvider
 {
@@ -53,193 +57,383 @@ class ComposerServiceProvider extends ServiceProvider
 //            $view->with('notifications', auth()->user()->unreadNotifications);
         });
 
-        view()->composer('admin.partials._sidenav', function ($view) {
-            $sidenavLinks = [
-                [
-                    'title' => '',
-                    'children' => [
-                        [
-                            'title' => 'Dashboard',
-                            'icon' => 'fas fa-home',
-                            'route' => route('admin.index'),
-                        ],
-                    ]
-                ],
-                [
-                    'title' => 'Taxonomies',
-                    'children' => [
-                        [
-                            'title' => 'Categories',
-                            'icon' => 'fas fa-tag',
-                            'route' => route('admin.taxonomies.index', [
-                                'type' => \App\Models\Taxonomy::getCorrectTypeName(\App\Models\Taxonomy::TYPE_POST_CATEGORY,
-                                    false)
-                            ]),
-                        ],
-                        [
-                            'title' => 'Tags',
-                            'icon' => 'fas fa-tag',
-                            'route' => route('admin.taxonomies.index', [
-                                'type' => \App\Models\Taxonomy::getCorrectTypeName(\App\Models\Taxonomy::TYPE_TAG,
-                                    false)
-                            ]),
-                        ],
-                    ]
-                ],
-                [
-                    'title' => 'Chains',
-                    'children' => [
-                        [
-                            'title' => 'Groceries Chains',
-                            'icon' => 'fas fa-link',
-                            'route' => route('admin.chains.index',
-                                ['type' => Chain::getCorrectTypeName(Chain::TYPE_GROCERY, false)]),
-                        ],
-                        [
-                            'title' => 'Foods Chains',
-                            'icon' => 'fas fa-link',
-                            'route' => route('admin.chains.index',
-                                ['type' => Chain::getCorrectTypeName(Chain::TYPE_FOOD, false)]),
-                        ],
-                    ]
-                ],
-                [
-                    'title' => 'Posts',
-                    'children' => [
-                        [
-                            'title' => 'Articles',
-                            'icon' => 'fas fa-pencil-alt',
-                            'route' => route('admin.posts.index', ['type' => 'article']),
-                        ],
-                        [
-                            'title' => 'Portfolio',
-                            'icon' => 'fas fa-image',
-                            'route' => route('admin.posts.index', ['type' => 'portfolio']),
-                        ],
-                        [
-                            'title' => 'News',
-                            'icon' => 'fas fa-newspaper',
-                            'route' => route('admin.posts.index',
-                                ['type' => Post::getCorrectTypeName(Post::TYPE_NEWS, false)]),
-                        ],
-                        [
-                            'title' => 'Pages',
-                            'icon' => 'fas fa-file',
-                            'route' => route('admin.posts.index',
-                                ['type' => Post::getCorrectTypeName(Post::TYPE_PAGE, false)]),
-                        ],
-                        [
-                            'title' => 'FAQ',
-                            'icon' => 'fas fa-question-circle',
-                            'route' => route('admin.posts.index',
-                                ['type' => Post::getCorrectTypeName(Post::TYPE_FAQ, false)]),
-                        ],
-                        [
-                            'title' => 'Services',
-                            'icon' => 'fas fa-suitcase',
-                            'route' => route('admin.posts.index', ['type' => 'service']),
-                        ],
-                        [
-                            'title' => 'Testimonials',
-                            'icon' => 'far fa-grin-stars',
-                            'route' => route('admin.posts.index',
-                                ['type' => Post::getCorrectTypeName(Post::TYPE_TESTIMONIAL_USER, false)]),
-                        ],
-                    ]
-                ],
-                [
-                    'title' => 'Logistics',
-                    'children' => [
-                        [
-                            'title' => trans('strings.regions'),
-                            'icon' => 'fas fa-map-signs',
-                            'route' => route('admin.regions.index'),
-                        ],
-                        [
-                            'title' => trans('strings.cities'),
-                            'icon' => 'fas fa-city',
-                            'route' => route('admin.cities.index'),
-                        ],
-                    ]
-                ],
-                [
-                    'title' => 'Accounts',
-                    'children' => [
-                        [
-                            'title' => 'Users',
-                            'icon' => 'fas fa-user-alt',
-                            'route' => route('admin.users.index', ['type' => \App\Models\User::ROLE_USER])
-                        ],
-                        [
-                            'title' => 'Admins',
-                            'icon' => 'fas fa-user-astronaut',
-                            'route' => route('admin.users.index', ['type' => \App\Models\User::ROLE_ADMIN])
-                        ],
-                        [
-                            'title' => 'Roles',
-                            'icon' => 'fas fa-user-cog',
-                            'route' => route('admin.roles.index')
-                        ]
-                    ]
-                ],
-                [
-                    'title' => '',
-                    'children' => [
-                        [
-                            'title' => 'Slides',
-                            'icon' => 'fas fa-slide',
-                            'route' => route('admin.slides.index'),
-                        ],
-                        [
-                            'title' => 'Translations',
-                            'icon' => 'fas fa-language',
-                            'route' => route('admin.translations.index'),
-                        ],
-                        [
-                            'title' => 'Preferences',
-                            'icon' => 'fas fa-cog',
-                            'route' => route('admin.preferences.index'),
-                        ],
-                    ]
-                ]
-            ];
-
-            $view->with([
-                'sidenavLinks' => $sidenavLinks,
-                'count' => [
+        view()->composer('admin.*', function ($view) {
+            if ( ! is_null($user = auth()->user())) {
+                $sidenavLinks = $this->initSidenavLinks();
+                // Todo: if you want to build route use buildInParams attribute to add it inside route like 'userId'
+                // or if you want to add parameter to route user params attribute as array to build it like '["type" => "faq"]'
+                $sidenavLinks = array_merge($sidenavLinks, $this->getAllSideNavLinks());
+                $sidenavLinks = $this->workOnActiveItem($sidenavLinks);
+//                dd($sidenavLinks);
+                $view->with([
+                    'sidenavLinks' => $sidenavLinks,
+                    'count' => [
 //                    'user_testimonial' => Post::usersTestimonials()->count(),
-                ]
-            ]);
+                    ]
+                ]);
+            }
         });
     }
 
-    /**
-     * Register the application services.
-     *
-     * @return void
-     */
-    public function register()
+    private function getAllSideNavLinks(): array
     {
-        //
+        $links = [];
+        $links = array_merge($links, [
+            [
+                'title' => 'Taxonomies',
+                'children' => [
+                    [
+                        'title' => 'Categories',
+                        'icon' => 'fas fa-tag',
+                        'type' => 'fas fa-tag',
+                        'params' => [
+                            'type' =>
+                                \App\Models\Taxonomy::getCorrectTypeName(\App\Models\Taxonomy::TYPE_POST_CATEGORY,
+                                    false)
+                        ],
+                        'routeName' => 'admin.taxonomies.index',
+                    ],
+                    [
+                        'title' => 'Tags',
+                        'icon' => 'fas fa-tag',
+                        'params' => [
+                            'type' =>
+                                \App\Models\Taxonomy::getCorrectTypeName(\App\Models\Taxonomy::TYPE_TAG,
+                                    false),
+                        ],
+                        'routeName' => 'admin.taxonomies.index',
+                    ],
+                ]
+            ],
+            [
+                'title' => 'Chains',
+                'children' => [
+                    [
+                        'title' => 'Groceries Chains',
+                        'icon' => 'fas fa-link',
+                        'params' => [
+                            'type' =>
+                                Chain::getCorrectTypeName(Chain::TYPE_GROCERY, false),
+                        ],
+                        'routeName' => 'admin.chains.index',
+                    ],
+                    [
+                        'title' => 'Foods Chains',
+                        'icon' => 'fas fa-link',
+                        'params' => [
+                            'type' => Chain::getCorrectTypeName(Chain::TYPE_FOOD, false),
+                        ],
+                        'routeName' => 'admin.chains.index',
+                    ],
+                ]
+            ],
+            [
+                'title' => 'Posts',
+                'children' => [
+                    [
+                        'title' => 'Articles',
+                        'icon' => 'fas fa-pencil-alt',
+                        'routeName' => 'admin.posts.index',
+                        'params' => ['type' => 'article'],
+                    ],
+                    [
+                        'title' => 'Portfolio',
+                        'icon' => 'fas fa-image',
+                        'routeName' => 'admin.posts.index',
+                        'params' => ['type' => 'portfolio'],
+                    ],
+                    [
+                        'title' => 'News',
+                        'icon' => 'fas fa-newspaper',
+                        'routeName' => 'admin.posts.index',
+                        'params' => ['type' => Post::getCorrectTypeName(Post::TYPE_NEWS, false)],
+                    ],
+                    [
+                        'title' => 'Pages',
+                        'icon' => 'fas fa-file',
+                        'routeName' => 'admin.posts.index',
+                        'params' => ['type' => Post::getCorrectTypeName(Post::TYPE_PAGE, false)],
+                    ],
+                    [
+                        'title' => 'FAQ',
+                        'icon' => 'fas fa-question-circle',
+                        'routeName' => 'admin.posts.index',
+                        'params' => ['type' => Post::getCorrectTypeName(Post::TYPE_FAQ, false)],
+                    ],
+                    [
+                        'title' => 'Services',
+                        'icon' => 'fas fa-suitcase',
+                        'routeName' => 'admin.posts.index',
+                        'params' => ['type' => 'service'],
+                    ],
+                    [
+                        'title' => 'Testimonials',
+                        'icon' => 'far fa-grin-stars',
+                        'routeName' => 'admin.posts.index',
+                        'params' => ['type' => Post::getCorrectTypeName(Post::TYPE_TESTIMONIAL_USER, false)],
+                    ],
+                ]
+            ],
+            [
+                'title' => 'Logistics',
+                'children' => [
+                    [
+                        'title' => trans('strings.regions'),
+                        'icon' => 'fas fa-map-signs',
+                        'routeName' => 'admin.regions.index',
+                    ],
+                    [
+                        'title' => trans('strings.cities'),
+                        'icon' => 'fas fa-city',
+                        'routeName' => 'admin.cities.index',
+                    ],
+                ]
+            ],
+            [
+                'title' => 'Accounts',
+                'children' => [
+                    [
+                        'title' => 'Users',
+                        'icon' => 'fas fa-user-alt',
+                        'routeName' => 'admin.users.index',
+                        'params' => ['type' => \App\Models\User::ROLE_USER],
+                    ],
+                    [
+                        'title' => 'Admins',
+                        'icon' => 'fas fa-user-astronaut',
+                        'routeName' => 'admin.users.index',
+                        'params' => ['type' => \App\Models\User::ROLE_ADMIN],
+                    ],
+                    [
+                        'title' => 'Roles',
+                        'icon' => 'fas fa-user-cog',
+                        'routeName' => 'admin.roles.index'
+                    ]
+                ]
+            ],
+            [
+                'title' => '',
+                'children' => [
+                    /*                    [
+                                            'title' => 'Slides',
+                                            'icon' => 'fas fa-images',
+                                            'routeName' => 'admin.slides.index',
+                                        ]*/
+                    [
+                        'title' => 'Translations',
+                        'icon' => 'fas fa-language',
+                        'routeName' => 'admin.translations.index',
+                    ],
+                    [
+                        'title' => 'Preferences',
+                        'icon' => 'fas fa-cog',
+                        'routeName' => 'admin.preferences.index',
+                    ],
+                ]
+            ],
+            [
+                'title' => trans('strings.users'),
+                'children' => [
+                    [
+                        'title' => trans('strings.users'),
+                        'icon' => 'fas fa-tag',
+                        'routeName' => 'admin.index',
+                        'subChildren' => [
+                            [
+                                'title' => trans('strings.doctor_titles'),
+                                'icon' => 'fas fa-stethoscope',
+                                'routeName' => 'admin.slides.index',
+                                'params' => [
+                                    'type' => Taxonomy::getCorrectTypeName(Taxonomy::TYPE_FOOD_CATEGORY, false)
+                                ],
+                            ],
+                        ]
+                    ]
+                ]
+            ],
+            [
+                'title' => trans('strings.taxonomies'),
+                'children' => [
+                    [
+                        'title' => trans('strings.taxonomies'),
+                        'icon' => 'fas fa-tag',
+                        'routeName' => 'admin.index',
+                        'subChildren' => [
+                            [
+                                'title' => trans('strings.specialties'),
+                                'routeName' => 'admin.taxonomies.index',
+                                'params' => [
+                                    'type' => Taxonomy::getCorrectTypeName(Taxonomy::TYPE_GROCERY_CATEGORY, false)
+                                ],
+                                'icon' => 'fas fa-book-medical',
+                            ],
+                            [
+                                'title' => trans('strings.doctor_titles'),
+                                'icon' => 'fas fa-stethoscope',
+                                'routeName' => 'admin.taxonomies.index',
+                                'params' => [
+                                    'type' => Taxonomy::getCorrectTypeName(Taxonomy::TYPE_POST_CATEGORY, false)
+                                ],
+                            ],
+                        ]
+                    ]
+            ]
+            ],
+        ]);
+        return $links;
+}
+
+
+/**
+ * Register the application services.
+ *
+ * @return void
+ */
+public
+function register()
+{
+    //
+}
+
+    private function getSubChildren(array $children)
+    {
+        return collect($children)->mapWithKeys(function ($item, $key) {
+            return [
+                $key => [
+                    'title' => \Str::title($item['title']),
+                    'icon' => $item['icon'],
+                    'routeName' => $item['route'],
+                ]
+            ];
+        })->all();
     }
 
-    /**
-     * Display the classes for the body element.
-     *
-     * @param  array  $classes  One or more classes to add to the class list.
-     *
-     * @return string
-     */
-    protected function bodyClasses($classes = null)
+
+/**
+ * Display the classes for the body element.
+ *
+ * @param  array  $classes  One or more classes to add to the class list.
+ *
+ * @return string
+ */
+protected
+function bodyClasses($classes = null)
+{
+    if ( ! is_array($classes)) {
+        $classes = [];
+    }
+
+    $classes[] = auth()->check() ? 'logged-in' : 'guest';
+
+    $classes[] = str_replace('.', '-', \Route::currentRouteName());
+
+    return implode(' ', $classes);
+}
+
+    private function initSidenavLinks(): array
     {
-        if ( ! is_array($classes)) {
-            $classes = [];
+        $sidenavLinks = [
+            [
+                'title' => '',
+                'children' => [
+                    [
+                        'title' => trans('strings.dashboard'),
+                        'icon' => 'fas fa-home',
+                        'routeName' => 'admin.index',
+                    ],
+                ]
+            ]
+        ];
+
+        return $sidenavLinks;
+    }
+
+
+    private function getCan(string $viewName, string $crudAction = 'index'): bool
+    {
+        $permissionSource = "defaults.all_permission.admin.$viewName.$crudAction";
+        $permissionName = config($permissionSource);
+
+        return ! is_null($permissionName) ? auth()->user()->can($permissionName) : false;
+    }
+
+    private function workOnActiveItem(array $sidenavLinks): array
+    {
+        $sidenavLinksCollection = collect($sidenavLinks);
+        $sidenavLinksCollection = $sidenavLinksCollection->filter($this->getNoneEmptyItem());
+        $sidenavLinksCollection->transform(function ($mainItem) {
+            if ( ! empty($mainItem)) {
+                $requestParams = \request()->toArray();
+                $requestRouteName = \request()->route()->getName();
+                $this->updateItemStatus($mainItem['children'], $requestParams, $requestRouteName);
+
+                return $mainItem;
+            }
+        });
+
+        return $sidenavLinksCollection->toArray();
+    }
+
+    private function getRouteValue(array &$sideNavItem): void
+    {
+        $params = [];
+        if (isset($sideNavItem['buildInParams'])) {
+            if (is_array($sideNavItem['buildInParams'])) {
+                $params = array_merge($params, $sideNavItem['buildInParams']);
+            } else {
+                array_push($params, $sideNavItem['buildInParams']);
+            }
+        }
+        if (isset($sideNavItem['params'])) {
+            $params = array_merge($params, $sideNavItem['params']);
         }
 
-        $classes[] = auth()->check() ? 'logged-in' : 'guest';
+        try {
+            $sideNavItem['route'] = route($sideNavItem['routeName'], $params);
+        } catch (\Exception $e) {
+            dd($sideNavItem);
+        }
+    }
 
-        $classes[] = str_replace('.', '-', \Route::currentRouteName());
 
-        return implode(' ', $classes);
+    private function updateItemStatus(&$sidenavItem, array $requestParams, string $requestRouteName)
+    {
+        $sidenavItem = Arr::where($sidenavItem, $this->getNoneEmptyItem());
+        foreach ($sidenavItem as $index => $item) {
+            if (isset($item['subChildren']) && count($item['subChildren'])) {
+                $this->updateItemStatus($sidenavItem[$index]['subChildren'], $requestParams, $requestRouteName);
+            }
+            if (isset($item['params'])) {
+                $paramsKeysIsEqual = array_keys($item['params']) === array_Keys($requestParams);
+                $paramsValuesIsEqual = array_values($item['params']) === array_values($requestParams);
+                $paramsIsEqual = $paramsKeysIsEqual && $paramsValuesIsEqual;
+                $sidenavItem[$index]['status'] = $paramsIsEqual ? 'active' : '';
+            } else {
+                $pathIsEqual = $item['routeName'] === $requestRouteName;
+                $sidenavItem[$index]['status'] = $pathIsEqual ? 'active' : '';
+                if (count(explode('.', $item['routeName'])) > 2) {
+                    if (Str::afterLast($item['routeName'], '.') === 'index') {
+                        $pathIsEqual = \request()->routeIs(Str::beforeLast($item['routeName'], '.').'.*');
+                        $sidenavItem[$index]['status'] = $pathIsEqual ? 'active' : '';
+                    }
+                }
+            }
+
+            $this->getRouteValue($sidenavItem[$index]);
+            unset($sidenavItem[$index]['routeName']);
+            unset($sidenavItem[$index]['params']);
+            unset($sidenavItem[$index]['buildInParams']);
+            if (isset($sidenavItem[$index]['subChildren']) && ! count($sidenavItem[$index]['subChildren'])) {
+                unset($sidenavItem[$index]);
+            }
+        }
+
+    }
+
+    private function getNoneEmptyItem(): \Closure
+    {
+        return function ($item) {
+            return ! empty($item);
+        };
     }
 }

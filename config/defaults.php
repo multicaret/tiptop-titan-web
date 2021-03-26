@@ -56,7 +56,8 @@ return [
         'post_cover' => '/images/post-cover.png',
         'taxonomy_cover' => '/images/taxonomy-cover.png',
         'product_cover' => '/images/product-cover.png',
-        'slider_image' => '/images/slide-1.png',
+        'slider_image' => '/images/slide.jpeg',
+        'slider_image_1' => '/images/slide-1.png',
         'slider_image_2' => '/images/slide-2.png',
         'manufacturer_logo' => '/images/manufacturer-logo.png',
         'barcode_image' => '/images/barcode-image.png',
@@ -217,7 +218,17 @@ return [
             ],
         ],
         'admin' => [],
-        'user' => []
+        'user' => [],
+        'supervisor' => [],
+        'agent' => [],
+        'content_editor' => [],
+        'marketer' => [],
+        'branch_owner' => [],
+        'branch_manager' => [],
+        'editor' => [],
+        'translator' => [],
+        'restaurant_driver' => [],
+        'tiptop_driver' => [],
     ],
     'roles' => [
         'super' => [
@@ -226,20 +237,38 @@ return [
         'admin' => [
             'name' => 'Admin',
         ],
+        'supervisor' => [
+            'name' => 'Supervisor',
+        ],
+        'agent' => [
+            'name' => 'Agent',
+        ],
+        'content_editor' => [
+            'name' => 'Content Editor',
+        ],
+        'marketer' => [
+            'name' => 'Marketer',
+        ],
+        'branch_owner' => [
+            'name' => 'Branch Owner',
+        ],
+        'branch_manager' => [
+            'name' => 'Branch Manager',
+        ],
         'editor' => [
             'name' => 'Editor',
         ],
         'translator' => [
             'name' => 'Translator',
         ],
-        'analyst' => [
-            'name' => 'Analyst',
+        'restaurant_driver' => [
+            'name' => 'Restaurant Driver',
+        ],
+        'tiptop_driver' => [
+            'name' => 'Tiptop Driver',
         ],
         'user' => [
             'name' => 'User',
         ],
-        'owner' => [
-            'name' => 'Owner',
-        ]
     ],
 ];
