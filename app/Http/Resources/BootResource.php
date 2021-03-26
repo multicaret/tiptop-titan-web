@@ -17,10 +17,10 @@ class BootResource extends JsonResource
     public function toArray($request)
     {
         return [
-            'buildNumber' => 1,
-            'applicationType' => 1,
-            'platformType' => 'ios',
-            'updateMethod' => 2,
+            'buildNumber' => $this->build_number,
+            'applicationType' => $this->application_type,
+            'platformType' => $this->platform_type,
+            'updateMethod' => $this->update_method,
             'data' => $this->data,
             'dataTranslated' => $this->data_translated,
         ];
