@@ -113,7 +113,9 @@ class AddressController extends BaseApiController
 
         \DB::commit();
 
-        return $this->respondWithMessage(__('strings.successfully_updated'));
+        return $this->respond([
+            'address' => new LocationResource($address)
+        ]);
     }
 
     public function destroy($address)
