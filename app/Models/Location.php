@@ -118,6 +118,15 @@ class Location extends Model
         return $kindsForMaps;
     }
 
+    public static function getKindForMarker($id)
+    {
+        $kindsForMaps = collect(Location::getKindsForMaps());
+
+        return $kindsForMaps->filter(function ($kind) use ($id) {
+            return $kind['id'] == $id;
+        });
+    }
+
     public function getKind()
     {
         return self::getKinds()[$this->kind];
