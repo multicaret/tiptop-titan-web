@@ -111,7 +111,7 @@ class Location extends Model
                 'id' => $id,
                 'title' => $kind['title'],
                 'icon' => asset($kind['icon']),
-                'markerIcon' => asset(Str::replaceLast('_icon', '_marker_icon', $kind['icon'])),
+                'markerIcon' => asset(Str::replaceLast('-icon', '-marker-icon', $kind['icon'])),
             ];
         }
 
