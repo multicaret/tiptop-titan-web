@@ -1,3 +1,12 @@
+@push('styles')
+    <style>
+        .sidenav-toggle::after {
+            transform: translateY(-50%) rotate(
+                225deg
+            );
+        }
+    </style>
+@endpush
 <div id="layout-sidenav"
      class="layout-sidenav sidenav-vertical sidenav layout-fixed bg-sidenav-theme">
     <!-- Brand demo (see assets/css/demo/demo.css) -->
@@ -24,11 +33,24 @@
             @endif
 
             @foreach($section['children'] as $link)
-                <li class="sidenav-item @active($link['route'])">
-                    <a href="{{ $link['route'] }}" class="sidenav-link">
-                        <i class="sidenav-icon text-primary {{ $link['icon'] }}"></i>
-                        <div>{{ $link['title'] }}</div>
+                <li class="sidenav-item {{$link['status']}}">
+                    <a href="{{ $link['route'] }}"
+                       class="sidenav-link {{isset($link['subChildren']) ? 'sidenav-toggle': ''}}">
+                        <i class="sidenav-icon text-primary {{ $link['icon'] }}" style="font-size:1.4em"></i>
+                        &nbsp;<div>{{ $link['title'] }}</div>
                     </a>
+                    @if(isset($link['subChildren']))
+                        <ul class="sidenav-menu">
+                            @foreach($link['subChildren'] as $childItem)
+                                <li class="sidenav-item {{$childItem['status']}}">
+                                    <a href="{{$childItem['route']}}"
+                                       class="sidenav-link {{\Str::title(request()->input('type')) === $childItem['title']? 'active': ''}}">
+                                        <div>{{$childItem['title']}}</div>
+                                    </a>
+                                </li>
+                            @endforeach
+                        </ul>
+                    @endif
                 </li>
             @endforeach
             <li class="sidenav-divider my-2"></li>
@@ -37,3 +59,18 @@
         </li>
     </ul>
 </div>
+
+@push('scripts')
+    <script>
+        $('document').ready(function () {
+            const $sidenav = $('.sidenav-menu');
+            if ($sidenav.children('.active').length !== 0) {
+                $sidenav.each(function () {
+                    if ($(this).children('.active').length !== 0) {
+                        $(this).parent().addClass('open');
+                    }
+                });
+            }
+        });
+    </script>
+@endpush
