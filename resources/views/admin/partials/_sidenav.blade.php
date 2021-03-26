@@ -10,14 +10,13 @@
 <div id="layout-sidenav"
      class="layout-sidenav sidenav-vertical sidenav layout-fixed bg-sidenav-theme">
     <!-- Brand demo (see assets/css/demo/demo.css) -->
-    <div class="app-brand demo">
+    <div class="app-brand demo ml-5">
         {{--
          use this class (.side-nav-logo) if you want to change the logo if sidenav collapsed
         --}}
-        <img src="/images/logo.jpeg" alt="@preferences('app_title')" width="50px"
-             class="">
         <a href="{{route('admin.index')}}" class="app-brand-text demo sidenav-text font-weight-normal ml-2">
-            @preferences('app_title')
+            <img src="/images/logo.jpeg" alt="@preferences('app_title')" width="70px"
+                 class="">
         </a>
         <a href="javascript:void(0)" class="layout-sidenav-toggle sidenav-link text-large ml-auto">
             <i class="ion ion-md-menu align-middle"></i>
@@ -44,7 +43,9 @@
                             @foreach($link['subChildren'] as $childItem)
                                 <li class="sidenav-item {{$childItem['status']}}">
                                     <a href="{{$childItem['route']}}"
-                                       class="sidenav-link {{\Str::title(request()->input('type')) === $childItem['title']? 'active': ''}}">
+                                       class="sidenav-link {{\Str::title(request()->input('type')) === $childItem['title']? 'active': '' }}">
+                                        <i class="sidenav-icon text-secondary {{ $childItem['icon'] }}"
+                                           style="font-size:1.4em"></i>
                                         <div>{{$childItem['title']}}</div>
                                     </a>
                                 </li>
