@@ -7,7 +7,6 @@ use App\Http\Controllers\Api\BaseApiController;
 use App\Http\Resources\BranchResource;
 use App\Http\Resources\CartResource;
 use App\Http\Resources\GroceryCategoryParentResource;
-use App\Http\Resources\LocationResource;
 use App\Http\Resources\SlideResource;
 use App\Models\Boot;
 use App\Models\Branch;
@@ -18,9 +17,19 @@ use Illuminate\Http\Request;
 
 class HomeController extends BaseApiController
 {
-    public function boot(Request $request)
+    public function boot(Request $request): \Illuminate\Http\JsonResponse
     {
-        $forceUpdateMethod = 'disabled';
+        /*$validationRules = [
+            'build_number' => 'required|numeric',
+            'platform' => 'required|min:3|max:20',
+        ];
+
+        $validator = validator()->make($request->all(), $validationRules);
+        if ($validator->fails()) {
+            return $this->respondValidationFails($validator->errors());
+        }*/
+
+        $forceUpdateMethod = Boot::FORCE_UPDATE_METHOD_DISABLED;
         $buildNumber = $request->input('build_number');
         $platform = $request->input('platform');
 
@@ -29,7 +38,7 @@ class HomeController extends BaseApiController
                                   ->first();
 
         return $this->respond([
-            'force-update' => $forceUpdateMethod, // soft,hard,disabled
+            'force-update' => $forceUpdateMethod,
             'configurations' => $bootConfigurations,
         ]);
     }
@@ -50,12 +59,12 @@ class HomeController extends BaseApiController
         $latitude = $request->latitude;
         $longitude = $request->longitude;
 
-/*        if ( ! is_null($user)) {
-            $addresses = LocationResource::collection($user->addresses);
-            $user->latitude = $latitude;
-            $user->longitude = $longitude;
-            $user->save();
-        }*/
+        /*        if ( ! is_null($user)) {
+                    $addresses = LocationResource::collection($user->addresses);
+                    $user->latitude = $latitude;
+                    $user->longitude = $longitude;
+                    $user->save();
+                }*/
 
         $sharedResponse = [
 //            'addresses' => $addresses,
