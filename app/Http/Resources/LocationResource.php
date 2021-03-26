@@ -33,6 +33,9 @@ class LocationResource extends JsonResource
                 $type = $contactableResource = null;
         }*/
 
+        $kind = $this->getKind();
+        $kind['id'] = $this->kind;
+
         return [
             'id' => (int) $this->id,
 //            'user' => new UserResource($this->user),
@@ -54,7 +57,7 @@ class LocationResource extends JsonResource
                 'raw' => strip_tags($this->notes),
                 'formatted' => $this->notes,
             ],
-            'kind' => $this->getKind(),
+            'kind' => $kind,
 //            'phones' => $this->phones,
 //            'mobiles' => $this->mobiles,
 //            'emails' => $this->emails,
