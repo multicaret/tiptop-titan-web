@@ -17,7 +17,26 @@ class OrderController extends BaseApiController
 
     public function index(Request $request)
     {
-        $previousOrders = auth()->user()->orders()->whereNotNull('completed_at')->latest()->get();
+        $validationRules = [
+            'chain_id' => 'required',
+            'branch_id' => 'required',
+        ];
+
+        $validator = validator()->make($request->all(), $validationRules);
+        if ($validator->fails()) {
+            return $this->respondValidationFails($validator->errors());
+        }
+
+        $user = auth()->user();
+        $chainId = $request->input('chain_id');
+        $branchId = $request->input('branch_id');
+
+        $previousOrders = Order::whereUserid($user->id)
+                               ->whereChainId($chainId)
+                               ->whereBranchId($branchId)
+                               ->whereNotNull('completed_at')
+                               ->latest()
+                               ->get();
         if ( ! is_null($previousOrders)) {
             return $this->respond(OrderResource::collection($previousOrders));
         }
