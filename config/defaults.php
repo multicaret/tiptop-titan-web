@@ -50,6 +50,7 @@ return [
     ],
     'images' => [
         'region_cover' => '/images/region-cover.png',
+        'chain_cover' => '/images/region-cover.png',
         'user_avatar' => '/images/user-avatar.png',
         'user_cover' => '/images/user-cover.png',
         'post_cover' => '/images/post-cover.png',

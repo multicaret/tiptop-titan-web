@@ -198,4 +198,5 @@ return [
     'future_slide_phase' => 'Future Slide Phase',
     'active_slide_phase' => 'Active Slide Phase',
     'over_slide_phase' => 'Over Slide Phase',
+    'chain' => 'Chain',
 ];

@@ -8,6 +8,7 @@ use App\Traits\HasUuid;
 use App\Traits\HasViewCount;
 use Astrotomic\Translatable\Translatable;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo as BelongsTo;
 use Spatie\Image\Manipulations;
 use Spatie\MediaLibrary\HasMedia;
 use Spatie\MediaLibrary\MediaCollections\Models\Media;
@@ -41,6 +42,21 @@ class Chain extends Model implements HasMedia
     public function branches(): \Illuminate\Database\Eloquent\Relations\HasMany
     {
         return $this->hasMany(Branch::class, 'chain_id');
+    }
+
+    public function region(): BelongsTo
+    {
+        return $this->belongsTo(Region::class);
+    }
+
+    public function city(): BelongsTo
+    {
+        return $this->belongsTo(City::class);
+    }
+
+    public function currency()
+    {
+        return $this->belongsTo(Currency::class);
     }
 
 

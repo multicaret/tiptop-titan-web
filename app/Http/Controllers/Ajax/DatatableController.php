@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Ajax;
 
+use App\Models\Chain;
 use App\Models\City;
 use App\Models\Post;
 use App\Models\Region;
@@ -429,6 +430,46 @@ class DatatableController extends AjaxController
                          ->setRowAttr([
                              'row-id' => function ($slide) {
                                  return $slide->id;
+                             }
+                         ])
+                         ->make(true);
+    }
+
+    public function chains(Request $request)
+    {
+        $chains = Chain::selectRaw('chains.*');
+
+        return DataTables::of($chains)
+                         ->editColumn('action', function ($chain) {
+                             $data = [
+                                 'editAction' => route('admin.chains.edit', $chain),
+                                 'deleteAction' => route('admin.chains.destroy', [
+                                     $chain->id,
+                                 ]),
+                             ];
+
+                             return view('admin.components.datatables._row-actions', $data)->render();
+                         })
+                         ->editColumn('region', function ($chain) {
+                             return ! is_null($chain->region) ? $chain->region->name : '';
+                         })
+                         ->editColumn('city', function ($chain) {
+                             return ! is_null($chain->city) ? $chain->city->name : '';
+                         })
+                         ->editColumn('created_at', function ($chain) {
+                             return view('admin.components.datatables._date', [
+                                 'date' => $chain->created_at
+                             ])->render();
+                         })
+                         ->rawColumns([
+                             'action',
+                             'region',
+                             'city',
+                             'created_at',
+                         ])
+                         ->setRowAttr([
+                             'row-id' => function ($chain) {
+                                 return $chain->id;
                              }
                          ])
                          ->make(true);
