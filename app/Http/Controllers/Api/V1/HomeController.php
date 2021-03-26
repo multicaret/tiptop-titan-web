@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Api\V1;
 
 
 use App\Http\Controllers\Api\BaseApiController;
+use App\Http\Resources\BootResource;
 use App\Http\Resources\BranchResource;
 use App\Http\Resources\CartResource;
 use App\Http\Resources\GroceryCategoryParentResource;
@@ -33,14 +34,12 @@ class HomeController extends BaseApiController
         $buildNumber = $request->input('build_number');
         $platform = $request->input('platform');
 
-        $bootConfigurations = Boot::where('platform_type', $platform)
+        $bootConfigurations = Boot::where('platform_type', strtolower($platform))
                                   ->where('build_number', $buildNumber)
                                   ->first();
 
-        return $this->respond([
-            'force-update' => $forceUpdateMethod,
-            'configurations' => $bootConfigurations,
-        ]);
+//dd($bootConfigurations->data_translated);
+        return $this->respond(new BootResource($bootConfigurations));
     }
 
     public function root()

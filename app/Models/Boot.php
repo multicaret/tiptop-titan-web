@@ -27,7 +27,6 @@ class Boot extends Model
 
     protected $translatedAttributes = ['title', 'data_translated'];
     protected $fillable = ['data', 'title', 'data_translated'];
-    protected $with = ['translations'];
     protected $casts = ['data' => 'json'];
 
 }
