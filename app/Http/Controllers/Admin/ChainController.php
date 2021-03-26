@@ -5,7 +5,6 @@ namespace App\Http\Controllers\Admin;
 use App\Http\Controllers\Controller;
 use App\Models\Region;
 use App\Models\Chain;
-use App\Models\ChainTranslation;
 use Illuminate\Http\Request;
 use Illuminate\View\View;
 
@@ -29,6 +28,7 @@ class ChainController extends Controller
      */
     public function index(Request $request)
     {
+        $typeName = Chain::getCorrectTypeName($request->type, false);
         $columns = [
             [
                 'data' => 'id',
@@ -66,7 +66,7 @@ class ChainController extends Controller
             ],
         ];
 
-        return view('admin.chains.index', compact('columns'));
+        return view('admin.chains.index', compact('columns', 'typeName'));
     }
 
     /**
@@ -80,8 +80,10 @@ class ChainController extends Controller
     {
         $chain = new Chain();
         $regions = Region::whereCountryId(config('defaults.country.id'))->get();
+        $typeName = Chain::getCorrectTypeName($request->type, false);
+        $type = Chain::getCorrectType($request->type);
 
-        return view('admin.chains.form', compact('chain', 'regions'));
+        return view('admin.chains.form', compact('chain', 'regions', 'typeName', 'type'));
     }
 
     /**
@@ -100,7 +102,7 @@ class ChainController extends Controller
         $this->storeUpdateLogic($request, $chain);
 
         return redirect()
-            ->route('admin.chains.index')
+            ->route('admin.chains.index', ['type' => $request->type])
             ->with('message', [
                 'type' => 'Success',
                 'text' => __('strings.successfully_created'),
@@ -118,10 +120,12 @@ class ChainController extends Controller
      */
     public function edit(Chain $chain, Request $request)
     {
+        $typeName = Chain::getCorrectTypeName($request->type, false);
+        $type = Chain::getCorrectType($request->type);
         $regions = Region::whereCountryId(config('defaults.country.id'))->get();
         $chain->load(['region', 'city']);
 
-        return view('admin.chains.form', compact('chain', 'regions'));
+        return view('admin.chains.form', compact('chain', 'regions', 'typeName', 'type'));
     }
 
     /**
@@ -138,7 +142,7 @@ class ChainController extends Controller
         $this->storeUpdateLogic($request, $chain);
 
         return redirect()
-            ->route('admin.chains.index')
+            ->route('admin.chains.index', ['type' => $request->type])
             ->with('message', [
                 'type' => 'Success',
                 'text' => 'Edited successfully',
@@ -182,13 +186,12 @@ class ChainController extends Controller
         \DB::beginTransaction();
         $chain->city_id = isset($region) ? $city->id : null;
         $chain->region_id = isset($region) ? $region->id : null;
-        /*$request->input('type')*/
-        $chain->type = Chain::TYPE_GROCERY;
         $chain->primary_phone_number = $request->input('primary_phone_number');
         $chain->secondary_phone_number = $request->input('secondary_phone_number');
         $chain->whatsapp_phone_number = $request->input('whatsapp_phone_number');
 //        $chain->primary_color = $request->input('primary_color');
 //        $chain->secondary_color = $request->input('secondary_color');
+        $chain->type = Chain::getCorrectType($request->type);
         $chain->status = $request->input('status');
         $chain->save();
 

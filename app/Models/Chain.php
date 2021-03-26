@@ -4,6 +4,7 @@ namespace App\Models;
 
 use App\Traits\HasMediaTrait;
 use App\Traits\HasStatuses;
+use App\Traits\HasTypes;
 use App\Traits\HasUuid;
 use App\Traits\HasViewCount;
 use Astrotomic\Translatable\Translatable;
@@ -19,7 +20,8 @@ class Chain extends Model implements HasMedia
         HasUuid,
         Translatable,
         HasStatuses,
-        HasViewCount;
+        HasViewCount,
+        HasTypes;
 
     const STATUS_INCOMPLETE = 0;
     const STATUS_DRAFT = 1;
@@ -57,6 +59,43 @@ class Chain extends Model implements HasMedia
     public function currency()
     {
         return $this->belongsTo(Currency::class);
+    }
+
+
+    /**
+     * Scope a query to only include Grocery.
+     *
+     * @param  \Illuminate\Database\Eloquent\Builder  $query
+     *
+     * @return \Illuminate\Database\Eloquent\Builder
+     */
+    public function scopeGroceries($query): \Illuminate\Database\Eloquent\Builder
+    {
+        return $query->where('type', self::TYPE_GROCERY);
+    }
+
+    /**
+     * Scope a query to only include foods.
+     *
+     * @param  \Illuminate\Database\Eloquent\Builder  $query
+     *
+     * @return \Illuminate\Database\Eloquent\Builder
+     */
+    public function scopeFoods($query): \Illuminate\Database\Eloquent\Builder
+    {
+        return $query->where('type', self::TYPE_FOOD);
+    }
+
+
+    /**
+     * @return array
+     */
+    public static function getTypesArray(): array
+    {
+        return [
+            self::TYPE_GROCERY => 'grocery',
+            self::TYPE_FOOD => 'food',
+        ];
     }
 
 

@@ -199,4 +199,5 @@ return [
     'active_slide_phase' => 'Active Slide Phase',
     'over_slide_phase' => 'Over Slide Phase',
     'chain' => 'Chain',
+    'groceries' => 'Groceries',
 ];

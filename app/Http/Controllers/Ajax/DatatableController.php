@@ -437,14 +437,18 @@ class DatatableController extends AjaxController
 
     public function chains(Request $request)
     {
-        $chains = Chain::selectRaw('chains.*');
+        $chains = Chain::where('type', Chain::getCorrectType($request->type))->selectRaw('chains.*');
 
         return DataTables::of($chains)
                          ->editColumn('action', function ($chain) {
                              $data = [
-                                 'editAction' => route('admin.chains.edit', $chain),
+                                 'editAction' => route('admin.chains.edit', [
+                                     $chain->uuid,
+                                     'type' => request('type')
+                                 ]),
                                  'deleteAction' => route('admin.chains.destroy', [
                                      $chain->id,
+                                     'type' => request('type')
                                  ]),
                              ];
 

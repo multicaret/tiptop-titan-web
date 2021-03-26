@@ -2,6 +2,7 @@
 
 namespace App\Providers;
 
+use App\Models\Chain;
 use App\Models\Currency;
 use App\Models\Language;
 use App\Models\Post;
@@ -89,9 +90,16 @@ class ComposerServiceProvider extends ServiceProvider
                     'title' => 'Chains',
                     'children' => [
                         [
-                            'title' => 'Chains',
+                            'title' => 'Groceries Chains',
                             'icon' => 'fas fa-link',
-                            'route' => route('admin.chains.index'),
+                            'route' => route('admin.chains.index',
+                                ['type' => Chain::getCorrectTypeName(Chain::TYPE_GROCERY, false)]),
+                        ],
+                        [
+                            'title' => 'Foods Chains',
+                            'icon' => 'fas fa-link',
+                            'route' => route('admin.chains.index',
+                                ['type' => Chain::getCorrectTypeName(Chain::TYPE_FOOD, false)]),
                         ],
                     ]
                 ],

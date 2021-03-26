@@ -2,8 +2,8 @@
 @section('title', 'Chains')
 @section('content')
     <h4 class="d-flex justify-content-between align-items-center w-100 font-weight-bold py-3 mb-4">
-        Chains
-        <a href="{{ route('admin.chains.create') }}">
+        {{Illuminate\Support\Str::plural(ucfirst($typeName))}} Chains
+        <a href="{{ route('admin.chains.create',['type'=> request()->type]) }}">
             <button type="button" class="btn btn-primary rounded-pill d-block">
                 <span class="ion ion-md-add"></span>
                 &nbsp;

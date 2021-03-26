@@ -15,7 +15,7 @@
 
     <div class="mb-4">
         @if(!is_null($chain->id))
-            <h5>Editing Chain - {{ $chain->name }}</h5>
+            <h5>Editing Chain - {{ $chain->title }}</h5>
         @else
             <h5>{{trans('strings.add_new')}} Chain</h5>
         @endif
@@ -23,9 +23,9 @@
 
     <form method="post" enctype="multipart/form-data"
           @if(is_null($chain->id))
-          action="{{route('admin.chains.store')}}"
+          action="{{route('admin.chains.store',['type' => strtolower($typeName)])}}"
           @else
-          action="{{route('admin.chains.update', [$chain->uuid])}}"
+          action="{{route('admin.chains.update', ['type' => strtolower($typeName),$chain->uuid])}}"
         @endif
     >
         {{csrf_field()}}
