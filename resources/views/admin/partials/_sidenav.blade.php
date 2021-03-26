@@ -36,7 +36,7 @@
                     <a href="{{ $link['route'] }}"
                        class="sidenav-link {{isset($link['subChildren']) ? 'sidenav-toggle': ''}}">
                         <i class="sidenav-icon text-primary {{ $link['icon'] }}" style="font-size:1.4em"></i>
-                        &nbsp;<div>{{ $link['title'] }}</div>
+                        &nbsp;<div class="font-weight-bold">{{ $link['title'] }}</div>
                     </a>
                     @if(isset($link['subChildren']))
                         <ul class="sidenav-menu">
@@ -44,7 +44,7 @@
                                 <li class="sidenav-item {{$childItem['status']}}">
                                     <a href="{{$childItem['route']}}"
                                        class="sidenav-link {{\Str::title(request()->input('type')) === $childItem['title']? 'active': '' }}">
-                                        <i class="sidenav-icon text-secondary {{ $childItem['icon'] }}"
+                                        <i class="mr-2 text-secondary {{ $childItem['icon'] }}"
                                            style="font-size:1.4em"></i>
                                         <div>{{$childItem['title']}}</div>
                                     </a>

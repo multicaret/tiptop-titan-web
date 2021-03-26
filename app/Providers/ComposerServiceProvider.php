@@ -114,12 +114,12 @@ class ComposerServiceProvider extends ServiceProvider
             [
                 'children' => [
                     [
-                        'title' => 'Market Chains',
+                        'title' => 'Chains',
                         'icon' => 'fas fa-link',
                         'routeName' => 'admin.index',
                         'subChildren' => [
                             [
-                                'title' => 'Groceries Chains',
+                                'title' => 'Market Chains',
                                 'icon' => 'fas fa-carrot',
                                 'params' => [
                                     'type' =>
@@ -128,12 +128,39 @@ class ComposerServiceProvider extends ServiceProvider
                                 'routeName' => 'admin.chains.index',
                             ],
                             [
-                                'title' => 'Foods Chains',
+                                'title' => 'Food Chains',
                                 'icon' => 'fas fa-hamburger',
                                 'params' => [
                                     'type' => Chain::getCorrectTypeName(Chain::TYPE_FOOD, false),
                                 ],
                                 'routeName' => 'admin.chains.index',
+                            ],
+                        ]
+                    ]
+                ]
+            ],
+            [
+                'children' => [
+                    [
+                        'title' => trans('strings.branches'),
+                        'icon' => 'fas fa-code-branch',
+                        'routeName' => 'admin.index',
+                        'subChildren' => [
+                            [
+                                'title' => 'Market Branches',
+                                'icon' => 'fas fa-code-branch',
+                                'params' => [
+                                    'type' => Branch::getCorrectTypeName(Branch::TYPE_GROCERY_BRANCH, false),
+                                ],
+                                'routeName' => 'admin.branches.index',
+                            ],
+                            [
+                                'title' => 'Food Branches',
+                                'icon' => 'fas fa-code-branch',
+                                'params' => [
+                                    'type' => Branch::getCorrectTypeName(Branch::TYPE_FOOD_BRANCH, false),
+                                ],
+                                'routeName' => 'admin.branches.index',
                             ],
                         ]
                     ]
