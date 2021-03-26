@@ -56,22 +56,13 @@ class HomeController extends BaseApiController
     {
         $channel = strtolower($request->input('channel'));
         $user = auth('sanctum')->user();
-//        $response = $addresses = [];
         $slides = SlideResource::collection(Slide::all());
         $cart = null;
 
         $latitude = $request->latitude;
         $longitude = $request->longitude;
 
-        /*        if ( ! is_null($user)) {
-                    $addresses = LocationResource::collection($user->addresses);
-                    $user->latitude = $latitude;
-                    $user->longitude = $longitude;
-                    $user->save();
-                }*/
-
         $sharedResponse = [
-//            'addresses' => $addresses,
             'cart' => null,
             'slides' => $slides,
             'estimated_arrival_time' => [
