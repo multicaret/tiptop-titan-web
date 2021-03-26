@@ -16,7 +16,7 @@ class CreateBranchesTable extends Migration
         Schema::create('branches', function (Blueprint $table) {
             $table->id();
             $table->char('uuid', 10)->unique();
-            $table->unsignedBigInteger('chain_id');
+            $table->unsignedBigInteger('chain_id')->index();
             $table->unsignedBigInteger('creator_id')->index();
             $table->unsignedBigInteger('editor_id');
             $table->unsignedBigInteger('region_id')->nullable();

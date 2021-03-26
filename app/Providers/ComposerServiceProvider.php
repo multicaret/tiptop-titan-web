@@ -324,10 +324,7 @@ class ComposerServiceProvider extends ServiceProvider
      *
      * @return string
      */
-    protected
-    function bodyClasses(
-        $classes = null
-    ) {
+    protected function bodyClasses($classes = null) {
         if ( ! is_array($classes)) {
             $classes = [];
         }
