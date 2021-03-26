@@ -207,4 +207,5 @@ return [
     'chains' => 'Chains',
     'branches' => 'Branches',
     'posts' => 'Posts',
+    'content_management' => 'Content Management',
 ];
