@@ -46,7 +46,7 @@
                                        class="sidenav-link {{\Str::title(request()->input('type')) === $childItem['title']? 'active': '' }}">
                                         <i class="mr-2 text-secondary {{ $childItem['icon'] }}"
                                            style="font-size:1.4em"></i>
-                                        <div>{{$childItem['title']}}</div>
+                                        <div class="font-weight-semibold">{{$childItem['title']}}</div>
                                     </a>
                                 </li>
                             @endforeach
