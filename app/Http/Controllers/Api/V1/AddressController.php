@@ -29,26 +29,7 @@ class AddressController extends BaseApiController
 
         return $this->respond([
             'addresses' => LocationResource::collection($addresses),
-            'kinds' => [
-                [
-                    'id' => Location::KIND_HOME,
-                    'title' => trans('api.address_kind_Home'),
-                    'icon' => asset(config('defaults.images.address_home_icon')),
-                    'markerIcon' => asset(config('defaults.images.address_home_marker_icon')),
-                ],
-                [
-                    'id' => Location::KIND_WORK,
-                    'title' => trans('api.address_kind_Work'),
-                    'icon' => asset(config('defaults.images.address_work_icon')),
-                    'markerIcon' => asset(config('defaults.images.address_work_marker_icon')),
-                ],
-                [
-                    'id' => Location::KIND_OTHER,
-                    'title' => trans('api.address_kind_Other'),
-                    'icon' => asset(config('defaults.images.address_other_icon')),
-                    'markerIcon' => asset(config('defaults.images.address_other_marker_icon')),
-                ],
-            ],
+            'kinds' => Location::getKindsForMaps(),
         ]);
     }
 
@@ -71,6 +52,7 @@ class AddressController extends BaseApiController
                 'cities' => CityResource::collection($cities),
                 'selectedRegion' => new RegionResource($selectedRegion),
                 'selectedCity' => new CityResource($selectedCity),
+                'kinds' => Location::getKindsForMaps(),
             ]
         );
 

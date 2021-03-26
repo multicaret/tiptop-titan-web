@@ -18,8 +18,10 @@ class RegionResource extends JsonResource
     {
         return [
             'id' => (int) $this->id,
-            'nameEnglish' => $this->english_name,
-            'name' => $this->name,
+            'name' => [
+                'original' => $this->english_name,
+                'translated' => $this->name,
+            ],
             'code' => $this->code,
         ];
     }

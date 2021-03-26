@@ -71,22 +71,26 @@ class SearchController extends BaseApiController
                            ->get();
 
         if ($products->count() == 0) {
-            return $this->respondNotFound('No results for your search');
+            return $this->respondWithMessage('No results for your search');
         }
 
         $chainId = $request->input('chain_id');
         $branchId = $request->input('branch_id');
         // Storing the search term.
-        if (is_null($search = Search::whereChainId($chainId)
+        if (is_null($search = Search::whereLocale(localization()->getCurrentLocale())
+                                    ->whereChainId($chainId)
                                     ->whereBranchId($branchId)
                                     ->whereTerm($searchQuery)
                                     ->first())) {
+            $search = new Search();
+            $search->locale = localization()->getCurrentLocale();
             $search->chain_id = $chainId;
             $search->branch_id = $branchId;
             $search->term = $searchQuery;
             $search->save();
         } else {
             $search->increment('count');
+            $search->save();
         }
 
         return $this->respond(ProductResource::collection($products));

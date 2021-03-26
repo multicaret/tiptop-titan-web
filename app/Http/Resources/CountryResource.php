@@ -35,8 +35,10 @@ class CountryResource extends JsonResource
 
             return [
                 'id' => $this->id,
-                'nameEnglish' => $this->english_name,
-                'name' => $this->name,
+                'name' => [
+                    'original' => $this->english_name,
+                    'translated' => $this->name,
+                ],
                 'alpha2Code' => $this->alpha2_code,
                 'alpha3Code' => $this->alpha3_code,
                 'numericCode' => $this->numeric_code,
