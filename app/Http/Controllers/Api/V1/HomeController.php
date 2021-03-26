@@ -39,7 +39,11 @@ class HomeController extends BaseApiController
                                   ->first();
 
 //dd($bootConfigurations->data_translated);
-        return $this->respond(new BootResource($bootConfigurations));
+        if ( ! is_null($bootConfigurations)) {
+            return $this->respond(new BootResource($bootConfigurations));
+        }
+
+        return $this->respondWithMessage('Things are fine, pass you twat!');
     }
 
     public function root()
