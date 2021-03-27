@@ -124,7 +124,7 @@ class Location extends Model
 
         return $kindsForMaps->filter(function ($kind) use ($id) {
             return $kind['id'] == $id;
-        });
+        })->first();
     }
 
     public function getKind()
