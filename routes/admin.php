@@ -15,8 +15,27 @@ Route::get('/', function () {
     return view('admin.dashboard');
 })->name('index');
 
-Route::resource('posts', 'PostController')->except(['show']);
+Route::get('users/{type}', 'UserController@index')->name('users.index');
+Route::get('users/{type}/create', 'UserController@create')->name('users.create');
+Route::post('users/{type}/store', 'UserController@store')->name('users.store');
+//Bottom ones don't have a "type" wildcard (cue in angry MK sounds)
+Route::get('users/{user}/edit', 'UserController@edit')->name('users.edit');
+Route::post('users/{user}/update', 'UserController@update')->name('users.update');
+Route::delete('users/{user}/delete', 'UserController@destory')->name('users.destroy');
+/*
+
 Route::resource('users', 'UserController')->except(['show']);
+Route::resource('restaurant-drivers', 'UserController')->except(['show']);
+Route::resource('tiptop-drivers', 'UserController')->except(['show']);
+Route::resource('admins', 'UserController')->except(['show']);
+Route::resource('supervisors', 'UserController')->except(['show']);
+Route::resource('agents', 'UserController')->except(['show']);
+Route::resource('content-editors', 'UserController')->except(['show']);
+Route::resource('marketers', 'UserController')->except(['show']);
+Route::resource('branch-owners', 'UserController')->except(['show']);
+Route::resource('branch-managers', 'UserController')->except(['show']);*/
+
+Route::resource('posts', 'PostController')->except(['show']);
 Route::resource('cities', 'CityController')->except(['show']);
 Route::resource('regions', 'RegionController')->except(['show']);
 

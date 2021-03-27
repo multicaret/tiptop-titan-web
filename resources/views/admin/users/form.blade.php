@@ -3,7 +3,7 @@
 @section('title', $user->id? trans('strings.edit'. request('type')) : trans('strings.add_new_'. request('type')))
 
 @section('breadcrumb')
-    <li class="breadcrumb-item"><a href="{{route('admin.users.index')}}">@lang('strings.users')</a></li>
+    <li class="breadcrumb-item"><a href="{{route('admin.users.index', ['type' => request()->type ])}}">@lang('strings.users')</a></li>
     <li class="breadcrumb-item active">{{ $user->id? trans('strings.edit'. request('type')): trans('strings.add_new_'. request('type'))}}</li>
 @endsection
 
@@ -14,7 +14,6 @@
     @else
         {!! Form::open(['route' => ['admin.users.store', ['type' => request()->type] ], 'files' => true]) !!}
     @endif--}}
-
     <form method="POST" enctype="multipart/form-data"
           @if(is_null($user->id))
           action="{{route('admin.users.store', ['type' => strtolower(request()->type)])}}"

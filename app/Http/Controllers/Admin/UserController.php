@@ -28,7 +28,7 @@ class UserController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index($type)
     {
         return view('admin.users.index');
     }
@@ -36,11 +36,12 @@ class UserController extends Controller
     /**
      * Show the form for creating a new resource.
      *
+     * @param $type
      * @param  Request  $request
      *
      * @return \Illuminate\Http\Response
      */
-    public function create(Request $request)
+    public function create($type, Request $request)
     {
         $data = $this->essentialData();
 
@@ -66,7 +67,7 @@ class UserController extends Controller
      *
      * @return \Illuminate\Http\RedirectResponse
      */
-    public function store(Request $request)
+    public function store($type, Request $request)
     {
         $request->validate([
             'first' => 'required|min:3|max:60',
@@ -135,8 +136,11 @@ class UserController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function edit(Request $request, User $user)
+    public function edit($type, User $user, Request $request)
     {
+        if(is_null($type)){
+            dd('type is null in edit');
+        }
         $type = $request->type;
         $data = $this->essentialData();
         $user->load(['country', 'region', 'city']);
@@ -150,13 +154,17 @@ class UserController extends Controller
     /**
      * Update the specified resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
+     * @param $type
      * @param  \App\Models\User  $user
      *
+     * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\RedirectResponse
      */
-    public function update(Request $request, User $user)
+    public function update($type, User $user, Request $request)
     {
+        if(is_null($type)){
+            dd('type is null in edit');
+        }
         $validationRules = [
             'first' => 'required|min:3|max:60',
             'email' => 'required|email|min:3|max:255|unique:users,email,'.$user->id,
@@ -229,7 +237,7 @@ class UserController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function destroy(User $user)
+    public function destroy($type, User $user)
     {
         if ($user->delete()) {
             return back()->with('message', [
