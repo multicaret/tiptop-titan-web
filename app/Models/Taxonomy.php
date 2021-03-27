@@ -5,7 +5,6 @@ namespace App\Models;
 use App\Contracts\ShouldHaveTypes;
 use App\Traits\HasMediaTrait;
 use App\Traits\HasStatuses;
-use App\Traits\HasTags;
 use App\Traits\HasTypes;
 use App\Traits\HasUuid;
 use App\Traits\HasViewCount;
@@ -37,6 +36,7 @@ class Taxonomy extends Node implements HasMedia, ShouldHaveTypes, TranslatableCo
     const TYPE_TAG = 2;
     const TYPE_GROCERY_CATEGORY = 3;
     const TYPE_FOOD_CATEGORY = 4;
+    const TYPE_RATING_ISSUE = 10;
 
     protected $fillable = ['title', 'description', 'parent_id', 'type', 'order_column'];
     protected $translatedAttributes = ['title', 'description'];
@@ -114,6 +114,18 @@ class Taxonomy extends Node implements HasMedia, ShouldHaveTypes, TranslatableCo
         return $query->where('type', '=', self::TYPE_FOOD_CATEGORY);
     }
 
+    /**
+     * Scope a query to only include rating issues
+     *
+     * @param  \Illuminate\Database\Eloquent\Builder  $query
+     *
+     * @return \Illuminate\Database\Eloquent\Builder
+     */
+    public function scopeRatingIssues($query): \Illuminate\Database\Eloquent\Builder
+    {
+        return $query->where('type', '=', self::TYPE_RATING_ISSUE);
+    }
+
 
     public function creator(): \Illuminate\Database\Eloquent\Relations\BelongsTo
     {
@@ -185,7 +197,9 @@ class Taxonomy extends Node implements HasMedia, ShouldHaveTypes, TranslatableCo
         return [
             self::TYPE_POST_CATEGORY => 'category',
             self::TYPE_TAG => 'tag',
-            self::TYPE_GROCERY_CATEGORY => 'grocery',
+            self::TYPE_GROCERY_CATEGORY => 'grocery-category',
+            self::TYPE_FOOD_CATEGORY => 'food-category',
+            self::TYPE_RATING_ISSUE => 'rating-issue',
         ];
     }
 
