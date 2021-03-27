@@ -14,7 +14,7 @@ class ProductResource extends JsonResource
     public function toArray($request)
     {
 
-        $isFavorited = auth()->check() ? $this->isFavoritedBy(auth()->user()) : false;
+        $isFavorited = auth('sanctum')->check() ? $this->isFavoritedBy(auth('sanctum')->user()) : false;
 
         return [
             'id' => (int) $this->id,
