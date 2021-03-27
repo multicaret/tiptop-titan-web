@@ -11,6 +11,7 @@ use App\Models\Order;
 use App\Models\PaymentMethod;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
+use Symfony\Component\HttpFoundation\Response;
 
 class OrderController extends BaseApiController
 {
@@ -84,7 +85,13 @@ class OrderController extends BaseApiController
         if ($userCart->total >= $minimumOrder) {
             $deliveryFee = $branch->fixed_delivery_fee;
         } else {
-            $deliveryFee = $underMinimumOrderDeliveryFee;
+            if ( ! $underMinimumOrderDeliveryFee) {
+                $message = trans('api.cart_total_under_minimum');
+                return $this->setStatusCode(Response::HTTP_NOT_ACCEPTABLE)
+                            ->respondWithMessage($message);
+            } else {
+                $deliveryFee = $underMinimumOrderDeliveryFee;
+            }
         }
 
         $paymentMethods = PaymentMethod::published()->get()->map(function ($method) {
