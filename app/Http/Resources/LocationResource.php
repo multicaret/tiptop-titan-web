@@ -33,8 +33,7 @@ class LocationResource extends JsonResource
                 $type = $contactableResource = null;
         }*/
 
-        $kind = $this->getKind();
-        $kind['id'] = $this->kind;
+        $kind = $this->getKindForMarker($this->kind);
 
         return [
             'id' => (int) $this->id,
