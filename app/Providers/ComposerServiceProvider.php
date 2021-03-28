@@ -121,15 +121,6 @@ class ComposerServiceProvider extends ServiceProvider
                         'params' => ['type' => 'collapse'],
                         'subChildren' => [
                             [
-                                'title' => 'Products',
-                                'icon' => 'fas fa-box-open',
-                                'params' => [
-                                    'type' =>
-                                        'foo',
-                                ],
-                                'routeName' => 'admin.chains.index',
-                            ],
-                            [
                                 'title' => 'Chains',
                                 'icon' => 'fas fa-link',
                                 'params' => [
@@ -156,6 +147,15 @@ class ComposerServiceProvider extends ServiceProvider
                                 ],
                                 'routeName' => 'admin.taxonomies.index',
                             ],
+                            [
+                                'title' => 'Products',
+                                'icon' => 'fas fa-box-open',
+                                'params' => [
+                                    'type' =>
+                                        'foo',
+                                ],
+                                'routeName' => 'admin.chains.index',
+                            ],
                         ]
                     ]
                 ]
@@ -168,15 +168,6 @@ class ComposerServiceProvider extends ServiceProvider
                         'routeName' => 'admin.index',
                         'params' => ['type' => 'collapse'],
                         'subChildren' => [
-                            [
-                                'title' => 'Products',
-                                'icon' => 'fas fa-box-open',
-                                'params' => [
-                                    'type' =>
-                                        'foo',
-                                ],
-                                'routeName' => 'admin.chains.index',
-                            ],
                             [
                                 'title' => 'Chains',
                                 'icon' => 'fas fa-link',
@@ -202,6 +193,15 @@ class ComposerServiceProvider extends ServiceProvider
                                             false)
                                 ],
                                 'routeName' => 'admin.taxonomies.index',
+                            ],
+                            [
+                                'title' => 'Products',
+                                'icon' => 'fas fa-box-open',
+                                'params' => [
+                                    'type' =>
+                                        'foo',
+                                ],
+                                'routeName' => 'admin.chains.index',
                             ],
                         ]
                     ]

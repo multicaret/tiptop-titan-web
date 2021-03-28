@@ -143,7 +143,7 @@ class Taxonomy extends Node implements HasMedia, ShouldHaveTypes, TranslatableCo
 
     protected $fillable = ['title', 'description', 'parent_id', 'type', 'order_column'];
     protected $translatedAttributes = ['title', 'description'];
-    protected $with = ['translations'];
+    protected $with = ['translations', 'chain', 'branches'];
 
     protected $appends = [
         'cover',
@@ -239,6 +239,22 @@ class Taxonomy extends Node implements HasMedia, ShouldHaveTypes, TranslatableCo
         return $this->belongsTo(User::class, 'editor_id');
     }
 
+    public function chain(): \Illuminate\Database\Eloquent\Relations\BelongsTo
+    {
+        return $this->belongsTo(Chain::class, 'chain_id');
+    }
+
+    public function branch(): \Illuminate\Database\Eloquent\Relations\BelongsTo
+    {
+        return $this->belongsTo(Branch::class, 'branch_id');
+    }
+
+    public function branches(): \Illuminate\Database\Eloquent\Relations\BelongsToMany
+    {
+        return $this->belongsToMany(Branch::class, 'category_branch', 'category_id', 'branch_id')
+                    ->withTimestamps();
+    }
+
     public function products(): \Illuminate\Database\Eloquent\Relations\BelongsToMany
     {
         return $this->belongsToMany(Product::class, 'category_product', 'category_id', 'product_id')
@@ -268,16 +284,16 @@ class Taxonomy extends Node implements HasMedia, ShouldHaveTypes, TranslatableCo
             'parent' => [
                 Taxonomy::TYPE_POST_CATEGORY,
                 Taxonomy::TYPE_GROCERY_CATEGORY,
+                Taxonomy::TYPE_FOOD_CATEGORY,
+
             ],
             'cover_image' => [
                 Taxonomy::TYPE_GROCERY_CATEGORY,
+                Taxonomy::TYPE_FOOD_CATEGORY,
             ],
             'content' => [
                 Taxonomy::TYPE_POST_CATEGORY,
             ],
-            'branch' => [
-                Taxonomy::TYPE_GROCERY_CATEGORY,
-            ]
         ];
 
         return $typeVariations[$index];
