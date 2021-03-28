@@ -39,7 +39,7 @@ class TranslationController extends Controller
         foreach (localization()->getSupportedLocales() as $key => $locale) {
             $columnsLocales[] = [
                 'sortBy' => $sortBy,
-                'data' => $key . '_value',
+                'data' => $key.'_value',
                 'name' => $locale->regional(),
                 'title' => $locale->name(),
             ];
@@ -47,7 +47,10 @@ class TranslationController extends Controller
         }
 
         $columns = array_merge($columns, $columnsLocales);
-        usort($columns, function($a, $b) {return $a['sortBy'] > $b['sortBy'];});
+        usort($columns, function ($a, $b): int {
+            return $a['sortBy'] > $b['sortBy'];
+        });
+
         return view('admin.translations.index', compact('columns'));
     }
 }
