@@ -223,7 +223,8 @@ return [
     'custom_banner_ended_at' => 'Custom Banner Ended At',
     'price_discount_amount' => 'Price Discount Amount',
     'ingredients' => 'Ingredients',
-    'ingredient-categories' => 'Ingredient categories',
+    'ingredient-categories' => 'Ingredient Categories',
+    'restaurant-categories' => 'Restaurant Categories',
     'step' => 'Step',
     'units' => 'Units',
 ];
