@@ -8,8 +8,7 @@ use App\Models\Currency;
 use App\Models\Language;
 use App\Models\Post;
 use App\Models\Preference;
-use App\Models\Taxonomy;
-use App\Models\User;
+use App\Models\Product;
 use App\Scopes\ActiveScope;
 use Illuminate\Http\Request;
 use Illuminate\Support\Arr;
@@ -121,6 +120,12 @@ class ComposerServiceProvider extends ServiceProvider
                         'params' => ['type' => 'collapse'],
                         'subChildren' => [
                             [
+                                'title' => 'Products',
+                                'icon' => 'fas fa-box-open',
+                                'params' => ['type' => Product::getCorrectTypeName(Product::TYPE_GROCERY_PRODUCT, false)],
+                                'routeName' => 'admin.products.index',
+                            ],
+                            [
                                 'title' => 'Chains',
                                 'icon' => 'fas fa-link',
                                 'params' => [
@@ -147,15 +152,6 @@ class ComposerServiceProvider extends ServiceProvider
                                 ],
                                 'routeName' => 'admin.taxonomies.index',
                             ],
-                            [
-                                'title' => 'Products',
-                                'icon' => 'fas fa-box-open',
-                                'params' => [
-                                    'type' =>
-                                        'foo',
-                                ],
-                                'routeName' => 'admin.chains.index',
-                            ],
                         ]
                     ]
                 ]
@@ -168,6 +164,12 @@ class ComposerServiceProvider extends ServiceProvider
                         'routeName' => 'admin.index',
                         'params' => ['type' => 'collapse'],
                         'subChildren' => [
+                            [
+                                'title' => 'Products',
+                                'icon' => 'fas fa-box-open',
+                                'params' => ['type' => Product::getCorrectTypeName(Product::TYPE_FOOD_PRODUCT, false)],
+                                'routeName' => 'admin.products.index',
+                            ],
                             [
                                 'title' => 'Chains',
                                 'icon' => 'fas fa-link',

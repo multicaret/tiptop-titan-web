@@ -33,6 +33,7 @@ class CreateProductsTable extends Migration
             $table->unsignedFloat('height')->nullable()->comment('y');
             $table->unsignedFloat('depth')->nullable()->comment('z');
             $table->unsignedFloat('weight')->nullable()->comment('w');
+            $table->unsignedTinyInteger('type')->default(\App\Models\Product::TYPE_GROCERY_PRODUCT)->comment('1:Market, 2: Food');
             $table->integer('minimum_orderable_quantity')->default(1)->nullable();
             $table->unsignedInteger('order_column')->nullable();
             $table->decimal('avg_rating', 3)->default(0);
