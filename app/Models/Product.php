@@ -165,6 +165,8 @@ class Product extends Model implements HasMedia
     const TYPE_FOOD_PRODUCT = 2;
 
     protected $with = [
+        'chain',
+        'branch',
         'translations',
         'tags',
         'masterCategory'

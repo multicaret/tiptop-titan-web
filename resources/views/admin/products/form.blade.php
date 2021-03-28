@@ -33,7 +33,7 @@
             {{method_field('put')}}
         @endif
         <div class="row mb-4">
-            <div class="col-md-12">
+            <div class="col-md-9">
                 <div class="col-12">
                     <ul class="nav nav-tabs border-bottom-0">
                         @foreach(localization()->getSupportedLocales() as $key => $locale)
@@ -66,7 +66,7 @@
                                                 <div class="col-md-{{$input === 'title' ? '12' : '6'}}">
                                                     @component('admin.components.form-group', ['name' => $langKey .'['.$input.']', 'type' => $type])
                                                         @slot('label', trans('strings.'. $input))
-                                                        @if(! is_null($product->$input))
+                                                        @if(! is_null($product->id))
                                                             @slot('value', optional($product->translate($langKey))->$input)
                                                         @endif
                                                     @endcomponent
@@ -84,7 +84,7 @@
                     <div class="card card-outline-inverse">
                         <h4 class="card-header">Selectors</h4>
                         <div class="card-body">
-                            <div class="row pt-3">
+                            <div class="row">
                                 <div class="col-6">
                                     <div class="form-group">
                                         <label class="control-label">
@@ -92,7 +92,7 @@
                                         </label>
                                         <multiselect
                                             :options="chains"
-                                            v-model="selectedChain"
+                                            v-model="product.chain"
                                             track-by="id"
                                             label="title"
                                             name="chain_id"
@@ -114,7 +114,7 @@
                                         </label>
                                         <multiselect
                                             :options="branches"
-                                            v-model="selectedBranch"
+                                            v-model="product.branch"
                                             track-by="id"
                                             label="title"
                                             name="branch_id"
@@ -124,7 +124,7 @@
                                             selected-label=""
                                             deselect-label=""
                                             placeholder=""
-{{--                                            @select="retrieveCities"--}}
+                                            {{--                                            @select="retrieveCities"--}}
                                             autocomplete="false"
                                         ></multiselect>
                                     </div>
@@ -190,8 +190,8 @@
                                         <div class="col-6">
                                             @component('admin.components.form-group', ['name' => $input, 'type' => $type])
                                                 @slot('label', trans('strings.'. $input))
-                                                @if(! is_null($product->$input))
-                                                    @slot('value', optional($product->translate($langKey))->$input)
+                                                @if(! is_null($product->id))
+                                                    @slot('value',$type === config('defaults.db_column_types.datetime') ? Carbon\Carbon::parse($product->$input)  : $product->$input)
                                                 @endif
                                             @endcomponent
                                         </div>
@@ -202,15 +202,15 @@
                     </div>
                 </div>
             </div>
-            <div class="col-md-12" style="margin-top: 2.2rem !important;">
+            <div class="col-md-3" style="margin-top: 2.2rem !important;">
                 <div class="row">
                     <div class="col-md-12 mt-2">
                         <div class="card card-outline-inverse">
-                            <h4 class="card-header">Photos</h4>
+                            <h4 class="card-header">Cover</h4>
                             <div class="card-body">
                                 <div class="row">
                                     <div class="col-12">
-                                        <h5>Cover</h5>
+                                        {{--                                        <h5>Cover</h5>--}}
                                         @component('admin.components.form-group', ['name' => 'cover', 'type' => 'file'])
                                             @slot('attributes', [
                                                 'class' => 'cover-uploader',
@@ -222,22 +222,30 @@
                                             ])
                                         @endcomponent
                                     </div>
-
-                                    <div class="col-12">
-                                        <h5>Gallery</h5>
-                                        @component('admin.components.form-group', ['name' => 'gallery', 'type' => 'file'])
-                                            @slot('attributes', [
-                                                'label'=> 'Gallery',
-                                                'class' => 'images-uploader',
-                                                'accept' => '.jpg, .jpeg, .png, .bmp',
-                                                'dropzone' => 'media-list',
-                                                'data-fileuploader-listInput' => 'media-list',
-                                                'data-fileuploader-extensions' => 'jpg, jpeg, png, bmp',
-                                                'data-fileuploader-files' => !is_null($product->id) && !is_null($gallery = $product->getMediaForUploader('gallery'))? json_encode($gallery, JSON_UNESCAPED_UNICODE) : null,
-                                            ])
-                                        @endcomponent
-                                    </div>
                                 </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-12 mt-2">
+                <div class="card card-outline-inverse">
+                    <h4 class="card-header">Gallery</h4>
+                    <div class="card-body">
+                        <div class="row">
+                            <div class="col-12">
+                                {{--                                        <h5>Gallery</h5>--}}
+                                @component('admin.components.form-group', ['name' => 'gallery', 'type' => 'file'])
+                                    @slot('attributes', [
+                                        'label'=> 'Gallery',
+                                        'class' => 'images-uploader',
+                                        'accept' => '.jpg, .jpeg, .png, .bmp',
+                                        'dropzone' => 'media-list',
+                                        'data-fileuploader-listInput' => 'media-list',
+                                        'data-fileuploader-extensions' => 'jpg, jpeg, png, bmp',
+                                        'data-fileuploader-files' => !is_null($product->id) && !is_null($gallery = $product->getMediaForUploader('gallery'))? json_encode($gallery, JSON_UNESCAPED_UNICODE) : null,
+                                    ])
+                                @endcomponent
                             </div>
                         </div>
                     </div>
@@ -277,7 +285,7 @@
                 allInputs: @json($allInputs)
             },
             beforeMount() {
-                console.log('this.allData');
+                console.log(this.product);
             },
             methods: {
                 resetBranch: function () {
