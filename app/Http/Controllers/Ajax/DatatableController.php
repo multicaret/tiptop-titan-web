@@ -147,6 +147,7 @@ class DatatableController extends AjaxController
                          })
                          ->rawColumns([
 //                             'chain',
+                             'step',
                              'branches',
                              'action',
                              'order_column',

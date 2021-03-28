@@ -126,6 +126,18 @@
                         @endcomponent
                     </div>
                 @endif
+                @if($correctType == \App\Models\Taxonomy::TYPE_UNIT)
+                    <div class="col-md-12">
+                        @component('admin.components.form-group', ['name' => 'step', 'type' => 'number'])
+                            @slot('label', 'Step')
+                            @slot('attributes', [
+                                'step' => 'any',
+                                'min'=>'0'
+                            ])
+                            @slot('value', $taxonomy->step)
+                        @endcomponent
+                    </div>
+                @endif
                 <div class="col-4">
                     @component('admin.components.form-group', ['name' => 'status', 'type' => 'select'])
                         @slot('label', trans('strings.status'))

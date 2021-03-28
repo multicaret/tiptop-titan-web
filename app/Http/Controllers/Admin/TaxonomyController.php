@@ -61,7 +61,17 @@ class TaxonomyController extends Controller
                 ]
             ]);
         }
-
+        if ($correctType == \App\Models\Taxonomy::TYPE_UNIT) {
+            $columns = array_merge($columns, [
+                [
+                    'data' => 'step',
+                    'name' => 'step',
+                    'title' => trans('strings.step'),
+                    'orderable' => false,
+                    'searchable' => false
+                ]
+            ]);
+        }
         if ($correctType == \App\Models\Taxonomy::TYPE_FOOD_CATEGORY) {
             $columns = array_merge($columns, [
                 [
@@ -141,6 +151,9 @@ class TaxonomyController extends Controller
         }
         if ( ! is_null($request->chain_id)) {
             $taxonomy->chain_id = $request->chain_id;
+        }
+        if ( ! is_null($request->step)) {
+            $taxonomy->step = $request->step;
         }
         $taxonomy->order_column = $order;
         $taxonomy->save();
@@ -224,6 +237,9 @@ class TaxonomyController extends Controller
         }
         if ( ! is_null($request->status)) {
             $taxonomy->status = $request->status;
+        }
+        if ( ! is_null($request->step)) {
+            $taxonomy->step = $request->step;
         }
         if ( ! is_null($request->branch_id)) {
             $taxonomy->branch_id = $request->branch_id;

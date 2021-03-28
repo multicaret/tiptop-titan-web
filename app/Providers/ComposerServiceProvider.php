@@ -229,6 +229,16 @@ class ComposerServiceProvider extends ServiceProvider
                                 'routeName' => 'admin.taxonomies.index',
                             ],
                             [
+                                'title' => 'Units',
+                                'icon' => 'fas fa-balance-scale',
+                                'params' => [
+                                    'type' =>
+                                        \App\Models\Taxonomy::getCorrectTypeName(\App\Models\Taxonomy::TYPE_UNIT,
+                                            false),
+                                ],
+                                'routeName' => 'admin.taxonomies.index',
+                            ],
+                            [
                                 'title' => 'Products',
                                 'icon' => 'fas fa-box-open',
                                 'params' => [
