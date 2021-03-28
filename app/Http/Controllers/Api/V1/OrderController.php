@@ -6,11 +6,15 @@ use App\Http\Controllers\Api\BaseApiController;
 use App\Http\Resources\OrderResource;
 use App\Models\Branch;
 use App\Models\Cart;
+use App\Models\Chain;
 use App\Models\Currency;
+use App\Models\Location;
 use App\Models\Order;
 use App\Models\PaymentMethod;
+use App\Models\Taxonomy;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
+use Symfony\Component\HttpFoundation\Response;
 
 class OrderController extends BaseApiController
 {
@@ -84,7 +88,14 @@ class OrderController extends BaseApiController
         if ($userCart->total >= $minimumOrder) {
             $deliveryFee = $branch->fixed_delivery_fee;
         } else {
-            $deliveryFee = $underMinimumOrderDeliveryFee;
+            if ( ! $underMinimumOrderDeliveryFee) {
+                $message = trans('api.cart_total_under_minimum');
+
+                return $this->setStatusCode(Response::HTTP_NOT_ACCEPTABLE)
+                            ->respondWithMessage($message);
+            } else {
+                $deliveryFee = $underMinimumOrderDeliveryFee;
+            }
         }
 
         $paymentMethods = PaymentMethod::published()->get()->map(function ($method) {
@@ -132,6 +143,13 @@ class OrderController extends BaseApiController
             return $this->respondValidationFails($validator->errors());
         }
 
+
+        $address = Location::find($request->input('address_id'));
+        if (is_null($address)) {
+            return $this->respondNotFound('Address not found');
+        }
+
+        $user = auth()->user();
         $userCart = Cart::whereId($request->input('cart_id'))->first();
         $branch = $userCart->branch;
         $minimumOrder = $branch->minimum_order;
@@ -151,7 +169,8 @@ class OrderController extends BaseApiController
         $newOrder->branch_id = $request->input('branch_id');
         $newOrder->cart_id = $request->input('cart_id');
         $newOrder->payment_method_id = $request->input('payment_method_id');
-        $newOrder->address_id = $request->input('address_id');
+        $newOrder->address_id = $address->id;
+        $newOrder->city_id = $address->city_id;
         $newOrder->total = $userCart->total;
         $newOrder->delivery_fee = $deliveryFee;
         $newOrder->grand_total = $userCart->total + $deliveryFee;
@@ -165,6 +184,7 @@ class OrderController extends BaseApiController
 //        $newOrder->rating_count = $request->input('rating_count');
         $newOrder->notes = $request->input('notes');
         $newOrder->status = Order::STATUS_DELIVERED;
+        $newOrder->type = $branch->type;
         $newOrder->save();
 
         // Todo: work on payment method & do it.
@@ -180,9 +200,80 @@ class OrderController extends BaseApiController
             }
         }
 
+        $user->increment('total_number_of_orders');
+        $user->save();
+
         \DB::commit();
 
         return $this->respond(new OrderResource($newOrder));
+    }
+
+
+    /**
+     * @param  Order  $order
+     * @param  Request  $request
+     * @return JsonResponse
+     */
+    public function createRate(Order $order, Request $request): JsonResponse
+    {
+        $response = [];
+        if ($order->type === Order::TYPE_GROCERY_ORDER) {
+            $response = [
+                'availableIssues' => $this->getIssuesLists(),
+            ];
+        } elseif ($order->type === Order::TYPE_FOOD_ORDER) {
+            $response = [
+                ['key' => 'has_good_food_quality_rating', 'label' => 'Good Food Quality'],
+                ['key' => 'has_good_packaging_quality_rating', 'label' => 'Good Packaging Quality'],
+                ['key' => 'has_good_order_accuracy_rating', 'label' => 'Good Order Accuracy'],
+            ];
+        }
+
+        return $this->respond($response);
+    }
+
+
+    public function storeRate(Order $order, Request $request): JsonResponse
+    {
+        $branchRatingValue = $request->input('branch_rating_value');
+        if ($order->type === Chain::TYPE_GROCERY_CHAIN) {
+            $order->rating_issue_id = $request->input('grocery_issue_id');
+        }
+        if ($order->type === Chain::TYPE_FOOD_CHAIN) {
+            $driverRatingValue = $request->input('driver_rating_value');
+            $order->driver_rating_value = $driverRatingValue;
+            $order->has_good_food_quality_rating = $request->input('food_rating_factors.has_good_food_quality_rating');
+            $order->has_good_packaging_quality_rating = $request->input('food_rating_factors.has_good_packaging_quality_rating');
+            $order->has_good_order_accuracy_rating = $request->input('food_rating_factors.has_good_order_accuracy_rating');
+            /*
+             * Todo: Remember to increase Driver avg rating
+            $driver->avg_rating = $driver->average_rating;
+            $driver->increment('rating_count');
+            $driver->save();
+            */
+        }
+
+        \DB::beginTransaction();
+        $order->rating_comment = $request->input('comment');
+        $order->branch_rating_value = $branchRatingValue;
+        $order->save();
+
+        $branch = Branch::find($order->branch_id);
+        auth()->user()->rate($branch, $branchRatingValue);
+
+        $branch->avg_rating = $branch->average_rating;
+        $branch->increment('rating_count');
+        $branch->save();
+        \DB::commit();
+
+        return $this->respondWithMessage(trans('strings.successfully_done'));
+    }
+
+    private function getIssuesLists()
+    {
+        return Taxonomy::ratingIssues()->get()->map(function ($item) {
+            return ['id' => $item->id, 'title' => $item->getTranslation()->title];
+        });
     }
 
 

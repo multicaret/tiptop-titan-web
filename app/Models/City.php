@@ -9,6 +9,65 @@ use Illuminate\Database\Eloquent\Model;
 use Spatie\MediaLibrary\HasMedia;
 use Spatie\MediaLibrary\MediaCollections\Models\Media;
 
+/**
+ * App\Models\City
+ *
+ * @property int $id
+ * @property int $country_id
+ * @property int|null $region_id
+ * @property int|null $timezone_id
+ * @property string $english_name
+ * @property int|null $population
+ * @property string|null $latitude
+ * @property string|null $longitude
+ * @property int|null $order_column
+ * @property int $status 0:incomplete, 1:draft, 2:published, 3:Inactive, 4..n:CUSTOM
+ * @property \Illuminate\Support\Carbon|null $created_at
+ * @property \Illuminate\Support\Carbon|null $updated_at
+ * @property-read \App\Models\Country $country
+ * @property-read mixed $cover
+ * @property-read mixed $gallery
+ * @property-read mixed $is_published
+ * @property-read mixed $status_name
+ * @property-read \Spatie\MediaLibrary\MediaCollections\Models\Collections\MediaCollection|Media[] $media
+ * @property-read int|null $media_count
+ * @property-read \App\Models\Region|null $region
+ * @property-read \App\Models\Timezone|null $timezone
+ * @property-read \App\Models\CityTranslation|null $translation
+ * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\CityTranslation[] $translations
+ * @property-read int|null $translations_count
+ * @method static \Illuminate\Database\Eloquent\Builder|City draft()
+ * @method static \Illuminate\Database\Eloquent\Builder|City inactive()
+ * @method static \Illuminate\Database\Eloquent\Builder|City incomplete()
+ * @method static \Illuminate\Database\Eloquent\Builder|City listsTranslations(string $translationField)
+ * @method static \Illuminate\Database\Eloquent\Builder|City newModelQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder|City newQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder|City notPublished()
+ * @method static \Illuminate\Database\Eloquent\Builder|City notTranslatedIn(?string $locale = null)
+ * @method static \Illuminate\Database\Eloquent\Builder|City orWhereTranslation(string $translationField, $value, ?string $locale = null)
+ * @method static \Illuminate\Database\Eloquent\Builder|City orWhereTranslationLike(string $translationField, $value, ?string $locale = null)
+ * @method static \Illuminate\Database\Eloquent\Builder|City orderByTranslation(string $translationField, string $sortMethod = 'asc')
+ * @method static \Illuminate\Database\Eloquent\Builder|City published()
+ * @method static \Illuminate\Database\Eloquent\Builder|City query()
+ * @method static \Illuminate\Database\Eloquent\Builder|City translated()
+ * @method static \Illuminate\Database\Eloquent\Builder|City translatedIn(?string $locale = null)
+ * @method static \Illuminate\Database\Eloquent\Builder|City whereCountryId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|City whereCreatedAt($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|City whereEnglishName($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|City whereId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|City whereLatitude($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|City whereLongitude($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|City whereOrderColumn($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|City wherePopulation($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|City whereRegionId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|City whereStatus($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|City whereTimezoneId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|City whereTranslation(string $translationField, $value, ?string $locale = null, string $method = 'whereHas', string $operator = '=')
+ * @method static \Illuminate\Database\Eloquent\Builder|City whereTranslationLike(string $translationField, $value, ?string $locale = null)
+ * @method static \Illuminate\Database\Eloquent\Builder|City whereUpdatedAt($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|City withTranslation()
+ * @mixin \Eloquent
+ */
 class City extends Model implements HasMedia
 {
     use HasMediaTrait,

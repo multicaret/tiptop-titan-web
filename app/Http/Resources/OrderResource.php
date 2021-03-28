@@ -34,6 +34,17 @@ class OrderResource extends JsonResource
                 'raw' => (double) $this->grand_total,
                 'formatted' => Currency::format($this->grand_total),
             ],
+            'rating' => [
+                'branchHasBeenRated' => ! is_null($this->branch_rating_value),
+                'branchRatingValue' => $this->branch_rating_value,
+                'driverHasBeenRated' => ! is_null($this->driver_rating_value),
+                'driverRatingValue' => $this->driver_rating_value,
+                'ratingComment' => $this->rating_comment,
+                'hasGoodFoodQualityRating' => $this->has_good_food_quality_rating,
+                'hasGoodPackagingQualityRating' => $this->has_good_packaging_quality_rating,
+                'hasGoodOrderAccuracyRating' => $this->has_good_order_accuracy_rating,
+                'ratingIssue' => $this->ratingIssue->title,
+            ],
             'cart' => new CartResource($this->cart),
             'paymentMethod' => new PaymentMethodResource($this->paymentMethod),
         ];

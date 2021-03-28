@@ -19,12 +19,145 @@ use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Str;
 use Laravel\Sanctum\HasApiTokens;
 use Multicaret\Acquaintances\Traits\CanFavorite;
+use Multicaret\Acquaintances\Traits\CanRate;
 use Spatie\Image\Manipulations;
 use Spatie\MediaLibrary\HasMedia;
 use Spatie\MediaLibrary\MediaCollections\Models\Media;
 use Spatie\Permission\Models\Role;
 use Spatie\Permission\Traits\HasRoles;
 
+/**
+ * App\Models\User
+ *
+ * @property int $id
+ * @property string $first
+ * @property string|null $last
+ * @property string $username
+ * @property string|null $email
+ * @property string|null $password
+ * @property string|null $phone_country_code
+ * @property string|null $phone_number
+ * @property string|null $bio
+ * @property \Illuminate\Support\Carbon|null $dob
+ * @property int|null $gender
+ * @property string $wallet_reserved_total
+ * @property string $wallet_free_total
+ * @property int|null $profession_id
+ * @property int|null $language_id Native language ID
+ * @property int|null $currency_id
+ * @property int|null $country_id
+ * @property int|null $region_id
+ * @property int|null $city_id
+ * @property int|null $selected_address_id
+ * @property string|null $latitude
+ * @property string|null $longitude
+ * @property string $avg_rating
+ * @property int $rating_count
+ * @property int $view_count
+ * @property int $total_number_of_orders
+ * @property int|null $order_column
+ * @property object $mobile_app
+ * @property mixed|null $social_networks
+ * @property object $settings to handle all sort of settings including notification related such as is_notifiable by email or by push notifications ...etc
+ * @property int $status 0:incomplete, 1:draft, 2:published, 3:Inactive, 4..n:CUSTOM
+ * @property \Illuminate\Support\Carbon|null $approved_at
+ * @property \Illuminate\Support\Carbon|null $phone_verified_at
+ * @property \Illuminate\Support\Carbon|null $suspended_at
+ * @property \Illuminate\Support\Carbon|null $email_verified_at
+ * @property \Illuminate\Support\Carbon|null $last_logged_in_at
+ * @property \Illuminate\Support\Carbon|null $last_logged_out_at
+ * @property string|null $remember_token
+ * @property \Illuminate\Support\Carbon|null $created_at
+ * @property \Illuminate\Support\Carbon|null $updated_at
+ * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\Location[] $addresses
+ * @property-read int|null $addresses_count
+ * @property-read \App\Models\City|null $city
+ * @property-read \App\Models\Country|null $country
+ * @property-read \App\Models\Currency|null $currency
+ * @property-read mixed $analyst
+ * @property-read bool $avatar
+ * @property-read bool $cover
+ * @property-read mixed $international_phone
+ * @property-read mixed $is_admin
+ * @property-read bool $is_manager
+ * @property-read mixed $is_owner
+ * @property-read mixed $is_published
+ * @property-read bool $is_super
+ * @property-read mixed $is_user
+ * @property-read mixed $name
+ * @property-read mixed $status_name
+ * @property-read mixed $translator
+ * @property-read \App\Models\Language|null $language
+ * @property-read \Spatie\MediaLibrary\MediaCollections\Models\Collections\MediaCollection|Media[] $media
+ * @property-read int|null $media_count
+ * @property-read \Illuminate\Notifications\DatabaseNotificationCollection|\Illuminate\Notifications\DatabaseNotification[] $notifications
+ * @property-read int|null $notifications_count
+ * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\Order[] $orders
+ * @property-read int|null $orders_count
+ * @property-read \Illuminate\Database\Eloquent\Collection|\Spatie\Permission\Models\Permission[] $permissions
+ * @property-read int|null $permissions_count
+ * @property-read \App\Models\Region|null $region
+ * @property-read \Illuminate\Database\Eloquent\Collection|Role[] $roles
+ * @property-read int|null $roles_count
+ * @property-read \Illuminate\Database\Eloquent\Collection|\Laravel\Sanctum\PersonalAccessToken[] $tokens
+ * @property-read int|null $tokens_count
+ * @method static \Illuminate\Database\Eloquent\Builder|User active()
+ * @method static \Illuminate\Database\Eloquent\Builder|User draft()
+ * @method static \Database\Factories\UserFactory factory(...$parameters)
+ * @method static \Illuminate\Database\Eloquent\Builder|User inActive()
+ * @method static \Illuminate\Database\Eloquent\Builder|User incomplete()
+ * @method static \Illuminate\Database\Eloquent\Builder|User managers()
+ * @method static \Illuminate\Database\Eloquent\Builder|User newModelQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder|User newQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder|User notPublished()
+ * @method static \Illuminate\Database\Eloquent\Builder|User notSuper()
+ * @method static \Illuminate\Database\Eloquent\Builder|User owners()
+ * @method static \Illuminate\Database\Eloquent\Builder|User permission($permissions)
+ * @method static \Illuminate\Database\Eloquent\Builder|User published()
+ * @method static \Illuminate\Database\Eloquent\Builder|User query()
+ * @method static \Illuminate\Database\Eloquent\Builder|User role($roles, $guard = null)
+ * @method static \Illuminate\Database\Eloquent\Builder|User whereApprovedAt($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|User whereAvgRating($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|User whereBio($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|User whereCityId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|User whereCountryId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|User whereCreatedAt($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|User whereCurrencyId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|User whereDob($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|User whereEmail($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|User whereEmailVerifiedAt($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|User whereFirst($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|User whereGender($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|User whereId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|User whereLanguageId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|User whereLast($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|User whereLastLoggedInAt($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|User whereLastLoggedOutAt($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|User whereLatitude($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|User whereLongitude($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|User whereMobileApp($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|User whereOrderColumn($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|User wherePassword($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|User wherePhoneCountryCode($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|User wherePhoneNumber($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|User wherePhoneVerifiedAt($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|User whereProfessionId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|User whereRatingCount($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|User whereRegionId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|User whereRememberToken($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|User whereSelectedAddressId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|User whereSettings($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|User whereSocialNetworks($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|User whereStatus($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|User whereSuspendedAt($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|User whereTotalNumberOfOrders($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|User whereUpdatedAt($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|User whereUsername($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|User whereViewCount($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|User whereWalletFreeTotal($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|User whereWalletReservedTotal($value)
+ * @mixin \Eloquent
+ */
 class User extends Authenticatable implements HasMedia, MustVerifyEmail
 {
     use HasApiTokens,
@@ -32,6 +165,7 @@ class User extends Authenticatable implements HasMedia, MustVerifyEmail
         HasViewCount,
         HasMediaTrait,
         CanResetPassword,
+        CanRate,
         HasGender,
         HasStatuses,
         HasRoles,
@@ -89,7 +223,7 @@ class User extends Authenticatable implements HasMedia, MustVerifyEmail
      * @var array
      */
     protected $hidden = [
-        'role',
+//        'role',
         'password',
         'remember_token',
     ];

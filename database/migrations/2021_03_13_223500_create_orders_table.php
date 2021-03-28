@@ -24,8 +24,9 @@ class CreateOrdersTable extends Migration
             $table->unsignedBigInteger('payment_method_id')->index();
             $table->unsignedBigInteger('address_id')->index();
             $table->unsignedBigInteger('coupon_id')->nullable();
+            $table->unsignedBigInteger('city_id');
             $table->unsignedBigInteger('previous_order_id')->nullable();
-            // Todo: Add "channel", so we can retrieve the previous orders properly.
+            $table->unsignedTinyInteger('type')->comment('1:Market, 2: Food');
             $table->unsignedDouble('total')->default(0);
             $table->unsignedDouble('coupon_discount_amount')->default(0);
             $table->unsignedDouble('delivery_fee')->default(0);
@@ -34,8 +35,19 @@ class CreateOrdersTable extends Migration
             $table->unsignedDouble('private_total')->default(0);
             $table->unsignedDouble('private_delivery_fee')->default(0);
             $table->unsignedDouble('private_grand_total')->default(0);
-            $table->decimal('avg_rating', 3)->default(0);
-            $table->unsignedInteger('rating_count')->default(0);
+
+            // Rating Related
+            $table->decimal('branch_rating_value', 3)->nullable();
+            $table->text('rating_comment')->nullable();
+            // Rating Related - For Food Only
+            $table->decimal('driver_rating_value', 3)->nullable();
+            $table->boolean('has_good_food_quality_rating')->nullable();
+            $table->boolean('has_good_packaging_quality_rating')->nullable();
+            $table->boolean('has_good_order_accuracy_rating')->nullable();
+
+            // Rating Related - For Grocery Only
+            $table->unsignedBigInteger('rating_issue_id')->nullable();
+
             $table->timestamp('completed_at')->nullable();
             $table->text('notes')->nullable();
             $table->unsignedTinyInteger('status')->default(Order::STATUS_DRAFT)
@@ -58,6 +70,7 @@ class CreateOrdersTable extends Migration
             $table->foreign('payment_method_id')->references('id')->on('payment_methods');
             $table->foreign('coupon_id')->references('id')->on('coupons');
             $table->foreign('previous_order_id')->references('id')->on('orders');
+            $table->foreign('rating_issue_id')->references('id')->on('taxonomies')->onDelete('set null');
         });
     }
 

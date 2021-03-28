@@ -56,11 +56,16 @@ Route::middleware('auth:sanctum')
          Route::get('profile/favorites', 'UserController@favorites');
          Route::post('products/{product}/interact', 'UserController@interact');
 
+         // Orders -- Rating
+         Route::get('orders/{order}/rate', 'OrderController@createRate');
+         Route::post('orders/{order}/rate', 'OrderController@storeRate');
          // Orders
          Route::get('orders', 'OrderController@index');
          Route::get('orders/create', 'OrderController@create');
          Route::post('orders', 'OrderController@store');
          Route::post('orders/{order}/delete', 'OrderController@destroy');
+
+         // Carts
          Route::post('carts/{cart}/products/adjust-quantity', 'CartController@adjustQuantity');
          Route::post('carts/{cart}/delete', 'CartController@destroy');
 

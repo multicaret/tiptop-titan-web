@@ -6,6 +6,33 @@ use App\Http\Resources\WorkingHourResource;
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Model;
 
+/**
+ * App\Models\WorkingHour
+ *
+ * @property int $id
+ * @property string $workable_type
+ * @property int $workable_id
+ * @property int $day
+ * @property string|null $opens_at
+ * @property string|null $closes_at
+ * @property bool $is_day_off
+ * @property \Illuminate\Support\Carbon|null $created_at
+ * @property \Illuminate\Support\Carbon|null $updated_at
+ * @property-read Model|\Eloquent $workable
+ * @method static \Illuminate\Database\Eloquent\Builder|WorkingHour newModelQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder|WorkingHour newQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder|WorkingHour query()
+ * @method static \Illuminate\Database\Eloquent\Builder|WorkingHour whereClosesAt($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|WorkingHour whereCreatedAt($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|WorkingHour whereDay($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|WorkingHour whereId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|WorkingHour whereIsDayOff($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|WorkingHour whereOpensAt($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|WorkingHour whereUpdatedAt($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|WorkingHour whereWorkableId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|WorkingHour whereWorkableType($value)
+ * @mixin \Eloquent
+ */
 class WorkingHour extends Model
 {
     protected $casts = [
