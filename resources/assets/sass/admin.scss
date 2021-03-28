@@ -15,7 +15,7 @@
     }
 
     &:focus {
-        box-shadow: 0 0 0 2px rgba(211, 74, 155, 0.30);
+        box-shadow: 0 0 0 2px rgba( $primary, .3 );
     }
 }
 
