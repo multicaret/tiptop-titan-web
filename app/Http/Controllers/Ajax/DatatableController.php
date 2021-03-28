@@ -102,7 +102,7 @@ class DatatableController extends AjaxController
     {
         $correctType = Taxonomy::getCorrectType($request->type);
         $taxonomies = Taxonomy::orderBy('order_column')
-                              ->with('parent')
+                              ->with('parent', 'chain', 'branches')
                               ->where('type', $correctType);
 
         return DataTables::of($taxonomies)
@@ -120,6 +120,18 @@ class DatatableController extends AjaxController
 
                              return view('admin.components.datatables._row-actions', $data)->render();
                          })
+                         ->editColumn('parent', function ($item) {
+                             return $item->parent ? $item->parent->title : null;
+                         })
+                         ->editColumn('chain', function ($item) {
+                             return $item->chain ? $item->chain->title : null;
+                         })
+                         ->editColumn('branches', function ($item) {
+                             $branches = $item->branches->pluck('title')->toArray();
+                             return view('admin.components.datatables._badge-items', [
+                                 'items' => $branches
+                             ])->render();
+                         })
                          ->editColumn('order_column', function ($item) {
                              return view('admin.components.datatables._row-reorder')->render();
                          })
@@ -134,6 +146,8 @@ class DatatableController extends AjaxController
                              ])->render();
                          })
                          ->rawColumns([
+//                             'chain',
+                             'branches',
                              'action',
                              'order_column',
                              'created_at'
