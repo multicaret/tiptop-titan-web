@@ -117,7 +117,7 @@ class Branch extends Model implements HasMedia
 
     public function getHasBeenRatedAttribute(): bool
     {
-        return $this->rating_count > 0 ;
+        return $this->raters->count() > 0 ;
     }
 
 }
