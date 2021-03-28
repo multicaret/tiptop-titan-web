@@ -122,7 +122,9 @@ class ComposerServiceProvider extends ServiceProvider
                             [
                                 'title' => 'Products',
                                 'icon' => 'fas fa-box-open',
-                                'params' => ['type' => Product::getCorrectTypeName(Product::TYPE_GROCERY_PRODUCT, false)],
+                                'params' => [
+                                    'type' => Product::getCorrectTypeName(Product::TYPE_GROCERY_PRODUCT, false)
+                                ],
                                 'routeName' => 'admin.products.index',
                             ],
                             [
@@ -203,6 +205,26 @@ class ComposerServiceProvider extends ServiceProvider
                                     'type' =>
                                         \App\Models\Taxonomy::getCorrectTypeName(\App\Models\Taxonomy::TYPE_RESTAURANT_CATEGORY,
                                             false)
+                                ],
+                                'routeName' => 'admin.taxonomies.index',
+                            ],
+                            [
+                                'title' => 'Ingredient',
+                                'icon' => 'fas fa-leaf',
+                                'params' => [
+                                    'type' =>
+                                        \App\Models\Taxonomy::getCorrectTypeName(\App\Models\Taxonomy::TYPE_INGREDIENT,
+                                            false),
+                                ],
+                                'routeName' => 'admin.taxonomies.index',
+                            ],
+                            [
+                                'title' => 'Ingredient Categories',
+                                'icon' => 'fas fa-leaf',
+                                'params' => [
+                                    'type' =>
+                                        \App\Models\Taxonomy::getCorrectTypeName(\App\Models\Taxonomy::TYPE_INGREDIENT_CATEGORY,
+                                            false),
                                 ],
                                 'routeName' => 'admin.taxonomies.index',
                             ],
