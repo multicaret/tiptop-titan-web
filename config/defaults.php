@@ -274,7 +274,7 @@ return [
     'db_column_types' => [
         'bigint' => 'number',
         'decimal' => 'number',
-        'datetime' => 'date',
+        'datetime' => 'datetime-local',
         'float' => 'number',
         'boolean' => 'checkbox',
         'integer' => 'number',

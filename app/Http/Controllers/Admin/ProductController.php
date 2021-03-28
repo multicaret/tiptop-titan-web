@@ -64,14 +64,7 @@ class ProductController extends Controller
     }
 
     public function create(Request $request) {
-        $data['typeName'] = $request->input('type');
-        $callback = function ($item){
-            return ['id' => $item->id, 'title' => $item->title];
-        };
-        $data['chains'] = Chain::whereType(Chain::TYPE_GROCERY_CHAIN)->get()->map($callback)->all();
-        $data['branches'] = Branch::whereType(Branch::TYPE_GROCERY_BRANCH)->get()->map($callback)->all();
-        $data['units'] = Taxonomy::postCategories()->get()->map($callback)->all();
-        $data['categories'] = Taxonomy::groceryCategories()->get()->map($callback)->all();
+        $data = $this->essentialData($request);
         $data['product'] = new Product();
         $tableName = $data['product']->getTable();
         $data['translatedInputs'] = Controller::getTranslatedAttributesFromTable($tableName, Product::getDroppedColumns());
@@ -89,5 +82,19 @@ class ProductController extends Controller
 
     public function destroy(Request $request) {
         dd("store", $request->all());
+    }
+
+    private function essentialData(Request $request): array
+    {
+        $data['typeName'] = $request->input('type');
+        $getIdTitle = function ($item) {
+            return ['id' => $item->id, 'title' => $item->title];
+        };
+        $data['chains'] = Chain::whereType(Chain::TYPE_GROCERY_CHAIN)->get()->map($getIdTitle)->all();
+        $data['branches'] = Branch::whereType(Branch::TYPE_GROCERY_BRANCH)->get()->map($getIdTitle)->all();
+        $data['units'] = Taxonomy::postCategories()->get()->map($getIdTitle)->all();
+        $data['categories'] = Taxonomy::groceryCategories()->get()->map($getIdTitle)->all();
+
+        return $data;
     }
 }
