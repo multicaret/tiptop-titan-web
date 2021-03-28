@@ -102,7 +102,7 @@ namespace App\Models{
  * @property int $id
  * @property int $build_number
  * @property int $application_type 1:customer, 2:restaurant, 3:driver
- * @property int $platform_type 1:ios, 2:android, 3..n:CUSTOM
+ * @property string $platform_type ios,android,other
  * @property int $update_method 0:disabled, 1:soft, 2:hard
  * @property array|null $data
  * @property \Illuminate\Support\Carbon|null $created_at
@@ -185,12 +185,27 @@ namespace App\Models{
  * @property \Illuminate\Support\Carbon|null $updated_at
  * @property string|null $deleted_at
  * @property-read \App\Models\Chain $chain
+ * @property-read \App\Models\City|null $city
+ * @property-read mixed $average_rating_all_types
+ * @property-read mixed $average_rating
+ * @property-read bool $has_been_rated
  * @property-read mixed $is_published
  * @property-read mixed $status_name
+ * @property-read mixed $sum_rating_all_types
+ * @property-read mixed $sum_rating
+ * @property-read mixed $user_average_rating_all_types
+ * @property-read mixed $user_average_rating
+ * @property-read mixed $user_sum_rating_all_types
+ * @property-read mixed $user_sum_rating
  * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\User[] $managers
  * @property-read int|null $managers_count
  * @property-read \Spatie\MediaLibrary\MediaCollections\Models\Collections\MediaCollection|\Spatie\MediaLibrary\MediaCollections\Models\Media[] $media
  * @property-read int|null $media_count
+ * @property-read \Illuminate\Database\Eloquent\Collection|\Multicaret\Acquaintances\Models\InteractionRelation[] $ratings
+ * @property-read int|null $ratings_count
+ * @property-read \Illuminate\Database\Eloquent\Collection|\Multicaret\Acquaintances\Models\InteractionRelation[] $ratingsPure
+ * @property-read int|null $ratings_pure_count
+ * @property-read \App\Models\Region|null $region
  * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\User[] $supervisors
  * @property-read int|null $supervisors_count
  * @property-read \App\Models\BranchTranslation|null $translation
@@ -473,6 +488,8 @@ namespace App\Models{
  * @property string|null $deleted_at
  * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\Branch[] $branches
  * @property-read int|null $branches_count
+ * @property-read \App\Models\City|null $city
+ * @property-read \App\Models\Currency|null $currency
  * @property-read mixed $cover
  * @property-read mixed $gallery
  * @property-read mixed $is_published
@@ -480,10 +497,13 @@ namespace App\Models{
  * @property-read mixed $status_name
  * @property-read \Spatie\MediaLibrary\MediaCollections\Models\Collections\MediaCollection|\Spatie\MediaLibrary\MediaCollections\Models\Media[] $media
  * @property-read int|null $media_count
+ * @property-read \App\Models\Region|null $region
  * @property-read \App\Models\ChainTranslation|null $translation
  * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\ChainTranslation[] $translations
  * @property-read int|null $translations_count
  * @method static \Illuminate\Database\Eloquent\Builder|Chain draft()
+ * @method static \Illuminate\Database\Eloquent\Builder|Chain foods()
+ * @method static \Illuminate\Database\Eloquent\Builder|Chain groceries()
  * @method static \Illuminate\Database\Eloquent\Builder|Chain inactive()
  * @method static \Illuminate\Database\Eloquent\Builder|Chain incomplete()
  * @method static \Illuminate\Database\Eloquent\Builder|Chain listsTranslations(string $translationField)
@@ -1260,8 +1280,12 @@ namespace App\Models{
  * @property float $private_total
  * @property float $private_delivery_fee
  * @property float $private_grand_total
- * @property string $avg_rating
- * @property int $rating_count
+ * @property string|null $rating_value
+ * @property string|null $rating_comment
+ * @property int|null $has_good_food_quality_rating
+ * @property int|null $has_good_packaging_quality_rating
+ * @property int|null $has_good_order_accuracy_rating
+ * @property int|null $rating_issue_id
  * @property \Illuminate\Support\Carbon|null $completed_at
  * @property string|null $notes
  * @property int $status 
@@ -1290,7 +1314,6 @@ namespace App\Models{
  * @method static \Illuminate\Database\Query\Builder|Order onlyTrashed()
  * @method static \Illuminate\Database\Eloquent\Builder|Order query()
  * @method static \Illuminate\Database\Eloquent\Builder|Order whereAddressId($value)
- * @method static \Illuminate\Database\Eloquent\Builder|Order whereAvgRating($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Order whereBranchId($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Order whereCartId($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Order whereChainId($value)
@@ -1301,6 +1324,9 @@ namespace App\Models{
  * @method static \Illuminate\Database\Eloquent\Builder|Order whereDeletedAt($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Order whereDeliveryFee($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Order whereGrandTotal($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Order whereHasGoodFoodQualityRating($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Order whereHasGoodOrderAccuracyRating($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Order whereHasGoodPackagingQualityRating($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Order whereId($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Order whereNotes($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Order wherePaymentMethodId($value)
@@ -1309,7 +1335,9 @@ namespace App\Models{
  * @method static \Illuminate\Database\Eloquent\Builder|Order wherePrivateGrandTotal($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Order wherePrivatePaymentMethodCommission($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Order wherePrivateTotal($value)
- * @method static \Illuminate\Database\Eloquent\Builder|Order whereRatingCount($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Order whereRatingComment($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Order whereRatingIssueId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Order whereRatingValue($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Order whereReferenceCode($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Order whereStatus($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Order whereTotal($value)
@@ -1646,6 +1674,8 @@ namespace App\Models{
  * @property-read \App\Models\Chain $chain
  * @property-read \App\Models\User $creator
  * @property-read \App\Models\User $editor
+ * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\User[] $favoriters
+ * @property-read int|null $favoriters_count
  * @property-read mixed $cover
  * @property-read mixed $cover_full
  * @property-read mixed $discounted_price
@@ -1920,37 +1950,53 @@ namespace App\Models{
  * @property int $creator_id
  * @property int $editor_id
  * @property string $uuid
- * @property string|null $link_value
+ * @property string $title
+ * @property string|null $description
  * @property int $link_type
+ * @property string|null $link_value
+ * @property string|null $linkage The entity the deeplink will point to that has ID of link_value (i.e: Restaurant::class
+ * @property \Illuminate\Support\Carbon|null $begins_at
+ * @property \Illuminate\Support\Carbon|null $expires_at
+ * @property int $status 0:incomplete, 1:draft, 2:published, 3:Inactive, 4..n:CUSTOM
+ * @property int|null $order_column
  * @property \Illuminate\Support\Carbon|null $created_at
  * @property \Illuminate\Support\Carbon|null $updated_at
  * @property \Illuminate\Support\Carbon|null $deleted_at
- * @property-read mixed $image
- * @property-read mixed $image_full
- * @property-read mixed $thumbnail
- * @property-read \Spatie\MediaLibrary\MediaCollections\Models\Collections\MediaCollection|\Spatie\MediaLibrary\MediaCollections\Models\Media[] $media
- * @property-read int|null $media_count
+ * @property-read mixed $is_published
+ * @property-read mixed $status_name
  * @property-read \App\Models\SlideTranslation|null $translation
  * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\SlideTranslation[] $translations
  * @property-read int|null $translations_count
+ * @method static \Illuminate\Database\Eloquent\Builder|Slide draft()
+ * @method static \Illuminate\Database\Eloquent\Builder|Slide inactive()
+ * @method static \Illuminate\Database\Eloquent\Builder|Slide incomplete()
  * @method static \Illuminate\Database\Eloquent\Builder|Slide listsTranslations(string $translationField)
  * @method static \Illuminate\Database\Eloquent\Builder|Slide newModelQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|Slide newQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder|Slide notPublished()
  * @method static \Illuminate\Database\Eloquent\Builder|Slide notTranslatedIn(?string $locale = null)
  * @method static \Illuminate\Database\Query\Builder|Slide onlyTrashed()
  * @method static \Illuminate\Database\Eloquent\Builder|Slide orWhereTranslation(string $translationField, $value, ?string $locale = null)
  * @method static \Illuminate\Database\Eloquent\Builder|Slide orWhereTranslationLike(string $translationField, $value, ?string $locale = null)
  * @method static \Illuminate\Database\Eloquent\Builder|Slide orderByTranslation(string $translationField, string $sortMethod = 'asc')
+ * @method static \Illuminate\Database\Eloquent\Builder|Slide published()
  * @method static \Illuminate\Database\Eloquent\Builder|Slide query()
  * @method static \Illuminate\Database\Eloquent\Builder|Slide translated()
  * @method static \Illuminate\Database\Eloquent\Builder|Slide translatedIn(?string $locale = null)
+ * @method static \Illuminate\Database\Eloquent\Builder|Slide whereBeginsAt($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Slide whereCreatedAt($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Slide whereCreatorId($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Slide whereDeletedAt($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Slide whereDescription($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Slide whereEditorId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Slide whereExpiresAt($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Slide whereId($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Slide whereLinkType($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Slide whereLinkValue($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Slide whereLinkage($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Slide whereOrderColumn($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Slide whereStatus($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Slide whereTitle($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Slide whereTranslation(string $translationField, $value, ?string $locale = null, string $method = 'whereHas', string $operator = '=')
  * @method static \Illuminate\Database\Eloquent\Builder|Slide whereTranslationLike(string $translationField, $value, ?string $locale = null)
  * @method static \Illuminate\Database\Eloquent\Builder|Slide whereUpdatedAt($value)
@@ -1959,7 +2005,7 @@ namespace App\Models{
  * @method static \Illuminate\Database\Query\Builder|Slide withTrashed()
  * @method static \Illuminate\Database\Query\Builder|Slide withoutTrashed()
  */
-	class Slide extends \Eloquent implements \Spatie\MediaLibrary\HasMedia {}
+	class Slide extends \Eloquent {}
 }
 
 namespace App\Models{
@@ -1968,19 +2014,22 @@ namespace App\Models{
  *
  * @property int $id
  * @property int $slide_id
+ * @property string $alt_tag
  * @property string $locale
- * @property string|null $title
- * @property string|null $description
+ * @property-read mixed $image
+ * @property-read mixed $image_full
+ * @property-read mixed $thumbnail
+ * @property-read \Spatie\MediaLibrary\MediaCollections\Models\Collections\MediaCollection|\Spatie\MediaLibrary\MediaCollections\Models\Media[] $media
+ * @property-read int|null $media_count
  * @method static \Illuminate\Database\Eloquent\Builder|SlideTranslation newModelQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|SlideTranslation newQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|SlideTranslation query()
- * @method static \Illuminate\Database\Eloquent\Builder|SlideTranslation whereDescription($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|SlideTranslation whereAltTag($value)
  * @method static \Illuminate\Database\Eloquent\Builder|SlideTranslation whereId($value)
  * @method static \Illuminate\Database\Eloquent\Builder|SlideTranslation whereLocale($value)
  * @method static \Illuminate\Database\Eloquent\Builder|SlideTranslation whereSlideId($value)
- * @method static \Illuminate\Database\Eloquent\Builder|SlideTranslation whereTitle($value)
  */
-	class SlideTranslation extends \Eloquent {}
+	class SlideTranslation extends \Eloquent implements \Spatie\MediaLibrary\HasMedia {}
 }
 
 namespace App\Models{
@@ -2075,8 +2124,11 @@ namespace App\Models{
  * @method static \Illuminate\Database\Eloquent\Builder|Taxonomy orderByTranslation(string $translationField, string $sortMethod = 'asc')
  * @method static \Illuminate\Database\Eloquent\Builder|Taxonomy parents()
  * @method static \Illuminate\Database\Eloquent\Builder|Taxonomy postCategories()
+ * @method static \Illuminate\Database\Eloquent\Builder|Taxonomy postTags()
  * @method static \Illuminate\Database\Eloquent\Builder|Taxonomy published()
  * @method static \Illuminate\Database\Eloquent\Builder|Taxonomy query()
+ * @method static \Illuminate\Database\Eloquent\Builder|Taxonomy ratingOneIssues()
+ * @method static \Illuminate\Database\Eloquent\Builder|Taxonomy ratingTwoIssues()
  * @method static \Illuminate\Database\Eloquent\Builder|Taxonomy tags()
  * @method static \Illuminate\Database\Eloquent\Builder|Taxonomy translated()
  * @method static \Illuminate\Database\Eloquent\Builder|Taxonomy translatedIn(?string $locale = null)
@@ -2226,7 +2278,7 @@ namespace App\Models{
  * @property string $first
  * @property string|null $last
  * @property string $username
- * @property string $email
+ * @property string|null $email
  * @property string|null $password
  * @property string|null $phone_country_code
  * @property string|null $phone_number

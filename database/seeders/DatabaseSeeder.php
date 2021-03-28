@@ -543,6 +543,132 @@ class DatabaseSeeder extends Seeder
                     ]
                 ]
             ],
+            [
+                'type' => Taxonomy::TYPE_ONE_STAR_RATING_ISSUE,
+                'parent_id' => null,
+                'translations' => [
+                    [
+                        'locale' => 'en',
+                        'title' => 'I had an issue with products (s)',
+                    ],
+                    [
+                        'locale' => 'ar',
+                        'title' => 'Issue 1 item 1 Ar',
+                    ],
+                    [
+                        'locale' => 'ku',
+                        'title' => 'Issue 1 item 1 Ku',
+                    ]
+                ]
+            ],
+            [
+                'type' => Taxonomy::TYPE_ONE_STAR_RATING_ISSUE,
+                'parent_id' => null,
+                'translations' => [
+                    [
+                        'locale' => 'en',
+                        'title' => 'I had an issue with courier',
+                    ],
+                    [
+                        'locale' => 'ar',
+                        'title' => 'Issue 1 item 2 Ar',
+                    ],
+                    [
+                        'locale' => 'ku',
+                        'title' => 'Issue 1 item 2 Ku',
+                    ]
+                ]
+            ],
+            [
+                'type' => Taxonomy::TYPE_ONE_STAR_RATING_ISSUE,
+                'parent_id' => null,
+                'translations' => [
+                    [
+                        'locale' => 'en',
+                        'title' => 'I had an issue with application',
+                    ],
+                    [
+                        'locale' => 'ar',
+                        'title' => 'Issue 1 item 3 Ar',
+                    ],
+                    [
+                        'locale' => 'ku',
+                        'title' => 'Issue 1 item 3 Ku',
+                    ]
+                ]
+            ],
+            [
+                'type' => Taxonomy::TYPE_ONE_STAR_RATING_ISSUE,
+                'parent_id' => null,
+                'translations' => [
+                    [
+                        'locale' => 'en',
+                        'title' => 'Other',
+                    ],
+                    [
+                        'locale' => 'ar',
+                        'title' => 'Issue 1 item 4 Ar',
+                    ],
+                    [
+                        'locale' => 'ku',
+                        'title' => 'Issue 1 item 4 Ku',
+                    ]
+                ]
+            ],
+            [
+                'type' => Taxonomy::TYPE_TWO_STAR_RATING_ISSUE,
+                'parent_id' => null,
+                'translations' => [
+                    [
+                        'locale' => 'en',
+                        'title' => 'Issue 2 item 1',
+                    ],
+                    [
+                        'locale' => 'ar',
+                        'title' => 'Issue 2 item 1 Ar',
+                    ],
+                    [
+                        'locale' => 'ku',
+                        'title' => 'Issue 2 item 1 Ku',
+                    ]
+                ]
+            ],
+            [
+                'type' => Taxonomy::TYPE_TWO_STAR_RATING_ISSUE,
+                'parent_id' => null,
+                'translations' => [
+                    [
+                        'locale' => 'en',
+                        'title' => 'Issue 2 item 2',
+                    ],
+                    [
+                        'locale' => 'ar',
+                        'title' => 'Issue 2 item 2 Ar',
+                    ],
+                    [
+                        'locale' => 'ku',
+                        'title' => 'Issue 2 item 2 Ku',
+                    ]
+                ]
+            ],
+            [
+                'type' => Taxonomy::TYPE_TWO_STAR_RATING_ISSUE,
+                'parent_id' => null,
+                'translations' => [
+                    [
+                        'locale' => 'en',
+                        'title' => 'Issue 2 item 3',
+                    ],
+                    [
+                        'locale' => 'ar',
+                        'title' => 'Issue 2 item 3 Ar',
+                    ],
+                    [
+                        'locale' => 'ku',
+                        'title' => 'Issue 2 item 3 Ku',
+                    ]
+                ]
+            ],
             /*            [
                             'type' => Taxonomy::TYPE_GROCERY_CATEGORY,
                             'parent_id' => 4,

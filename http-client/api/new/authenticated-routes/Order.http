@@ -37,3 +37,9 @@ POST {{host}}/{{locale}}/api/v1/orders/1/delete
 Accept: application/json
 Content-Type: application/json
 Authorization: Bearer {{token}}
+
+### Order create rate.   type 'grocery / food'
+GET {{host}}/{{locale}}/api/v1/orders/1/rate?type=food
+Accept: application/json
+Content-Type: application/json
+Authorization: Bearer {{token}}

@@ -61,6 +61,8 @@ Route::middleware('auth:sanctum')
          Route::get('orders/create', 'OrderController@create');
          Route::post('orders', 'OrderController@store');
          Route::post('orders/{order}/delete', 'OrderController@destroy');
+         Route::get('orders/{order}/rate', 'OrderController@createRate');
+         Route::post('orders/{order}/rate', 'OrderController@storeRate');
          Route::post('carts/{cart}/products/adjust-quantity', 'CartController@adjustQuantity');
          Route::post('carts/{cart}/delete', 'CartController@destroy');
 

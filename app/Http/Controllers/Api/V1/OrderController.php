@@ -6,9 +6,11 @@ use App\Http\Controllers\Api\BaseApiController;
 use App\Http\Resources\OrderResource;
 use App\Models\Branch;
 use App\Models\Cart;
+use App\Models\Chain;
 use App\Models\Currency;
 use App\Models\Order;
 use App\Models\PaymentMethod;
+use App\Models\Taxonomy;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -87,6 +89,7 @@ class OrderController extends BaseApiController
         } else {
             if ( ! $underMinimumOrderDeliveryFee) {
                 $message = trans('api.cart_total_under_minimum');
+
                 return $this->setStatusCode(Response::HTTP_NOT_ACCEPTABLE)
                             ->respondWithMessage($message);
             } else {
@@ -190,6 +193,74 @@ class OrderController extends BaseApiController
         \DB::commit();
 
         return $this->respond(new OrderResource($newOrder));
+    }
+
+
+    public function createRate(Request $request): JsonResponse
+    {
+        $this->respond(Chain::getTypesArray()[Chain::TYPE_FOOD]);
+        $response = [];
+        if ($request->input('type') === Chain::getTypesArray()[Chain::TYPE_GROCERY]) {
+            [$issuesOne, $issuesTwo] = $this->getIssuesLists();
+            $response = [
+                'issuesOne' => $issuesOne,
+                'issuesTwo' => $issuesTwo,
+            ];
+        } elseif ($request->input('type') === Chain::getTypesArray()[Chain::TYPE_FOOD]) {
+            $response = [
+                ['key' => 'has_good_food_quality_rating', 'label' => 'Good Food Quality'],
+                ['key' => 'has_good_packaging_quality_rating', 'label' => 'Good Packaging Quality'],
+                ['key' => 'has_good_order_accuracy_rating', 'label' => 'Good Order Accuracy'],
+            ];
+        }
+
+        return $this->respond($response);
+    }
+
+
+    public function storeRate(Request $request): JsonResponse
+    {
+        [$issuesOne, $issuesTwo] = $this->getIssuesLists();
+        $response = [
+            'issuesOne' => TaxonomyResource,
+            'issuesTwo' => $issuesTwo,
+        ];
+
+        return $this->respond($response);
+    }
+
+
+    public function rate(Request $request): JsonResponse
+    {
+        $this->respond(Chain::getTypesArray()[Chain::TYPE_FOOD]);
+        $response = [];
+        if ($request->input('type') === Chain::getTypesArray()[Chain::TYPE_GROCERY]) {
+            [$issuesOne, $issuesTwo] = $this->getIssuesLists();
+            $response = [
+                'issuesOne' => $issuesOne,
+                'issuesTwo' => $issuesTwo,
+            ];
+        } elseif ($request->input('type') === Chain::getTypesArray()[Chain::TYPE_FOOD]) {
+            $response = [
+                'has_good_food_quality_rating' => 'Good Food Quality',
+                'has_good_packaging_quality_rating' => 'Good Packaging Quality',
+                'has_good_order_accuracy_rating' => 'Good Order Accuracy',
+            ];
+        }
+
+        return $this->respond($response);
+    }
+
+    private function getIssuesLists(): array
+    {
+        $issuesOne = Taxonomy::ratingOneIssues()->get()->map(function ($item) {
+            return ['id' => $item->id, 'title' => $item->getTranslation()->title];
+        });
+        $issuesTwo = Taxonomy::ratingTwoIssues()->get()->map(function ($item) {
+            return ['id' => $item->id, 'title' => $item->getTranslation()->title];
+        });
+
+        return [$issuesOne, $issuesTwo];
     }
 
 

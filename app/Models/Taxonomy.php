@@ -37,8 +37,8 @@ class Taxonomy extends Node implements HasMedia, ShouldHaveTypes, TranslatableCo
     const TYPE_TAG = 2;
     const TYPE_GROCERY_CATEGORY = 3;
     const TYPE_FOOD_CATEGORY = 4;
-    const TYPE_RATING_1_ISSUE = 10;
-    const TYPE_RATING_2_ISSUE = 12;
+    const TYPE_ONE_STAR_RATING_ISSUE = 10;
+    const TYPE_TWO_STAR_RATING_ISSUE = 12;
 
     protected $fillable = ['title', 'description', 'parent_id', 'type', 'order_column'];
     protected $translatedAttributes = ['title', 'description'];
@@ -125,12 +125,12 @@ class Taxonomy extends Node implements HasMedia, ShouldHaveTypes, TranslatableCo
      */
     public function scopeRatingOneIssues($query): Builder
     {
-        return $query->where('type', '=', self::TYPE_RATING_1_ISSUE);
+        return $query->where('type', '=', self::TYPE_ONE_STAR_RATING_ISSUE);
     }
 
     public function scopeRatingTwoIssues($query): Builder
     {
-        return $query->where('type', '=', self::TYPE_RATING_2_ISSUE);
+        return $query->where('type', '=', self::TYPE_TWO_STAR_RATING_ISSUE);
     }
 
 
@@ -206,8 +206,8 @@ class Taxonomy extends Node implements HasMedia, ShouldHaveTypes, TranslatableCo
             self::TYPE_TAG => 'tag',
             self::TYPE_GROCERY_CATEGORY => 'grocery-category',
             self::TYPE_FOOD_CATEGORY => 'food-category',
-            self::TYPE_RATING_1_ISSUE => 'rating-issue-1',
-            self::TYPE_RATING_2_ISSUE => 'rating-issue-2',
+            self::TYPE_ONE_STAR_RATING_ISSUE => 'one-star-rating-issue',
+            self::TYPE_TWO_STAR_RATING_ISSUE => 'two-star-rating-issue',
         ];
     }
 
