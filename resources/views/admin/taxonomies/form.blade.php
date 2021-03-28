@@ -113,7 +113,7 @@
                         @endcomponent
                     </div>
                 @endif
-                @if(in_array($correctType, [\App\Models\Taxonomy::TYPE_RESTAURANT_CATEGORY]))
+                @if(in_array($correctType, [\App\Models\Taxonomy::TYPE_MENU_CATEGORY]))
                     <div class="col-4">
                         @component('admin.components.form-group', ['name' => 'branch_id', 'type' => 'select'])
                             @slot('label', trans('strings.branch'))

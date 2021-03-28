@@ -102,7 +102,7 @@ class DatatableController extends AjaxController
     {
         $correctType = Taxonomy::getCorrectType($request->type);
         $taxonomies = Taxonomy::orderBy('order_column')
-                              ->with('parent', 'chain', 'branches')
+                              ->with('parent', 'chain', 'branches', 'branch')
                               ->where('type', $correctType);
 
         return DataTables::of($taxonomies)
