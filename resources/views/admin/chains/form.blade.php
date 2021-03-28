@@ -280,7 +280,20 @@
                 chain: @json($chain),
                 regions: @json($regions),
                 cities: [],
-
+                selectedRegion: null
+            },
+            watch: {
+                chain: {
+                    handler: function (val) {
+                        if (!this.selectedRegion || this.selectedRegion.id != val.region.id) {
+                            this.selectedRegion = val.region;
+                            if (this.chain.city != null) {
+                                this.chain.city = null
+                            }
+                        }
+                    },
+                    deep: true,
+                }
             },
             methods: {
                 retrieveCities: function (region) {
