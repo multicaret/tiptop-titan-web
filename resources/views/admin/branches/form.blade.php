@@ -128,7 +128,7 @@
                                         </div>
                                     </div>
                                 </div>
-                                <div class="col-6">
+                                <div class="col-6" style="height: 250px;">
                                     <div id="gmaps-branch" style="height: 100%; width: 100%;"></div>
                                     <div id="gmaps-branch" style="height: 100%; width: 100%;"></div>
                                 </div>
@@ -141,7 +141,7 @@
                         <h4 class="card-header">Details</h4>
                         <div class="card-body">
                             <div class="row">
-                                <div class="col-md-12">
+                                <div class="col-md-6">
                                     <div class="form-group">
                                         <label class="control-label">
                                             Chain
@@ -160,6 +160,13 @@
                                             autocomplete="false"
                                         ></multiselect>
                                     </div>
+                                </div>
+                                <div class="col-6">
+                                    @component('admin.components.form-group', ['name' => 'status', 'type' => 'select'])
+                                        @slot('label', trans('strings.status'))
+                                        @slot('options', \App\Models\Branch::getStatusesArray())
+                                        @slot('selected', $branch->status)
+                                    @endcomponent
                                 </div>
                                 <div class="col-md-4 mt-3">
                                     @component('admin.components.form-group', ['name' => 'minimum_order', 'type' => 'number'])
@@ -201,13 +208,6 @@
                                         @slot('value', $branch->whatsapp_phone_number)
                                     @endcomponent
                                 </div>
-                                <div class="col-12">
-                                    @component('admin.components.form-group', ['name' => 'status', 'type' => 'select'])
-                                        @slot('label', trans('strings.status'))
-                                        @slot('options', \App\Models\Branch::getStatusesArray())
-                                        @slot('selected', $branch->status)
-                                    @endcomponent
-                                </div>
                             </div>
                         </div>
                     </div>
@@ -218,7 +218,7 @@
                             <a class="text-body" data-toggle="collapse" href="#accordion-1">
                                 <h4 class="card-header">Contacts</h4>
                             </a>
-                            <div id="accordion-1" class="collapse" data-parent="#accordion">
+                            <div id="accordion-1" class="collapse show" data-parent="#accordion">
                                 <div class="card-body">
                                     <div class="row">
                                         <div class="col-md-12">
@@ -332,6 +332,20 @@
                 },
                 validationData: [],
                 formErrorMessage: null,
+                selectedRegion: null,
+            },
+            watch: {
+                branch: {
+                    handler: function (val) {
+                        if (!this.selectedRegion || this.selectedRegion.id != val.region.id) {
+                            this.selectedRegion = val.region;
+                            if (this.branch.city != null) {
+                                this.branch.city = null
+                            }
+                        }
+                    },
+                    deep: true,
+                }
             },
             methods: {
                 retrieveCities: function (region) {
@@ -384,7 +398,7 @@
                         this.formErrorMessage = null;
                     }, 2500);
                 },
-            }
+            },
         })
     </script>
 
