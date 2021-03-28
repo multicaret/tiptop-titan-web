@@ -2,6 +2,14 @@
     background: #FEC63D !important;
 }
 
-.fileuploader{
+.fileuploader {
     padding: 0 !important;
+}
+
+.navbar-expand-lg .navbar-collapse {
+    flex-direction: row-reverse !important;
+}
+
+.app-brand .layout-sidenav-toggle {
+    margin-left: 55px !important;
 }
