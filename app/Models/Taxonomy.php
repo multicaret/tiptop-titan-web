@@ -11,6 +11,7 @@ use App\Traits\HasViewCount;
 use Astrotomic\Translatable\Contracts\Translatable as TranslatableContract;
 use Astrotomic\Translatable\Translatable;
 use Baum\Node;
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Support\Str;
 use Spatie\MediaLibrary\HasMedia;
@@ -36,7 +37,8 @@ class Taxonomy extends Node implements HasMedia, ShouldHaveTypes, TranslatableCo
     const TYPE_TAG = 2;
     const TYPE_GROCERY_CATEGORY = 3;
     const TYPE_FOOD_CATEGORY = 4;
-    const TYPE_RATING_ISSUE = 10;
+    const TYPE_RATING_1_ISSUE = 10;
+    const TYPE_RATING_2_ISSUE = 12;
 
     protected $fillable = ['title', 'description', 'parent_id', 'type', 'order_column'];
     protected $translatedAttributes = ['title', 'description'];
@@ -51,9 +53,9 @@ class Taxonomy extends Node implements HasMedia, ShouldHaveTypes, TranslatableCo
     /**
      * Scope a query to only include only parents.
      *
-     * @param  \Illuminate\Database\Eloquent\Builder  $query
+     * @param  Builder  $query
      *
-     * @return \Illuminate\Database\Eloquent\Builder
+     * @return Builder
      */
     public function scopeParents($query)
     {
@@ -64,9 +66,9 @@ class Taxonomy extends Node implements HasMedia, ShouldHaveTypes, TranslatableCo
     /**
      * Scope a query to only include category taxonomies.
      *
-     * @param  \Illuminate\Database\Eloquent\Builder  $query
+     * @param  Builder  $query
      *
-     * @return \Illuminate\Database\Eloquent\Builder
+     * @return Builder
      */
     public function scopePostCategories($query)
     {
@@ -76,9 +78,9 @@ class Taxonomy extends Node implements HasMedia, ShouldHaveTypes, TranslatableCo
     /**
      * Scope a query to only include all tags.
      *
-     * @param  \Illuminate\Database\Eloquent\Builder  $query
+     * @param  Builder  $query
      *
-     * @return \Illuminate\Database\Eloquent\Builder
+     * @return Builder
      */
     public function scopeTags($query)
     {
@@ -93,11 +95,11 @@ class Taxonomy extends Node implements HasMedia, ShouldHaveTypes, TranslatableCo
     /**
      * Scope a query to only include tags taxonomies for grocery categories.
      *
-     * @param  \Illuminate\Database\Eloquent\Builder  $query
+     * @param  Builder  $query
      *
-     * @return \Illuminate\Database\Eloquent\Builder
+     * @return Builder
      */
-    public function scopeGroceryCategories($query): \Illuminate\Database\Eloquent\Builder
+    public function scopeGroceryCategories($query): Builder
     {
         return $query->where('type', '=', self::TYPE_GROCERY_CATEGORY);
     }
@@ -105,11 +107,11 @@ class Taxonomy extends Node implements HasMedia, ShouldHaveTypes, TranslatableCo
     /**
      * Scope a query to only include tags taxonomies for food categories.
      *
-     * @param  \Illuminate\Database\Eloquent\Builder  $query
+     * @param  Builder  $query
      *
-     * @return \Illuminate\Database\Eloquent\Builder
+     * @return Builder
      */
-    public function scopeFoodCategories($query): \Illuminate\Database\Eloquent\Builder
+    public function scopeFoodCategories($query): Builder
     {
         return $query->where('type', '=', self::TYPE_FOOD_CATEGORY);
     }
@@ -117,13 +119,18 @@ class Taxonomy extends Node implements HasMedia, ShouldHaveTypes, TranslatableCo
     /**
      * Scope a query to only include rating issues
      *
-     * @param  \Illuminate\Database\Eloquent\Builder  $query
+     * @param  Builder  $query
      *
-     * @return \Illuminate\Database\Eloquent\Builder
+     * @return Builder
      */
-    public function scopeRatingIssues($query): \Illuminate\Database\Eloquent\Builder
+    public function scopeRatingOneIssues($query): Builder
     {
-        return $query->where('type', '=', self::TYPE_RATING_ISSUE);
+        return $query->where('type', '=', self::TYPE_RATING_1_ISSUE);
+    }
+
+    public function scopeRatingTwoIssues($query): Builder
+    {
+        return $query->where('type', '=', self::TYPE_RATING_2_ISSUE);
     }
 
 
@@ -199,7 +206,8 @@ class Taxonomy extends Node implements HasMedia, ShouldHaveTypes, TranslatableCo
             self::TYPE_TAG => 'tag',
             self::TYPE_GROCERY_CATEGORY => 'grocery-category',
             self::TYPE_FOOD_CATEGORY => 'food-category',
-            self::TYPE_RATING_ISSUE => 'rating-issue',
+            self::TYPE_RATING_1_ISSUE => 'rating-issue-1',
+            self::TYPE_RATING_2_ISSUE => 'rating-issue-2',
         ];
     }
 
