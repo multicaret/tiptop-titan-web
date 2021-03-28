@@ -122,7 +122,9 @@ class ComposerServiceProvider extends ServiceProvider
                             [
                                 'title' => 'Products',
                                 'icon' => 'fas fa-box-open',
-                                'params' => ['type' => Product::getCorrectTypeName(Product::TYPE_GROCERY_PRODUCT, false)],
+                                'params' => [
+                                    'type' => Product::getCorrectTypeName(Product::TYPE_GROCERY_PRODUCT, false)
+                                ],
                                 'routeName' => 'admin.products.index',
                             ],
                             [
@@ -206,6 +208,35 @@ class ComposerServiceProvider extends ServiceProvider
                                 ],
                                 'routeName' => 'admin.taxonomies.index',
                             ],
+                            [
+                                'title' => 'Ingredient',
+                                'icon' => 'fas fa-leaf',
+                                'params' => [
+                                    'type' =>
+                                        \App\Models\Taxonomy::getCorrectTypeName(\App\Models\Taxonomy::TYPE_INGREDIENT,
+                                            false),
+                                ],
+                                'routeName' => 'admin.taxonomies.index',
+                            ],
+                            [
+                                'title' => 'Ingredient Categories',
+                                'icon' => 'fas fa-leaf',
+                                'params' => [
+                                    'type' =>
+                                        \App\Models\Taxonomy::getCorrectTypeName(\App\Models\Taxonomy::TYPE_INGREDIENT_CATEGORY,
+                                            false),
+                                ],
+                                'routeName' => 'admin.taxonomies.index',
+                            ],
+                            [
+                                'title' => 'Products',
+                                'icon' => 'fas fa-box-open',
+                                'params' => [
+                                    'type' =>
+                                        'foo',
+                                ],
+                                'routeName' => 'admin.chains.index',
+                            ],
                         ]
                     ]
                 ]
@@ -278,12 +309,12 @@ class ComposerServiceProvider extends ServiceProvider
                         'params' => ['type' => 'collapse'],
                         'subChildren' => [
                             [
-                                'title' => trans('strings.regions'),
+                                'title' => 'Cities',
                                 'icon' => 'fas fa-map-signs',
                                 'routeName' => 'admin.regions.index',
                             ],
                             [
-                                'title' => trans('strings.cities'),
+                                'title' => 'Neighborhoods',
                                 'icon' => 'fas fa-city',
                                 'routeName' => 'admin.cities.index',
                             ],
