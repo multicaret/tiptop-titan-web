@@ -79,7 +79,8 @@ class TaxonomyController extends Controller
         $taxonomy = new Taxonomy();
         $taxonomy->type = $correctType;
 
-        return view('admin.taxonomies.form', compact('taxonomy', 'roots', 'typeName', 'fontAwesomeIcons'));
+        return view('admin.taxonomies.form',
+            compact('taxonomy', 'roots', 'correctType', 'typeName', 'fontAwesomeIcons'));
     }
 
     /**
@@ -162,7 +163,7 @@ class TaxonomyController extends Controller
     {
         [$typeName, $correctType, $roots, $fontAwesomeIcons] = $this->loadData($request);
 
-        return view('admin.taxonomies.form', compact('taxonomy', 'roots', 'typeName', 'fontAwesomeIcons'));
+        return view('admin.taxonomies.form', compact('taxonomy', 'roots', 'correctType', 'typeName', 'fontAwesomeIcons'));
     }
 
     /**
@@ -293,7 +294,7 @@ class TaxonomyController extends Controller
         $hasParent = in_array($correctType, Taxonomy::typesHaving('parent'));
         if ($hasParent) {
             $roots = Taxonomy::roots()
-                             ->postCategories()
+                             ->groceryCategories()
                              ->get();
         }
 
