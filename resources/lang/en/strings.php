@@ -224,7 +224,7 @@ return [
     'price_discount_amount' => 'Price Discount Amount',
     'ingredients' => 'Ingredients',
     'ingredient-categories' => 'Ingredient Categories',
-    'restaurant-categories' => 'Restaurant Categories',
+    'menu-categories' => 'Menu Categories',
     'step' => 'Step',
     'units' => 'Units',
 ];
