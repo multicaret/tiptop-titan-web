@@ -68,7 +68,7 @@
                                         @endif
                                     @endcomponent
                                 </div>
-                                @if(in_array(\App\Models\Taxonomy::getCorrectType(request('type')), \App\Models\Taxonomy::typesHaving('content')))
+                                @if(in_array($correctType, \App\Models\Taxonomy::typesHaving('content')))
                                     <div class="col-md-12">
                                         @component('admin.components.form-group', ['name' => $langKey .'[description]', 'type' => 'textarea'])
                                             @slot('label', 'Description')
@@ -91,7 +91,7 @@
         <h4 class="card-header">Details</h4>
         <div class="card-body">
             <div class="row">
-                @if(in_array(\App\Models\Taxonomy::getCorrectType(request('type')), \App\Models\Taxonomy::typesHaving('parent')))
+                @if(in_array($correctType, \App\Models\Taxonomy::typesHaving('parent')))
                     <div class="col-md-12">
                         @component('admin.components.form-group', ['name' => 'parent_id', 'type' => 'select'])
                             @slot('label', 'Parent')
@@ -104,7 +104,7 @@
                     </div>
                 @endif
 
-                @if(in_array(\App\Models\Taxonomy::getCorrectType(request('type')), \App\Models\Taxonomy::typesHaving('branch')))
+                @if(in_array($correctType, \App\Models\Taxonomy::typesHaving('branch')))
                         <div class="col-12">
                             @component('admin.components.form-group', ['name' => 'branch_id', 'type' => 'select'])
                                 @slot('label', trans('strings.branch'))
@@ -117,7 +117,7 @@
                             @endcomponent
                         </div>
                 @endif
-                @if(in_array(\App\Models\Taxonomy::getCorrectType(request('type')), \App\Models\Taxonomy::typesHaving('cover_image')))
+                @if(in_array($correctType, \App\Models\Taxonomy::typesHaving('cover_image')))
                     <div class="col-md-12">
                         @component('admin.components.form-group', ['name' => 'cover', 'type' => 'file'])
                             @slot('label', 'Cover')
