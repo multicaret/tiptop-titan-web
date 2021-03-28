@@ -103,9 +103,20 @@
                         @endcomponent
                     </div>
                 @endif
-                <div class="col-4">
+                @if($correctType == \App\Models\Taxonomy::TYPE_INGREDIENT)
+                    <div class="col-6">
+                        @component('admin.components.form-group', ['name' => 'ingredient_category_id', 'type' => 'select'])
+                            @slot('label', 'Ingredient Category')
+                            @slot('options', $ingredientCategories->pluck('title','id'))
+                            @slot('attributes', ['class'=>'select-2-ingredient-category w-100'])
+                            @slot('selected', $taxonomy->ingredient_category_id)
+                        @endcomponent
+                    </div>
+                @endif
+                <div class="col-6">
                     @component('admin.components.form-group', ['name' => 'status', 'type' => 'select'])
                         @slot('label', trans('strings.status'))
+                        @slot('attributes', ['class'=>'select-2-status w-100'])
                         @slot('options', \App\Models\Taxonomy::getStatusesArray())
                         @slot('selected', $taxonomy->status)
                     @endcomponent
@@ -169,6 +180,12 @@
         $(function () {
             $('.select2-branch').select2({
                 placeholder: 'Select Branch',
+            });
+            $('.select-2-ingredient-category').select2({
+                placeholder: 'Select Ingredient Category',
+            });
+            $('.select-2-status').select2({
+                placeholder: 'Select Status',
             });
         });
     </script>

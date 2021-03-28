@@ -222,4 +222,6 @@ return [
     'custom_banner_began_at' => 'Custom Banner Began At',
     'custom_banner_ended_at' => 'Custom Banner Ended At',
     'price_discount_amount' => 'Price Discount Amount',
+    'ingredients' => 'Ingredients',
+    'ingredient-categories' => 'Ingredient categories',
 ];

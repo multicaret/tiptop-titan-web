@@ -95,17 +95,20 @@ class TaxonomyController extends Controller
      *
      * @param  Request  $request
      *
-     * @return View
+     * @return \Illuminate\Contracts\Foundation\Application|\Illuminate\Contracts\View\Factory|\Illuminate\Contracts\View\View|View
      */
     public function create(Request $request)
     {
-        [$typeName, $correctType, $roots, $fontAwesomeIcons, $branches] = $this->loadData($request);
+        [
+            $typeName, $correctType, $roots, $fontAwesomeIcons, $branches, $ingredientCategories
+        ] = $this->loadData($request);
 
         $taxonomy = new Taxonomy();
         $taxonomy->type = $correctType;
 
         return view('admin.taxonomies.form',
-            compact('taxonomy', 'roots', 'correctType', 'typeName', 'fontAwesomeIcons', 'branches'));
+            compact('taxonomy', 'roots', 'correctType', 'typeName', 'fontAwesomeIcons', 'branches',
+                'ingredientCategories'));
     }
 
     /**
@@ -132,6 +135,7 @@ class TaxonomyController extends Controller
         $taxonomy = new Taxonomy();
         $taxonomy->creator_id = $taxonomy->editor_id = auth()->id();
         $taxonomy->type = $correctType;
+        $taxonomy->ingredient_category_id = $request->ingredient_category_id;
         if ( ! is_null($request->status)) {
             $taxonomy->status = $request->status;
         }
@@ -186,10 +190,13 @@ class TaxonomyController extends Controller
      */
     public function edit(Taxonomy $taxonomy, Request $request)
     {
-        [$typeName, $correctType, $roots, $fontAwesomeIcons, $branches] = $this->loadData($request);
+        [
+            $typeName, $correctType, $roots, $fontAwesomeIcons, $branches, $ingredientCategories
+        ] = $this->loadData($request);
 
         return view('admin.taxonomies.form',
-            compact('taxonomy', 'roots', 'correctType', 'typeName', 'fontAwesomeIcons', 'branches'));
+            compact('taxonomy', 'roots', 'correctType', 'typeName', 'fontAwesomeIcons', 'branches',
+                'ingredientCategories'));
     }
 
     /**
@@ -211,6 +218,7 @@ class TaxonomyController extends Controller
         $request->validate($validationRules);
 
         $taxonomy->editor_id = auth()->id();
+        $taxonomy->ingredient_category_id = $request->ingredient_category_id;
         if ($request->has('icon')) {
             $taxonomy->icon = $request->icon;
         }
@@ -331,7 +339,8 @@ class TaxonomyController extends Controller
 
         $fontAwesomeIcons = $this->getFontAwesomeIcons();
         $branches = \App\Models\Branch::whereType(\App\Models\Branch::TYPE_GROCERY_BRANCH)->get();
+        $ingredientCategories = Taxonomy::ingredientCategories()->get();
 
-        return [$typeName, $correctType, $roots, $fontAwesomeIcons, $branches];
+        return [$typeName, $correctType, $roots, $fontAwesomeIcons, $branches, $ingredientCategories];
     }
 }
