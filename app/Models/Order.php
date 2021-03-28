@@ -12,8 +12,9 @@ class Order extends Model
 
     const STATUS_CANCELLED = 0;
     const STATUS_DRAFT = 1;
-    const STATUS_WAITING_COURIER = 6;
-    const STATUS_PREPARING = 10;
+    const STATUS_NEW = 2; // Pending approval or rejection,
+    const STATUS_PREPARING = 10; // Confirmed
+    const STATUS_WAITING_COURIER = 12; // Ready, this case is ignored when delivery is made by the branch itself
     const STATUS_ON_THE_WAY = 16;
     const STATUS_AT_THE_ADDRESS = 18;
     const STATUS_DELIVERED = 20;
