@@ -53,17 +53,17 @@
                                 class="tab-pane {{ $langKey == localization()->getDefaultLocale() ? 'active' : '' }}"
                                 id="title_{{$langKey}}">
                                 <div class="card-body pb-0">
-                                    <div class="row p-t-20">
+                                    <div class="row p-t-20 pt-2">
                                         @foreach($translatedInputs as $input => $type)
                                             @if($type === 'editor')
-                                                <div class="col-md-12">
+                                                <div class="col-md-6">
                                                     <x-admin.textarea :id="$langKey.'-'. $input"
                                                                       :name="$langKey.'['.$input.']'"
                                                                       :label="$input"
                                                                       :content="optional($product->translate($langKey))->$input"/>
                                                 </div>
                                             @else
-                                                <div class="col-md-12">
+                                                <div class="col-md-{{$input === 'title' ? '12' : '6'}}">
                                                     @component('admin.components.form-group', ['name' => $langKey .'['.$input.']', 'type' => $type])
                                                         @slot('label', trans('strings.'. $input))
                                                         @if(! is_null($product->$input))
