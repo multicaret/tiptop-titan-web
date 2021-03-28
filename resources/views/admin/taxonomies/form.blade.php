@@ -68,24 +68,14 @@
                                         @endif
                                     @endcomponent
                                 </div>
-                                <div class="col-md-12">
-                                    @component('admin.components.form-group', ['name' => $langKey .'[description]', 'type' => 'textarea'])
-                                        @slot('label', 'Description')
-                                        @slot('attributes', ['rows'=>2])
-                                        @if(!is_null($taxonomy->id))
-                                            @slot('value', optional($taxonomy->translate($langKey))->description)
-                                        @endif
-                                    @endcomponent
-                                </div>
-                                @if(in_array(\App\Models\Taxonomy::getCorrectType(request('type')), \App\Models\Taxonomy::typesHaving('parent')))
-                                    <div class="col-12">
-                                        @component('admin.components.form-group', ['name' => 'parent_id', 'type' => 'select'])
-                                            @slot('label', 'Parent')
-                                            @slot('options', $roots->push([
-                                                'id' => null,
-                                                'title' => '-- Parent (ROOT) --',
-                                            ])->pluck('title', 'id'))
-                                            @slot('selected' , $taxonomy->parent_id ?? '')
+                                @if(in_array(\App\Models\Taxonomy::getCorrectType(request('type')), \App\Models\Taxonomy::typesHaving('content')))
+                                    <div class="col-md-12">
+                                        @component('admin.components.form-group', ['name' => $langKey .'[description]', 'type' => 'textarea'])
+                                            @slot('label', 'Description')
+                                            @slot('attributes', ['rows'=>2])
+                                            @if(!is_null($taxonomy->id))
+                                                @slot('value', optional($taxonomy->translate($langKey))->description)
+                                            @endif
                                         @endcomponent
                                     </div>
                                 @endif
@@ -97,29 +87,85 @@
         </div>
     </div>
 
-    @if(in_array(\App\Models\Taxonomy::getCorrectType(request('type')), \App\Models\Taxonomy::typesHaving('cover_image')))
-        <div class="card mb-4">
-            <h4 class="card-header">Thumbnail</h4>
-            <div>
-                <div class="col-md-12">
-                    @component('admin.components.form-group', ['name' => 'cover', 'type' => 'file'])
-                        @slot('attributes', [
-                            'class' => 'cover-uploader',
-                            'accept' => '.jpg, .jpeg, .png, .bmp',
-                            'dropzone' => 'media-list',
-                            'data-fileuploader-listInput' => 'media-list',
-                            'data-fileuploader-extensions' => 'jpg, jpeg, png, bmp',
-                            'data-fileuploader-files' => json_encode($taxonomy->getMediaForUploader('cover'), JSON_UNESCAPED_UNICODE),
-                        ])
+    <div class="card card-outline-inverse mb-4">
+        <h4 class="card-header">Details</h4>
+        <div class="card-body">
+            <div class="row">
+                @if(in_array(\App\Models\Taxonomy::getCorrectType(request('type')), \App\Models\Taxonomy::typesHaving('parent')))
+                    <div class="col-md-12">
+                        @component('admin.components.form-group', ['name' => 'parent_id', 'type' => 'select'])
+                            @slot('label', 'Parent')
+                            @slot('options', $roots->push([
+                                'id' => null,
+                                'title' => '-- Parent (ROOT) --',
+                            ])->pluck('title', 'id'))
+                            @slot('selected' , $taxonomy->parent_id ?? '')
+                        @endcomponent
+                    </div>
+                @endif
+
+                @if(in_array(\App\Models\Taxonomy::getCorrectType(request('type')), \App\Models\Taxonomy::typesHaving('branch')))
+                        <div class="col-12">
+                            @component('admin.components.form-group', ['name' => 'branch_id', 'type' => 'select'])
+                                @slot('label', trans('strings.branch'))
+                                @slot('options',  \App\Models\Branch::whereType(\App\Models\Branch::TYPE_GROCERY_BRANCH)->get()->pluck('title', 'id')->prepend('',''))
+                                @slot('attributes', [
+                                    'class' => 'select2-branch w-100',
+                                    'required',
+                                ])
+                                @slot('selected', $taxonomy->branch_id)
+                            @endcomponent
+                        </div>
+                @endif
+                @if(in_array(\App\Models\Taxonomy::getCorrectType(request('type')), \App\Models\Taxonomy::typesHaving('cover_image')))
+                    <div class="col-md-12">
+                        @component('admin.components.form-group', ['name' => 'cover', 'type' => 'file'])
+                            @slot('label', 'Cover')
+                            @slot('attributes', [
+                                'class' => 'cover-uploader',
+                                'accept' => '.jpg, .jpeg, .png, .bmp',
+                                'dropzone' => 'media-list',
+                                'data-fileuploader-listInput' => 'media-list',
+                                'data-fileuploader-extensions' => 'jpg, jpeg, png, bmp',
+                                'data-fileuploader-files' => json_encode($taxonomy->getMediaForUploader('cover'), JSON_UNESCAPED_UNICODE),
+                            ])
+                        @endcomponent
+                    </div>
+                @endif
+            </div>
+        </div>
+    </div>
+
+    <div class="card card-outline-inverse mb-4">
+        <h4 class="card-header">Status</h4>
+        <div class="card-body">
+            <div class="row">
+                <div class="col-12">
+                    @component('admin.components.form-group', ['name' => 'status', 'type' => 'select'])
+                        @slot('label', trans('strings.status'))
+                        @slot('options', \App\Models\Taxonomy::getStatusesArray())
+                        @slot('selected', $taxonomy->status)
                     @endcomponent
                 </div>
             </div>
         </div>
-    @endif
+    </div>
 
     <button class="btn btn-success" type="submit">@lang('strings.submit')</button>
     {!! Form::close() !!}
 
 @endsection
+
+@push('scripts')
+    <script src="{{ asset('/admin-assets/libs/quill/quill.js') }}"></script>
+    <script src="/admin-assets/libs/select2/select2.js"></script>
+    <script>
+        $(function () {
+            $('.select2-branch').select2({
+                placeholder: 'Select Branch',
+            });
+        });
+    </script>
+@endpush
 
 
