@@ -19,6 +19,7 @@ use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Str;
 use Laravel\Sanctum\HasApiTokens;
 use Multicaret\Acquaintances\Traits\CanFavorite;
+use Multicaret\Acquaintances\Traits\CanRate;
 use Spatie\Image\Manipulations;
 use Spatie\MediaLibrary\HasMedia;
 use Spatie\MediaLibrary\MediaCollections\Models\Media;
@@ -32,6 +33,7 @@ class User extends Authenticatable implements HasMedia, MustVerifyEmail
         HasViewCount,
         HasMediaTrait,
         CanResetPassword,
+        CanRate,
         HasGender,
         HasStatuses,
         HasRoles,

@@ -2,7 +2,6 @@
 
 namespace App\Models;
 
-use App\Http\Resources\BranchResource;
 use App\Traits\HasMediaTrait;
 use App\Traits\HasStatuses;
 use App\Traits\HasTypes;
@@ -12,6 +11,7 @@ use App\Traits\HasWorkingHours;
 use Astrotomic\Translatable\Translatable;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo as BelongsTo;
+use Multicaret\Acquaintances\Traits\CanBeRated;
 use Spatie\MediaLibrary\HasMedia;
 
 class Branch extends Model implements HasMedia
@@ -22,6 +22,7 @@ class Branch extends Model implements HasMedia
         HasStatuses,
         HasWorkingHours,
         HasViewCount,
+        CanBeRated,
         HasTypes;
 
     const STATUS_INCOMPLETE = 0;
@@ -112,6 +113,11 @@ class Branch extends Model implements HasMedia
             self::TYPE_GROCERY_BRANCH => 'grocery-branch',
             self::TYPE_FOOD_BRANCH => 'food-branch',
         ];
+    }
+
+    public function getHasBeenRatedAttribute(): bool
+    {
+        return $this->rating_count > 0 ;
     }
 
 }
