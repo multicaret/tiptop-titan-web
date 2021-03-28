@@ -204,9 +204,11 @@ return [
     'logistics' => 'Logistics',
     'users' => 'Users',
     'chains' => 'Chains',
-    'chain' => 'Chains',
+    'chain' => 'Chain',
     'branches' => 'Branches',
-    'branch' => 'Branches',
+    'branch' => 'Branch',
     'posts' => 'Posts',
     'content_management' => 'Content Management',
+    'food-categories' => 'Food Categories',
+    'grocery-categories' => 'Grocery Categories',
 ];

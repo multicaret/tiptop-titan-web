@@ -62,6 +62,31 @@ class TaxonomyController extends Controller
             ]);
         }
 
+        if ($correctType == \App\Models\Taxonomy::TYPE_FOOD_CATEGORY) {
+            $columns = array_merge($columns, [
+                [
+                    'data' => 'branches',
+                    'name' => 'branches',
+                    'title' => trans('strings.branches'),
+                    'orderable' => false,
+                    'searchable' => false
+                ]
+            ]);
+        }
+
+        if ($correctType == in_array($correctType,
+                [Taxonomy::TYPE_GROCERY_CATEGORY, Taxonomy::TYPE_FOOD_CATEGORY])) {
+            $columns = array_merge($columns, [
+                [
+                    'data' => 'chain',
+                    'name' => 'chain.title',
+                    'title' => trans('strings.chain'),
+                    'orderable' => false,
+                    'searchable' => false
+                ]
+            ]);
+        }
+
         return view('admin.taxonomies.index', compact('typeName', 'columns'));
     }
 
@@ -74,13 +99,13 @@ class TaxonomyController extends Controller
      */
     public function create(Request $request)
     {
-        [$typeName, $correctType, $roots, $fontAwesomeIcons] = $this->loadData($request);
+        [$typeName, $correctType, $roots, $fontAwesomeIcons, $branches] = $this->loadData($request);
 
         $taxonomy = new Taxonomy();
         $taxonomy->type = $correctType;
 
         return view('admin.taxonomies.form',
-            compact('taxonomy', 'roots', 'correctType', 'typeName', 'fontAwesomeIcons'));
+            compact('taxonomy', 'roots', 'correctType', 'typeName', 'fontAwesomeIcons', 'branches'));
     }
 
     /**
@@ -110,14 +135,14 @@ class TaxonomyController extends Controller
         if ( ! is_null($request->status)) {
             $taxonomy->status = $request->status;
         }
-        if ( ! is_null($request->branch_id)) {
-            $taxonomy->branch_id = $request->branch_id;
+        if ( ! is_null($request->chain_id)) {
+            $taxonomy->chain_id = $request->chain_id;
         }
         $taxonomy->order_column = $order;
         $taxonomy->save();
 
+        $taxonomy->branches()->sync($request->input('branches'));
         $this->handleSubmittedSingleMedia('cover', $request, $taxonomy);
-
 
         // Filling translations
         foreach (localization()->getSupportedLocales() as $key => $value) {
@@ -161,9 +186,10 @@ class TaxonomyController extends Controller
      */
     public function edit(Taxonomy $taxonomy, Request $request)
     {
-        [$typeName, $correctType, $roots, $fontAwesomeIcons] = $this->loadData($request);
+        [$typeName, $correctType, $roots, $fontAwesomeIcons, $branches] = $this->loadData($request);
 
-        return view('admin.taxonomies.form', compact('taxonomy', 'roots', 'correctType', 'typeName', 'fontAwesomeIcons'));
+        return view('admin.taxonomies.form',
+            compact('taxonomy', 'roots', 'correctType', 'typeName', 'fontAwesomeIcons', 'branches'));
     }
 
     /**
@@ -194,6 +220,9 @@ class TaxonomyController extends Controller
         if ( ! is_null($request->branch_id)) {
             $taxonomy->branch_id = $request->branch_id;
         }
+        if ( ! is_null($request->chain_id)) {
+            $taxonomy->chain_id = $request->chain_id;
+        }
         $taxonomy->save();
 
         // Filling translations
@@ -219,6 +248,8 @@ class TaxonomyController extends Controller
             $parent = Taxonomy::find($parentId);
             $taxonomy->makeChildOf($parent);
         }
+
+        $taxonomy->branches()->sync($request->input('branches'));
 
         $this->handleSubmittedSingleMedia('cover', $request, $taxonomy);
 
@@ -299,7 +330,8 @@ class TaxonomyController extends Controller
         }
 
         $fontAwesomeIcons = $this->getFontAwesomeIcons();
+        $branches = \App\Models\Branch::whereType(\App\Models\Branch::TYPE_GROCERY_BRANCH)->get();
 
-        return [$typeName, $correctType, $roots, $fontAwesomeIcons];
+        return [$typeName, $correctType, $roots, $fontAwesomeIcons, $branches];
     }
 }
