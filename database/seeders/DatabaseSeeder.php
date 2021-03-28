@@ -572,7 +572,13 @@ class DatabaseSeeder extends Seeder
                 $taxonomy->parent_id = $item['parent_id'];
             } else {
                 if ($item['type'] == Taxonomy::TYPE_GROCERY_CATEGORY) {
-                    $taxonomy->addMediaFromUrl(asset("/images/product-categories/{$item['translations'][0]['title']}.png"))->toMediaCollection("cover");
+                    $imageName = str_replace('&_', '_&_', Str::snake($item['translations'][0]['title']));
+                    if (File::exists(public_path("/images/product-categories/{$imageName}.png"))) {
+                        $taxonomy->addMediaFromUrl(asset("/images/product-categories/{$imageName}.png"))
+                                 ->toMediaCollection("cover");
+                    } else {
+                        var_dump("The image: $imageName not found");
+                    }
                 }
             }
             $taxonomy->creator_id = $super->id;
