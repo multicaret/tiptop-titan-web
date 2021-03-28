@@ -113,7 +113,20 @@
                         @endcomponent
                     </div>
                 @endif
-                <div class="col-6">
+                @if(in_array($correctType, [\App\Models\Taxonomy::TYPE_RESTAURANT_CATEGORY]))
+                    <div class="col-4">
+                        @component('admin.components.form-group', ['name' => 'branch_id', 'type' => 'select'])
+                            @slot('label', trans('strings.branch'))
+                            @slot('options',  \App\Models\Branch::whereType(\App\Models\Branch::TYPE_FOOD_BRANCH)->get()->pluck('title', 'id')->prepend('',''))
+                            @slot('attributes', [
+                                'class' => 'select2-branch w-100',
+                                'required',
+                            ])
+                            @slot('selected', $taxonomy->branch_id)
+                        @endcomponent
+                    </div>
+                @endif
+                <div class="col-4">
                     @component('admin.components.form-group', ['name' => 'status', 'type' => 'select'])
                         @slot('label', trans('strings.status'))
                         @slot('attributes', ['class'=>'select-2-status w-100'])
@@ -143,7 +156,7 @@
                             @slot('attributes', [
                                 'multiple',
                                 'required',
-                                'class' => 'select2-branch w-100',
+                                'class' => 'select2-branches w-100',
                             ])
                             @slot('selected', $taxonomy->branches)
                         @endcomponent
@@ -178,6 +191,11 @@
     <script src="/admin-assets/libs/select2/select2.js"></script>
     <script>
         $(function () {
+            $('.select2-branches').select2({
+                placeholder: 'Select Branches',
+            });
+        });
+        $(function () {
             $('.select2-branch').select2({
                 placeholder: 'Select Branch',
             });
@@ -188,8 +206,6 @@
                 placeholder: 'Select Status',
             });
         });
-    </script>
-    <script>
         $(function () {
             $('.select2-chain').select2({
                 placeholder: 'Select Chain',

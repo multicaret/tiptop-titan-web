@@ -122,9 +122,7 @@ class ComposerServiceProvider extends ServiceProvider
                             [
                                 'title' => 'Products',
                                 'icon' => 'fas fa-box-open',
-                                'params' => [
-                                    'type' => Product::getCorrectTypeName(Product::TYPE_GROCERY_PRODUCT, false)
-                                ],
+                                'params' => ['type' => Product::getCorrectTypeName(Product::TYPE_GROCERY_PRODUCT, false)],
                                 'routeName' => 'admin.products.index',
                             ],
                             [
@@ -199,24 +197,23 @@ class ComposerServiceProvider extends ServiceProvider
                                 'routeName' => 'admin.taxonomies.index',
                             ],
                             [
-                                'title' => 'Ingredient',
-                                'icon' => 'fas fa-leaf',
+                                'title' => 'Restaurant Categories',
+                                'icon' => 'fas fa-shapes',
                                 'params' => [
                                     'type' =>
-                                        \App\Models\Taxonomy::getCorrectTypeName(\App\Models\Taxonomy::TYPE_INGREDIENT,
-                                            false),
+                                        \App\Models\Taxonomy::getCorrectTypeName(\App\Models\Taxonomy::TYPE_RESTAURANT_CATEGORY,
+                                            false)
                                 ],
                                 'routeName' => 'admin.taxonomies.index',
                             ],
                             [
-                                'title' => 'Ingredient Categories',
-                                'icon' => 'fas fa-leaf',
+                                'title' => 'Products',
+                                'icon' => 'fas fa-box-open',
                                 'params' => [
                                     'type' =>
-                                        \App\Models\Taxonomy::getCorrectTypeName(\App\Models\Taxonomy::TYPE_INGREDIENT_CATEGORY,
-                                            false),
+                                        'foo',
                                 ],
-                                'routeName' => 'admin.taxonomies.index',
+                                'routeName' => 'admin.chains.index',
                             ],
                         ]
                     ]
