@@ -24,6 +24,7 @@ class CreateOrdersTable extends Migration
             $table->unsignedBigInteger('payment_method_id')->index();
             $table->unsignedBigInteger('address_id')->index();
             $table->unsignedBigInteger('coupon_id')->nullable();
+            $table->unsignedBigInteger('city_id');
             $table->unsignedBigInteger('previous_order_id')->nullable();
             // Todo: Add "channel", so we can retrieve the previous orders properly.
             $table->unsignedDouble('total')->default(0);

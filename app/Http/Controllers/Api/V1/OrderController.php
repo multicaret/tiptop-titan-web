@@ -8,6 +8,7 @@ use App\Models\Branch;
 use App\Models\Cart;
 use App\Models\Chain;
 use App\Models\Currency;
+use App\Models\Location;
 use App\Models\Order;
 use App\Models\PaymentMethod;
 use App\Models\Taxonomy;
@@ -142,6 +143,13 @@ class OrderController extends BaseApiController
             return $this->respondValidationFails($validator->errors());
         }
 
+
+        $address = Location::find($request->input('address_id'));
+        if (is_null($address)) {
+            return $this->respondNotFound('Address not found');
+        }
+
+        $user = auth()->user();
         $userCart = Cart::whereId($request->input('cart_id'))->first();
         $branch = $userCart->branch;
         $minimumOrder = $branch->minimum_order;
@@ -161,7 +169,8 @@ class OrderController extends BaseApiController
         $newOrder->branch_id = $request->input('branch_id');
         $newOrder->cart_id = $request->input('cart_id');
         $newOrder->payment_method_id = $request->input('payment_method_id');
-        $newOrder->address_id = $request->input('address_id');
+        $newOrder->address_id = $address;
+        $newOrder->city_id = $address->city_id;
         $newOrder->total = $userCart->total;
         $newOrder->delivery_fee = $deliveryFee;
         $newOrder->grand_total = $userCart->total + $deliveryFee;
@@ -189,6 +198,9 @@ class OrderController extends BaseApiController
                 $product->save();
             }
         }
+
+        $user->increment('total_number_of_orders');
+        $user->save();
 
         \DB::commit();
 
