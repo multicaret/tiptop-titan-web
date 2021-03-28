@@ -38,27 +38,27 @@ Accept: application/json
 Content-Type: application/json
 Authorization: Bearer {{token}}
 
-### Order create rate.   type 'grocery / food'
-GET {{host}}/{{locale}}/api/v1/orders/1/rate?type=grocery
+### Order create rate.
+GET {{host}}/{{locale}}/api/v1/orders/1/rate
 Accept: application/json
 Content-Type: application/json
 Authorization: Bearer {{token}}
 
-### Order create rate.   type: can used as query parameter ['grocery / food']
-POST {{host}}/{{locale}}/api/v1/orders/2/rate?type=grocery
+### Order store rate.
+POST {{host}}/{{locale}}/api/v1/orders/1/rate
 Accept: application/json
 Content-Type: application/json
 Authorization: Bearer {{token}}
 
 
 {
-    "rating_value": "3",
-    "type": "grocery",
+    "branch_rating_value": 3.2,
     "grocery_issue_id": 28,
+    "driver_rating_value": 3.2,
     "food_rating_factors": {
         "has_good_food_quality_rating": true,
         "has_good_packaging_quality_rating": false,
         "has_good_order_accuracy_rating": null
     },
-    "comment": "This is not!."
+    "comment": "This is not what I ordered!"
 }

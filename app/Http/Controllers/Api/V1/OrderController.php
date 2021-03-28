@@ -184,6 +184,7 @@ class OrderController extends BaseApiController
 //        $newOrder->rating_count = $request->input('rating_count');
         $newOrder->notes = $request->input('notes');
         $newOrder->status = Order::STATUS_DELIVERED;
+        $newOrder->type = $branch->type;
         $newOrder->save();
 
         // Todo: work on payment method & do it.
@@ -208,17 +209,19 @@ class OrderController extends BaseApiController
     }
 
 
-    public function createRate(Request $request): JsonResponse
+    /**
+     * @param  Order  $order
+     * @param  Request  $request
+     * @return JsonResponse
+     */
+    public function createRate(Order $order, Request $request): JsonResponse
     {
-        $this->respond(Chain::getTypesArray()[Chain::TYPE_FOOD]);
         $response = [];
-        if ($request->input('type') === Chain::getTypesArray()[Chain::TYPE_GROCERY]) {
-            [$issuesOne, $issuesTwo] = $this->getIssuesLists();
+        if ($order->type === Order::TYPE_GROCERY_ORDER) {
             $response = [
-                'issuesOne' => $issuesOne,
-                'issuesTwo' => $issuesTwo,
+                'availableIssues' => $this->getIssuesLists(),
             ];
-        } elseif ($request->input('type') === Chain::getTypesArray()[Chain::TYPE_FOOD]) {
+        } elseif ($order->type === Order::TYPE_FOOD_ORDER) {
             $response = [
                 ['key' => 'has_good_food_quality_rating', 'label' => 'Good Food Quality'],
                 ['key' => 'has_good_packaging_quality_rating', 'label' => 'Good Packaging Quality'],
@@ -230,46 +233,47 @@ class OrderController extends BaseApiController
     }
 
 
-    public function storeRate(Request $request, $orderId): JsonResponse
+    public function storeRate(Order $order, Request $request): JsonResponse
     {
-        try {
-            $order = Order::find($orderId);
-        } catch (\Exception $e) {
-            return $this->respondNotFound();
-        }
-        $response = [];
-
-        $ratingValue = $request->input('rating_value');
-        if ($request->input('type') === Chain::getTypesArray()[Chain::TYPE_GROCERY]) {
+        $branchRatingValue = $request->input('branch_rating_value');
+        if ($order->type === Chain::TYPE_GROCERY_CHAIN) {
             $order->rating_issue_id = $request->input('grocery_issue_id');
         }
-        if ($request->input('type') === Chain::getTypesArray()[Chain::TYPE_FOOD]) {
+        if ($order->type === Chain::TYPE_FOOD_CHAIN) {
+            $driverRatingValue = $request->input('driver_rating_value');
+            $order->driver_rating_value = $driverRatingValue;
             $order->has_good_food_quality_rating = $request->input('food_rating_factors.has_good_food_quality_rating');
             $order->has_good_packaging_quality_rating = $request->input('food_rating_factors.has_good_packaging_quality_rating');
             $order->has_good_order_accuracy_rating = $request->input('food_rating_factors.has_good_order_accuracy_rating');
+            /*
+             * Todo: Remember to increase Driver avg rating
+            $driver->avg_rating = $driver->average_rating;
+            $driver->increment('rating_count');
+            $driver->save();
+            */
         }
 
         \DB::beginTransaction();
         $order->rating_comment = $request->input('comment');
-        $order->rating_value = $ratingValue;
+        $order->branch_rating_value = $branchRatingValue;
         $order->save();
+
         $branch = Branch::find($order->branch_id);
-        auth()->user()->rate($branch, $ratingValue);
+        auth()->user()->rate($branch, $branchRatingValue);
+
+        $branch->avg_rating = $branch->average_rating;
+        $branch->increment('rating_count');
+        $branch->save();
         \DB::commit();
 
         return $this->respondWithMessage(trans('strings.successfully_done'));
     }
 
-    private function getIssuesLists(): array
+    private function getIssuesLists()
     {
-        $issuesOne = Taxonomy::ratingOneIssues()->get()->map(function ($item) {
+        return Taxonomy::ratingIssues()->get()->map(function ($item) {
             return ['id' => $item->id, 'title' => $item->getTranslation()->title];
         });
-        $issuesTwo = Taxonomy::ratingTwoIssues()->get()->map(function ($item) {
-            return ['id' => $item->id, 'title' => $item->getTranslation()->title];
-        });
-
-        return [$issuesOne, $issuesTwo];
     }
 
 

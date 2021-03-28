@@ -544,7 +544,7 @@ class DatabaseSeeder extends Seeder
                 ]
             ],
             [
-                'type' => Taxonomy::TYPE_ONE_STAR_RATING_ISSUE,
+                'type' => Taxonomy::TYPE_RATING_ISSUE,
                 'parent_id' => null,
                 'translations' => [
                     [
@@ -562,7 +562,7 @@ class DatabaseSeeder extends Seeder
                 ]
             ],
             [
-                'type' => Taxonomy::TYPE_ONE_STAR_RATING_ISSUE,
+                'type' => Taxonomy::TYPE_RATING_ISSUE,
                 'parent_id' => null,
                 'translations' => [
                     [
@@ -580,7 +580,7 @@ class DatabaseSeeder extends Seeder
                 ]
             ],
             [
-                'type' => Taxonomy::TYPE_ONE_STAR_RATING_ISSUE,
+                'type' => Taxonomy::TYPE_RATING_ISSUE,
                 'parent_id' => null,
                 'translations' => [
                     [
@@ -598,7 +598,7 @@ class DatabaseSeeder extends Seeder
                 ]
             ],
             [
-                'type' => Taxonomy::TYPE_ONE_STAR_RATING_ISSUE,
+                'type' => Taxonomy::TYPE_RATING_ISSUE,
                 'parent_id' => null,
                 'translations' => [
                     [
@@ -612,60 +612,6 @@ class DatabaseSeeder extends Seeder
                     [
                         'locale' => 'ku',
                         'title' => 'Issue 1 item 4 Ku',
-                    ]
-                ]
-            ],
-            [
-                'type' => Taxonomy::TYPE_TWO_STAR_RATING_ISSUE,
-                'parent_id' => null,
-                'translations' => [
-                    [
-                        'locale' => 'en',
-                        'title' => 'Issue 2 item 1',
-                    ],
-                    [
-                        'locale' => 'ar',
-                        'title' => 'Issue 2 item 1 Ar',
-                    ],
-                    [
-                        'locale' => 'ku',
-                        'title' => 'Issue 2 item 1 Ku',
-                    ]
-                ]
-            ],
-            [
-                'type' => Taxonomy::TYPE_TWO_STAR_RATING_ISSUE,
-                'parent_id' => null,
-                'translations' => [
-                    [
-                        'locale' => 'en',
-                        'title' => 'Issue 2 item 2',
-                    ],
-                    [
-                        'locale' => 'ar',
-                        'title' => 'Issue 2 item 2 Ar',
-                    ],
-                    [
-                        'locale' => 'ku',
-                        'title' => 'Issue 2 item 2 Ku',
-                    ]
-                ]
-            ],
-            [
-                'type' => Taxonomy::TYPE_TWO_STAR_RATING_ISSUE,
-                'parent_id' => null,
-                'translations' => [
-                    [
-                        'locale' => 'en',
-                        'title' => 'Issue 2 item 3',
-                    ],
-                    [
-                        'locale' => 'ar',
-                        'title' => 'Issue 2 item 3 Ar',
-                    ],
-                    [
-                        'locale' => 'ku',
-                        'title' => 'Issue 2 item 3 Ku',
                     ]
                 ]
             ],
@@ -1284,7 +1230,7 @@ class DatabaseSeeder extends Seeder
         $chain->region_id = config('defaults.region.id');
         $chain->city_id = config('defaults.city.id');
         $chain->currency_id = config('defaults.currency.id');
-        $chain->type = Chain::TYPE_GROCERY;
+        $chain->type = Chain::TYPE_GROCERY_CHAIN;
         $chain->primary_phone_number = "+964539551234";
         $chain->secondary_phone_number = "+964539551234";
         $chain->whatsapp_phone_number = "+964539551234";

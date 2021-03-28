@@ -144,7 +144,7 @@ class ComposerServiceProvider extends ServiceProvider
                                 'icon' => 'fas fa-link',
                                 'params' => [
                                     'type' =>
-                                        Chain::getCorrectTypeName(Chain::TYPE_GROCERY, false),
+                                        Chain::getCorrectTypeName(Chain::TYPE_GROCERY_CHAIN, false),
                                 ],
                                 'routeName' => 'admin.chains.index',
                             ],
@@ -181,7 +181,7 @@ class ComposerServiceProvider extends ServiceProvider
                                 'title' => 'Food Chains',
                                 'icon' => 'fas fa-link',
                                 'params' => [
-                                    'type' => Chain::getCorrectTypeName(Chain::TYPE_FOOD, false),
+                                    'type' => Chain::getCorrectTypeName(Chain::TYPE_FOOD_CHAIN, false),
                                 ],
                                 'routeName' => 'admin.chains.index',
                             ],

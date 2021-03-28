@@ -2,7 +2,9 @@
 
 namespace App\Http\Resources;
 
+use App\Http\Controllers\Controller;
 use App\Models\Currency;
+use App\Models\Place;
 use Illuminate\Http\Resources\Json\JsonResource;
 
 /** @mixin \App\Models\Branch */
@@ -34,8 +36,14 @@ class BranchResource extends JsonResource
             'primaryPhoneNumber' => $this->primary_phone_number,
             'secondaryPhoneNumber' => $this->secondary_phone_number,
             'whatsappPhoneNumber' => $this->whatsapp_phone_number,
-            'hasBeenRated' => $this->raters->count() > 0,
-            'averageRating' => (double) $this->getAverageRatingAttribute(),
+            'rating' => [
+                'colorHexadecimal' => Controller::ratingColorHexadecimal($this->avg_rating),
+                'colorRGBA' => Controller::ratingColorRGBA($this->avg_rating),
+                'averageRaw' => $this->avg_rating,
+                'averageFormatted' => (float) number_format($this->avg_rating, 1),
+                'countRaw' => $this->rating_count,
+                'countFormatted' => Controller::numberToReadable($this->rating_count),
+            ],
             'latitude' => (float) $this->latitude,
             'longitude' => (float) $this->longitude,
             'chain' => new ChainResource($this->chain),
