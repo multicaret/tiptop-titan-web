@@ -99,16 +99,6 @@ class ComposerServiceProvider extends ServiceProvider
                                 'routeName' => 'admin.taxonomies.index',
                             ],*/
                             [
-                                'title' => 'Grocery Categories',
-                                'icon' => 'fas fa-shapes',
-                                'params' => [
-                                    'type' =>
-                                        \App\Models\Taxonomy::getCorrectTypeName(\App\Models\Taxonomy::TYPE_GROCERY_CATEGORY,
-                                            false)
-                                ],
-                                'routeName' => 'admin.taxonomies.index',
-                            ],
-                            [
                                 'title' => 'Tags',
                                 'icon' => 'fas fa-tag',
                                 'params' => [
@@ -140,7 +130,7 @@ class ComposerServiceProvider extends ServiceProvider
                                 'routeName' => 'admin.chains.index',
                             ],
                             [
-                                'title' => 'Market Chains',
+                                'title' => 'Chains',
                                 'icon' => 'fas fa-link',
                                 'params' => [
                                     'type' =>
@@ -149,12 +139,22 @@ class ComposerServiceProvider extends ServiceProvider
                                 'routeName' => 'admin.chains.index',
                             ],
                             [
-                                'title' => 'Market Branches',
+                                'title' => 'Branches',
                                 'icon' => 'fas fa-store-alt',
                                 'params' => [
                                     'type' => Branch::getCorrectTypeName(Branch::TYPE_GROCERY_BRANCH, false),
                                 ],
                                 'routeName' => 'admin.branches.index',
+                            ],
+                            [
+                                'title' => 'Categories',
+                                'icon' => 'fas fa-shapes',
+                                'params' => [
+                                    'type' =>
+                                        \App\Models\Taxonomy::getCorrectTypeName(\App\Models\Taxonomy::TYPE_GROCERY_CATEGORY,
+                                            false)
+                                ],
+                                'routeName' => 'admin.taxonomies.index',
                             ],
                         ]
                     ]
@@ -178,7 +178,7 @@ class ComposerServiceProvider extends ServiceProvider
                                 'routeName' => 'admin.chains.index',
                             ],
                             [
-                                'title' => 'Food Chains',
+                                'title' => 'Chains',
                                 'icon' => 'fas fa-link',
                                 'params' => [
                                     'type' => Chain::getCorrectTypeName(Chain::TYPE_FOOD_CHAIN, false),
@@ -186,12 +186,22 @@ class ComposerServiceProvider extends ServiceProvider
                                 'routeName' => 'admin.chains.index',
                             ],
                             [
-                                'title' => 'Food Branches',
+                                'title' => 'Branches',
                                 'icon' => 'fas fa-store-alt',
                                 'params' => [
                                     'type' => Branch::getCorrectTypeName(Branch::TYPE_FOOD_BRANCH, false),
                                 ],
                                 'routeName' => 'admin.branches.index',
+                            ],
+                            [
+                                'title' => 'Categories',
+                                'icon' => 'fas fa-shapes',
+                                'params' => [
+                                    'type' =>
+                                        \App\Models\Taxonomy::getCorrectTypeName(\App\Models\Taxonomy::TYPE_FOOD_CATEGORY,
+                                            false)
+                                ],
+                                'routeName' => 'admin.taxonomies.index',
                             ],
                         ]
                     ]
