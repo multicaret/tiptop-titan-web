@@ -172,8 +172,17 @@ class Taxonomy extends Node implements HasMedia, ShouldHaveTypes, TranslatableCo
         $typeVariations = [
             'parent' => [
                 Taxonomy::TYPE_POST_CATEGORY,
+                Taxonomy::TYPE_GROCERY_CATEGORY,
             ],
-            'cover_image' => []
+            'cover_image' => [
+                Taxonomy::TYPE_GROCERY_CATEGORY,
+            ],
+            'content' => [
+                Taxonomy::TYPE_POST_CATEGORY,
+            ],
+            'branch' => [
+                Taxonomy::TYPE_GROCERY_CATEGORY,
+            ]
         ];
 
         return $typeVariations[$index];

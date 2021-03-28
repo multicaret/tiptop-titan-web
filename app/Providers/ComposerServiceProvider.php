@@ -88,12 +88,22 @@ class ComposerServiceProvider extends ServiceProvider
                         'routeName' => 'admin.index',
                         'params' => ['type' => 'collapse'],
                         'subChildren' => [
-                            [
+                            /*[
                                 'title' => 'Categories',
                                 'icon' => 'fas fa-shapes',
                                 'params' => [
                                     'type' =>
                                         \App\Models\Taxonomy::getCorrectTypeName(\App\Models\Taxonomy::TYPE_POST_CATEGORY,
+                                            false)
+                                ],
+                                'routeName' => 'admin.taxonomies.index',
+                            ],*/
+                            [
+                                'title' => 'Grocery Categories',
+                                'icon' => 'fas fa-shapes',
+                                'params' => [
+                                    'type' =>
+                                        \App\Models\Taxonomy::getCorrectTypeName(\App\Models\Taxonomy::TYPE_GROCERY_CATEGORY,
                                             false)
                                 ],
                                 'routeName' => 'admin.taxonomies.index',
