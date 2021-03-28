@@ -41,7 +41,7 @@ use Spatie\MediaLibrary\HasMedia;
  * @property \Illuminate\Support\Carbon|null $created_at
  * @property \Illuminate\Support\Carbon|null $updated_at
  * @property string|null $deleted_at
- * @property-read \App\Models\Chain $chain
+ * @property \App\Models\Chain $chain
  * @property-read \App\Models\City|null $city
  * @property-read mixed $average_rating_all_types
  * @property-read mixed $average_rating
