@@ -465,7 +465,7 @@ class DatatableController extends AjaxController
                                      'type' => request('type')
                                  ]),
                                  'deleteAction' => route('admin.chains.destroy', [
-                                     $chain->id,
+                                     $chain->uuid,
                                      'type' => request('type')
                                  ]),
                              ];
