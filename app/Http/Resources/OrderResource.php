@@ -43,7 +43,7 @@ class OrderResource extends JsonResource
                 'hasGoodFoodQualityRating' => $this->has_good_food_quality_rating,
                 'hasGoodPackagingQualityRating' => $this->has_good_packaging_quality_rating,
                 'hasGoodOrderAccuracyRating' => $this->has_good_order_accuracy_rating,
-                'ratingIssue' => $this->ratingIssue->title,
+                'ratingIssue' => optional($this->ratingIssue)->title,
             ],
             'cart' => new CartResource($this->cart),
             'paymentMethod' => new PaymentMethodResource($this->paymentMethod),
