@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
 use App\Models\Chain;
+use App\Models\Location;
 use App\Models\Region;
 use App\Models\Branch;
 use Illuminate\Http\Request;
@@ -89,13 +90,14 @@ class BranchController extends Controller
     {
         $typeName = Branch::getCorrectTypeName($request->type, false);
         $type = Branch::getCorrectType($request->type);
+        $contacts = [];
 
         $branch = new Branch();
         $regions = Region::whereCountryId(config('defaults.country.id'))->get();
         $chains = Chain::whereType($type)->get();
         $branch->chain = Chain::whereType($type)->first();
 
-        return view('admin.branches.form', compact('branch', 'regions', 'chains', 'typeName', 'type'));
+        return view('admin.branches.form', compact('branch', 'regions', 'chains', 'typeName', 'type', 'contacts'));
     }
 
     /**
@@ -134,12 +136,19 @@ class BranchController extends Controller
     {
         $typeName = Branch::getCorrectTypeName($request->type, false);
         $type = Branch::getCorrectType($request->type);
-
+        $contacts = Location::where('contactable_id', $branch->id)->get()->map(function ($item) {
+            return [
+                'id' => $item->id,
+                'name' => $item->name,
+                'email' => $item->emails,
+                'phone' => $item->phones
+            ];
+        });
         $regions = Region::whereCountryId(config('defaults.country.id'))->get();
         $branch->load(['region', 'city', 'chain']);
         $chains = Chain::whereType($type)->get();
 
-        return view('admin.branches.form', compact('branch', 'regions', 'typeName', 'type', 'chains'));
+        return view('admin.branches.form', compact('branch', 'regions', 'typeName', 'type', 'chains', 'contacts'));
     }
 
     /**
@@ -223,6 +232,32 @@ class BranchController extends Controller
                 $branch->translateOrNew($key)->description = $request->input($key.'.description');
             }
         }
+        $requestContactDetails = json_decode($request->contactDetails);
+        $contactToDelete = Location::where('contactable_id', $branch->id)
+                                   ->where('contactable_type', Branch::class)
+                                   ->get()->pluck('id')->toArray();
+        $contactToDelete = array_combine($contactToDelete, $contactToDelete);
+        foreach ($requestContactDetails as $requestContactDetail) {
+            if (isset($requestContactDetail->id) && ! is_null($location = Location::whereId($requestContactDetail->id)->first())) {
+                $location->name = $requestContactDetail->name;
+                $location->phones = $requestContactDetail->phone;
+                $location->emails = $requestContactDetail->email;
+                $location->type = Location::TYPE_CONTACT;
+                unset($contactToDelete[$location->id]);
+            } else {
+                $location = new Location();
+                $location->creator_id = $location->editor_id = auth()->id();
+                $location->contactable_id = $branch->id;
+                $location->contactable_type = Branch::class;
+                $location->type = Location::TYPE_CONTACT;
+                $location->name = $requestContactDetail->name;
+                $location->emails = $requestContactDetail->email;
+                $location->phones = $requestContactDetail->phone;
+            }
+            $location->save();
+        }
+        Location::whereIn('id', $contactToDelete)->delete();
+
         $branch->save();
         \DB::commit();
     }

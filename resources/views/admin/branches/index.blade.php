@@ -7,13 +7,15 @@
         @else
             Food Branches
         @endif
-        <a href="{{ route('admin.branches.create',['type'=> request()->type]) }}">
-            <button type="button" class="btn btn-primary rounded-pill d-block">
-                <span class="ion ion-md-add"></span>
-                &nbsp;
-                {{trans('strings.add')}}
-            </button>
-        </a>
+        @if(request()->has('type'))
+            <a href="{{ route('admin.branches.create',['type'=> request()->type]) }}">
+                <button type="button" class="btn btn-primary rounded-pill d-block">
+                    <span class="ion ion-md-add"></span>
+                    &nbsp;
+                    {{trans('strings.add')}}
+                </button>
+            </a>
+        @endif
     </h4>
 
     <div class="card">
