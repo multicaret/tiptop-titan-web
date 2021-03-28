@@ -113,6 +113,8 @@ use Spatie\MediaLibrary\HasMedia;
  * @method static \Illuminate\Database\Eloquent\Builder|Branch whereWhatsappPhoneNumber($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Branch withTranslation()
  * @mixin \Eloquent
+ * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\Location[] $locations
+ * @property-read int|null $locations_count
  */
 class Branch extends Model implements HasMedia
 {
@@ -225,4 +227,18 @@ class Branch extends Model implements HasMedia
         return $this->raters->count() > 0;
     }
 
+    public static function checkRequestTypes(): object
+    {
+        return new class {
+            public static function isFood(): bool
+            {
+                return request()->type === Branch::getTypesArray()[Branch::TYPE_FOOD_BRANCH];
+            }
+
+            public static function isGrocery(): bool
+            {
+                return request()->type === Branch::getTypesArray()[Branch::TYPE_GROCERY_BRANCH];
+            }
+        };
+    }
 }

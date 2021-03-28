@@ -99,6 +99,8 @@ use Illuminate\Database\Eloquent\SoftDeletes;
  * @method static \Illuminate\Database\Query\Builder|Order withTrashed()
  * @method static \Illuminate\Database\Query\Builder|Order withoutTrashed()
  * @mixin \Eloquent
+ * @property string|null $rating_value
+ * @method static \Illuminate\Database\Eloquent\Builder|Order whereRatingValue($value)
  */
 class Order extends Model
 {

@@ -119,6 +119,12 @@ use Spatie\MediaLibrary\MediaCollections\Models\Media;
  * @method static \Illuminate\Database\Eloquent\Builder|Node withoutSelf()
  * @method static \Illuminate\Database\Query\Builder|Taxonomy withoutTrashed()
  * @mixin \Eloquent
+ * @property-read \App\Models\Branch $branch
+ * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\Branch[] $branches
+ * @property-read int|null $branches_count
+ * @property-read \App\Models\Chain $chain
+ * @method static Builder|Taxonomy ingredientCategories()
+ * @method static Builder|Taxonomy ingredients()
  */
 class Taxonomy extends Node implements HasMedia, ShouldHaveTypes, TranslatableContract
 {
@@ -140,6 +146,8 @@ class Taxonomy extends Node implements HasMedia, ShouldHaveTypes, TranslatableCo
     const TYPE_GROCERY_CATEGORY = 3;
     const TYPE_FOOD_CATEGORY = 4;
     const TYPE_RATING_ISSUE = 10;
+    const TYPE_INGREDIENT = 11;
+    const TYPE_INGREDIENT_CATEGORY = 12;
 
     protected $fillable = ['title', 'description', 'parent_id', 'type', 'order_column'];
     protected $translatedAttributes = ['title', 'description'];
@@ -227,6 +235,30 @@ class Taxonomy extends Node implements HasMedia, ShouldHaveTypes, TranslatableCo
     public function scopeRatingIssues($query): Builder
     {
         return $query->where('type', '=', self::TYPE_RATING_ISSUE);
+    }
+
+    /**
+     * Scope a query to only include Ingredients issues
+     *
+     * @param  Builder  $query
+     *
+     * @return Builder
+     */
+    public function scopeIngredients($query): Builder
+    {
+        return $query->where('type', '=', self::TYPE_INGREDIENT);
+    }
+
+    /**
+     * Scope a query to only include Ingredient Categories issues
+     *
+     * @param  Builder  $query
+     *
+     * @return Builder
+     */
+    public function scopeIngredientCategories($query): Builder
+    {
+        return $query->where('type', '=', self::TYPE_INGREDIENT_CATEGORY);
     }
 
     public function creator(): \Illuminate\Database\Eloquent\Relations\BelongsTo
@@ -327,6 +359,8 @@ class Taxonomy extends Node implements HasMedia, ShouldHaveTypes, TranslatableCo
             self::TYPE_GROCERY_CATEGORY => 'grocery-category',
             self::TYPE_FOOD_CATEGORY => 'food-category',
             self::TYPE_RATING_ISSUE => 'rating-issue',
+            self::TYPE_INGREDIENT => 'ingredient',
+            self::TYPE_INGREDIENT_CATEGORY => 'ingredient-category',
         ];
     }
 

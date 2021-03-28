@@ -261,4 +261,20 @@ class Chain extends Model implements HasMedia
 
     }
 
+    public static function checkRequestTypes(): object
+    {
+        return new class {
+            public static function isFood(): bool
+            {
+                return request()->type === Chain::getTypesArray()[Chain::TYPE_FOOD_CHAIN];
+            }
+
+            public static function isGrocery(): bool
+            {
+                return request()->type === Chain::getTypesArray()[Chain::TYPE_GROCERY_CHAIN];
+            }
+        };
+    }
+
+
 }
