@@ -126,7 +126,7 @@
                         @endcomponent
                     </div>
                 @endif
-                <div class="{{$correctType == \App\Models\Taxonomy::TYPE_INGREDIENT ? 'col-6':'col-4'}}">
+                <div class="{{in_array($correctType, [\App\Models\Taxonomy::TYPE_INGREDIENT,\App\Models\Taxonomy::TYPE_INGREDIENT_CATEGORY]) ? 'col-6':'col-4'}}">
                     @component('admin.components.form-group', ['name' => 'status', 'type' => 'select'])
                         @slot('label', trans('strings.status'))
                         @slot('attributes', ['class'=>'select-2-status w-100'])
