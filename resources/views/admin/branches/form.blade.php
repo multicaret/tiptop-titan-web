@@ -196,7 +196,7 @@
                                         @slot('value', $branch->primary_phone_number)
                                     @endcomponent
                                 </div>
-                                <div class="col-md-4 mt-3">
+                                {{--<div class="col-md-4 mt-3">
                                     @component('admin.components.form-group', ['name' => 'secondary_phone_number', 'type' => 'tel'])
                                         @slot('label', 'Secondary phone number')
                                         @slot('value', $branch->secondary_phone_number)
@@ -207,7 +207,7 @@
                                         @slot('label', 'Whatsapp phone number')
                                         @slot('value', $branch->whatsapp_phone_number)
                                     @endcomponent
-                                </div>
+                                </div>--}}
                             </div>
                         </div>
                     </div>
@@ -309,6 +309,7 @@
             const marker = map.addMarker({
                 lat: lat,
                 lng: lng,
+                streetViewControl: false,
                 draggable: true,
             });
             marker.addListener('dragend', function () {

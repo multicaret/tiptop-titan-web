@@ -220,8 +220,8 @@ class BranchController extends Controller
         $branch->under_minimum_order_delivery_fee = $request->input('under_minimum_order_delivery_fee');
         $branch->fixed_delivery_fee = $request->input('fixed_delivery_fee');
         $branch->primary_phone_number = $request->input('primary_phone_number');
-        $branch->secondary_phone_number = $request->input('secondary_phone_number');
-        $branch->whatsapp_phone_number = $request->input('whatsapp_phone_number');
+//        $branch->secondary_phone_number = $request->input('secondary_phone_number');
+//        $branch->whatsapp_phone_number = $request->input('whatsapp_phone_number');
         $branch->type = Branch::getCorrectType($request->type);
         $branch->status = $request->input('status');
         $branch->save();
