@@ -239,7 +239,7 @@
                                                         <td>
                                                             <input type="text" v-model="contactDetail.name"
                                                                    class="form-control" name="contact-name">
-{{--                                                            <small>@{{}}</small>--}}
+                                                            {{--                                                            <small>@{{}}</small>--}}
                                                         </td>
                                                         <td>
                                                             <input type="text" v-model="contactDetail.email"
@@ -282,12 +282,11 @@
             <input type="hidden" name="longitude" id="longitude">
             <input type="hidden" name="latitude" id="latitude">
             <input type="hidden" name="unattached-media" class="deleted-file" value="">
-{{--            <tamplet v-if="contactDetails.length && errors.length">--}}
-{{--                <ul>--}}
-{{--                    <li v-for="error in errors">@{{ error }}</li>--}}
-{{--                </ul>--}}
-{{--            </tamplet>--}}
-            <button class="btn btn-success" type="submit" @click="submitButton($event)">{{trans('strings.submit')}}</button>
+            <div class="col-md-12" v-if="formErrorMessage">
+                <p class="text-danger text-capitalize">@{{ formErrorMessage }}</p>
+            </div>
+            <button class="btn btn-success" type="submit"
+                    @click="submitButton($event)">{{trans('strings.submit')}}</button>
         </div>
     </form>
 
@@ -332,6 +331,7 @@
                     phone: ''
                 },
                 validationData: [],
+                formErrorMessage: null,
             },
             methods: {
                 retrieveCities: function (region) {
@@ -349,35 +349,41 @@
 
                 },
                 submitButton(e) {
-                    e.preventDefault();
-                    console.log("this.$refs['main-form'].elements");
-                    console.log(this.$refs['main-form'].elements.namedItem('en[title]'));
-                    // const titleElement = this.$refs['main-form'].elements;
-                    // let validationData = this.validationData;
-                    // validationData[0] = {'English Title': !!titleElement.value};
-                    // validationData[1] = {'Old Price': !!oldPriceElement.value};
-                    // validationData[2] = {'New Price': !!newPriceElement.value};
-                    // validationData[3] = {'discount start date': !!offer.begins_at};
-                    // validationData[4] = {'discount start end': !!offer.expires_at};
-                    // validationData[5] = {'clinic': !!offer.clinic && !!offer.clinic.id};
-                    // validationData[6] = {'specialty': !!offer.specialty && !!offer.specialty.id};
-                    // validationData[7] = {'doctors': !!offer.doctors};
-                    //
-                    /*for (let i = 0; i < validationData.length; i++) {
-                        const tmpItem = validationData[i], inputLabel = Object.keys(tmpItem)[0];
-                        if (!tmpItem[inputLabel]) {
-                            this.setErrorMessage(`${inputLabel} is required.`);
-                            break;
+                    if (this.contactDetails.length) {
+                        let validationData = this.validationData;
+                        let name = false
+                        let phone = false
+                        const titleElement = this.$refs['main-form'].elements.namedItem('en[title]');
+                        console.log("titleElement");
+                        console.log(titleElement);
+                        this.contactDetails.forEach(function (element) {
+                            name = element.name.length
+                            phone = element.phone.length
+                        })
+                        validationData[0] = {'Name': name};
+                        validationData[1] = {'Phone': phone};
+                        for (let i = 0; i < validationData.length; i++) {
+                            const tmpItem = validationData[i], inputLabel = Object.keys(tmpItem)[0];
+                            if (!tmpItem[inputLabel]) {
+                                this.setErrorMessage(`${inputLabel} is required.`);
+                                break;
+                            }
                         }
-                    }*/
-/*
-                    if (!!this.formErrorMessage) {
-                        e.preventDefault();
+                        if (!!this.formErrorMessage) {
+                            e.preventDefault();
+                        } else {
+                            this.$refs['main-form'].submit();
+                        }
                     } else {
                         this.$refs['main-form'].submit();
                     }
-*/
-                }
+                },
+                setErrorMessage(msg) {
+                    this.formErrorMessage = msg;
+                    setTimeout(_ => {
+                        this.formErrorMessage = null;
+                    }, 2500);
+                },
             }
         })
     </script>
