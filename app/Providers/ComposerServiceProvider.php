@@ -195,6 +195,16 @@ class ComposerServiceProvider extends ServiceProvider
                                 'routeName' => 'admin.taxonomies.index',
                             ],
                             [
+                                'title' => 'Restaurant Categories',
+                                'icon' => 'fas fa-shapes',
+                                'params' => [
+                                    'type' =>
+                                        \App\Models\Taxonomy::getCorrectTypeName(\App\Models\Taxonomy::TYPE_RESTAURANT_CATEGORY,
+                                            false)
+                                ],
+                                'routeName' => 'admin.taxonomies.index',
+                            ],
+                            [
                                 'title' => 'Products',
                                 'icon' => 'fas fa-box-open',
                                 'params' => [

@@ -139,6 +139,7 @@ class Taxonomy extends Node implements HasMedia, ShouldHaveTypes, TranslatableCo
     const TYPE_TAG = 2;
     const TYPE_GROCERY_CATEGORY = 3;
     const TYPE_FOOD_CATEGORY = 4;
+    const TYPE_RESTAURANT_CATEGORY = 5;
     const TYPE_RATING_ISSUE = 10;
 
     protected $fillable = ['title', 'description', 'parent_id', 'type', 'order_column'];
@@ -215,6 +216,11 @@ class Taxonomy extends Node implements HasMedia, ShouldHaveTypes, TranslatableCo
     public function scopeFoodCategories($query): Builder
     {
         return $query->where('type', '=', self::TYPE_FOOD_CATEGORY);
+    }
+
+    public function scopeRestaurahtCategories($query): Builder
+    {
+        return $query->where('type', '=', self::TYPE_RESTAURANT_CATEGORY);
     }
 
     /**
@@ -326,6 +332,7 @@ class Taxonomy extends Node implements HasMedia, ShouldHaveTypes, TranslatableCo
             self::TYPE_TAG => 'tag',
             self::TYPE_GROCERY_CATEGORY => 'grocery-category',
             self::TYPE_FOOD_CATEGORY => 'food-category',
+            self::TYPE_RESTAURANT_CATEGORY => 'restaurant-category',
             self::TYPE_RATING_ISSUE => 'rating-issue',
         ];
     }
