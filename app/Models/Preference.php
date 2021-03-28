@@ -8,6 +8,48 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Collection;
 use Spatie\MediaLibrary\HasMedia;
 
+/**
+ * App\Models\Preference
+ *
+ * @property int $id
+ * @property string $key
+ * @property string $type
+ * @property string|null $notes
+ * @property string|null $group_name
+ * @property int|null $order_column
+ * @property string|null $icon
+ * @property \Illuminate\Support\Carbon|null $created_at
+ * @property \Illuminate\Support\Carbon|null $updated_at
+ * @property-read \Spatie\MediaLibrary\MediaCollections\Models\Collections\MediaCollection|\Spatie\MediaLibrary\MediaCollections\Models\Media[] $media
+ * @property-read int|null $media_count
+ * @property-read \App\Models\PreferenceTranslation|null $translation
+ * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\PreferenceTranslation[] $translations
+ * @property-read int|null $translations_count
+ * @method static \Illuminate\Database\Eloquent\Builder|Preference listsTranslations(string $translationField)
+ * @method static \Illuminate\Database\Eloquent\Builder|Preference newModelQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder|Preference newQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder|Preference notTranslatedIn(?string $locale = null)
+ * @method static \Illuminate\Database\Eloquent\Builder|Preference orWhereTranslation(string $translationField, $value, ?string $locale = null)
+ * @method static \Illuminate\Database\Eloquent\Builder|Preference orWhereTranslationLike(string $translationField, $value, ?string $locale = null)
+ * @method static \Illuminate\Database\Eloquent\Builder|Preference orderByTranslation(string $translationField, string $sortMethod = 'asc')
+ * @method static \Illuminate\Database\Eloquent\Builder|Preference query()
+ * @method static \Illuminate\Database\Eloquent\Builder|Preference sections()
+ * @method static \Illuminate\Database\Eloquent\Builder|Preference translated()
+ * @method static \Illuminate\Database\Eloquent\Builder|Preference translatedIn(?string $locale = null)
+ * @method static \Illuminate\Database\Eloquent\Builder|Preference whereCreatedAt($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Preference whereGroupName($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Preference whereIcon($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Preference whereId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Preference whereKey($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Preference whereNotes($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Preference whereOrderColumn($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Preference whereTranslation(string $translationField, $value, ?string $locale = null, string $method = 'whereHas', string $operator = '=')
+ * @method static \Illuminate\Database\Eloquent\Builder|Preference whereTranslationLike(string $translationField, $value, ?string $locale = null)
+ * @method static \Illuminate\Database\Eloquent\Builder|Preference whereType($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Preference whereUpdatedAt($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Preference withTranslation()
+ * @mixin \Eloquent
+ */
 class Preference extends Model implements HasMedia
 {
     use Translatable, HasMediaTrait;

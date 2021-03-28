@@ -6,6 +6,27 @@ use App\Traits\HasMediaTrait;
 use Illuminate\Database\Eloquent\Model;
 use Spatie\MediaLibrary\HasMedia;
 
+/**
+ * App\Models\SlideTranslation
+ *
+ * @property int $id
+ * @property int $slide_id
+ * @property string $alt_tag
+ * @property string $locale
+ * @property-read mixed $image
+ * @property-read mixed $image_full
+ * @property-read mixed $thumbnail
+ * @property-read \Spatie\MediaLibrary\MediaCollections\Models\Collections\MediaCollection|\Spatie\MediaLibrary\MediaCollections\Models\Media[] $media
+ * @property-read int|null $media_count
+ * @method static \Illuminate\Database\Eloquent\Builder|SlideTranslation newModelQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder|SlideTranslation newQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder|SlideTranslation query()
+ * @method static \Illuminate\Database\Eloquent\Builder|SlideTranslation whereAltTag($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|SlideTranslation whereId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|SlideTranslation whereLocale($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|SlideTranslation whereSlideId($value)
+ * @mixin \Eloquent
+ */
 class SlideTranslation extends Model implements HasMedia
 {
     use HasMediaTrait;

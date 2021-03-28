@@ -6,6 +6,45 @@ use App\Scopes\ActiveScope;
 use App\Traits\HasStatuses;
 use Illuminate\Database\Eloquent\Model;
 
+/**
+ * App\Models\Currency
+ *
+ * @property int $id
+ * @property string $english_name
+ * @property string $code
+ * @property string $symbol
+ * @property float|null $rate
+ * @property string|null $decimal_separator
+ * @property string|null $thousands_separator
+ * @property bool|null $is_symbol_after
+ * @property int $status 0:incomplete, 1:draft, 2:published, 3:Inactive, 4..n:CUSTOM
+ * @property \Illuminate\Support\Carbon|null $created_at
+ * @property \Illuminate\Support\Carbon|null $updated_at
+ * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\Country[] $countries
+ * @property-read int|null $countries_count
+ * @property-read mixed $is_published
+ * @property-read mixed $status_name
+ * @method static \Illuminate\Database\Eloquent\Builder|Currency draft()
+ * @method static \Illuminate\Database\Eloquent\Builder|Currency inactive()
+ * @method static \Illuminate\Database\Eloquent\Builder|Currency incomplete()
+ * @method static \Illuminate\Database\Eloquent\Builder|Currency newModelQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder|Currency newQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder|Currency notPublished()
+ * @method static \Illuminate\Database\Eloquent\Builder|Currency published()
+ * @method static \Illuminate\Database\Eloquent\Builder|Currency query()
+ * @method static \Illuminate\Database\Eloquent\Builder|Currency whereCode($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Currency whereCreatedAt($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Currency whereDecimalSeparator($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Currency whereEnglishName($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Currency whereId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Currency whereIsSymbolAfter($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Currency whereRate($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Currency whereStatus($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Currency whereSymbol($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Currency whereThousandsSeparator($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Currency whereUpdatedAt($value)
+ * @mixin \Eloquent
+ */
 class Currency extends Model
 {
     use HasStatuses;

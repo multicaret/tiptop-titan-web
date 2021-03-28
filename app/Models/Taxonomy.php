@@ -18,6 +18,108 @@ use Spatie\MediaLibrary\HasMedia;
 use Spatie\MediaLibrary\MediaCollections\Models\Media;
 
 
+/**
+ * App\Models\Taxonomy
+ *
+ * @property int $id
+ * @property string $uuid
+ * @property int $creator_id
+ * @property int $editor_id
+ * @property int|null $parent_id
+ * @property int|null $branch_id
+ * @property int $type 1:Category, 2: Tag, 3..n: CUSTOM
+ * @property string|null $icon
+ * @property int $view_count
+ * @property int $left
+ * @property int $right
+ * @property int|null $depth
+ * @property string $step
+ * @property int|null $order_column
+ * @property int $status 0:incomplete, 1:draft, 2:published, 3:Inactive, 4..n:CUSTOM
+ * @property \Illuminate\Support\Carbon|null $created_at
+ * @property \Illuminate\Support\Carbon|null $updated_at
+ * @property \Illuminate\Support\Carbon|null $deleted_at
+ * @property-read \Illuminate\Database\Eloquent\Collection|Taxonomy[] $children
+ * @property-read int|null $children_count
+ * @property-read \App\Models\User $creator
+ * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\Product[] $crossSellsProducts
+ * @property-read int|null $cross_sells_products_count
+ * @property-read \App\Models\User $editor
+ * @property-read mixed $cover
+ * @property-read mixed $cover_small
+ * @property-read mixed $is_published
+ * @property-read mixed $link
+ * @property-read mixed $status_name
+ * @property-read \Spatie\MediaLibrary\MediaCollections\Models\Collections\MediaCollection|Media[] $media
+ * @property-read int|null $media_count
+ * @property-read Taxonomy|null $parent
+ * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\Post[] $posts
+ * @property-read int|null $posts_count
+ * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\Product[] $products
+ * @property-read int|null $products_count
+ * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\Post[] $tagPosts
+ * @property-read int|null $tag_posts_count
+ * @property-read \App\Models\TaxonomyTranslation|null $translation
+ * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\TaxonomyTranslation[] $translations
+ * @property-read int|null $translations_count
+ * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\Product[] $upSellsProducts
+ * @property-read int|null $up_sells_products_count
+ * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\User[] $usersOfCategory
+ * @property-read int|null $users_of_category_count
+ * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\User[] $usersOfSkill
+ * @property-read int|null $users_of_skill_count
+ * @method static Builder|Taxonomy draft()
+ * @method static Builder|Taxonomy foodCategories()
+ * @method static Builder|Taxonomy groceryCategories()
+ * @method static Builder|Taxonomy inactive()
+ * @method static Builder|Taxonomy incomplete()
+ * @method static \Illuminate\Database\Eloquent\Builder|Node limitDepth($limit)
+ * @method static Builder|Taxonomy listsTranslations(string $translationField)
+ * @method static Builder|Taxonomy newModelQuery()
+ * @method static Builder|Taxonomy newQuery()
+ * @method static Builder|Taxonomy notPublished()
+ * @method static Builder|Taxonomy notTranslatedIn(?string $locale = null)
+ * @method static \Illuminate\Database\Query\Builder|Taxonomy onlyTrashed()
+ * @method static Builder|Taxonomy orWhereTranslation(string $translationField, $value, ?string $locale = null)
+ * @method static Builder|Taxonomy orWhereTranslationLike(string $translationField, $value, ?string $locale = null)
+ * @method static Builder|Taxonomy orderByTranslation(string $translationField, string $sortMethod = 'asc')
+ * @method static Builder|Taxonomy parents()
+ * @method static Builder|Taxonomy postCategories()
+ * @method static Builder|Taxonomy postTags()
+ * @method static Builder|Taxonomy published()
+ * @method static Builder|Taxonomy query()
+ * @method static Builder|Taxonomy ratingIssues()
+ * @method static Builder|Taxonomy tags()
+ * @method static Builder|Taxonomy translated()
+ * @method static Builder|Taxonomy translatedIn(?string $locale = null)
+ * @method static Builder|Taxonomy whereBranchId($value)
+ * @method static Builder|Taxonomy whereCreatedAt($value)
+ * @method static Builder|Taxonomy whereCreatorId($value)
+ * @method static Builder|Taxonomy whereDeletedAt($value)
+ * @method static Builder|Taxonomy whereDepth($value)
+ * @method static Builder|Taxonomy whereEditorId($value)
+ * @method static Builder|Taxonomy whereIcon($value)
+ * @method static Builder|Taxonomy whereId($value)
+ * @method static Builder|Taxonomy whereLeft($value)
+ * @method static Builder|Taxonomy whereOrderColumn($value)
+ * @method static Builder|Taxonomy whereParentId($value)
+ * @method static Builder|Taxonomy whereRight($value)
+ * @method static Builder|Taxonomy whereStatus($value)
+ * @method static Builder|Taxonomy whereStep($value)
+ * @method static Builder|Taxonomy whereTranslation(string $translationField, $value, ?string $locale = null, string $method = 'whereHas', string $operator = '=')
+ * @method static Builder|Taxonomy whereTranslationLike(string $translationField, $value, ?string $locale = null)
+ * @method static Builder|Taxonomy whereType($value)
+ * @method static Builder|Taxonomy whereUpdatedAt($value)
+ * @method static Builder|Taxonomy whereUuid($value)
+ * @method static Builder|Taxonomy whereViewCount($value)
+ * @method static Builder|Taxonomy withTranslation()
+ * @method static \Illuminate\Database\Query\Builder|Taxonomy withTrashed()
+ * @method static \Illuminate\Database\Eloquent\Builder|Node withoutNode($node)
+ * @method static \Illuminate\Database\Eloquent\Builder|Node withoutRoot()
+ * @method static \Illuminate\Database\Eloquent\Builder|Node withoutSelf()
+ * @method static \Illuminate\Database\Query\Builder|Taxonomy withoutTrashed()
+ * @mixin \Eloquent
+ */
 class Taxonomy extends Node implements HasMedia, ShouldHaveTypes, TranslatableContract
 {
     use Translatable,
@@ -37,8 +139,7 @@ class Taxonomy extends Node implements HasMedia, ShouldHaveTypes, TranslatableCo
     const TYPE_TAG = 2;
     const TYPE_GROCERY_CATEGORY = 3;
     const TYPE_FOOD_CATEGORY = 4;
-    const TYPE_ONE_STAR_RATING_ISSUE = 10;
-    const TYPE_TWO_STAR_RATING_ISSUE = 12;
+    const TYPE_RATING_ISSUE = 10;
 
     protected $fillable = ['title', 'description', 'parent_id', 'type', 'order_column'];
     protected $translatedAttributes = ['title', 'description'];
@@ -123,16 +224,10 @@ class Taxonomy extends Node implements HasMedia, ShouldHaveTypes, TranslatableCo
      *
      * @return Builder
      */
-    public function scopeRatingOneIssues($query): Builder
+    public function scopeRatingIssues($query): Builder
     {
-        return $query->where('type', '=', self::TYPE_ONE_STAR_RATING_ISSUE);
+        return $query->where('type', '=', self::TYPE_RATING_ISSUE);
     }
-
-    public function scopeRatingTwoIssues($query): Builder
-    {
-        return $query->where('type', '=', self::TYPE_TWO_STAR_RATING_ISSUE);
-    }
-
 
     public function creator(): \Illuminate\Database\Eloquent\Relations\BelongsTo
     {
@@ -215,8 +310,7 @@ class Taxonomy extends Node implements HasMedia, ShouldHaveTypes, TranslatableCo
             self::TYPE_TAG => 'tag',
             self::TYPE_GROCERY_CATEGORY => 'grocery-category',
             self::TYPE_FOOD_CATEGORY => 'food-category',
-            self::TYPE_ONE_STAR_RATING_ISSUE => 'one-star-rating-issue',
-            self::TYPE_TWO_STAR_RATING_ISSUE => 'two-star-rating-issue',
+            self::TYPE_RATING_ISSUE => 'rating-issue',
         ];
     }
 
