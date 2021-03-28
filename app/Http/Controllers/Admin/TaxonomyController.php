@@ -72,6 +72,17 @@ class TaxonomyController extends Controller
                 ]
             ]);
         }
+        if ($correctType == \App\Models\Taxonomy::TYPE_INGREDIENT) {
+            $columns = array_merge($columns, [
+                [
+                    'data' => 'ingredientCategory',
+                    'name' => 'ingredientCategory',
+                    'title' => 'Ingredient Category',
+                    'orderable' => false,
+                    'searchable' => false
+                ]
+            ]);
+        }
         if ($correctType == \App\Models\Taxonomy::TYPE_FOOD_CATEGORY) {
             $columns = array_merge($columns, [
                 [
@@ -84,13 +95,25 @@ class TaxonomyController extends Controller
             ]);
         }
 
-        if ($correctType == in_array($correctType,
+        if (in_array($correctType,
                 [Taxonomy::TYPE_GROCERY_CATEGORY, Taxonomy::TYPE_FOOD_CATEGORY])) {
             $columns = array_merge($columns, [
                 [
                     'data' => 'chain',
                     'name' => 'chain.title',
                     'title' => trans('strings.chain'),
+                    'orderable' => false,
+                    'searchable' => false
+                ]
+            ]);
+        }
+
+        if ($correctType == Taxonomy::TYPE_MENU_CATEGORY) {
+            $columns = array_merge($columns, [
+                [
+                    'data' => 'branch.title',
+                    'name' => 'branch.title',
+                    'title' => trans('strings.branch'),
                     'orderable' => false,
                     'searchable' => false
                 ]

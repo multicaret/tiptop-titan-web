@@ -120,14 +120,6 @@ class ComposerServiceProvider extends ServiceProvider
                         'params' => ['type' => 'collapse'],
                         'subChildren' => [
                             [
-                                'title' => 'Products',
-                                'icon' => 'fas fa-box-open',
-                                'params' => [
-                                    'type' => Product::getCorrectTypeName(Product::TYPE_GROCERY_PRODUCT, false)
-                                ],
-                                'routeName' => 'admin.products.index',
-                            ],
-                            [
                                 'title' => 'Chains',
                                 'icon' => 'fas fa-link',
                                 'params' => [
@@ -145,7 +137,20 @@ class ComposerServiceProvider extends ServiceProvider
                                 'routeName' => 'admin.branches.index',
                             ],
                             [
-                                'title' => 'Categories',
+                                'title' => 'Slides',
+                                'icon' => 'fas fa-images',
+                                'routeName' => 'admin.slides.index',
+                            ],
+                            [
+                                'title' => 'Products',
+                                'icon' => 'fas fa-box-open',
+                                'params' => [
+                                    'type' => Product::getCorrectTypeName(Product::TYPE_GROCERY_PRODUCT, false)
+                                ],
+                                'routeName' => 'admin.products.index',
+                            ],
+                            [
+                                'title' => 'Main Categories',
                                 'icon' => 'fas fa-shapes',
                                 'params' => [
                                     'type' =>
@@ -189,41 +194,11 @@ class ComposerServiceProvider extends ServiceProvider
                                 'routeName' => 'admin.branches.index',
                             ],
                             [
-                                'title' => 'Categories',
-                                'icon' => 'fas fa-shapes',
-                                'params' => [
-                                    'type' =>
-                                        \App\Models\Taxonomy::getCorrectTypeName(\App\Models\Taxonomy::TYPE_FOOD_CATEGORY,
-                                            false)
-                                ],
-                                'routeName' => 'admin.taxonomies.index',
-                            ],
-                            [
-                                'title' => 'Restaurant Categories',
-                                'icon' => 'fas fa-shapes',
-                                'params' => [
-                                    'type' =>
-                                        \App\Models\Taxonomy::getCorrectTypeName(\App\Models\Taxonomy::TYPE_RESTAURANT_CATEGORY,
-                                            false)
-                                ],
-                                'routeName' => 'admin.taxonomies.index',
-                            ],
-                            [
                                 'title' => 'Ingredient',
                                 'icon' => 'fas fa-leaf',
                                 'params' => [
                                     'type' =>
                                         \App\Models\Taxonomy::getCorrectTypeName(\App\Models\Taxonomy::TYPE_INGREDIENT,
-                                            false),
-                                ],
-                                'routeName' => 'admin.taxonomies.index',
-                            ],
-                            [
-                                'title' => 'Ingredient Categories',
-                                'icon' => 'fas fa-leaf',
-                                'params' => [
-                                    'type' =>
-                                        \App\Models\Taxonomy::getCorrectTypeName(\App\Models\Taxonomy::TYPE_INGREDIENT_CATEGORY,
                                             false),
                                 ],
                                 'routeName' => 'admin.taxonomies.index',
@@ -247,6 +222,36 @@ class ComposerServiceProvider extends ServiceProvider
                                 ],
                                 'routeName' => 'admin.chains.index',
                             ],
+                            [
+                                'title' => 'Main Categories',
+                                'icon' => 'fas fa-shapes',
+                                'params' => [
+                                    'type' =>
+                                        \App\Models\Taxonomy::getCorrectTypeName(\App\Models\Taxonomy::TYPE_FOOD_CATEGORY,
+                                            false)
+                                ],
+                                'routeName' => 'admin.taxonomies.index',
+                            ],
+                            [
+                                'title' => 'Menu Categories',
+                                'icon' => 'fas fa-shapes',
+                                'params' => [
+                                    'type' =>
+                                        \App\Models\Taxonomy::getCorrectTypeName(\App\Models\Taxonomy::TYPE_MENU_CATEGORY,
+                                            false)
+                                ],
+                                'routeName' => 'admin.taxonomies.index',
+                            ],
+                            [
+                                'title' => 'Ingredient Categories',
+                                'icon' => 'fas fa-shapes',
+                                'params' => [
+                                    'type' =>
+                                        \App\Models\Taxonomy::getCorrectTypeName(\App\Models\Taxonomy::TYPE_INGREDIENT_CATEGORY,
+                                            false),
+                                ],
+                                'routeName' => 'admin.taxonomies.index',
+                            ],
                         ]
                     ]
                 ]
@@ -259,11 +264,6 @@ class ComposerServiceProvider extends ServiceProvider
                         'routeName' => 'admin.index',
                         'params' => ['type' => 'collapse'],
                         'subChildren' => [
-                            [
-                                'title' => 'Slides',
-                                'icon' => 'fas fa-images',
-                                'routeName' => 'admin.slides.index',
-                            ],
                             [
                                 'title' => 'Articles',
                                 'icon' => 'fas fa-pencil-alt',

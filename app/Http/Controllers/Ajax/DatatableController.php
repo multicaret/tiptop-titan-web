@@ -102,7 +102,7 @@ class DatatableController extends AjaxController
     {
         $correctType = Taxonomy::getCorrectType($request->type);
         $taxonomies = Taxonomy::orderBy('order_column')
-                              ->with('parent', 'chain', 'branches')
+                              ->with('parent', 'chain', 'branches', 'branch')
                               ->where('type', $correctType);
 
         return DataTables::of($taxonomies)
@@ -128,9 +128,13 @@ class DatatableController extends AjaxController
                          })
                          ->editColumn('branches', function ($item) {
                              $branches = $item->branches->pluck('title')->toArray();
+
                              return view('admin.components.datatables._badge-items', [
                                  'items' => $branches
                              ])->render();
+                         })
+                         ->editColumn('ingredientCategory', function ($item) {
+                             return !is_null($item->ingredientCategory) ? $item->ingredientCategory->title : null;
                          })
                          ->editColumn('order_column', function ($item) {
                              return view('admin.components.datatables._row-reorder')->render();
@@ -151,7 +155,8 @@ class DatatableController extends AjaxController
                              'branches',
                              'action',
                              'order_column',
-                             'created_at'
+                             'created_at',
+                             'ingredientCategory'
                          ])
                          ->setRowAttr([
                              'row-id' => function ($taxonomy) {
@@ -465,7 +470,7 @@ class DatatableController extends AjaxController
                                      'type' => request('type')
                                  ]),
                                  'deleteAction' => route('admin.chains.destroy', [
-                                     $chain->id,
+                                     $chain->uuid,
                                      'type' => request('type')
                                  ]),
                              ];
