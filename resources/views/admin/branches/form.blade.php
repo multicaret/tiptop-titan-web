@@ -26,7 +26,8 @@
           action="{{route('admin.branches.store',['type'=> request()->type])}}"
           @else
           action="{{route('admin.branches.update',['type'=> request()->type,$branch->uuid])}}"
-        @endif
+          @endif
+          ref="main-form"
     >
         {{csrf_field()}}
         @if(!is_null($branch->id))
@@ -211,42 +212,82 @@
                         </div>
                     </div>
                 </div>
-            </div>
-            {{--<div class="col-md-3" style="margin-top: 2.2rem !important;">
-                <div class="row">
-                    <div class="col-md-12 mt-2">
-                        <div class="card card-outline-inverse">
-                            <h4 class="card-header">Photos</h4>
-                            <div class="card-body">
-                                <div class="row">
-                                    <div class="col-12">
-                                        <h5>Cover</h5>
-                                        @component('admin.components.form-group', ['name' => 'cover', 'type' => 'file'])
-                                            @slot('attributes', [
-                                                'class' => 'cover-uploader',
-                                                'accept' => '.jpg, .jpeg, .png, .bmp',
-                                                'dropzone' => 'media-list',
-                                                'data-fileuploader-listInput' => 'media-list',
-                                                'data-fileuploader-extensions' => 'jpg, jpeg, png, bmp',
-                                                'data-fileuploader-files' => json_encode($branch->getMediaForUploader('cover'), JSON_UNESCAPED_UNICODE),
-                                            ])
-                                        @endcomponent
+                <div class="col-md-12 mt-2">
+                    <div id="accordion">
+                        <div class="card mb-2">
+                            <a class="text-body" data-toggle="collapse" href="#accordion-1">
+                                <h4 class="card-header">Contacts</h4>
+                            </a>
+                            <div id="accordion-1" class="collapse" data-parent="#accordion">
+                                <div class="card-body">
+                                    <div class="row">
+                                        <div class="col-md-12">
+                                            <div class="card">
+                                                <table class="table card-table">
+                                                    <thead class="thead-light">
+                                                    <tr>
+                                                        <th>#</th>
+                                                        <th>Name</th>
+                                                        <th>Email</th>
+                                                        <th>Phone Number</th>
+                                                        <th>Action</th>
+                                                    </tr>
+                                                    </thead>
+                                                    <tbody v-for="(contactDetail,index) in contactDetails">
+                                                    <tr>
+                                                        <th scope="row">@{{index+1}}</th>
+                                                        <td>
+                                                            <input type="text" v-model="contactDetail.name"
+                                                                   class="form-control" name="contact-name">
+{{--                                                            <small>@{{}}</small>--}}
+                                                        </td>
+                                                        <td>
+                                                            <input type="text" v-model="contactDetail.email"
+                                                                   class="form-control" name="contact-email">
+                                                        </td>
+                                                        <td>
+                                                            <input type="text" v-model="contactDetail.phone"
+                                                                   class="form-control" name="contact-phone">
+                                                        </td>
+                                                        <td>
+                                                            <a class="btn btn-danger text-white"
+                                                               @click="removeItem(contactDetail.id)">
+                                                                <i class="fa fa-trash-alt"></i>
+                                                            </a></td>
+                                                    </tr>
+                                                    </tbody>
+                                                    <tr>
+                                                        <td>
+                                                            <a class="btn btn-primary" @click="addNewContact">
+                                                                <i class="fa fa-plus"></i>
+                                                            </a>
+                                                        </td>
+                                                    </tr>
+                                                </table>
+                                            </div>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
                         </div>
                     </div>
                 </div>
-            </div>--}}
+            </div>
         </div>
         <div class="col-md-12">
             <input type="hidden" name="region" :value="JSON.stringify(branch.region)">
             <input type="hidden" name="city" :value="JSON.stringify(branch.city)">
             <input type="hidden" name="chain" :value="JSON.stringify(branch.chain)">
+            <input type="hidden" name="contactDetails" :value="JSON.stringify(contactDetails)">
             <input type="hidden" name="longitude" id="longitude">
             <input type="hidden" name="latitude" id="latitude">
             <input type="hidden" name="unattached-media" class="deleted-file" value="">
-            <button class="btn btn-success" type="submit">{{trans('strings.submit')}}</button>
+{{--            <tamplet v-if="contactDetails.length && errors.length">--}}
+{{--                <ul>--}}
+{{--                    <li v-for="error in errors">@{{ error }}</li>--}}
+{{--                </ul>--}}
+{{--            </tamplet>--}}
+            <button class="btn btn-success" type="submit" @click="submitButton($event)">{{trans('strings.submit')}}</button>
         </div>
     </form>
 
@@ -284,6 +325,13 @@
                 regions: @json($regions),
                 cities: [],
                 chains: @json($chains),
+                contactDetails: @json($contacts),
+                contactDetail: {
+                    name: '',
+                    email: '',
+                    phone: ''
+                },
+                validationData: [],
             },
             methods: {
                 retrieveCities: function (region) {
@@ -292,7 +340,45 @@
                             this.cities = res.data;
                         });
                 },
-            },
+                addNewContact: function () {
+                    this.contactDetails.push(JSON.parse(JSON.stringify(this.contactDetail)))
+
+                },
+                removeItem: function (id) {
+                    this.contactDetails.splice(this.contactDetails.indexOf(id), 1);
+
+                },
+                submitButton(e) {
+                    e.preventDefault();
+                    console.log("this.$refs['main-form'].elements");
+                    console.log(this.$refs['main-form'].elements.namedItem('en[title]'));
+                    // const titleElement = this.$refs['main-form'].elements;
+                    // let validationData = this.validationData;
+                    // validationData[0] = {'English Title': !!titleElement.value};
+                    // validationData[1] = {'Old Price': !!oldPriceElement.value};
+                    // validationData[2] = {'New Price': !!newPriceElement.value};
+                    // validationData[3] = {'discount start date': !!offer.begins_at};
+                    // validationData[4] = {'discount start end': !!offer.expires_at};
+                    // validationData[5] = {'clinic': !!offer.clinic && !!offer.clinic.id};
+                    // validationData[6] = {'specialty': !!offer.specialty && !!offer.specialty.id};
+                    // validationData[7] = {'doctors': !!offer.doctors};
+                    //
+                    /*for (let i = 0; i < validationData.length; i++) {
+                        const tmpItem = validationData[i], inputLabel = Object.keys(tmpItem)[0];
+                        if (!tmpItem[inputLabel]) {
+                            this.setErrorMessage(`${inputLabel} is required.`);
+                            break;
+                        }
+                    }*/
+/*
+                    if (!!this.formErrorMessage) {
+                        e.preventDefault();
+                    } else {
+                        this.$refs['main-form'].submit();
+                    }
+*/
+                }
+            }
         })
     </script>
 
