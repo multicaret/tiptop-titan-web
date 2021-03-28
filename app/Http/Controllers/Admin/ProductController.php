@@ -3,7 +3,10 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
+use App\Models\Branch;
+use App\Models\Chain;
 use App\Models\Product;
+use App\Models\Taxonomy;
 use Illuminate\Http\Request;
 
 class ProductController extends Controller
@@ -61,13 +64,19 @@ class ProductController extends Controller
     }
 
     public function create(Request $request) {
-        $typeName = $request->input('type');
-        $product = new Product();
-        $tableName = $product->getTable();
-        $translatedInputs = Controller::getTranslatedAttributesFromTable($tableName, Product::getDroppedColumns());
-        $allInputs = Controller::getAttributesFromTable($tableName, Product::getDroppedColumns());
-        return view('admin.products.form', compact('product', 'typeName', 'translatedInputs', 'allInputs'));
-
+        $data['typeName'] = $request->input('type');
+        $callback = function ($item){
+            return ['id' => $item->id, 'title' => $item->title];
+        };
+        $data['chains'] = Chain::whereType(Chain::TYPE_GROCERY_CHAIN)->get()->map($callback)->all();
+        $data['branches'] = Branch::whereType(Branch::TYPE_GROCERY_BRANCH)->get()->map($callback)->all();
+        $data['units'] = Taxonomy::postCategories()->get()->map($callback)->all();
+        $data['categories'] = Taxonomy::groceryCategories()->get()->map($callback)->all();
+        $data['product'] = new Product();
+        $tableName = $data['product']->getTable();
+        $data['translatedInputs'] = Controller::getTranslatedAttributesFromTable($tableName, Product::getDroppedColumns());
+        $data['allInputs'] = Controller::getAttributesFromTable($tableName, Product::getDroppedColumns());
+        return view('admin.products.form', $data);
     }
 
     public function store(Request $request) {

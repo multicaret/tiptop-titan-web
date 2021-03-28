@@ -206,15 +206,6 @@ class ComposerServiceProvider extends ServiceProvider
                                 ],
                                 'routeName' => 'admin.taxonomies.index',
                             ],
-                            [
-                                'title' => 'Products',
-                                'icon' => 'fas fa-box-open',
-                                'params' => [
-                                    'type' =>
-                                        'foo',
-                                ],
-                                'routeName' => 'admin.chains.index',
-                            ],
                         ]
                     ]
                 ]
