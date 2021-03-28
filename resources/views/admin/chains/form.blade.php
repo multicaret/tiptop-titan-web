@@ -84,7 +84,7 @@
                                 <div class="col-6">
                                     <div class="form-group">
                                         <label class="control-label">
-                                            @lang('strings.region')
+                                            @lang('strings.city')
                                         </label>
                                         <multiselect
                                             :options="regions"
@@ -105,7 +105,7 @@
                                 <div class="col-6">
                                     <div class="form-group">
                                         <label class="control-label">
-                                            @lang('strings.city')
+                                            Neighborhood
                                         </label>
                                         <multiselect
                                             :options="cities"

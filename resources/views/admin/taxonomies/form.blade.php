@@ -126,6 +126,16 @@
                         @endcomponent
                     </div>
                 @endif
+                <div
+                    class="{{in_array($correctType, [\App\Models\Taxonomy::TYPE_INGREDIENT,\App\Models\Taxonomy::TYPE_INGREDIENT_CATEGORY]) ? 'col-6':'col-4'}}">
+                    @component('admin.components.form-group', ['name' => 'status', 'type' => 'select'])
+                        @slot('label', trans('strings.status'))
+                        @slot('attributes', ['class'=>'select-2-status w-100'])
+                        @slot('options', \App\Models\Taxonomy::getStatusesArray())
+                        @slot('selected', $taxonomy->status)
+                    @endcomponent
+                </div>
+
                 @if($correctType == \App\Models\Taxonomy::TYPE_UNIT)
                     <div class="col-md-12">
                         @component('admin.components.form-group', ['name' => 'step', 'type' => 'number'])
@@ -138,14 +148,6 @@
                         @endcomponent
                     </div>
                 @endif
-                <div class="col-4">
-                    @component('admin.components.form-group', ['name' => 'status', 'type' => 'select'])
-                        @slot('label', trans('strings.status'))
-                        @slot('attributes', ['class'=>'select-2-status w-100'])
-                        @slot('options', \App\Models\Taxonomy::getStatusesArray())
-                        @slot('selected', $taxonomy->status)
-                    @endcomponent
-                </div>
                 @if(in_array($correctType, [\App\Models\Taxonomy::TYPE_GROCERY_CATEGORY,\App\Models\Taxonomy::TYPE_FOOD_CATEGORY]))
                     <div class="col-4">
                         @component('admin.components.form-group', ['name' => 'chain_id', 'type' => 'select'])

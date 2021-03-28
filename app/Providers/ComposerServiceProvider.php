@@ -319,12 +319,12 @@ class ComposerServiceProvider extends ServiceProvider
                         'params' => ['type' => 'collapse'],
                         'subChildren' => [
                             [
-                                'title' => trans('strings.regions'),
+                                'title' => 'Cities',
                                 'icon' => 'fas fa-map-signs',
                                 'routeName' => 'admin.regions.index',
                             ],
                             [
-                                'title' => trans('strings.cities'),
+                                'title' => 'Neighborhoods',
                                 'icon' => 'fas fa-city',
                                 'routeName' => 'admin.cities.index',
                             ],

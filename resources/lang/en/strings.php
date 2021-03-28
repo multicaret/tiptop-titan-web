@@ -225,4 +225,5 @@ return [
     'ingredients' => 'Ingredients',
     'ingredient-categories' => 'Ingredient categories',
     'step' => 'Step',
+    'units' => 'Units',
 ];
