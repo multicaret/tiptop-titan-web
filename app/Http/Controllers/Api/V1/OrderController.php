@@ -169,7 +169,7 @@ class OrderController extends BaseApiController
         $newOrder->branch_id = $request->input('branch_id');
         $newOrder->cart_id = $request->input('cart_id');
         $newOrder->payment_method_id = $request->input('payment_method_id');
-        $newOrder->address_id = $address;
+        $newOrder->address_id = $address->id;
         $newOrder->city_id = $address->city_id;
         $newOrder->total = $userCart->total;
         $newOrder->delivery_fee = $deliveryFee;
@@ -230,37 +230,34 @@ class OrderController extends BaseApiController
     }
 
 
-    public function storeRate(Request $request): JsonResponse
+    public function storeRate(Request $request, $orderId): JsonResponse
     {
-        [$issuesOne, $issuesTwo] = $this->getIssuesLists();
-        $response = [
-            'issuesOne' => TaxonomyResource,
-            'issuesTwo' => $issuesTwo,
-        ];
-
-        return $this->respond($response);
-    }
-
-
-    public function rate(Request $request): JsonResponse
-    {
-        $this->respond(Chain::getTypesArray()[Chain::TYPE_FOOD]);
+        try {
+            $order = Order::find($orderId);
+        } catch (\Exception $e) {
+            return $this->respondNotFound();
+        }
         $response = [];
+
+        $ratingValue = $request->input('rating_value');
         if ($request->input('type') === Chain::getTypesArray()[Chain::TYPE_GROCERY]) {
-            [$issuesOne, $issuesTwo] = $this->getIssuesLists();
-            $response = [
-                'issuesOne' => $issuesOne,
-                'issuesTwo' => $issuesTwo,
-            ];
-        } elseif ($request->input('type') === Chain::getTypesArray()[Chain::TYPE_FOOD]) {
-            $response = [
-                'has_good_food_quality_rating' => 'Good Food Quality',
-                'has_good_packaging_quality_rating' => 'Good Packaging Quality',
-                'has_good_order_accuracy_rating' => 'Good Order Accuracy',
-            ];
+            $order->rating_issue_id = $request->input('grocery_issue_id');
+        }
+        if ($request->input('type') === Chain::getTypesArray()[Chain::TYPE_FOOD]) {
+            $order->has_good_food_quality_rating = $request->input('food_rating_factors.has_good_food_quality_rating');
+            $order->has_good_packaging_quality_rating = $request->input('food_rating_factors.has_good_packaging_quality_rating');
+            $order->has_good_order_accuracy_rating = $request->input('food_rating_factors.has_good_order_accuracy_rating');
         }
 
-        return $this->respond($response);
+        \DB::beginTransaction();
+        $order->rating_comment = $request->input('comment');
+        $order->rating_value = $ratingValue;
+        $order->save();
+        $branch = Branch::find($order->branch_id);
+        auth()->user()->rate($branch, $ratingValue);
+        \DB::commit();
+
+        return $this->respondWithMessage(trans('strings.successfully_done'));
     }
 
     private function getIssuesLists(): array
