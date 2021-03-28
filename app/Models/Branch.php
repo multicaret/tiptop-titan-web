@@ -183,6 +183,11 @@ class Branch extends Model implements HasMedia
         return $this->belongsTo(City::class);
     }
 
+    public function locations(): \Illuminate\Database\Eloquent\Relations\HasMany
+    {
+        return $this->hasMany(Location::class, 'contactable_id');
+    }
+
     public static function getClosestAvailableBranch($latitude, $longitude): array
     {
         $distance = $branch = null;
@@ -217,7 +222,7 @@ class Branch extends Model implements HasMedia
 
     public function getHasBeenRatedAttribute(): bool
     {
-        return $this->raters->count() > 0 ;
+        return $this->raters->count() > 0;
     }
 
 }

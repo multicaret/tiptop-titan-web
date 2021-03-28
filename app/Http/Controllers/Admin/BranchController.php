@@ -136,7 +136,7 @@ class BranchController extends Controller
     {
         $typeName = Branch::getCorrectTypeName($request->type, false);
         $type = Branch::getCorrectType($request->type);
-        $contacts = Location::where('contactable_id', $branch->id)->get()->map(function ($item) {
+        $contacts = $branch->locations()->get()->map(function ($item) {
             return [
                 'id' => $item->id,
                 'name' => $item->name,
@@ -233,9 +233,7 @@ class BranchController extends Controller
             }
         }
         $requestContactDetails = json_decode($request->contactDetails);
-        $contactToDelete = Location::where('contactable_id', $branch->id)
-                                   ->where('contactable_type', Branch::class)
-                                   ->get()->pluck('id')->toArray();
+        $contactToDelete = $branch->locations()->get()->pluck('id')->toArray();
         $contactToDelete = array_combine($contactToDelete, $contactToDelete);
         foreach ($requestContactDetails as $requestContactDetail) {
             if (isset($requestContactDetail->id) && ! is_null($location = Location::whereId($requestContactDetail->id)->first())) {
