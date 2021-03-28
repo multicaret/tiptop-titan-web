@@ -43,7 +43,12 @@ class Kernel extends HttpKernel
         'api' => [
             'throttle:api',
             \Illuminate\Routing\Middleware\SubstituteBindings::class,
-            \App\Http\Middleware\LogAllInputs::class,
+            /*
+             * Todo: please note that enabling this middleware will cause a problem in
+             * resolving the route model binding
+             * https://github.com/laravel/framework/issues/34165
+            */
+//            \App\Http\Middleware\LogAllInputs::class,
         ],
     ];
 

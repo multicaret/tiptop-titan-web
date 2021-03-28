@@ -8,6 +8,38 @@ use App\Traits\HasViewCount;
 use Illuminate\Database\Eloquent\Model;
 use Spatie\MediaLibrary\HasMedia;
 
+/**
+ * App\Models\Barcode
+ *
+ * @property int $id
+ * @property int $country_id
+ * @property int $creator_id
+ * @property int $editor_id
+ * @property int $code
+ * @property \Illuminate\Support\Carbon|null $created_at
+ * @property \Illuminate\Support\Carbon|null $updated_at
+ * @property-read bool $image
+ * @property-read mixed $is_published
+ * @property-read mixed $status_name
+ * @property-read \Spatie\MediaLibrary\MediaCollections\Models\Collections\MediaCollection|\Spatie\MediaLibrary\MediaCollections\Models\Media[] $media
+ * @property-read int|null $media_count
+ * @method static \Illuminate\Database\Eloquent\Builder|Barcode draft()
+ * @method static \Illuminate\Database\Eloquent\Builder|Barcode inactive()
+ * @method static \Illuminate\Database\Eloquent\Builder|Barcode incomplete()
+ * @method static \Illuminate\Database\Eloquent\Builder|Barcode newModelQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder|Barcode newQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder|Barcode notPublished()
+ * @method static \Illuminate\Database\Eloquent\Builder|Barcode published()
+ * @method static \Illuminate\Database\Eloquent\Builder|Barcode query()
+ * @method static \Illuminate\Database\Eloquent\Builder|Barcode whereCode($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Barcode whereCountryId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Barcode whereCreatedAt($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Barcode whereCreatorId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Barcode whereEditorId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Barcode whereId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Barcode whereUpdatedAt($value)
+ * @mixin \Eloquent
+ */
 class Barcode extends Model implements HasMedia
 {
     use HasMediaTrait,

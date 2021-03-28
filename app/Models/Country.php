@@ -6,6 +6,69 @@ use App\Traits\HasStatuses;
 use Astrotomic\Translatable\Translatable;
 use Illuminate\Database\Eloquent\Model;
 
+/**
+ * App\Models\Country
+ *
+ * @property int $id
+ * @property int|null $currency_id
+ * @property int|null $language_id
+ * @property int|null $timezone_id
+ * @property string $english_name
+ * @property string $alpha2_code
+ * @property string $alpha3_code
+ * @property int $numeric_code
+ * @property string|null $phone_code
+ * @property int|null $order_column
+ * @property int $status 0:incomplete, 1:draft, 2:published, 3:Inactive, 4..n:CUSTOM
+ * @property \Illuminate\Support\Carbon|null $created_at
+ * @property \Illuminate\Support\Carbon|null $updated_at
+ * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\City[] $cities
+ * @property-read int|null $cities_count
+ * @property-read \App\Models\Currency|null $currency
+ * @property-read mixed $is_published
+ * @property-read mixed $status_name
+ * @property-read \App\Models\Language|null $language
+ * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\Location[] $locations
+ * @property-read int|null $locations_count
+ * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\Region[] $regions
+ * @property-read int|null $regions_count
+ * @property-read \App\Models\Timezone|null $timezone
+ * @property-read \App\Models\CountryTranslation|null $translation
+ * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\CountryTranslation[] $translations
+ * @property-read int|null $translations_count
+ * @method static \Illuminate\Database\Eloquent\Builder|Country draft()
+ * @method static \Illuminate\Database\Eloquent\Builder|Country inactive()
+ * @method static \Illuminate\Database\Eloquent\Builder|Country incomplete()
+ * @method static \Illuminate\Database\Eloquent\Builder|Country listsTranslations(string $translationField)
+ * @method static \Illuminate\Database\Eloquent\Builder|Country newModelQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder|Country newQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder|Country notPublished()
+ * @method static \Illuminate\Database\Eloquent\Builder|Country notTranslatedIn(?string $locale = null)
+ * @method static \Illuminate\Database\Eloquent\Builder|Country orWhereTranslation(string $translationField, $value, ?string $locale = null)
+ * @method static \Illuminate\Database\Eloquent\Builder|Country orWhereTranslationLike(string $translationField, $value, ?string $locale = null)
+ * @method static \Illuminate\Database\Eloquent\Builder|Country orderByTranslation(string $translationField, string $sortMethod = 'asc')
+ * @method static \Illuminate\Database\Eloquent\Builder|Country published()
+ * @method static \Illuminate\Database\Eloquent\Builder|Country query()
+ * @method static \Illuminate\Database\Eloquent\Builder|Country translated()
+ * @method static \Illuminate\Database\Eloquent\Builder|Country translatedIn(?string $locale = null)
+ * @method static \Illuminate\Database\Eloquent\Builder|Country whereAlpha2Code($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Country whereAlpha3Code($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Country whereCreatedAt($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Country whereCurrencyId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Country whereEnglishName($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Country whereId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Country whereLanguageId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Country whereNumericCode($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Country whereOrderColumn($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Country wherePhoneCode($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Country whereStatus($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Country whereTimezoneId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Country whereTranslation(string $translationField, $value, ?string $locale = null, string $method = 'whereHas', string $operator = '=')
+ * @method static \Illuminate\Database\Eloquent\Builder|Country whereTranslationLike(string $translationField, $value, ?string $locale = null)
+ * @method static \Illuminate\Database\Eloquent\Builder|Country whereUpdatedAt($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Country withTranslation()
+ * @mixin \Eloquent
+ */
 class Country extends Model
 {
     use Translatable,

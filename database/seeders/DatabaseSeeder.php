@@ -543,6 +543,78 @@ class DatabaseSeeder extends Seeder
                     ]
                 ]
             ],
+            [
+                'type' => Taxonomy::TYPE_RATING_ISSUE,
+                'parent_id' => null,
+                'translations' => [
+                    [
+                        'locale' => 'en',
+                        'title' => 'I had an issue with products (s)',
+                    ],
+                    [
+                        'locale' => 'ar',
+                        'title' => 'Issue 1 item 1 Ar',
+                    ],
+                    [
+                        'locale' => 'ku',
+                        'title' => 'Issue 1 item 1 Ku',
+                    ]
+                ]
+            ],
+            [
+                'type' => Taxonomy::TYPE_RATING_ISSUE,
+                'parent_id' => null,
+                'translations' => [
+                    [
+                        'locale' => 'en',
+                        'title' => 'I had an issue with courier',
+                    ],
+                    [
+                        'locale' => 'ar',
+                        'title' => 'Issue 1 item 2 Ar',
+                    ],
+                    [
+                        'locale' => 'ku',
+                        'title' => 'Issue 1 item 2 Ku',
+                    ]
+                ]
+            ],
+            [
+                'type' => Taxonomy::TYPE_RATING_ISSUE,
+                'parent_id' => null,
+                'translations' => [
+                    [
+                        'locale' => 'en',
+                        'title' => 'I had an issue with application',
+                    ],
+                    [
+                        'locale' => 'ar',
+                        'title' => 'Issue 1 item 3 Ar',
+                    ],
+                    [
+                        'locale' => 'ku',
+                        'title' => 'Issue 1 item 3 Ku',
+                    ]
+                ]
+            ],
+            [
+                'type' => Taxonomy::TYPE_RATING_ISSUE,
+                'parent_id' => null,
+                'translations' => [
+                    [
+                        'locale' => 'en',
+                        'title' => 'Other',
+                    ],
+                    [
+                        'locale' => 'ar',
+                        'title' => 'Issue 1 item 4 Ar',
+                    ],
+                    [
+                        'locale' => 'ku',
+                        'title' => 'Issue 1 item 4 Ku',
+                    ]
+                ]
+            ],
             /*            [
                             'type' => Taxonomy::TYPE_GROCERY_CATEGORY,
                             'parent_id' => 4,
@@ -572,7 +644,13 @@ class DatabaseSeeder extends Seeder
                 $taxonomy->parent_id = $item['parent_id'];
             } else {
                 if ($item['type'] == Taxonomy::TYPE_GROCERY_CATEGORY) {
-                    $taxonomy->addMediaFromUrl(asset("/images/product-categories/{$item['translations'][0]['title']}.png"))->toMediaCollection("cover");
+                    $imageName = str_replace('&_', '_&_', Str::snake($item['translations'][0]['title']));
+                    if (File::exists(public_path("/images/product-categories/{$imageName}.png"))) {
+                        $taxonomy->addMediaFromUrl(asset("/images/product-categories/{$imageName}.png"))
+                                 ->toMediaCollection("cover");
+                    } else {
+                        var_dump("The image: $imageName not found");
+                    }
                 }
             }
             $taxonomy->creator_id = $super->id;
@@ -1152,7 +1230,7 @@ class DatabaseSeeder extends Seeder
         $chain->region_id = config('defaults.region.id');
         $chain->city_id = config('defaults.city.id');
         $chain->currency_id = config('defaults.currency.id');
-        $chain->type = Chain::TYPE_GROCERY;
+        $chain->type = Chain::TYPE_GROCERY_CHAIN;
         $chain->primary_phone_number = "+964539551234";
         $chain->secondary_phone_number = "+964539551234";
         $chain->whatsapp_phone_number = "+964539551234";

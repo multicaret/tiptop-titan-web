@@ -39,6 +39,7 @@ class CreateUsersTable extends Migration
             $table->decimal('avg_rating', 3)->default(0);
             $table->unsignedInteger('rating_count')->default(0);
             $table->unsignedBigInteger('view_count')->default(1);
+            $table->unsignedInteger('total_number_of_orders')->default(0);
             $table->unsignedInteger('order_column')->nullable();
             $table->json('mobile_app');
             $table->json('social_networks')->nullable();

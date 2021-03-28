@@ -14,6 +14,90 @@ use Spatie\Image\Manipulations;
 use Spatie\MediaLibrary\HasMedia;
 use Spatie\MediaLibrary\MediaCollections\Models\Media;
 
+/**
+ * App\Models\Chain
+ *
+ * @property int $id
+ * @property string $uuid
+ * @property int $creator_id
+ * @property int $editor_id
+ * @property int|null $region_id
+ * @property int|null $city_id
+ * @property int|null $currency_id
+ * @property int $type 1:Market, 2: Food
+ * @property string|null $primary_phone_number
+ * @property string|null $secondary_phone_number
+ * @property string|null $whatsapp_phone_number
+ * @property string $primary_color
+ * @property string $secondary_color
+ * @property int $number_of_items_on_mobile_grid_view
+ * @property string $avg_rating
+ * @property int $rating_count
+ * @property int $view_count
+ * @property int|null $order_column
+ * @property int|null $status
+ * @property \Illuminate\Support\Carbon|null $created_at
+ * @property \Illuminate\Support\Carbon|null $updated_at
+ * @property string|null $deleted_at
+ * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\Branch[] $branches
+ * @property-read int|null $branches_count
+ * @property-read \App\Models\City|null $city
+ * @property-read \App\Models\Currency|null $currency
+ * @property-read mixed $cover
+ * @property-read mixed $gallery
+ * @property-read mixed $is_published
+ * @property-read bool $logo
+ * @property-read mixed $status_name
+ * @property-read \Spatie\MediaLibrary\MediaCollections\Models\Collections\MediaCollection|Media[] $media
+ * @property-read int|null $media_count
+ * @property-read \App\Models\Region|null $region
+ * @property-read \App\Models\ChainTranslation|null $translation
+ * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\ChainTranslation[] $translations
+ * @property-read int|null $translations_count
+ * @method static \Illuminate\Database\Eloquent\Builder|Chain draft()
+ * @method static \Illuminate\Database\Eloquent\Builder|Chain foods()
+ * @method static \Illuminate\Database\Eloquent\Builder|Chain groceries()
+ * @method static \Illuminate\Database\Eloquent\Builder|Chain inactive()
+ * @method static \Illuminate\Database\Eloquent\Builder|Chain incomplete()
+ * @method static \Illuminate\Database\Eloquent\Builder|Chain listsTranslations(string $translationField)
+ * @method static \Illuminate\Database\Eloquent\Builder|Chain newModelQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder|Chain newQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder|Chain notPublished()
+ * @method static \Illuminate\Database\Eloquent\Builder|Chain notTranslatedIn(?string $locale = null)
+ * @method static \Illuminate\Database\Eloquent\Builder|Chain orWhereTranslation(string $translationField, $value, ?string $locale = null)
+ * @method static \Illuminate\Database\Eloquent\Builder|Chain orWhereTranslationLike(string $translationField, $value, ?string $locale = null)
+ * @method static \Illuminate\Database\Eloquent\Builder|Chain orderByTranslation(string $translationField, string $sortMethod = 'asc')
+ * @method static \Illuminate\Database\Eloquent\Builder|Chain published()
+ * @method static \Illuminate\Database\Eloquent\Builder|Chain query()
+ * @method static \Illuminate\Database\Eloquent\Builder|Chain translated()
+ * @method static \Illuminate\Database\Eloquent\Builder|Chain translatedIn(?string $locale = null)
+ * @method static \Illuminate\Database\Eloquent\Builder|Chain whereAvgRating($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Chain whereCityId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Chain whereCreatedAt($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Chain whereCreatorId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Chain whereCurrencyId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Chain whereDeletedAt($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Chain whereEditorId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Chain whereId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Chain whereNumberOfItemsOnMobileGridView($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Chain whereOrderColumn($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Chain wherePrimaryColor($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Chain wherePrimaryPhoneNumber($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Chain whereRatingCount($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Chain whereRegionId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Chain whereSecondaryColor($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Chain whereSecondaryPhoneNumber($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Chain whereStatus($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Chain whereTranslation(string $translationField, $value, ?string $locale = null, string $method = 'whereHas', string $operator = '=')
+ * @method static \Illuminate\Database\Eloquent\Builder|Chain whereTranslationLike(string $translationField, $value, ?string $locale = null)
+ * @method static \Illuminate\Database\Eloquent\Builder|Chain whereType($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Chain whereUpdatedAt($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Chain whereUuid($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Chain whereViewCount($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Chain whereWhatsappPhoneNumber($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Chain withTranslation()
+ * @mixin \Eloquent
+ */
 class Chain extends Model implements HasMedia
 {
     use HasMediaTrait,
@@ -28,8 +112,8 @@ class Chain extends Model implements HasMedia
     const STATUS_PUBLISHED = 2;
     const STATUS_INACTIVE = 3;
 
-    const TYPE_GROCERY = 1;
-    const TYPE_FOOD = 2;
+    const TYPE_GROCERY_CHAIN = 1;
+    const TYPE_FOOD_CHAIN = 2;
 
     protected $fillable = ['title', 'description'];
     protected $with = ['translations'];
@@ -71,7 +155,7 @@ class Chain extends Model implements HasMedia
      */
     public function scopeGroceries($query): \Illuminate\Database\Eloquent\Builder
     {
-        return $query->where('type', self::TYPE_GROCERY);
+        return $query->where('type', self::TYPE_GROCERY_CHAIN);
     }
 
     /**
@@ -83,7 +167,7 @@ class Chain extends Model implements HasMedia
      */
     public function scopeFoods($query): \Illuminate\Database\Eloquent\Builder
     {
-        return $query->where('type', self::TYPE_FOOD);
+        return $query->where('type', self::TYPE_FOOD_CHAIN);
     }
 
 
@@ -93,8 +177,8 @@ class Chain extends Model implements HasMedia
     public static function getTypesArray(): array
     {
         return [
-            self::TYPE_GROCERY => 'grocery',
-            self::TYPE_FOOD => 'food',
+            self::TYPE_GROCERY_CHAIN => 'grocery',
+            self::TYPE_FOOD_CHAIN => 'food',
         ];
     }
 

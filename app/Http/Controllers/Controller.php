@@ -365,4 +365,31 @@ class Controller extends BaseController
         return null;
     }
 
+
+    public static function ratingColorHexadecimal($rating)
+    {
+        if ($rating < 2) {
+            return '#f53d3d';
+        } else if ($rating < 3) {
+            return '#ffb700';
+        } else if ($rating <= 5) {
+            return '#32db64';
+        }
+
+        return '#f53d3d';
+    }
+
+    public static function ratingColorRGBA($rating)
+    {
+        if ($rating < 2) {
+            return 'rgba(245, 61, 61, 0.25)';
+        } else if ($rating < 3) {
+            return 'rgba(255, 183, 0, 0.25)';
+        } else if ($rating <= 5) {
+            return 'rgba(50, 219, 100, 0.25)';
+        }
+
+        return 'rgba(245, 61, 61, 0.25)';
+    }
+
 }

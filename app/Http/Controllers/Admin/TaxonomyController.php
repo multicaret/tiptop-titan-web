@@ -79,7 +79,8 @@ class TaxonomyController extends Controller
         $taxonomy = new Taxonomy();
         $taxonomy->type = $correctType;
 
-        return view('admin.taxonomies.form', compact('taxonomy', 'roots', 'typeName', 'fontAwesomeIcons'));
+        return view('admin.taxonomies.form',
+            compact('taxonomy', 'roots', 'correctType', 'typeName', 'fontAwesomeIcons'));
     }
 
     /**
@@ -108,6 +109,9 @@ class TaxonomyController extends Controller
         $taxonomy->type = $correctType;
         if ( ! is_null($request->status)) {
             $taxonomy->status = $request->status;
+        }
+        if ( ! is_null($request->branch_id)) {
+            $taxonomy->branch_id = $request->branch_id;
         }
         $taxonomy->order_column = $order;
         $taxonomy->save();
@@ -159,7 +163,7 @@ class TaxonomyController extends Controller
     {
         [$typeName, $correctType, $roots, $fontAwesomeIcons] = $this->loadData($request);
 
-        return view('admin.taxonomies.form', compact('taxonomy', 'roots', 'typeName', 'fontAwesomeIcons'));
+        return view('admin.taxonomies.form', compact('taxonomy', 'roots', 'correctType', 'typeName', 'fontAwesomeIcons'));
     }
 
     /**
@@ -186,6 +190,9 @@ class TaxonomyController extends Controller
         }
         if ( ! is_null($request->status)) {
             $taxonomy->status = $request->status;
+        }
+        if ( ! is_null($request->branch_id)) {
+            $taxonomy->branch_id = $request->branch_id;
         }
         $taxonomy->save();
 
@@ -287,7 +294,7 @@ class TaxonomyController extends Controller
         $hasParent = in_array($correctType, Taxonomy::typesHaving('parent'));
         if ($hasParent) {
             $roots = Taxonomy::roots()
-                             ->postCategories()
+                             ->groceryCategories()
                              ->get();
         }
 

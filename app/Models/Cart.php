@@ -6,6 +6,43 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 
+/**
+ * App\Models\Cart
+ *
+ * @property int $id
+ * @property int $user_id
+ * @property int $chain_id
+ * @property int $branch_id
+ * @property float $total
+ * @property float $without_discount_total
+ * @property int|null $crm_id
+ * @property int|null $crm_user_id
+ * @property int $status 0:In Progress, 1: Completed
+ * @property \Illuminate\Support\Carbon|null $created_at
+ * @property \Illuminate\Support\Carbon|null $updated_at
+ * @property-read \App\Models\Branch $branch
+ * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\CartProduct[] $cartProducts
+ * @property-read int|null $cart_products_count
+ * @property-read \App\Models\Chain $chain
+ * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\Product[] $products
+ * @property-read int|null $products_count
+ * @property-read \App\Models\User $user
+ * @method static \Illuminate\Database\Eloquent\Builder|Cart newModelQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder|Cart newQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder|Cart query()
+ * @method static \Illuminate\Database\Eloquent\Builder|Cart whereBranchId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Cart whereChainId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Cart whereCreatedAt($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Cart whereCrmId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Cart whereCrmUserId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Cart whereId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Cart whereStatus($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Cart whereTotal($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Cart whereUpdatedAt($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Cart whereUserId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Cart whereWithoutDiscountTotal($value)
+ * @mixin \Eloquent
+ */
 class Cart extends Model
 {
 
