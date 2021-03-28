@@ -444,11 +444,6 @@ class Product extends Model implements HasMedia
             'height',
             'depth',
             'weight',
-            'order_column',
-            'avg_rating',
-            'rating_count',
-            'search_count',
-            'view_count',
         ];
     }
 

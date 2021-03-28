@@ -79,94 +79,106 @@
                         @endforeach
                     </div>
                 </div>
-                {{--                <div class="col-md-12 mt-2">--}}
+                <div class="col-md-12 mt-2">
 
-                {{--                    <div class="card card-outline-inverse">--}}
-                {{--                        <h4 class="card-header">Details</h4>--}}
-                {{--                        <div class="card-body">--}}
-                {{--                            <div class="row bg-light pt-3">--}}
-                {{--                                <div class="col-6">--}}
-                {{--                                    <div class="form-group">--}}
-                {{--                                        <label class="control-label">--}}
-                {{--                                            @lang('strings.region')--}}
-                {{--                                        </label>--}}
-                {{--                                                                                <multiselect--}}
-                {{--                                                                                    :options="regions"--}}
-                {{--                                                                                    v-model="chain.region"--}}
-                {{--                                                                                    track-by="name"--}}
-                {{--                                                                                    label="name"--}}
-                {{--                                                                                    :searchable="true"--}}
-                {{--                                                                                    :allow-empty="true"--}}
-                {{--                                                                                    select-label=""--}}
-                {{--                                                                                    selected-label=""--}}
-                {{--                                                                                    deselect-label=""--}}
-                {{--                                                                                    placeholder=""--}}
-                {{--                                                                                    @select="retrieveCities"--}}
-                {{--                                                                                    autocomplete="false"--}}
-                {{--                                                                                ></multiselect>--}}
-                {{--                                    </div>--}}
-                {{--                                </div>--}}
-                {{--                                <div class="col-6">--}}
-                {{--                                    <div class="form-group">--}}
-                {{--                                        <label class="control-label">--}}
-                {{--                                            @lang('strings.city')--}}
-                {{--                                        </label>--}}
-                {{--                                                                                <multiselect--}}
-                {{--                                                                                    :options="cities"--}}
-                {{--                                                                                    v-model="chain.city"--}}
-                {{--                                                                                    track-by="name"--}}
-                {{--                                                                                    label="name"--}}
-                {{--                                                                                    :searchable="true"--}}
-                {{--                                                                                    :allow-empty="true"--}}
-                {{--                                                                                    select-label=""--}}
-                {{--                                                                                    selected-label=""--}}
-                {{--                                                                                    deselect-label=""--}}
-                {{--                                                                                    placeholder=""--}}
-                {{--                                                                                                                            @select="retrieveNeighborhoods"--}}
-                {{--                                                                                    autocomplete="false"--}}
-                {{--                                                                                ></multiselect>--}}
-                {{--                                    </div>--}}
-                {{--                                </div>--}}
-                {{--                            </div>--}}
-                {{--                            <div class="row">--}}
-                {{--                                <div class="col-md-4 mt-3">--}}
-                {{--                                    @component('admin.components.form-group', ['name' => 'primary_phone_number', 'type' => 'tel'])--}}
-                {{--                                        @slot('label', 'Primary phone number')--}}
-                {{--                                        @slot('value', $product->primary_phone_number)--}}
-                {{--                                    @endcomponent--}}
-                {{--                                </div>--}}
-                {{--                            </div>--}}
-                {{--                        </div>--}}
-                {{--                    </div>--}}
-                {{--                </div>--}}
-
-                {{--<div class="col-md-12 mt-2">
                     <div class="card card-outline-inverse">
-                        <h4 class="card-header">Style</h4>
+                        <h4 class="card-header">Selectors</h4>
                         <div class="card-body">
-                            <div class="row">
-                                <div class="col-md-6">
-                                    @component('admin.components.form-group', ['name' => 'primary_color', 'type' => 'color'])
-                                        @slot('label', 'Primary color')
-                                        @slot('value', is_null($product->primary_color)? '#FEC63D' : $product->primary_color)
-                                    @endcomponent
+                            <div class="row pt-3">
+                                <div class="col-6">
+                                    <div class="form-group">
+                                        <label class="control-label">
+                                            @lang('strings.chain')
+                                        </label>
+                                        <multiselect
+                                            :options="chains"
+                                            v-model="selectedChain"
+                                            track-by="id"
+                                            label="title"
+                                            name="chain_id"
+                                            :searchable="true"
+                                            :allow-empty="true"
+                                            select-label=""
+                                            selected-label=""
+                                            deselect-label=""
+                                            placeholder=""
+                                            @select="resetBranch"
+                                            autocomplete="false"
+                                        ></multiselect>
+                                    </div>
                                 </div>
-                                <div class="col-md-6">
-                                    @component('admin.components.form-group', ['name' => 'secondary_color', 'type' => 'color'])
-                                        @slot('label', 'Secondary color')
-                                        @slot('value', is_null($product->secondary_color)? '#4E5155' : $product->secondary_color)
-                                    @endcomponent
+                                <div class="col-6">
+                                    <div class="form-group">
+                                        <label class="control-label">
+                                            @lang('strings.branch')
+                                        </label>
+                                        <multiselect
+                                            :options="branches"
+                                            v-model="selectedBranch"
+                                            track-by="id"
+                                            label="title"
+                                            name="branch_id"
+                                            :searchable="true"
+                                            :allow-empty="true"
+                                            select-label=""
+                                            selected-label=""
+                                            deselect-label=""
+                                            placeholder=""
+{{--                                            @select="retrieveCities"--}}
+                                            autocomplete="false"
+                                        ></multiselect>
+                                    </div>
                                 </div>
-                                <div class="col-md-6">
-                                    @component('admin.components.form-group', ['name' => 'number_of_items_on_mobile_grid_view', 'type' => 'number'])
-                                        @slot('label', 'Number of items on mobile grid view')
-                                        @slot('value', $product->number_of_items_on_mobile_grid_view)
-                                    @endcomponent
+
+                                <div class="col-6">
+                                    <div class="form-group">
+                                        <label class="control-label">
+                                            @lang('strings.categories')
+                                        </label>
+                                        <multiselect
+                                            :options="categories"
+                                            v-model="selectedCategories"
+                                            track-by="id"
+                                            label="title"
+                                            name="categories"
+                                            :searchable="true"
+                                            :multiple="true"
+                                            :allow-empty="true"
+                                            select-label=""
+                                            selected-label=""
+                                            deselect-label=""
+                                            placeholder=""
+                                            autocomplete="false"
+                                        ></multiselect>
+                                    </div>
+                                </div>
+
+                                <div class="col-6">
+                                    <div class="form-group">
+                                        <label class="control-label">
+                                            @lang('strings.units')
+                                        </label>
+                                        <multiselect
+                                            :options="units"
+                                            v-model="selectedUnit"
+                                            track-by="id"
+                                            label="title"
+                                            name="unit_id"
+                                            :searchable="true"
+                                            :allow-empty="true"
+                                            select-label=""
+                                            selected-label=""
+                                            deselect-label=""
+                                            placeholder=""
+                                            autocomplete="false"
+                                        ></multiselect>
+                                    </div>
                                 </div>
                             </div>
                         </div>
                     </div>
-                </div>--}}
+                </div>
+
                 <div class="col-md-12 mt-2">
 
                     <div class="card card-outline-inverse">
@@ -234,8 +246,10 @@
         </div>
 
         <div class="col-md-12">
-            {{--            <input type="hidden" name="region" :value="JSON.stringify(chain.region)">--}}
-            {{--            <input type="hidden" name="city" :value="JSON.stringify(chain.city)">--}}
+            <input type="hidden" name="chain_id" :value="JSON.stringify(selectedChain)">
+            <input type="hidden" name="branch_id" :value="JSON.stringify(selectedBranch)">
+            <input type="hidden" name="categories" :value="JSON.stringify(selectedCategories)">
+            <input type="hidden" name="unit_id" :value="JSON.stringify(selectedUnit)">
             <input type="hidden" name="unattached-media" class="deleted-file" value="">
             <button class="btn btn-success" type="submit">{{trans('strings.submit')}}</button>
         </div>
@@ -252,12 +266,24 @@
             el: '#vue-app',
             data: {
                 product: @json($product),
-
+                chains: @json($chains),
+                selectedChain: null,
+                branches: @json($branches),
+                selectedBranch: null,
+                categories: @json($categories),
+                selectedCategories: null,
+                units: @json($units),
+                selectedUnit: null,
+                allInputs: @json($allInputs)
             },
-            mounted() {
-                console.log('product');
+            beforeMount() {
+                console.log('this.allData');
             },
-            methods: {},
+            methods: {
+                resetBranch: function () {
+                    console.log('resetBranch');
+                }
+            },
         })
     </script>
 
