@@ -6,6 +6,7 @@ use App\Models\Branch;
 use App\Models\Chain;
 use App\Models\City;
 use App\Models\Post;
+use App\Models\Product;
 use App\Models\Region;
 use App\Models\Slide;
 use App\Models\Taxonomy;
@@ -570,5 +571,54 @@ class DatatableController extends AjaxController
             ->rawColumns($rawColumns)
             ->make(true);
     }
+
+    public function products(Request $request)
+    {
+        $products = Product::whereType(Product::getCorrectType($request->type))->selectRaw('products.*');
+
+        return DataTables::of($products)
+                         ->editColumn('action', function ($product) {
+                             $data = [
+                                 'editAction' => route('admin.products.edit', [
+                                     $product->uuid,
+                                     'type' => request('type')
+                                 ]),
+                                 'deleteAction' => route('admin.products.destroy', [
+                                     $product->uuid,
+                                     'type' => request('type')
+                                 ]),
+                             ];
+
+                             return view('admin.components.datatables._row-actions', $data)->render();
+                         })
+                         ->editColumn('chain', function ($product) {
+                             return ! is_null($product->chain) ? $product->chain->title : '';
+                         })
+                         ->editColumn('branch', function ($product) {
+                             return ! is_null($product->branch) ? $product->branch->title : '';
+                         })
+                         ->editColumn('price', function ($product) {
+                             return ! is_null($product->price) ? $product->price_formatted : '';
+                         })
+                         ->editColumn('created_at', function ($product) {
+                             return view('admin.components.datatables._date', [
+                                 'date' => $product->created_at
+                             ])->render();
+                         })
+                         ->rawColumns([
+                             'action',
+                             'chain',
+                             'branch',
+                             'price',
+                             'created_at',
+                         ])
+                         ->setRowAttr([
+                             'row-id' => function ($branch) {
+                                 return $branch->id;
+                             }
+                         ])
+                         ->make(true);
+    }
+
 
 }

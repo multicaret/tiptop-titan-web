@@ -8,8 +8,7 @@ use App\Models\Currency;
 use App\Models\Language;
 use App\Models\Post;
 use App\Models\Preference;
-use App\Models\Taxonomy;
-use App\Models\User;
+use App\Models\Product;
 use App\Scopes\ActiveScope;
 use Illuminate\Http\Request;
 use Illuminate\Support\Arr;
@@ -123,11 +122,8 @@ class ComposerServiceProvider extends ServiceProvider
                             [
                                 'title' => 'Products',
                                 'icon' => 'fas fa-box-open',
-                                'params' => [
-                                    'type' =>
-                                        'foo',
-                                ],
-                                'routeName' => 'admin.chains.index',
+                                'params' => ['type' => Product::getCorrectTypeName(Product::TYPE_GROCERY_PRODUCT, false)],
+                                'routeName' => 'admin.products.index',
                             ],
                             [
                                 'title' => 'Chains',
@@ -171,11 +167,8 @@ class ComposerServiceProvider extends ServiceProvider
                             [
                                 'title' => 'Products',
                                 'icon' => 'fas fa-box-open',
-                                'params' => [
-                                    'type' =>
-                                        'foo',
-                                ],
-                                'routeName' => 'admin.chains.index',
+                                'params' => ['type' => Product::getCorrectTypeName(Product::TYPE_FOOD_PRODUCT, false)],
+                                'routeName' => 'admin.products.index',
                             ],
                             [
                                 'title' => 'Chains',

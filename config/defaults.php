@@ -271,4 +271,14 @@ return [
             'name' => 'User',
         ],
     ],
+    'db_column_types' => [
+        'bigint' => 'number',
+        'decimal' => 'number',
+        'datetime' => 'date',
+        'float' => 'number',
+        'boolean' => 'checkbox',
+        'integer' => 'number',
+        'string' => 'text',
+        'text' => 'editor',
+    ]
 ];
