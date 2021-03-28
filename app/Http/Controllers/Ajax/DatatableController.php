@@ -128,9 +128,13 @@ class DatatableController extends AjaxController
                          })
                          ->editColumn('branches', function ($item) {
                              $branches = $item->branches->pluck('title')->toArray();
+
                              return view('admin.components.datatables._badge-items', [
                                  'items' => $branches
                              ])->render();
+                         })
+                         ->editColumn('ingredientCategory', function ($item) {
+                             return !is_null($item->ingredientCategory) ? $item->ingredientCategory->title : null;
                          })
                          ->editColumn('order_column', function ($item) {
                              return view('admin.components.datatables._row-reorder')->render();
@@ -151,7 +155,8 @@ class DatatableController extends AjaxController
                              'branches',
                              'action',
                              'order_column',
-                             'created_at'
+                             'created_at',
+                             'ingredientCategory'
                          ])
                          ->setRowAttr([
                              'row-id' => function ($taxonomy) {

@@ -21,7 +21,7 @@ class CreateTaxonomiesTable extends Migration
             $table->unsignedBigInteger('parent_id')->index()->nullable();
             $table->unsignedBigInteger('branch_id')->index()->nullable();
             $table->unsignedBigInteger('chain_id')->index()->nullable();
-            $table->unsignedBigInteger('ingredient_category_id')->nullable();
+                $table->unsignedBigInteger('ingredient_category_id')->nullable();
             $table->unsignedTinyInteger('type')->default(1)->comment('1:Category, 2: Tag, 3..n: CUSTOM');
             $table->string('icon')->nullable();
             $table->integer('view_count')->default(1);
