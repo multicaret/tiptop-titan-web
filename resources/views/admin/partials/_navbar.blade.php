@@ -175,7 +175,7 @@
                         &nbsp; My profile</a>
                     <a href="javascript:void(0)" class="dropdown-item"><i class="ion ion-ios-mail text-lightest"></i>
                         &nbsp; Messages</a>--}}
-                    <a href="{{ route('admin.users.edit',$auth) }}" class="dropdown-item"><i class="ion ion-md-settings text-lightest"></i>
+                    <a href="{{ route('admin.users.edit',['type' => Str::lower($auth->roles[0]->first()->name),'user' => $auth]) }}" class="dropdown-item"><i class="ion ion-md-settings text-lightest"></i>
                         &nbsp; Account settings</a>
                     <div class="dropdown-divider"></div>
 

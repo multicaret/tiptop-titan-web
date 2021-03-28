@@ -115,35 +115,23 @@ class ComposerServiceProvider extends ServiceProvider
             [
                 'children' => [
                     [
-                        'title' => 'Essentials',
-                        'icon' => 'fas fa-hamburger',
+                        'title' => 'Market',
+                        'icon' => 'fas fa-carrot',
                         'routeName' => 'admin.index',
                         'params' => ['type' => 'collapse'],
                         'subChildren' => [
                             [
                                 'title' => 'Products',
-                                'icon' => 'fas fa-hamburger',
+                                'icon' => 'fas fa-box-open',
                                 'params' => [
                                     'type' =>
                                         'foo',
                                 ],
                                 'routeName' => 'admin.chains.index',
                             ],
-                        ]
-                    ]
-                ]
-            ],
-            [
-                'children' => [
-                    [
-                        'title' => 'Chains',
-                        'icon' => 'fas fa-link',
-                        'routeName' => 'admin.index',
-                        'params' => ['type' => 'collapse'],
-                        'subChildren' => [
                             [
                                 'title' => 'Market Chains',
-                                'icon' => 'fas fa-carrot',
+                                'icon' => 'fas fa-link',
                                 'params' => [
                                     'type' =>
                                         Chain::getCorrectTypeName(Chain::TYPE_GROCERY, false),
@@ -151,12 +139,12 @@ class ComposerServiceProvider extends ServiceProvider
                                 'routeName' => 'admin.chains.index',
                             ],
                             [
-                                'title' => 'Food Chains',
-                                'icon' => 'fas fa-utensils',
+                                'title' => 'Market Branches',
+                                'icon' => 'fas fa-store-alt',
                                 'params' => [
-                                    'type' => Chain::getCorrectTypeName(Chain::TYPE_FOOD, false),
+                                    'type' => Branch::getCorrectTypeName(Branch::TYPE_GROCERY_BRANCH, false),
                                 ],
-                                'routeName' => 'admin.chains.index',
+                                'routeName' => 'admin.branches.index',
                             ],
                         ]
                     ]
@@ -165,22 +153,31 @@ class ComposerServiceProvider extends ServiceProvider
             [
                 'children' => [
                     [
-                        'title' => trans('strings.branches'),
-                        'icon' => 'fas fa-code-branch',
+                        'title' => 'Food',
+                        'icon' => 'fas fa-utensils',
                         'routeName' => 'admin.index',
                         'params' => ['type' => 'collapse'],
                         'subChildren' => [
                             [
-                                'title' => 'Market Branches',
-                                'icon' => 'fas fa-carrot',
+                                'title' => 'Products',
+                                'icon' => 'fas fa-box-open',
                                 'params' => [
-                                    'type' => Branch::getCorrectTypeName(Branch::TYPE_GROCERY_BRANCH, false),
+                                    'type' =>
+                                        'foo',
                                 ],
-                                'routeName' => 'admin.branches.index',
+                                'routeName' => 'admin.chains.index',
+                            ],
+                            [
+                                'title' => 'Food Chains',
+                                'icon' => 'fas fa-link',
+                                'params' => [
+                                    'type' => Chain::getCorrectTypeName(Chain::TYPE_FOOD, false),
+                                ],
+                                'routeName' => 'admin.chains.index',
                             ],
                             [
                                 'title' => 'Food Branches',
-                                'icon' => 'fas fa-utensils',
+                                'icon' => 'fas fa-store-alt',
                                 'params' => [
                                     'type' => Branch::getCorrectTypeName(Branch::TYPE_FOOD_BRANCH, false),
                                 ],
@@ -274,29 +271,81 @@ class ComposerServiceProvider extends ServiceProvider
             [
                 'children' => [
                     [
-                        'title' => trans('strings.accounts'),
+                        'title' => trans('strings.users'),
                         'icon' => 'fas fa-user-alt',
                         'routeName' => 'admin.index',
                         'params' => ['type' => 'collapse'],
                         'subChildren' => [
                             [
-                                'title' => 'Users',
-                                'icon' => 'fas fa-user-alt',
+                                'title' => 'End Users',
+                                'icon' => 'fas fa-user',
+                                'routeName' => 'admin.users.index',
+                                'params' => ['type' => \App\Models\User::ROLE_USER],
+                            ],
+                            [
+                                'title' => 'Restaurant Drivers',
+                                'icon' => 'fas fa-truck',
+                                'routeName' => 'admin.users.index',
+                                'params' => ['type' => \App\Models\User::ROLE_USER],
+                            ],
+                            [
+                                'title' => 'Tiptop Drivers',
+                                'icon' => 'fas fa-car-side',
                                 'routeName' => 'admin.users.index',
                                 'params' => ['type' => \App\Models\User::ROLE_USER],
                             ],
                             [
                                 'title' => 'Admins',
-                                'icon' => 'fas fa-user-astronaut',
+                                'icon' => 'fas fa-user-shield',
                                 'routeName' => 'admin.users.index',
                                 'params' => ['type' => \App\Models\User::ROLE_ADMIN],
                             ],
                             [
-                                'title' => 'Roles',
-                                'icon' => 'fas fa-user-cog',
-                                'routeName' => 'admin.roles.index'
-                            ]
+                                'title' => 'Supervisors',
+                                'icon' => 'fas fa-user-secret',
+                                'routeName' => 'admin.users.index',
+                                'params' => ['type' => \App\Models\User::ROLE_USER],
+                            ],
+                            [
+                                'title' => 'Agents',
+                                'icon' => 'fas fa-user-tie',
+                                'routeName' => 'admin.users.index',
+                                'params' => ['type' => \App\Models\User::ROLE_USER],
+                            ],
+                            [
+                                'title' => 'Content Editors',
+                                'icon' => 'fas fa-user-edit',
+                                'routeName' => 'admin.users.index',
+                                'params' => ['type' => \App\Models\User::ROLE_USER],
+                            ],
+                            [
+                                'title' => 'Marketers',
+                                'icon' => 'fas fa-users',
+                                'routeName' => 'admin.users.index',
+                                'params' => ['type' => \App\Models\User::ROLE_USER],
+                            ],
+                            [
+                                'title' => 'Branch Owners',
+                                'icon' => 'fas fa-user-plus',
+                                'routeName' => 'admin.users.index',
+                                'params' => ['type' => \App\Models\User::ROLE_USER],
+                            ],
+                            [
+                                'title' => 'Branch Managers',
+                                'icon' => 'fas fa-users-cog',
+                                'routeName' => 'admin.users.index',
+                                'params' => ['type' => \App\Models\User::ROLE_USER],
+                            ],
                         ]
+                    ]
+                ]
+            ],
+            [
+                'children' => [
+                    [
+                        'title' => 'Roles',
+                        'icon' => 'fas fa-user-cog',
+                        'routeName' => 'admin.roles.index'
                     ]
                 ]
             ],

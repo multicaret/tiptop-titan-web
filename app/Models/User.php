@@ -89,7 +89,7 @@ class User extends Authenticatable implements HasMedia, MustVerifyEmail
      * @var array
      */
     protected $hidden = [
-        'role',
+//        'role',
         'password',
         'remember_token',
     ];
