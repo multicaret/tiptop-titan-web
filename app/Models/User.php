@@ -251,9 +251,9 @@ class User extends Authenticatable implements HasMedia, MustVerifyEmail
             }
         });
         static::creating(function (User $user) {
-            if (is_null($user->mobile_app)) {
+            /*if (is_null($user->mobile_app)) {
                 $user->mobile_app = json_decode(json_encode(config('defaults.user.mobile_app')));
-            }
+            }*/
             if (is_null($user->settings)) {
                 $user->settings = json_decode(json_encode(config('defaults.user.settings')));
             }
@@ -577,7 +577,7 @@ class User extends Authenticatable implements HasMedia, MustVerifyEmail
             'name' => $name,
             'token' => hash('sha256', $plainTextToken = Str::random(40)),
             'abilities' => $abilities,
-            'device_info' => $abilities,
+            'mobile_app' => null,
         ]);
 
         return new NewAccessToken($token, $token->getKey().'|'.$plainTextToken);
