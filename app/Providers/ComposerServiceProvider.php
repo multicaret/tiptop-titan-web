@@ -115,7 +115,7 @@ class ComposerServiceProvider extends ServiceProvider
                 'children' => [
                     [
                         'title' => 'Market',
-                        'icon' => 'fas fa-carrot',
+                        'icon' => 'fas fa-shopping-cart',
                         'routeName' => 'admin.index',
                         'params' => ['type' => 'collapse'],
                         'subChildren' => [
