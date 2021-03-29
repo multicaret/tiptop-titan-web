@@ -164,7 +164,11 @@ class ProductController extends Controller
         $data['chains'] = Chain::whereType(Chain::TYPE_GROCERY_CHAIN)->get()->map($getIdTitle)->all();
         $data['branches'] = Branch::whereType(Branch::TYPE_GROCERY_BRANCH)->get()->map($getIdTitle)->all();
         $data['units'] = Taxonomy::unitCategories()->get()->map($getIdTitle)->all();
-        $data['categories'] = Taxonomy::groceryCategories()->get()->map($getIdTitle)->all();
+        if (Product::checkRequestTypes()->isGrocery()) {
+            $data['categories'] = Taxonomy::groceryCategories()->get()->map($getIdTitle)->all();
+        } else {
+            $data['categories'] = Taxonomy::foodCategories()->get()->map($getIdTitle)->all();
+        }
 
         return $data;
     }
