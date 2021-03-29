@@ -82,40 +82,8 @@ class ComposerServiceProvider extends ServiceProvider
             [
                 'children' => [
                     [
-                        'title' => trans('strings.taxonomies'),
-                        'icon' => 'fas fa-list',
-                        'routeName' => 'admin.index',
-                        'params' => ['type' => 'collapse'],
-                        'subChildren' => [
-                            /*[
-                                'title' => 'Categories',
-                                'icon' => 'fas fa-shapes',
-                                'params' => [
-                                    'type' =>
-                                        \App\Models\Taxonomy::getCorrectTypeName(\App\Models\Taxonomy::TYPE_POST_CATEGORY,
-                                            false)
-                                ],
-                                'routeName' => 'admin.taxonomies.index',
-                            ],*/
-                            [
-                                'title' => 'Tags',
-                                'icon' => 'fas fa-tag',
-                                'params' => [
-                                    'type' =>
-                                        \App\Models\Taxonomy::getCorrectTypeName(\App\Models\Taxonomy::TYPE_TAG,
-                                            false),
-                                ],
-                                'routeName' => 'admin.taxonomies.index',
-                            ],
-                        ]
-                    ]
-                ]
-            ],
-            [
-                'children' => [
-                    [
                         'title' => 'Market',
-                        'icon' => 'fas fa-shopping-cart',
+                        'icon' => 'fas fa-shopping-basket',
                         'routeName' => 'admin.index',
                         'params' => ['type' => 'collapse'],
                         'subChildren' => [
@@ -398,19 +366,54 @@ class ComposerServiceProvider extends ServiceProvider
             [
                 'children' => [
                     [
-                        'title' => 'Roles',
-                        'icon' => 'fas fa-user-cog',
-                        'routeName' => 'admin.roles.index'
+                        'title' => trans('strings.misc'),
+                        'icon' => 'fas fa-list',
+                        'routeName' => 'admin.index',
+                        'params' => ['type' => 'collapse'],
+                        'subChildren' => [
+                            /*[
+                                'title' => 'Categories',
+                                'icon' => 'fas fa-shapes',
+                                'params' => [
+                                    'type' =>
+                                        \App\Models\Taxonomy::getCorrectTypeName(\App\Models\Taxonomy::TYPE_POST_CATEGORY,
+                                            false)
+                                ],
+                                'routeName' => 'admin.taxonomies.index',
+                            ],*/
+                            [
+                                'title' => 'Roles',
+                                'icon' => 'fas fa-user-cog',
+                                'routeName' => 'admin.roles.index'
+                            ],
+                            [
+                                'title' => 'Translations',
+                                'icon' => 'fas fa-language',
+                                'routeName' => 'admin.translations.index',
+                            ],
+                            [
+                                'title' => 'Tags',
+                                'icon' => 'fas fa-tag',
+                                'params' => [
+                                    'type' =>
+                                        \App\Models\Taxonomy::getCorrectTypeName(\App\Models\Taxonomy::TYPE_TAG,
+                                            false),
+                                ],
+                                'routeName' => 'admin.taxonomies.index',
+                            ],
+                            [
+                                'title' => 'Search Tags',
+                                'icon' => 'fas fa-tag',
+                                'params' => [
+                                    'type' =>
+                                        \App\Models\Taxonomy::getCorrectTypeName(\App\Models\Taxonomy::TYPE_SEARCH_TAGS, //todo: make it search tags
+                                            false),
+                                ],
+                                'routeName' => 'admin.taxonomies.index',
+                            ],
+
+                        ]
                     ]
-                ]
-            ],
-            [
-                'children' => [
-                    [
-                        'title' => 'Translations',
-                        'icon' => 'fas fa-language',
-                        'routeName' => 'admin.translations.index',
-                    ],
                 ]
             ],
             [
@@ -421,7 +424,7 @@ class ComposerServiceProvider extends ServiceProvider
                         'routeName' => 'admin.preferences.index',
                     ],
                 ]
-            ]
+            ],
         ]);
 
         return $links;

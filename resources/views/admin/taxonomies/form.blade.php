@@ -148,7 +148,7 @@
                         @endcomponent
                     </div>
                 @endif
-                @if(in_array($correctType, [\App\Models\Taxonomy::TYPE_GROCERY_CATEGORY,\App\Models\Taxonomy::TYPE_FOOD_CATEGORY]))
+                @if(in_array($correctType, [\App\Models\Taxonomy::TYPE_GROCERY_CATEGORY]))
                     <div class="col-4">
                         @component('admin.components.form-group', ['name' => 'chain_id', 'type' => 'select'])
                             @slot('label', trans('strings.chain'))
@@ -161,8 +161,8 @@
                         @endcomponent
                     </div>
                 @endif
-                @if($correctType == \App\Models\Taxonomy::TYPE_FOOD_CATEGORY)
-                    {{-- Branches --}}
+                {{--@if($correctType == \App\Models\Taxonomy::TYPE_FOOD_CATEGORY)
+                    --}}{{-- Branches --}}{{--
                     <div class="col-4">
                         @component('admin.components.form-group', ['name' => 'branches[]', 'type' => 'select'])
                             @slot('label', trans('strings.branches'))
@@ -175,7 +175,7 @@
                             @slot('selected', $taxonomy->branches)
                         @endcomponent
                     </div>
-                @endif
+                @endif--}}
                 @if(in_array($correctType, \App\Models\Taxonomy::typesHaving('cover_image')))
                     <div class="col-md-4">
                         @component('admin.components.form-group', ['name' => 'cover', 'type' => 'file'])

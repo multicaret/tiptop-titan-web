@@ -152,6 +152,7 @@ class Taxonomy extends Node implements HasMedia, ShouldHaveTypes, TranslatableCo
     const TYPE_GROCERY_CATEGORY = 3;
     const TYPE_FOOD_CATEGORY = 4;
     const TYPE_MENU_CATEGORY = 5;
+    const TYPE_SEARCH_TAGS = 7;
     const TYPE_RATING_ISSUE = 10;
     const TYPE_INGREDIENT = 11;
     const TYPE_INGREDIENT_CATEGORY = 12;
@@ -202,6 +203,11 @@ class Taxonomy extends Node implements HasMedia, ShouldHaveTypes, TranslatableCo
     public function scopeTags($query)
     {
         return $query->where('type', self::TYPE_TAG);
+    }
+
+    public function scopeSearchTags($query)
+    {
+        return $query->where('type', self::TYPE_SEARCH_TAGS);
     }
 
     public function scopePostTags($query)
@@ -379,6 +385,7 @@ class Taxonomy extends Node implements HasMedia, ShouldHaveTypes, TranslatableCo
         return [
             self::TYPE_POST_CATEGORY => 'category',
             self::TYPE_TAG => 'tag',
+            self::TYPE_SEARCH_TAGS => 'search-tags',
             self::TYPE_GROCERY_CATEGORY => 'grocery-category',
             self::TYPE_FOOD_CATEGORY => 'food-category',
             self::TYPE_MENU_CATEGORY => 'menu-category',

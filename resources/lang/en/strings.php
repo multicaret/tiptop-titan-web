@@ -227,4 +227,6 @@ return [
     'menu-categories' => 'Menu Categories',
     'step' => 'Step',
     'units' => 'Units',
+    'misc' => 'Miscellaneous',
+    'search-tags' => 'Search Tags',
 ];

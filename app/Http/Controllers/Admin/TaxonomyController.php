@@ -96,7 +96,7 @@ class TaxonomyController extends Controller
         }
 
         if (in_array($correctType,
-                [Taxonomy::TYPE_GROCERY_CATEGORY, Taxonomy::TYPE_FOOD_CATEGORY])) {
+            [Taxonomy::TYPE_GROCERY_CATEGORY, Taxonomy::TYPE_FOOD_CATEGORY])) {
             $columns = array_merge($columns, [
                 [
                     'data' => 'chain',
@@ -374,9 +374,14 @@ class TaxonomyController extends Controller
         $roots = collect([]);
         $hasParent = in_array($correctType, Taxonomy::typesHaving('parent'));
         if ($hasParent) {
-            $roots = Taxonomy::roots()
-                             ->groceryCategories()
-                             ->get();
+            $roots = Taxonomy::roots();
+            if ($correctType == Taxonomy::TYPE_GROCERY_CATEGORY) {
+                $roots = $roots->groceryCategories();
+            } elseif ($correctType == Taxonomy::TYPE_FOOD_CATEGORY) {
+                $roots = $roots->foodCategories();
+            }
+
+            $roots = $roots->get();
         }
 
         $fontAwesomeIcons = $this->getFontAwesomeIcons();
