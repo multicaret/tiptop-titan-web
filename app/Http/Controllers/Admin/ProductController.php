@@ -13,7 +13,8 @@ use Illuminate\Http\Request;
 class ProductController extends Controller
 {
 
-    public function index(Request $request) {
+    public function index(Request $request)
+    {
         $columns = [
             [
                 'data' => 'id',
@@ -64,17 +65,27 @@ class ProductController extends Controller
         return view('admin.products.index', compact('columns', 'typeName'));
     }
 
-    public function create(Request $request) {
+    public function create(Request $request)
+    {
         $data = $this->essentialData($request);
+
         return view('admin.products.form', $data);
     }
 
     public function store(Request $request): RedirectResponse
     {
+        $this->prepareForValidation($request);
         $request->validate($this->validationRules());
         $product = new Product();
 
-        $this->storeSaveLogic($request, $product);
+        try {
+            $this->storeSaveLogic($request, $product);
+        } catch (\Exception $e) {
+            return back()->with('message', [
+                'type' => 'Error',
+                'text' => $e->getMessage(),
+            ]);
+        }
 
         return redirect()
             ->route('admin.products.index', ['type' => $request->type])
@@ -84,19 +95,28 @@ class ProductController extends Controller
             ]);
     }
 
-    public function edit(Request $request, Product $product) {
+    public function edit(Request $request, Product $product)
+    {
         $data = $this->essentialData($request);
         $data['product'] = $product;
+
         return view('admin.products.form', $data);
     }
 
     public function update(Request $request, Product $product): RedirectResponse
     {
+        $this->prepareForValidation($request);
+
         $request->validate($this->validationRules());
 
-        dd("update", $request->all());
-
-        $this->storeSaveLogic($request, $product);
+        try {
+            $this->storeSaveLogic($request, $product);
+        } catch (\Exception $e) {
+            return back()->with('message', [
+                'type' => 'Error',
+                'text' => $e->getMessage(),
+            ]);
+        }
 
         return redirect()
             ->route('admin.products.index', ['type' => $request->type])
@@ -106,16 +126,32 @@ class ProductController extends Controller
             ]);
     }
 
-    public function destroy(Request $request) {
-        dd("store", $request->all());
+    public function destroy(Request $request, Product $product): RedirectResponse
+    {
+        try {
+            $product->delete();
+        } catch (\Exception $e) {
+            return redirect()
+                ->route('admin.products.index', ['type' => $request->type])
+                ->with('message', [
+                    'type' => 'Error',
+                    'text' => $e->getMessage(),
+                ]);
+        }
+
+        return back()->with('message', [
+            'type' => 'Success',
+            'text' => 'Successfully Deleted',
+        ]);
     }
 
     private function essentialData(Request $request): array
     {
         $data['product'] = new Product();
         $tableName = $data['product']->getTable();
-        $data['translatedInputs'] = Controller::getTranslatedAttributesFromTable($tableName, Product::getDroppedColumns());
-        $data['allInputs'] = Controller::getAttributesFromTable($tableName, Product::getDroppedColumns());
+        $droppedColumns = array_merge(Product::getDroppedColumns(), $this->getDroppedColumnsByType());
+        $data['translatedInputs'] = Controller::getTranslatedAttributesFromTable($tableName, $droppedColumns);
+        $data['allInputs'] = Controller::getAttributesFromTable($tableName, $droppedColumns);
 
         $data['typeName'] = $request->input('type');
         $getIdTitle = function ($item) {
@@ -184,5 +220,28 @@ class ProductController extends Controller
 
         $this->handleSubmittedSingleMedia('cover', $request, $product);
         $this->handleSubmittedMedia($request, 'gallery', $product, 'gallery');
+    }
+
+    private function getDroppedColumnsByType(): array
+    {
+        if (Product::checkRequestTypes()->isGrocery()) {
+            return ['unit_id', 'unit_text'];
+        } else {
+            return [];
+        }
+    }
+
+    protected function prepareForValidation(Request $request)
+    {
+        $request->merge([
+            'chain_id' => $request->chain_id === 'null' ? null : $request->chain_id
+        ]);
+        $request->merge([
+            'branch_id' => $request->branch_id === 'null' ? null : $request->branch_id
+        ]);
+        $request->merge([
+            'categories' => $request->categories === 'null' ? null : $request->categories
+        ]);
+//        dd("prepareForValidation", $request->all());
     }
 }

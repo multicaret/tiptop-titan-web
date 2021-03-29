@@ -118,9 +118,11 @@ class Controller extends BaseController
             }
         }
 
-        if ( ! empty($fileName)) {
-            $media = $media->usingName($fileName);
-        }
+
+// Todo: try to solve it
+//        if ( ! empty($fileName)) {
+//            $media = $media->usingName($fileName);
+//        }
 
 
         $customProperties = [

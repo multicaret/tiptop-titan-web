@@ -169,6 +169,7 @@ class Product extends Model implements HasMedia
         'branch',
         'translations',
         'tags',
+        'categories',
         'masterCategory'
     ];
 

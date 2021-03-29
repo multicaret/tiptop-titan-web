@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Ajax;
 
 use App\Http\Controllers\Controller;
+use App\Models\Chain;
 use App\Models\Preference;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
@@ -24,7 +25,7 @@ class AjaxController extends Controller
     }
 
     /**
-     * @param int $statusCode
+     * @param  int  $statusCode
      *
      * @return $this
      */
@@ -112,7 +113,7 @@ class AjaxController extends Controller
         $value = $request->input('value');
         $retrieve = Preference::retrieve("$key-$userId");
         try {
-            if (!is_null($retrieve)) {
+            if ( ! is_null($retrieve)) {
                 $retrieve->value = $value;
                 $retrieve->notes = "userId-$userId";
                 $retrieve->save();
@@ -123,6 +124,7 @@ class AjaxController extends Controller
                     'value' => $value
                 ]);
             }
+
             return $this->respond([
                 'isSuccess' => true
             ]);
@@ -136,10 +138,26 @@ class AjaxController extends Controller
     {
         $userId = optional(auth()->user())->id;
         $themeSettingsForAuthUser = Preference::where('notes', "userId-$userId")->get();
-        if (!is_null($themeSettingsForAuthUser)) {
+        if ( ! is_null($themeSettingsForAuthUser)) {
             return $this->respond($themeSettingsForAuthUser->toArray());
         } else {
             return $this->respond([]);
         }
+    }
+
+    public function loadChainBranches(Request $request): JsonResponse
+    {
+        $chainId = $request->input('chain_id');
+        try {
+            $chain = Chain::find($chainId);
+            $getIdTitle = function ($item) {
+                return ['id' => $item->id, 'title' => $item->title];
+            };
+            $allBranches = $chain->branches->map($getIdTitle)->all();
+        } catch (\Exception $e) {
+            return $this->respondWithError($e->getMessage());
+        }
+
+        return $this->respond(['branches' => $allBranches]);
     }
 }

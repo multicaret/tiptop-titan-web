@@ -102,7 +102,8 @@
                                             selected-label=""
                                             deselect-label=""
                                             placeholder=""
-                                            @select="resetBranch"
+                                            @input="getBranches"
+                                            @select="selectChain"
                                             autocomplete="false"
                                         ></multiselect>
                                     </div>
@@ -123,57 +124,61 @@
                                             select-label=""
                                             selected-label=""
                                             deselect-label=""
+                                            :clear-on-select="false"
+                                            :preselect-first="true"
                                             placeholder=""
                                             {{--                                            @select="retrieveCities"--}}
                                             autocomplete="false"
                                         ></multiselect>
                                     </div>
                                 </div>
-
-                                <div class="col-6">
-                                    <div class="form-group">
-                                        <label class="control-label">
-                                            @lang('strings.categories')
-                                        </label>
-                                        <multiselect
-                                            :options="categories"
-                                            v-model="selectedCategories"
-                                            track-by="id"
-                                            label="title"
-                                            name="categories"
-                                            :searchable="true"
-                                            :multiple="true"
-                                            :allow-empty="true"
-                                            select-label=""
-                                            selected-label=""
-                                            deselect-label=""
-                                            placeholder=""
-                                            autocomplete="false"
-                                        ></multiselect>
+                                @isset($allInputs['category_id'])
+                                    <div class="col-6">
+                                        <div class="form-group">
+                                            <label class="control-label">
+                                                @lang('strings.categories')
+                                            </label>
+                                            <multiselect
+                                                :options="categories"
+                                                v-model="product.categories"
+                                                track-by="id"
+                                                label="title"
+                                                name="categories"
+                                                :searchable="true"
+                                                :multiple="true"
+                                                :allow-empty="true"
+                                                select-label=""
+                                                selected-label=""
+                                                deselect-label=""
+                                                placeholder=""
+                                                autocomplete="false"
+                                            ></multiselect>
+                                        </div>
                                     </div>
-                                </div>
-
-                                <div class="col-6">
-                                    <div class="form-group">
-                                        <label class="control-label">
-                                            @lang('strings.units')
-                                        </label>
-                                        <multiselect
-                                            :options="units"
-                                            v-model="selectedUnit"
-                                            track-by="id"
-                                            label="title"
-                                            name="unit_id"
-                                            :searchable="true"
-                                            :allow-empty="true"
-                                            select-label=""
-                                            selected-label=""
-                                            deselect-label=""
-                                            placeholder=""
-                                            autocomplete="false"
-                                        ></multiselect>
+                                @endisset
+                                @isset($allInputs['unit_id'])
+                                    <div class="col-6">
+                                        <div class="form-group">
+                                            <label class="control-label">
+                                                @lang('strings.units')
+                                            </label>
+                                            <multiselect
+                                                :options="units"
+                                                v-model="selectedUnit"
+                                                track-by="id"
+                                                label="title"
+                                                name="unit_id"
+                                                :searchable="true"
+                                                :allow-empty="true"
+                                                select-label=""
+                                                selected-label=""
+                                                deselect-label=""
+                                                placeholder=""
+                                                autocomplete="false"
+                                            ></multiselect>
+                                        </div>
                                     </div>
-                                </div>
+                                @endisset
                             </div>
                         </div>
                     </div>
@@ -254,9 +259,9 @@
         </div>
 
         <div class="col-md-12">
-            <input type="hidden" name="chain_id" :value="JSON.stringify(selectedChain)">
-            <input type="hidden" name="branch_id" :value="JSON.stringify(selectedBranch)">
-            <input type="hidden" name="categories" :value="JSON.stringify(selectedCategories)">
+            <input type="hidden" name="chain_id" :value="JSON.stringify(product.chain)">
+            <input type="hidden" name="branch_id" :value="JSON.stringify(product.branch)">
+            <input type="hidden" name="categories" :value="JSON.stringify(product.categories)">
             <input type="hidden" name="unit_id" :value="JSON.stringify(selectedUnit)">
             <input type="hidden" name="unattached-media" class="deleted-file" value="">
             <button class="btn btn-success" type="submit">{{trans('strings.submit')}}</button>
@@ -284,12 +289,31 @@
                 selectedUnit: null,
                 allInputs: @json($allInputs)
             },
-            beforeMount() {
-                console.log(this.product);
-            },
+            beforeMount() {},
             methods: {
-                resetBranch: function () {
-                    console.log('resetBranch');
+                selectChain: function () {
+                    this.branches = [];
+                    this.product.branch = null;
+                },
+                getBranches: function () {
+                    const branches = !!this.branches ? JSON.parse(JSON.stringify(this.branches)) : null;
+                    let hasError = true;
+                    let url = true ? @json(localization()->localizeURL(route('ajax.branch-by-chain', ['chain_id' => 'XMLSD']))) : '';
+                    if (!!this.product.chain && !!this.product.chain.id) {
+                        const chain_id = this.product.chain.id;
+                        url = url.replaceAll('XMLSD', chain_id);
+                        axios.get(url).then((res) => {
+                            this.branches = res.data.branches;
+                            if (this.branches.length > 0) {
+                                this.product.branch = this.branches[0];
+                            }
+                            hasError = false;
+                        }).catch(console.error).finally(() => {
+                            if (hasError) {
+                                this.branches = branches;
+                            }
+                        });
+                    }
                 }
             },
         })

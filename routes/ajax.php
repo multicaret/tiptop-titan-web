@@ -51,3 +51,4 @@ Route::get('theme-settings/load', 'AjaxController@loadAdminThemeSettings')->name
 Route::put('translations', 'TranslationController@translationUpdate')->name('translation.update');
 Route::get('translations/load', 'TranslationController@updateTranslationsData')->name('translation.load');
 Route::resource('media', 'MediaController')->only(['store']);
+Route::get('branch-by-chain', 'AjaxController@loadChainBranches')->name('branch-by-chain');
