@@ -172,12 +172,6 @@ class ComposerServiceProvider extends ServiceProvider
                         'params' => ['type' => 'collapse'],
                         'subChildren' => [
                             [
-                                'title' => 'Products',
-                                'icon' => 'fas fa-box-open',
-                                'params' => ['type' => Product::getCorrectTypeName(Product::TYPE_FOOD_PRODUCT, false)],
-                                'routeName' => 'admin.products.index',
-                            ],
-                            [
                                 'title' => 'Chains',
                                 'icon' => 'fas fa-link',
                                 'params' => [
@@ -216,11 +210,8 @@ class ComposerServiceProvider extends ServiceProvider
                             [
                                 'title' => 'Products',
                                 'icon' => 'fas fa-box-open',
-                                'params' => [
-                                    'type' =>
-                                        'foo',
-                                ],
-                                'routeName' => 'admin.chains.index',
+                                'params' => ['type' => Product::getCorrectTypeName(Product::TYPE_FOOD_PRODUCT, false)],
+                                'routeName' => 'admin.products.index',
                             ],
                             [
                                 'title' => 'Main Categories',
