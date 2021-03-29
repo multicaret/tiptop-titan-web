@@ -17,9 +17,13 @@ class GroceryCategoryChildResource extends JsonResource
     public function toArray($request)
     {
 
+        $currentCategoryId = $this->id;
         $products = $this->products()
                          ->where('available_quantity', '>', 0)
                          ->orWhere('is_storage_tracking_enabled', false)
+                         ->whereHas('categories', function ($query) use ($currentCategoryId) {
+                             return $query->where('taxonomies.id', $currentCategoryId);
+                         })
                          ->get();
 
         return [
