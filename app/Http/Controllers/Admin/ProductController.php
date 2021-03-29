@@ -99,6 +99,7 @@ class ProductController extends Controller
     {
         $data = $this->essentialData($request);
         $data['product'] = $product;
+        $product->load(['unit']);
 
         return view('admin.products.form', $data);
     }
@@ -147,7 +148,10 @@ class ProductController extends Controller
 
     private function essentialData(Request $request): array
     {
-        $data['product'] = new Product();
+        $product = new Product();
+        $product->chain = Chain::first();
+        $product->branch = Branch::whereChainId(optional($product->chain)->id)->first();
+        $data['product'] = $product;
         $tableName = $data['product']->getTable();
         $droppedColumns = array_merge(Product::getDroppedColumns(), $this->getDroppedColumnsByType());
         $data['translatedInputs'] = Controller::getTranslatedAttributesFromTable($tableName, $droppedColumns);

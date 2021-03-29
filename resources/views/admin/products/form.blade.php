@@ -289,7 +289,7 @@
                 categories: @json($categories),
                 selectedCategories: null,
                 units: @json($units),
-                selectedUnit: null,
+                selectedUnit: @json(!is_null($product->unit) ? $product->unit : null),
                 allInputs: @json($allInputs)
             },
             beforeMount() {},
