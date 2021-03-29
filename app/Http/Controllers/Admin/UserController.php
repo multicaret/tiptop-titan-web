@@ -258,7 +258,7 @@ class UserController extends Controller
             'roles' => [
 //                User::ROLE_SUPER => trans('strings.' . User::ROLE_SUPER),
                 User::ROLE_ADMIN => trans('strings.'.User::ROLE_ADMIN),
-                User::ROLE_EDITOR => trans('strings.'.User::ROLE_EDITOR),
+                User::ROLE_CONTENT_EDITOR => trans('strings.'.User::ROLE_CONTENT_EDITOR),
             ],
             'countries' => Country::all(),
             'regions' => Region::where('country_id', config('defaults.country.id'))->get(),
