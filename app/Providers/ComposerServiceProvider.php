@@ -150,7 +150,7 @@ class ComposerServiceProvider extends ServiceProvider
                                 'routeName' => 'admin.products.index',
                             ],
                             [
-                                'title' => 'Main Categories',
+                                'title' => 'Grocery Categories',
                                 'icon' => 'fas fa-shapes',
                                 'params' => [
                                     'type' =>
@@ -214,7 +214,7 @@ class ComposerServiceProvider extends ServiceProvider
                                 'routeName' => 'admin.products.index',
                             ],
                             [
-                                'title' => 'Main Categories',
+                                'title' => 'Food Categories',
                                 'icon' => 'fas fa-shapes',
                                 'params' => [
                                     'type' =>
@@ -341,13 +341,13 @@ class ComposerServiceProvider extends ServiceProvider
                                 'title' => 'Restaurant Drivers',
                                 'icon' => 'fas fa-truck',
                                 'routeName' => 'admin.users.index',
-                                'params' => ['type' => \App\Models\User::ROLE_USER],
+                                'params' => ['type' => \App\Models\User::ROLE_RESTAURANT_DRIVER],
                             ],
                             [
                                 'title' => 'Tiptop Drivers',
                                 'icon' => 'fas fa-car-side',
                                 'routeName' => 'admin.users.index',
-                                'params' => ['type' => \App\Models\User::ROLE_USER],
+                                'params' => ['type' => \App\Models\User::ROLE_TIPTOP_DRIVER],
                             ],
                             [
                                 'title' => 'Admins',
@@ -359,37 +359,37 @@ class ComposerServiceProvider extends ServiceProvider
                                 'title' => 'Supervisors',
                                 'icon' => 'fas fa-user-secret',
                                 'routeName' => 'admin.users.index',
-                                'params' => ['type' => \App\Models\User::ROLE_USER],
+                                'params' => ['type' => \App\Models\User::ROLE_SUPERVISOR],
                             ],
                             [
                                 'title' => 'Agents',
                                 'icon' => 'fas fa-user-tie',
                                 'routeName' => 'admin.users.index',
-                                'params' => ['type' => \App\Models\User::ROLE_USER],
+                                'params' => ['type' => \App\Models\User::ROLE_AGENT],
                             ],
                             [
                                 'title' => 'Content Editors',
                                 'icon' => 'fas fa-user-edit',
                                 'routeName' => 'admin.users.index',
-                                'params' => ['type' => \App\Models\User::ROLE_USER],
+                                'params' => ['type' => \App\Models\User::ROLE_CONTENT_EDITOR],
                             ],
                             [
                                 'title' => 'Marketers',
                                 'icon' => 'fas fa-users',
                                 'routeName' => 'admin.users.index',
-                                'params' => ['type' => \App\Models\User::ROLE_USER],
+                                'params' => ['type' => \App\Models\User::ROLE_MARKETER],
                             ],
                             [
                                 'title' => 'Branch Owners',
                                 'icon' => 'fas fa-user-plus',
                                 'routeName' => 'admin.users.index',
-                                'params' => ['type' => \App\Models\User::ROLE_USER],
+                                'params' => ['type' => \App\Models\User::ROLE_BRANCH_OWNER],
                             ],
                             [
                                 'title' => 'Branch Managers',
                                 'icon' => 'fas fa-users-cog',
                                 'routeName' => 'admin.users.index',
-                                'params' => ['type' => \App\Models\User::ROLE_USER],
+                                'params' => ['type' => \App\Models\User::ROLE_BRANCH_MANAGER],
                             ],
                         ]
                     ]
