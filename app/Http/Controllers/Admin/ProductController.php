@@ -232,10 +232,10 @@ class ProductController extends Controller
 
     private function getDroppedColumnsByType(): array
     {
-        if (Product::checkRequestTypes()->isGrocery()) {
-            return ['unit_id', 'unit_text'];
-        } else {
+        if ( Product::checkRequestTypes()->isGrocery()) {
             return [];
+        } else {
+            return ['unit_id', 'unit_text'];
         }
     }
 
