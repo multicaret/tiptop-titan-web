@@ -6,6 +6,7 @@ use App\Models\Branch;
 use App\Models\Chain;
 use App\Models\City;
 use App\Models\Post;
+use App\Models\Product;
 use App\Models\Region;
 use App\Models\Slide;
 use App\Models\Taxonomy;
@@ -101,7 +102,7 @@ class DatatableController extends AjaxController
     {
         $correctType = Taxonomy::getCorrectType($request->type);
         $taxonomies = Taxonomy::orderBy('order_column')
-                              ->with('parent')
+                              ->with('parent', 'chain', 'branches', 'branch')
                               ->where('type', $correctType);
 
         return DataTables::of($taxonomies)
@@ -119,6 +120,22 @@ class DatatableController extends AjaxController
 
                              return view('admin.components.datatables._row-actions', $data)->render();
                          })
+                         ->editColumn('parent', function ($item) {
+                             return $item->parent ? $item->parent->title : null;
+                         })
+                         ->editColumn('chain', function ($item) {
+                             return $item->chain ? $item->chain->title : null;
+                         })
+                         ->editColumn('branches', function ($item) {
+                             $branches = $item->branches->pluck('title')->toArray();
+
+                             return view('admin.components.datatables._badge-items', [
+                                 'items' => $branches
+                             ])->render();
+                         })
+                         ->editColumn('ingredientCategory', function ($item) {
+                             return !is_null($item->ingredientCategory) ? $item->ingredientCategory->title : null;
+                         })
                          ->editColumn('order_column', function ($item) {
                              return view('admin.components.datatables._row-reorder')->render();
                          })
@@ -133,9 +150,13 @@ class DatatableController extends AjaxController
                              ])->render();
                          })
                          ->rawColumns([
+//                             'chain',
+                             'step',
+                             'branches',
                              'action',
                              'order_column',
-                             'created_at'
+                             'created_at',
+                             'ingredientCategory'
                          ])
                          ->setRowAttr([
                              'row-id' => function ($taxonomy) {
@@ -449,7 +470,7 @@ class DatatableController extends AjaxController
                                      'type' => request('type')
                                  ]),
                                  'deleteAction' => route('admin.chains.destroy', [
-                                     $chain->id,
+                                     $chain->uuid,
                                      'type' => request('type')
                                  ]),
                              ];
@@ -570,5 +591,54 @@ class DatatableController extends AjaxController
             ->rawColumns($rawColumns)
             ->make(true);
     }
+
+    public function products(Request $request)
+    {
+        $products = Product::whereType(Product::getCorrectType($request->type))->selectRaw('products.*');
+
+        return DataTables::of($products)
+                         ->editColumn('action', function ($product) {
+                             $data = [
+                                 'editAction' => route('admin.products.edit', [
+                                     $product->uuid,
+                                     'type' => request('type')
+                                 ]),
+                                 'deleteAction' => route('admin.products.destroy', [
+                                     $product->uuid,
+                                     'type' => request('type')
+                                 ]),
+                             ];
+
+                             return view('admin.components.datatables._row-actions', $data)->render();
+                         })
+                         ->editColumn('chain', function ($product) {
+                             return ! is_null($product->chain) ? $product->chain->title : '';
+                         })
+                         ->editColumn('branch', function ($product) {
+                             return ! is_null($product->branch) ? $product->branch->title : '';
+                         })
+                         ->editColumn('price', function ($product) {
+                             return ! is_null($product->price) ? $product->price_formatted : '';
+                         })
+                         ->editColumn('created_at', function ($product) {
+                             return view('admin.components.datatables._date', [
+                                 'date' => $product->created_at
+                             ])->render();
+                         })
+                         ->rawColumns([
+                             'action',
+                             'chain',
+                             'branch',
+                             'price',
+                             'created_at',
+                         ])
+                         ->setRowAttr([
+                             'row-id' => function ($branch) {
+                                 return $branch->id;
+                             }
+                         ])
+                         ->make(true);
+    }
+
 
 }

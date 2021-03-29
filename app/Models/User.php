@@ -173,19 +173,18 @@ class User extends Authenticatable implements HasMedia, MustVerifyEmail
         HasFactory,
         CanFavorite;
 
-    const ROLE_SUPER = 'Super';
-    const ROLE_ADMIN = 'Admin';
-    const ROLE_SUPERVISOR = 'Supervisor';
-    const ROLE_AGENT = 'Agent';
-    const ROLE_CONTENT_EDITOR = 'Content Editor';
-    const ROLE_MARKETER = 'Marketer';
-    const ROLE_BRANCH_OWNER = 'Branch Owner';
-    const ROLE_BRANCH_MANAGER = 'Branch Manager';
-    const ROLE_EDITOR = 'Editor';
-    const ROLE_TRANSLATOR = 'Translator';
-    const ROLE_RESTAURANT_DRIVER = 'Restaurant Driver';
-    const ROLE_TIPTOP_DRIVER = 'Tiptop Driver';
-    const ROLE_USER = 'User';
+    const ROLE_SUPER = 'super';
+    const ROLE_ADMIN = 'admin';
+    const ROLE_SUPERVISOR = 'supervisor';
+    const ROLE_AGENT = 'agent';
+    const ROLE_CONTENT_EDITOR = 'content-editor';
+    const ROLE_MARKETER = 'marketer';
+    const ROLE_BRANCH_OWNER = 'branch-owner';
+    const ROLE_BRANCH_MANAGER = 'branch-manager';
+    const ROLE_TRANSLATOR = 'translator';
+    const ROLE_RESTAURANT_DRIVER = 'restaurant-driver';
+    const ROLE_TIPTOP_DRIVER = 'tiptop-driver';
+    const ROLE_USER = 'user';
 
     const STATUS_INCOMPLETE = 0;
     const STATUS_DRAFT = 1;
@@ -544,7 +543,6 @@ class User extends Authenticatable implements HasMedia, MustVerifyEmail
             'marketer' => self::ROLE_MARKETER,
             'branch_owner' => self::ROLE_BRANCH_OWNER,
             'branch_manager' => self::ROLE_BRANCH_MANAGER,
-            'editor' => self::ROLE_EDITOR,
             'translator' => self::ROLE_TRANSLATOR,
             'restaurant_driver' => self::ROLE_RESTAURANT_DRIVER,
             'tiptop_driver' => self::ROLE_TIPTOP_DRIVER,

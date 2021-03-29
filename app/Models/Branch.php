@@ -41,7 +41,7 @@ use Spatie\MediaLibrary\HasMedia;
  * @property \Illuminate\Support\Carbon|null $created_at
  * @property \Illuminate\Support\Carbon|null $updated_at
  * @property string|null $deleted_at
- * @property-read \App\Models\Chain $chain
+ * @property \App\Models\Chain $chain
  * @property-read \App\Models\City|null $city
  * @property-read mixed $average_rating_all_types
  * @property-read mixed $average_rating
@@ -113,6 +113,8 @@ use Spatie\MediaLibrary\HasMedia;
  * @method static \Illuminate\Database\Eloquent\Builder|Branch whereWhatsappPhoneNumber($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Branch withTranslation()
  * @mixin \Eloquent
+ * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\Location[] $locations
+ * @property-read int|null $locations_count
  */
 class Branch extends Model implements HasMedia
 {
@@ -183,6 +185,11 @@ class Branch extends Model implements HasMedia
         return $this->belongsTo(City::class);
     }
 
+    public function locations(): \Illuminate\Database\Eloquent\Relations\HasMany
+    {
+        return $this->hasMany(Location::class, 'contactable_id');
+    }
+
     public static function getClosestAvailableBranch($latitude, $longitude): array
     {
         $distance = $branch = null;
@@ -217,7 +224,21 @@ class Branch extends Model implements HasMedia
 
     public function getHasBeenRatedAttribute(): bool
     {
-        return $this->raters->count() > 0 ;
+        return $this->raters->count() > 0;
     }
 
+    public static function checkRequestTypes(): object
+    {
+        return new class {
+            public static function isFood(): bool
+            {
+                return request()->type === Branch::getTypesArray()[Branch::TYPE_FOOD_BRANCH];
+            }
+
+            public static function isGrocery(): bool
+            {
+                return request()->type === Branch::getTypesArray()[Branch::TYPE_GROCERY_BRANCH];
+            }
+        };
+    }
 }

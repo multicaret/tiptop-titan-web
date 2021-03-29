@@ -2,18 +2,20 @@
 @section('title', 'Branches')
 @section('content')
     <h4 class="d-flex justify-content-between align-items-center w-100 font-weight-bold py-3 mb-4">
-        @if($typeName == 'grocery-branch')
+        @if(\App\Models\Branch::checkRequestTypes()->isGrocery())
             Market Branches
         @else
             Food Branches
         @endif
-        <a href="{{ route('admin.branches.create',['type'=> request()->type]) }}">
-            <button type="button" class="btn btn-primary rounded-pill d-block">
-                <span class="ion ion-md-add"></span>
-                &nbsp;
-                {{trans('strings.add')}}
-            </button>
-        </a>
+        @if(request()->has('type'))
+            <a href="{{ route('admin.branches.create',['type'=> request()->type]) }}">
+                <button type="button" class="btn btn-primary rounded-pill d-block">
+                    <span class="ion ion-md-add"></span>
+                    &nbsp;
+                    {{trans('strings.add')}}
+                </button>
+            </a>
+        @endif
     </h4>
 
     <div class="card">

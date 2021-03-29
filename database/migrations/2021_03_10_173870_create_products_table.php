@@ -24,15 +24,14 @@ class CreateProductsTable extends Migration
             $table->unsignedBigInteger('unit_id')->nullable();
             $table->double('price')->nullable();
             $table->double('price_discount_amount')->nullable();
-            $table->boolean('price_discount_by_percentage')->nullable()->comment('true: percentage, false: fixed amount');
             $table->unsignedBigInteger('available_quantity')->nullable();
             $table->string('sku')->nullable();
             $table->unsignedBigInteger('upc')->nullable();
-            $table->boolean('is_storage_tracking_enabled')->nullable(true);
             $table->unsignedFloat('width')->nullable()->comment('x');
             $table->unsignedFloat('height')->nullable()->comment('y');
             $table->unsignedFloat('depth')->nullable()->comment('z');
             $table->unsignedFloat('weight')->nullable()->comment('w');
+            $table->unsignedTinyInteger('type')->default(\App\Models\Product::TYPE_GROCERY_PRODUCT)->comment('1:Market, 2: Food');
             $table->integer('minimum_orderable_quantity')->default(1)->nullable();
             $table->unsignedInteger('order_column')->nullable();
             $table->decimal('avg_rating', 3)->default(0);
@@ -44,6 +43,8 @@ class CreateProductsTable extends Migration
             $table->timestamp('price_discount_finished_at')->nullable();
             $table->timestamp('custom_banner_began_at')->nullable();
             $table->timestamp('custom_banner_ended_at')->nullable();
+            $table->boolean('is_storage_tracking_enabled')->nullable(true);
+            $table->boolean('price_discount_by_percentage')->nullable()->comment('true: percentage, false: fixed amount');
             $table->unsignedTinyInteger('on_mobile_grid_tile_weight')->default(3);
             $table->timestamps();
             $table->softDeletes();

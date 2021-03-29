@@ -37,7 +37,7 @@ use Illuminate\Database\Eloquent\SoftDeletes;
  * @property int|null $rating_issue_id
  * @property \Illuminate\Support\Carbon|null $completed_at
  * @property string|null $notes
- * @property int $status 
+ * @property int $status
  *             0: Cancelled,
  *             1: Draft,
  *             6: Waiting Courier,
@@ -99,6 +99,8 @@ use Illuminate\Database\Eloquent\SoftDeletes;
  * @method static \Illuminate\Database\Query\Builder|Order withTrashed()
  * @method static \Illuminate\Database\Query\Builder|Order withoutTrashed()
  * @mixin \Eloquent
+ * @property string|null $rating_value
+ * @method static \Illuminate\Database\Eloquent\Builder|Order whereRatingValue($value)
  */
 class Order extends Model
 {

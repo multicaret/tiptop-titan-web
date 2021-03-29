@@ -18,7 +18,7 @@
             <img src="/images/logo.jpeg" alt="@preferences('app_title')" width="70px"
                  class="">
         </a>
-        <a href="javascript:void(0)" class="layout-sidenav-toggle sidenav-link text-large ml-auto">
+        <a href="javascript:void(0)" class="layout-sidenav-toggle sidenav-link text-large">
             <i class="ion ion-md-menu align-middle"></i>
         </a>
     </div>

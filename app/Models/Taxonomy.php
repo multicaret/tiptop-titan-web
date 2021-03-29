@@ -119,6 +119,21 @@ use Spatie\MediaLibrary\MediaCollections\Models\Media;
  * @method static \Illuminate\Database\Eloquent\Builder|Node withoutSelf()
  * @method static \Illuminate\Database\Query\Builder|Taxonomy withoutTrashed()
  * @mixin \Eloquent
+ * @property-read \App\Models\Branch $branch
+ * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\Branch[] $branches
+ * @property-read int|null $branches_count
+ * @property-read \App\Models\Chain $chain
+ * @method static Builder|Taxonomy ingredientCategories()
+ * @method static Builder|Taxonomy ingredients()
+ * @property int|null $chain_id
+ * @property int|null $ingredient_category_id
+ * @method static Builder|Taxonomy restaurantCategories()
+ * @method static Builder|Taxonomy unitCategories()
+ * @method static Builder|Taxonomy whereChainId($value)
+ * @method static Builder|Taxonomy whereIngredientCategoryId($value)
+ * @property-read Taxonomy|null $ingredientCategory
+ * @method static Builder|Taxonomy menuCategories()
+ * @method static Builder|Taxonomy searchTags()
  */
 class Taxonomy extends Node implements HasMedia, ShouldHaveTypes, TranslatableContract
 {
@@ -139,11 +154,16 @@ class Taxonomy extends Node implements HasMedia, ShouldHaveTypes, TranslatableCo
     const TYPE_TAG = 2;
     const TYPE_GROCERY_CATEGORY = 3;
     const TYPE_FOOD_CATEGORY = 4;
+    const TYPE_MENU_CATEGORY = 5;
+    const TYPE_SEARCH_TAGS = 7;
     const TYPE_RATING_ISSUE = 10;
+    const TYPE_INGREDIENT = 11;
+    const TYPE_INGREDIENT_CATEGORY = 12;
+    const TYPE_UNIT = 15;
 
     protected $fillable = ['title', 'description', 'parent_id', 'type', 'order_column'];
     protected $translatedAttributes = ['title', 'description'];
-    protected $with = ['translations'];
+    protected $with = ['translations', 'chain', 'branches'];
 
     protected $appends = [
         'cover',
@@ -188,6 +208,11 @@ class Taxonomy extends Node implements HasMedia, ShouldHaveTypes, TranslatableCo
         return $query->where('type', self::TYPE_TAG);
     }
 
+    public function scopeSearchTags($query)
+    {
+        return $query->where('type', self::TYPE_SEARCH_TAGS);
+    }
+
     public function scopePostTags($query)
     {
         return $query->where('type', '=', self::TYPE_TAG);
@@ -217,6 +242,16 @@ class Taxonomy extends Node implements HasMedia, ShouldHaveTypes, TranslatableCo
         return $query->where('type', '=', self::TYPE_FOOD_CATEGORY);
     }
 
+    public function scopeUnitCategories($query): Builder
+    {
+        return $query->where('type', '=', self::TYPE_UNIT);
+    }
+
+    public function scopeMenuCategories($query): Builder
+    {
+        return $query->where('type', '=', self::TYPE_MENU_CATEGORY);
+    }
+
     /**
      * Scope a query to only include rating issues
      *
@@ -229,6 +264,30 @@ class Taxonomy extends Node implements HasMedia, ShouldHaveTypes, TranslatableCo
         return $query->where('type', '=', self::TYPE_RATING_ISSUE);
     }
 
+    /**
+     * Scope a query to only include Ingredients issues
+     *
+     * @param  Builder  $query
+     *
+     * @return Builder
+     */
+    public function scopeIngredients($query): Builder
+    {
+        return $query->where('type', '=', self::TYPE_INGREDIENT);
+    }
+
+    /**
+     * Scope a query to only include Ingredient Categories issues
+     *
+     * @param  Builder  $query
+     *
+     * @return Builder
+     */
+    public function scopeIngredientCategories($query): Builder
+    {
+        return $query->where('type', '=', self::TYPE_INGREDIENT_CATEGORY);
+    }
+
     public function creator(): \Illuminate\Database\Eloquent\Relations\BelongsTo
     {
         return $this->belongsTo(User::class, 'creator_id');
@@ -237,6 +296,27 @@ class Taxonomy extends Node implements HasMedia, ShouldHaveTypes, TranslatableCo
     public function editor(): \Illuminate\Database\Eloquent\Relations\BelongsTo
     {
         return $this->belongsTo(User::class, 'editor_id');
+    }
+
+    public function chain(): \Illuminate\Database\Eloquent\Relations\BelongsTo
+    {
+        return $this->belongsTo(Chain::class, 'chain_id');
+    }
+
+    public function branch(): \Illuminate\Database\Eloquent\Relations\BelongsTo
+    {
+        return $this->belongsTo(Branch::class, 'branch_id');
+    }
+
+    public function ingredientCategory(): \Illuminate\Database\Eloquent\Relations\BelongsTo
+    {
+        return $this->belongsTo(Taxonomy::class, 'ingredient_category_id');
+    }
+
+    public function branches(): \Illuminate\Database\Eloquent\Relations\BelongsToMany
+    {
+        return $this->belongsToMany(Branch::class, 'category_branch', 'category_id', 'branch_id')
+                    ->withTimestamps();
     }
 
     public function products(): \Illuminate\Database\Eloquent\Relations\BelongsToMany
@@ -268,16 +348,16 @@ class Taxonomy extends Node implements HasMedia, ShouldHaveTypes, TranslatableCo
             'parent' => [
                 Taxonomy::TYPE_POST_CATEGORY,
                 Taxonomy::TYPE_GROCERY_CATEGORY,
+                Taxonomy::TYPE_FOOD_CATEGORY,
+
             ],
             'cover_image' => [
                 Taxonomy::TYPE_GROCERY_CATEGORY,
+                Taxonomy::TYPE_FOOD_CATEGORY,
             ],
             'content' => [
                 Taxonomy::TYPE_POST_CATEGORY,
             ],
-            'branch' => [
-                Taxonomy::TYPE_GROCERY_CATEGORY,
-            ]
         ];
 
         return $typeVariations[$index];
@@ -308,9 +388,14 @@ class Taxonomy extends Node implements HasMedia, ShouldHaveTypes, TranslatableCo
         return [
             self::TYPE_POST_CATEGORY => 'category',
             self::TYPE_TAG => 'tag',
+            self::TYPE_SEARCH_TAGS => 'search-tags',
             self::TYPE_GROCERY_CATEGORY => 'grocery-category',
             self::TYPE_FOOD_CATEGORY => 'food-category',
+            self::TYPE_MENU_CATEGORY => 'menu-category',
             self::TYPE_RATING_ISSUE => 'rating-issue',
+            self::TYPE_INGREDIENT => 'ingredient',
+            self::TYPE_INGREDIENT_CATEGORY => 'ingredient-category',
+            self::TYPE_UNIT => 'unit',
         ];
     }
 

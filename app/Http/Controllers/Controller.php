@@ -118,9 +118,11 @@ class Controller extends BaseController
             }
         }
 
-        if ( ! empty($fileName)) {
-            $media = $media->usingName($fileName);
-        }
+
+// Todo: try to solve it
+//        if ( ! empty($fileName)) {
+//            $media = $media->usingName($fileName);
+//        }
 
 
         $customProperties = [
@@ -370,9 +372,9 @@ class Controller extends BaseController
     {
         if ($rating < 2) {
             return '#f53d3d';
-        } else if ($rating < 3) {
+        } elseif ($rating < 3) {
             return '#ffb700';
-        } else if ($rating <= 5) {
+        } elseif ($rating <= 5) {
             return '#32db64';
         }
 
@@ -383,13 +385,56 @@ class Controller extends BaseController
     {
         if ($rating < 2) {
             return 'rgba(245, 61, 61, 0.25)';
-        } else if ($rating < 3) {
+        } elseif ($rating < 3) {
             return 'rgba(255, 183, 0, 0.25)';
-        } else if ($rating <= 5) {
+        } elseif ($rating <= 5) {
             return 'rgba(50, 219, 100, 0.25)';
         }
 
         return 'rgba(245, 61, 61, 0.25)';
+    }
+
+
+    public static function getAttributesFromTable($tableName = 'taxonomies', $droppedColumns = []): array
+    {
+       return self::workColumns($tableName, $droppedColumns);
+    }
+
+    public static function getTranslatedAttributesFromTable($tableName = 'taxonomies', $droppedColumns = []): array
+    {
+        $translatedTableName = \Str::singular($tableName).'_translations';
+        return self::workColumns($translatedTableName, $droppedColumns);
+    }
+
+    private static function getOriginalColumns($tableName = 'taxonomies'): array
+    {
+        $databaseName = env('DB_DATABASE');
+        $queryString = 'SELECT column_name FROM information_schema.columns WHERE table_schema ='."'$databaseName'".' AND table_name = '."'$tableName'".' ORDER BY ordinal_position';
+        $tableColumns = \DB::select($queryString);
+        $orderedTableColumns = \Arr::flatten(json_decode(json_encode($tableColumns), true));
+        if (empty($orderedTableColumns)) {
+            $orderedTableColumns = \Schema::getColumnListing($tableName);
+        }
+
+        return $orderedTableColumns;
+    }
+
+    private static function workColumns(string $translatedTableName, array $droppedColumns): array
+    {
+        $arr = [];
+        $tableColumns = self::getOriginalColumns($translatedTableName);
+        foreach ($tableColumns as $type) {
+            if ( ! in_array($type, $droppedColumns)) {
+                if (\Str::contains($type, '_id')) {
+                    $arr[$type] = 'select';
+                } else {
+                    $dbColumnTypesToFE = config('defaults.db_column_types');
+                    $arr[$type] = $dbColumnTypesToFE[\Schema::getColumnType($translatedTableName, $type)];
+                }
+            }
+        }
+
+        return $arr;
     }
 
 }

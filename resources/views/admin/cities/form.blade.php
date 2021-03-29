@@ -1,9 +1,9 @@
 @extends('layouts.admin')
 
 @if(!is_null($city->id))
-    @section('title', trans('strings.editing') .' - ' . trans('strings.cities'))
+    @section('title', trans('strings.editing') .' - ' . 'Neighborhoods')
 @else
-    @section('title', trans('strings.add_new') .' - ' . trans('strings.city'))
+    @section('title', trans('strings.add_new') .' - ' . 'Neighborhood')
 @endif
 
 @push('styles')
@@ -15,9 +15,9 @@
 
     <div class="mb-4">
         @if(!is_null($city->id))
-            <h5>Editing City - {{ $city->name }}</h5>
+            <h5>Editing Neighborhood - {{ $city->name }}</h5>
         @else
-            <h5>{{trans('strings.add_new')}} {{trans('strings.city')}}</h5>
+            <h5>{{trans('strings.add_new')}} Neighborhood</h5>
         @endif
     </div>
 
@@ -71,7 +71,7 @@
                         <div class="row">
                             <div class="col-12">
                                 @component('admin.components.form-group', ['name' => 'region_id', 'type' => 'select'])
-                                    @slot('label', trans('strings.region'))
+                                    @slot('label', trans('strings.city'))
                                     @slot('options', $regions->pluck('name', 'id')->prepend('',''))
                                     @slot('attributes', [
                                         'class' => 'select2-regions w-100',
@@ -98,7 +98,7 @@
     <script>
         $(function () {
             $('.select2-regions').select2({
-                placeholder: 'Select regions',
+                placeholder: 'Select Cities',
             });
         });
     </script>

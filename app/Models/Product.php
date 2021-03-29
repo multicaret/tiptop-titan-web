@@ -5,10 +5,13 @@ namespace App\Models;
 use App\Http\Controllers\Controller;
 use App\Traits\HasMediaTrait;
 use App\Traits\HasStatuses;
+use App\Traits\HasTypes;
 use App\Traits\HasUuid;
 use App\Traits\HasViewCount;
 use Astrotomic\Translatable\Translatable;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Multicaret\Acquaintances\Traits\CanBeFavorited;
 use Spatie\MediaLibrary\HasMedia;
@@ -53,12 +56,12 @@ use Spatie\MediaLibrary\MediaCollections\Models\Media;
  * @property \Illuminate\Support\Carbon|null $deleted_at
  * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\Barcode[] $barcodes
  * @property-read int|null $barcodes_count
- * @property-read \App\Models\Branch $branch
+ * @property \App\Models\Branch $branch
  * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\Cart[] $carts
  * @property-read int|null $carts_count
  * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\Taxonomy[] $categories
  * @property-read int|null $categories_count
- * @property-read \App\Models\Chain $chain
+ * @property \App\Models\Chain $chain
  * @property-read \App\Models\User $creator
  * @property-read \App\Models\User $editor
  * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\User[] $favoriters
@@ -138,6 +141,8 @@ use Spatie\MediaLibrary\MediaCollections\Models\Media;
  * @method static \Illuminate\Database\Query\Builder|Product withTrashed()
  * @method static \Illuminate\Database\Query\Builder|Product withoutTrashed()
  * @mixin \Eloquent
+ * @property int $type 1:Market, 2: Food
+ * @method static \Illuminate\Database\Eloquent\Builder|Product whereType($value)
  */
 class Product extends Model implements HasMedia
 {
@@ -147,6 +152,7 @@ class Product extends Model implements HasMedia
         HasViewCount,
         HasUuid,
         HasStatuses,
+        HasTypes,
         CanBeFavorited;
 
     const STATUS_INCOMPLETE = 0;
@@ -155,12 +161,15 @@ class Product extends Model implements HasMedia
     const STATUS_INACTIVE = 3;
     const STATUS_INACTIVE_SEASONABLE = 4;
 
-    const TYPE_GROCERY = 1;
-    const TYPE_FOOD = 2;
+    const TYPE_GROCERY_PRODUCT = 1;
+    const TYPE_FOOD_PRODUCT = 2;
 
     protected $with = [
+        'chain',
+        'branch',
         'translations',
         'tags',
+        'categories',
         'masterCategory'
     ];
 
@@ -180,6 +189,7 @@ class Product extends Model implements HasMedia
     protected $casts = [
         'price_discount_amount' => 'double',
         'price' => 'double',
+        'is_storage_tracking_enabled' => 'boolean',
         'price_discount_by_percentage' => 'boolean',
         'price_discount_began_at' => 'timestamp',
         'price_discount_finished_at' => 'timestamp',
@@ -191,6 +201,31 @@ class Product extends Model implements HasMedia
         'weight' => 'float',
     ];
 
+    public static function requestTypeIsGrocery(): bool
+    {
+        return request()->type === self::getTypesArray()[self::TYPE_GROCERY_PRODUCT];
+    }
+
+    public static function requestTypeIsFood(): bool
+    {
+        return request()->type === self::getTypesArray()[self::TYPE_FOOD_PRODUCT];
+    }
+
+    public static function checkRequestTypes(): object
+    {
+        return new class {
+            public static function isFood(): bool
+            {
+                return request()->type === Product::getTypesArray()[Product::TYPE_FOOD_PRODUCT];
+            }
+
+            public static function isGrocery(): bool
+            {
+                return request()->type === Product::getTypesArray()[Product::TYPE_GROCERY_PRODUCT];
+            }
+        };
+    }
+
     public function creator()
     {
         return $this->belongsTo(User::class, 'creator_id');
@@ -201,42 +236,42 @@ class Product extends Model implements HasMedia
         return $this->belongsTo(User::class, 'editor_id');
     }
 
-    public function chain(): \Illuminate\Database\Eloquent\Relations\BelongsTo
+    public function chain(): BelongsTo
     {
         return $this->belongsTo(Chain::class, 'chain_id');
     }
 
-    public function branch(): \Illuminate\Database\Eloquent\Relations\BelongsTo
+    public function branch(): BelongsTo
     {
         return $this->belongsTo(Branch::class, 'branch_id');
     }
 
-    public function masterCategory(): \Illuminate\Database\Eloquent\Relations\BelongsTo
+    public function masterCategory(): BelongsTo
     {
         return $this->belongsTo(Taxonomy::class, 'category_id');
     }
 
-    public function barcodes(): \Illuminate\Database\Eloquent\Relations\BelongsToMany
+    public function barcodes(): BelongsToMany
     {
         return $this->belongsToMany(Barcode::class, 'barcode_product', 'product_id', 'barcode_id');
     }
 
-    public function unit(): \Illuminate\Database\Eloquent\Relations\BelongsTo
+    public function unit(): BelongsTo
     {
         return $this->belongsTo(Taxonomy::class, 'unit_id');
     }
 
-    public function categories(): \Illuminate\Database\Eloquent\Relations\BelongsToMany
+    public function categories(): BelongsToMany
     {
         return $this->belongsToMany(Taxonomy::class, 'category_product', 'product_id', 'category_id');
     }
 
-    public function tags(): \Illuminate\Database\Eloquent\Relations\BelongsToMany
+    public function tags(): BelongsToMany
     {
         return $this->belongsToMany(Taxonomy::class, 'product_tag', 'product_id', 'tag_id');
     }
 
-    public function carts(): \Illuminate\Database\Eloquent\Relations\BelongsToMany
+    public function carts(): BelongsToMany
     {
         return $this->belongsToMany(Cart::class, 'cart_product', 'product_id', 'cart_id');
     }
@@ -309,7 +344,7 @@ class Product extends Model implements HasMedia
 
     public function registerMediaCollections(): void
     {
-        $isGrocery = $this->type === self::TYPE_GROCERY;
+        $isGrocery = $this->type === self::TYPE_GROCERY_PRODUCT;
         $fallBackImageUrl = config('defaults.images.product_cover');
         $this->addMediaCollection('cover')
              ->useFallbackUrl(url($fallBackImageUrl))
@@ -375,6 +410,45 @@ class Product extends Model implements HasMedia
     public function getDiscountedPriceFormattedAttribute(): string
     {
         return Currency::format($this->discounted_price);
+    }
+
+    public static function getTypesArray(): array
+    {
+        return [
+            self::TYPE_GROCERY_PRODUCT => 'grocery-product',
+            self::TYPE_FOOD_PRODUCT => 'food-product',
+        ];
+    }
+
+
+    public static function getDroppedColumns(): array
+    {
+        return $droppedColumns = [
+            'avg_rating',
+            'created_at',
+            'creator_id',
+            'deleted_at',
+            'editor_id',
+            'id',
+            'order_column',
+            'rating_count',
+            'search_count',
+            'sku',
+            'type',
+            'on_mobile_grid_tile_weight',
+            'status',
+            'upc',
+            'updated_at',
+            'uuid',
+            'view_count',
+            'product_id',
+            'locale',
+            'excerpt',
+            'width',
+            'height',
+            'depth',
+            'weight',
+        ];
     }
 
 

@@ -33,10 +33,10 @@ class CreateLocationsTable extends Migration
             $table->decimal('latitude', 11, 8)->nullable();
             $table->decimal('longitude', 11, 8)->nullable();
             $table->text('notes')->nullable();
-            $table->text('phones')->nullable();
-            $table->text('mobiles')->nullable();
-            $table->text('emails')->nullable();
-            $table->text('social_media')->nullable();
+            $table->json('phones')->nullable();
+            $table->json('mobiles')->nullable();
+            $table->json('emails')->nullable();
+            $table->json('social_media')->nullable();
             $table->string('website')->nullable();
             $table->string('position')->nullable();
             $table->string('company')->nullable();
