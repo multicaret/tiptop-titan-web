@@ -56,12 +56,12 @@ use Spatie\MediaLibrary\MediaCollections\Models\Media;
  * @property \Illuminate\Support\Carbon|null $deleted_at
  * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\Barcode[] $barcodes
  * @property-read int|null $barcodes_count
- * @property-read \App\Models\Branch $branch
+ * @property \App\Models\Branch $branch
  * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\Cart[] $carts
  * @property-read int|null $carts_count
  * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\Taxonomy[] $categories
  * @property-read int|null $categories_count
- * @property-read \App\Models\Chain $chain
+ * @property \App\Models\Chain $chain
  * @property-read \App\Models\User $creator
  * @property-read \App\Models\User $editor
  * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\User[] $favoriters
