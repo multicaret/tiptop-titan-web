@@ -195,6 +195,9 @@
                                         <div class="col-6">
                                             @component('admin.components.form-group', ['name' => $input, 'type' => $type])
                                                 @slot('label', trans('strings.'. $input))
+                                                @if(! is_null($product->id) && $type === config('defaults.db_column_types.boolean'))
+                                                    @slot('attributes',$product->$input ? ['checked']: [''])
+                                                @endif
                                                 @if(! is_null($product->id))
                                                     @slot('value',$type === config('defaults.db_column_types.datetime') ? Carbon\Carbon::parse($product->$input)  : $product->$input)
                                                 @endif

@@ -242,6 +242,5 @@ class ProductController extends Controller
         $request->merge([
             'categories' => $request->categories === 'null' ? null : $request->categories
         ]);
-//        dd("prepareForValidation", $request->all());
     }
 }

@@ -189,6 +189,7 @@ class Product extends Model implements HasMedia
     protected $casts = [
         'price_discount_amount' => 'double',
         'price' => 'double',
+        'is_storage_tracking_enabled' => 'boolean',
         'price_discount_by_percentage' => 'boolean',
         'price_discount_began_at' => 'timestamp',
         'price_discount_finished_at' => 'timestamp',
