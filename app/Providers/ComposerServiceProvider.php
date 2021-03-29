@@ -137,11 +137,6 @@ class ComposerServiceProvider extends ServiceProvider
                                 'routeName' => 'admin.branches.index',
                             ],
                             [
-                                'title' => 'Slides',
-                                'icon' => 'fas fa-images',
-                                'routeName' => 'admin.slides.index',
-                            ],
-                            [
                                 'title' => 'Products',
                                 'icon' => 'fas fa-box-open',
                                 'params' => [
@@ -150,12 +145,22 @@ class ComposerServiceProvider extends ServiceProvider
                                 'routeName' => 'admin.products.index',
                             ],
                             [
-                                'title' => 'Grocery Categories',
+                                'title' => 'Market Categories',
                                 'icon' => 'fas fa-shapes',
                                 'params' => [
                                     'type' =>
                                         \App\Models\Taxonomy::getCorrectTypeName(\App\Models\Taxonomy::TYPE_GROCERY_CATEGORY,
                                             false)
+                                ],
+                                'routeName' => 'admin.taxonomies.index',
+                            ],
+                            [
+                                'title' => 'Units',
+                                'icon' => 'fas fa-balance-scale',
+                                'params' => [
+                                    'type' =>
+                                        \App\Models\Taxonomy::getCorrectTypeName(\App\Models\Taxonomy::TYPE_UNIT,
+                                            false),
                                 ],
                                 'routeName' => 'admin.taxonomies.index',
                             ],
@@ -193,16 +198,6 @@ class ComposerServiceProvider extends ServiceProvider
                                 'params' => [
                                     'type' =>
                                         \App\Models\Taxonomy::getCorrectTypeName(\App\Models\Taxonomy::TYPE_INGREDIENT,
-                                            false),
-                                ],
-                                'routeName' => 'admin.taxonomies.index',
-                            ],
-                            [
-                                'title' => 'Units',
-                                'icon' => 'fas fa-balance-scale',
-                                'params' => [
-                                    'type' =>
-                                        \App\Models\Taxonomy::getCorrectTypeName(\App\Models\Taxonomy::TYPE_UNIT,
                                             false),
                                 ],
                                 'routeName' => 'admin.taxonomies.index',
@@ -255,6 +250,11 @@ class ComposerServiceProvider extends ServiceProvider
                         'routeName' => 'admin.index',
                         'params' => ['type' => 'collapse'],
                         'subChildren' => [
+                            [
+                                'title' => 'Slides',
+                                'icon' => 'fas fa-images',
+                                'routeName' => 'admin.slides.index',
+                            ],
                             [
                                 'title' => 'Articles',
                                 'icon' => 'fas fa-pencil-alt',
