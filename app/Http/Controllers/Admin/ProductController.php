@@ -167,7 +167,7 @@ class ProductController extends Controller
         if (Product::checkRequestTypes()->isGrocery()) {
             $data['categories'] = Taxonomy::groceryCategories()->get()->map($getIdTitle)->all();
         } else {
-            $data['categories'] = Taxonomy::foodCategories()->get()->map($getIdTitle)->all();
+            $data['categories'] = Taxonomy::menuCategories()->get()->map($getIdTitle)->all();
         }
 
         return $data;

@@ -131,6 +131,9 @@ use Spatie\MediaLibrary\MediaCollections\Models\Media;
  * @method static Builder|Taxonomy unitCategories()
  * @method static Builder|Taxonomy whereChainId($value)
  * @method static Builder|Taxonomy whereIngredientCategoryId($value)
+ * @property-read Taxonomy|null $ingredientCategory
+ * @method static Builder|Taxonomy menuCategories()
+ * @method static Builder|Taxonomy searchTags()
  */
 class Taxonomy extends Node implements HasMedia, ShouldHaveTypes, TranslatableContract
 {
