@@ -419,6 +419,24 @@ class ComposerServiceProvider extends ServiceProvider
             [
                 'children' => [
                     [
+                        'title' => 'Promotion',
+                        'icon' => 'fas fa-ad',
+                        'routeName' => 'admin.index',
+                        'params' => ['type' => 'collapse'],
+                        'subChildren' => [
+                            [
+                                'title' => 'Coupons',
+                                'icon' => 'fas fa-paperclip',
+                                'routeName' => 'admin.coupons.index',
+                            ],
+
+                        ]
+                    ]
+                ]
+            ],
+            [
+                'children' => [
+                    [
                         'title' => 'Preferences',
                         'icon' => 'fas fa-cog',
                         'routeName' => 'admin.preferences.index',
