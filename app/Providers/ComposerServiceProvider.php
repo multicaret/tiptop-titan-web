@@ -6,6 +6,7 @@ use App\Models\Branch;
 use App\Models\Chain;
 use App\Models\Currency;
 use App\Models\Language;
+use App\Models\Order;
 use App\Models\Post;
 use App\Models\Preference;
 use App\Models\Product;
@@ -108,7 +109,7 @@ class ComposerServiceProvider extends ServiceProvider
                                 'title' => 'Products',
                                 'icon' => 'fas fa-box-open',
                                 'params' => [
-                                    'type' => Product::getCorrectTypeName(Product::TYPE_GROCERY_PRODUCT, false)
+                                    'type' => Product::getCorrectTypeName(Product::TYPE_GROCERY_OBJECT, false)
                                 ],
                                 'routeName' => 'admin.products.index',
                             ],
@@ -131,6 +132,12 @@ class ComposerServiceProvider extends ServiceProvider
                                             false),
                                 ],
                                 'routeName' => 'admin.taxonomies.index',
+                            ],
+                            [
+                                'title' => 'Ratings',
+                                'icon' => 'fas fa-star',
+                                'params' => ['type' => Order::getCorrectTypeName(Order::TYPE_GROCERY_OBJECT, false)],
+                                'routeName' => 'admin.orders.ratings',
                             ],
                         ]
                     ]
@@ -173,7 +180,7 @@ class ComposerServiceProvider extends ServiceProvider
                             [
                                 'title' => 'Products',
                                 'icon' => 'fas fa-box-open',
-                                'params' => ['type' => Product::getCorrectTypeName(Product::TYPE_FOOD_PRODUCT, false)],
+                                'params' => ['type' => Product::getCorrectTypeName(Product::TYPE_FOOD_OBJECT, false)],
                                 'routeName' => 'admin.products.index',
                             ],
                             [

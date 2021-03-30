@@ -2,6 +2,8 @@
 
 namespace App\Models;
 
+use App\Traits\HasAppTypes;
+use App\Traits\HasTypes;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
@@ -104,10 +106,12 @@ use Illuminate\Database\Eloquent\SoftDeletes;
  */
 class Order extends Model
 {
-    use SoftDeletes;
+    use SoftDeletes,
+        HasTypes,
+        HasAppTypes;
 
-    const TYPE_GROCERY_ORDER = 1;
-    const TYPE_FOOD_ORDER = 2;
+    const TYPE_GROCERY_OBJECT = 1;
+    const TYPE_FOOD_OBJECT = 2;
 
     const STATUS_CANCELLED = 0;
     const STATUS_DRAFT = 1;
