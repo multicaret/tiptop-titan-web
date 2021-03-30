@@ -2,6 +2,7 @@
 
 namespace App\Http\Resources;
 
+use App\Models\Product;
 use Illuminate\Http\Resources\Json\JsonResource;
 
 /** @mixin \App\Models\Taxonomy */
@@ -16,15 +17,12 @@ class GroceryCategoryChildResource extends JsonResource
      */
     public function toArray($request)
     {
-
-        $currentCategoryId = $this->id;
-        $products = $this->products()
-                         ->where('available_quantity', '>', 0)
-                         ->orWhere('is_storage_tracking_enabled', false)
-                         ->whereHas('categories', function ($query) use ($currentCategoryId) {
-                             return $query->where('taxonomies.id', $currentCategoryId);
-                         })
-                         ->get();
+        $productsIds = $this->products()
+                           ->where([['available_quantity', '>', 0], ['is_storage_tracking_enabled', true]])
+                           ->orWhere('is_storage_tracking_enabled', false)
+                           ->distinct('product_id')
+                           ->pluck('product_id');
+        $products = Product::whereIn('id',$productsIds)->get();
 
         return [
             'id' => (int) $this->id,
