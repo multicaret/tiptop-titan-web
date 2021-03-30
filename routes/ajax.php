@@ -35,6 +35,7 @@ Route::prefix('datatables')->name('datatables.')->group(function () {
     Route::get('chains', 'DatatableController@chains')->name('chains');
     Route::get('branches', 'DatatableController@branches')->name('branches');
     Route::get('products', 'DatatableController@products')->name('products');
+    Route::get('orders/ratings', 'DatatableController@orderRatings')->name('orders.ratings');
     Route::get('coupons', 'DatatableController@coupons')->name('coupons');
 });
 

@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Ajax;
 use App\Models\Branch;
 use App\Models\Chain;
 use App\Models\City;
+use App\Models\Order;
 use App\Models\Coupon;
 use App\Models\Post;
 use App\Models\Product;
@@ -135,7 +136,7 @@ class DatatableController extends AjaxController
                              ])->render();
                          })
                          ->editColumn('ingredientCategory', function ($item) {
-                             return ! is_null($item->ingredientCategory) ? $item->ingredientCategory->title : null;
+                             return !is_null($item->ingredientCategory) ? $item->ingredientCategory->title : null;
                          })
                          ->editColumn('order_column', function ($item) {
                              return view('admin.components.datatables._row-reorder')->render();
@@ -685,6 +686,48 @@ class DatatableController extends AjaxController
                              'chain',
                              'branch',
                              'price',
+                             'created_at',
+                         ])
+                         ->setRowAttr([
+                             'row-id' => function ($branch) {
+                                 return $branch->id;
+                             }
+                         ])
+                         ->make(true);
+    }
+
+    public function orderRatings(Request $request)
+    {
+        $orders = Order::whereType(Order::getCorrectType($request->type))->selectRaw('orders.*');
+
+        return DataTables::of($orders)
+                         ->editColumn('action', function ($order) {
+                             $data = [];
+
+                             return view('admin.components.datatables._row-actions', $data)->render();
+                         })
+                         ->editColumn('branch', function ($order) {
+                             return ! is_null($order->branch) ? $order->branch->title : '';
+                         })
+                         ->editColumn('issue', function ($order) {
+                             return ! is_null($order->ratingIssue) ? $order->ratingIssue->title : '';
+                         })
+                         ->editColumn('rating', function ($order) {
+                             return view('admin.components.datatables._rating', [
+                                 'rating' => $order->branch_rating_value
+                             ])->render();
+                         })
+                         ->editColumn('created_at', function ($order) {
+                             return view('admin.components.datatables._date', [
+                                 'date' => $order->created_at
+                             ])->render();
+                         })
+                         ->rawColumns([
+                             'action',
+                             'branch',
+                             'rating',
+                             'issue',
+                             'rating_comment',
                              'created_at',
                          ])
                          ->setRowAttr([

@@ -43,6 +43,7 @@ Route::resource('slides', 'SlideController')->except(['show']);
 Route::resource('chains', 'ChainController')->except(['show']);
 Route::resource('branches', 'BranchController')->except(['show']);
 Route::resource('products', 'ProductController')->except(['show']);
+Route::get('orders/ratings', 'OrderController@ratings')->name('orders.ratings');
 Route::resource('coupons', 'CouponController')->except(['show']);
 
 Route::get('preferences/{section}/edit', 'PreferenceController@edit')->name('preferences.edit');
