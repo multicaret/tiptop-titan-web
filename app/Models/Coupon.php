@@ -44,5 +44,7 @@ class Coupon extends Model
 {
     protected $casts = [
         'discount_amount' => 'double',
+        'max_allowed_discount_amount' => 'double',
+        'is_delivery_free' => 'boolean',
     ];
 }
