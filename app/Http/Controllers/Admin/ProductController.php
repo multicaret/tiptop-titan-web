@@ -165,9 +165,9 @@ class ProductController extends Controller
         $data['branches'] = Branch::whereType(Branch::TYPE_GROCERY_BRANCH)->get()->map($getIdTitle)->all();
         $data['units'] = Taxonomy::unitCategories()->get()->map($getIdTitle)->all();
         if (Product::isGrocery()) {
-            $data['categories'] = Taxonomy::groceryCategories()->get()->map($getIdTitle)->all();
+            $data['categories'] = Taxonomy::groceryCategories()->whereNotNull('parent_id')->get()->map($getIdTitle)->all();
         } else {
-            $data['categories'] = Taxonomy::menuCategories()->get()->map($getIdTitle)->all();
+            $data['categories'] = Taxonomy::menuCategories()->whereNotNull('parent_id')->get()->map($getIdTitle)->all();
         }
 
         return $data;
