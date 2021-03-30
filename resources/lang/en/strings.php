@@ -229,4 +229,9 @@ return [
     'units' => 'Units',
     'misc' => 'Miscellaneous',
     'search-tags' => 'Search Tags',
+    'order_number' => 'Order #',
+    'rating' => 'Rating',
+    'date' => 'date',
+    'issues' => 'Issues',
+    'comment' => 'Comment',
 ];

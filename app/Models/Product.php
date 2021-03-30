@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use App\Http\Controllers\Controller;
+use App\Traits\HasAppTypes;
 use App\Traits\HasMediaTrait;
 use App\Traits\HasStatuses;
 use App\Traits\HasTypes;
@@ -153,6 +154,7 @@ class Product extends Model implements HasMedia
         HasUuid,
         HasStatuses,
         HasTypes,
+        HasAppTypes,
         CanBeFavorited;
 
     const STATUS_INCOMPLETE = 0;
@@ -161,8 +163,8 @@ class Product extends Model implements HasMedia
     const STATUS_INACTIVE = 3;
     const STATUS_INACTIVE_SEASONABLE = 4;
 
-    const TYPE_GROCERY_PRODUCT = 1;
-    const TYPE_FOOD_PRODUCT = 2;
+    const TYPE_GROCERY_OBJECT = 1;
+    const TYPE_FOOD_OBJECT = 2;
 
     protected $with = [
         'chain',
@@ -200,31 +202,6 @@ class Product extends Model implements HasMedia
         'depth' => 'float',
         'weight' => 'float',
     ];
-
-    public static function requestTypeIsGrocery(): bool
-    {
-        return request()->type === self::getTypesArray()[self::TYPE_GROCERY_PRODUCT];
-    }
-
-    public static function requestTypeIsFood(): bool
-    {
-        return request()->type === self::getTypesArray()[self::TYPE_FOOD_PRODUCT];
-    }
-
-    public static function checkRequestTypes(): object
-    {
-        return new class {
-            public static function isFood(): bool
-            {
-                return request()->type === Product::getTypesArray()[Product::TYPE_FOOD_PRODUCT];
-            }
-
-            public static function isGrocery(): bool
-            {
-                return request()->type === Product::getTypesArray()[Product::TYPE_GROCERY_PRODUCT];
-            }
-        };
-    }
 
     public function creator()
     {
@@ -344,7 +321,7 @@ class Product extends Model implements HasMedia
 
     public function registerMediaCollections(): void
     {
-        $isGrocery = $this->type === self::TYPE_GROCERY_PRODUCT;
+        $isGrocery = $this->type === self::TYPE_GROCERY_OBJECT;
         $fallBackImageUrl = config('defaults.images.product_cover');
         $this->addMediaCollection('cover')
              ->useFallbackUrl(url($fallBackImageUrl))
@@ -412,13 +389,7 @@ class Product extends Model implements HasMedia
         return Currency::format($this->discounted_price);
     }
 
-    public static function getTypesArray(): array
-    {
-        return [
-            self::TYPE_GROCERY_PRODUCT => 'grocery-product',
-            self::TYPE_FOOD_PRODUCT => 'food-product',
-        ];
-    }
+
 
 
     public static function getDroppedColumns(): array

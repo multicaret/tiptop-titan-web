@@ -164,7 +164,7 @@ class ProductController extends Controller
         $data['chains'] = Chain::whereType(Chain::TYPE_GROCERY_CHAIN)->get()->map($getIdTitle)->all();
         $data['branches'] = Branch::whereType(Branch::TYPE_GROCERY_BRANCH)->get()->map($getIdTitle)->all();
         $data['units'] = Taxonomy::unitCategories()->get()->map($getIdTitle)->all();
-        if (Product::checkRequestTypes()->isGrocery()) {
+        if (Product::isGrocery()) {
             $data['categories'] = Taxonomy::groceryCategories()->get()->map($getIdTitle)->all();
         } else {
             $data['categories'] = Taxonomy::menuCategories()->get()->map($getIdTitle)->all();
@@ -232,7 +232,7 @@ class ProductController extends Controller
 
     private function getDroppedColumnsByType(): array
     {
-        if ( Product::checkRequestTypes()->isGrocery()) {
+        if ( Product::isGrocery()) {
             return [];
         } else {
             return ['unit_id', 'unit_text'];

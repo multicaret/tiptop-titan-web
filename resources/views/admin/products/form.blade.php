@@ -33,7 +33,7 @@
             {{method_field('put')}}
         @endif
         <div class="row mb-4">
-            <div class="col-md-{{\App\Models\Product::checkRequestTypes()->isFood() ? '12' : '9'}}">
+            <div class="col-md-{{\App\Models\Product::isFood() ? '12' : '9'}}">
                 <div class="col-12">
                     <ul class="nav nav-tabs border-bottom-0">
                         @foreach(localization()->getSupportedLocales() as $key => $locale)
@@ -210,7 +210,7 @@
                     </div>
                 </div>
             </div>
-            @if(\App\Models\Product::checkRequestTypes()->isGrocery())
+            @if(\App\Models\Product::isGrocery())
             <div class="col-md-3" style="margin-top: 2.2rem !important;">
                 <div class="row">
                     <div class="col-md-12 mt-2">

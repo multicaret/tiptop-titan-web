@@ -2,7 +2,7 @@
 @section('title', 'Branches')
 @section('content')
     <h4 class="d-flex justify-content-between align-items-center w-100 font-weight-bold py-3 mb-4">
-        @if(\App\Models\Branch::checkRequestTypes()->isGrocery())
+        @if(\App\Models\Branch::isGrocery())
             Market Branches
         @else
             Food Branches
