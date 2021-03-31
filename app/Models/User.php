@@ -560,6 +560,16 @@ class User extends Authenticatable implements HasMedia, MustVerifyEmail
 
 
     /**
+     * Get the access tokens that belong to model.
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\MorphMany
+     */
+    public function tokens()
+    {
+        return $this->morphMany(PersonalAccessToken::class, 'tokenable');
+    }
+
+    /**
      * Create a new personal access token for the user.
      *
      * @param  string  $name

@@ -1,7 +1,7 @@
 <?php
 return [
     'user' => [
-        'mobile_app' => [
+        'mobile_app_details' => [
             'version' => "0.0.0",
             'buildNumber' => 0,
             'device' => [
