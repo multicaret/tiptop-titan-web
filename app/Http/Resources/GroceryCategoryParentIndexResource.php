@@ -18,8 +18,9 @@ class GroceryCategoryParentIndexResource extends JsonResource
     {
 
         return [
-            'id' => (int)$this->id,
+            'id' => (int) $this->id,
             'icon' => $this->icon,
+            'englishTitle' => $this->translate('en')->title,
             'title' => $this->title,
             'description' => [
                 'raw' => strip_tags($this->description),

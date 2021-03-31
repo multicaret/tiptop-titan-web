@@ -19,6 +19,7 @@ class ProductResource extends JsonResource
         return [
             'id' => (int) $this->id,
             'uuid' => $this->uuid,
+            'englishTitle' => $this->translate('en')->title,
             'title' => $this->title,
             'description' => [
                 'raw' => strip_tags($this->description),

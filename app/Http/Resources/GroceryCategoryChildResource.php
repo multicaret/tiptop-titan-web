@@ -18,16 +18,17 @@ class GroceryCategoryChildResource extends JsonResource
     public function toArray($request)
     {
         $productsIds = $this->products()
-                           ->where([['available_quantity', '>', 0], ['is_storage_tracking_enabled', true]])
-                           ->orWhere('is_storage_tracking_enabled', false)
-                           ->distinct('product_id')
-                           ->pluck('product_id');
-        $products = Product::whereIn('id',$productsIds)->get();
+                            ->where([['available_quantity', '>', 0], ['is_storage_tracking_enabled', true]])
+                            ->orWhere('is_storage_tracking_enabled', false)
+                            ->distinct('product_id')
+                            ->pluck('product_id');
+        $products = Product::whereIn('id', $productsIds)->get();
 
         return [
             'id' => (int) $this->id,
             'type' => $this->getCorrectTypeName(),
             'icon' => $this->icon,
+            'englishTitle' => $this->translate('en')->title,
             'title' => $this->title,
             'description' => [
                 'raw' => strip_tags($this->description),
