@@ -57,7 +57,6 @@ use Spatie\Permission\Traits\HasRoles;
  * @property int $view_count
  * @property int $total_number_of_orders
  * @property int|null $order_column
- * @property object $mobile_app
  * @property mixed|null $social_networks
  * @property object $settings to handle all sort of settings including notification related such as is_notifiable by email or by push notifications ...etc
  * @property int $status 0:incomplete, 1:draft, 2:published, 3:Inactive, 4..n:CUSTOM
@@ -207,7 +206,6 @@ class User extends Authenticatable implements HasMedia, MustVerifyEmail
      */
     protected $casts = [
         'dob' => 'date',
-        'mobile_app' => 'object',
         'settings' => 'object',
         'email_verified_at' => 'datetime',
         'approved_at' => 'datetime',
@@ -251,9 +249,6 @@ class User extends Authenticatable implements HasMedia, MustVerifyEmail
             }
         });
         static::creating(function (User $user) {
-            /*if (is_null($user->mobile_app)) {
-                $user->mobile_app = json_decode(json_encode(config('defaults.user.mobile_app')));
-            }*/
             if (is_null($user->settings)) {
                 $user->settings = json_decode(json_encode(config('defaults.user.settings')));
             }
@@ -568,16 +563,17 @@ class User extends Authenticatable implements HasMedia, MustVerifyEmail
      * Create a new personal access token for the user.
      *
      * @param  string  $name
+     * @param  array  $deviceDetails
      * @param  array  $abilities
      * @return \Laravel\Sanctum\NewAccessToken
      */
-    public function createToken(string $name, array $abilities = ['*'])
+    public function createToken(string $name, array $deviceDetails = [], array $abilities = ['*']): NewAccessToken
     {
         $token = $this->tokens()->create([
             'name' => $name,
             'token' => hash('sha256', $plainTextToken = Str::random(40)),
             'abilities' => $abilities,
-            'mobile_app' => null,
+            'mobile_app_details' => json_encode($deviceDetails),
         ]);
 
         return new NewAccessToken($token, $token->getKey().'|'.$plainTextToken);

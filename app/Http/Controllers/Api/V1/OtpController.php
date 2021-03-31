@@ -65,6 +65,18 @@ class OtpController extends BaseApiController
 
     public function check($reference, Request $request): JsonResponse
     {
+        $validationRules = [
+            'phone_number' => 'required|numeric|min:7|max:15',
+            'phone_country_code' => 'required|min:3|max:3',
+            'mobile_app_details' => 'json',
+        ];
+
+        $validator = validator()->make($request->all(), $validationRules);
+        if ($validator->fails()) {
+            return $this->respondValidationFails($validator->errors());
+        }
+
+
         try {
             $vfk = $this->getVFK();
             $validationCheck = $vfk->checkValidation($reference);
@@ -84,14 +96,10 @@ class OtpController extends BaseApiController
 
         $newUser = false;
         if ($validationStatus) {
-            $phoneCountryCode = $request->phone_country_code;
-            $phoneNumber = $request->phone_number;
-            $mobileDataRequest = $request->input('mobile_app');
-
             [$user, $newUser, $accessToken] = $this->registerUserIfNotFoundByPhone(
-                $phoneCountryCode,
-                $phoneNumber,
-                $mobileDataRequest
+                $request->input('phone_country_code'),
+                $request->input('phone_number'),
+                $request->input('mobile_app_details')
             );
             $response = [
                 'newUser' => $newUser,
@@ -123,8 +131,10 @@ class OtpController extends BaseApiController
     public function otpSmsSend(Request $request): JsonResponse
     {
         $validationRules = [
-            'phone_number' => 'required',
-            'country_code' => 'required',
+            'country_code' => 'required|min:2|max:2',
+            'phone_country_code' => 'required|min:3|max:3',
+            'phone_number' => 'required|numeric|min:7|max:15',
+            'mobile_app_details' => 'json',
         ];
 
         $validator = validator()->make($request->all(), $validationRules);
@@ -167,11 +177,12 @@ class OtpController extends BaseApiController
     public function otpSmsValidate(Request $request): JsonResponse
     {
         $validationRules = [
-            'phone_number' => 'required',
-            'phone_country_code' => 'required',
-            'country_code' => 'required',
-            'code' => 'required',
+            'country_code' => 'required|min:2|max:2',
+            'phone_country_code' => 'required|min:3|max:3',
+            'phone_number' => 'required|numeric|min:7|max:15',
+            'code' => 'required|numeric|min:4|max:8',
             'reference' => 'required',
+            'mobile_app_details' => 'json',
         ];
 
         $validator = validator()->make($request->all(), $validationRules);
@@ -201,12 +212,10 @@ class OtpController extends BaseApiController
                         'validationDate' => $result->getValidationDate()->format('Y-m-d H:i:s'),
                     ];*/
 
-                    $mobileDataRequest = $request->input('mobile_app');
-
                     [$user, $newUser, $accessToken] = $this->registerUserIfNotFoundByPhone(
                         $phoneCountryCode,
                         $phoneNumber,
-                        $mobileDataRequest
+                        $request->input('mobile_app_details')
                     );
                     $response = [
                         'newUser' => $newUser,
@@ -284,15 +293,12 @@ class OtpController extends BaseApiController
             $user->username = $phoneNumber;
             $user->approved_at = now();
             $user->phone_verified_at = now();
-            if ( ! is_null($mobileDataRequest) && ! is_null($mobileAppData)) {
-                $user->mobile_app = $mobileAppData;
-            }
             $newUser = true;
         }
         $user->last_logged_in_at = now();
         $user->save();
 
-        $accessToken = $user->createToken($deviceName)->plainTextToken;
+        $accessToken = $user->createToken($deviceName, $mobileAppData)->plainTextToken;
         event(new Registered($user));
 
         return [$user, $newUser, $accessToken];
