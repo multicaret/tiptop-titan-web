@@ -567,7 +567,7 @@ class User extends Authenticatable implements HasMedia, MustVerifyEmail
      * @param  array  $abilities
      * @return \Laravel\Sanctum\NewAccessToken
      */
-    public function createToken(string $name, array $deviceDetails = [], array $abilities = ['*']): NewAccessToken
+    public function createToken(string $name, $deviceDetails, array $abilities = ['*']): NewAccessToken
     {
         $token = $this->tokens()->create([
             'name' => $name,
