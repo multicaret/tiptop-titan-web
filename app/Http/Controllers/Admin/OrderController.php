@@ -33,8 +33,8 @@ class OrderController extends Controller
                 'width' => '5',
             ],
             [
-                'data' => 'reference_code',
-                'name' => 'reference_code',
+                'data' => 'order',
+                'name' => 'order',
                 'title' => trans('strings.order_number'),
                 'width' => '5',
             ],
@@ -57,8 +57,8 @@ class OrderController extends Controller
                 'width' => '10',
             ],
             [
-                'data' => 'rating_comment',
-                'name' => 'rating_comment',
+                'data' => 'comment',
+                'name' => 'comment',
                 'title' => trans('strings.comment'),
                 'width' => '10',
             ],

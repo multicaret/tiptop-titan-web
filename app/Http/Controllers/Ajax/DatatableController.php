@@ -654,6 +654,19 @@ class DatatableController extends AjaxController
                          ->editColumn('branch', function ($order) {
                              return ! is_null($order->branch) ? $order->branch->title : '';
                          })
+                         ->editColumn('order', function ($order) {
+                             return view('admin.components.datatables._link', [
+                                 'text' => $order->reference_code,
+                                 'link' => route('admin.products.index'),
+//                                 'link' => route('admin.orders.edit', [$order->id]),
+
+                             ])->render();
+                         })
+                         ->editColumn('comment', function ($order) {
+                             return view('admin.components.datatables._comment', [
+                                 'order' => $order,
+                             ])->render();
+                         })
                          ->editColumn('issue', function ($order) {
                              return ! is_null($order->ratingIssue) ? $order->ratingIssue->title : '';
                          })
@@ -669,6 +682,8 @@ class DatatableController extends AjaxController
                          })
                          ->rawColumns([
                              'action',
+                             'order',
+                             'comment',
                              'branch',
                              'rating',
                              'issue',

@@ -38,6 +38,7 @@ class CreateOrdersTable extends Migration
 
             // Rating Related
             $table->decimal('branch_rating_value', 3)->nullable();
+            $table->decimal('rated_at', 3)->nullable();
             $table->text('rating_comment')->nullable();
             // Rating Related - For Food Only
             $table->decimal('driver_rating_value', 3)->nullable();
