@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Traits\HasAppTypes;
 use App\Traits\HasMediaTrait;
 use App\Traits\HasStatuses;
 use App\Traits\HasTypes;
@@ -105,15 +106,16 @@ class Chain extends Model implements HasMedia
         Translatable,
         HasStatuses,
         HasViewCount,
-        HasTypes;
+        HasTypes,
+        HasAppTypes;
 
     const STATUS_INCOMPLETE = 0;
     const STATUS_DRAFT = 1;
     const STATUS_PUBLISHED = 2;
     const STATUS_INACTIVE = 3;
 
-    const TYPE_GROCERY_CHAIN = 1;
-    const TYPE_FOOD_CHAIN = 2;
+    const TYPE_GROCERY_OBJECT = 1;
+    const TYPE_FOOD_OBJECT = 2;
 
     protected $fillable = ['title', 'description'];
     protected $with = ['translations'];
@@ -155,7 +157,7 @@ class Chain extends Model implements HasMedia
      */
     public function scopeGroceries($query): \Illuminate\Database\Eloquent\Builder
     {
-        return $query->where('type', self::TYPE_GROCERY_CHAIN);
+        return $query->where('type', self::TYPE_GROCERY_OBJECT);
     }
 
     /**
@@ -167,19 +169,7 @@ class Chain extends Model implements HasMedia
      */
     public function scopeFoods($query): \Illuminate\Database\Eloquent\Builder
     {
-        return $query->where('type', self::TYPE_FOOD_CHAIN);
-    }
-
-
-    /**
-     * @return array
-     */
-    public static function getTypesArray(): array
-    {
-        return [
-            self::TYPE_GROCERY_CHAIN => 'grocery',
-            self::TYPE_FOOD_CHAIN => 'food',
-        ];
+        return $query->where('type', self::TYPE_FOOD_OBJECT);
     }
 
 
@@ -261,20 +251,6 @@ class Chain extends Model implements HasMedia
 
     }
 
-    public static function checkRequestTypes(): object
-    {
-        return new class {
-            public static function isFood(): bool
-            {
-                return request()->type === Chain::getTypesArray()[Chain::TYPE_FOOD_CHAIN];
-            }
-
-            public static function isGrocery(): bool
-            {
-                return request()->type === Chain::getTypesArray()[Chain::TYPE_GROCERY_CHAIN];
-            }
-        };
-    }
 
 
 }

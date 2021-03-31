@@ -161,8 +161,8 @@ class ProductController extends Controller
         $getIdTitle = function ($item) {
             return ['id' => $item->id, 'title' => $item->title];
         };
-        $data['chains'] = Chain::whereType(Chain::TYPE_GROCERY_CHAIN)->get()->map($getIdTitle)->all();
-        $data['branches'] = Branch::whereType(Branch::TYPE_GROCERY_BRANCH)->get()->map($getIdTitle)->all();
+        $data['chains'] = Chain::whereType(Chain::TYPE_GROCERY_OBJECT)->get()->map($getIdTitle)->all();
+        $data['branches'] = Branch::whereType(Branch::TYPE_GROCERY_OBJECT)->get()->map($getIdTitle)->all();
         $data['units'] = Taxonomy::unitCategories()->get()->map($getIdTitle)->all();
         if (Product::isGrocery()) {
             $data['categories'] = Taxonomy::groceryCategories()->whereNotNull('parent_id')->get()->map($getIdTitle)->all();
