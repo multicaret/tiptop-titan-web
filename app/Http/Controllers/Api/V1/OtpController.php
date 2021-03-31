@@ -66,7 +66,7 @@ class OtpController extends BaseApiController
     public function check($reference, Request $request): JsonResponse
     {
         $validationRules = [
-            'phone_number' => 'required|numeric|min:7|max:15',
+            'phone_number' => 'required|numeric|digits_between:7,15',
             'phone_country_code' => 'required|min:3|max:3',
             'mobile_app_details' => 'json',
         ];
@@ -133,7 +133,7 @@ class OtpController extends BaseApiController
         $validationRules = [
             'country_code' => 'required|min:2|max:2',
             'phone_country_code' => 'required|min:3|max:3',
-            'phone_number' => 'required|numeric|min:7|max:15',
+            'phone_number' => 'required|numeric|digits_between:7,15',
             'mobile_app_details' => 'json',
         ];
 
@@ -179,7 +179,7 @@ class OtpController extends BaseApiController
         $validationRules = [
             'country_code' => 'required|min:2|max:2',
             'phone_country_code' => 'required|min:3|max:3',
-            'phone_number' => 'required|numeric|min:7|max:15',
+            'phone_number' => 'required|numeric|digits_between:7,15',
             'code' => 'required|numeric|min:4|max:8',
             'reference' => 'required',
             'mobile_app_details' => 'json',
