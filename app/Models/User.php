@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Http\Controllers\Controller;
 use App\Mail\Welcome;
 use App\Notifications\ResetPassword;
 use App\Traits\HasGender;
@@ -253,6 +254,28 @@ class User extends Authenticatable implements HasMedia, MustVerifyEmail
                 $user->settings = json_decode(json_encode(config('defaults.user.settings')));
             }
         });
+    }
+
+    /**
+     * Set the user's first name.
+     *
+     * @param  string  $value
+     * @return void
+     */
+    public function setFirstAttribute($value)
+    {
+        $this->attributes['first'] = ucfirst(Controller::convertNumbersToArabic($value));
+    }
+
+    /**
+     * Set the user's first name.
+     *
+     * @param  string  $value
+     * @return void
+     */
+    public function setLastAttribute($value)
+    {
+        $this->attributes['last'] = ucfirst(Controller::convertNumbersToArabic($value));
     }
 
     /**
