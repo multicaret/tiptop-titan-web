@@ -72,7 +72,6 @@ class UserResource extends JsonResource
                 'diffForHumans' => $this->updated_at->diffForHumans(),
                 'timestamp' => $this->updated_at->timestamp,
             ],
-            'mobileApp' => $this->mobile_app,
             'settings' => $this->settings,
             'currency' => new CurrencyResource($this->currency),
             'country' => new CountryResource($this->country),
