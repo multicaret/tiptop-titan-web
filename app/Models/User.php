@@ -563,7 +563,7 @@ class User extends Authenticatable implements HasMedia, MustVerifyEmail
      * Create a new personal access token for the user.
      *
      * @param  string  $name
-     * @param  array  $deviceDetails
+     * @param $deviceDetails
      * @param  array  $abilities
      * @return \Laravel\Sanctum\NewAccessToken
      */
