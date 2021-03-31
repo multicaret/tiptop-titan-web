@@ -10,12 +10,12 @@
 <div id="layout-sidenav"
      class="layout-sidenav sidenav-vertical sidenav layout-fixed bg-sidenav-theme">
     <!-- Brand demo (see assets/css/demo/demo.css) -->
-    <div class="app-brand demo ml-5">
+    <div class="app-brand demo ml-2">
         {{--
          use this class (.side-nav-logo) if you want to change the logo if sidenav collapsed
         --}}
-        <a href="{{route('admin.index')}}" class="app-brand-text demo sidenav-text font-weight-normal ml-2">
-            <img src="/images/logo.jpeg" alt="@preferences('app_title')" width="70px"
+        <a href="{{route('admin.index')}}" class="app-brand-text demo sidenav-text font-weight-normal">
+            <img src="/images/logo.svg" alt="@preferences('app_title')" width="135px"
                  class="">
         </a>
         <a href="javascript:void(0)" class="layout-sidenav-toggle sidenav-link text-large">
