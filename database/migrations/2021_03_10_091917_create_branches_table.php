@@ -28,7 +28,7 @@ class CreateBranchesTable extends Migration
             $table->string('secondary_phone_number')->nullable();
             $table->string('whatsapp_phone_number')->nullable();
             $table->unsignedInteger('order_column')->nullable();
-            $table->unsignedTinyInteger('type')->default(\App\Models\Branch::TYPE_FOOD_BRANCH)->comment('1:Market, 2: Food');
+            $table->unsignedTinyInteger('type')->default(\App\Models\Branch::TYPE_FOOD_OBJECT)->comment('1:Market, 2: Food');
             $table->decimal('latitude', 11, 8)->nullable();
             $table->decimal('longitude', 11, 8)->nullable();
             $table->decimal('avg_rating', 3)->default(0);

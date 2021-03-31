@@ -93,7 +93,7 @@ class ComposerServiceProvider extends ServiceProvider
                                 'icon' => 'fas fa-link',
                                 'params' => [
                                     'type' =>
-                                        Chain::getCorrectTypeName(Chain::TYPE_GROCERY_CHAIN, false),
+                                        Chain::getCorrectTypeName(Chain::TYPE_GROCERY_OBJECT, false),
                                 ],
                                 'routeName' => 'admin.chains.index',
                             ],
@@ -101,7 +101,7 @@ class ComposerServiceProvider extends ServiceProvider
                                 'title' => 'Branches',
                                 'icon' => 'fas fa-store-alt',
                                 'params' => [
-                                    'type' => Branch::getCorrectTypeName(Branch::TYPE_GROCERY_BRANCH, false),
+                                    'type' => Branch::getCorrectTypeName(Branch::TYPE_GROCERY_OBJECT, false),
                                 ],
                                 'routeName' => 'admin.branches.index',
                             ],
@@ -155,7 +155,7 @@ class ComposerServiceProvider extends ServiceProvider
                                 'title' => 'Chains',
                                 'icon' => 'fas fa-link',
                                 'params' => [
-                                    'type' => Chain::getCorrectTypeName(Chain::TYPE_FOOD_CHAIN, false),
+                                    'type' => Chain::getCorrectTypeName(Chain::TYPE_FOOD_OBJECT, false),
                                 ],
                                 'routeName' => 'admin.chains.index',
                             ],
@@ -163,7 +163,7 @@ class ComposerServiceProvider extends ServiceProvider
                                 'title' => 'Branches',
                                 'icon' => 'fas fa-store-alt',
                                 'params' => [
-                                    'type' => Branch::getCorrectTypeName(Branch::TYPE_FOOD_BRANCH, false),
+                                    'type' => Branch::getCorrectTypeName(Branch::TYPE_FOOD_OBJECT, false),
                                 ],
                                 'routeName' => 'admin.branches.index',
                             ],
@@ -417,6 +417,24 @@ class ComposerServiceProvider extends ServiceProvider
                                             false),
                                 ],
                                 'routeName' => 'admin.taxonomies.index',
+                            ],
+
+                        ]
+                    ]
+                ]
+            ],
+            [
+                'children' => [
+                    [
+                        'title' => 'Promotion',
+                        'icon' => 'fas fa-ad',
+                        'routeName' => 'admin.index',
+                        'params' => ['type' => 'collapse'],
+                        'subChildren' => [
+                            [
+                                'title' => 'Coupons',
+                                'icon' => 'fas fa-paperclip',
+                                'routeName' => 'admin.coupons.index',
                             ],
 
                         ]

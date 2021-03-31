@@ -385,7 +385,7 @@ class TaxonomyController extends Controller
         }
 
         $fontAwesomeIcons = $this->getFontAwesomeIcons();
-        $branches = \App\Models\Branch::whereType(\App\Models\Branch::TYPE_GROCERY_BRANCH)->get();
+        $branches = \App\Models\Branch::whereType(\App\Models\Branch::TYPE_GROCERY_OBJECT)->get();
         $ingredientCategories = Taxonomy::ingredientCategories()->get();
 
         return [$typeName, $correctType, $roots, $fontAwesomeIcons, $branches, $ingredientCategories];

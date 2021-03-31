@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Traits\HasStatuses;
 use Illuminate\Database\Eloquent\Model;
 
 /**
@@ -42,9 +43,18 @@ use Illuminate\Database\Eloquent\Model;
  */
 class Coupon extends Model
 {
+    use HasStatuses;
+
+    const STATUS_INCOMPLETE = 0;
+    const STATUS_DRAFT = 1;
+    const STATUS_PUBLISHED = 2;
+    const STATUS_INACTIVE = 3;
+
     protected $casts = [
         'discount_amount' => 'double',
         'max_allowed_discount_amount' => 'double',
+        'discount_by_percentage' => 'boolean',
         'is_delivery_free' => 'boolean',
+        'expired_at' => 'date',
     ];
 }

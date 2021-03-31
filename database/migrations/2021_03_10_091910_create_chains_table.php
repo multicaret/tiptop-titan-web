@@ -21,7 +21,7 @@ class CreateChainsTable extends Migration
             $table->unsignedBigInteger('region_id')->nullable();
             $table->unsignedBigInteger('city_id')->nullable();
             $table->unsignedBigInteger('currency_id')->nullable()->default(config('defaults.currency.id'));
-            $table->unsignedTinyInteger('type')->default(\App\Models\Chain::TYPE_FOOD_CHAIN)->comment('1:Market, 2: Food');
+            $table->unsignedTinyInteger('type')->default(\App\Models\Chain::TYPE_FOOD_OBJECT)->comment('1:Market, 2: Food');
             $table->string('primary_phone_number')->nullable();
             $table->string('secondary_phone_number')->nullable();
             $table->string('whatsapp_phone_number')->nullable();

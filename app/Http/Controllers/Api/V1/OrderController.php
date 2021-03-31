@@ -217,11 +217,11 @@ class OrderController extends BaseApiController
     public function createRate(Order $order, Request $request): JsonResponse
     {
         $response = [];
-        if ($order->type === Order::TYPE_GROCERY_ORDER) {
+        if ($order->type === Order::TYPE_GROCERY_OBJECT) {
             $response = [
                 'availableIssues' => $this->getIssuesLists(),
             ];
-        } elseif ($order->type === Order::TYPE_FOOD_ORDER) {
+        } elseif ($order->type === Order::TYPE_FOOD_OBJECT) {
             $response = [
                 ['key' => 'has_good_food_quality_rating', 'label' => 'Good Food Quality'],
                 ['key' => 'has_good_packaging_quality_rating', 'label' => 'Good Packaging Quality'],
@@ -236,10 +236,10 @@ class OrderController extends BaseApiController
     public function storeRate(Order $order, Request $request): JsonResponse
     {
         $branchRatingValue = $request->input('branch_rating_value');
-        if ($order->type === Chain::TYPE_GROCERY_CHAIN) {
+        if ($order->type === Chain::TYPE_GROCERY_OBJECT) {
             $order->rating_issue_id = $request->input('grocery_issue_id');
         }
-        if ($order->type === Chain::TYPE_FOOD_CHAIN) {
+        if ($order->type === Chain::TYPE_FOOD_OBJECT) {
             $driverRatingValue = $request->input('driver_rating_value');
             $order->driver_rating_value = $driverRatingValue;
             $order->has_good_food_quality_rating = $request->input('food_rating_factors.has_good_food_quality_rating');

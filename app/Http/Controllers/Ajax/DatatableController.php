@@ -6,6 +6,7 @@ use App\Models\Branch;
 use App\Models\Chain;
 use App\Models\City;
 use App\Models\Order;
+use App\Models\Coupon;
 use App\Models\Post;
 use App\Models\Product;
 use App\Models\Region;
@@ -135,7 +136,7 @@ class DatatableController extends AjaxController
                              ])->render();
                          })
                          ->editColumn('ingredientCategory', function ($item) {
-                             return ! is_null($item->ingredientCategory) ? $item->ingredientCategory->title : null;
+                             return !is_null($item->ingredientCategory) ? $item->ingredientCategory->title : null;
                          })
                          ->editColumn('order_column', function ($item) {
                              return view('admin.components.datatables._row-reorder')->render();
@@ -498,6 +499,60 @@ class DatatableController extends AjaxController
                          ->setRowAttr([
                              'row-id' => function ($chain) {
                                  return $chain->id;
+                             }
+                         ])
+                         ->make(true);
+    }
+
+
+    public function coupons(Request $request)
+    {
+        $coupons = Coupon::selectRaw('coupons.*');
+
+        return DataTables::of($coupons)
+                         ->editColumn('action', function ($coupon) {
+                             $data = [
+                                 'editAction' => route('admin.coupons.edit', [
+                                     $coupon->id,
+                                 ]),
+                                 'deleteAction' => route('admin.coupons.destroy', [
+                                     $coupon->id,
+                                 ]),
+                             ];
+
+                             return view('admin.components.datatables._row-actions', $data)->render();
+                         })
+                         ->editColumn('discount', function ($coupon) {
+
+                             $prefix = $coupon->discount_by_percentage ? '%' : config('defaults.currency.code');
+
+                             return $prefix.' '.$coupon->discount_amount;
+                         })
+                         ->editColumn('expired_at', function ($coupon) {
+                             return view('admin.components.datatables._date', [
+                                 'date' => $coupon->expired_at
+                             ])->render();
+                         })
+                         ->editColumn('status', function ($coupon) {
+                             return view('admin.components.datatables._status', [
+                                 'status' => $coupon->status
+                             ])->render();
+                         })
+                         ->editColumn('created_at', function ($coupon) {
+                             return view('admin.components.datatables._date', [
+                                 'date' => $coupon->created_at
+                             ])->render();
+                         })
+                         ->rawColumns([
+                             'action',
+                             'status',
+                             'discount',
+                             'created_at',
+                             'expired_at',
+                         ])
+                         ->setRowAttr([
+                             'row-id' => function ($coupon) {
+                                 return $coupon->id;
                              }
                          ])
                          ->make(true);
