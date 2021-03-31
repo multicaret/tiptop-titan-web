@@ -433,7 +433,7 @@ class ComposerServiceProvider extends ServiceProvider
                         'subChildren' => [
                             [
                                 'title' => 'Coupons',
-                                'icon' => 'fas fa-paperclip',
+                                'icon' => 'fas fa-ticket-alt',
                                 'routeName' => 'admin.coupons.index',
                             ],
 
