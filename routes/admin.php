@@ -57,3 +57,6 @@ Route::resource('media', 'MediaController')->only(['store']);
 Route::resource('roles', 'RoleController');
 
 Route::get('translations', 'TranslationController@index')->name('translations.index');
+
+
+Route::get('orders', 'OrdernController@index')->name('orders.index');
