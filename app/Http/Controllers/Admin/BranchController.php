@@ -55,7 +55,7 @@ class BranchController extends Controller
             [
                 'data' => 'region',
                 'name' => 'region',
-                'title' => 'Region',
+                'title' => 'City',
                 'searchable' => false,
                 'bSortable' => false,
                 'width' => '10',
@@ -63,7 +63,7 @@ class BranchController extends Controller
             [
                 'data' => 'city',
                 'name' => 'city',
-                'title' => 'City',
+                'title' => 'Neighborhood',
                 'searchable' => false,
                 'bSortable' => false,
                 'width' => '10',
