@@ -174,7 +174,7 @@ class CouponController extends Controller
         $coupon->discount_amount = json_decode($request->input('discount_amount'));
         $coupon->total_usage_count = $request->input('total_usage_count');
         $coupon->usage_count_by_same_user = $request->input('usage_count_by_same_user');
-        $coupon->is_delivery_free = $request->has('is_delivery_free') ? $request->input('is_delivery_free') : 0;
+        $coupon->has_free_delivery = $request->has('has_free_delivery') ? $request->input('has_free_delivery') : 0;
         $coupon->discount_by_percentage = $request->has('discount_by_percentage') ? json_decode($request->input('discount_by_percentage')) : 0;
         $coupon->max_allowed_discount_amount = $request->input('max_allowed_discount_amount');
         $coupon->expired_at = Carbon::parse($request->input('expired_at'));
