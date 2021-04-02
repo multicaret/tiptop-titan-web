@@ -100,6 +100,9 @@ class HomeController extends BaseApiController
 
             if ( ! is_null($user) && ! is_null($selectedAddress = $request->input('selected_address_id'))) {
                 $selectedAddress = Location::find($selectedAddress);
+                if (is_null($selectedAddress)) {
+                    return $this->respondNotFound('Address not found!');
+                }
                 $latitude = $selectedAddress->latitude;
                 $longitude = $selectedAddress->longitude;
             }

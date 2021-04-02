@@ -196,5 +196,10 @@ class Order extends Model
                     ->withTimestamps();
     }
 
+    public function scopeNew($query)
+    {
+        return $query->where('status', self::STATUS_NEW);
+    }
+
 
 }

@@ -14,7 +14,7 @@ Authorization: Bearer {{token}}
 
 
 ###  remove or add product
-POST {{host}}/{{locale}}/api/v1/carts/1/products/adjust-quantity
+POST {{host}}/{{locale}}/api/v1/carts/{{cartId}}/products/adjust-quantity
 Accept: application/json
 Content-Type: application/json
 Authorization: Bearer {{token}}
@@ -28,7 +28,7 @@ Authorization: Bearer {{token}}
 }
 
 ###  clear cart
-POST {{host}}/{{locale}}/api/v1/carts/{cart}/delete
+POST {{host}}/{{locale}}/api/v1/carts/{{cart}}/delete
 Accept: application/json
 Content-Type: application/json
 Authorization: Bearer {{token}}

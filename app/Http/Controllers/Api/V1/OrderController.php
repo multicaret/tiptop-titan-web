@@ -183,7 +183,7 @@ class OrderController extends BaseApiController
 //        $newOrder->avg_rating = $request->input('avg_rating');
 //        $newOrder->rating_count = $request->input('rating_count');
         $newOrder->notes = $request->input('notes');
-        $newOrder->status = Order::STATUS_DELIVERED;
+        $newOrder->status = Order::STATUS_NEW;
         $newOrder->type = $branch->type;
         $newOrder->save();
 
