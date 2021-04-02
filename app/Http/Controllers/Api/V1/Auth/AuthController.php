@@ -88,7 +88,7 @@ class AuthController extends BaseApiController
                 'last_logged_in_at' => now()
             ]);
             $deviceName = $request->input('device_name', 'New Device');
-            $accessToken = $user->createToken($deviceName)->plainTextToken;
+            $accessToken = $user->createToken($deviceName,config('defaults.user.mobile_app_details'))->plainTextToken;
 
             return $this->respond([
                 'user' => new UserResource($user),

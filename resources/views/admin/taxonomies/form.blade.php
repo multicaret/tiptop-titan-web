@@ -117,7 +117,7 @@
                     <div class="col-4">
                         @component('admin.components.form-group', ['name' => 'branch_id', 'type' => 'select'])
                             @slot('label', trans('strings.branch'))
-                            @slot('options',  \App\Models\Branch::whereType(\App\Models\Branch::TYPE_FOOD_BRANCH)->get()->pluck('title', 'id')->prepend('',''))
+                            @slot('options',  \App\Models\Branch::whereType(\App\Models\Branch::TYPE_FOOD_OBJECT)->get()->pluck('title', 'id')->prepend('',''))
                             @slot('attributes', [
                                 'class' => 'select2-branch w-100',
                                 'required',
