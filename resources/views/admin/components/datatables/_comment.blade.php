@@ -4,29 +4,52 @@
 @endphp
 
 <a href="!#" data-toggle="modal" data-target="#modals-{{$order->reference_code}}">
-    {{\Str::limit($order->rating_comment, 80) }}
+    {{\Str::limit($order->rating_comment, 80, '') }}
+    @if($isLong)
+        <i class="far fa-comment-dots" style="color: #1e70cd"></i>
+    @endif
 </a>
-
-@if($isLong)
-    <i class="far fa-comment-dots"></i>
-@endif
 
 
 <div class="modal fade" id="modals-{{$order->reference_code}}">
     <div class="modal-dialog">
         <form class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title">
-                    {{$order->user->name}}'s
-                    <span class="font-weight-light">Comment</span>
-                    <br>
-                </h5>
-                <p>Order Number: <span class="font-weight-bold">{{$order->reference_code}}</span></p>
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close">×</button>
+            <div class="modal-header px-0">
+                <div class="container">
+                    <div class="d-flex justify-content-around align-center h-100">
+                        {{--Left side--}}
+                        <div class="w-100 d-flex flex-column align-items-start">
+                            <span class="font-weight-bold mb-2">
+                                Order ID: {{$order->user->id}}
+                            </span>
+                            <span class="font-weight-bold mb-2">
+                                User: {{$order->user->name}}
+                            </span>
+                            <span class="font-weight-bold mb-2">Branch: {{$order->branch->title}}</span>
+                        </div>
+                        {{--Right side--}}
+                        <div class="w-100 d-flex flex-column align-items-end">
+                            <span class="font-weight-bold mb-2 float-right">
+                                Order Number: {{$order->reference_code}}
+                            </span>
+                            <span class="font-weight-bold mb-2 float-right">
+                                Date: {{$order->rated_at}}
+                            </span>
+                        </div>
+
+                    </div>
+                </div>
             </div>
             <div class="modal-body">
                 <div class="form-row">
                     <div class="form-group col">
+                        <div class="d-flex justify-content-around mb-3">
+                            <span class="font-weight-bold float-right">
+                                Issue: {{$order->ratingIssue->title}}
+                            </span>
+                            @include('admin.components.datatables._rating', ['rating' => $order->branch_rating_value])
+                        </div>
+
                         <p>{{$order->rating_comment}}</p>
                     </div>
                 </div>
