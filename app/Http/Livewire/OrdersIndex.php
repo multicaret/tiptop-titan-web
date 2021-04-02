@@ -7,11 +7,13 @@ use Livewire\Component;
 
 class OrdersIndex extends Component
 {
-    public $newOrdersCount = 0;
+    public $foodNewOrdersCount = 0;
+    public $groceryNewOrdersCount = 0;
 
     public function render()
     {
-        $this->newOrdersCount = Order::new()->count();
+        $this->foodNewOrdersCount = Order::food()->new()->count();
+        $this->groceryNewOrdersCount = Order::grocery()->new()->count();
 
         return view('livewire.orders-index');
     }

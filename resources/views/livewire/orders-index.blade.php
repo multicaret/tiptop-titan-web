@@ -1,22 +1,22 @@
 <div>
     <div class="mb-4">
-        <div class="row mb-5">
-            <div class="col-4">
+        <div class="row mb-3">
+            <div class="col-3">
                 <div class="card">
-                    <div class="card-body">
+                    <div class="card-body shadow px-4 py-3 rounded-lg">
                         <h4 class="card-title">
-                            New Orders
-                            <span wire:loading wire:target="newOrdersCount">
+                            Food New Orders
+                            <span wire:loading wire:target="foodNewOrdersCount">
                                   <i class="fas fa-sync fa-spin"></i>
                             </span>
                         </h4>
                         <div class="card-text">
                             <div class="media align-items-center">
-                                <img src="/images/icons/food-delivery-17/svg/021-paper-bag.svg" alt="Orders"
+                                <img src="/images/icons/food-delivery-186/svg/019-food tray.svg" alt="Food Orders"
                                      class="d-block ui-w-50">
                                 <div class="media-body ml-4">
-                                    <h3 wire:poll.1s>
-                                    {{$newOrdersCount}}
+                                    <h3 wire:poll.10s>
+                                        {{$foodNewOrdersCount}}
                                     </h3>
                                 </div>
                             </div>
@@ -25,15 +25,40 @@
                 </div>
             </div>
 
-            <div class="col-4">
+            <div class="col-3">
                 <div class="card">
-                    <div class="card-body">
+                    <div class="card-body shadow px-4 py-3 rounded-lg">
+                        <h4 class="card-title">
+                            Grocery New Orders
+                            <span wire:loading wire:target="groceryNewOrdersCount">
+                                  <i class="fas fa-sync fa-spin"></i>
+                            </span>
+                        </h4>
+                        <div class="card-text">
+                            <div class="media align-items-center">
+                                <img src="/images/icons/food-delivery-186/svg/021-food delivery.svg"
+                                     alt="Grocery Orders"
+                                     class="d-block ui-w-50">
+                                <div class="media-body ml-4">
+                                    <h3 wire:poll.10s>
+                                        {{$groceryNewOrdersCount}}
+                                    </h3>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-3">
+                <div class="card">
+                    <div class="card-body shadow px-4 py-3 rounded-lg">
                         <h4 class="card-title">
                             Current Time
                         </h4>
                         <div class="card-text">
                             <div class="media align-items-center">
-                                <img src="/images/icons/food-delivery-17/svg/015-24-hours.svg" alt="Clock"
+                                <img src="/images/icons/svg/clock.svg" alt="Clock"
                                      class="d-block ui-w-50">
                                 <div class="media-body ml-4">
                                     <span wire:poll.1m>{{ now() }}</span>
@@ -43,9 +68,9 @@
                     </div>
                 </div>
             </div>
-            <div class="col-4">
+            <div class="col-3">
                 <div class="card">
-                    <div class="card-body">
+                    <div class="card-body shadow px-4 py-3 rounded-lg">
                         <h4 class="card-title">
                             {{ $auth->name }}
                         </h4>
