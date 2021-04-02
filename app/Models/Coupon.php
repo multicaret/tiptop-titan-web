@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Traits\HasAppTypes;
 use App\Traits\HasStatuses;
 use Illuminate\Database\Eloquent\Model;
 
@@ -43,18 +44,22 @@ use Illuminate\Database\Eloquent\Model;
  */
 class Coupon extends Model
 {
-    use HasStatuses;
+    use HasStatuses,HasAppTypes;
 
     const STATUS_INCOMPLETE = 0;
     const STATUS_DRAFT = 1;
     const STATUS_PUBLISHED = 2;
     const STATUS_INACTIVE = 3;
 
+    const TYPE_GROCERY_OBJECT = 1;
+    const TYPE_FOOD_OBJECT = 2;
+
     protected $casts = [
         'discount_amount' => 'double',
         'max_allowed_discount_amount' => 'double',
         'discount_by_percentage' => 'boolean',
-        'is_delivery_free' => 'boolean',
+        'has_free_delivery' => 'boolean',
         'expired_at' => 'date',
+        // Todo: @Wael
     ];
 }

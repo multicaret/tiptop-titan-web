@@ -135,7 +135,7 @@
                                 <label class="switcher">
                                     <input type="checkbox" class="switcher-input"
                                            value="1"
-                                           name="is_delivery_free" {{$coupon->is_delivery_free ? 'checked' : ''}}>
+                                           name="has_free_delivery" {{$coupon->has_free_delivery ? 'checked' : ''}}>
                                     <span class="switcher-indicator">
                                     <span class="switcher-yes">
                                         <span class="ion ion-md-checkmark"></span>
