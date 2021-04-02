@@ -109,12 +109,14 @@ class PaymentMethod extends Model implements HasMedia
              ->singleFile()
              ->withResponsiveImages()
              ->registerMediaConversions(function (Media $media) {
-                 foreach (config('defaults.image_conversions.generic_logo') as $conversionName => $dimensions) {
+                 foreach (config('defaults.image_conversions.icon') as $conversionName => $dimensions) {
                      $this->addMediaConversion($conversionName)
+                          ->format(Manipulations::FORMAT_PNG)
                           ->width($dimensions['width'])
                           ->height($dimensions['height']);
                  }
                  $this->addMediaConversion('256-cropped')
+                      ->format(Manipulations::FORMAT_PNG)
                       ->crop(Manipulations::CROP_CENTER, 256, 256);
              });
 
@@ -132,9 +134,14 @@ class PaymentMethod extends Model implements HasMedia
         $logo = url(config('defaults.images.payment_method_logo'));
 
         if ( ! is_null($media = $this->getFirstMedia('logo'))) {
-            $logo = $media->getFullUrl('1K');
+            $logo = $media->getFullUrl(/*'256'*/);
         }
 
         return $logo;
+    }
+
+    public function getFontAwesomeIcon()
+    {
+
     }
 }

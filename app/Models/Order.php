@@ -106,21 +106,21 @@ use Illuminate\Database\Eloquent\SoftDeletes;
  */
 class Order extends Model
 {
-    use SoftDeletes,
-        HasTypes,
-        HasAppTypes;
+    use HasAppTypes;
+    use HasTypes;
+    use SoftDeletes;
 
-    const TYPE_GROCERY_OBJECT = 1;
-    const TYPE_FOOD_OBJECT = 2;
+    public const TYPE_GROCERY_OBJECT = 1;
+    public const TYPE_FOOD_OBJECT = 2;
 
-    const STATUS_CANCELLED = 0;
-    const STATUS_DRAFT = 1;
-    const STATUS_NEW = 2; // Pending approval or rejection,
-    const STATUS_PREPARING = 10; // Confirmed
-    const STATUS_WAITING_COURIER = 12; // Ready, this case is ignored when delivery is made by the branch itself
-    const STATUS_ON_THE_WAY = 16;
-    const STATUS_AT_THE_ADDRESS = 18;
-    const STATUS_DELIVERED = 20;
+    public const STATUS_CANCELLED = 0;
+    public const STATUS_DRAFT = 1;
+    public const STATUS_NEW = 2; // Pending approval or rejection,
+    public const STATUS_PREPARING = 10; // Confirmed
+    public const STATUS_WAITING_COURIER = 12; // Ready, this case is ignored when delivery is made by the branch itself
+    public const STATUS_ON_THE_WAY = 16;
+    public const STATUS_AT_THE_ADDRESS = 18;
+    public const STATUS_DELIVERED = 20;
 
     protected $casts = [
         'total' => 'double',
@@ -196,5 +196,28 @@ class Order extends Model
                     ->withTimestamps();
     }
 
+    public function scopeNew($query)
+    {
+        return $query->where('status', self::STATUS_NEW);
+    }
 
+
+    public function getLateCssBgClass(): ?string
+    {
+        if ($this->status == self::STATUS_NEW) {
+            $pastInMinutes = $this->created_at->diffInMinutes();
+            if ($pastInMinutes > 7) {
+                return 'bg-danger text-white';
+            } elseif ($pastInMinutes > 5) {
+                return 'bg-danger-darker';
+            } elseif ($pastInMinutes > 3) {
+                return 'bg-warning-dark';
+            } elseif ($pastInMinutes > 2) {
+                return 'bg-warning';
+            }
+
+        }
+
+        return null;
+    }
 }

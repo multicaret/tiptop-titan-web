@@ -26,9 +26,9 @@ Authorization: Bearer {{token}}
 {
     "chain_id": "1",
     "branch_id": "1",
-    "cart_id": "2",
+    "cart_id": "{{cartId}}",
     "payment_method_id": "1",
-    "address_id": "3",
+    "address_id": "{{addressId}}",
     "notes": null
 }
 

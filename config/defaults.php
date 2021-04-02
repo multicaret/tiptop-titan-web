@@ -88,6 +88,20 @@ return [
                 'height' => 1024,
             ],
         ],
+        'icon' => [
+            '128' => [
+                'width' => 128,
+                'height' => 128,
+            ],
+            '256' => [
+                'width' => 256,
+                'height' => 256,
+            ],
+            '512' => [
+                'width' => 512,
+                'height' => 512,
+            ],
+        ],
         'generic_cover' => [
             'SD' => [
                 'width' => 640,
@@ -128,6 +142,9 @@ return [
     'date' => [
         'short_format' => 'Y-m-d',
         'normal_format' => 'd M Y',
+    ],
+    'time' => [
+        'normal_format' => 'H:i',
     ],
     'geolocation' => [
         'latitude' => 36.195238,
