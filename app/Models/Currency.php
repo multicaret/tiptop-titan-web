@@ -104,7 +104,8 @@ class Currency extends Model
         return $this->hasMany(Country::class);
     }
 
-    public static function format($amount, $currencyCode = null, $decimals = 0)
+
+    public static function renderFormat($amount, $currencyCode = null, $decimals = 0): array
     {
         if (is_null($currencyCode)) {
             $currencyCode = config('defaults.currency.code');
@@ -120,8 +121,26 @@ class Currency extends Model
             }
         }
 
-        return vsprintf("%s %s", $currency->is_symbol_after ?
-            [$number_formatted, $symbol] : [$symbol, $number_formatted]);
+        return [$currency->is_symbol_after, $number_formatted, $symbol];
+    }
+
+    public static function format($amount, $currencyCode = null, $decimals = 0)
+    {
+        [$isSymbolAfter, $numberFormatted, $symbol] = self::renderFormat($amount, $currencyCode, $decimals);
+
+        return vsprintf("%s %s", $isSymbolAfter ?
+            [$numberFormatted, $symbol] : [$symbol, $numberFormatted]);
+    }
+
+
+    public static function formatHtml($amount, $currencyCode = null, $decimals = 0)
+    {
+        [$isSymbolAfter, $numberFormatted, $symbol] = self::renderFormat($amount, $currencyCode, $decimals);
+        if ($isSymbolAfter) {
+            return sprintf("%s <sup>%s</sup>", $numberFormatted, $symbol);
+        } else {
+            return sprintf("<sup>%s</sup> %s", $symbol, $numberFormatted);
+        }
     }
 
 
