@@ -207,6 +207,9 @@
     </script>
 @endif
 
+<script>
+    $('[data-toggle="tooltip"]').tooltip();
+</script>
 @stack('scripts')
 </body>
 </html>
