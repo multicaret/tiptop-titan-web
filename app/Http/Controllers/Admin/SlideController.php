@@ -61,6 +61,11 @@ class SlideController extends Controller
                 'width' => '40',
             ],
             [
+                'data' => 'channel',
+                'name' => 'channel',
+                'title' => 'Channel',
+            ],
+            [
                 'data' => 'has_been_authenticated',
                 'name' => 'has_been_authenticated',
                 'title' => trans('strings.has_been_authenticated'),

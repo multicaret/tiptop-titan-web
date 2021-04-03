@@ -119,6 +119,28 @@ class Slide extends Model
         ];
     }
 
+    public static function getAllChannelsRich(): array
+    {
+        return [
+            self::TYPE_GROCERY_OBJECT => [
+                'id' => self::TYPE_GROCERY_OBJECT,
+                'title' => trans("strings.grocery"),
+                'class' => 'success',
+            ],
+            self::TYPE_FOOD_OBJECT => [
+                'id' => self::TYPE_FOOD_OBJECT,
+                'title' => trans("strings.food"),
+                'class' => 'dark',
+            ],
+            self::TYPE_FOOD_AND_GROCERY_OBJECT => [
+                'id' => self::TYPE_FOOD_AND_GROCERY_OBJECT,
+                'title' => trans("strings.grocery_and_food"),
+                'class' => 'info',
+            ],
+        ];
+    }
+
+
     public function region(): BelongsTo
     {
         return $this->belongsTo(Region::class);

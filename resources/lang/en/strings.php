@@ -236,4 +236,7 @@ return [
     'issues' => 'Issues',
     'comment' => 'Comment',
     'has_been_authenticated' => 'Has Been Authenticated',
+    'grocery_and_food' => 'Grocery And Food',
+    'grocery' => 'Grocery',
+    'food' => 'Food',
 ];

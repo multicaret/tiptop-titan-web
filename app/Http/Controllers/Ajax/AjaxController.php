@@ -106,6 +106,41 @@ class AjaxController extends Controller
         }
     }
 
+    //todo: refactor this and the status functions to be dynamic
+    public function channelChange(Request $request)
+    {
+        $modelName = $request->relatedModel;
+        $objectName = $modelName::find($request->itemId);
+
+        $objectName->channel = $request->channel;
+        $objectName->save();
+        return $this->respond([
+            'isSuccess' => true,
+            'message' => "Successfully updated",
+            'currentStatus' => $request->relatedModel::getAllChannelsRich()[$objectName->channel],
+        ]);
+    }
+
+    public function channelToggle(Request $request)
+    {
+        $request->validate([
+            'table' => 'required',
+            'id' => 'required'
+        ]);
+
+        if (Schema::hasTable($request->input('table'))) {
+            $item = DB::table($request->input('table'))->where('id', $request->input('id'))->first();
+            if ($item) {
+                $newStatus = $item->channel ? 0 : 1;
+                $data = ['channel' => $newStatus];
+                if (Schema::hasColumn($request->input('table'), 'suspended_at')) {
+                    $data['suspended_at'] = ($newStatus == 0) ? now() : null;
+                }
+                DB::table($request->input('table'))->where('id', $request->input('id'))->update($data);
+            }
+        }
+    }
+
     public function saveAdminThemeSettings(Request $request): JsonResponse
     {
         $userId = optional(auth()->user())->id;

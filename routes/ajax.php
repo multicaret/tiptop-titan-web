@@ -40,6 +40,7 @@ Route::prefix('datatables')->name('datatables.')->group(function () {
 });
 
 Route::post('change-status', 'AjaxController@statusChange')->name('statuses.change');
+Route::post('change-channel', 'AjaxController@channelChange')->name('channels.change');
 
 
 Route::group(['prefix' => 'search'], function () {

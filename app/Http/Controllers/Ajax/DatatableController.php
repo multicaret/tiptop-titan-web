@@ -419,14 +419,14 @@ class DatatableController extends AjaxController
                          ->editColumn('has_been_authenticated', function ($item) {
                              return $item->has_been_authenticated ? 'Yes' : 'No';
                          })
-                         ->editColumn('status', function ($item) {
-                             $currentStatus = Post::getAllStatusesRich()[$item->status];
+                         ->editColumn('channel', function ($item) {
+                             $currentChannel = Slide::getAllChannelsRich()[$item->channel];
                              $data = [
                                  'item' => $item,
-                                 'currentStatus' => $currentStatus,
+                                 'currentChannel' => $currentChannel,
                              ];
 
-                             return view('admin.components.datatables._row-actions-status', $data)
+                             return view('admin.components.datatables._row-actions-channel', $data)
                                  ->render();
                          })
                          ->editColumn('thumbnail', function (Slide $item) {
@@ -460,6 +460,7 @@ class DatatableController extends AjaxController
                              'region',
                              'city',
                              'state',
+                             'channel',
                              'time_left',
                              'thumbnail',
                          ])
