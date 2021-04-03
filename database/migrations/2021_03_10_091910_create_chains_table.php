@@ -30,9 +30,9 @@ class CreateChainsTable extends Migration
             $table->unsignedTinyInteger('number_of_items_on_mobile_grid_view')->default(3);
             $table->decimal('avg_rating', 3)->default(0);
             $table->unsignedInteger('rating_count')->default(0);
-            $table->integer('view_count')->default(1);
-            $table->unsignedInteger('order_column')->nullable();
-            $table->integer('status')->default(1)->nullable();
+            $table->unsignedBigInteger('view_count')->default(1);
+            $table->unsignedBigInteger('order_column')->nullable();
+            $table->unsignedTinyInteger('status')->default(\App\Models\Chain::STATUS_DRAFT)->nullable();
             $table->timestamps();
             $table->softDeletes();
 

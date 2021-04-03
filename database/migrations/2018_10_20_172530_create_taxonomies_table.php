@@ -24,12 +24,12 @@ class CreateTaxonomiesTable extends Migration
                 $table->unsignedBigInteger('ingredient_category_id')->nullable();
             $table->unsignedTinyInteger('type')->default(1)->comment('1:Category, 2: Tag, 3..n: CUSTOM');
             $table->string('icon')->nullable();
-            $table->integer('view_count')->default(1);
+            $table->unsignedBigInteger('view_count')->default(1);
             $table->integer('left');
             $table->integer('right');
             $table->integer('depth')->nullable();
             $table->decimal('step')->default(1);
-            $table->unsignedInteger('order_column')->nullable();
+            $table->unsignedBigInteger('order_column')->nullable();
             $table->unsignedTinyInteger('status')->default(1)->comment('0:incomplete, 1:draft, 2:published, 3:Inactive, 4..n:CUSTOM');
             $table->timestamps();
             $table->softDeletes();

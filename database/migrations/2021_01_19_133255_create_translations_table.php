@@ -19,7 +19,7 @@ class CreateTranslationsTable extends Migration
             $table->integer('status')->default(2);
             $table->string('group');
             $table->text('key');
-            $table->unsignedInteger('order_column')->nullable();
+            $table->unsignedBigInteger('order_column')->nullable();
             $table->timestamps();
         });
     }
