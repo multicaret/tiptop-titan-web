@@ -34,18 +34,13 @@ class CountryResource extends JsonResource
             }
 
             return [
-                'id' => $this->id,
-                'name' => [
-                    'original' => $this->english_name,
-                    'translated' => $this->name,
-                ],
+                'id' => (int) $this->id,
+                'nameEnglish' => $this->english_name,
+                'name' => $this->name,
+                'phoneCode' => $this->phone_code,
                 'alpha2Code' => $this->alpha2_code,
                 'alpha3Code' => $this->alpha3_code,
-                'numericCode' => $this->numeric_code,
-                'phoneCode' => $this->phone_code,
                 'flagUrl' => $flag_url,
-                'currency' => $this->currency ? new CurrencyResource($this->currency) : null,
-                'timezone' => $this->timezone ? new TimezoneResource($this->timezone) : null,
             ];
         });
 
