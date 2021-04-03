@@ -2,11 +2,13 @@
 
 namespace App\Models;
 
+use App\Traits\HasAppTypes;
 use App\Traits\HasMediaTrait;
 use App\Traits\HasStatuses;
 use App\Traits\HasUuid;
 use Astrotomic\Translatable\Translatable;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo as BelongsTo;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Spatie\MediaLibrary\HasMedia;
 use Spatie\MediaLibrary\MediaCollections\Models\Media;
@@ -79,7 +81,8 @@ class Slide extends Model
     use SoftDeletes,
         HasUuid,
         Translatable,
-        HasStatuses;
+        HasStatuses,
+        HasAppTypes;
 
     const STATUS_INCOMPLETE = 0;
     const STATUS_DRAFT = 1;
@@ -91,9 +94,13 @@ class Slide extends Model
     const TYPE_DEFERRED_DEEPLINK = 3;
     const TYPE_DEEPLINK = 4;
 
+    const TYPE_GROCERY_OBJECT = 8;
+    const TYPE_FOOD_OBJECT = 9;
+    const TYPE_FOOD_AND_GROCERY_OBJECT = 10;
+
     protected $with = ['translations'];
 
-    protected $translatedAttributes = ['alt_tag','image'];
+    protected $translatedAttributes = ['alt_tag', 'image'];
 
     protected $fillable = ['title', 'description', 'link_value', 'link_type', 'begins_at', 'expires_at', 'status'];
 
@@ -110,5 +117,15 @@ class Slide extends Model
             self::TYPE_DEFERRED_DEEPLINK => 'deferred-deeplink',
             self::TYPE_DEEPLINK => 'deeplink',
         ];
+    }
+
+    public function region(): BelongsTo
+    {
+        return $this->belongsTo(Region::class);
+    }
+
+    public function city(): BelongsTo
+    {
+        return $this->belongsTo(City::class);
     }
 }

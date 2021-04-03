@@ -49,6 +49,24 @@ class SlideController extends Controller
                 'width' => '40',
             ],
             [
+                'data' => 'region',
+                'name' => 'region',
+                'title' => trans('strings.city'),
+                'width' => '40',
+            ],
+            [
+                'data' => 'city',
+                'name' => 'city',
+                'title' => trans('strings.neighborhood'),
+                'width' => '40',
+            ],
+            [
+                'data' => 'has_been_authenticated',
+                'name' => 'has_been_authenticated',
+                'title' => trans('strings.has_been_authenticated'),
+                'width' => '40',
+            ],
+            [
                 'data' => 'begins_at',
                 'name' => 'begins_at',
                 'title' => trans('strings.start_date'),
@@ -134,6 +152,7 @@ class SlideController extends Controller
     public function edit(Slide $slide, Request $request)
     {
         $data = $this->essentialData($request);
+        $slide->load(['region', 'city']);
         $data['slide'] = $slide;
 
         return view('admin.slides.form', $data);
@@ -180,9 +199,9 @@ class SlideController extends Controller
     private function essentialData(Request $request): array
     {
         $linkTypes = Slide::getTypesArray();
+        $regions = Region::whereCountryId(config('defaults.country.id'))->get();
 
-
-        return compact('linkTypes');
+        return compact('linkTypes', 'regions');
     }
 
     private function validationRules(): array
@@ -198,10 +217,14 @@ class SlideController extends Controller
 
     private function saveLogic($request, Slide $slide, bool $isUpdating = false)
     {
+        $region = json_decode($request->region);
+        $city = json_decode($request->city);
+
         \DB::beginTransaction();
         if ( ! $isUpdating) {
             $slide->creator_id = auth()->id();
         }
+
         $slide->editor_id = auth()->id();
         $slide->title = $request->input('title');
         $slide->description = $request->input('description');
@@ -210,6 +233,8 @@ class SlideController extends Controller
         $slide->linkage = $request->input('linkage');
         $slide->begins_at = $request->input('begins_at');
         $slide->expires_at = $request->input('expires_at');
+        $slide->city_id = isset($city) ? $city->id : null;
+        $slide->region_id = isset($region) ? $region->id : null;
         $slide->status = $request->input('status');
         $slide->save();
         // Filling translations

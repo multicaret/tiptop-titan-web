@@ -60,6 +60,7 @@ return [
     'add_new_region' => 'Add New Region',
     'cities' => 'Cities',
     'city' => 'City',
+    'neighborhood' => 'Neighborhood',
     'all_preferences' => 'All Preferences',
     'add_new_role' => 'Add New Role',
     'publish_all_translations' => 'Publish all translations',
@@ -234,4 +235,5 @@ return [
     'date' => 'date',
     'issues' => 'Issues',
     'comment' => 'Comment',
+    'has_been_authenticated' => 'Has Been Authenticated',
 ];

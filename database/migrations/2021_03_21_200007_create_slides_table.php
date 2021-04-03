@@ -18,6 +18,8 @@ class CreateSlidesTable extends Migration
             $table->id();
             $table->unsignedBigInteger('creator_id')->index();
             $table->unsignedBigInteger('editor_id');
+            $table->unsignedBigInteger('city_id')->nullable();
+            $table->unsignedBigInteger('region_id')->nullable();
             $table->char('uuid', 10)->unique();
             $table->string('title'); //These are purposely not translatable!
             $table->text('description')->nullable();
@@ -29,6 +31,8 @@ class CreateSlidesTable extends Migration
             $table->timestamp('begins_at')->nullable();
             $table->timestamp('expires_at')->nullable();
             $table->unsignedTinyInteger('status')->default(1)->comment('0:incomplete, 1:draft, 2:published, 3:Inactive, 4..n:CUSTOM');
+            $table->unsignedTinyInteger('channel')->default(Slide::TYPE_FOOD_AND_GROCERY_OBJECT)->comment('8:food and grocery, 9:grocery, 10:food');
+            $table->boolean('has_been_authenticated')->default(false);
             $table->unsignedInteger('order_column')->nullable();
 
             $table->timestamps();

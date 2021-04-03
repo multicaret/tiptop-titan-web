@@ -13,6 +13,7 @@ use App\Models\Boot;
 use App\Models\Branch;
 use App\Models\Cart;
 use App\Models\Location;
+use App\Models\Order;
 use App\Models\Slide;
 use App\Models\Taxonomy;
 use Illuminate\Http\Request;
@@ -119,6 +120,13 @@ class HomeController extends BaseApiController
                     $userCart = Cart::retrieve($branch->chain_id, $branch->id, $user->id);
                     $cart = new CartResource($userCart);
                     $sharedResponse['cart'] = $cart;
+                    $sharedResponse['activeOrders'] = Order::whereUserId($user->id)
+                                                           ->whereNotIn('status', [
+                                                               Order::STATUS_CANCELLED,
+                                                               Order::STATUS_DELIVERED,
+                                                           ])
+                                                           ->whereChainId($branch->chain_id)
+                                                           ->get();
                 }
 //            } else {
                 // It's too late no branch is open for now, so sorry
