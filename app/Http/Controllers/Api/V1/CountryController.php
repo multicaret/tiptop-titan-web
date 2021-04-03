@@ -14,7 +14,7 @@ class CountryController extends BaseApiController
      *
      * @return \Illuminate\Http\JsonResponse
      */
-    public function countreisWithFlags(Request $request)
+    public function index(Request $request)
     {
 
         if ($request->has('all')) {
