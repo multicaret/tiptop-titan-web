@@ -40,7 +40,7 @@ class CreateUsersTable extends Migration
             $table->unsignedInteger('rating_count')->default(0);
             $table->unsignedBigInteger('view_count')->default(1);
             $table->unsignedInteger('total_number_of_orders')->default(0);
-            $table->unsignedInteger('order_column')->nullable();
+            $table->unsignedBigInteger('order_column')->nullable();
             $table->json('social_networks')->nullable();
             $table->json('settings')->comment('to handle all sort of settings including notification related such as is_notifiable by email or by push notifications ...etc');
             $table->unsignedTinyInteger('status')->default(1)->comment('0:incomplete, 1:draft, 2:published, 3:Inactive, 4..n:CUSTOM');

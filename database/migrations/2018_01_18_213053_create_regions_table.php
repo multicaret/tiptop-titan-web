@@ -18,7 +18,7 @@ class CreateRegionsTable extends Migration
             $table->unsignedBigInteger('country_id')->index();
             $table->string('english_name');
             $table->string('code', 6)->nullable();
-            $table->unsignedInteger('order_column')->nullable();
+            $table->unsignedBigInteger('order_column')->nullable();
             $table->unsignedTinyInteger('status')->default(1)->comment('0:incomplete, 1:draft, 2:published, 3:Inactive, 4..n:CUSTOM');
             $table->timestamps();
 

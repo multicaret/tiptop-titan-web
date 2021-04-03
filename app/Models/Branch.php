@@ -119,15 +119,15 @@ use Spatie\MediaLibrary\HasMedia;
  */
 class Branch extends Model implements HasMedia
 {
-    use HasMediaTrait,
-        HasUuid,
-        Translatable,
-        HasStatuses,
-        HasWorkingHours,
-        HasViewCount,
-        CanBeRated,
-        HasTypes,
-        HasAppTypes;
+    use CanBeRated;
+    use HasAppTypes;
+    use HasMediaTrait;
+    use HasStatuses;
+    use HasTypes;
+    use HasUuid;
+    use HasViewCount;
+    use HasWorkingHours;
+    use Translatable;
 
     const STATUS_INCOMPLETE = 0;
     const STATUS_DRAFT = 1;
@@ -140,6 +140,15 @@ class Branch extends Model implements HasMedia
     protected $fillable = ['title', 'description'];
     protected $with = ['translations'];
     protected $translatedAttributes = ['title', 'description'];
+
+    protected $casts = [
+        'minimum_order' => 'double',
+        'under_minimum_order_delivery_fee' => 'double',
+        'fixed_delivery_fee' => 'double',
+        'restaurant_minimum_order' => 'double',
+        'restaurant_under_minimum_order_delivery_fee' => 'double',
+        'restaurant_fixed_delivery_fee' => 'double',
+    ];
 
 
     public function chain(): \Illuminate\Database\Eloquent\Relations\BelongsTo

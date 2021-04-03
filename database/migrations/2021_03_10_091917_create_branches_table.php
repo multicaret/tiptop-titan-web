@@ -21,20 +21,30 @@ class CreateBranchesTable extends Migration
             $table->unsignedBigInteger('editor_id');
             $table->unsignedBigInteger('region_id')->nullable();
             $table->unsignedBigInteger('city_id')->nullable();
-            $table->float('minimum_order')->default(0); // 50
-            $table->float('under_minimum_order_delivery_fee')->default(0); // 10
-            $table->float('fixed_delivery_fee')->default(0); // 5
+            // TipTop Delivery
+            $table->unsignedDouble('minimum_order')->default(0); // 50
+            $table->unsignedDouble('under_minimum_order_delivery_fee')->default(0); // 10
+            $table->unsignedDouble('fixed_delivery_fee')->default(0); // 5
+            $table->unsignedInteger('min_delivery_minutes')->default(20);
+            $table->unsignedInteger('max_delivery_minutes')->default(30);
+            // Restaurant Delivery
+            $table->unsignedDouble('restaurant_minimum_order')->default(0);
+            $table->unsignedDouble('restaurant_under_minimum_order_delivery_fee')->default(0);
+            $table->unsignedDouble('restaurant_fixed_delivery_fee')->default(0);
+            $table->unsignedInteger('restaurant_min_delivery_minutes')->default(20);
+            $table->unsignedInteger('restaurant_max_delivery_minutes')->default(30);
+
             $table->string('primary_phone_number')->nullable();
             $table->string('secondary_phone_number')->nullable();
             $table->string('whatsapp_phone_number')->nullable();
-            $table->unsignedInteger('order_column')->nullable();
+            $table->unsignedBigInteger('order_column')->nullable();
             $table->unsignedTinyInteger('type')->default(\App\Models\Branch::TYPE_FOOD_OBJECT)->comment('1:Market, 2: Food');
             $table->decimal('latitude', 11, 8)->nullable();
             $table->decimal('longitude', 11, 8)->nullable();
             $table->decimal('avg_rating', 3)->default(0);
             $table->unsignedInteger('rating_count')->default(0);
-            $table->integer('view_count')->default(1);
-            $table->integer('status')->default(1)->nullable();
+            $table->unsignedBigInteger('view_count')->default(1);
+            $table->unsignedTinyInteger('status')->default(1)->nullable();
             $table->timestamps();
             $table->softDeletes();
 

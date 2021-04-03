@@ -17,7 +17,7 @@ class CreateTaggableTable extends Migration
             $table->id();
             $table->morphs('taggable');
             $table->unsignedBigInteger('taxonomy_id')->index();
-            $table->unsignedInteger('order_column')->nullable();
+            $table->unsignedBigInteger('order_column')->nullable();
             $table->timestamps();
 
             $table->foreign('taxonomy_id')->references('id')->on('taxonomies')->onDelete('cascade');

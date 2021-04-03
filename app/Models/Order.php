@@ -209,7 +209,7 @@ class Order extends Model
             if ($pastInMinutes > 7) {
                 return 'bg-danger text-white';
             } elseif ($pastInMinutes > 5) {
-                return 'bg-danger-darker';
+                return 'bg-warning-darker';
             } elseif ($pastInMinutes > 3) {
                 return 'bg-warning-dark';
             } elseif ($pastInMinutes > 2) {
