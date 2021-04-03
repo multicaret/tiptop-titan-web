@@ -19,7 +19,7 @@
             z-index: 999999;
         }
 
-        td {
+        th, td {
             vertical-align: middle !important;
             text-align: center !important;
             z-index: 1 !important;
@@ -97,7 +97,7 @@
                                 {{$order->reference_code}}
                             </td>
                             <td>
-                                <span data-toggle="tooltip" data-placement="top" title="{{$order->status}}">
+                                <span data-toggle="tooltip" data-placement="top" title="{{$order->getStatusName()}}">
                                 @include('admin.orders._partials.statuses.'.$order->status)
                                 </span>
                             </td>
@@ -115,11 +115,13 @@
                                 </small>
                             </td>
                             <td>
-                                <img src="/images/icons/food-delivery-186/svg/021-food delivery.svg"
-                                     alt="Grocery Orders" class="d-inline-block ui-w-20">
-                                {{--<img src="/images/icons/food-delivery-186/svg/019-food tray.svg"
-                                     alt="Food Orders" class="d-inline-block ui-w-20">--}}
-                                {{--                                Grocery--}}
+                                @if($order->type == \App\Models\Order::TYPE_FOOD_OBJECT)
+                                    <img src="/images/icons/food-delivery-186/svg/019-food tray.svg"
+                                         alt="Food Orders" class="d-inline-block ui-w-20" title="Food">
+                                @else
+                                    <img src="/images/icons/food-delivery-186/svg/021-food delivery.svg"
+                                         alt="Grocery Orders" class="d-inline-block ui-w-20" title="Grocery">
+                                @endif
                             </td>
                             <td>
                                 @if($order->is_delivery_by_tiptop)

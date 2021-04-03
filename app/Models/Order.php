@@ -197,11 +197,50 @@ class Order extends Model
                     ->withTimestamps();
     }
 
+    public function scopeCancelled($query)
+    {
+        return $query->where('status', self::STATUS_CANCELLED);
+    }
+
+    public function scopeDraft($query)
+    {
+        return $query->where('status', self::STATUS_DRAFT);
+    }
+
     public function scopeNew($query)
     {
         return $query->where('status', self::STATUS_NEW);
     }
 
+    public function scopePreparing($query)
+    {
+        return $query->where('status', self::STATUS_PREPARING);
+    }
+
+    public function scopeWaitingCourier($query)
+    {
+        return $query->where('status', self::STATUS_WAITING_COURIER);
+    }
+
+    public function scopeOnTheWay($query)
+    {
+        return $query->where('status', self::STATUS_ON_THE_WAY);
+    }
+
+    public function scopeAtTheAddress($query)
+    {
+        return $query->where('status', self::STATUS_AT_THE_ADDRESS);
+    }
+
+    public function scopeDelivered($query)
+    {
+        return $query->where('status', self::STATUS_DELIVERED);
+    }
+
+    public function getStatusName()
+    {
+        return trans('strings.order_status_'.$this->status);
+    }
 
     public function getLateCssBgClass(): ?string
     {

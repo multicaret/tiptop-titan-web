@@ -236,4 +236,12 @@ return [
     'issues' => 'Issues',
     'comment' => 'Comment',
     'has_been_authenticated' => 'Has Been Authenticated',
+    'order_status_0' => 'Cancelled',
+    'order_status_1' => 'Draft',
+    'order_status_2' => 'New',
+    'order_status_10' => 'Preparing',
+    'order_status_12' => 'Waiting courier',
+    'order_status_16' => 'On the way',
+    'order_status_18' => 'At the address',
+    'order_status_20' => 'Delivered',
 ];
