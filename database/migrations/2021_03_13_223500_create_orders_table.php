@@ -35,6 +35,7 @@ class CreateOrdersTable extends Migration
             $table->unsignedDouble('private_total')->default(0);
             $table->unsignedDouble('private_delivery_fee')->default(0);
             $table->unsignedDouble('private_grand_total')->default(0);
+            $table->boolean('is_delivery_by_tiptop')->default(1);
 
             // Rating Related
             $table->decimal('branch_rating_value', 3)->nullable();

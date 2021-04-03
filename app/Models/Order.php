@@ -132,6 +132,7 @@ class Order extends Model
         'private_delivery_fee' => 'double',
         'private_grand_total' => 'double',
         'completed_at' => 'datetime',
+        'is_delivery_by_tiptop' => 'boolean',
     ];
 
     protected static function boot()
