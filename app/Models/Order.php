@@ -208,7 +208,7 @@ class Order extends Model
         if ($this->status == self::STATUS_NEW) {
             $pastInMinutes = $this->created_at->diffInMinutes();
             if ($pastInMinutes > 7) {
-                return 'bg-danger text-white';
+                return 'bg-danger-darker text-white';
             } elseif ($pastInMinutes > 5) {
                 return 'bg-warning-darker';
             } elseif ($pastInMinutes > 3) {

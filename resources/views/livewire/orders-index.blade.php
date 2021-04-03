@@ -37,8 +37,7 @@
                         <div class="card-text">
                             <div class="media align-items-center">
                                 <img src="/images/icons/food-delivery-186/svg/021-food delivery.svg"
-                                     alt="Grocery Orders"
-                                     class="d-block ui-w-50">
+                                     alt="Grocery Orders" class="d-block ui-w-50">
                                 <div class="media-body ml-4">
                                     <h3 {{--wire:poll.1m--}}>
                                         {{$groceryNewOrdersCount}}

@@ -2,7 +2,7 @@
     <style>
         .tableFixHead {
             overflow-y: auto;
-            height: {{ ($orders->count() != 0? $orders->count() * 57 :100)+57 }}px;
+            height: {{ ($orders->count() != 0? $orders->count() * 59 :100)+59 }}px;
         }
 
         .tableFixHead thead th {
@@ -20,7 +20,9 @@
         }
 
         td {
-            z-index: -999;
+            vertical-align: middle !important;
+            text-align: center !important;
+            z-index: 1 !important;
         }
 
     </style>
@@ -76,52 +78,62 @@
             <table class="table card-table table-striped">
                 <thead class="thead-dark">
                 <tr>
+                    <th style="width:10px">#</th>
                     <th>Status</th>
-                    <th>#</th>
                     <th>Time</th>
                     <th>Type</th>
-                    <th>Delivery Type</th>
-                    <th>Customer Name</th>
+                    <th>Delivery</th>
+                    <th>Customer</th>
                     <th>Branch</th>
                     <th>Total</th>
-                    <th>Payment Method</th>
+                    <th>Payment</th>
                 </tr>
                 </thead>
                 <tbody {{--wire:poll.1s--}}>
                 @if($orders)
                     @forelse($orders as $order)
                         <tr class="{{ $order->getLateCssBgClass()}}">
-                            <td>
-                        <span data-toggle="tooltip" data-placement="top" title="{{$order->status}}">
-                        @include('admin.orders._partials.statuses.'.$order->status)
-                        </span>
-                            </td>
-                            <th scope="row">
+                            <td style="width:10px">
                                 {{$order->reference_code}}
-                            </th>
+                            </td>
                             <td>
-                                <h5>
-                                    <i class="far fa-clock"></i>
+                                <span data-toggle="tooltip" data-placement="top" title="{{$order->status}}">
+                                @include('admin.orders._partials.statuses.'.$order->status)
+                                </span>
+                            </td>
+                            <td>
+                                <h5 class="m-0">
+                                    <i class="fas fa-clock"></i>
                                     {{$order->completed_at->format(config('defaults.time.normal_format'))}}
                                     &nbsp;
-                                    <small>
-                                <span class="text-muted">
-                                    <i class="far fa-calendar"></i>
-                                    {{$order->completed_at->format(config('defaults.date.normal_format'))}}
-                                </span>
-                                    </small>
-
                                 </h5>
+                                <small>
+                                    <span class="text-lighter">
+{{--                                            <i class="far fa-calendar"></i>--}}
+                                        {{$order->completed_at->format(config('defaults.date.normal_format'))}}
+                                    </span>
+                                </small>
                             </td>
-                            <td>Grocery</td>
                             <td>
-                                {{--                        <i class="fas fa-motorcycle text-primary"></i>--}}
-                                <lottie-player
+                                <img src="/images/icons/food-delivery-186/svg/021-food delivery.svg"
+                                     alt="Grocery Orders" class="d-inline-block ui-w-20">
+                                {{--<img src="/images/icons/food-delivery-186/svg/019-food tray.svg"
+                                     alt="Food Orders" class="d-inline-block ui-w-20">--}}
+                                {{--                                Grocery--}}
+                            </td>
+                            <td>
+                                @if($order->is_delivery_by_tiptop)
+                                    <i class="fas fa-motorcycle text-primary" data-toggle="tooltip" data-placement="top"
+                                       title="TipTop"></i>
+                                @else
+                                    <i class="fas fa-utensils text-success" data-toggle="tooltip" data-placement="top"
+                                       title="Restaurant"></i>
+                                @endif
+                                {{--<lottie-player
                                     src="{{url('animations/motor.json')}}"
                                     background="transparent" speed="2"
                                     style="width: 25px; height: 25px;display: inline-block"
-                                    loop hover></lottie-player>
-                                TipTop Delivery
+                                    loop hover></lottie-player>--}}
                             </td>
                             <td>
                                 @if($order->user->total_number_of_orders == 1)
@@ -131,10 +143,10 @@
                                             <lottie-player
                                                 src="{{url('animations/new.json')}}"
                                                 background="transparent" speed="1"
-                                                style="width: 30px; height: 30px;display: inline-block" loop
+                                                style="width: 30px; height: 30px;display: inline-block; position: absolute;"
+                                                loop
                                                 autoplay></lottie-player>
                                     </span>
-
                                 @else
                                     {{ $order->user->name }}
                                 @endif
