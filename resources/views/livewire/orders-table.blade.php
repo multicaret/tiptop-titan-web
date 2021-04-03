@@ -63,7 +63,7 @@
                 </div>
                 <div class="col-2">
                     <div class="form-group">
-                        <label for="branch-name">Branch</label>
+                        <label for="branch-name">Branch Name</label>
                         <input type="text" wire:model.debounce.300ms="branchName"
                                class="form-control" id="branch-name">
                     </div>

@@ -89,7 +89,6 @@ class OrdersTable extends Component
         $this->customerEmail = null;
         $this->customerPhone = null;
         $this->branchName = null;
-
         $this->filterByDate = now()->today()->format(config('defaults.date.short_format'));
     }
 }
