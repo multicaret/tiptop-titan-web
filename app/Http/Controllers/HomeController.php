@@ -37,7 +37,7 @@ class HomeController extends Controller
 
     public function foo()
     {
-        $super = User::ghaith();
+        $super = User::first();
         dd($super->name);
 
     }
