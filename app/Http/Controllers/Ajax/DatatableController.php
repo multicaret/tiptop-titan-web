@@ -136,7 +136,7 @@ class DatatableController extends AjaxController
                              ])->render();
                          })
                          ->editColumn('ingredientCategory', function ($item) {
-                             return !is_null($item->ingredientCategory) ? $item->ingredientCategory->title : null;
+                             return ! is_null($item->ingredientCategory) ? $item->ingredientCategory->title : null;
                          })
                          ->editColumn('order_column', function ($item) {
                              return view('admin.components.datatables._row-reorder')->render();
@@ -410,6 +410,15 @@ class DatatableController extends AjaxController
 
                              return null;
                          })
+                         ->editColumn('region', function ($item) {
+                             return ! is_null($item->region) ? $item->region->name : '';
+                         })
+                         ->editColumn('city', function ($item) {
+                             return ! is_null($item->city) ? $item->city->name : '';
+                         })
+                         ->editColumn('has_been_authenticated', function ($item) {
+                             return $item->has_been_authenticated ? 'Yes' : 'No';
+                         })
                          ->editColumn('status', function ($item) {
                              $currentStatus = Post::getAllStatusesRich()[$item->status];
                              $data = [
@@ -448,6 +457,8 @@ class DatatableController extends AjaxController
                              'status',
                              'begins_at',
                              'expires_at',
+                             'region',
+                             'city',
                              'state',
                              'time_left',
                              'thumbnail',
