@@ -26,7 +26,7 @@ class CouponController extends BaseApiController
      * @param $code
      * @return JsonResponse
      */
-    public function validateCoupon($code): JsonResponse
+    public function validate($code): JsonResponse
     {
         $coupon = Coupon::where('redeem_code', $code)->first();
 

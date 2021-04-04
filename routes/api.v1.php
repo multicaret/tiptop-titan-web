@@ -69,7 +69,7 @@ Route::middleware('auth:sanctum')
          Route::post('carts/{cart}/products/adjust-quantity', 'CartController@adjustQuantity');
          Route::post('carts/{cart}/delete', 'CartController@destroy');
 
-         Route::get('coupons/{code}/validate', 'CouponController@validateCoupon');
+         Route::get('coupons/{code}/validate', 'CouponController@validate');
 
 
 //         Route::get('taxonomies', 'TaxonomyController@index');
