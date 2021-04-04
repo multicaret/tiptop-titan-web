@@ -7,6 +7,8 @@ use App\Http\Resources\OrderResource;
 use App\Models\Branch;
 use App\Models\Cart;
 use App\Models\Chain;
+use App\Models\Coupon;
+use App\Models\CouponUsage;
 use App\Models\Currency;
 use App\Models\Location;
 use App\Models\Order;
@@ -196,17 +198,98 @@ class OrderController extends BaseApiController
         // Deduct the purchased quantity from the available quantity of each product.
         foreach ($cart->products as $product) {
             if ($product->is_storage_tracking_enabled) {
-                $product->available_quantity = $product->available_quantity - $product->pivot->quantity;
-                $product->save();
+                if ($product->available_quantity != 0) {
+                    $product->available_quantity = $product->available_quantity - $product->pivot->quantity;
+                    $product->save();
+                } else {
+                    $productName = $product->title;
+
+                    return $this->respondWithMessage("{$productName} Product Unavailable");
+                }
             }
         }
 
         $user->increment('total_number_of_orders');
         $user->save();
 
+
+        $cartTotalAfterDiscount = null;
+        if ($request->has('coupon_id')) {
+            $coupon = Coupon::whereId($request->input('coupon_id'))->first();
+            if ( ! is_null($coupon && $coupon->expired_at < now())) {
+                if ($coupon->min_cart_value_allowed < $newOrder->grand_total) {
+                    if ($coupon->max_usable_count > $coupon->total_redeemed_count) {
+                        $coupon->money_redeemed_so_far = $coupon->discount_amount;
+                        $coupon->total_redeemed_count++;
+                        $coupon->status = Coupon::STATUS_ACTIVE;
+                        $coupon->save();
+
+                        $couponUsage = new CouponUsage;
+                        $couponUsage->coupon_id = $coupon->id;
+                        $couponUsage->cart_id = $cart->id;
+                        $couponUsage->redeemer_id = auth()->id();
+                        $couponUsage->order_id = $newOrder->id;
+                        $couponUsage->redeemed_at = now();
+                        $couponUsage->discounted_amount = $coupon->discount_amount;
+                        $couponUsage->save();
+                    } else {
+                        return $this->respondWithMessage('Max usable count is over');
+                    }
+
+                } else {
+                    return $this->respondWithMessage('Cart total smaller than minimum cart value allowed');
+                }
+            } else {
+                return $this->respondNotFound('Coupon code is wrong or expired');
+            }
+
+            $hasFreeDelivery = $coupon->has_free_delivery;
+            $grandTotal = $newOrder->grand_total;
+            $couponDiscountAmount = $coupon->discount_amount;
+            $couponMaxAllowedDiscountAmount = $coupon->max_allowed_discount_amount;
+
+            if ($hasFreeDelivery && $coupon->discount_by_percentage) {
+                // to get discounted amount
+                $discountedAmount = $grandTotal - $grandTotal * $couponDiscountAmount / 100;
+
+                if ($discountedAmount > $couponMaxAllowedDiscountAmount) {
+                    $cartTotalAfterDiscount = ($grandTotal - $couponMaxAllowedDiscountAmount);
+                } else {
+                    $cartTotalAfterDiscount = ($couponDiscountAmount / 100) * $grandTotal;
+                }
+            } elseif ( ! $hasFreeDelivery && $coupon->discount_by_percentage) {
+                $discountedAmount = $newOrder->total - $newOrder->total * $couponDiscountAmount / 100;
+
+                if ($discountedAmount > $couponMaxAllowedDiscountAmount) {
+                    $cartTotalAfterDiscount = ($newOrder->total - $couponMaxAllowedDiscountAmount) + $newOrder->delivery_fee;
+                } else {
+                    $cartTotalAfterDiscount = ($couponDiscountAmount / 100) * $newOrder->total + $newOrder->delivery_fee;
+                }
+            } elseif ($hasFreeDelivery && ! $coupon->discount_by_percentage) {
+                if ($couponDiscountAmount > $couponMaxAllowedDiscountAmount) {
+                    $cartTotalAfterDiscount = ($grandTotal - $couponMaxAllowedDiscountAmount);
+                } else {
+                    $cartTotalAfterDiscount = ($grandTotal - $couponDiscountAmount);
+                }
+            } elseif ($hasFreeDelivery && ! $coupon->discount_by_percentage) {
+                if ($couponDiscountAmount > $couponMaxAllowedDiscountAmount) {
+                    $cartTotalAfterDiscount = ($newOrder->total - $couponMaxAllowedDiscountAmount) + $newOrder->delivery_fee;
+                } else {
+                    $cartTotalAfterDiscount = ($newOrder->total - $couponDiscountAmount) + $newOrder->delivery_fee;
+                }
+            }
+
+        }
+
+
         DB::commit();
 
-        return $this->respond(new OrderResource($newOrder));
+        return $this->respond(
+            [
+                'order' => new OrderResource($newOrder),
+                'cartTotalAfterDiscount' => $cartTotalAfterDiscount
+            ]
+        );
     }
 
 

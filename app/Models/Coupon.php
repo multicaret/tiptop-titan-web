@@ -102,7 +102,7 @@ class Coupon extends Model
         return $this->hasMany(CouponUsage::class, 'coupon_id');
     }
 
-    public static function retrieveValidation($coupon)
+    public static function retrieveValidation($coupon): array
     {
         if (is_null($coupon)) {
             return [
@@ -116,20 +116,13 @@ class Coupon extends Model
                 'message' => 'Coupon is expired'
             ];
         }
-        $totalUsageBuilder = $coupon->couponUsage();
-        if ($coupon->max_usable_count > $totalUsageBuilder->count()) {
+//        $totalUsageBuilder = $coupon->couponUsage();
+        if ($coupon->max_usable_count > $coupon->total_redeemed_count/*$totalUsageBuilder->count()*/) {
             if ($coupon->max_usable_count_by_user > auth()->user()->couponUsage()->count()) {
-                if ($coupon->max_allowed_discount_amount > $coupon->couponUsage()->sum('discounted_amount')) {
-                    return [
-                        'type' => 'Success',
-                        'data' => new CouponResource($coupon)
-                    ];
-                } else {
-                    return [
-                        'type' => 'error',
-                        'message' => 'Discount amount  is full'
-                    ];
-                }
+                return [
+                    'type' => 'Success',
+                    'data' => new CouponResource($coupon)
+                ];
             } else {
                 return [
                     'type' => 'error',

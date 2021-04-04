@@ -29,7 +29,8 @@ Authorization: Bearer {{token}}
     "cart_id": "{{cartId}}",
     "payment_method_id": "1",
     "address_id": "{{addressId}}",
-    "notes": null
+    "notes": null,
+    "coupon_id":1
 }
 
 ### Order delete
@@ -64,7 +65,7 @@ Authorization: Bearer {{token}}
 }
 
 ### coupon
-GET {{host}}/{{locale}}/api/v1/coupons/21312eqeqwr/validate
+GET {{host}}/{{locale}}/api/v1/coupons/3213rwerwer/validate
 Accept: application/json
 Content-Type: application/json
 Authorization: Bearer {{token}}
