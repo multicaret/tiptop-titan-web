@@ -213,6 +213,7 @@ class BranchController extends Controller
         $region = json_decode($request->region);
         $city = json_decode($request->city);
         $chain = json_decode($request->chain);
+        dd($request->input('has_restaurant_delivery'));
         \DB::beginTransaction();
         $branch->chain_id = $chain->id;
         $branch->city_id = isset($city) ? $city->id : null;
