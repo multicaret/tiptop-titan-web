@@ -69,8 +69,6 @@ class OtpController extends BaseApiController
     public function check($reference, Request $request): JsonResponse
     {
         $validationRules = [
-//            'phone_number' => 'required|numeric|digits_between:7,15',
-//            'phone_country_code' => 'required|min:1|max:3',
             'mobile_app_details' => 'json',
         ];
 
@@ -97,18 +95,21 @@ class OtpController extends BaseApiController
         }
         $validationStatus = isset($validationCheck) ? $validationCheck->getValidationStatus() : false;
 
-        $result = $vfk->getResult($validationCheck->getSessionId());
-
         $phoneNumber = null;
         $phoneCountryCode = null;
+
+        $vfk2 = $this->getVFK(true);
+        $result = $vfk2->getResult($validationCheck->getSessionId());
         if ($result->isSuccess()) {
-            $phoneNumber = $result->getPhoneNumber();
-            $phoneCountryCode = Country::whereAlpha2Code($result->getCountryCode())->phone_code;
-            /*echo "Phone number : " . $result->getPhoneNumber() .
-                ", Validation Type : " . $result->getValidationType() .
-                ", Validation Date : " . $result->getValidationDate()->format('Y-m-d H:i:s') . PHP_EOL;*/
+            $phoneCountryCode = '+'.Country::whereAlpha2Code($result->getCountryCode())->first()->phone_code;
+            $phoneNumber = str_replace($phoneCountryCode, '', $result->getPhoneNumber());
+//                echo "Validation Date : " . $result->getValidationDate()->format('Y-m-d H:i:s') . PHP_EOL;
             /*} else {
                 echo "Error message : " . $result->getErrorMessage() . ", error code : " . $result->getErrorCode() . PHP_EOL;*/
+        }
+
+        if (is_null($phoneNumber) || is_null($phoneCountryCode)) {
+            return $this->respondWithMessage('Oops,Got an empty phone number!');
         }
 
         $newUser = false;
@@ -268,12 +269,17 @@ class OtpController extends BaseApiController
 
 
     /**
-     * @return Exception|ServerKeyEmptyException|Web
+     * @param  bool  $isVerifyKitModel
+     * @return Exception|ServerKeyEmptyException|VerifyKit|Web
      */
-    private function getVFK()
+    private function getVFK($isVerifyKitModel = false)
     {
         try {
             [$serverKey, $clientIp] = $this->getServerKeyAndClientIP();
+
+            if ($isVerifyKitModel) {
+                return new VerifyKit($serverKey, $clientIp);
+            }
 
             return new Web($serverKey, $clientIp);
         } catch (ServerKeyEmptyException $e) {
