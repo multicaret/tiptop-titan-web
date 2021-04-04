@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Api\V1;
 
 
 use App\Http\Controllers\Api\BaseApiController;
+use App\Http\Controllers\Controller;
 use App\Http\Resources\UserResource;
 use App\Models\User;
 use Illuminate\Auth\Events\Registered;
@@ -96,9 +97,10 @@ class OtpController extends BaseApiController
 
         $newUser = false;
         if ($validationStatus) {
+            $phoneNumber = Controller::convertNumbersToArabic($request->input('phone_number'));
             [$user, $newUser, $accessToken] = $this->registerUserIfNotFoundByPhone(
                 $request->input('phone_country_code'),
-                $request->input('phone_number'),
+                $phoneNumber,
                 $request->input('mobile_app_details')
             );
             $response = [
@@ -146,7 +148,7 @@ class OtpController extends BaseApiController
         $mcc = '999'; // Mobile Country Code (MCC) of the sim card in the user's device. Default value is '999'. Not required.
         $mnc = '999'; // Mobile Network Code (MNC) of the sim card in the user's device. Default value is '999'. Not required.
 
-        $phoneNumber = $request->input('phone_number');  // '+90'.$request->phone;
+        $phoneNumber = Controller::convertNumbersToArabic($request->input('phone_number'));  // '+90'.$request->phone;
         $countryCode = $request->input('country_code');  // 'TR';
 
         $lang = localization()->getCurrentLocale();
@@ -192,7 +194,7 @@ class OtpController extends BaseApiController
 
 
         $statusCode = Response::HTTP_BAD_REQUEST;
-        $phoneNumber = $request->input('phone_number');
+        $phoneNumber = Controller::convertNumbersToArabic($request->input('phone_number'));
         $phoneCountryCode = $request->input('phone_country_code');
         $countryCode = $request->input('country_code');
         $code = $request->input('code');
