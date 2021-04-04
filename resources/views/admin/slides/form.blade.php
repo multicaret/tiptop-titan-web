@@ -63,7 +63,7 @@
                             <div class="col-md-12">
                                 @component('admin.components.form-group', ['name' => $langKey .'[alt_tag]', 'type' => 'text'])
                                     @slot('label', trans('strings.alt-tag'))
-
+                                    @slot('attributes',['required'])
                                     @if(! is_null($slide->id))
                                         @slot('value', optional($slide->translate($langKey))->alt_tag)
                                     @endif
