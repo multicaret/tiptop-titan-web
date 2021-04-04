@@ -95,6 +95,9 @@
                         <tr class="{{ $order->getLateCssBgClass()}}">
                             <td style="width:10px">
                                 {{$order->reference_code}}
+                                <button data-toggle="modal" data-target="#orderShowModal"
+                                        wire:click="show({{ $order->id }})" class="btn btn-primary btn-sm">Show
+                                </button>
                             </td>
                             <td>
                                 <span data-toggle="tooltip" data-placement="top" title="{{$order->getStatusName()}}">
@@ -187,12 +190,18 @@
         </div>
     </div>
 
+    @include('livewire.order-show')
+
     @push('scripts')
         <script>
             document.addEventListener('DOMContentLoaded', function () {
                 $('[data-toggle="tooltip"]').tooltip();
             });
             /*document.addEventListener('livewire:load', function () {
+            });*/
+
+            /*window.livewire.on('userStore', () => {
+                $('#exampleModal').modal('hide');
             });*/
         </script>
     @endpush

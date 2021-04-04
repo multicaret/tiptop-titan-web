@@ -8,6 +8,7 @@ use Livewire\Component;
 class OrdersTable extends Component
 {
     public $orders;
+    public $selectedOrder;
 
     /*use WithPagination;
 
@@ -91,4 +92,13 @@ class OrdersTable extends Component
         $this->branchName = null;
         $this->filterByDate = now()->today()->format(config('defaults.date.short_format'));
     }
+
+    public $showModal = false;
+
+    public function show($id)
+    {
+        $this->showModal = true;
+        $this->selectedOrder = Order::where('id', $id)->first();
+    }
+//        $this->emit('userStore');
 }
