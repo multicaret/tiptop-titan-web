@@ -15,6 +15,16 @@ class OrderController extends Controller
 //        $this->middleware('permission:chain.permissions.index', ['only' => ['index', 'store']]);
     }
 
+    public function index()
+    {
+        return view('admin.orders.index');
+    }
+
+    public function show(Order $order)
+    {
+        return view('admin.orders.show', compact('order'));
+    }
+
     /**
      * Display a listing of the resource.
      *

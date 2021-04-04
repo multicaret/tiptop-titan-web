@@ -24,7 +24,7 @@ class CountryWithFlagResource extends JsonResource
             'phoneCode' => $this->phone_code,
             'alpha2Code' => $this->alpha2_code,
             'alpha3Code' => $this->alpha3_code,
-            'flag' => is_null($this->flag) ? '' : $this->flag,
+            'flagUrl' => is_null($this->flag) ? '' : $this->flag,
         ];
     }
 }

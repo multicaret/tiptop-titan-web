@@ -132,6 +132,7 @@ class Order extends Model
         'private_delivery_fee' => 'double',
         'private_grand_total' => 'double',
         'completed_at' => 'datetime',
+        'is_delivery_by_tiptop' => 'boolean',
     ];
 
     protected static function boot()
@@ -196,18 +197,57 @@ class Order extends Model
                     ->withTimestamps();
     }
 
+    public function scopeCancelled($query)
+    {
+        return $query->where('status', self::STATUS_CANCELLED);
+    }
+
+    public function scopeDraft($query)
+    {
+        return $query->where('status', self::STATUS_DRAFT);
+    }
+
     public function scopeNew($query)
     {
         return $query->where('status', self::STATUS_NEW);
     }
 
+    public function scopePreparing($query)
+    {
+        return $query->where('status', self::STATUS_PREPARING);
+    }
+
+    public function scopeWaitingCourier($query)
+    {
+        return $query->where('status', self::STATUS_WAITING_COURIER);
+    }
+
+    public function scopeOnTheWay($query)
+    {
+        return $query->where('status', self::STATUS_ON_THE_WAY);
+    }
+
+    public function scopeAtTheAddress($query)
+    {
+        return $query->where('status', self::STATUS_AT_THE_ADDRESS);
+    }
+
+    public function scopeDelivered($query)
+    {
+        return $query->where('status', self::STATUS_DELIVERED);
+    }
+
+    public function getStatusName()
+    {
+        return trans('strings.order_status_'.$this->status);
+    }
 
     public function getLateCssBgClass(): ?string
     {
         if ($this->status == self::STATUS_NEW) {
             $pastInMinutes = $this->created_at->diffInMinutes();
             if ($pastInMinutes > 7) {
-                return 'bg-danger text-white';
+                return 'bg-danger-darker text-white';
             } elseif ($pastInMinutes > 5) {
                 return 'bg-warning-darker';
             } elseif ($pastInMinutes > 3) {

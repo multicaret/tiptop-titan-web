@@ -288,4 +288,12 @@ return [
     'Avatar' => 'صورة شخصية',
     'Add' => 'إضافة',
     'Loading' => 'جاري التحميل',
+    'order_status_0' => 'ألغيت',
+    'order_status_1' => 'مسودة',
+    'order_status_2' => 'جديد',
+    'order_status_10' => 'خطة',
+    'order_status_12' => 'منتظر',
+    'order_status_16' => 'تشغيل',
+    'order_status_18' => 'في',
+    'order_status_20' => 'تم التوصيل',
 ];

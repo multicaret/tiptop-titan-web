@@ -1,4 +1,4 @@
 <lottie-player
     src="{{url('animations/info.json')}}"
-    background="transparent" speed="2" style="width: 30px; height: 30px;" loop
+    background="transparent" speed="1" style="width: 40px; height: 40px;margin: 0 auto;" loop
     autoplay></lottie-player>

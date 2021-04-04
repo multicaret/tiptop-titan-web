@@ -15,7 +15,7 @@
                                 <img src="/images/icons/food-delivery-186/svg/019-food tray.svg" alt="Food Orders"
                                      class="d-block ui-w-50">
                                 <div class="media-body ml-4">
-                                    <h3 wire:poll.10s>
+                                    <h3 {{--wire:poll.1m--}}>
                                         {{$foodNewOrdersCount}}
                                     </h3>
                                 </div>
@@ -37,10 +37,9 @@
                         <div class="card-text">
                             <div class="media align-items-center">
                                 <img src="/images/icons/food-delivery-186/svg/021-food delivery.svg"
-                                     alt="Grocery Orders"
-                                     class="d-block ui-w-50">
+                                     alt="Grocery Orders" class="d-block ui-w-50">
                                 <div class="media-body ml-4">
-                                    <h3 wire:poll.10s>
+                                    <h3 {{--wire:poll.1m--}}>
                                         {{$groceryNewOrdersCount}}
                                     </h3>
                                 </div>
@@ -61,7 +60,9 @@
                                 <img src="/images/icons/svg/clock.svg" alt="Clock"
                                      class="d-block ui-w-50">
                                 <div class="media-body ml-4">
-                                    <span wire:poll.1m>{{ now() }}</span>
+                                    <span {{--wire:poll.24h--}}>{{ now()->format(config('defaults.date.normal_format')) }}</span>
+                                    &nbsp;&nbsp; - &nbsp;&nbsp;
+                                    <span {{--wire:poll.1m--}}>{{ now()->format(config('defaults.time.normal_format')) }}</span>
                                 </div>
                             </div>
                         </div>
