@@ -327,7 +327,7 @@ class DatatableController extends AjaxController
 
     public function slides(Request $request)
     {
-        $slides = Slide::selectRaw('slides.*');
+        $slides = Slide::selectRaw('slides.*')->latest();
 
         return DataTables::of($slides)
                          ->editColumn('action', function ($slide) {
