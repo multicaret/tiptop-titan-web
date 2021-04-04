@@ -171,18 +171,25 @@
                                 @endif
                             @endcomponent
                         </div>
-                        <div class="col-3">
+                        <div class="col-4">
                             @component('admin.components.form-group', ['name' => 'status', 'type' => 'select'])
                                 @slot('label', trans('strings.status'))
                                 @slot('options', \App\Models\Slide::getStatusesArray())
                                 @slot('selected', $slide->status)
                             @endcomponent
                         </div>
-                        <div class="col-3">
+                        <div class="col-4">
                             @component('admin.components.form-group', ['name' => 'channel', 'type' => 'select'])
                                 @slot('label', trans('strings.channel'))
                                 @slot('options', \App\Models\Slide::getChannelsArray())
                                 @slot('selected', $slide->channel)
+                            @endcomponent
+                        </div>
+                        <div class="col-4">
+                            @component('admin.components.form-group', ['name' => 'has_been_authenticated', 'type' => 'select'])
+                                @slot('label', trans('strings.placement'))
+                                @slot('options', \App\Models\Slide::getTargetsArray())
+                                @slot('selected', $slide->has_been_authenticated)
                             @endcomponent
                         </div>
                     </div>

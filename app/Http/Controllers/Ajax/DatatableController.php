@@ -418,7 +418,7 @@ class DatatableController extends AjaxController
                              return ! is_null($item->city) ? $item->city->name : '';
                          })
                          ->editColumn('has_been_authenticated', function ($item) {
-                             return $item->has_been_authenticated ? 'Yes' : 'No';
+                             return Slide::getTargetsArray()[$item->has_been_authenticated];
                          })
                          ->editColumn('channel', function ($item) {
                              $currentChannel = Slide::getAllChannelsRich()[$item->channel];

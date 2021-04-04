@@ -246,4 +246,8 @@ return [
     'grocery' => 'Grocery',
     'food' => 'Food',
     'channel' => 'Channel',
+    'logged_in' => 'Logged In',
+    'guest' => 'Guest',
+    'everyone' => 'Everyone',
+    'placement' => 'Placement',
 ];
