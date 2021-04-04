@@ -861,7 +861,7 @@ class DatabaseSeeder extends Seeder
                 'title' => 'Slide 1',
                 'description' => file_get_contents(storage_path('seeders/slides/slide-en.html')),
                 'link_value' => 'https://example.com',
-                'link_type' => Slide::TYPE_DEEPLINK,
+                'link_type' => Slide::LINK_TYPE_DEEPLINK,
                 'image' => config('defaults.images.slider_image'),
                 'translations' => [
                     [
@@ -882,7 +882,7 @@ class DatabaseSeeder extends Seeder
                 'title' => 'Slide 2',
                 'description' => file_get_contents(storage_path('seeders/slides/slide-en.html')),
                 'link_value' => 'https://example.com',
-                'link_type' => Slide::TYPE_EXTERNAL,
+                'link_type' => Slide::LINK_TYPE_EXTERNAL,
                 'image' => config('defaults.images.slider_image_2'),
                 'translations' => [
                     [

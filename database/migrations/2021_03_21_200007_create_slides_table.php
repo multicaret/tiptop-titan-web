@@ -23,7 +23,7 @@ class CreateSlidesTable extends Migration
             $table->char('uuid', 10)->unique();
             $table->string('title'); //These are purposely not translatable!
             $table->text('description')->nullable();
-            $table->unsignedTinyInteger('link_type')->default(Slide::TYPE_EXTERNAL);
+            $table->unsignedTinyInteger('link_type')->default(Slide::LINK_TYPE_EXTERNAL);
             $table->string('link_value')->nullable();
             $table->string('linkage')
                   ->nullable()

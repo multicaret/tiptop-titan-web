@@ -3,15 +3,12 @@
 namespace App\Models;
 
 use App\Traits\HasAppTypes;
-use App\Traits\HasMediaTrait;
 use App\Traits\HasStatuses;
 use App\Traits\HasUuid;
 use Astrotomic\Translatable\Translatable;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo as BelongsTo;
 use Illuminate\Database\Eloquent\SoftDeletes;
-use Spatie\MediaLibrary\HasMedia;
-use Spatie\MediaLibrary\MediaCollections\Models\Media;
 
 /**
  * App\Models\Slide
@@ -78,25 +75,25 @@ use Spatie\MediaLibrary\MediaCollections\Models\Media;
  */
 class Slide extends Model
 {
-    use SoftDeletes,
-        HasUuid,
-        Translatable,
-        HasStatuses,
-        HasAppTypes;
+    use HasAppTypes;
+    use HasStatuses;
+    use HasUuid;
+    use SoftDeletes;
+    use Translatable;
 
-    const STATUS_INCOMPLETE = 0;
-    const STATUS_DRAFT = 1;
-    const STATUS_PUBLISHED = 2;
-    const STATUS_INACTIVE = 3;
+    public const STATUS_INCOMPLETE = 0;
+    public const STATUS_DRAFT = 1;
+    public const STATUS_PUBLISHED = 2;
+    public const STATUS_INACTIVE = 3;
 
-    const TYPE_EXTERNAL = 1;
-    const TYPE_UNIVERSAL = 2;
-    const TYPE_DEFERRED_DEEPLINK = 3;
-    const TYPE_DEEPLINK = 4;
+    public const LINK_TYPE_EXTERNAL = 1;
+    public const LINK_TYPE_UNIVERSAL = 2;
+    public const LINK_TYPE_DEFERRED_DEEPLINK = 3;
+    public const LINK_TYPE_DEEPLINK = 4;
 
-    const TYPE_GROCERY_OBJECT = 8;
-    const TYPE_FOOD_OBJECT = 9;
-    const TYPE_FOOD_AND_GROCERY_OBJECT = 10;
+    public const TYPE_GROCERY_OBJECT = 8;
+    public const TYPE_FOOD_OBJECT = 9;
+    public const TYPE_FOOD_AND_GROCERY_OBJECT = 10;
 
     protected $with = ['translations'];
 
@@ -112,10 +109,10 @@ class Slide extends Model
     public static function getTypesArray(): array
     {
         return [
-            self::TYPE_EXTERNAL => 'external',
-            self::TYPE_UNIVERSAL => 'universal',
-            self::TYPE_DEFERRED_DEEPLINK => 'deferred-deeplink',
-            self::TYPE_DEEPLINK => 'deeplink',
+            self::LINK_TYPE_EXTERNAL => 'external',
+            self::LINK_TYPE_UNIVERSAL => 'universal',
+            self::LINK_TYPE_DEFERRED_DEEPLINK => 'deferred-deeplink',
+            self::LINK_TYPE_DEEPLINK => 'deeplink',
         ];
     }
 
