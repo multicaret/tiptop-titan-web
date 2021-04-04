@@ -102,7 +102,7 @@ class Coupon extends Model
         return $this->hasMany(CouponUsage::class, 'coupon_id');
     }
 
-    public static function retrieveValidation($coupon)
+    public static function retrieveValidation($coupon): array
     {
         if (is_null($coupon)) {
             return [
