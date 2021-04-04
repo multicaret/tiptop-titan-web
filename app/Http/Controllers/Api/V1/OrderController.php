@@ -7,6 +7,8 @@ use App\Http\Resources\OrderResource;
 use App\Models\Branch;
 use App\Models\Cart;
 use App\Models\Chain;
+use App\Models\Coupon;
+use App\Models\CouponUsage;
 use App\Models\Currency;
 use App\Models\Location;
 use App\Models\Order;
@@ -196,8 +198,14 @@ class OrderController extends BaseApiController
         // Deduct the purchased quantity from the available quantity of each product.
         foreach ($cart->products as $product) {
             if ($product->is_storage_tracking_enabled) {
-                $product->available_quantity = $product->available_quantity - $product->pivot->quantity;
-                $product->save();
+                if ($product->available_quantity != 0) {
+                    $product->available_quantity = $product->available_quantity - $product->pivot->quantity;
+                    $product->save();
+                } else {
+                    $productName = $product->title;
+
+                    return $this->respondWithMessage("{$productName} Product Unavailable");
+                }
             }
         }
 
