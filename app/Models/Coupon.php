@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Http\Resources\CouponResource;
 use App\Traits\HasAppTypes;
 use App\Traits\HasStatuses;
 use Illuminate\Database\Eloquent\Model;
@@ -57,9 +58,57 @@ class Coupon extends Model
     protected $casts = [
         'discount_amount' => 'double',
         'max_allowed_discount_amount' => 'double',
+        'min_cart_value_allowed' => 'double',
         'discount_by_percentage' => 'boolean',
         'has_free_delivery' => 'boolean',
         'expired_at' => 'date',
-        // Todo: @Wael
     ];
+
+    public function couponUsage(): \Illuminate\Database\Eloquent\Relations\HasMany
+    {
+        return $this->hasMany(CouponUsage::class, 'coupon_id');
+    }
+
+    public static function retrieveValidation($coupon)
+    {
+        if (is_null($coupon)) {
+            return [
+                'type' => 'undefined',
+                'message' => 'Coupon code is wrong'
+            ];
+
+        } elseif ( ! is_null($coupon->expired_at) && $coupon->expired_at < now()) {
+            return [
+                'type' => 'error',
+                'message' => 'Coupon is expired'
+            ];
+        }
+        $totalUsageBuilder = $coupon->couponUsage();
+        if ($coupon->total_usage_count > $totalUsageBuilder->count()) {
+            if ($coupon->usage_count_by_same_user > auth()->user()->couponUsage()->count()) {
+                if ($coupon->max_allowed_discount_amount > $coupon->couponUsage()->sum('discounted_amount')) {
+                    return [
+                        'type' => 'Success',
+                        'data' => new CouponResource($coupon)
+                    ];
+                } else {
+                    return [
+                        'type' => 'error',
+                        'message' => 'Discount amount  is full'
+                    ];
+                }
+            } else {
+                return [
+                    'type' => 'error',
+                    'message' => 'User Cannot Use the current coupon'
+                ];
+            }
+        } else {
+            return [
+                'type' => 'error',
+                'message' => 'The total usage count full'
+            ];
+        }
+
+    }
 }
