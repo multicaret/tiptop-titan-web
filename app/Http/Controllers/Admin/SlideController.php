@@ -247,6 +247,7 @@ class SlideController extends Controller
         $slide->city_id = isset($city) ? $city->id : null;
         $slide->region_id = isset($region) ? $region->id : null;
         $slide->status = $request->input('status');
+        $slide->channel = $request->input('channel');
         $slide->save();
         // Filling translations
 

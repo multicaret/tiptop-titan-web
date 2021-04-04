@@ -245,4 +245,5 @@ return [
     'grocery_and_food' => 'Grocery And Food',
     'grocery' => 'Grocery',
     'food' => 'Food',
+    'channel' => 'Channel',
 ];
