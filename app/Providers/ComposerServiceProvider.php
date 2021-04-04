@@ -168,16 +168,6 @@ class ComposerServiceProvider extends ServiceProvider
                                 'routeName' => 'admin.branches.index',
                             ],
                             [
-                                'title' => 'Ingredient',
-                                'icon' => 'fas fa-leaf',
-                                'params' => [
-                                    'type' =>
-                                        \App\Models\Taxonomy::getCorrectTypeName(\App\Models\Taxonomy::TYPE_INGREDIENT,
-                                            false),
-                                ],
-                                'routeName' => 'admin.taxonomies.index',
-                            ],
-                            [
                                 'title' => 'Products',
                                 'icon' => 'fas fa-box-open',
                                 'params' => ['type' => Product::getCorrectTypeName(Product::TYPE_FOOD_OBJECT, false)],
@@ -209,6 +199,16 @@ class ComposerServiceProvider extends ServiceProvider
                                 'params' => [
                                     'type' =>
                                         \App\Models\Taxonomy::getCorrectTypeName(\App\Models\Taxonomy::TYPE_INGREDIENT_CATEGORY,
+                                            false),
+                                ],
+                                'routeName' => 'admin.taxonomies.index',
+                            ],
+                            [
+                                'title' => 'Ingredients',
+                                'icon' => 'fas fa-leaf',
+                                'params' => [
+                                    'type' =>
+                                        \App\Models\Taxonomy::getCorrectTypeName(\App\Models\Taxonomy::TYPE_INGREDIENT,
                                             false),
                                 ],
                                 'routeName' => 'admin.taxonomies.index',
