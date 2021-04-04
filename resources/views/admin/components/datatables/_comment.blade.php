@@ -30,10 +30,11 @@
                         {{--Right side--}}
                         <div class="w-100 d-flex flex-column align-items-end">
                             <span class="font-weight-bold mb-2 float-right">
-                                Order Number: {{$order->reference_code}}
+                                Order Reference Code: {{$order->reference_code}}
                             </span>
-                            <span class="font-weight-bold mb-2 float-right">
-                                Date: {{$order->rated_at}}
+                            <span class="font-weight-bold mb-2 float-right" title="{{$order->rated_at}}">
+                                Date:
+                                {{$order->rated_at->format(config('defaults.date.normal_format'))}}
                             </span>
                         </div>
 
