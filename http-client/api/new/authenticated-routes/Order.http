@@ -62,3 +62,9 @@ Authorization: Bearer {{token}}
     },
     "comment": "This is not what I ordered!"
 }
+
+### coupon
+GET {{host}}/{{locale}}/api/v1/coupons/21312eqeqwr/validate
+Accept: application/json
+Content-Type: application/json
+Authorization: Bearer {{token}}
