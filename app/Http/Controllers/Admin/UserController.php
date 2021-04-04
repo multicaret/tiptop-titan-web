@@ -46,7 +46,7 @@ class UserController extends Controller
         $data = $this->essentialData();
 
         $user = new User();
-        $user->status = User::STATUS_PUBLISHED;
+        $user->status = User::STATUS_ACTIVE;
         $user->country_id = config('defaults.country.id');
         $user->region_id = config('defaults.region.id');
         $user->city_id = config('defaults.city.id');

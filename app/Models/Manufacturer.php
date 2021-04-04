@@ -21,18 +21,18 @@ use Spatie\MediaLibrary\MediaCollections\Models\Media;
  * @property string $name
  * @property \Illuminate\Support\Carbon|null $created_at
  * @property \Illuminate\Support\Carbon|null $updated_at
- * @property-read mixed $is_published
+ * @property-read bool $is_active
+ * @property-read bool $is_inactive
  * @property-read bool $logo
  * @property-read mixed $status_name
  * @property-read \Spatie\MediaLibrary\MediaCollections\Models\Collections\MediaCollection|Media[] $media
  * @property-read int|null $media_count
+ * @method static \Illuminate\Database\Eloquent\Builder|Manufacturer active()
  * @method static \Illuminate\Database\Eloquent\Builder|Manufacturer draft()
  * @method static \Illuminate\Database\Eloquent\Builder|Manufacturer inactive()
- * @method static \Illuminate\Database\Eloquent\Builder|Manufacturer incomplete()
  * @method static \Illuminate\Database\Eloquent\Builder|Manufacturer newModelQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|Manufacturer newQuery()
- * @method static \Illuminate\Database\Eloquent\Builder|Manufacturer notPublished()
- * @method static \Illuminate\Database\Eloquent\Builder|Manufacturer published()
+ * @method static \Illuminate\Database\Eloquent\Builder|Manufacturer notActive()
  * @method static \Illuminate\Database\Eloquent\Builder|Manufacturer query()
  * @method static \Illuminate\Database\Eloquent\Builder|Manufacturer whereCityId($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Manufacturer whereCreatedAt($value)
@@ -50,9 +50,9 @@ class Manufacturer extends Model implements HasMedia
         HasStatuses,
         HasViewCount;
 
-    const STATUS_INCOMPLETE = 0;
+
     const STATUS_DRAFT = 1;
-    const STATUS_PUBLISHED = 2;
+    const STATUS_ACTIVE = 2;
     const STATUS_INACTIVE = 3;
 
     protected $appends = [

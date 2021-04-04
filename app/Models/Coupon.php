@@ -14,42 +14,69 @@ use Illuminate\Database\Eloquent\Model;
  * @property int $creator_id
  * @property int $editor_id
  * @property int $currency_id
- * @property int|null $discount_by_percentage true: percentage, false: fixed amount
+ * @property int $type 1:Market, 2: Food
+ * @property string $name
+ * @property string|null $description
  * @property float|null $discount_amount
- * @property int|null $max_usable_count
+ * @property bool|null $discount_by_percentage true: percentage, false: fixed amount
+ * @property float $max_allowed_discount_amount
+ * @property float $min_cart_value_allowed
+ * @property bool $has_free_delivery
+ * @property int $max_usable_count
+ * @property int $total_redeemed_count
  * @property int $max_usable_count_by_user
- * @property string|null $expired_at
- * @property string $code
- * @property int $status 0:incomplete, 1:draft, 2:published, 3:Inactive, 4..n:CUSTOM
+ * @property float $money_redeemed_so_far
+ * @property \Illuminate\Support\Carbon|null $expired_at
+ * @property string $redeem_code
+ * @property int $status 1:draft, 2:active, 3:Inactive, 4..n:CUSTOM
  * @property \Illuminate\Support\Carbon|null $created_at
  * @property \Illuminate\Support\Carbon|null $updated_at
  * @property string|null $deleted_at
+ * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\CouponUsage[] $couponUsage
+ * @property-read int|null $coupon_usage_count
+ * @property-read bool $is_active
+ * @property-read bool $is_inactive
+ * @property-read mixed $status_name
+ * @method static \Illuminate\Database\Eloquent\Builder|Coupon active()
+ * @method static \Illuminate\Database\Eloquent\Builder|Coupon draft()
+ * @method static \Illuminate\Database\Eloquent\Builder|Coupon food()
+ * @method static \Illuminate\Database\Eloquent\Builder|Coupon grocery()
+ * @method static \Illuminate\Database\Eloquent\Builder|Coupon inactive()
  * @method static \Illuminate\Database\Eloquent\Builder|Coupon newModelQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|Coupon newQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder|Coupon notActive()
  * @method static \Illuminate\Database\Eloquent\Builder|Coupon query()
- * @method static \Illuminate\Database\Eloquent\Builder|Coupon whereCode($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Coupon whereCreatedAt($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Coupon whereCreatorId($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Coupon whereCurrencyId($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Coupon whereDeletedAt($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Coupon whereDescription($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Coupon whereDiscountAmount($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Coupon whereDiscountByPercentage($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Coupon whereEditorId($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Coupon whereExpiredAt($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Coupon whereHasFreeDelivery($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Coupon whereId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Coupon whereMaxAllowedDiscountAmount($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Coupon whereMaxUsableCount($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Coupon whereMaxUsableCountByUser($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Coupon whereMinCartValueAllowed($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Coupon whereMoneyRedeemedSoFar($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Coupon whereName($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Coupon whereRedeemCode($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Coupon whereStatus($value)
- * @method static \Illuminate\Database\Eloquent\Builder|Coupon whereTotalUsageCount($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Coupon whereTotalRedeemedCount($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Coupon whereType($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Coupon whereUpdatedAt($value)
- * @method static \Illuminate\Database\Eloquent\Builder|Coupon whereUsageCountBySameUser($value)
  * @mixin \Eloquent
  */
 class Coupon extends Model
 {
-    use HasStatuses,HasAppTypes;
+    use HasStatuses, HasAppTypes;
 
-    const STATUS_INCOMPLETE = 0;
+
     const STATUS_DRAFT = 1;
-    const STATUS_PUBLISHED = 2;
+    const STATUS_ACTIVE = 2;
     const STATUS_INACTIVE = 3;
 
     const TYPE_GROCERY_OBJECT = 1;

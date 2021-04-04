@@ -6,6 +6,7 @@ namespace App\Http\Controllers\Api\V1;
 use App\Http\Controllers\Api\BaseApiController;
 use App\Http\Controllers\Controller;
 use App\Http\Resources\UserResource;
+use App\Models\Country;
 use App\Models\User;
 use Illuminate\Auth\Events\Registered;
 use Illuminate\Http\JsonResponse;
@@ -67,8 +68,8 @@ class OtpController extends BaseApiController
     public function check($reference, Request $request): JsonResponse
     {
         $validationRules = [
-            'phone_number' => 'required|numeric|digits_between:7,15',
-            'phone_country_code' => 'required|min:1|max:3',
+//            'phone_number' => 'required|numeric|digits_between:7,15',
+//            'phone_country_code' => 'required|min:1|max:3',
             'mobile_app_details' => 'json',
         ];
 
@@ -95,11 +96,24 @@ class OtpController extends BaseApiController
         }
         $validationStatus = isset($validationCheck) ? $validationCheck->getValidationStatus() : false;
 
+        $result = $vfk->getResult($validationCheck->getSessionId());
+
+        $phoneNumber = null;
+        $phoneCountryCode = null;
+        if ($result->isSuccess()) {
+            $phoneNumber = $result->getPhoneNumber();
+            $phoneCountryCode = Country::whereAlpha2Code($result->getCountryCode())->phone_code;
+            /*echo "Phone number : " . $result->getPhoneNumber() .
+                ", Validation Type : " . $result->getValidationType() .
+                ", Validation Date : " . $result->getValidationDate()->format('Y-m-d H:i:s') . PHP_EOL;*/
+            /*} else {
+                echo "Error message : " . $result->getErrorMessage() . ", error code : " . $result->getErrorCode() . PHP_EOL;*/
+        }
+
         $newUser = false;
         if ($validationStatus) {
-            $phoneNumber = Controller::convertNumbersToArabic($request->input('phone_number'));
             [$user, $newUser, $accessToken] = $this->registerUserIfNotFoundByPhone(
-                $request->input('phone_country_code'),
+                $phoneCountryCode,
                 $phoneNumber,
                 $request->input('mobile_app_details')
             );

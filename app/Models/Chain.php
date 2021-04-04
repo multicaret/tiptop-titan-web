@@ -46,7 +46,8 @@ use Spatie\MediaLibrary\MediaCollections\Models\Media;
  * @property-read \App\Models\Currency|null $currency
  * @property-read mixed $cover
  * @property-read mixed $gallery
- * @property-read mixed $is_published
+ * @property-read bool $is_active
+ * @property-read bool $is_inactive
  * @property-read bool $logo
  * @property-read mixed $status_name
  * @property-read \Spatie\MediaLibrary\MediaCollections\Models\Collections\MediaCollection|Media[] $media
@@ -55,20 +56,21 @@ use Spatie\MediaLibrary\MediaCollections\Models\Media;
  * @property-read \App\Models\ChainTranslation|null $translation
  * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\ChainTranslation[] $translations
  * @property-read int|null $translations_count
+ * @method static \Illuminate\Database\Eloquent\Builder|Chain active()
  * @method static \Illuminate\Database\Eloquent\Builder|Chain draft()
+ * @method static \Illuminate\Database\Eloquent\Builder|Chain food()
  * @method static \Illuminate\Database\Eloquent\Builder|Chain foods()
  * @method static \Illuminate\Database\Eloquent\Builder|Chain groceries()
+ * @method static \Illuminate\Database\Eloquent\Builder|Chain grocery()
  * @method static \Illuminate\Database\Eloquent\Builder|Chain inactive()
- * @method static \Illuminate\Database\Eloquent\Builder|Chain incomplete()
  * @method static \Illuminate\Database\Eloquent\Builder|Chain listsTranslations(string $translationField)
  * @method static \Illuminate\Database\Eloquent\Builder|Chain newModelQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|Chain newQuery()
- * @method static \Illuminate\Database\Eloquent\Builder|Chain notPublished()
+ * @method static \Illuminate\Database\Eloquent\Builder|Chain notActive()
  * @method static \Illuminate\Database\Eloquent\Builder|Chain notTranslatedIn(?string $locale = null)
  * @method static \Illuminate\Database\Eloquent\Builder|Chain orWhereTranslation(string $translationField, $value, ?string $locale = null)
  * @method static \Illuminate\Database\Eloquent\Builder|Chain orWhereTranslationLike(string $translationField, $value, ?string $locale = null)
  * @method static \Illuminate\Database\Eloquent\Builder|Chain orderByTranslation(string $translationField, string $sortMethod = 'asc')
- * @method static \Illuminate\Database\Eloquent\Builder|Chain published()
  * @method static \Illuminate\Database\Eloquent\Builder|Chain query()
  * @method static \Illuminate\Database\Eloquent\Builder|Chain translated()
  * @method static \Illuminate\Database\Eloquent\Builder|Chain translatedIn(?string $locale = null)
@@ -109,9 +111,9 @@ class Chain extends Model implements HasMedia
         HasTypes,
         HasAppTypes;
 
-    const STATUS_INCOMPLETE = 0;
+
     const STATUS_DRAFT = 1;
-    const STATUS_PUBLISHED = 2;
+    const STATUS_ACTIVE = 2;
     const STATUS_INACTIVE = 3;
 
     const TYPE_GROCERY_OBJECT = 1;
@@ -250,7 +252,6 @@ class Chain extends Model implements HasMedia
              });
 
     }
-
 
 
 }

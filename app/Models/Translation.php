@@ -4,7 +4,6 @@ namespace App\Models;
 
 use App\Traits\HasStatuses;
 use Astrotomic\Translatable\Translatable;
-use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
 /**
@@ -17,24 +16,24 @@ use Illuminate\Database\Eloquent\Model;
  * @property int|null $order_column
  * @property \Illuminate\Support\Carbon|null $created_at
  * @property \Illuminate\Support\Carbon|null $updated_at
- * @property-read mixed $is_published
+ * @property-read bool $is_active
+ * @property-read bool $is_inactive
  * @property-read mixed $status_name
  * @property-read \App\Models\TranslationTranslation|null $translation
  * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\TranslationTranslation[] $translations
  * @property-read int|null $translations_count
+ * @method static \Illuminate\Database\Eloquent\Builder|Translation active()
  * @method static \Illuminate\Database\Eloquent\Builder|Translation draft()
  * @method static \Illuminate\Database\Eloquent\Builder|Translation group($groupName)
  * @method static \Illuminate\Database\Eloquent\Builder|Translation inactive()
- * @method static \Illuminate\Database\Eloquent\Builder|Translation incomplete()
  * @method static \Illuminate\Database\Eloquent\Builder|Translation listsTranslations(string $translationField)
  * @method static \Illuminate\Database\Eloquent\Builder|Translation newModelQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|Translation newQuery()
- * @method static \Illuminate\Database\Eloquent\Builder|Translation notPublished()
+ * @method static \Illuminate\Database\Eloquent\Builder|Translation notActive()
  * @method static \Illuminate\Database\Eloquent\Builder|Translation notTranslatedIn(?string $locale = null)
  * @method static \Illuminate\Database\Eloquent\Builder|Translation orWhereTranslation(string $translationField, $value, ?string $locale = null)
  * @method static \Illuminate\Database\Eloquent\Builder|Translation orWhereTranslationLike(string $translationField, $value, ?string $locale = null)
  * @method static \Illuminate\Database\Eloquent\Builder|Translation orderByTranslation(string $translationField, string $sortMethod = 'asc')
- * @method static \Illuminate\Database\Eloquent\Builder|Translation published()
  * @method static \Illuminate\Database\Eloquent\Builder|Translation query()
  * @method static \Illuminate\Database\Eloquent\Builder|Translation translated()
  * @method static \Illuminate\Database\Eloquent\Builder|Translation translatedIn(?string $locale = null)
@@ -52,13 +51,13 @@ use Illuminate\Database\Eloquent\Model;
  */
 class Translation extends Model
 {
-    use Translatable,
-        HasStatuses;
+    use HasStatuses;
+    use Translatable;
 
-    const STATUS_INCOMPLETE = 0;
-    const STATUS_DRAFT = 1;
-    const STATUS_PUBLISHED = 2;
-    const STATUS_INACTIVE = 3;
+
+    public const STATUS_DRAFT = 1;
+    public const STATUS_ACTIVE = 2;
+    public const STATUS_INACTIVE = 3;
 
     protected $fillable = ['key', 'group', 'value'];
     protected $with = ['translations'];

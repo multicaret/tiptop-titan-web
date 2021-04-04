@@ -443,7 +443,7 @@
                 @slot('label', 'Status')
                 @slot('options', [
                     App\Models\User::STATUS_INACTIVE => 'Inactive',
-                    App\Models\User::STATUS_PUBLISHED => 'Active',
+                    App\Models\User::STATUS_ACTIVE => 'Active',
                 ])
                 @slot('selected', $user->status)
                 {{--                    App\Models\User::STATUS_SUSPENDED => 'Suspended',--}}

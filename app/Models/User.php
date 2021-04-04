@@ -60,7 +60,7 @@ use Spatie\Permission\Traits\HasRoles;
  * @property int|null $order_column
  * @property mixed|null $social_networks
  * @property object $settings to handle all sort of settings including notification related such as is_notifiable by email or by push notifications ...etc
- * @property int $status 0:incomplete, 1:draft, 2:published, 3:Inactive, 4..n:CUSTOM
+ * @property int $status 1:draft, 2:active, 3:Inactive, 4..n:CUSTOM
  * @property \Illuminate\Support\Carbon|null $approved_at
  * @property \Illuminate\Support\Carbon|null $phone_verified_at
  * @property \Illuminate\Support\Carbon|null $suspended_at
@@ -74,15 +74,18 @@ use Spatie\Permission\Traits\HasRoles;
  * @property-read int|null $addresses_count
  * @property-read \App\Models\City|null $city
  * @property-read \App\Models\Country|null $country
+ * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\CouponUsage[] $couponUsage
+ * @property-read int|null $coupon_usage_count
  * @property-read \App\Models\Currency|null $currency
  * @property-read mixed $analyst
  * @property-read bool $avatar
  * @property-read bool $cover
  * @property-read mixed $international_phone
+ * @property-read bool $is_active
  * @property-read mixed $is_admin
+ * @property-read bool $is_inactive
  * @property-read bool $is_manager
  * @property-read mixed $is_owner
- * @property-read mixed $is_published
  * @property-read bool $is_super
  * @property-read mixed $is_user
  * @property-read mixed $name
@@ -100,21 +103,19 @@ use Spatie\Permission\Traits\HasRoles;
  * @property-read \App\Models\Region|null $region
  * @property-read \Illuminate\Database\Eloquent\Collection|Role[] $roles
  * @property-read int|null $roles_count
- * @property-read \Illuminate\Database\Eloquent\Collection|\Laravel\Sanctum\PersonalAccessToken[] $tokens
+ * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\PersonalAccessToken[] $tokens
  * @property-read int|null $tokens_count
  * @method static \Illuminate\Database\Eloquent\Builder|User active()
  * @method static \Illuminate\Database\Eloquent\Builder|User draft()
  * @method static \Database\Factories\UserFactory factory(...$parameters)
  * @method static \Illuminate\Database\Eloquent\Builder|User inActive()
- * @method static \Illuminate\Database\Eloquent\Builder|User incomplete()
  * @method static \Illuminate\Database\Eloquent\Builder|User managers()
  * @method static \Illuminate\Database\Eloquent\Builder|User newModelQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|User newQuery()
- * @method static \Illuminate\Database\Eloquent\Builder|User notPublished()
+ * @method static \Illuminate\Database\Eloquent\Builder|User notActive()
  * @method static \Illuminate\Database\Eloquent\Builder|User notSuper()
  * @method static \Illuminate\Database\Eloquent\Builder|User owners()
  * @method static \Illuminate\Database\Eloquent\Builder|User permission($permissions)
- * @method static \Illuminate\Database\Eloquent\Builder|User published()
  * @method static \Illuminate\Database\Eloquent\Builder|User query()
  * @method static \Illuminate\Database\Eloquent\Builder|User role($roles, $guard = null)
  * @method static \Illuminate\Database\Eloquent\Builder|User whereApprovedAt($value)
@@ -136,7 +137,6 @@ use Spatie\Permission\Traits\HasRoles;
  * @method static \Illuminate\Database\Eloquent\Builder|User whereLastLoggedOutAt($value)
  * @method static \Illuminate\Database\Eloquent\Builder|User whereLatitude($value)
  * @method static \Illuminate\Database\Eloquent\Builder|User whereLongitude($value)
- * @method static \Illuminate\Database\Eloquent\Builder|User whereMobileApp($value)
  * @method static \Illuminate\Database\Eloquent\Builder|User whereOrderColumn($value)
  * @method static \Illuminate\Database\Eloquent\Builder|User wherePassword($value)
  * @method static \Illuminate\Database\Eloquent\Builder|User wherePhoneCountryCode($value)
@@ -186,9 +186,9 @@ class User extends Authenticatable implements HasMedia, MustVerifyEmail
     const ROLE_TIPTOP_DRIVER = 'tiptop-driver';
     const ROLE_USER = 'user';
 
-    const STATUS_INCOMPLETE = 0;
+
     const STATUS_DRAFT = 1;
-    const STATUS_PUBLISHED = 2;
+    const STATUS_ACTIVE = 2;
     const STATUS_INACTIVE = 3;
 
     const GENDER_UNSPECIFIED = 0;

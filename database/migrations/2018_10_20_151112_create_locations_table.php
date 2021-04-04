@@ -45,7 +45,7 @@ class CreateLocationsTable extends Migration
             $table->boolean('is_default')->default(false);
             $table->unsignedTinyInteger('type')->default(Location::TYPE_ADDRESS)->comment('1: Address, 2: Contact');
             $table->unsignedTinyInteger('kind')->default(Location::KIND_HOME)->comment('1: Home, 2: Work, 3:Other');
-            $table->unsignedTinyInteger('status')->default(Location::STATUS_DRAFT)->comment('0:incomplete, 1:draft, 2:published, 3:Inactive, 4..n:CUSTOM');
+            $table->unsignedTinyInteger('status')->default(Location::STATUS_DRAFT)->comment('1:draft, 2:active, 3:Inactive, 4..n:CUSTOM');
             $table->timestamps();
             $table->softDeletes();
 

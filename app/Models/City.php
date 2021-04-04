@@ -21,13 +21,14 @@ use Spatie\MediaLibrary\MediaCollections\Models\Media;
  * @property string|null $latitude
  * @property string|null $longitude
  * @property int|null $order_column
- * @property int $status 0:incomplete, 1:draft, 2:published, 3:Inactive, 4..n:CUSTOM
+ * @property int $status 1:draft, 2:active, 3:Inactive, 4..n:CUSTOM
  * @property \Illuminate\Support\Carbon|null $created_at
  * @property \Illuminate\Support\Carbon|null $updated_at
  * @property-read \App\Models\Country $country
  * @property-read mixed $cover
  * @property-read mixed $gallery
- * @property-read mixed $is_published
+ * @property-read bool $is_active
+ * @property-read bool $is_inactive
  * @property-read mixed $status_name
  * @property-read \Spatie\MediaLibrary\MediaCollections\Models\Collections\MediaCollection|Media[] $media
  * @property-read int|null $media_count
@@ -36,18 +37,17 @@ use Spatie\MediaLibrary\MediaCollections\Models\Media;
  * @property-read \App\Models\CityTranslation|null $translation
  * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\CityTranslation[] $translations
  * @property-read int|null $translations_count
+ * @method static \Illuminate\Database\Eloquent\Builder|City active()
  * @method static \Illuminate\Database\Eloquent\Builder|City draft()
  * @method static \Illuminate\Database\Eloquent\Builder|City inactive()
- * @method static \Illuminate\Database\Eloquent\Builder|City incomplete()
  * @method static \Illuminate\Database\Eloquent\Builder|City listsTranslations(string $translationField)
  * @method static \Illuminate\Database\Eloquent\Builder|City newModelQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|City newQuery()
- * @method static \Illuminate\Database\Eloquent\Builder|City notPublished()
+ * @method static \Illuminate\Database\Eloquent\Builder|City notActive()
  * @method static \Illuminate\Database\Eloquent\Builder|City notTranslatedIn(?string $locale = null)
  * @method static \Illuminate\Database\Eloquent\Builder|City orWhereTranslation(string $translationField, $value, ?string $locale = null)
  * @method static \Illuminate\Database\Eloquent\Builder|City orWhereTranslationLike(string $translationField, $value, ?string $locale = null)
  * @method static \Illuminate\Database\Eloquent\Builder|City orderByTranslation(string $translationField, string $sortMethod = 'asc')
- * @method static \Illuminate\Database\Eloquent\Builder|City published()
  * @method static \Illuminate\Database\Eloquent\Builder|City query()
  * @method static \Illuminate\Database\Eloquent\Builder|City translated()
  * @method static \Illuminate\Database\Eloquent\Builder|City translatedIn(?string $locale = null)
@@ -74,9 +74,9 @@ class City extends Model implements HasMedia
         Translatable,
         HasStatuses;
 
-    const STATUS_INCOMPLETE = 0;
+
     const STATUS_DRAFT = 1;
-    const STATUS_PUBLISHED = 2;
+    const STATUS_ACTIVE = 2;
     const STATUS_INACTIVE = 3;
 
     protected $fillable = ['name', 'slug'];

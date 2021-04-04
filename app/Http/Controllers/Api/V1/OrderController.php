@@ -98,7 +98,7 @@ class OrderController extends BaseApiController
             }
         }
 
-        $paymentMethods = PaymentMethod::published()->get()->map(function ($method) {
+        $paymentMethods = PaymentMethod::active()->get()->map(function ($method) {
             return [
                 'id' => $method->id,
                 'title' => $method->title,

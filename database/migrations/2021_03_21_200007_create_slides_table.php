@@ -30,10 +30,10 @@ class CreateSlidesTable extends Migration
                   ->comment('The entity the deeplink will point to that has ID of link_value (i.e: Restaurant::class');
             $table->timestamp('begins_at')->nullable();
             $table->timestamp('expires_at')->nullable();
-            $table->unsignedTinyInteger('status')->default(1)->comment('0:incomplete, 1:draft, 2:published, 3:Inactive, 4..n:CUSTOM');
             $table->unsignedTinyInteger('channel')->default(Slide::TYPE_FOOD_AND_GROCERY_OBJECT)->comment('8:food and grocery, 9:grocery, 10:food');
             $table->boolean('has_been_authenticated')->default(false);
             $table->unsignedInteger('order_column')->nullable();
+            $table->unsignedTinyInteger('status')->default(Slide::STATUS_DRAFT)->comment('1:draft, 2:active, 3:Inactive, 4..n:CUSTOM');
 
             $table->timestamps();
             $table->softDeletes();

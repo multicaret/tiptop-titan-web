@@ -1,5 +1,6 @@
 <?php
 
+use App\Models\Taxonomy;
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
@@ -21,7 +22,7 @@ class CreateTaxonomiesTable extends Migration
             $table->unsignedBigInteger('parent_id')->index()->nullable();
             $table->unsignedBigInteger('branch_id')->index()->nullable();
             $table->unsignedBigInteger('chain_id')->index()->nullable();
-                $table->unsignedBigInteger('ingredient_category_id')->nullable();
+            $table->unsignedBigInteger('ingredient_category_id')->nullable();
             $table->unsignedTinyInteger('type')->default(1)->comment('1:Category, 2: Tag, 3..n: CUSTOM');
             $table->string('icon')->nullable();
             $table->unsignedBigInteger('view_count')->default(1);
@@ -30,7 +31,7 @@ class CreateTaxonomiesTable extends Migration
             $table->integer('depth')->nullable();
             $table->decimal('step')->default(1);
             $table->unsignedBigInteger('order_column')->nullable();
-            $table->unsignedTinyInteger('status')->default(1)->comment('0:incomplete, 1:draft, 2:published, 3:Inactive, 4..n:CUSTOM');
+            $table->unsignedTinyInteger('status')->default(Taxonomy::STATUS_DRAFT)->comment('1:draft, 2:active, 3:Inactive, 4..n:CUSTOM');
             $table->timestamps();
             $table->softDeletes();
 

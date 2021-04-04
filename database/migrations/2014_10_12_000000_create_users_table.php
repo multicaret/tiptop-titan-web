@@ -1,5 +1,6 @@
 <?php
 
+use App\Models\User;
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
@@ -43,7 +44,7 @@ class CreateUsersTable extends Migration
             $table->unsignedBigInteger('order_column')->nullable();
             $table->json('social_networks')->nullable();
             $table->json('settings')->comment('to handle all sort of settings including notification related such as is_notifiable by email or by push notifications ...etc');
-            $table->unsignedTinyInteger('status')->default(1)->comment('0:incomplete, 1:draft, 2:published, 3:Inactive, 4..n:CUSTOM');
+            $table->unsignedTinyInteger('status')->default(User::STATUS_DRAFT)->comment('1:draft, 2:active, 3:Inactive, 4..n:CUSTOM');
             $table->timestamp('approved_at')->nullable();
             $table->timestamp('phone_verified_at')->nullable();
             $table->timestamp('suspended_at')->nullable();

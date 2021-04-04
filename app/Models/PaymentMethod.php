@@ -18,13 +18,14 @@ use Spatie\MediaLibrary\MediaCollections\Models\Media;
  * @property int $creator_id
  * @property int $editor_id
  * @property float $base_commission
- * @property int $status 0:incomplete, 1:draft, 2:published, 3:Inactive, 4..n:CUSTOM
+ * @property int $status 1:draft, 2:active, 3:Inactive, 4..n:CUSTOM
  * @property \Illuminate\Support\Carbon|null $created_at
  * @property \Illuminate\Support\Carbon|null $updated_at
  * @property \Illuminate\Support\Carbon|null $deleted_at
  * @property-read \App\Models\User $creator
  * @property-read \App\Models\User $editor
- * @property-read mixed $is_published
+ * @property-read bool $is_active
+ * @property-read bool $is_inactive
  * @property-read bool $logo
  * @property-read mixed $status_name
  * @property-read \Spatie\MediaLibrary\MediaCollections\Models\Collections\MediaCollection|Media[] $media
@@ -32,19 +33,18 @@ use Spatie\MediaLibrary\MediaCollections\Models\Media;
  * @property-read \App\Models\PaymentMethodTranslation|null $translation
  * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\PaymentMethodTranslation[] $translations
  * @property-read int|null $translations_count
+ * @method static \Illuminate\Database\Eloquent\Builder|PaymentMethod active()
  * @method static \Illuminate\Database\Eloquent\Builder|PaymentMethod draft()
  * @method static \Illuminate\Database\Eloquent\Builder|PaymentMethod inactive()
- * @method static \Illuminate\Database\Eloquent\Builder|PaymentMethod incomplete()
  * @method static \Illuminate\Database\Eloquent\Builder|PaymentMethod listsTranslations(string $translationField)
  * @method static \Illuminate\Database\Eloquent\Builder|PaymentMethod newModelQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|PaymentMethod newQuery()
- * @method static \Illuminate\Database\Eloquent\Builder|PaymentMethod notPublished()
+ * @method static \Illuminate\Database\Eloquent\Builder|PaymentMethod notActive()
  * @method static \Illuminate\Database\Eloquent\Builder|PaymentMethod notTranslatedIn(?string $locale = null)
  * @method static \Illuminate\Database\Query\Builder|PaymentMethod onlyTrashed()
  * @method static \Illuminate\Database\Eloquent\Builder|PaymentMethod orWhereTranslation(string $translationField, $value, ?string $locale = null)
  * @method static \Illuminate\Database\Eloquent\Builder|PaymentMethod orWhereTranslationLike(string $translationField, $value, ?string $locale = null)
  * @method static \Illuminate\Database\Eloquent\Builder|PaymentMethod orderByTranslation(string $translationField, string $sortMethod = 'asc')
- * @method static \Illuminate\Database\Eloquent\Builder|PaymentMethod published()
  * @method static \Illuminate\Database\Eloquent\Builder|PaymentMethod query()
  * @method static \Illuminate\Database\Eloquent\Builder|PaymentMethod translated()
  * @method static \Illuminate\Database\Eloquent\Builder|PaymentMethod translatedIn(?string $locale = null)
@@ -70,9 +70,9 @@ class PaymentMethod extends Model implements HasMedia
         HasMediaTrait,
         HasStatuses;
 
-    const STATUS_INCOMPLETE = 0;
+
     const STATUS_DRAFT = 1;
-    const STATUS_PUBLISHED = 2;
+    const STATUS_ACTIVE = 2;
     const STATUS_INACTIVE = 3;
 
     protected $appends = [

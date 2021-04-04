@@ -30,7 +30,9 @@ use Illuminate\Database\Eloquent\SoftDeletes;
  * @property float $private_total
  * @property float $private_delivery_fee
  * @property float $private_grand_total
+ * @property bool $is_delivery_by_tiptop
  * @property string|null $branch_rating_value
+ * @property int|null $rated_at
  * @property string|null $rating_comment
  * @property string|null $driver_rating_value
  * @property int|null $has_good_food_quality_rating
@@ -39,14 +41,14 @@ use Illuminate\Database\Eloquent\SoftDeletes;
  * @property int|null $rating_issue_id
  * @property \Illuminate\Support\Carbon|null $completed_at
  * @property string|null $notes
- * @property int $status
- *             0: Cancelled,
- *             1: Draft,
- *             6: Waiting Courier,
- *             10: Preparing,
- *             16: On the way,
- *             18: At the address,
- *             20: Delivered,
+ * @property int $status 
+ *                     0: Cancelled,
+ *                     1: Draft,
+ *                     6: Waiting Courier,
+ *                     10: Preparing,
+ *                     16: On the way,
+ *                     18: At the address,
+ *                     20: Delivered,
  * @property \Illuminate\Support\Carbon|null $created_at
  * @property \Illuminate\Support\Carbon|null $updated_at
  * @property \Illuminate\Support\Carbon|null $deleted_at
@@ -61,10 +63,20 @@ use Illuminate\Database\Eloquent\SoftDeletes;
  * @property-read int|null $products_count
  * @property-read \App\Models\Taxonomy|null $ratingIssue
  * @property-read \App\Models\User $user
+ * @method static \Illuminate\Database\Eloquent\Builder|Order atTheAddress()
+ * @method static \Illuminate\Database\Eloquent\Builder|Order cancelled()
+ * @method static \Illuminate\Database\Eloquent\Builder|Order delivered()
+ * @method static \Illuminate\Database\Eloquent\Builder|Order draft()
+ * @method static \Illuminate\Database\Eloquent\Builder|Order food()
+ * @method static \Illuminate\Database\Eloquent\Builder|Order grocery()
+ * @method static \Illuminate\Database\Eloquent\Builder|Order new()
  * @method static \Illuminate\Database\Eloquent\Builder|Order newModelQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|Order newQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder|Order onTheWay()
  * @method static \Illuminate\Database\Query\Builder|Order onlyTrashed()
+ * @method static \Illuminate\Database\Eloquent\Builder|Order preparing()
  * @method static \Illuminate\Database\Eloquent\Builder|Order query()
+ * @method static \Illuminate\Database\Eloquent\Builder|Order waitingCourier()
  * @method static \Illuminate\Database\Eloquent\Builder|Order whereAddressId($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Order whereBranchId($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Order whereBranchRatingValue($value)
@@ -83,6 +95,7 @@ use Illuminate\Database\Eloquent\SoftDeletes;
  * @method static \Illuminate\Database\Eloquent\Builder|Order whereHasGoodOrderAccuracyRating($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Order whereHasGoodPackagingQualityRating($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Order whereId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Order whereIsDeliveryByTiptop($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Order whereNotes($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Order wherePaymentMethodId($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Order wherePreviousOrderId($value)
@@ -90,6 +103,7 @@ use Illuminate\Database\Eloquent\SoftDeletes;
  * @method static \Illuminate\Database\Eloquent\Builder|Order wherePrivateGrandTotal($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Order wherePrivatePaymentMethodCommission($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Order wherePrivateTotal($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Order whereRatedAt($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Order whereRatingComment($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Order whereRatingIssueId($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Order whereReferenceCode($value)
@@ -101,8 +115,6 @@ use Illuminate\Database\Eloquent\SoftDeletes;
  * @method static \Illuminate\Database\Query\Builder|Order withTrashed()
  * @method static \Illuminate\Database\Query\Builder|Order withoutTrashed()
  * @mixin \Eloquent
- * @property string|null $rating_value
- * @method static \Illuminate\Database\Eloquent\Builder|Order whereRatingValue($value)
  */
 class Order extends Model
 {

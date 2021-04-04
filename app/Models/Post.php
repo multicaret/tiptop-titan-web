@@ -31,7 +31,7 @@ use Spatie\MediaLibrary\MediaCollections\Models\Media;
  * @property int $rating_count
  * @property int $view_count
  * @property int|null $order_column
- * @property int $status 0:incomplete, 1:draft, 2:published, 3:Inactive, 4..n:CUSTOM
+ * @property int $status 1:draft, 2:active, 3:Inactive, 4..n:CUSTOM
  * @property \Illuminate\Support\Carbon|null $created_at
  * @property \Illuminate\Support\Carbon|null $updated_at
  * @property \Illuminate\Support\Carbon|null $deleted_at
@@ -44,7 +44,8 @@ use Spatie\MediaLibrary\MediaCollections\Models\Media;
  * @property-read \App\Models\User $editor
  * @property-read mixed $cover
  * @property-read mixed $gallery
- * @property-read mixed $is_published
+ * @property-read bool $is_active
+ * @property-read bool $is_inactive
  * @property-read mixed $link
  * @property-read mixed $status_name
  * @property-read \Spatie\MediaLibrary\MediaCollections\Models\Collections\MediaCollection|Media[] $media
@@ -57,18 +58,18 @@ use Spatie\MediaLibrary\MediaCollections\Models\Media;
  * @property-read \App\Models\PostTranslation|null $translation
  * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\PostTranslation[] $translations
  * @property-read int|null $translations_count
+ * @method static \Illuminate\Database\Eloquent\Builder|Post active()
  * @method static \Illuminate\Database\Eloquent\Builder|Post articles()
  * @method static \Illuminate\Database\Eloquent\Builder|Post blog()
  * @method static \Illuminate\Database\Eloquent\Builder|Post companiesTestimonials()
  * @method static \Illuminate\Database\Eloquent\Builder|Post draft()
  * @method static \Illuminate\Database\Eloquent\Builder|Post faq()
  * @method static \Illuminate\Database\Eloquent\Builder|Post inactive()
- * @method static \Illuminate\Database\Eloquent\Builder|Post incomplete()
  * @method static \Illuminate\Database\Eloquent\Builder|Post listsTranslations(string $translationField)
  * @method static \Illuminate\Database\Eloquent\Builder|Post newModelQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|Post newQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|Post news()
- * @method static \Illuminate\Database\Eloquent\Builder|Post notPublished()
+ * @method static \Illuminate\Database\Eloquent\Builder|Post notActive()
  * @method static \Illuminate\Database\Eloquent\Builder|Post notTranslatedIn(?string $locale = null)
  * @method static \Illuminate\Database\Query\Builder|Post onlyTrashed()
  * @method static \Illuminate\Database\Eloquent\Builder|Post orWhereTranslation(string $translationField, $value, ?string $locale = null)
@@ -76,7 +77,6 @@ use Spatie\MediaLibrary\MediaCollections\Models\Media;
  * @method static \Illuminate\Database\Eloquent\Builder|Post orderByTranslation(string $translationField, string $sortMethod = 'asc')
  * @method static \Illuminate\Database\Eloquent\Builder|Post pages()
  * @method static \Illuminate\Database\Eloquent\Builder|Post portfolios()
- * @method static \Illuminate\Database\Eloquent\Builder|Post published()
  * @method static \Illuminate\Database\Eloquent\Builder|Post query()
  * @method static \Illuminate\Database\Eloquent\Builder|Post services()
  * @method static \Illuminate\Database\Eloquent\Builder|Post translated()
@@ -126,9 +126,9 @@ class Post extends Model implements HasMedia, ShouldHaveTypes
     const TYPE_SERVICE = 7;
     const TYPE_NEWS = 8;
 
-    const STATUS_INCOMPLETE = 0;
+
     const STATUS_DRAFT = 1;
-    const STATUS_PUBLISHED = 2;
+    const STATUS_ACTIVE = 2;
     const STATUS_INACTIVE = 3;
 
     //These values are hardcoded here because they are part of the DB seeder

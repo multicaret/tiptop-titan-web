@@ -17,20 +17,20 @@ use Illuminate\Database\Eloquent\Model;
  * @property string|null $decimal_separator
  * @property string|null $thousands_separator
  * @property bool|null $is_symbol_after
- * @property int $status 0:incomplete, 1:draft, 2:published, 3:Inactive, 4..n:CUSTOM
+ * @property int $status 1:draft, 2:active, 3:Inactive, 4..n:CUSTOM
  * @property \Illuminate\Support\Carbon|null $created_at
  * @property \Illuminate\Support\Carbon|null $updated_at
  * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\Country[] $countries
  * @property-read int|null $countries_count
- * @property-read mixed $is_published
+ * @property-read bool $is_active
+ * @property-read bool $is_inactive
  * @property-read mixed $status_name
+ * @method static \Illuminate\Database\Eloquent\Builder|Currency active()
  * @method static \Illuminate\Database\Eloquent\Builder|Currency draft()
  * @method static \Illuminate\Database\Eloquent\Builder|Currency inactive()
- * @method static \Illuminate\Database\Eloquent\Builder|Currency incomplete()
  * @method static \Illuminate\Database\Eloquent\Builder|Currency newModelQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|Currency newQuery()
- * @method static \Illuminate\Database\Eloquent\Builder|Currency notPublished()
- * @method static \Illuminate\Database\Eloquent\Builder|Currency published()
+ * @method static \Illuminate\Database\Eloquent\Builder|Currency notActive()
  * @method static \Illuminate\Database\Eloquent\Builder|Currency query()
  * @method static \Illuminate\Database\Eloquent\Builder|Currency whereCode($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Currency whereCreatedAt($value)
@@ -49,9 +49,9 @@ class Currency extends Model
 {
     use HasStatuses;
 
-    const STATUS_INCOMPLETE = 0;
+
     const STATUS_DRAFT = 1;
-    const STATUS_PUBLISHED = 2;
+    const STATUS_ACTIVE = 2;
     const STATUS_INACTIVE = 3;
 
     const IS_SYMBOL_BEFORE = 0;

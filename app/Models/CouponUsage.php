@@ -10,7 +10,10 @@ use Illuminate\Database\Eloquent\Model;
  * @property int $id
  * @property int $coupon_id
  * @property int $redeemer_id
+ * @property int $order_id
+ * @property int $cart_id
  * @property int $redeemed_at
+ * @property float $discounted_amount
  * @property \Illuminate\Support\Carbon|null $created_at
  * @property \Illuminate\Support\Carbon|null $updated_at
  * @property-read \App\Models\Coupon $coupon
@@ -18,9 +21,12 @@ use Illuminate\Database\Eloquent\Model;
  * @method static \Illuminate\Database\Eloquent\Builder|CouponUsage newModelQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|CouponUsage newQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|CouponUsage query()
+ * @method static \Illuminate\Database\Eloquent\Builder|CouponUsage whereCartId($value)
  * @method static \Illuminate\Database\Eloquent\Builder|CouponUsage whereCouponId($value)
  * @method static \Illuminate\Database\Eloquent\Builder|CouponUsage whereCreatedAt($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|CouponUsage whereDiscountedAmount($value)
  * @method static \Illuminate\Database\Eloquent\Builder|CouponUsage whereId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|CouponUsage whereOrderId($value)
  * @method static \Illuminate\Database\Eloquent\Builder|CouponUsage whereRedeemedAt($value)
  * @method static \Illuminate\Database\Eloquent\Builder|CouponUsage whereRedeemerId($value)
  * @method static \Illuminate\Database\Eloquent\Builder|CouponUsage whereUpdatedAt($value)

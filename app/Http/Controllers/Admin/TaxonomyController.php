@@ -387,12 +387,12 @@ class TaxonomyController extends Controller
 
         $fontAwesomeIcons = $this->getFontAwesomeIcons();
         $branches = Branch::whereType(Branch::TYPE_FOOD_OBJECT)
-                          ->published()
+                          ->active()
                           ->get()
                           ->mapWithKeys(function ($item) {
                               return [$item['id'] => $item['title'].' - '.$item['chain']['title'].' ('.$item['city']['english_name'].')'];
                           });
-        $ingredientCategories = Taxonomy::ingredientCategories()->published()->get();
+        $ingredientCategories = Taxonomy::ingredientCategories()->active()->get();
 
         return [$typeName, $correctType, $roots, $fontAwesomeIcons, $branches, $ingredientCategories];
     }

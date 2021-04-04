@@ -27,6 +27,8 @@ use Spatie\MediaLibrary\MediaCollections\Models\Media;
  * @property int $editor_id
  * @property int|null $parent_id
  * @property int|null $branch_id
+ * @property int|null $chain_id
+ * @property int|null $ingredient_category_id
  * @property int $type 1:Category, 2: Tag, 3..n: CUSTOM
  * @property string|null $icon
  * @property int $view_count
@@ -35,10 +37,14 @@ use Spatie\MediaLibrary\MediaCollections\Models\Media;
  * @property int|null $depth
  * @property string $step
  * @property int|null $order_column
- * @property int $status 0:incomplete, 1:draft, 2:published, 3:Inactive, 4..n:CUSTOM
+ * @property int $status 1:draft, 2:active, 3:Inactive, 4..n:CUSTOM
  * @property \Illuminate\Support\Carbon|null $created_at
  * @property \Illuminate\Support\Carbon|null $updated_at
  * @property \Illuminate\Support\Carbon|null $deleted_at
+ * @property-read \App\Models\Branch|null $branch
+ * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\Branch[] $branches
+ * @property-read int|null $branches_count
+ * @property-read \App\Models\Chain|null $chain
  * @property-read \Illuminate\Database\Eloquent\Collection|Taxonomy[] $children
  * @property-read int|null $children_count
  * @property-read \App\Models\User $creator
@@ -47,9 +53,11 @@ use Spatie\MediaLibrary\MediaCollections\Models\Media;
  * @property-read \App\Models\User $editor
  * @property-read mixed $cover
  * @property-read mixed $cover_small
- * @property-read mixed $is_published
+ * @property-read bool $is_active
+ * @property-read bool $is_inactive
  * @property-read mixed $link
  * @property-read mixed $status_name
+ * @property-read Taxonomy|null $ingredientCategory
  * @property-read \Spatie\MediaLibrary\MediaCollections\Models\Collections\MediaCollection|Media[] $media
  * @property-read int|null $media_count
  * @property-read Taxonomy|null $parent
@@ -68,16 +76,19 @@ use Spatie\MediaLibrary\MediaCollections\Models\Media;
  * @property-read int|null $users_of_category_count
  * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\User[] $usersOfSkill
  * @property-read int|null $users_of_skill_count
+ * @method static Builder|Taxonomy active()
  * @method static Builder|Taxonomy draft()
  * @method static Builder|Taxonomy foodCategories()
  * @method static Builder|Taxonomy groceryCategories()
  * @method static Builder|Taxonomy inactive()
- * @method static Builder|Taxonomy incomplete()
+ * @method static Builder|Taxonomy ingredientCategories()
+ * @method static Builder|Taxonomy ingredients()
  * @method static \Illuminate\Database\Eloquent\Builder|Node limitDepth($limit)
  * @method static Builder|Taxonomy listsTranslations(string $translationField)
+ * @method static Builder|Taxonomy menuCategories()
  * @method static Builder|Taxonomy newModelQuery()
  * @method static Builder|Taxonomy newQuery()
- * @method static Builder|Taxonomy notPublished()
+ * @method static Builder|Taxonomy notActive()
  * @method static Builder|Taxonomy notTranslatedIn(?string $locale = null)
  * @method static \Illuminate\Database\Query\Builder|Taxonomy onlyTrashed()
  * @method static Builder|Taxonomy orWhereTranslation(string $translationField, $value, ?string $locale = null)
@@ -86,13 +97,15 @@ use Spatie\MediaLibrary\MediaCollections\Models\Media;
  * @method static Builder|Taxonomy parents()
  * @method static Builder|Taxonomy postCategories()
  * @method static Builder|Taxonomy postTags()
- * @method static Builder|Taxonomy published()
  * @method static Builder|Taxonomy query()
  * @method static Builder|Taxonomy ratingIssues()
+ * @method static Builder|Taxonomy searchTags()
  * @method static Builder|Taxonomy tags()
  * @method static Builder|Taxonomy translated()
  * @method static Builder|Taxonomy translatedIn(?string $locale = null)
+ * @method static Builder|Taxonomy unitCategories()
  * @method static Builder|Taxonomy whereBranchId($value)
+ * @method static Builder|Taxonomy whereChainId($value)
  * @method static Builder|Taxonomy whereCreatedAt($value)
  * @method static Builder|Taxonomy whereCreatorId($value)
  * @method static Builder|Taxonomy whereDeletedAt($value)
@@ -100,6 +113,7 @@ use Spatie\MediaLibrary\MediaCollections\Models\Media;
  * @method static Builder|Taxonomy whereEditorId($value)
  * @method static Builder|Taxonomy whereIcon($value)
  * @method static Builder|Taxonomy whereId($value)
+ * @method static Builder|Taxonomy whereIngredientCategoryId($value)
  * @method static Builder|Taxonomy whereLeft($value)
  * @method static Builder|Taxonomy whereOrderColumn($value)
  * @method static Builder|Taxonomy whereParentId($value)
@@ -119,21 +133,6 @@ use Spatie\MediaLibrary\MediaCollections\Models\Media;
  * @method static \Illuminate\Database\Eloquent\Builder|Node withoutSelf()
  * @method static \Illuminate\Database\Query\Builder|Taxonomy withoutTrashed()
  * @mixin \Eloquent
- * @property-read \App\Models\Branch $branch
- * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\Branch[] $branches
- * @property-read int|null $branches_count
- * @property-read \App\Models\Chain $chain
- * @method static Builder|Taxonomy ingredientCategories()
- * @method static Builder|Taxonomy ingredients()
- * @property int|null $chain_id
- * @property int|null $ingredient_category_id
- * @method static Builder|Taxonomy restaurantCategories()
- * @method static Builder|Taxonomy unitCategories()
- * @method static Builder|Taxonomy whereChainId($value)
- * @method static Builder|Taxonomy whereIngredientCategoryId($value)
- * @property-read Taxonomy|null $ingredientCategory
- * @method static Builder|Taxonomy menuCategories()
- * @method static Builder|Taxonomy searchTags()
  */
 class Taxonomy extends Node implements HasMedia, ShouldHaveTypes, TranslatableContract
 {
@@ -145,9 +144,9 @@ class Taxonomy extends Node implements HasMedia, ShouldHaveTypes, TranslatableCo
         HasUuid,
         HasStatuses;
 
-    const STATUS_INCOMPLETE = 0;
+
     const STATUS_DRAFT = 1;
-    const STATUS_PUBLISHED = 2;
+    const STATUS_ACTIVE = 2;
     const STATUS_INACTIVE = 3;
 
     const TYPE_POST_CATEGORY = 1;

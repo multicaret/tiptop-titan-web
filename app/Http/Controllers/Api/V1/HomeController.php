@@ -67,8 +67,9 @@ class HomeController extends BaseApiController
         }
 
 
-        $channel = strtolower($request->input('channel'));
         $user = auth('sanctum')->user();
+        $channel = strtolower($request->input('channel'));
+        // Todo: retrieve slides based on channel.
         $slides = SlideResource::collection(Slide::all());
         $cart = null;
 
@@ -93,7 +94,7 @@ class HomeController extends BaseApiController
             ];
 
             $response['categories'] = cache()->rememberForever('all_grocery_categories_with_products', function () {
-                $groceryParentCategories = Taxonomy::published()->groceryCategories()->parents()->get();
+                $groceryParentCategories = Taxonomy::active()->groceryCategories()->parents()->get();
 
                 return GroceryCategoryParentResource::collection($groceryParentCategories);
             });

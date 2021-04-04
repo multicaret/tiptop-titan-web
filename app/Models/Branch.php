@@ -25,9 +25,18 @@ use Spatie\MediaLibrary\HasMedia;
  * @property int $editor_id
  * @property int|null $region_id
  * @property int|null $city_id
+ * @property bool $has_tip_top_delivery
  * @property float $minimum_order
  * @property float $under_minimum_order_delivery_fee
  * @property float $fixed_delivery_fee
+ * @property int $min_delivery_minutes
+ * @property int $max_delivery_minutes
+ * @property bool $has_restaurant_delivery
+ * @property float $restaurant_minimum_order
+ * @property float $restaurant_under_minimum_order_delivery_fee
+ * @property float $restaurant_fixed_delivery_fee
+ * @property int $restaurant_min_delivery_minutes
+ * @property int $restaurant_max_delivery_minutes
  * @property string|null $primary_phone_number
  * @property string|null $secondary_phone_number
  * @property string|null $whatsapp_phone_number
@@ -38,16 +47,17 @@ use Spatie\MediaLibrary\HasMedia;
  * @property string $avg_rating
  * @property int $rating_count
  * @property int $view_count
- * @property int|null $status
+ * @property int $status 1:draft, 2:active, 3:Inactive, 4..n:CUSTOM
  * @property \Illuminate\Support\Carbon|null $created_at
  * @property \Illuminate\Support\Carbon|null $updated_at
  * @property string|null $deleted_at
- * @property \App\Models\Chain $chain
+ * @property-read \App\Models\Chain $chain
  * @property-read \App\Models\City|null $city
  * @property-read mixed $average_rating_all_types
  * @property-read mixed $average_rating
  * @property-read bool $has_been_rated
- * @property-read mixed $is_published
+ * @property-read bool $is_active
+ * @property-read bool $is_inactive
  * @property-read mixed $status_name
  * @property-read mixed $sum_rating_all_types
  * @property-read mixed $sum_rating
@@ -55,6 +65,8 @@ use Spatie\MediaLibrary\HasMedia;
  * @property-read mixed $user_average_rating
  * @property-read mixed $user_sum_rating_all_types
  * @property-read mixed $user_sum_rating
+ * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\Location[] $locations
+ * @property-read int|null $locations_count
  * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\User[] $managers
  * @property-read int|null $managers_count
  * @property-read \Spatie\MediaLibrary\MediaCollections\Models\Collections\MediaCollection|\Spatie\MediaLibrary\MediaCollections\Models\Media[] $media
@@ -71,18 +83,19 @@ use Spatie\MediaLibrary\HasMedia;
  * @property-read int|null $translations_count
  * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\WorkingHour[] $workingHours
  * @property-read int|null $working_hours_count
+ * @method static \Illuminate\Database\Eloquent\Builder|Branch active()
  * @method static \Illuminate\Database\Eloquent\Builder|Branch draft()
+ * @method static \Illuminate\Database\Eloquent\Builder|Branch food()
+ * @method static \Illuminate\Database\Eloquent\Builder|Branch grocery()
  * @method static \Illuminate\Database\Eloquent\Builder|Branch inactive()
- * @method static \Illuminate\Database\Eloquent\Builder|Branch incomplete()
  * @method static \Illuminate\Database\Eloquent\Builder|Branch listsTranslations(string $translationField)
  * @method static \Illuminate\Database\Eloquent\Builder|Branch newModelQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|Branch newQuery()
- * @method static \Illuminate\Database\Eloquent\Builder|Branch notPublished()
+ * @method static \Illuminate\Database\Eloquent\Builder|Branch notActive()
  * @method static \Illuminate\Database\Eloquent\Builder|Branch notTranslatedIn(?string $locale = null)
  * @method static \Illuminate\Database\Eloquent\Builder|Branch orWhereTranslation(string $translationField, $value, ?string $locale = null)
  * @method static \Illuminate\Database\Eloquent\Builder|Branch orWhereTranslationLike(string $translationField, $value, ?string $locale = null)
  * @method static \Illuminate\Database\Eloquent\Builder|Branch orderByTranslation(string $translationField, string $sortMethod = 'asc')
- * @method static \Illuminate\Database\Eloquent\Builder|Branch published()
  * @method static \Illuminate\Database\Eloquent\Builder|Branch query()
  * @method static \Illuminate\Database\Eloquent\Builder|Branch translated()
  * @method static \Illuminate\Database\Eloquent\Builder|Branch translatedIn(?string $locale = null)
@@ -94,14 +107,23 @@ use Spatie\MediaLibrary\HasMedia;
  * @method static \Illuminate\Database\Eloquent\Builder|Branch whereDeletedAt($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Branch whereEditorId($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Branch whereFixedDeliveryFee($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Branch whereHasRestaurantDelivery($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Branch whereHasTipTopDelivery($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Branch whereId($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Branch whereLatitude($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Branch whereLongitude($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Branch whereMaxDeliveryMinutes($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Branch whereMinDeliveryMinutes($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Branch whereMinimumOrder($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Branch whereOrderColumn($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Branch wherePrimaryPhoneNumber($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Branch whereRatingCount($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Branch whereRegionId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Branch whereRestaurantFixedDeliveryFee($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Branch whereRestaurantMaxDeliveryMinutes($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Branch whereRestaurantMinDeliveryMinutes($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Branch whereRestaurantMinimumOrder($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Branch whereRestaurantUnderMinimumOrderDeliveryFee($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Branch whereSecondaryPhoneNumber($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Branch whereStatus($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Branch whereTranslation(string $translationField, $value, ?string $locale = null, string $method = 'whereHas', string $operator = '=')
@@ -114,8 +136,6 @@ use Spatie\MediaLibrary\HasMedia;
  * @method static \Illuminate\Database\Eloquent\Builder|Branch whereWhatsappPhoneNumber($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Branch withTranslation()
  * @mixin \Eloquent
- * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\Location[] $locations
- * @property-read int|null $locations_count
  */
 class Branch extends Model implements HasMedia
 {
@@ -129,9 +149,9 @@ class Branch extends Model implements HasMedia
     use HasWorkingHours;
     use Translatable;
 
-    const STATUS_INCOMPLETE = 0;
+
     const STATUS_DRAFT = 1;
-    const STATUS_PUBLISHED = 2;
+    const STATUS_ACTIVE = 2;
     const STATUS_INACTIVE = 3;
 
     const TYPE_GROCERY_OBJECT = 1;
@@ -215,7 +235,7 @@ class Branch extends Model implements HasMedia
     public static function getClosestAvailableBranch($latitude, $longitude): array
     {
         $distance = $branch = null;
-        $branchesOrderedByDistance = Branch::published()
+        $branchesOrderedByDistance = Branch::active()
                                            ->selectRaw('branches.id, DISTANCE_BETWEEN(latitude,longitude,?,?) as distance',
                                                [$latitude, $longitude])
                                            ->orderBy('distance')

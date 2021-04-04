@@ -655,7 +655,7 @@ class DatabaseSeeder extends Seeder
             }
             $taxonomy->creator_id = $super->id;
             $taxonomy->editor_id = $super->id;
-            $taxonomy->status = Taxonomy::STATUS_PUBLISHED;
+            $taxonomy->status = Taxonomy::STATUS_ACTIVE;
 
             $taxonomy->save();
             foreach ($item['translations'] as $translation) {
@@ -841,7 +841,7 @@ class DatabaseSeeder extends Seeder
             $post->type = $item['type'];
             $post->creator_id = $super->id;
             $post->editor_id = $super->id;
-            $post->status = Post::STATUS_PUBLISHED;
+            $post->status = Post::STATUS_ACTIVE;
             $post->save();
             foreach ($item['translations'] as $translation) {
                 $postTranslation = new PostTranslation();
@@ -1236,7 +1236,7 @@ class DatabaseSeeder extends Seeder
         $chain->primary_phone_number = "+964539551234";
         $chain->secondary_phone_number = "+964539551234";
         $chain->whatsapp_phone_number = "+964539551234";
-        $chain->status = Chain::STATUS_PUBLISHED;
+        $chain->status = Chain::STATUS_ACTIVE;
         $chain->save();
 
         foreach (config('localization.supported-locales') as $locale) {
@@ -1272,7 +1272,7 @@ class DatabaseSeeder extends Seeder
             $item->whatsapp_phone_number = "+964539551234";
             $item->latitude = config('defaults.geolocation.latitude') + ($branchIndex / 50);
             $item->longitude = config('defaults.geolocation.longitude') + ($branchIndex / 50);
-            $item->status = Branch::STATUS_PUBLISHED;
+            $item->status = Branch::STATUS_ACTIVE;
             $item->save();
 
             foreach (config('localization.supported-locales') as $locale) {
@@ -1496,7 +1496,7 @@ class DatabaseSeeder extends Seeder
             $item->avg_rating = 4.6;
             $item->rating_count = 3.5;
             $item->view_count = 400;
-            $item->status = Product::STATUS_PUBLISHED;
+            $item->status = Product::STATUS_ACTIVE;
 //            $item->price_discount_began_at = ;
 //            $item->price_discount_finished_at = ;
 //            $item->custom_banner_began_at = ;
@@ -1536,7 +1536,7 @@ class DatabaseSeeder extends Seeder
         $paymentMethod->title = 'Cash on Delivery';
         $paymentMethod->description = null;
         $paymentMethod->instructions = null;
-        $paymentMethod->status = PaymentMethod::STATUS_PUBLISHED;
+        $paymentMethod->status = PaymentMethod::STATUS_ACTIVE;
         $paymentMethod->save();
         $paymentMethod->translateOrNew('ar')->title = 'دفع عند الباب';
         $paymentMethod->save();
@@ -1548,7 +1548,7 @@ class DatabaseSeeder extends Seeder
         $paymentMethod->title = 'Credit Card on Delivery';
         $paymentMethod->description = null;
         $paymentMethod->instructions = null;
-        $paymentMethod->status = PaymentMethod::STATUS_PUBLISHED;
+        $paymentMethod->status = PaymentMethod::STATUS_ACTIVE;
         $paymentMethod->save();
         $paymentMethod->translateOrNew('ar')->title = 'بطاقة بنك عند الباب';
         $paymentMethod->save();

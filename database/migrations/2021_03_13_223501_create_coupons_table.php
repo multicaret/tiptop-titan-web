@@ -1,5 +1,6 @@
 <?php
 
+use App\Models\Coupon;
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
@@ -18,7 +19,7 @@ class CreateCouponsTable extends Migration
             $table->unsignedBigInteger('creator_id')->index();
             $table->unsignedBigInteger('editor_id');
             $table->unsignedBigInteger('currency_id')->default(config('defaults.currency.id'));
-            $table->unsignedTinyInteger('type')->default(\App\Models\Coupon::TYPE_GROCERY_OBJECT)->comment('1:Market, 2: Food');
+            $table->unsignedTinyInteger('type')->default(Coupon::TYPE_GROCERY_OBJECT)->comment('1:Market, 2: Food');
             $table->string('name');
             $table->text('description')->nullable();
             $table->unsignedDouble('discount_amount')->nullable();
@@ -32,7 +33,7 @@ class CreateCouponsTable extends Migration
             $table->unsignedDouble('money_redeemed_so_far')->default(0);
             $table->timestamp('expired_at')->nullable();
             $table->string('redeem_code');
-            $table->unsignedTinyInteger('status')->default(1)->comment('0:incomplete, 1:draft, 2:published, 3:Inactive, 4..n:CUSTOM');
+            $table->unsignedTinyInteger('status')->default(Coupon::STATUS_DRAFT)->comment('1:draft, 2:active, 3:Inactive, 4..n:CUSTOM');
             $table->timestamps();
             $table->softDeletes();
 

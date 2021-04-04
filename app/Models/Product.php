@@ -31,38 +31,39 @@ use Spatie\MediaLibrary\MediaCollections\Models\Media;
  * @property int|null $unit_id
  * @property float|null $price
  * @property float|null $price_discount_amount
- * @property bool|null $price_discount_by_percentage true: percentage, false: fixed amount
  * @property int|null $available_quantity
  * @property string|null $sku
  * @property int|null $upc
- * @property int|null $is_storage_tracking_enabled
  * @property float|null $width x
  * @property float|null $height y
  * @property float|null $depth z
  * @property float|null $weight w
+ * @property int $type 1:Market, 2: Food
  * @property int|null $minimum_orderable_quantity
  * @property int|null $order_column
  * @property string $avg_rating
  * @property int $rating_count
  * @property int $search_count
  * @property int $view_count
- * @property int|null $status
+ * @property int $status 1:draft, 2:active, 3:Inactive, 4..n:CUSTOM
  * @property int|null $price_discount_began_at
  * @property int|null $price_discount_finished_at
  * @property int|null $custom_banner_began_at
  * @property int|null $custom_banner_ended_at
+ * @property bool|null $is_storage_tracking_enabled
+ * @property bool|null $price_discount_by_percentage true: percentage, false: fixed amount
  * @property int $on_mobile_grid_tile_weight
  * @property \Illuminate\Support\Carbon|null $created_at
  * @property \Illuminate\Support\Carbon|null $updated_at
  * @property \Illuminate\Support\Carbon|null $deleted_at
  * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\Barcode[] $barcodes
  * @property-read int|null $barcodes_count
- * @property \App\Models\Branch $branch
+ * @property-read \App\Models\Branch $branch
  * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\Cart[] $carts
  * @property-read int|null $carts_count
  * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\Taxonomy[] $categories
  * @property-read int|null $categories_count
- * @property \App\Models\Chain $chain
+ * @property-read \App\Models\Chain $chain
  * @property-read \App\Models\User $creator
  * @property-read \App\Models\User $editor
  * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\User[] $favoriters
@@ -72,7 +73,8 @@ use Spatie\MediaLibrary\MediaCollections\Models\Media;
  * @property-read mixed $discounted_price
  * @property-read string $discounted_price_formatted
  * @property-read mixed $gallery
- * @property-read mixed $is_published
+ * @property-read bool $is_active
+ * @property-read bool $is_inactive
  * @property-read mixed $price_formatted
  * @property-read mixed $status_name
  * @property-read mixed $thumbnail
@@ -85,20 +87,21 @@ use Spatie\MediaLibrary\MediaCollections\Models\Media;
  * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\ProductTranslation[] $translations
  * @property-read int|null $translations_count
  * @property-read \App\Models\Taxonomy|null $unit
+ * @method static \Illuminate\Database\Eloquent\Builder|Product active()
  * @method static \Illuminate\Database\Eloquent\Builder|Product draft()
+ * @method static \Illuminate\Database\Eloquent\Builder|Product food()
  * @method static \Illuminate\Database\Eloquent\Builder|Product forCategory($categoryId)
+ * @method static \Illuminate\Database\Eloquent\Builder|Product grocery()
  * @method static \Illuminate\Database\Eloquent\Builder|Product inactive()
- * @method static \Illuminate\Database\Eloquent\Builder|Product incomplete()
  * @method static \Illuminate\Database\Eloquent\Builder|Product listsTranslations(string $translationField)
  * @method static \Illuminate\Database\Eloquent\Builder|Product newModelQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|Product newQuery()
- * @method static \Illuminate\Database\Eloquent\Builder|Product notPublished()
+ * @method static \Illuminate\Database\Eloquent\Builder|Product notActive()
  * @method static \Illuminate\Database\Eloquent\Builder|Product notTranslatedIn(?string $locale = null)
  * @method static \Illuminate\Database\Query\Builder|Product onlyTrashed()
  * @method static \Illuminate\Database\Eloquent\Builder|Product orWhereTranslation(string $translationField, $value, ?string $locale = null)
  * @method static \Illuminate\Database\Eloquent\Builder|Product orWhereTranslationLike(string $translationField, $value, ?string $locale = null)
  * @method static \Illuminate\Database\Eloquent\Builder|Product orderByTranslation(string $translationField, string $sortMethod = 'asc')
- * @method static \Illuminate\Database\Eloquent\Builder|Product published()
  * @method static \Illuminate\Database\Eloquent\Builder|Product query()
  * @method static \Illuminate\Database\Eloquent\Builder|Product translated()
  * @method static \Illuminate\Database\Eloquent\Builder|Product translatedIn(?string $locale = null)
@@ -131,6 +134,7 @@ use Spatie\MediaLibrary\MediaCollections\Models\Media;
  * @method static \Illuminate\Database\Eloquent\Builder|Product whereStatus($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Product whereTranslation(string $translationField, $value, ?string $locale = null, string $method = 'whereHas', string $operator = '=')
  * @method static \Illuminate\Database\Eloquent\Builder|Product whereTranslationLike(string $translationField, $value, ?string $locale = null)
+ * @method static \Illuminate\Database\Eloquent\Builder|Product whereType($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Product whereUnitId($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Product whereUpc($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Product whereUpdatedAt($value)
@@ -142,8 +146,6 @@ use Spatie\MediaLibrary\MediaCollections\Models\Media;
  * @method static \Illuminate\Database\Query\Builder|Product withTrashed()
  * @method static \Illuminate\Database\Query\Builder|Product withoutTrashed()
  * @mixin \Eloquent
- * @property int $type 1:Market, 2: Food
- * @method static \Illuminate\Database\Eloquent\Builder|Product whereType($value)
  */
 class Product extends Model implements HasMedia
 {
@@ -157,9 +159,9 @@ class Product extends Model implements HasMedia
         HasAppTypes,
         CanBeFavorited;
 
-    const STATUS_INCOMPLETE = 0;
+
     const STATUS_DRAFT = 1;
-    const STATUS_PUBLISHED = 2;
+    const STATUS_ACTIVE = 2;
     const STATUS_INACTIVE = 3;
     const STATUS_INACTIVE_SEASONABLE = 4;
 
@@ -257,8 +259,8 @@ class Product extends Model implements HasMedia
     public static function getAllStatusesRich(): array
     {
         return [
-            self::STATUS_PUBLISHED => [
-                'id' => self::STATUS_PUBLISHED,
+            self::STATUS_ACTIVE => [
+                'id' => self::STATUS_ACTIVE,
                 'title' => __("Active"),
                 'class' => 'success',
             ],
@@ -388,8 +390,6 @@ class Product extends Model implements HasMedia
     {
         return Currency::format($this->discounted_price);
     }
-
-
 
 
     public static function getDroppedColumns(): array

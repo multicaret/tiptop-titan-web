@@ -2,7 +2,6 @@
 
 namespace App\Models;
 
-use App\Scopes\ActiveScope;
 use App\Traits\HasStatuses;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
@@ -31,9 +30,9 @@ use Illuminate\Support\Str;
  * @property float|null $longitude
  * @property string|null $notes
  * @property object|null $phones
- * @property string|null $mobiles
+ * @property mixed|null $mobiles
  * @property object|null $emails
- * @property string|null $social_media
+ * @property mixed|null $social_media
  * @property string|null $website
  * @property string|null $position
  * @property string|null $company
@@ -42,7 +41,7 @@ use Illuminate\Support\Str;
  * @property bool $is_default
  * @property int $type 1: Address, 2: Contact
  * @property int $kind 1: Home, 2: Work, 3:Other
- * @property int $status 0:incomplete, 1:draft, 2:published, 3:Inactive, 4..n:CUSTOM
+ * @property int $status 1:draft, 2:active, 3:Inactive, 4..n:CUSTOM
  * @property \Illuminate\Support\Carbon|null $created_at
  * @property \Illuminate\Support\Carbon|null $updated_at
  * @property \Illuminate\Support\Carbon|null $deleted_at
@@ -51,19 +50,19 @@ use Illuminate\Support\Str;
  * @property-read \App\Models\Country|null $country
  * @property-read \App\Models\User $creator
  * @property-read \App\Models\User $editor
- * @property-read mixed $is_published
+ * @property-read bool $is_active
+ * @property-read bool $is_inactive
  * @property-read mixed $status_name
  * @property-read \App\Models\Region|null $region
+ * @method static \Illuminate\Database\Eloquent\Builder|Location active()
  * @method static \Illuminate\Database\Eloquent\Builder|Location addresses()
  * @method static \Illuminate\Database\Eloquent\Builder|Location contacts()
  * @method static \Illuminate\Database\Eloquent\Builder|Location draft()
  * @method static \Illuminate\Database\Eloquent\Builder|Location inactive()
- * @method static \Illuminate\Database\Eloquent\Builder|Location incomplete()
  * @method static \Illuminate\Database\Eloquent\Builder|Location newModelQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|Location newQuery()
- * @method static \Illuminate\Database\Eloquent\Builder|Location notPublished()
+ * @method static \Illuminate\Database\Eloquent\Builder|Location notActive()
  * @method static \Illuminate\Database\Query\Builder|Location onlyTrashed()
- * @method static \Illuminate\Database\Eloquent\Builder|Location published()
  * @method static \Illuminate\Database\Eloquent\Builder|Location query()
  * @method static \Illuminate\Database\Eloquent\Builder|Location whereAddress1($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Location whereAddress2($value)
@@ -109,9 +108,9 @@ class Location extends Model
     use SoftDeletes,
         HasStatuses;
 
-    const STATUS_INCOMPLETE = 0;
+
     const STATUS_DRAFT = 1;
-    const STATUS_PUBLISHED = 2;
+    const STATUS_ACTIVE = 2;
     const STATUS_INACTIVE = 3;
 
     const TYPE_ADDRESS = 1;

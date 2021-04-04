@@ -53,15 +53,15 @@ class CreateOrdersTable extends Migration
             $table->timestamp('completed_at')->nullable();
             $table->text('notes')->nullable();
             $table->unsignedTinyInteger('status')->default(Order::STATUS_DRAFT)
-                  ->comment("
-            0: Cancelled,
-            1: Draft,
-            6: Waiting Courier,
-            10: Preparing,
-            16: On the way,
-            18: At the address,
-            20: Delivered,
-            ");
+                  ->comment('
+                    0: Cancelled,
+                    1: Draft,
+                    6: Waiting Courier,
+                    10: Preparing,
+                    16: On the way,
+                    18: At the address,
+                    20: Delivered,
+                  ');
             $table->timestamps();
             $table->softDeletes();
 

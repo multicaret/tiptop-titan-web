@@ -14,30 +14,30 @@ use Illuminate\Database\Eloquent\Model;
  * @property string $code
  * @property string $locale_country
  * @property bool $is_rtl
- * @property int $status 0:incomplete, 1:draft, 2:published, 3:Inactive, 4..n:CUSTOM
+ * @property int $status 1:draft, 2:active, 3:Inactive, 4..n:CUSTOM
  * @property \Illuminate\Support\Carbon|null $created_at
  * @property \Illuminate\Support\Carbon|null $updated_at
  * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\Country[] $countries
  * @property-read int|null $countries_count
- * @property-read mixed $is_published
+ * @property-read bool $is_active
+ * @property-read bool $is_inactive
  * @property-read mixed $status_name
  * @property-read \App\Models\LanguageTranslation|null $translation
  * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\LanguageTranslation[] $translations
  * @property-read int|null $translations_count
  * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\User[] $users
  * @property-read int|null $users_count
+ * @method static \Illuminate\Database\Eloquent\Builder|Language active()
  * @method static \Illuminate\Database\Eloquent\Builder|Language draft()
  * @method static \Illuminate\Database\Eloquent\Builder|Language inactive()
- * @method static \Illuminate\Database\Eloquent\Builder|Language incomplete()
  * @method static \Illuminate\Database\Eloquent\Builder|Language listsTranslations(string $translationField)
  * @method static \Illuminate\Database\Eloquent\Builder|Language newModelQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|Language newQuery()
- * @method static \Illuminate\Database\Eloquent\Builder|Language notPublished()
+ * @method static \Illuminate\Database\Eloquent\Builder|Language notActive()
  * @method static \Illuminate\Database\Eloquent\Builder|Language notTranslatedIn(?string $locale = null)
  * @method static \Illuminate\Database\Eloquent\Builder|Language orWhereTranslation(string $translationField, $value, ?string $locale = null)
  * @method static \Illuminate\Database\Eloquent\Builder|Language orWhereTranslationLike(string $translationField, $value, ?string $locale = null)
  * @method static \Illuminate\Database\Eloquent\Builder|Language orderByTranslation(string $translationField, string $sortMethod = 'asc')
- * @method static \Illuminate\Database\Eloquent\Builder|Language published()
  * @method static \Illuminate\Database\Eloquent\Builder|Language query()
  * @method static \Illuminate\Database\Eloquent\Builder|Language translated()
  * @method static \Illuminate\Database\Eloquent\Builder|Language translatedIn(?string $locale = null)
@@ -59,9 +59,9 @@ class Language extends Model
     use Translatable,
         HasStatuses;
 
-    const STATUS_INCOMPLETE = 0;
+
     const STATUS_DRAFT = 1;
-    const STATUS_PUBLISHED = 2;
+    const STATUS_ACTIVE = 2;
     const STATUS_INACTIVE = 3;
 
     protected $translatedAttributes = ['name'];

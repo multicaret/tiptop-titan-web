@@ -19,17 +19,17 @@ use Spatie\MediaLibrary\HasMedia;
  * @property \Illuminate\Support\Carbon|null $created_at
  * @property \Illuminate\Support\Carbon|null $updated_at
  * @property-read bool $image
- * @property-read mixed $is_published
+ * @property-read bool $is_active
+ * @property-read bool $is_inactive
  * @property-read mixed $status_name
  * @property-read \Spatie\MediaLibrary\MediaCollections\Models\Collections\MediaCollection|\Spatie\MediaLibrary\MediaCollections\Models\Media[] $media
  * @property-read int|null $media_count
+ * @method static \Illuminate\Database\Eloquent\Builder|Barcode active()
  * @method static \Illuminate\Database\Eloquent\Builder|Barcode draft()
  * @method static \Illuminate\Database\Eloquent\Builder|Barcode inactive()
- * @method static \Illuminate\Database\Eloquent\Builder|Barcode incomplete()
  * @method static \Illuminate\Database\Eloquent\Builder|Barcode newModelQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|Barcode newQuery()
- * @method static \Illuminate\Database\Eloquent\Builder|Barcode notPublished()
- * @method static \Illuminate\Database\Eloquent\Builder|Barcode published()
+ * @method static \Illuminate\Database\Eloquent\Builder|Barcode notActive()
  * @method static \Illuminate\Database\Eloquent\Builder|Barcode query()
  * @method static \Illuminate\Database\Eloquent\Builder|Barcode whereCode($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Barcode whereCountryId($value)
@@ -46,9 +46,9 @@ class Barcode extends Model implements HasMedia
         HasStatuses,
         HasViewCount;
 
-    const STATUS_INCOMPLETE = 0;
+
     const STATUS_DRAFT = 1;
-    const STATUS_PUBLISHED = 2;
+    const STATUS_ACTIVE = 2;
     const STATUS_INACTIVE = 3;
 
     protected $appends = [
