@@ -119,17 +119,10 @@ class Coupon extends Model
 //        $totalUsageBuilder = $coupon->couponUsage();
         if ($coupon->max_usable_count > $coupon->total_redeemed_count/*$totalUsageBuilder->count()*/) {
             if ($coupon->max_usable_count_by_user > auth()->user()->couponUsage()->count()) {
-                if ($coupon->max_allowed_discount_amount > $coupon->couponUsage()->sum('discounted_amount')) {
-                    return [
-                        'type' => 'Success',
-                        'data' => new CouponResource($coupon)
-                    ];
-                } else {
-                    return [
-                        'type' => 'error',
-                        'message' => 'Discount amount  is full'
-                    ];
-                }
+                return [
+                    'type' => 'Success',
+                    'data' => new CouponResource($coupon)
+                ];
             } else {
                 return [
                     'type' => 'error',
