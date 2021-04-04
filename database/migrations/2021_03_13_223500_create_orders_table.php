@@ -70,7 +70,6 @@ class CreateOrdersTable extends Migration
             $table->foreign('branch_id')->references('id')->on('branches')->onDelete('cascade');
             $table->foreign('cart_id')->references('id')->on('carts')->onDelete('cascade');
             $table->foreign('payment_method_id')->references('id')->on('payment_methods');
-            $table->foreign('coupon_id')->references('id')->on('coupons');
             $table->foreign('previous_order_id')->references('id')->on('orders');
             $table->foreign('rating_issue_id')->references('id')->on('taxonomies')->onDelete('set null');
         });

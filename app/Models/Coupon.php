@@ -16,8 +16,8 @@ use Illuminate\Database\Eloquent\Model;
  * @property int $currency_id
  * @property int|null $discount_by_percentage true: percentage, false: fixed amount
  * @property float|null $discount_amount
- * @property int|null $total_usage_count
- * @property int $usage_count_by_same_user
+ * @property int|null $max_usable_count
+ * @property int $max_usable_count_by_user
  * @property string|null $expired_at
  * @property string $code
  * @property int $status 0:incomplete, 1:draft, 2:published, 3:Inactive, 4..n:CUSTOM
@@ -84,8 +84,8 @@ class Coupon extends Model
             ];
         }
         $totalUsageBuilder = $coupon->couponUsage();
-        if ($coupon->total_usage_count > $totalUsageBuilder->count()) {
-            if ($coupon->usage_count_by_same_user > auth()->user()->couponUsage()->count()) {
+        if ($coupon->max_usable_count > $totalUsageBuilder->count()) {
+            if ($coupon->max_usable_count_by_user > auth()->user()->couponUsage()->count()) {
                 if ($coupon->max_allowed_discount_amount > $coupon->couponUsage()->sum('discounted_amount')) {
                     return [
                         'type' => 'Success',

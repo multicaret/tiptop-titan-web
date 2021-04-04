@@ -20,7 +20,7 @@ class CreateCouponUsagesTable extends Migration
             $table->unsignedBigInteger('order_id');
             $table->unsignedBigInteger('cart_id');
             $table->timestamp('redeemed_at');
-            $table->unsignedDouble('discounted_amount');
+            $table->unsignedDouble('discounted_amount'); // 3500
             $table->timestamps();
 
             $table->foreign('coupon_id')->references('id')->on('coupons')->onDelete('cascade');

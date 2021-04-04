@@ -172,8 +172,8 @@ class CouponController extends Controller
         $coupon->redeem_code = $request->input('redeem_code');
         $coupon->description = $request->input('description');
         $coupon->discount_amount = json_decode($request->input('discount_amount'));
-        $coupon->total_usage_count = $request->input('total_usage_count');
-        $coupon->usage_count_by_same_user = $request->input('usage_count_by_same_user');
+        $coupon->max_usable_count = $request->input('max_usable_count');
+        $coupon->max_usable_count_by_user = $request->input('max_usable_count_by_user');
         $coupon->has_free_delivery = $request->has('has_free_delivery') ? $request->input('has_free_delivery') : 0;
         $coupon->discount_by_percentage = $request->has('discount_by_percentage') ? json_decode($request->input('discount_by_percentage')) : 0;
         $coupon->max_allowed_discount_amount = $request->input('max_allowed_discount_amount');
