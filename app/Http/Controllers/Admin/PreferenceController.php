@@ -5,7 +5,10 @@ namespace App\Http\Controllers\Admin;
 use App\Http\Controllers\Controller;
 use App\Models\Preference;
 use App\Models\PreferenceTranslation;
+use DB;
+use Exception;
 use Illuminate\Http\Request;
+use Illuminate\Http\Response;
 use Illuminate\View\View;
 
 class PreferenceController extends Controller
@@ -27,14 +30,14 @@ class PreferenceController extends Controller
     /**
      * Store a newly created resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
+     * @param  Request  $request
      *
-     * @return \Illuminate\Http\Response
-     * @throws \Exception
+     * @return Response
+     * @throws Exception
      */
     public function store(Request $request)
     {
-        \DB::beginTransaction();
+        DB::beginTransaction();
         foreach ($request->except(['_token']) as $langKey => $preferences) {
             foreach ($preferences as $key => $value) {
 
@@ -62,7 +65,7 @@ class PreferenceController extends Controller
 
         }
 
-        \DB::commit();
+        DB::commit();
         cache()->tags('preferences')->flush();
 
 
@@ -95,10 +98,10 @@ class PreferenceController extends Controller
     /**
      * Update the specified resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
+     * @param  Request  $request
      * @param  \App\Preference  $preference
      *
-     * @return \Illuminate\Http\Response
+     * @return Response
      */
     public function update(Request $request, Preference $preference)
     {
@@ -110,7 +113,7 @@ class PreferenceController extends Controller
      *
      * @param  \App\Preference  $preference
      *
-     * @return \Illuminate\Http\Response
+     * @return Response
      */
     public function destroy(Preference $preference)
     {

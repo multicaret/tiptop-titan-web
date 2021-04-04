@@ -2,6 +2,8 @@
 
 namespace App\Traits;
 
+use Str;
+
 trait HasAppTypes
 {
     public static function isFood(): bool
@@ -53,7 +55,7 @@ trait HasAppTypes
 
     public static function getTypesArray(): array
     {
-        $model = (last(explode('\\', \Str::lower(get_class()))));
+        $model = (last(explode('\\', Str::lower(get_class()))));
 
         return [
             self::TYPE_GROCERY_OBJECT => "grocery-$model",

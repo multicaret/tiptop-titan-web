@@ -8,7 +8,9 @@ use App\Http\Resources\FaqResource;
 use App\Http\Resources\TaxonomyResource;
 use App\Models\Taxonomy;
 use App\Models\TaxonomyTranslation;
+use DB;
 use Illuminate\Http\Request;
+use Illuminate\Http\Resources\Json\AnonymousResourceCollection;
 
 class TaxonomyController extends BaseApiController
 {
@@ -16,7 +18,7 @@ class TaxonomyController extends BaseApiController
     /**
      * @param  Request  $request
      *
-     * @return \Illuminate\Http\Resources\Json\AnonymousResourceCollection
+     * @return AnonymousResourceCollection
      */
     public function index(Request $request)
     {
@@ -57,9 +59,9 @@ class TaxonomyController extends BaseApiController
 
     public function store(Request $request)
     {
-        \DB::beginTransaction();
+        DB::beginTransaction();
         if ($request->parentId && is_null(Taxonomy::find($request->parentId))) {
-            return $this->respondValidationFails("Taxonomy with given parentId was not found");
+            return $this->respondValidationFails('Taxonomy with given parentId was not found');
         }
         $taxonomy = new Taxonomy();
         $taxonomy->creator_id = $taxonomy->editor_id = auth()->id();
@@ -85,7 +87,7 @@ class TaxonomyController extends BaseApiController
         $taxonomy->save();
 
 //        $taxonomy->addMediaFromUrl($request->thumbnail);
-        \DB::commit();
+        DB::commit();
 
         return $this->respond([
             'success' => true,
@@ -181,7 +183,7 @@ class TaxonomyController extends BaseApiController
         $taxonomy = Taxonomy::find($taxonomy);
 
         if (is_null(Taxonomy::find($taxonomy))) {
-            return $this->respondNotFound("This Item does not exist");
+            return $this->respondNotFound('This Item does not exist');
         }
 
         if ($taxonomy->hasChildren()) {

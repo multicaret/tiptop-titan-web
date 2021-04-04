@@ -20,7 +20,7 @@ class CreatePaymentMethodsTable extends Migration
             $table->unsignedBigInteger('editor_id');
             $table->unsignedDouble('base_commission')->default(0);
             $table->unsignedTinyInteger('status')->default(PaymentMethod::STATUS_DRAFT)
-                  ->comment('0:incomplete, 1:draft, 2:published, 3:Inactive, 4..n:CUSTOM');
+                  ->comment('1:draft, 2:active, 3:Inactive, 4..n:CUSTOM');
             $table->timestamps();
             $table->softDeletes();
 

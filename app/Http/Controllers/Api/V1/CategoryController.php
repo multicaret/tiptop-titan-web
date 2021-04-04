@@ -15,7 +15,7 @@ class CategoryController extends BaseApiController
     {
         $parent = Taxonomy::find($groceryCategory);
 
-        $groceryParentCategories = Taxonomy::published()->groceryCategories()->parents()->get();
+        $groceryParentCategories = Taxonomy::active()->groceryCategories()->parents()->get();
         $categories = GroceryCategoryParentIndexResource::collection($groceryParentCategories);
 
         return $this->respond([

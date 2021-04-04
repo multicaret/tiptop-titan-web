@@ -13,7 +13,7 @@ class CreateAcquaintancesInteractionsTable extends Migration
     {
         Schema::create(config('acquaintances.tables.interactions', 'interactions'), function (Blueprint $table) {
             $table->id();
-            
+
             $userModel = config('auth.providers.users.model');
             $userModel = (new $userModel);
 

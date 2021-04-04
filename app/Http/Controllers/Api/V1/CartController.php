@@ -7,6 +7,7 @@ use App\Http\Controllers\Api\BaseApiController;
 use App\Http\Resources\CartResource;
 use App\Models\Cart;
 use App\Models\CartProduct;
+use Exception;
 use Illuminate\Http\Request;
 
 class CartController extends BaseApiController
@@ -98,7 +99,7 @@ class CartController extends BaseApiController
         if ( ! is_null($cart)) {
             try {
                 $cart->delete();
-            } catch (\Exception $e) {
+            } catch (Exception $e) {
                 dd($e->getMessage());
             }
 

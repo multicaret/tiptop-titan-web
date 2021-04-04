@@ -16,7 +16,7 @@ class HumanName implements Rule
      */
     public function passes($attribute, $value)
     {
-        return preg_match("/^[\p{L}- ]+$/u", $value);
+        return preg_match('/^[\p{L}- ]+$/u', $value);
     }
 
     /**

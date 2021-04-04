@@ -16,11 +16,12 @@ use App\Models\Location;
 use App\Models\Order;
 use App\Models\Slide;
 use App\Models\Taxonomy;
+use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 
 class HomeController extends BaseApiController
 {
-    public function boot(Request $request): \Illuminate\Http\JsonResponse
+    public function boot(Request $request): JsonResponse
     {
         /*$validationRules = [
             'build_number' => 'required|numeric',
@@ -67,8 +68,9 @@ class HomeController extends BaseApiController
         }
 
 
-        $channel = strtolower($request->input('channel'));
         $user = auth('sanctum')->user();
+        $channel = strtolower($request->input('channel'));
+        // Todo: retrieve slides based on channel.
         $slides = SlideResource::collection(Slide::all());
         $cart = null;
 
@@ -93,7 +95,7 @@ class HomeController extends BaseApiController
             ];
 
             $response['categories'] = cache()->rememberForever('all_grocery_categories_with_products', function () {
-                $groceryParentCategories = Taxonomy::published()->groceryCategories()->parents()->get();
+                $groceryParentCategories = Taxonomy::active()->groceryCategories()->parents()->get();
 
                 return GroceryCategoryParentResource::collection($groceryParentCategories);
             });

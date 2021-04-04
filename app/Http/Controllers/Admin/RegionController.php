@@ -4,19 +4,24 @@ namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
 use App\Models\Region;
+use DB;
+use Exception;
+use Illuminate\Contracts\View\Factory;
+use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\View\View;
 
 class RegionController extends Controller
 {
 
-    function __construct()
+    public function __construct()
     {
         $this->middleware('permission:region.permissions.index', ['only' => ['index', 'store']]);
         $this->middleware('permission:region.permissions.create', ['only' => ['create', 'store']]);
         $this->middleware('permission:region.permissions.edit', ['only' => ['edit', 'update']]);
         $this->middleware('permission:region.permissions.destroy', ['only' => ['destroy']]);
     }
+
     /**
      * Display a listing of the resource.
      *
@@ -70,9 +75,9 @@ class RegionController extends Controller
     /**
      * Store a newly created resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
+     * @param  Request  $request
      *
-     * @return \Illuminate\Http\RedirectResponse
+     * @return RedirectResponse
      */
     public function store(Request $request)
     {
@@ -82,7 +87,7 @@ class RegionController extends Controller
         ];
 
         $request->validate($validationData);*/
-        \DB::beginTransaction();
+        DB::beginTransaction();
         $region = new Region();
         $region->english_name = $request->input('en.name');
         $region->country_id = config('defaults.country.id');
@@ -96,7 +101,7 @@ class RegionController extends Controller
 
         $region->save();
 
-        \DB::commit();
+        DB::commit();
 
         return redirect()
             ->route('admin.regions.index')
@@ -113,7 +118,7 @@ class RegionController extends Controller
      *
      * @param  Request  $request
      *
-     * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
+     * @return Factory|View
      */
     public function edit(Region $region, Request $request)
     {
@@ -123,10 +128,10 @@ class RegionController extends Controller
     /**
      * Update the specified resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
+     * @param  Request  $request
      * @param  Region  $region
      *
-     * @return \Illuminate\Http\RedirectResponse
+     * @return RedirectResponse
      */
     public function update(Request $request, Region $region)
     {
@@ -137,7 +142,7 @@ class RegionController extends Controller
 
         $request->validate($validationRules);*/
 
-        \DB::beginTransaction();
+        DB::beginTransaction();
 
         $region->english_name = $request->input('en.name');
         $region->country_id = config('defaults.country.id');
@@ -150,7 +155,7 @@ class RegionController extends Controller
         }
         $region->save();
 
-        \DB::commit();
+        DB::commit();
 
         return redirect()
             ->route('admin.regions.index', ['type' => $request->type])
@@ -165,8 +170,8 @@ class RegionController extends Controller
      *
      * @param  Region  $region
      *
-     * @return \Illuminate\Http\RedirectResponse
-     * @throws \Exception
+     * @return RedirectResponse
+     * @throws Exception
      */
     public function destroy(Region $region)
     {

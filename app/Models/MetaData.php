@@ -3,7 +3,11 @@
 namespace App\Models;
 
 use Astrotomic\Translatable\Translatable;
+use Eloquent;
+use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Carbon;
 
 /**
  * App\Models\MetaData
@@ -11,30 +15,30 @@ use Illuminate\Database\Eloquent\Model;
  * @property int $id
  * @property string $model_type
  * @property int $model_id
- * @property \Illuminate\Support\Carbon|null $created_at
- * @property \Illuminate\Support\Carbon|null $updated_at
- * @property-read \App\Models\MetaDataTranslation|null $translation
- * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\MetaDataTranslation[] $translations
+ * @property Carbon|null $created_at
+ * @property Carbon|null $updated_at
+ * @property-read MetaDataTranslation|null $translation
+ * @property-read Collection|MetaDataTranslation[] $translations
  * @property-read int|null $translations_count
- * @method static \Illuminate\Database\Eloquent\Builder|MetaData listsTranslations(string $translationField)
- * @method static \Illuminate\Database\Eloquent\Builder|MetaData newModelQuery()
- * @method static \Illuminate\Database\Eloquent\Builder|MetaData newQuery()
- * @method static \Illuminate\Database\Eloquent\Builder|MetaData notTranslatedIn(?string $locale = null)
- * @method static \Illuminate\Database\Eloquent\Builder|MetaData orWhereTranslation(string $translationField, $value, ?string $locale = null)
- * @method static \Illuminate\Database\Eloquent\Builder|MetaData orWhereTranslationLike(string $translationField, $value, ?string $locale = null)
- * @method static \Illuminate\Database\Eloquent\Builder|MetaData orderByTranslation(string $translationField, string $sortMethod = 'asc')
- * @method static \Illuminate\Database\Eloquent\Builder|MetaData query()
- * @method static \Illuminate\Database\Eloquent\Builder|MetaData translated()
- * @method static \Illuminate\Database\Eloquent\Builder|MetaData translatedIn(?string $locale = null)
- * @method static \Illuminate\Database\Eloquent\Builder|MetaData whereCreatedAt($value)
- * @method static \Illuminate\Database\Eloquent\Builder|MetaData whereId($value)
- * @method static \Illuminate\Database\Eloquent\Builder|MetaData whereModelId($value)
- * @method static \Illuminate\Database\Eloquent\Builder|MetaData whereModelType($value)
- * @method static \Illuminate\Database\Eloquent\Builder|MetaData whereTranslation(string $translationField, $value, ?string $locale = null, string $method = 'whereHas', string $operator = '=')
- * @method static \Illuminate\Database\Eloquent\Builder|MetaData whereTranslationLike(string $translationField, $value, ?string $locale = null)
- * @method static \Illuminate\Database\Eloquent\Builder|MetaData whereUpdatedAt($value)
- * @method static \Illuminate\Database\Eloquent\Builder|MetaData withTranslation()
- * @mixin \Eloquent
+ * @method static Builder|MetaData listsTranslations(string $translationField)
+ * @method static Builder|MetaData newModelQuery()
+ * @method static Builder|MetaData newQuery()
+ * @method static Builder|MetaData notTranslatedIn(?string $locale = null)
+ * @method static Builder|MetaData orWhereTranslation(string $translationField, $value, ?string $locale = null)
+ * @method static Builder|MetaData orWhereTranslationLike(string $translationField, $value, ?string $locale = null)
+ * @method static Builder|MetaData orderByTranslation(string $translationField, string $sortMethod = 'asc')
+ * @method static Builder|MetaData query()
+ * @method static Builder|MetaData translated()
+ * @method static Builder|MetaData translatedIn(?string $locale = null)
+ * @method static Builder|MetaData whereCreatedAt($value)
+ * @method static Builder|MetaData whereId($value)
+ * @method static Builder|MetaData whereModelId($value)
+ * @method static Builder|MetaData whereModelType($value)
+ * @method static Builder|MetaData whereTranslation(string $translationField, $value, ?string $locale = null, string $method = 'whereHas', string $operator = '=')
+ * @method static Builder|MetaData whereTranslationLike(string $translationField, $value, ?string $locale = null)
+ * @method static Builder|MetaData whereUpdatedAt($value)
+ * @method static Builder|MetaData withTranslation()
+ * @mixin Eloquent
  */
 class MetaData extends Model
 {

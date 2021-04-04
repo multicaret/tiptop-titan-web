@@ -2,6 +2,8 @@
 
 namespace App\Models;
 
+use Eloquent;
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
 
 /**
@@ -13,16 +15,16 @@ use Illuminate\Database\Eloquent\Model;
  * @property string $title
  * @property string|null $description
  * @property bool $is_auto_inserted
- * @method static \Illuminate\Database\Eloquent\Builder|TaxonomyTranslation newModelQuery()
- * @method static \Illuminate\Database\Eloquent\Builder|TaxonomyTranslation newQuery()
- * @method static \Illuminate\Database\Eloquent\Builder|TaxonomyTranslation query()
- * @method static \Illuminate\Database\Eloquent\Builder|TaxonomyTranslation whereDescription($value)
- * @method static \Illuminate\Database\Eloquent\Builder|TaxonomyTranslation whereId($value)
- * @method static \Illuminate\Database\Eloquent\Builder|TaxonomyTranslation whereIsAutoInserted($value)
- * @method static \Illuminate\Database\Eloquent\Builder|TaxonomyTranslation whereLocale($value)
- * @method static \Illuminate\Database\Eloquent\Builder|TaxonomyTranslation whereTaxonomyId($value)
- * @method static \Illuminate\Database\Eloquent\Builder|TaxonomyTranslation whereTitle($value)
- * @mixin \Eloquent
+ * @method static Builder|TaxonomyTranslation newModelQuery()
+ * @method static Builder|TaxonomyTranslation newQuery()
+ * @method static Builder|TaxonomyTranslation query()
+ * @method static Builder|TaxonomyTranslation whereDescription($value)
+ * @method static Builder|TaxonomyTranslation whereId($value)
+ * @method static Builder|TaxonomyTranslation whereIsAutoInserted($value)
+ * @method static Builder|TaxonomyTranslation whereLocale($value)
+ * @method static Builder|TaxonomyTranslation whereTaxonomyId($value)
+ * @method static Builder|TaxonomyTranslation whereTitle($value)
+ * @mixin Eloquent
  */
 class TaxonomyTranslation extends Model
 {

@@ -12,6 +12,7 @@ use App\Models\Location;
 use App\Models\Order;
 use App\Models\PaymentMethod;
 use App\Models\Taxonomy;
+use DB;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -98,7 +99,7 @@ class OrderController extends BaseApiController
             }
         }
 
-        $paymentMethods = PaymentMethod::published()->get()->map(function ($method) {
+        $paymentMethods = PaymentMethod::active()->get()->map(function ($method) {
             return [
                 'id' => $method->id,
                 'title' => $method->title,
@@ -162,7 +163,7 @@ class OrderController extends BaseApiController
             $deliveryFee = $underMinimumOrderDeliveryFee;
         }
 
-        \DB::beginTransaction();
+        DB::beginTransaction();
         $newOrder = new Order();
         $newOrder->user_id = auth()->id();
         $newOrder->chain_id = $request->input('chain_id');
@@ -203,7 +204,7 @@ class OrderController extends BaseApiController
         $user->increment('total_number_of_orders');
         $user->save();
 
-        \DB::commit();
+        DB::commit();
 
         return $this->respond(new OrderResource($newOrder));
     }
@@ -253,10 +254,10 @@ class OrderController extends BaseApiController
             */
         }
 
-        \DB::beginTransaction();
+        DB::beginTransaction();
         $order->rating_comment = $request->input('comment');
         $order->branch_rating_value = $branchRatingValue;
-        $order->rated_at = $request->input('rated_at');
+        $order->rated_at = now();
         $order->save();
 
         $branch = Branch::find($order->branch_id);
@@ -265,7 +266,7 @@ class OrderController extends BaseApiController
         $branch->avg_rating = $branch->average_rating;
         $branch->increment('rating_count');
         $branch->save();
-        \DB::commit();
+        DB::commit();
 
         return $this->respondWithMessage(trans('strings.successfully_done'));
     }

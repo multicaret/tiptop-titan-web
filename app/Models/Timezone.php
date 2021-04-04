@@ -2,6 +2,9 @@
 
 namespace App\Models;
 
+use Eloquent;
+use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Model;
 
 /**
@@ -11,16 +14,16 @@ use Illuminate\Database\Eloquent\Model;
  * @property string $name
  * @property int $utc_offset
  * @property int $dst_offset
- * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\City[] $cities
+ * @property-read Collection|City[] $cities
  * @property-read int|null $cities_count
- * @method static \Illuminate\Database\Eloquent\Builder|Timezone newModelQuery()
- * @method static \Illuminate\Database\Eloquent\Builder|Timezone newQuery()
- * @method static \Illuminate\Database\Eloquent\Builder|Timezone query()
- * @method static \Illuminate\Database\Eloquent\Builder|Timezone whereDstOffset($value)
- * @method static \Illuminate\Database\Eloquent\Builder|Timezone whereId($value)
- * @method static \Illuminate\Database\Eloquent\Builder|Timezone whereName($value)
- * @method static \Illuminate\Database\Eloquent\Builder|Timezone whereUtcOffset($value)
- * @mixin \Eloquent
+ * @method static Builder|Timezone newModelQuery()
+ * @method static Builder|Timezone newQuery()
+ * @method static Builder|Timezone query()
+ * @method static Builder|Timezone whereDstOffset($value)
+ * @method static Builder|Timezone whereId($value)
+ * @method static Builder|Timezone whereName($value)
+ * @method static Builder|Timezone whereUtcOffset($value)
+ * @mixin Eloquent
  */
 class Timezone extends Model
 {

@@ -4,9 +4,14 @@ namespace App\Models;
 
 use App\Traits\HasMediaTrait;
 use Astrotomic\Translatable\Translatable;
+use Eloquent;
+use Exception;
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Carbon;
 use Illuminate\Support\Collection;
 use Spatie\MediaLibrary\HasMedia;
+use Spatie\MediaLibrary\MediaCollections\Models\Collections\MediaCollection;
 
 /**
  * App\Models\Preference
@@ -18,41 +23,42 @@ use Spatie\MediaLibrary\HasMedia;
  * @property string|null $group_name
  * @property int|null $order_column
  * @property string|null $icon
- * @property \Illuminate\Support\Carbon|null $created_at
- * @property \Illuminate\Support\Carbon|null $updated_at
- * @property-read \Spatie\MediaLibrary\MediaCollections\Models\Collections\MediaCollection|\Spatie\MediaLibrary\MediaCollections\Models\Media[] $media
+ * @property Carbon|null $created_at
+ * @property Carbon|null $updated_at
+ * @property-read MediaCollection|\Spatie\MediaLibrary\MediaCollections\Models\Media[] $media
  * @property-read int|null $media_count
- * @property-read \App\Models\PreferenceTranslation|null $translation
- * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\PreferenceTranslation[] $translations
+ * @property-read PreferenceTranslation|null $translation
+ * @property-read \Illuminate\Database\Eloquent\Collection|PreferenceTranslation[] $translations
  * @property-read int|null $translations_count
- * @method static \Illuminate\Database\Eloquent\Builder|Preference listsTranslations(string $translationField)
- * @method static \Illuminate\Database\Eloquent\Builder|Preference newModelQuery()
- * @method static \Illuminate\Database\Eloquent\Builder|Preference newQuery()
- * @method static \Illuminate\Database\Eloquent\Builder|Preference notTranslatedIn(?string $locale = null)
- * @method static \Illuminate\Database\Eloquent\Builder|Preference orWhereTranslation(string $translationField, $value, ?string $locale = null)
- * @method static \Illuminate\Database\Eloquent\Builder|Preference orWhereTranslationLike(string $translationField, $value, ?string $locale = null)
- * @method static \Illuminate\Database\Eloquent\Builder|Preference orderByTranslation(string $translationField, string $sortMethod = 'asc')
- * @method static \Illuminate\Database\Eloquent\Builder|Preference query()
- * @method static \Illuminate\Database\Eloquent\Builder|Preference sections()
- * @method static \Illuminate\Database\Eloquent\Builder|Preference translated()
- * @method static \Illuminate\Database\Eloquent\Builder|Preference translatedIn(?string $locale = null)
- * @method static \Illuminate\Database\Eloquent\Builder|Preference whereCreatedAt($value)
- * @method static \Illuminate\Database\Eloquent\Builder|Preference whereGroupName($value)
- * @method static \Illuminate\Database\Eloquent\Builder|Preference whereIcon($value)
- * @method static \Illuminate\Database\Eloquent\Builder|Preference whereId($value)
- * @method static \Illuminate\Database\Eloquent\Builder|Preference whereKey($value)
- * @method static \Illuminate\Database\Eloquent\Builder|Preference whereNotes($value)
- * @method static \Illuminate\Database\Eloquent\Builder|Preference whereOrderColumn($value)
- * @method static \Illuminate\Database\Eloquent\Builder|Preference whereTranslation(string $translationField, $value, ?string $locale = null, string $method = 'whereHas', string $operator = '=')
- * @method static \Illuminate\Database\Eloquent\Builder|Preference whereTranslationLike(string $translationField, $value, ?string $locale = null)
- * @method static \Illuminate\Database\Eloquent\Builder|Preference whereType($value)
- * @method static \Illuminate\Database\Eloquent\Builder|Preference whereUpdatedAt($value)
- * @method static \Illuminate\Database\Eloquent\Builder|Preference withTranslation()
- * @mixin \Eloquent
+ * @method static Builder|Preference listsTranslations(string $translationField)
+ * @method static Builder|Preference newModelQuery()
+ * @method static Builder|Preference newQuery()
+ * @method static Builder|Preference notTranslatedIn(?string $locale = null)
+ * @method static Builder|Preference orWhereTranslation(string $translationField, $value, ?string $locale = null)
+ * @method static Builder|Preference orWhereTranslationLike(string $translationField, $value, ?string $locale = null)
+ * @method static Builder|Preference orderByTranslation(string $translationField, string $sortMethod = 'asc')
+ * @method static Builder|Preference query()
+ * @method static Builder|Preference sections()
+ * @method static Builder|Preference translated()
+ * @method static Builder|Preference translatedIn(?string $locale = null)
+ * @method static Builder|Preference whereCreatedAt($value)
+ * @method static Builder|Preference whereGroupName($value)
+ * @method static Builder|Preference whereIcon($value)
+ * @method static Builder|Preference whereId($value)
+ * @method static Builder|Preference whereKey($value)
+ * @method static Builder|Preference whereNotes($value)
+ * @method static Builder|Preference whereOrderColumn($value)
+ * @method static Builder|Preference whereTranslation(string $translationField, $value, ?string $locale = null, string $method = 'whereHas', string $operator = '=')
+ * @method static Builder|Preference whereTranslationLike(string $translationField, $value, ?string $locale = null)
+ * @method static Builder|Preference whereType($value)
+ * @method static Builder|Preference whereUpdatedAt($value)
+ * @method static Builder|Preference withTranslation()
+ * @mixin Eloquent
  */
 class Preference extends Model implements HasMedia
 {
-    use Translatable, HasMediaTrait;
+    use HasMediaTrait;
+    use Translatable;
 
     protected $with = ['translations'];
     protected $translatedAttributes = ['value'];
@@ -100,7 +106,7 @@ class Preference extends Model implements HasMedia
 
     /**
      * @return Collection
-     * @throws \Exception
+     * @throws Exception
      */
     public static function getAll(): Collection
     {
@@ -118,10 +124,10 @@ class Preference extends Model implements HasMedia
     }
 
     /**
-     * @return \Illuminate\Support\Collection
-     * @throws \Exception
+     * @return Collection
+     * @throws Exception
      */
-    public static function getAllPluckValueKey(): \Illuminate\Support\Collection
+    public static function getAllPluckValueKey(): Collection
     {
         return self::getAll()->pluck('value', 'key');
     }

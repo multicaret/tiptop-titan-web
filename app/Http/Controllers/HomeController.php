@@ -23,7 +23,7 @@ class HomeController extends Controller
         $marker1 = urlencode("color:blue|label:Me|{$marker1LocationLatitude},{$marker1LocationLongitude}");
         $marker2LocationLatitude = config('defaults.geolocation.latitude') + 0.002;
         $marker2LocationLongitude = config('defaults.geolocation.longitude') + 0.002;
-        $marker2IconUrl = "http://titan.trytiptop.app/favicon.png?2";
+        $marker2IconUrl = 'http://titan.trytiptop.app/favicon.png?2';
         $marker2 = urlencode("icon:{$marker2IconUrl}|{$marker2LocationLatitude},{$marker2LocationLongitude}");
 //        $marker2 = urlencode("color:green|label:G|{$marker2LocationLatitude},{$marker2LocationLongitude}");
 

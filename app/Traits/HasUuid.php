@@ -2,6 +2,7 @@
 
 namespace App\Traits;
 
+use App\Http\Controllers\Controller;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Http\Request;
 
@@ -13,7 +14,7 @@ trait HasUuid
         parent::boot();
 
         static::creating(function ($query) {
-            $query->uuid = \App\Http\Controllers\Controller::uuid().mt_rand(10, 99);
+            $query->uuid = Controller::uuid().mt_rand(10, 99);
         });
     }
 
@@ -61,7 +62,7 @@ trait HasUuid
         }*/
     }
 
-    static function slugify($text)
+    public static function slugify($text)
     {
         $text = trim(strtolower($text), '-');
 

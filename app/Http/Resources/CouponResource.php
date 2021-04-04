@@ -2,15 +2,17 @@
 
 namespace App\Http\Resources;
 
+use App\Models\Coupon;
+use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
 
-/** @mixin \App\Models\Coupon */
+/** @mixin Coupon */
 class CouponResource extends JsonResource
 {
     /**
      * Transform the resource into an array.
      *
-     * @param  \Illuminate\Http\Request  $request
+     * @param  Request  $request
      *
      * @return array
      */

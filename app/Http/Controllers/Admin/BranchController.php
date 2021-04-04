@@ -7,13 +7,18 @@ use App\Models\Chain;
 use App\Models\Location;
 use App\Models\Region;
 use App\Models\Branch;
+use DB;
+use Exception;
+use Illuminate\Contracts\Foundation\Application;
+use Illuminate\Contracts\View\Factory;
+use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\View\View;
 
 class BranchController extends Controller
 {
 
-    function __construct()
+    public function __construct()
     {
 //        $this->middleware('permission:branch.permissions.index', ['only' => ['index', 'store']]);
 //        $this->middleware('permission:branch.permissions.create', ['only' => ['create', 'store']]);
@@ -26,7 +31,7 @@ class BranchController extends Controller
      *
      * @param  Request  $request
      *
-     * @return \Illuminate\Contracts\Foundation\Application|\Illuminate\Contracts\View\Factory|\Illuminate\Contracts\View\View|View
+     * @return Application|Factory|\Illuminate\Contracts\View\View|View
      */
     public function index(Request $request)
     {
@@ -84,7 +89,7 @@ class BranchController extends Controller
      *
      * @param  Request  $request
      *
-     * @return \Illuminate\Contracts\Foundation\Application|\Illuminate\Contracts\View\Factory|\Illuminate\Contracts\View\View|View
+     * @return Application|Factory|\Illuminate\Contracts\View\View|View
      */
     public function create(Request $request)
     {
@@ -103,9 +108,9 @@ class BranchController extends Controller
     /**
      * Store a newly created resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
+     * @param  Request  $request
      *
-     * @return \Illuminate\Http\RedirectResponse
+     * @return RedirectResponse
      */
     public function store(Request $request)
     {
@@ -130,7 +135,7 @@ class BranchController extends Controller
      *
      * @param  Request  $request
      *
-     * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
+     * @return Factory|View
      */
     public function edit(Branch $branch, Request $request)
     {
@@ -154,10 +159,10 @@ class BranchController extends Controller
     /**
      * Update the specified resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
+     * @param  Request  $request
      * @param  Branch  $branch
      *
-     * @return \Illuminate\Http\RedirectResponse
+     * @return RedirectResponse
      */
     public function update(Request $request, Branch $branch)
     {
@@ -178,8 +183,8 @@ class BranchController extends Controller
      *
      * @param  Branch  $branch
      *
-     * @return \Illuminate\Http\RedirectResponse
-     * @throws \Exception
+     * @return RedirectResponse
+     * @throws Exception
      */
     public function destroy(Branch $branch)
     {
@@ -198,12 +203,12 @@ class BranchController extends Controller
 
         return [
             "{$defaultLocale}.title" => 'required',
-            "minimum_order" => 'required',
-            "under_minimum_order_delivery_fee" => 'required',
-            "fixed_delivery_fee" => 'required',
-            "restaurant_minimum_order" => 'required',
-            "restaurant_under_minimum_order_delivery_fee" => 'required',
-            "restaurant_fixed_delivery_fee" => 'required',
+            'minimum_order' => 'required',
+            'under_minimum_order_delivery_fee' => 'required',
+            'fixed_delivery_fee' => 'required',
+            'restaurant_minimum_order' => 'required',
+            'restaurant_under_minimum_order_delivery_fee' => 'required',
+            'restaurant_fixed_delivery_fee' => 'required',
         ];
     }
 
@@ -213,8 +218,7 @@ class BranchController extends Controller
         $region = json_decode($request->region);
         $city = json_decode($request->city);
         $chain = json_decode($request->chain);
-//        dd($request->input('has_restaurant_delivery'));
-        \DB::beginTransaction();
+        DB::beginTransaction();
         $branch->chain_id = $chain->id;
         $branch->city_id = isset($city) ? $city->id : null;
         $branch->region_id = isset($region) ? $region->id : null;
@@ -266,7 +270,7 @@ class BranchController extends Controller
         Location::whereIn('id', $contactToDelete)->delete();
 
         $branch->save();
-        \DB::commit();
+        DB::commit();
     }
 
 }

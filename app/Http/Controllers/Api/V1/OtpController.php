@@ -4,8 +4,11 @@ namespace App\Http\Controllers\Api\V1;
 
 
 use App\Http\Controllers\Api\BaseApiController;
+use App\Http\Controllers\Controller;
 use App\Http\Resources\UserResource;
+use App\Models\Country;
 use App\Models\User;
+use Exception;
 use Illuminate\Auth\Events\Registered;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
@@ -66,8 +69,6 @@ class OtpController extends BaseApiController
     public function check($reference, Request $request): JsonResponse
     {
         $validationRules = [
-            'phone_number' => 'required|numeric|digits_between:7,15',
-            'phone_country_code' => 'required|min:1|max:3',
             'mobile_app_details' => 'json',
         ];
 
@@ -94,11 +95,28 @@ class OtpController extends BaseApiController
         }
         $validationStatus = isset($validationCheck) ? $validationCheck->getValidationStatus() : false;
 
+        $phoneNumber = null;
+        $phoneCountryCode = null;
+
+        $vfk2 = $this->getVFK(true);
+        $result = $vfk2->getResult($validationCheck->getSessionId());
+        if ($result->isSuccess()) {
+            $phoneCountryCode = '+'.Country::whereAlpha2Code($result->getCountryCode())->first()->phone_code;
+            $phoneNumber = str_replace($phoneCountryCode, '', $result->getPhoneNumber());
+//                echo "Validation Date : " . $result->getValidationDate()->format('Y-m-d H:i:s') . PHP_EOL;
+            /*} else {
+                echo "Error message : " . $result->getErrorMessage() . ", error code : " . $result->getErrorCode() . PHP_EOL;*/
+        }
+
+        if (is_null($phoneNumber) || is_null($phoneCountryCode)) {
+            return $this->respondWithMessage('Oops,Got an empty phone number!');
+        }
+
         $newUser = false;
         if ($validationStatus) {
             [$user, $newUser, $accessToken] = $this->registerUserIfNotFoundByPhone(
-                $request->input('phone_country_code'),
-                $request->input('phone_number'),
+                $phoneCountryCode,
+                $phoneNumber,
                 $request->input('mobile_app_details')
             );
             $response = [
@@ -146,7 +164,7 @@ class OtpController extends BaseApiController
         $mcc = '999'; // Mobile Country Code (MCC) of the sim card in the user's device. Default value is '999'. Not required.
         $mnc = '999'; // Mobile Network Code (MNC) of the sim card in the user's device. Default value is '999'. Not required.
 
-        $phoneNumber = $request->input('phone_number');  // '+90'.$request->phone;
+        $phoneNumber = Controller::convertNumbersToArabic($request->input('phone_number'));  // '+90'.$request->phone;
         $countryCode = $request->input('country_code');  // 'TR';
 
         $lang = localization()->getCurrentLocale();
@@ -192,7 +210,7 @@ class OtpController extends BaseApiController
 
 
         $statusCode = Response::HTTP_BAD_REQUEST;
-        $phoneNumber = $request->input('phone_number');
+        $phoneNumber = Controller::convertNumbersToArabic($request->input('phone_number'));
         $phoneCountryCode = $request->input('phone_country_code');
         $countryCode = $request->input('country_code');
         $code = $request->input('code');
@@ -230,7 +248,7 @@ class OtpController extends BaseApiController
 
                     return $this->respond($response);
                 } else {
-                    $errorMessage = $result->getErrorMessage().", error code : ".$result->getErrorCode();
+                    $errorMessage = $result->getErrorMessage().', error code : '.$result->getErrorCode();
                 }
             } else {
                 $errorMessage = $otpCheck->getErrorMessage();
@@ -238,7 +256,7 @@ class OtpController extends BaseApiController
             }
         } catch (CountryCodeEmptyException | PhoneNumberEmptyException |
         OTPCodeEmptyException | CurlException |
-        ReferenceEmptyException | ServerKeyEmptyException | \Exception $e) {
+        ReferenceEmptyException | ServerKeyEmptyException | Exception $e) {
             $errorMessage = $e->getMessage();
         }
 
@@ -251,12 +269,17 @@ class OtpController extends BaseApiController
 
 
     /**
-     * @return \Exception|ServerKeyEmptyException|Web
+     * @param  bool  $isVerifyKitModel
+     * @return Exception|ServerKeyEmptyException|VerifyKit|Web
      */
-    private function getVFK()
+    private function getVFK($isVerifyKitModel = false)
     {
         try {
             [$serverKey, $clientIp] = $this->getServerKeyAndClientIP();
+
+            if ($isVerifyKitModel) {
+                return new VerifyKit($serverKey, $clientIp);
+            }
 
             return new Web($serverKey, $clientIp);
         } catch (ServerKeyEmptyException $e) {

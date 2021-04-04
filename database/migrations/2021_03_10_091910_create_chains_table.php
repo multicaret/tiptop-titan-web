@@ -1,5 +1,6 @@
 <?php
 
+use App\Models\Chain;
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
@@ -21,7 +22,7 @@ class CreateChainsTable extends Migration
             $table->unsignedBigInteger('region_id')->nullable();
             $table->unsignedBigInteger('city_id')->nullable();
             $table->unsignedBigInteger('currency_id')->nullable()->default(config('defaults.currency.id'));
-            $table->unsignedTinyInteger('type')->default(\App\Models\Chain::TYPE_FOOD_OBJECT)->comment('1:Market, 2: Food');
+            $table->unsignedTinyInteger('type')->default(Chain::TYPE_FOOD_OBJECT)->comment('1:Market, 2: Food');
             $table->string('primary_phone_number')->nullable();
             $table->string('secondary_phone_number')->nullable();
             $table->string('whatsapp_phone_number')->nullable();
@@ -32,7 +33,7 @@ class CreateChainsTable extends Migration
             $table->unsignedInteger('rating_count')->default(0);
             $table->unsignedBigInteger('view_count')->default(1);
             $table->unsignedBigInteger('order_column')->nullable();
-            $table->unsignedTinyInteger('status')->default(\App\Models\Chain::STATUS_DRAFT)->nullable();
+            $table->unsignedTinyInteger('status')->default(Chain::STATUS_DRAFT)->nullable();
             $table->timestamps();
             $table->softDeletes();
 

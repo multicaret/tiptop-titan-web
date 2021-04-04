@@ -2,15 +2,17 @@
 
 namespace App\Http\Resources;
 
+use App\Models\Currency;
+use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
 
-/** @mixin \App\Models\Currency */
+/** @mixin Currency */
 class CurrencyResource extends JsonResource
 {
     /**
      * Transform the resource into an array.
      *
-     * @param  \Illuminate\Http\Request  $request
+     * @param  Request  $request
      *
      * @return array
      */

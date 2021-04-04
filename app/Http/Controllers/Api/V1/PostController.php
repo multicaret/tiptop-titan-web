@@ -11,6 +11,7 @@ use App\Http\Resources\TaxonomyResource;
 use App\Models\Post;
 use App\Models\PostTranslation;
 use App\Models\Taxonomy;
+use DB;
 use Illuminate\Http\Request;
 use Spatie\MediaLibrary\MediaCollections\Models\Media;
 
@@ -48,7 +49,7 @@ class PostController extends BaseApiController
 
     public function store(Request $request)
     {
-        \DB::beginTransaction();
+        DB::beginTransaction();
         $defaultLocale = localization()->getDefaultLocale();
 
         /*$validationRules = [
@@ -88,7 +89,7 @@ class PostController extends BaseApiController
             $post->addMediaFromRequest('cover')
                  ->toMediaCollection('cover');
         }
-        \DB::commit();
+        DB::commit();
 
         return $this->respond([
             'success' => true,
@@ -167,7 +168,7 @@ class PostController extends BaseApiController
         $post = Post::find($post);
 
         if (is_null(Post::find($post))) {
-            return $this->respondNotFound("This Item does not exist");
+            return $this->respondNotFound('This Item does not exist');
         }
 
         if ($post->delete()) {

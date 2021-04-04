@@ -12,6 +12,7 @@ use App\Models\City;
 use App\Models\Location;
 use App\Models\Region;
 use App\Models\User;
+use DB;
 use Illuminate\Http\Request;
 
 class AddressController extends BaseApiController
@@ -72,7 +73,7 @@ class AddressController extends BaseApiController
             return $this->respondValidationFails($validator->errors());
         }
 
-        \DB::beginTransaction();
+        DB::beginTransaction();
         $userId = auth()->user()->id;
         $address = new Location();
         $address->creator_id = $userId;
@@ -93,7 +94,7 @@ class AddressController extends BaseApiController
         $address->notes = $request->directions;
         $address->save();
 
-        \DB::commit();
+        DB::commit();
 
         return $this->respond([
             'address' => new LocationResource($address)

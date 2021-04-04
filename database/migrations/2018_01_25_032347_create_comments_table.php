@@ -1,5 +1,6 @@
 <?php
 
+use App\Models\Comment;
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
@@ -24,7 +25,7 @@ class CreateCommentsTable extends Migration
             $table->integer('right');
             $table->integer('depth')->nullable();
             $table->integer('votes')->default(0);
-            $table->boolean('status')->default(1)->comment('1:shown, 2:reported');
+            $table->boolean('status')->default(Comment::STATUS_SHOWN)->comment('1:shown, 2:reported');
             $table->timestamps();
             $table->softDeletes();
 

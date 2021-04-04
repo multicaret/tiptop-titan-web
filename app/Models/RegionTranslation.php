@@ -2,6 +2,8 @@
 
 namespace App\Models;
 
+use Eloquent;
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
 
 /**
@@ -12,15 +14,15 @@ use Illuminate\Database\Eloquent\Model;
  * @property string $name
  * @property string $locale
  * @property string|null $slug
- * @method static \Illuminate\Database\Eloquent\Builder|RegionTranslation newModelQuery()
- * @method static \Illuminate\Database\Eloquent\Builder|RegionTranslation newQuery()
- * @method static \Illuminate\Database\Eloquent\Builder|RegionTranslation query()
- * @method static \Illuminate\Database\Eloquent\Builder|RegionTranslation whereId($value)
- * @method static \Illuminate\Database\Eloquent\Builder|RegionTranslation whereLocale($value)
- * @method static \Illuminate\Database\Eloquent\Builder|RegionTranslation whereName($value)
- * @method static \Illuminate\Database\Eloquent\Builder|RegionTranslation whereRegionId($value)
- * @method static \Illuminate\Database\Eloquent\Builder|RegionTranslation whereSlug($value)
- * @mixin \Eloquent
+ * @method static Builder|RegionTranslation newModelQuery()
+ * @method static Builder|RegionTranslation newQuery()
+ * @method static Builder|RegionTranslation query()
+ * @method static Builder|RegionTranslation whereId($value)
+ * @method static Builder|RegionTranslation whereLocale($value)
+ * @method static Builder|RegionTranslation whereName($value)
+ * @method static Builder|RegionTranslation whereRegionId($value)
+ * @method static Builder|RegionTranslation whereSlug($value)
+ * @mixin Eloquent
  */
 class RegionTranslation extends Model
 {

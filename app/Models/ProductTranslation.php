@@ -2,6 +2,8 @@
 
 namespace App\Models;
 
+use Eloquent;
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
 
 /**
@@ -16,19 +18,19 @@ use Illuminate\Database\Eloquent\Model;
  * @property string|null $notes
  * @property string|null $custom_banner_text
  * @property string|null $unit_text
- * @method static \Illuminate\Database\Eloquent\Builder|ProductTranslation newModelQuery()
- * @method static \Illuminate\Database\Eloquent\Builder|ProductTranslation newQuery()
- * @method static \Illuminate\Database\Eloquent\Builder|ProductTranslation query()
- * @method static \Illuminate\Database\Eloquent\Builder|ProductTranslation whereCustomBannerText($value)
- * @method static \Illuminate\Database\Eloquent\Builder|ProductTranslation whereDescription($value)
- * @method static \Illuminate\Database\Eloquent\Builder|ProductTranslation whereExcerpt($value)
- * @method static \Illuminate\Database\Eloquent\Builder|ProductTranslation whereId($value)
- * @method static \Illuminate\Database\Eloquent\Builder|ProductTranslation whereLocale($value)
- * @method static \Illuminate\Database\Eloquent\Builder|ProductTranslation whereNotes($value)
- * @method static \Illuminate\Database\Eloquent\Builder|ProductTranslation whereProductId($value)
- * @method static \Illuminate\Database\Eloquent\Builder|ProductTranslation whereTitle($value)
- * @method static \Illuminate\Database\Eloquent\Builder|ProductTranslation whereUnitText($value)
- * @mixin \Eloquent
+ * @method static Builder|ProductTranslation newModelQuery()
+ * @method static Builder|ProductTranslation newQuery()
+ * @method static Builder|ProductTranslation query()
+ * @method static Builder|ProductTranslation whereCustomBannerText($value)
+ * @method static Builder|ProductTranslation whereDescription($value)
+ * @method static Builder|ProductTranslation whereExcerpt($value)
+ * @method static Builder|ProductTranslation whereId($value)
+ * @method static Builder|ProductTranslation whereLocale($value)
+ * @method static Builder|ProductTranslation whereNotes($value)
+ * @method static Builder|ProductTranslation whereProductId($value)
+ * @method static Builder|ProductTranslation whereTitle($value)
+ * @method static Builder|ProductTranslation whereUnitText($value)
+ * @mixin Eloquent
  */
 class ProductTranslation extends Model
 {

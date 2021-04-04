@@ -5,9 +5,13 @@ namespace App\Models;
 use App\Traits\HasMediaTrait;
 use App\Traits\HasStatuses;
 use App\Traits\HasViewCount;
+use Eloquent;
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Carbon;
 use Spatie\Image\Manipulations;
 use Spatie\MediaLibrary\HasMedia;
+use Spatie\MediaLibrary\MediaCollections\Models\Collections\MediaCollection;
 use Spatie\MediaLibrary\MediaCollections\Models\Media;
 
 /**
@@ -19,41 +23,41 @@ use Spatie\MediaLibrary\MediaCollections\Models\Media;
  * @property int|null $region_id
  * @property int|null $city_id
  * @property string $name
- * @property \Illuminate\Support\Carbon|null $created_at
- * @property \Illuminate\Support\Carbon|null $updated_at
- * @property-read mixed $is_published
+ * @property Carbon|null $created_at
+ * @property Carbon|null $updated_at
+ * @property-read bool $is_active
+ * @property-read bool $is_inactive
  * @property-read bool $logo
  * @property-read mixed $status_name
- * @property-read \Spatie\MediaLibrary\MediaCollections\Models\Collections\MediaCollection|Media[] $media
+ * @property-read MediaCollection|Media[] $media
  * @property-read int|null $media_count
- * @method static \Illuminate\Database\Eloquent\Builder|Manufacturer draft()
- * @method static \Illuminate\Database\Eloquent\Builder|Manufacturer inactive()
- * @method static \Illuminate\Database\Eloquent\Builder|Manufacturer incomplete()
- * @method static \Illuminate\Database\Eloquent\Builder|Manufacturer newModelQuery()
- * @method static \Illuminate\Database\Eloquent\Builder|Manufacturer newQuery()
- * @method static \Illuminate\Database\Eloquent\Builder|Manufacturer notPublished()
- * @method static \Illuminate\Database\Eloquent\Builder|Manufacturer published()
- * @method static \Illuminate\Database\Eloquent\Builder|Manufacturer query()
- * @method static \Illuminate\Database\Eloquent\Builder|Manufacturer whereCityId($value)
- * @method static \Illuminate\Database\Eloquent\Builder|Manufacturer whereCreatedAt($value)
- * @method static \Illuminate\Database\Eloquent\Builder|Manufacturer whereCreatorId($value)
- * @method static \Illuminate\Database\Eloquent\Builder|Manufacturer whereEditorId($value)
- * @method static \Illuminate\Database\Eloquent\Builder|Manufacturer whereId($value)
- * @method static \Illuminate\Database\Eloquent\Builder|Manufacturer whereName($value)
- * @method static \Illuminate\Database\Eloquent\Builder|Manufacturer whereRegionId($value)
- * @method static \Illuminate\Database\Eloquent\Builder|Manufacturer whereUpdatedAt($value)
- * @mixin \Eloquent
+ * @method static Builder|Manufacturer active()
+ * @method static Builder|Manufacturer draft()
+ * @method static Builder|Manufacturer inactive()
+ * @method static Builder|Manufacturer newModelQuery()
+ * @method static Builder|Manufacturer newQuery()
+ * @method static Builder|Manufacturer notActive()
+ * @method static Builder|Manufacturer query()
+ * @method static Builder|Manufacturer whereCityId($value)
+ * @method static Builder|Manufacturer whereCreatedAt($value)
+ * @method static Builder|Manufacturer whereCreatorId($value)
+ * @method static Builder|Manufacturer whereEditorId($value)
+ * @method static Builder|Manufacturer whereId($value)
+ * @method static Builder|Manufacturer whereName($value)
+ * @method static Builder|Manufacturer whereRegionId($value)
+ * @method static Builder|Manufacturer whereUpdatedAt($value)
+ * @mixin Eloquent
  */
 class Manufacturer extends Model implements HasMedia
 {
-    use HasMediaTrait,
-        HasStatuses,
-        HasViewCount;
+    use HasMediaTrait;
+    use HasStatuses;
+    use HasViewCount;
 
-    const STATUS_INCOMPLETE = 0;
-    const STATUS_DRAFT = 1;
-    const STATUS_PUBLISHED = 2;
-    const STATUS_INACTIVE = 3;
+
+    public const STATUS_DRAFT = 1;
+    public const STATUS_ACTIVE = 2;
+    public const STATUS_INACTIVE = 3;
 
     protected $appends = [
         'logo',

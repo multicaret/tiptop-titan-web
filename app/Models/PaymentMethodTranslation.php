@@ -2,6 +2,8 @@
 
 namespace App\Models;
 
+use Eloquent;
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
 
 /**
@@ -13,16 +15,16 @@ use Illuminate\Database\Eloquent\Model;
  * @property string|null $description
  * @property mixed|null $instructions
  * @property string $locale
- * @method static \Illuminate\Database\Eloquent\Builder|PaymentMethodTranslation newModelQuery()
- * @method static \Illuminate\Database\Eloquent\Builder|PaymentMethodTranslation newQuery()
- * @method static \Illuminate\Database\Eloquent\Builder|PaymentMethodTranslation query()
- * @method static \Illuminate\Database\Eloquent\Builder|PaymentMethodTranslation whereDescription($value)
- * @method static \Illuminate\Database\Eloquent\Builder|PaymentMethodTranslation whereId($value)
- * @method static \Illuminate\Database\Eloquent\Builder|PaymentMethodTranslation whereInstructions($value)
- * @method static \Illuminate\Database\Eloquent\Builder|PaymentMethodTranslation whereLocale($value)
- * @method static \Illuminate\Database\Eloquent\Builder|PaymentMethodTranslation wherePaymentMethodId($value)
- * @method static \Illuminate\Database\Eloquent\Builder|PaymentMethodTranslation whereTitle($value)
- * @mixin \Eloquent
+ * @method static Builder|PaymentMethodTranslation newModelQuery()
+ * @method static Builder|PaymentMethodTranslation newQuery()
+ * @method static Builder|PaymentMethodTranslation query()
+ * @method static Builder|PaymentMethodTranslation whereDescription($value)
+ * @method static Builder|PaymentMethodTranslation whereId($value)
+ * @method static Builder|PaymentMethodTranslation whereInstructions($value)
+ * @method static Builder|PaymentMethodTranslation whereLocale($value)
+ * @method static Builder|PaymentMethodTranslation wherePaymentMethodId($value)
+ * @method static Builder|PaymentMethodTranslation whereTitle($value)
+ * @mixin Eloquent
  */
 class PaymentMethodTranslation extends Model
 {

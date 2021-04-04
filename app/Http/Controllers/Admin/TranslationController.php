@@ -6,7 +6,7 @@ use App\Http\Controllers\Controller;
 
 class TranslationController extends Controller
 {
-    function __construct()
+    public function __construct()
     {
         $this->middleware('permission:translation.permissions.index', ['only' => ['index', 'store']]);
     }

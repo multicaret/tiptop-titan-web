@@ -10,11 +10,16 @@ use App\Models\Order;
 use App\Models\Post;
 use App\Models\Preference;
 use App\Models\Product;
+use App\Models\Taxonomy;
+use App\Models\User;
 use App\Scopes\ActiveScope;
+use Closure;
+use Exception;
 use Illuminate\Http\Request;
 use Illuminate\Support\Arr;
 use Illuminate\Support\ServiceProvider;
 use Illuminate\Support\Str;
+use Route;
 
 class ComposerServiceProvider extends ServiceProvider
 {
@@ -24,7 +29,7 @@ class ComposerServiceProvider extends ServiceProvider
      * @param  Request  $request
      *
      * @return void
-     * @throws \Exception
+     * @throws Exception
      */
     public function boot(Request $request)
     {
@@ -118,7 +123,7 @@ class ComposerServiceProvider extends ServiceProvider
                                 'icon' => 'fas fa-shapes',
                                 'params' => [
                                     'type' =>
-                                        \App\Models\Taxonomy::getCorrectTypeName(\App\Models\Taxonomy::TYPE_GROCERY_CATEGORY,
+                                        Taxonomy::getCorrectTypeName(Taxonomy::TYPE_GROCERY_CATEGORY,
                                             false)
                                 ],
                                 'routeName' => 'admin.taxonomies.index',
@@ -128,7 +133,7 @@ class ComposerServiceProvider extends ServiceProvider
                                 'icon' => 'fas fa-balance-scale',
                                 'params' => [
                                     'type' =>
-                                        \App\Models\Taxonomy::getCorrectTypeName(\App\Models\Taxonomy::TYPE_UNIT,
+                                        Taxonomy::getCorrectTypeName(Taxonomy::TYPE_UNIT,
                                             false),
                                 ],
                                 'routeName' => 'admin.taxonomies.index',
@@ -168,16 +173,6 @@ class ComposerServiceProvider extends ServiceProvider
                                 'routeName' => 'admin.branches.index',
                             ],
                             [
-                                'title' => 'Ingredient',
-                                'icon' => 'fas fa-leaf',
-                                'params' => [
-                                    'type' =>
-                                        \App\Models\Taxonomy::getCorrectTypeName(\App\Models\Taxonomy::TYPE_INGREDIENT,
-                                            false),
-                                ],
-                                'routeName' => 'admin.taxonomies.index',
-                            ],
-                            [
                                 'title' => 'Products',
                                 'icon' => 'fas fa-box-open',
                                 'params' => ['type' => Product::getCorrectTypeName(Product::TYPE_FOOD_OBJECT, false)],
@@ -188,7 +183,7 @@ class ComposerServiceProvider extends ServiceProvider
                                 'icon' => 'fas fa-shapes',
                                 'params' => [
                                     'type' =>
-                                        \App\Models\Taxonomy::getCorrectTypeName(\App\Models\Taxonomy::TYPE_FOOD_CATEGORY,
+                                        Taxonomy::getCorrectTypeName(Taxonomy::TYPE_FOOD_CATEGORY,
                                             false)
                                 ],
                                 'routeName' => 'admin.taxonomies.index',
@@ -198,7 +193,7 @@ class ComposerServiceProvider extends ServiceProvider
                                 'icon' => 'fas fa-shapes',
                                 'params' => [
                                     'type' =>
-                                        \App\Models\Taxonomy::getCorrectTypeName(\App\Models\Taxonomy::TYPE_MENU_CATEGORY,
+                                        Taxonomy::getCorrectTypeName(Taxonomy::TYPE_MENU_CATEGORY,
                                             false)
                                 ],
                                 'routeName' => 'admin.taxonomies.index',
@@ -208,7 +203,17 @@ class ComposerServiceProvider extends ServiceProvider
                                 'icon' => 'fas fa-shapes',
                                 'params' => [
                                     'type' =>
-                                        \App\Models\Taxonomy::getCorrectTypeName(\App\Models\Taxonomy::TYPE_INGREDIENT_CATEGORY,
+                                        Taxonomy::getCorrectTypeName(Taxonomy::TYPE_INGREDIENT_CATEGORY,
+                                            false),
+                                ],
+                                'routeName' => 'admin.taxonomies.index',
+                            ],
+                            [
+                                'title' => 'Ingredients',
+                                'icon' => 'fas fa-leaf',
+                                'params' => [
+                                    'type' =>
+                                        Taxonomy::getCorrectTypeName(Taxonomy::TYPE_INGREDIENT,
                                             false),
                                 ],
                                 'routeName' => 'admin.taxonomies.index',
@@ -310,61 +315,61 @@ class ComposerServiceProvider extends ServiceProvider
                                 'title' => 'End Users',
                                 'icon' => 'fas fa-user',
                                 'routeName' => 'admin.users.index',
-                                'params' => ['type' => \App\Models\User::ROLE_USER],
+                                'params' => ['type' => User::ROLE_USER],
                             ],
                             [
                                 'title' => 'Restaurant Drivers',
                                 'icon' => 'fas fa-truck',
                                 'routeName' => 'admin.users.index',
-                                'params' => ['type' => \App\Models\User::ROLE_RESTAURANT_DRIVER],
+                                'params' => ['type' => User::ROLE_RESTAURANT_DRIVER],
                             ],
                             [
                                 'title' => 'Tiptop Drivers',
                                 'icon' => 'fas fa-car-side',
                                 'routeName' => 'admin.users.index',
-                                'params' => ['type' => \App\Models\User::ROLE_TIPTOP_DRIVER],
+                                'params' => ['type' => User::ROLE_TIPTOP_DRIVER],
                             ],
                             [
                                 'title' => 'Admins',
                                 'icon' => 'fas fa-user-shield',
                                 'routeName' => 'admin.users.index',
-                                'params' => ['type' => \App\Models\User::ROLE_ADMIN],
+                                'params' => ['type' => User::ROLE_ADMIN],
                             ],
                             [
                                 'title' => 'Supervisors',
                                 'icon' => 'fas fa-user-secret',
                                 'routeName' => 'admin.users.index',
-                                'params' => ['type' => \App\Models\User::ROLE_SUPERVISOR],
+                                'params' => ['type' => User::ROLE_SUPERVISOR],
                             ],
                             [
                                 'title' => 'Agents',
                                 'icon' => 'fas fa-user-tie',
                                 'routeName' => 'admin.users.index',
-                                'params' => ['type' => \App\Models\User::ROLE_AGENT],
+                                'params' => ['type' => User::ROLE_AGENT],
                             ],
                             [
                                 'title' => 'Content Editors',
                                 'icon' => 'fas fa-user-edit',
                                 'routeName' => 'admin.users.index',
-                                'params' => ['type' => \App\Models\User::ROLE_CONTENT_EDITOR],
+                                'params' => ['type' => User::ROLE_CONTENT_EDITOR],
                             ],
                             [
                                 'title' => 'Marketers',
                                 'icon' => 'fas fa-users',
                                 'routeName' => 'admin.users.index',
-                                'params' => ['type' => \App\Models\User::ROLE_MARKETER],
+                                'params' => ['type' => User::ROLE_MARKETER],
                             ],
                             [
                                 'title' => 'Branch Owners',
                                 'icon' => 'fas fa-user-plus',
                                 'routeName' => 'admin.users.index',
-                                'params' => ['type' => \App\Models\User::ROLE_BRANCH_OWNER],
+                                'params' => ['type' => User::ROLE_BRANCH_OWNER],
                             ],
                             [
                                 'title' => 'Branch Managers',
                                 'icon' => 'fas fa-users-cog',
                                 'routeName' => 'admin.users.index',
-                                'params' => ['type' => \App\Models\User::ROLE_BRANCH_MANAGER],
+                                'params' => ['type' => User::ROLE_BRANCH_MANAGER],
                             ],
                         ]
                     ]
@@ -403,7 +408,7 @@ class ComposerServiceProvider extends ServiceProvider
                                 'icon' => 'fas fa-tag',
                                 'params' => [
                                     'type' =>
-                                        \App\Models\Taxonomy::getCorrectTypeName(\App\Models\Taxonomy::TYPE_TAG,
+                                        Taxonomy::getCorrectTypeName(Taxonomy::TYPE_TAG,
                                             false),
                                 ],
                                 'routeName' => 'admin.taxonomies.index',
@@ -413,7 +418,7 @@ class ComposerServiceProvider extends ServiceProvider
                                 'icon' => 'fas fa-tag',
                                 'params' => [
                                     'type' =>
-                                        \App\Models\Taxonomy::getCorrectTypeName(\App\Models\Taxonomy::TYPE_SEARCH_TAGS, //todo: make it search tags
+                                        Taxonomy::getCorrectTypeName(Taxonomy::TYPE_SEARCH_TAGS, //todo: make it search tags
                                             false),
                                 ],
                                 'routeName' => 'admin.taxonomies.index',
@@ -496,7 +501,7 @@ class ComposerServiceProvider extends ServiceProvider
 
         $classes[] = auth()->check() ? 'logged-in' : 'guest';
 
-        $classes[] = str_replace('.', '-', \Route::currentRouteName());
+        $classes[] = str_replace('.', '-', Route::currentRouteName());
 
         return implode(' ', $classes);
     }
@@ -561,7 +566,7 @@ class ComposerServiceProvider extends ServiceProvider
 
         try {
             $sideNavItem['route'] = route($sideNavItem['routeName'], $params);
-        } catch (\Exception $e) {
+        } catch (Exception $e) {
             dd($sideNavItem);
         }
     }
@@ -601,7 +606,7 @@ class ComposerServiceProvider extends ServiceProvider
 
     }
 
-    private function getNoneEmptyItem(): \Closure
+    private function getNoneEmptyItem(): Closure
     {
         return function ($item) {
             return ! empty($item);

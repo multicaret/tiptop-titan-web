@@ -5,15 +5,17 @@ namespace App\Http\Controllers\Ajax;
 use App\Http\Controllers\Controller;
 use App\Models\Chain;
 use App\Models\Preference;
+use Exception;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Pagination\LengthAwarePaginator;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Schema;
+use Response;
 
 class AjaxController extends Controller
 {
-    const PAGINATION = 10;
+    public const PAGINATION = 10;
     private $statusCode = 200;
 
     /**
@@ -53,7 +55,7 @@ class AjaxController extends Controller
 
     public function respond($data, $headers = [])
     {
-        return \Response::json($data, $this->getStatusCode(), $headers);
+        return Response::json($data, $this->getStatusCode(), $headers);
     }
 
     public function respondWithPagination(LengthAwarePaginator $items, $data)
@@ -81,7 +83,7 @@ class AjaxController extends Controller
 
         return $this->respond([
             'isSuccess' => true,
-            'message' => "Successfully updated",
+            'message' => 'Successfully updated',
             'currentStatus' => $request->relatedModel::getAllStatusesRich()[$objectName->status],
         ]);
     }
@@ -116,7 +118,7 @@ class AjaxController extends Controller
         $objectName->save();
         return $this->respond([
             'isSuccess' => true,
-            'message' => "Successfully updated",
+            'message' => 'Successfully updated',
             'currentStatus' => $request->relatedModel::getAllChannelsRich()[$objectName->channel],
         ]);
     }
@@ -163,7 +165,7 @@ class AjaxController extends Controller
             return $this->respond([
                 'isSuccess' => true
             ]);
-        } catch (\Exception $e) {
+        } catch (Exception $e) {
             return $this->respondWithError($e->getMessage());
         }
 
@@ -189,7 +191,7 @@ class AjaxController extends Controller
                 return ['id' => $item->id, 'title' => $item->title];
             };
             $allBranches = $chain->branches->map($getIdTitle)->all();
-        } catch (\Exception $e) {
+        } catch (Exception $e) {
             return $this->respondWithError($e->getMessage());
         }
 

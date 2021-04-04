@@ -112,17 +112,17 @@
                                 @endcomponent
                             </div>
                             <div class="col-md-6">
-                                @component('admin.components.form-group', ['name' => 'usage_count_by_same_user', 'type' => 'number'])
+                                @component('admin.components.form-group', ['name' => 'max_usable_count_by_user', 'type' => 'number'])
                                     @slot('label', 'Usage count by same user')
                                     @slot('attributes',['min' => 1])
-                                    @slot('value', $coupon->usage_count_by_same_user)
+                                    @slot('value', $coupon->max_usable_count_by_user)
                                 @endcomponent
                             </div>
                             <div class="col-md-6">
-                                @component('admin.components.form-group', ['name' => 'total_usage_count', 'type' => 'number'])
+                                @component('admin.components.form-group', ['name' => 'max_usable_count', 'type' => 'number'])
                                     @slot('label', 'Total usage count')
                                     @slot('attributes',['min' => 1])
-                                    @slot('value', $coupon->total_usage_count)
+                                    @slot('value', $coupon->max_usable_count)
                                 @endcomponent
                             </div>
                             <div class="col-6">

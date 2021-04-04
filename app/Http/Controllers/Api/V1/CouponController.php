@@ -3,7 +3,6 @@
 namespace App\Http\Controllers\Api\V1;
 
 use App\Http\Controllers\Api\BaseApiController;
-use App\Http\Resources\CouponResource;
 use App\Models\Coupon;
 use Illuminate\Http\JsonResponse;
 use Symfony\Component\HttpFoundation\Response;

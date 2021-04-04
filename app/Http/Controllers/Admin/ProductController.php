@@ -7,6 +7,9 @@ use App\Models\Branch;
 use App\Models\Chain;
 use App\Models\Product;
 use App\Models\Taxonomy;
+use Arr;
+use DB;
+use Exception;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 
@@ -80,7 +83,7 @@ class ProductController extends Controller
 
         try {
             $this->storeSaveLogic($request, $product);
-        } catch (\Exception $e) {
+        } catch (Exception $e) {
             return back()->with('message', [
                 'type' => 'Error',
                 'text' => $e->getMessage(),
@@ -112,7 +115,7 @@ class ProductController extends Controller
 
         try {
             $this->storeSaveLogic($request, $product);
-        } catch (\Exception $e) {
+        } catch (Exception $e) {
             return back()->with('message', [
                 'type' => 'Error',
                 'text' => $e->getMessage(),
@@ -131,7 +134,7 @@ class ProductController extends Controller
     {
         try {
             $product->delete();
-        } catch (\Exception $e) {
+        } catch (Exception $e) {
             return redirect()
                 ->route('admin.products.index', ['type' => $request->type])
                 ->with('message', [
@@ -179,19 +182,19 @@ class ProductController extends Controller
 
         return [
             "{$defaultLocale}.title" => 'required',
-            "chain_id" => 'required',
-            "branch_id" => 'required',
-            "categories" => 'required',
-            "unit_id" => 'required',
-            "price" => 'required',
-            "type" => 'required',
+            'chain_id' => 'required',
+            'branch_id' => 'required',
+            'categories' => 'required',
+            'unit_id' => 'required',
+            'price' => 'required',
+            'type' => 'required',
         ];
     }
 
     private function storeSaveLogic(Request $request, Product $product): void
     {
-        \DB::beginTransaction();
-        $ids = \Arr::pluck(json_decode($request->input('categories'), true), 'id');
+        DB::beginTransaction();
+        $ids = Arr::pluck(json_decode($request->input('categories'), true), 'id');
         $product->creator_id = $product->editor_id = auth()->id();
         $product->category_id = count($ids) > 0 ? $ids[0] : null;
         $product->chain_id = optional(json_decode($request->input('chain_id')))->id;
@@ -224,7 +227,7 @@ class ProductController extends Controller
             }
         }
         $product->push();
-        \DB::commit();
+        DB::commit();
 
         $this->handleSubmittedSingleMedia('cover', $request, $product);
         $this->handleSubmittedMedia($request, 'gallery', $product, 'gallery');

@@ -2,6 +2,8 @@
 
 namespace App\Models;
 
+use Eloquent;
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
 
 /**
@@ -12,15 +14,15 @@ use Illuminate\Database\Eloquent\Model;
  * @property string $title
  * @property string|null $description
  * @property string $locale
- * @method static \Illuminate\Database\Eloquent\Builder|BranchTranslation newModelQuery()
- * @method static \Illuminate\Database\Eloquent\Builder|BranchTranslation newQuery()
- * @method static \Illuminate\Database\Eloquent\Builder|BranchTranslation query()
- * @method static \Illuminate\Database\Eloquent\Builder|BranchTranslation whereBranchId($value)
- * @method static \Illuminate\Database\Eloquent\Builder|BranchTranslation whereDescription($value)
- * @method static \Illuminate\Database\Eloquent\Builder|BranchTranslation whereId($value)
- * @method static \Illuminate\Database\Eloquent\Builder|BranchTranslation whereLocale($value)
- * @method static \Illuminate\Database\Eloquent\Builder|BranchTranslation whereTitle($value)
- * @mixin \Eloquent
+ * @method static Builder|BranchTranslation newModelQuery()
+ * @method static Builder|BranchTranslation newQuery()
+ * @method static Builder|BranchTranslation query()
+ * @method static Builder|BranchTranslation whereBranchId($value)
+ * @method static Builder|BranchTranslation whereDescription($value)
+ * @method static Builder|BranchTranslation whereId($value)
+ * @method static Builder|BranchTranslation whereLocale($value)
+ * @method static Builder|BranchTranslation whereTitle($value)
+ * @mixin Eloquent
  */
 class BranchTranslation extends Model
 {

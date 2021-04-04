@@ -10,10 +10,12 @@ use Symfony\Component\HttpFoundation\Response;
 
 class BaseApiController extends Controller
 {
-    use AuthorizesRequests, DispatchesJobs, ValidatesRequests;
+    use AuthorizesRequests;
+    use DispatchesJobs;
+    use ValidatesRequests;
 
-    const PAGINATION = 30;
-    const NOTIFICATION_LED_COLOR = '34495e';
+    public const PAGINATION = 30;
+    public const NOTIFICATION_LED_COLOR = '34495e';
 
     private $statusCode = Response::HTTP_OK;
 

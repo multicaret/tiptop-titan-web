@@ -5,13 +5,18 @@ namespace App\Http\Controllers\Admin;
 use App\Http\Controllers\Controller;
 use App\Models\Region;
 use App\Models\Chain;
+use DB;
+use Exception;
+use Illuminate\Contracts\Foundation\Application;
+use Illuminate\Contracts\View\Factory;
+use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\View\View;
 
 class ChainController extends Controller
 {
 
-    function __construct()
+    public function __construct()
     {
 //        $this->middleware('permission:chain.permissions.index', ['only' => ['index', 'store']]);
 //        $this->middleware('permission:chain.permissions.create', ['only' => ['create', 'store']]);
@@ -24,7 +29,7 @@ class ChainController extends Controller
      *
      * @param  Request  $request
      *
-     * @return \Illuminate\Contracts\Foundation\Application|\Illuminate\Contracts\View\Factory|\Illuminate\Contracts\View\View|View
+     * @return Application|Factory|\Illuminate\Contracts\View\View|View
      */
     public function index(Request $request)
     {
@@ -74,7 +79,7 @@ class ChainController extends Controller
      *
      * @param  Request  $request
      *
-     * @return \Illuminate\Contracts\Foundation\Application|\Illuminate\Contracts\View\Factory|\Illuminate\Contracts\View\View|View
+     * @return Application|Factory|\Illuminate\Contracts\View\View|View
      */
     public function create(Request $request)
     {
@@ -89,9 +94,9 @@ class ChainController extends Controller
     /**
      * Store a newly created resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
+     * @param  Request  $request
      *
-     * @return \Illuminate\Http\RedirectResponse
+     * @return RedirectResponse
      */
     public function store(Request $request)
     {
@@ -116,7 +121,7 @@ class ChainController extends Controller
      *
      * @param  Request  $request
      *
-     * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
+     * @return Factory|View
      */
     public function edit(Chain $chain, Request $request)
     {
@@ -131,10 +136,10 @@ class ChainController extends Controller
     /**
      * Update the specified resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
+     * @param  Request  $request
      * @param  Chain  $chain
      *
-     * @return \Illuminate\Http\RedirectResponse
+     * @return RedirectResponse
      */
     public function update(Request $request, Chain $chain)
     {
@@ -154,8 +159,8 @@ class ChainController extends Controller
      *
      * @param  Chain  $chain
      *
-     * @return \Illuminate\Http\RedirectResponse
-     * @throws \Exception
+     * @return RedirectResponse
+     * @throws Exception
      */
     public function destroy(Chain $chain)
     {
@@ -183,7 +188,7 @@ class ChainController extends Controller
     {
         $region = json_decode($request->region);
         $city = json_decode($request->city);
-        \DB::beginTransaction();
+        DB::beginTransaction();
         $chain->city_id = isset($city) ? $city->id : null;
         $chain->region_id = isset($region) ? $region->id : null;
         $chain->primary_phone_number = $request->input('primary_phone_number');
@@ -205,7 +210,7 @@ class ChainController extends Controller
         $this->handleSubmittedSingleMedia('cover', $request, $chain);
         $this->handleSubmittedSingleMedia('logo', $request, $chain);
         $this->handleSubmittedMedia($request, 'gallery', $chain, 'gallery');
-        \DB::commit();
+        DB::commit();
     }
 
 }

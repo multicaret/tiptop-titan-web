@@ -15,6 +15,7 @@ use App\Models\Taxonomy;
 use App\Models\Translation;
 use App\Models\User;
 use Carbon\Carbon;
+use Exception;
 use Illuminate\Http\Request;
 use Illuminate\Support\Str;
 use Yajra\DataTables\DataTables;
@@ -25,7 +26,7 @@ class DatatableController extends AjaxController
      * @param  Request  $request
      *
      * @return mixed
-     * @throws \Exception
+     * @throws Exception
      */
     public function users(Request $request)
     {
@@ -72,7 +73,7 @@ class DatatableController extends AjaxController
                                  ])->render();
                              }
 
-                             return "<i>Never</i>";
+                             return '<i>Never</i>';
                          })
                          ->editColumn('created_at', function ($item) {
                              return view('admin.components.datatables._date', [
@@ -98,7 +99,7 @@ class DatatableController extends AjaxController
      * @param  Request  $request
      *
      * @return mixed
-     * @throws \Exception
+     * @throws Exception
      */
     public function taxonomies(Request $request)
     {
@@ -172,7 +173,7 @@ class DatatableController extends AjaxController
      * @param  Request  $request
      *
      * @return mixed
-     * @throws \Exception
+     * @throws Exception
      */
     public function posts(Request $request)
     {
@@ -327,7 +328,7 @@ class DatatableController extends AjaxController
 
     public function slides(Request $request)
     {
-        $slides = Slide::selectRaw('slides.*');
+        $slides = Slide::selectRaw('slides.*')->latest();
 
         return DataTables::of($slides)
                          ->editColumn('action', function ($slide) {
@@ -402,7 +403,7 @@ class DatatableController extends AjaxController
                              if ( ! is_null($item->expires_at)) {
                                  return view('admin.components.datatables._time-left', [
                                      'title' => $title,
-                                     'tooltip' => Str::kebab($item->expires_at->diffForHumans(\Carbon\Carbon::now())),
+                                     'tooltip' => Str::kebab($item->expires_at->diffForHumans(Carbon::now())),
                                      'icon' => $icon,
                                      'color' => $color,
                                  ])->render();
@@ -630,8 +631,8 @@ class DatatableController extends AjaxController
             'order_column'
         ];
         foreach (localization()->getSupportedLocalesKeys() as $key) {
-            array_push($rawColumns, $key."_value");
-            $of->editColumn($key."_value", function ($transition) use ($key) {
+            array_push($rawColumns, $key.'_value');
+            $of->editColumn($key.'_value', function ($transition) use ($key) {
                 $hasTranslation = $transition->hasTranslation($key);
                 $value = $hasTranslation ? $transition->getTranslation($key)->value : '';
 
@@ -641,7 +642,7 @@ class DatatableController extends AjaxController
                     'localeKey' => $key,
                     'is_empty' => ! $hasTranslation,
                 ])->render();
-            })->filterColumn($key."_value", function ($builderData, $search) use ($key) {
+            })->filterColumn($key.'_value', function ($builderData, $search) use ($key) {
                 if (strpos(Str::lower($search), 'empty') !== false) {
                     return $builderData->notTranslatedIn($key);
                 }

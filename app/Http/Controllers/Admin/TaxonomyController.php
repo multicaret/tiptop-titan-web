@@ -3,15 +3,21 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
+use App\Models\Branch;
 use App\Models\Taxonomy;
 use App\Models\TaxonomyTranslation;
+use Exception;
+use Illuminate\Contracts\Foundation\Application;
+use Illuminate\Contracts\View\Factory;
+use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
+use Illuminate\Http\Response;
 use Illuminate\View\View;
 
 class TaxonomyController extends Controller
 {
 
-    function __construct()
+    public function __construct()
     {
         $this->middleware('permission:taxonomy.permissions.index', ['only' => ['index', 'store']]);
         $this->middleware('permission:taxonomy.permissions.create', ['only' => ['create', 'store']]);
@@ -24,7 +30,7 @@ class TaxonomyController extends Controller
      *
      * @param  Request  $request
      *
-     * @return \Illuminate\Http\Response
+     * @return Response
      */
     public function index(Request $request)
     {
@@ -61,7 +67,7 @@ class TaxonomyController extends Controller
                 ]
             ]);
         }
-        if ($correctType == \App\Models\Taxonomy::TYPE_UNIT) {
+        if ($correctType == Taxonomy::TYPE_UNIT) {
             $columns = array_merge($columns, [
                 [
                     'data' => 'step',
@@ -72,7 +78,7 @@ class TaxonomyController extends Controller
                 ]
             ]);
         }
-        if ($correctType == \App\Models\Taxonomy::TYPE_INGREDIENT) {
+        if ($correctType == Taxonomy::TYPE_INGREDIENT) {
             $columns = array_merge($columns, [
                 [
                     'data' => 'ingredientCategory',
@@ -83,7 +89,7 @@ class TaxonomyController extends Controller
                 ]
             ]);
         }
-        if ($correctType == \App\Models\Taxonomy::TYPE_FOOD_CATEGORY) {
+        if ($correctType == Taxonomy::TYPE_FOOD_CATEGORY) {
             $columns = array_merge($columns, [
                 [
                     'data' => 'branches',
@@ -128,7 +134,7 @@ class TaxonomyController extends Controller
      *
      * @param  Request  $request
      *
-     * @return \Illuminate\Contracts\Foundation\Application|\Illuminate\Contracts\View\Factory|\Illuminate\Contracts\View\View|View
+     * @return Application|Factory|\Illuminate\Contracts\View\View|View
      */
     public function create(Request $request)
     {
@@ -147,9 +153,9 @@ class TaxonomyController extends Controller
     /**
      * Store a newly created resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
+     * @param  Request  $request
      *
-     * @return \Illuminate\Http\Response
+     * @return Response
      */
     public function store(Request $request)
     {
@@ -241,10 +247,10 @@ class TaxonomyController extends Controller
     /**
      * Update the specified resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
+     * @param  Request  $request
      * @param  Taxonomy  $taxonomy
      *
-     * @return \Illuminate\Http\RedirectResponse
+     * @return RedirectResponse
      */
     public function update(Request $request, Taxonomy $taxonomy)
     {
@@ -318,8 +324,8 @@ class TaxonomyController extends Controller
      *
      * @param  Taxonomy  $taxonomy
      *
-     * @return \Illuminate\Http\RedirectResponse
-     * @throws \Exception
+     * @return RedirectResponse
+     * @throws Exception
      */
     public function destroy(Taxonomy $taxonomy)
     {
@@ -385,12 +391,13 @@ class TaxonomyController extends Controller
         }
 
         $fontAwesomeIcons = $this->getFontAwesomeIcons();
-        $branches = \App\Models\Branch::whereType(\App\Models\Branch::TYPE_FOOD_OBJECT)
-                                      ->get()
-                                      ->mapWithKeys(function ($item) {
-                                          return [$item['id'] => $item['title'].' - '.$item['chain']['title'].' ('.$item['city']['english_name'].')'];
-                                      });
-        $ingredientCategories = Taxonomy::ingredientCategories()->get();
+        $branches = Branch::whereType(Branch::TYPE_FOOD_OBJECT)
+                          ->active()
+                          ->get()
+                          ->mapWithKeys(function ($item) {
+                              return [$item['id'] => $item['title'].' - '.$item['chain']['title'].' ('.$item['city']['english_name'].')'];
+                          });
+        $ingredientCategories = Taxonomy::ingredientCategories()->active()->get();
 
         return [$typeName, $correctType, $roots, $fontAwesomeIcons, $branches, $ingredientCategories];
     }

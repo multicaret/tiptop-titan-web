@@ -4,6 +4,9 @@ namespace App\Traits;
 
 
 use App\Models\Activity;
+use Illuminate\Database\Eloquent\Relations\MorphMany;
+use ReflectionClass;
+use ReflectionException;
 
 trait RecordsActivity
 {
@@ -40,7 +43,7 @@ trait RecordsActivity
     /**
      * Fetch the activity relationship.
      *
-     * @return \Illuminate\Database\Eloquent\Relations\MorphMany
+     * @return MorphMany
      */
     public function activity()
     {
@@ -52,7 +55,7 @@ trait RecordsActivity
      *
      * @param  string  $event
      *
-     * @throws \ReflectionException
+     * @throws ReflectionException
      */
     protected function recordActivity($event)
     {
@@ -96,11 +99,11 @@ trait RecordsActivity
      * @param  string  $event
      *
      * @return string
-     * @throws \ReflectionException
+     * @throws ReflectionException
      */
     protected function getActivityType($event)
     {
-        $type = strtolower((new \ReflectionClass($this))->getShortName());
+        $type = strtolower((new ReflectionClass($this))->getShortName());
 
         return "{$event}_{$type}";
     }

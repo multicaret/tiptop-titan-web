@@ -2,7 +2,11 @@
 
 namespace App\Models;
 
+use Eloquent;
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Support\Carbon;
 
 /**
  * App\Models\CouponUsage
@@ -10,21 +14,27 @@ use Illuminate\Database\Eloquent\Model;
  * @property int $id
  * @property int $coupon_id
  * @property int $redeemer_id
+ * @property int $order_id
+ * @property int $cart_id
  * @property int $redeemed_at
- * @property \Illuminate\Support\Carbon|null $created_at
- * @property \Illuminate\Support\Carbon|null $updated_at
- * @property-read \App\Models\Coupon $coupon
- * @property-read \App\Models\User $redeemer
- * @method static \Illuminate\Database\Eloquent\Builder|CouponUsage newModelQuery()
- * @method static \Illuminate\Database\Eloquent\Builder|CouponUsage newQuery()
- * @method static \Illuminate\Database\Eloquent\Builder|CouponUsage query()
- * @method static \Illuminate\Database\Eloquent\Builder|CouponUsage whereCouponId($value)
- * @method static \Illuminate\Database\Eloquent\Builder|CouponUsage whereCreatedAt($value)
- * @method static \Illuminate\Database\Eloquent\Builder|CouponUsage whereId($value)
- * @method static \Illuminate\Database\Eloquent\Builder|CouponUsage whereRedeemedAt($value)
- * @method static \Illuminate\Database\Eloquent\Builder|CouponUsage whereRedeemerId($value)
- * @method static \Illuminate\Database\Eloquent\Builder|CouponUsage whereUpdatedAt($value)
- * @mixin \Eloquent
+ * @property float $discounted_amount
+ * @property Carbon|null $created_at
+ * @property Carbon|null $updated_at
+ * @property-read Coupon $coupon
+ * @property-read User $redeemer
+ * @method static Builder|CouponUsage newModelQuery()
+ * @method static Builder|CouponUsage newQuery()
+ * @method static Builder|CouponUsage query()
+ * @method static Builder|CouponUsage whereCartId($value)
+ * @method static Builder|CouponUsage whereCouponId($value)
+ * @method static Builder|CouponUsage whereCreatedAt($value)
+ * @method static Builder|CouponUsage whereDiscountedAmount($value)
+ * @method static Builder|CouponUsage whereId($value)
+ * @method static Builder|CouponUsage whereOrderId($value)
+ * @method static Builder|CouponUsage whereRedeemedAt($value)
+ * @method static Builder|CouponUsage whereRedeemerId($value)
+ * @method static Builder|CouponUsage whereUpdatedAt($value)
+ * @mixin Eloquent
  */
 class CouponUsage extends Model
 {
@@ -33,12 +43,12 @@ class CouponUsage extends Model
         'redeemed_at' => 'timestamp'
     ];
 
-    public function coupon(): \Illuminate\Database\Eloquent\Relations\BelongsTo
+    public function coupon(): BelongsTo
     {
         return $this->belongsTo(Coupon::class, 'coupon_id');
     }
 
-    public function redeemer(): \Illuminate\Database\Eloquent\Relations\BelongsTo
+    public function redeemer(): BelongsTo
     {
         return $this->belongsTo(User::class, 'redeemer_id');
     }

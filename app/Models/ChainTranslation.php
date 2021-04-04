@@ -2,6 +2,8 @@
 
 namespace App\Models;
 
+use Eloquent;
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
 
 /**
@@ -12,15 +14,15 @@ use Illuminate\Database\Eloquent\Model;
  * @property string $title
  * @property string|null $description
  * @property string $locale
- * @method static \Illuminate\Database\Eloquent\Builder|ChainTranslation newModelQuery()
- * @method static \Illuminate\Database\Eloquent\Builder|ChainTranslation newQuery()
- * @method static \Illuminate\Database\Eloquent\Builder|ChainTranslation query()
- * @method static \Illuminate\Database\Eloquent\Builder|ChainTranslation whereChainId($value)
- * @method static \Illuminate\Database\Eloquent\Builder|ChainTranslation whereDescription($value)
- * @method static \Illuminate\Database\Eloquent\Builder|ChainTranslation whereId($value)
- * @method static \Illuminate\Database\Eloquent\Builder|ChainTranslation whereLocale($value)
- * @method static \Illuminate\Database\Eloquent\Builder|ChainTranslation whereTitle($value)
- * @mixin \Eloquent
+ * @method static Builder|ChainTranslation newModelQuery()
+ * @method static Builder|ChainTranslation newQuery()
+ * @method static Builder|ChainTranslation query()
+ * @method static Builder|ChainTranslation whereChainId($value)
+ * @method static Builder|ChainTranslation whereDescription($value)
+ * @method static Builder|ChainTranslation whereId($value)
+ * @method static Builder|ChainTranslation whereLocale($value)
+ * @method static Builder|ChainTranslation whereTitle($value)
+ * @mixin Eloquent
  */
 class ChainTranslation extends Model
 {

@@ -5,6 +5,10 @@ namespace App\Http\Controllers\Admin;
 use App\Http\Controllers\Controller;
 use App\Models\City;
 use App\Models\Region;
+use DB;
+use Exception;
+use Illuminate\Contracts\View\Factory;
+use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\View\View;
 
@@ -12,13 +16,14 @@ class CityController extends Controller
 {
 
 
-    function __construct()
+    public function __construct()
     {
         $this->middleware('permission:city.permissions.index', ['only' => ['index', 'store']]);
         $this->middleware('permission:city.permissions.create', ['only' => ['create', 'store']]);
         $this->middleware('permission:city.permissions.edit', ['only' => ['edit', 'update']]);
         $this->middleware('permission:city.permissions.destroy', ['only' => ['destroy']]);
     }
+
     /**
      * Display a listing of the resource.
      *
@@ -78,9 +83,9 @@ class CityController extends Controller
     /**
      * Store a newly created resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
+     * @param  Request  $request
      *
-     * @return \Illuminate\Http\RedirectResponse
+     * @return RedirectResponse
      */
     public function store(Request $request)
     {
@@ -91,7 +96,7 @@ class CityController extends Controller
         ];
 
         $request->validate($validationData);*/
-        \DB::beginTransaction();
+        DB::beginTransaction();
         $city = new City();
         $city->english_name = $request->input('en.name');
         $city->region_id = $request->region_id;
@@ -106,7 +111,7 @@ class CityController extends Controller
 
         $city->save();
 
-        \DB::commit();
+        DB::commit();
 
         return redirect()
             ->route('admin.cities.index')
@@ -123,21 +128,22 @@ class CityController extends Controller
      *
      * @param  Request  $request
      *
-     * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
+     * @return Factory|View
      */
     public function edit(City $city)
     {
         $regions = Region::all();
+
         return view('admin.cities.form', compact('city', 'regions'));
     }
 
     /**
      * Update the specified resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
+     * @param  Request  $request
      * @param  City  $city
      *
-     * @return \Illuminate\Http\RedirectResponse
+     * @return RedirectResponse
      */
     public function update(Request $request, City $city)
     {
@@ -148,7 +154,7 @@ class CityController extends Controller
 
         $request->validate($validationRules);*/
 
-        \DB::beginTransaction();
+        DB::beginTransaction();
 
         $city->english_name = $request->input('en.name');
         $city->region_id = $request->region_id;
@@ -162,7 +168,7 @@ class CityController extends Controller
         }
         $city->save();
 
-        \DB::commit();
+        DB::commit();
 
         return redirect()
             ->route('admin.cities.index', ['type' => $request->type])
@@ -177,8 +183,8 @@ class CityController extends Controller
      *
      * @param  City  $city
      *
-     * @return \Illuminate\Http\RedirectResponse
-     * @throws \Exception
+     * @return RedirectResponse
+     * @throws Exception
      */
     public function destroy(City $city)
     {

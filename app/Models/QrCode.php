@@ -2,7 +2,10 @@
 
 namespace App\Models;
 
+use Eloquent;
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Carbon;
 
 /**
  * App\Models\QrCode
@@ -15,23 +18,23 @@ use Illuminate\Database\Eloquent\Model;
  * @property int $is_external_route
  * @property string $forecolor
  * @property string $backcolor
- * @property \Illuminate\Support\Carbon|null $created_at
- * @property \Illuminate\Support\Carbon|null $updated_at
- * @property-read Model|\Eloquent $qrCodeable
- * @method static \Illuminate\Database\Eloquent\Builder|QrCode newModelQuery()
- * @method static \Illuminate\Database\Eloquent\Builder|QrCode newQuery()
- * @method static \Illuminate\Database\Eloquent\Builder|QrCode query()
- * @method static \Illuminate\Database\Eloquent\Builder|QrCode whereBackcolor($value)
- * @method static \Illuminate\Database\Eloquent\Builder|QrCode whereCreatedAt($value)
- * @method static \Illuminate\Database\Eloquent\Builder|QrCode whereForecolor($value)
- * @method static \Illuminate\Database\Eloquent\Builder|QrCode whereId($value)
- * @method static \Illuminate\Database\Eloquent\Builder|QrCode whereIsExternalRoute($value)
- * @method static \Illuminate\Database\Eloquent\Builder|QrCode whereQrCodeableId($value)
- * @method static \Illuminate\Database\Eloquent\Builder|QrCode whereQrCodeableType($value)
- * @method static \Illuminate\Database\Eloquent\Builder|QrCode whereRoute($value)
- * @method static \Illuminate\Database\Eloquent\Builder|QrCode whereRouteParams($value)
- * @method static \Illuminate\Database\Eloquent\Builder|QrCode whereUpdatedAt($value)
- * @mixin \Eloquent
+ * @property Carbon|null $created_at
+ * @property Carbon|null $updated_at
+ * @property-read Model|Eloquent $qrCodeable
+ * @method static Builder|QrCode newModelQuery()
+ * @method static Builder|QrCode newQuery()
+ * @method static Builder|QrCode query()
+ * @method static Builder|QrCode whereBackcolor($value)
+ * @method static Builder|QrCode whereCreatedAt($value)
+ * @method static Builder|QrCode whereForecolor($value)
+ * @method static Builder|QrCode whereId($value)
+ * @method static Builder|QrCode whereIsExternalRoute($value)
+ * @method static Builder|QrCode whereQrCodeableId($value)
+ * @method static Builder|QrCode whereQrCodeableType($value)
+ * @method static Builder|QrCode whereRoute($value)
+ * @method static Builder|QrCode whereRouteParams($value)
+ * @method static Builder|QrCode whereUpdatedAt($value)
+ * @mixin Eloquent
  */
 class QrCode extends Model
 {

@@ -1,5 +1,6 @@
 <?php
 
+use App\Models\Currency;
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
@@ -22,7 +23,7 @@ class CreateCurrenciesTable extends Migration
             $table->char('decimal_separator', 10)->nullable();
             $table->char('thousands_separator', 10)->nullable();
             $table->boolean('is_symbol_after')->default(false)->nullable();
-            $table->unsignedTinyInteger('status')->default(1)->comment('0:incomplete, 1:draft, 2:published, 3:Inactive, 4..n:CUSTOM');
+            $table->unsignedTinyInteger('status')->default(Currency::STATUS_DRAFT)->comment('1:draft, 2:active, 3:Inactive, 4..n:CUSTOM');
             $table->timestamps();
         });
     }
