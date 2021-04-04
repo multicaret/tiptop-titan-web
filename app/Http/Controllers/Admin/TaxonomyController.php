@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
+use App\Models\Branch;
 use App\Models\Taxonomy;
 use App\Models\TaxonomyTranslation;
 use Illuminate\Http\Request;
@@ -385,12 +386,13 @@ class TaxonomyController extends Controller
         }
 
         $fontAwesomeIcons = $this->getFontAwesomeIcons();
-        $branches = \App\Models\Branch::whereType(\App\Models\Branch::TYPE_FOOD_OBJECT)
-                                      ->get()
-                                      ->mapWithKeys(function ($item) {
-                                          return [$item['id'] => $item['title'].' - '.$item['chain']['title'].' ('.$item['city']['english_name'].')'];
-                                      });
-        $ingredientCategories = Taxonomy::ingredientCategories()->get();
+        $branches = Branch::whereType(Branch::TYPE_FOOD_OBJECT)
+                          ->published()
+                          ->get()
+                          ->mapWithKeys(function ($item) {
+                              return [$item['id'] => $item['title'].' - '.$item['chain']['title'].' ('.$item['city']['english_name'].')'];
+                          });
+        $ingredientCategories = Taxonomy::ingredientCategories()->published()->get();
 
         return [$typeName, $correctType, $roots, $fontAwesomeIcons, $branches, $ingredientCategories];
     }

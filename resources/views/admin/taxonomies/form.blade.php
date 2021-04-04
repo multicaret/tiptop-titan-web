@@ -107,8 +107,8 @@
                     <div class="col-6">
                         @component('admin.components.form-group', ['name' => 'ingredient_category_id', 'type' => 'select'])
                             @slot('label', 'Ingredient Category')
-                            @slot('options', $ingredientCategories->pluck('title','id'))
-                            @slot('attributes', ['class'=>'select-2-ingredient-category w-100'])
+                            @slot('options', $ingredientCategories->prepend(null)->pluck('title','id'))
+                            @slot('attributes', ['required','class'=>'select-2-ingredient-category w-100'])
                             @slot('selected', $taxonomy->ingredient_category_id)
                         @endcomponent
                     </div>
