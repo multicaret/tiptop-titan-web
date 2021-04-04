@@ -256,7 +256,7 @@ class OrderController extends BaseApiController
         \DB::beginTransaction();
         $order->rating_comment = $request->input('comment');
         $order->branch_rating_value = $branchRatingValue;
-        $order->rated_at = $request->input('rated_at');
+        $order->rated_at = now();
         $order->save();
 
         $branch = Branch::find($order->branch_id);
