@@ -6,9 +6,12 @@ use App\Http\Controllers\Api\BaseApiController;
 use App\Http\Resources\UserResource;
 use App\Models\User;
 use Exception;
+use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
+use Illuminate\Routing\Redirector;
 use Illuminate\Support\Str;
 use Socialite;
+use Spatie\MediaLibrary\Exceptions\FileCannotBeAdded;
 use Symfony\Component\HttpFoundation\Response;
 
 class SocialiteController extends BaseApiController
@@ -25,8 +28,8 @@ class SocialiteController extends BaseApiController
      * @param         $provider
      * @param  Request  $request
      *
-     * @return \Illuminate\Http\RedirectResponse|\Illuminate\Routing\Redirector
-     * @throws \Spatie\MediaLibrary\Exceptions\FileCannotBeAdded
+     * @return RedirectResponse|Redirector
+     * @throws FileCannotBeAdded
      */
     public function handleProvider($provider, Request $request)
     {

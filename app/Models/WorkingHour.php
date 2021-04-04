@@ -4,6 +4,8 @@ namespace App\Models;
 
 use App\Http\Resources\WorkingHourResource;
 use Carbon\Carbon;
+use Eloquent;
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
 
 /**
@@ -18,20 +20,20 @@ use Illuminate\Database\Eloquent\Model;
  * @property bool $is_day_off
  * @property \Illuminate\Support\Carbon|null $created_at
  * @property \Illuminate\Support\Carbon|null $updated_at
- * @property-read Model|\Eloquent $workable
- * @method static \Illuminate\Database\Eloquent\Builder|WorkingHour newModelQuery()
- * @method static \Illuminate\Database\Eloquent\Builder|WorkingHour newQuery()
- * @method static \Illuminate\Database\Eloquent\Builder|WorkingHour query()
- * @method static \Illuminate\Database\Eloquent\Builder|WorkingHour whereClosesAt($value)
- * @method static \Illuminate\Database\Eloquent\Builder|WorkingHour whereCreatedAt($value)
- * @method static \Illuminate\Database\Eloquent\Builder|WorkingHour whereDay($value)
- * @method static \Illuminate\Database\Eloquent\Builder|WorkingHour whereId($value)
- * @method static \Illuminate\Database\Eloquent\Builder|WorkingHour whereIsDayOff($value)
- * @method static \Illuminate\Database\Eloquent\Builder|WorkingHour whereOpensAt($value)
- * @method static \Illuminate\Database\Eloquent\Builder|WorkingHour whereUpdatedAt($value)
- * @method static \Illuminate\Database\Eloquent\Builder|WorkingHour whereWorkableId($value)
- * @method static \Illuminate\Database\Eloquent\Builder|WorkingHour whereWorkableType($value)
- * @mixin \Eloquent
+ * @property-read Model|Eloquent $workable
+ * @method static Builder|WorkingHour newModelQuery()
+ * @method static Builder|WorkingHour newQuery()
+ * @method static Builder|WorkingHour query()
+ * @method static Builder|WorkingHour whereClosesAt($value)
+ * @method static Builder|WorkingHour whereCreatedAt($value)
+ * @method static Builder|WorkingHour whereDay($value)
+ * @method static Builder|WorkingHour whereId($value)
+ * @method static Builder|WorkingHour whereIsDayOff($value)
+ * @method static Builder|WorkingHour whereOpensAt($value)
+ * @method static Builder|WorkingHour whereUpdatedAt($value)
+ * @method static Builder|WorkingHour whereWorkableId($value)
+ * @method static Builder|WorkingHour whereWorkableType($value)
+ * @mixin Eloquent
  */
 class WorkingHour extends Model
 {

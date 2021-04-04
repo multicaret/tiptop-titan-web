@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Ajax;
 
 use App\Models\Taxonomy;
 use App\Models\User;
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Support\Facades\DB;
 
 class SearchController extends AjaxController
@@ -80,7 +81,7 @@ class SearchController extends AjaxController
     /**
      * Get all users when match the name or username
      *
-     * @return \Illuminate\Database\Eloquent\Builder
+     * @return Builder
      */
     protected function lookForUsers()
     {
@@ -109,7 +110,7 @@ class SearchController extends AjaxController
     /**
      * Get all taxonomies when match.
      *
-     * @return \Illuminate\Database\Eloquent\Builder
+     * @return Builder
      */
     protected function lookForTaxonomies()
     {

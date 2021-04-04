@@ -3,8 +3,11 @@
 namespace App\Models;
 
 use App\Traits\HasStatuses;
+use Eloquent;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
+use Illuminate\Database\Query\Builder;
+use Illuminate\Support\Carbon;
 use Illuminate\Support\Str;
 
 /**
@@ -42,18 +45,18 @@ use Illuminate\Support\Str;
  * @property int $type 1: Address, 2: Contact
  * @property int $kind 1: Home, 2: Work, 3:Other
  * @property int $status 1:draft, 2:active, 3:Inactive, 4..n:CUSTOM
- * @property \Illuminate\Support\Carbon|null $created_at
- * @property \Illuminate\Support\Carbon|null $updated_at
- * @property \Illuminate\Support\Carbon|null $deleted_at
- * @property-read \App\Models\City|null $city
- * @property-read Model|\Eloquent $contactable
- * @property-read \App\Models\Country|null $country
- * @property-read \App\Models\User $creator
- * @property-read \App\Models\User $editor
+ * @property Carbon|null $created_at
+ * @property Carbon|null $updated_at
+ * @property Carbon|null $deleted_at
+ * @property-read City|null $city
+ * @property-read Model|Eloquent $contactable
+ * @property-read Country|null $country
+ * @property-read User $creator
+ * @property-read User $editor
  * @property-read bool $is_active
  * @property-read bool $is_inactive
  * @property-read mixed $status_name
- * @property-read \App\Models\Region|null $region
+ * @property-read Region|null $region
  * @method static \Illuminate\Database\Eloquent\Builder|Location active()
  * @method static \Illuminate\Database\Eloquent\Builder|Location addresses()
  * @method static \Illuminate\Database\Eloquent\Builder|Location contacts()
@@ -62,7 +65,7 @@ use Illuminate\Support\Str;
  * @method static \Illuminate\Database\Eloquent\Builder|Location newModelQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|Location newQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|Location notActive()
- * @method static \Illuminate\Database\Query\Builder|Location onlyTrashed()
+ * @method static Builder|Location onlyTrashed()
  * @method static \Illuminate\Database\Eloquent\Builder|Location query()
  * @method static \Illuminate\Database\Eloquent\Builder|Location whereAddress1($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Location whereAddress2($value)
@@ -99,26 +102,26 @@ use Illuminate\Support\Str;
  * @method static \Illuminate\Database\Eloquent\Builder|Location whereVat($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Location whereVatOffice($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Location whereWebsite($value)
- * @method static \Illuminate\Database\Query\Builder|Location withTrashed()
- * @method static \Illuminate\Database\Query\Builder|Location withoutTrashed()
- * @mixin \Eloquent
+ * @method static Builder|Location withTrashed()
+ * @method static Builder|Location withoutTrashed()
+ * @mixin Eloquent
  */
 class Location extends Model
 {
-    use SoftDeletes,
-        HasStatuses;
+    use HasStatuses;
+    use SoftDeletes;
 
 
-    const STATUS_DRAFT = 1;
-    const STATUS_ACTIVE = 2;
-    const STATUS_INACTIVE = 3;
+    public const STATUS_DRAFT = 1;
+    public const STATUS_ACTIVE = 2;
+    public const STATUS_INACTIVE = 3;
 
-    const TYPE_ADDRESS = 1;
-    const TYPE_CONTACT = 2;
+    public const TYPE_ADDRESS = 1;
+    public const TYPE_CONTACT = 2;
 
-    const KIND_HOME = 1;
-    const KIND_WORK = 2;
-    const KIND_OTHER = 3;
+    public const KIND_HOME = 1;
+    public const KIND_WORK = 2;
+    public const KIND_OTHER = 3;
 
     /**
      * The attributes that should be cast to native types.

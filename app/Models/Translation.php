@@ -4,7 +4,12 @@ namespace App\Models;
 
 use App\Traits\HasStatuses;
 use Astrotomic\Translatable\Translatable;
+use Eloquent;
+use File;
+use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Carbon;
 
 /**
  * App\Models\Translation
@@ -14,40 +19,40 @@ use Illuminate\Database\Eloquent\Model;
  * @property string $group
  * @property string $key
  * @property int|null $order_column
- * @property \Illuminate\Support\Carbon|null $created_at
- * @property \Illuminate\Support\Carbon|null $updated_at
+ * @property Carbon|null $created_at
+ * @property Carbon|null $updated_at
  * @property-read bool $is_active
  * @property-read bool $is_inactive
  * @property-read mixed $status_name
- * @property-read \App\Models\TranslationTranslation|null $translation
- * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\TranslationTranslation[] $translations
+ * @property-read TranslationTranslation|null $translation
+ * @property-read Collection|TranslationTranslation[] $translations
  * @property-read int|null $translations_count
- * @method static \Illuminate\Database\Eloquent\Builder|Translation active()
- * @method static \Illuminate\Database\Eloquent\Builder|Translation draft()
- * @method static \Illuminate\Database\Eloquent\Builder|Translation group($groupName)
- * @method static \Illuminate\Database\Eloquent\Builder|Translation inactive()
- * @method static \Illuminate\Database\Eloquent\Builder|Translation listsTranslations(string $translationField)
- * @method static \Illuminate\Database\Eloquent\Builder|Translation newModelQuery()
- * @method static \Illuminate\Database\Eloquent\Builder|Translation newQuery()
- * @method static \Illuminate\Database\Eloquent\Builder|Translation notActive()
- * @method static \Illuminate\Database\Eloquent\Builder|Translation notTranslatedIn(?string $locale = null)
- * @method static \Illuminate\Database\Eloquent\Builder|Translation orWhereTranslation(string $translationField, $value, ?string $locale = null)
- * @method static \Illuminate\Database\Eloquent\Builder|Translation orWhereTranslationLike(string $translationField, $value, ?string $locale = null)
- * @method static \Illuminate\Database\Eloquent\Builder|Translation orderByTranslation(string $translationField, string $sortMethod = 'asc')
- * @method static \Illuminate\Database\Eloquent\Builder|Translation query()
- * @method static \Illuminate\Database\Eloquent\Builder|Translation translated()
- * @method static \Illuminate\Database\Eloquent\Builder|Translation translatedIn(?string $locale = null)
- * @method static \Illuminate\Database\Eloquent\Builder|Translation whereCreatedAt($value)
- * @method static \Illuminate\Database\Eloquent\Builder|Translation whereGroup($value)
- * @method static \Illuminate\Database\Eloquent\Builder|Translation whereId($value)
- * @method static \Illuminate\Database\Eloquent\Builder|Translation whereKey($value)
- * @method static \Illuminate\Database\Eloquent\Builder|Translation whereOrderColumn($value)
- * @method static \Illuminate\Database\Eloquent\Builder|Translation whereStatus($value)
- * @method static \Illuminate\Database\Eloquent\Builder|Translation whereTranslation(string $translationField, $value, ?string $locale = null, string $method = 'whereHas', string $operator = '=')
- * @method static \Illuminate\Database\Eloquent\Builder|Translation whereTranslationLike(string $translationField, $value, ?string $locale = null)
- * @method static \Illuminate\Database\Eloquent\Builder|Translation whereUpdatedAt($value)
- * @method static \Illuminate\Database\Eloquent\Builder|Translation withTranslation()
- * @mixin \Eloquent
+ * @method static Builder|Translation active()
+ * @method static Builder|Translation draft()
+ * @method static Builder|Translation group($groupName)
+ * @method static Builder|Translation inactive()
+ * @method static Builder|Translation listsTranslations(string $translationField)
+ * @method static Builder|Translation newModelQuery()
+ * @method static Builder|Translation newQuery()
+ * @method static Builder|Translation notActive()
+ * @method static Builder|Translation notTranslatedIn(?string $locale = null)
+ * @method static Builder|Translation orWhereTranslation(string $translationField, $value, ?string $locale = null)
+ * @method static Builder|Translation orWhereTranslationLike(string $translationField, $value, ?string $locale = null)
+ * @method static Builder|Translation orderByTranslation(string $translationField, string $sortMethod = 'asc')
+ * @method static Builder|Translation query()
+ * @method static Builder|Translation translated()
+ * @method static Builder|Translation translatedIn(?string $locale = null)
+ * @method static Builder|Translation whereCreatedAt($value)
+ * @method static Builder|Translation whereGroup($value)
+ * @method static Builder|Translation whereId($value)
+ * @method static Builder|Translation whereKey($value)
+ * @method static Builder|Translation whereOrderColumn($value)
+ * @method static Builder|Translation whereStatus($value)
+ * @method static Builder|Translation whereTranslation(string $translationField, $value, ?string $locale = null, string $method = 'whereHas', string $operator = '=')
+ * @method static Builder|Translation whereTranslationLike(string $translationField, $value, ?string $locale = null)
+ * @method static Builder|Translation whereUpdatedAt($value)
+ * @method static Builder|Translation withTranslation()
+ * @mixin Eloquent
  */
 class Translation extends Model
 {
@@ -72,9 +77,9 @@ class Translation extends Model
     {
         $allGroupsFiles = [];
         $defaultLocale = localization()->getDefaultLocale();
-        $directoryIsExists = \File::exists(app()['path.lang']."/{$defaultLocale}/");
+        $directoryIsExists = File::exists(app()['path.lang']."/{$defaultLocale}/");
         if ($directoryIsExists) {
-            $allFiles = \File::files(app()['path.lang']."/{$defaultLocale}/");
+            $allFiles = File::files(app()['path.lang']."/{$defaultLocale}/");
             $allGroupsFiles = collect($allFiles)->map(function ($file) {
                 return pathinfo($file, PATHINFO_FILENAME);
             })->toArray();

@@ -2,7 +2,11 @@
 
 namespace App\Models;
 
+use Eloquent;
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Support\Carbon;
 use Illuminate\Support\Str;
 
 /**
@@ -14,22 +18,22 @@ use Illuminate\Support\Str;
  * @property int $count
  * @property int $chain_id
  * @property int $branch_id
- * @property \Illuminate\Support\Carbon|null $created_at
- * @property \Illuminate\Support\Carbon|null $updated_at
- * @property-read \App\Models\Branch $branch
- * @property-read \App\Models\Chain $chain
- * @method static \Illuminate\Database\Eloquent\Builder|Search newModelQuery()
- * @method static \Illuminate\Database\Eloquent\Builder|Search newQuery()
- * @method static \Illuminate\Database\Eloquent\Builder|Search query()
- * @method static \Illuminate\Database\Eloquent\Builder|Search whereBranchId($value)
- * @method static \Illuminate\Database\Eloquent\Builder|Search whereChainId($value)
- * @method static \Illuminate\Database\Eloquent\Builder|Search whereCount($value)
- * @method static \Illuminate\Database\Eloquent\Builder|Search whereCreatedAt($value)
- * @method static \Illuminate\Database\Eloquent\Builder|Search whereId($value)
- * @method static \Illuminate\Database\Eloquent\Builder|Search whereLocale($value)
- * @method static \Illuminate\Database\Eloquent\Builder|Search whereTerm($value)
- * @method static \Illuminate\Database\Eloquent\Builder|Search whereUpdatedAt($value)
- * @mixin \Eloquent
+ * @property Carbon|null $created_at
+ * @property Carbon|null $updated_at
+ * @property-read Branch $branch
+ * @property-read Chain $chain
+ * @method static Builder|Search newModelQuery()
+ * @method static Builder|Search newQuery()
+ * @method static Builder|Search query()
+ * @method static Builder|Search whereBranchId($value)
+ * @method static Builder|Search whereChainId($value)
+ * @method static Builder|Search whereCount($value)
+ * @method static Builder|Search whereCreatedAt($value)
+ * @method static Builder|Search whereId($value)
+ * @method static Builder|Search whereLocale($value)
+ * @method static Builder|Search whereTerm($value)
+ * @method static Builder|Search whereUpdatedAt($value)
+ * @mixin Eloquent
  */
 class Search extends Model
 {
@@ -54,12 +58,12 @@ class Search extends Model
     }
 
 
-    public function chain(): \Illuminate\Database\Eloquent\Relations\BelongsTo
+    public function chain(): BelongsTo
     {
         return $this->belongsTo(Chain::class, 'chain_id');
     }
 
-    public function branch(): \Illuminate\Database\Eloquent\Relations\BelongsTo
+    public function branch(): BelongsTo
     {
         return $this->belongsTo(Branch::class, 'branch_id');
     }

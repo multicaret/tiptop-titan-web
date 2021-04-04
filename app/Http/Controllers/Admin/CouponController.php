@@ -5,14 +5,19 @@ namespace App\Http\Controllers\Admin;
 use App\Http\Controllers\Controller;
 use App\Models\Coupon;
 use Carbon\Carbon;
+use Illuminate\Contracts\Foundation\Application;
+use Illuminate\Contracts\View\Factory;
+use Illuminate\Contracts\View\View;
+use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
+use Illuminate\Http\Response;
 
 class CouponController extends Controller
 {
     /**
      * Display a listing of the resource.
      *
-     * @return \Illuminate\Contracts\Foundation\Application|\Illuminate\Contracts\View\Factory|\Illuminate\Contracts\View\View|\Illuminate\Http\Response
+     * @return Application|Factory|View|Response
      */
     public function index()
     {
@@ -63,7 +68,7 @@ class CouponController extends Controller
     /**
      * Show the form for creating a new resource.
      *
-     * @return \Illuminate\Contracts\Foundation\Application|\Illuminate\Contracts\View\Factory|\Illuminate\Contracts\View\View|\Illuminate\Http\Response
+     * @return Application|Factory|View|Response
      */
     public function create()
     {
@@ -76,9 +81,9 @@ class CouponController extends Controller
     /**
      * Store a newly created resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
+     * @param  Request  $request
      *
-     * @return \Illuminate\Http\RedirectResponse
+     * @return RedirectResponse
      */
     public function store(Request $request)
     {
@@ -95,9 +100,9 @@ class CouponController extends Controller
     /**
      * Display the specified resource.
      *
-     * @param  \App\Models\Coupon  $coupon
+     * @param  Coupon  $coupon
      *
-     * @return \Illuminate\Http\Response
+     * @return Response
      */
     public function show(Coupon $coupon)
     {
@@ -107,9 +112,9 @@ class CouponController extends Controller
     /**
      * Show the form for editing the specified resource.
      *
-     * @param  \App\Models\Coupon  $coupon
+     * @param  Coupon  $coupon
      *
-     * @return \Illuminate\Contracts\Foundation\Application|\Illuminate\Contracts\View\Factory|\Illuminate\Contracts\View\View|\Illuminate\Http\Response
+     * @return Application|Factory|View|Response
      */
     public function edit(Coupon $coupon)
     {
@@ -119,12 +124,12 @@ class CouponController extends Controller
     /**
      * Update the specified resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  \App\Models\Coupon  $coupon
+     * @param  Request  $request
+     * @param  Coupon  $coupon
      *
-     * @return \Illuminate\Http\RedirectResponse
+     * @return RedirectResponse
      */
-    public function update(Request $request, Coupon $coupon): \Illuminate\Http\RedirectResponse
+    public function update(Request $request, Coupon $coupon): RedirectResponse
     {
         $request->validate($this->validationRules());
         $coupon->editor_id = auth()->id();
@@ -138,11 +143,11 @@ class CouponController extends Controller
     /**
      * Remove the specified resource from storage.
      *
-     * @param  \App\Models\Coupon  $coupon
+     * @param  Coupon  $coupon
      *
-     * @return \Illuminate\Http\RedirectResponse
+     * @return RedirectResponse
      */
-    public function destroy(Coupon $coupon): \Illuminate\Http\RedirectResponse
+    public function destroy(Coupon $coupon): RedirectResponse
     {
         if ($coupon->delete()) {
             return back()->with('message', [
@@ -160,9 +165,9 @@ class CouponController extends Controller
     private function validationRules(): array
     {
         return [
-            "name" => 'required',
-            "redeem_code" => 'required',
-            "discount_amount" => 'required',
+            'name' => 'required',
+            'redeem_code' => 'required',
+            'discount_amount' => 'required',
         ];
     }
 

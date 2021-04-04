@@ -3,8 +3,11 @@
 namespace App\Models;
 
 use App\Traits\HasMediaTrait;
+use Eloquent;
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
 use Spatie\MediaLibrary\HasMedia;
+use Spatie\MediaLibrary\MediaCollections\Models\Collections\MediaCollection;
 
 /**
  * App\Models\SlideTranslation
@@ -16,16 +19,16 @@ use Spatie\MediaLibrary\HasMedia;
  * @property-read mixed $image
  * @property-read mixed $image_full
  * @property-read mixed $thumbnail
- * @property-read \Spatie\MediaLibrary\MediaCollections\Models\Collections\MediaCollection|\Spatie\MediaLibrary\MediaCollections\Models\Media[] $media
+ * @property-read MediaCollection|\Spatie\MediaLibrary\MediaCollections\Models\Media[] $media
  * @property-read int|null $media_count
- * @method static \Illuminate\Database\Eloquent\Builder|SlideTranslation newModelQuery()
- * @method static \Illuminate\Database\Eloquent\Builder|SlideTranslation newQuery()
- * @method static \Illuminate\Database\Eloquent\Builder|SlideTranslation query()
- * @method static \Illuminate\Database\Eloquent\Builder|SlideTranslation whereAltTag($value)
- * @method static \Illuminate\Database\Eloquent\Builder|SlideTranslation whereId($value)
- * @method static \Illuminate\Database\Eloquent\Builder|SlideTranslation whereLocale($value)
- * @method static \Illuminate\Database\Eloquent\Builder|SlideTranslation whereSlideId($value)
- * @mixin \Eloquent
+ * @method static Builder|SlideTranslation newModelQuery()
+ * @method static Builder|SlideTranslation newQuery()
+ * @method static Builder|SlideTranslation query()
+ * @method static Builder|SlideTranslation whereAltTag($value)
+ * @method static Builder|SlideTranslation whereId($value)
+ * @method static Builder|SlideTranslation whereLocale($value)
+ * @method static Builder|SlideTranslation whereSlideId($value)
+ * @mixin Eloquent
  */
 class SlideTranslation extends Model implements HasMedia
 {

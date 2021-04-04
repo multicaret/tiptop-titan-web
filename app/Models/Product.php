@@ -10,12 +10,17 @@ use App\Traits\HasTypes;
 use App\Traits\HasUuid;
 use App\Traits\HasViewCount;
 use Astrotomic\Translatable\Translatable;
+use Eloquent;
+use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\SoftDeletes;
+use Illuminate\Support\Carbon;
 use Multicaret\Acquaintances\Traits\CanBeFavorited;
 use Spatie\MediaLibrary\HasMedia;
+use Spatie\MediaLibrary\MediaCollections\Models\Collections\MediaCollection;
 use Spatie\MediaLibrary\MediaCollections\Models\Media;
 
 /**
@@ -53,20 +58,20 @@ use Spatie\MediaLibrary\MediaCollections\Models\Media;
  * @property bool|null $is_storage_tracking_enabled
  * @property bool|null $price_discount_by_percentage true: percentage, false: fixed amount
  * @property int $on_mobile_grid_tile_weight
- * @property \Illuminate\Support\Carbon|null $created_at
- * @property \Illuminate\Support\Carbon|null $updated_at
- * @property \Illuminate\Support\Carbon|null $deleted_at
- * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\Barcode[] $barcodes
+ * @property Carbon|null $created_at
+ * @property Carbon|null $updated_at
+ * @property Carbon|null $deleted_at
+ * @property-read Collection|Barcode[] $barcodes
  * @property-read int|null $barcodes_count
- * @property-read \App\Models\Branch $branch
- * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\Cart[] $carts
+ * @property-read Branch $branch
+ * @property-read Collection|Cart[] $carts
  * @property-read int|null $carts_count
- * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\Taxonomy[] $categories
+ * @property-read Collection|Taxonomy[] $categories
  * @property-read int|null $categories_count
- * @property-read \App\Models\Chain $chain
- * @property-read \App\Models\User $creator
- * @property-read \App\Models\User $editor
- * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\User[] $favoriters
+ * @property-read Chain $chain
+ * @property-read User $creator
+ * @property-read User $editor
+ * @property-read Collection|User[] $favoriters
  * @property-read int|null $favoriters_count
  * @property-read mixed $cover
  * @property-read mixed $cover_full
@@ -78,95 +83,95 @@ use Spatie\MediaLibrary\MediaCollections\Models\Media;
  * @property-read mixed $price_formatted
  * @property-read mixed $status_name
  * @property-read mixed $thumbnail
- * @property-read \App\Models\Taxonomy $masterCategory
- * @property-read \Spatie\MediaLibrary\MediaCollections\Models\Collections\MediaCollection|Media[] $media
+ * @property-read Taxonomy $masterCategory
+ * @property-read MediaCollection|Media[] $media
  * @property-read int|null $media_count
- * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\Taxonomy[] $tags
+ * @property-read Collection|Taxonomy[] $tags
  * @property-read int|null $tags_count
- * @property-read \App\Models\ProductTranslation|null $translation
- * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\ProductTranslation[] $translations
+ * @property-read ProductTranslation|null $translation
+ * @property-read Collection|ProductTranslation[] $translations
  * @property-read int|null $translations_count
- * @property-read \App\Models\Taxonomy|null $unit
- * @method static \Illuminate\Database\Eloquent\Builder|Product active()
- * @method static \Illuminate\Database\Eloquent\Builder|Product draft()
- * @method static \Illuminate\Database\Eloquent\Builder|Product food()
- * @method static \Illuminate\Database\Eloquent\Builder|Product forCategory($categoryId)
- * @method static \Illuminate\Database\Eloquent\Builder|Product grocery()
- * @method static \Illuminate\Database\Eloquent\Builder|Product inactive()
- * @method static \Illuminate\Database\Eloquent\Builder|Product listsTranslations(string $translationField)
- * @method static \Illuminate\Database\Eloquent\Builder|Product newModelQuery()
- * @method static \Illuminate\Database\Eloquent\Builder|Product newQuery()
- * @method static \Illuminate\Database\Eloquent\Builder|Product notActive()
- * @method static \Illuminate\Database\Eloquent\Builder|Product notTranslatedIn(?string $locale = null)
+ * @property-read Taxonomy|null $unit
+ * @method static Builder|Product active()
+ * @method static Builder|Product draft()
+ * @method static Builder|Product food()
+ * @method static Builder|Product forCategory($categoryId)
+ * @method static Builder|Product grocery()
+ * @method static Builder|Product inactive()
+ * @method static Builder|Product listsTranslations(string $translationField)
+ * @method static Builder|Product newModelQuery()
+ * @method static Builder|Product newQuery()
+ * @method static Builder|Product notActive()
+ * @method static Builder|Product notTranslatedIn(?string $locale = null)
  * @method static \Illuminate\Database\Query\Builder|Product onlyTrashed()
- * @method static \Illuminate\Database\Eloquent\Builder|Product orWhereTranslation(string $translationField, $value, ?string $locale = null)
- * @method static \Illuminate\Database\Eloquent\Builder|Product orWhereTranslationLike(string $translationField, $value, ?string $locale = null)
- * @method static \Illuminate\Database\Eloquent\Builder|Product orderByTranslation(string $translationField, string $sortMethod = 'asc')
- * @method static \Illuminate\Database\Eloquent\Builder|Product query()
- * @method static \Illuminate\Database\Eloquent\Builder|Product translated()
- * @method static \Illuminate\Database\Eloquent\Builder|Product translatedIn(?string $locale = null)
- * @method static \Illuminate\Database\Eloquent\Builder|Product whereAvailableQuantity($value)
- * @method static \Illuminate\Database\Eloquent\Builder|Product whereAvgRating($value)
- * @method static \Illuminate\Database\Eloquent\Builder|Product whereBranchId($value)
- * @method static \Illuminate\Database\Eloquent\Builder|Product whereCategoryId($value)
- * @method static \Illuminate\Database\Eloquent\Builder|Product whereChainId($value)
- * @method static \Illuminate\Database\Eloquent\Builder|Product whereCreatedAt($value)
- * @method static \Illuminate\Database\Eloquent\Builder|Product whereCreatorId($value)
- * @method static \Illuminate\Database\Eloquent\Builder|Product whereCustomBannerBeganAt($value)
- * @method static \Illuminate\Database\Eloquent\Builder|Product whereCustomBannerEndedAt($value)
- * @method static \Illuminate\Database\Eloquent\Builder|Product whereDeletedAt($value)
- * @method static \Illuminate\Database\Eloquent\Builder|Product whereDepth($value)
- * @method static \Illuminate\Database\Eloquent\Builder|Product whereEditorId($value)
- * @method static \Illuminate\Database\Eloquent\Builder|Product whereHeight($value)
- * @method static \Illuminate\Database\Eloquent\Builder|Product whereId($value)
- * @method static \Illuminate\Database\Eloquent\Builder|Product whereIsStorageTrackingEnabled($value)
- * @method static \Illuminate\Database\Eloquent\Builder|Product whereMinimumOrderableQuantity($value)
- * @method static \Illuminate\Database\Eloquent\Builder|Product whereOnMobileGridTileWeight($value)
- * @method static \Illuminate\Database\Eloquent\Builder|Product whereOrderColumn($value)
- * @method static \Illuminate\Database\Eloquent\Builder|Product wherePrice($value)
- * @method static \Illuminate\Database\Eloquent\Builder|Product wherePriceDiscountAmount($value)
- * @method static \Illuminate\Database\Eloquent\Builder|Product wherePriceDiscountBeganAt($value)
- * @method static \Illuminate\Database\Eloquent\Builder|Product wherePriceDiscountByPercentage($value)
- * @method static \Illuminate\Database\Eloquent\Builder|Product wherePriceDiscountFinishedAt($value)
- * @method static \Illuminate\Database\Eloquent\Builder|Product whereRatingCount($value)
- * @method static \Illuminate\Database\Eloquent\Builder|Product whereSearchCount($value)
- * @method static \Illuminate\Database\Eloquent\Builder|Product whereSku($value)
- * @method static \Illuminate\Database\Eloquent\Builder|Product whereStatus($value)
- * @method static \Illuminate\Database\Eloquent\Builder|Product whereTranslation(string $translationField, $value, ?string $locale = null, string $method = 'whereHas', string $operator = '=')
- * @method static \Illuminate\Database\Eloquent\Builder|Product whereTranslationLike(string $translationField, $value, ?string $locale = null)
- * @method static \Illuminate\Database\Eloquent\Builder|Product whereType($value)
- * @method static \Illuminate\Database\Eloquent\Builder|Product whereUnitId($value)
- * @method static \Illuminate\Database\Eloquent\Builder|Product whereUpc($value)
- * @method static \Illuminate\Database\Eloquent\Builder|Product whereUpdatedAt($value)
- * @method static \Illuminate\Database\Eloquent\Builder|Product whereUuid($value)
- * @method static \Illuminate\Database\Eloquent\Builder|Product whereViewCount($value)
- * @method static \Illuminate\Database\Eloquent\Builder|Product whereWeight($value)
- * @method static \Illuminate\Database\Eloquent\Builder|Product whereWidth($value)
- * @method static \Illuminate\Database\Eloquent\Builder|Product withTranslation()
+ * @method static Builder|Product orWhereTranslation(string $translationField, $value, ?string $locale = null)
+ * @method static Builder|Product orWhereTranslationLike(string $translationField, $value, ?string $locale = null)
+ * @method static Builder|Product orderByTranslation(string $translationField, string $sortMethod = 'asc')
+ * @method static Builder|Product query()
+ * @method static Builder|Product translated()
+ * @method static Builder|Product translatedIn(?string $locale = null)
+ * @method static Builder|Product whereAvailableQuantity($value)
+ * @method static Builder|Product whereAvgRating($value)
+ * @method static Builder|Product whereBranchId($value)
+ * @method static Builder|Product whereCategoryId($value)
+ * @method static Builder|Product whereChainId($value)
+ * @method static Builder|Product whereCreatedAt($value)
+ * @method static Builder|Product whereCreatorId($value)
+ * @method static Builder|Product whereCustomBannerBeganAt($value)
+ * @method static Builder|Product whereCustomBannerEndedAt($value)
+ * @method static Builder|Product whereDeletedAt($value)
+ * @method static Builder|Product whereDepth($value)
+ * @method static Builder|Product whereEditorId($value)
+ * @method static Builder|Product whereHeight($value)
+ * @method static Builder|Product whereId($value)
+ * @method static Builder|Product whereIsStorageTrackingEnabled($value)
+ * @method static Builder|Product whereMinimumOrderableQuantity($value)
+ * @method static Builder|Product whereOnMobileGridTileWeight($value)
+ * @method static Builder|Product whereOrderColumn($value)
+ * @method static Builder|Product wherePrice($value)
+ * @method static Builder|Product wherePriceDiscountAmount($value)
+ * @method static Builder|Product wherePriceDiscountBeganAt($value)
+ * @method static Builder|Product wherePriceDiscountByPercentage($value)
+ * @method static Builder|Product wherePriceDiscountFinishedAt($value)
+ * @method static Builder|Product whereRatingCount($value)
+ * @method static Builder|Product whereSearchCount($value)
+ * @method static Builder|Product whereSku($value)
+ * @method static Builder|Product whereStatus($value)
+ * @method static Builder|Product whereTranslation(string $translationField, $value, ?string $locale = null, string $method = 'whereHas', string $operator = '=')
+ * @method static Builder|Product whereTranslationLike(string $translationField, $value, ?string $locale = null)
+ * @method static Builder|Product whereType($value)
+ * @method static Builder|Product whereUnitId($value)
+ * @method static Builder|Product whereUpc($value)
+ * @method static Builder|Product whereUpdatedAt($value)
+ * @method static Builder|Product whereUuid($value)
+ * @method static Builder|Product whereViewCount($value)
+ * @method static Builder|Product whereWeight($value)
+ * @method static Builder|Product whereWidth($value)
+ * @method static Builder|Product withTranslation()
  * @method static \Illuminate\Database\Query\Builder|Product withTrashed()
  * @method static \Illuminate\Database\Query\Builder|Product withoutTrashed()
- * @mixin \Eloquent
+ * @mixin Eloquent
  */
 class Product extends Model implements HasMedia
 {
-    use HasMediaTrait,
-        Translatable,
-        SoftDeletes,
-        HasViewCount,
-        HasUuid,
-        HasStatuses,
-        HasTypes,
-        HasAppTypes,
-        CanBeFavorited;
+    use CanBeFavorited;
+    use HasAppTypes;
+    use HasMediaTrait;
+    use HasStatuses;
+    use HasTypes;
+    use HasUuid;
+    use HasViewCount;
+    use SoftDeletes;
+    use Translatable;
 
 
-    const STATUS_DRAFT = 1;
-    const STATUS_ACTIVE = 2;
-    const STATUS_INACTIVE = 3;
-    const STATUS_INACTIVE_SEASONABLE = 4;
+    public const STATUS_DRAFT = 1;
+    public const STATUS_ACTIVE = 2;
+    public const STATUS_INACTIVE = 3;
+    public const STATUS_INACTIVE_SEASONABLE = 4;
 
-    const TYPE_GROCERY_OBJECT = 1;
-    const TYPE_FOOD_OBJECT = 2;
+    public const TYPE_GROCERY_OBJECT = 1;
+    public const TYPE_FOOD_OBJECT = 2;
 
     protected $with = [
         'chain',
@@ -261,17 +266,17 @@ class Product extends Model implements HasMedia
         return [
             self::STATUS_ACTIVE => [
                 'id' => self::STATUS_ACTIVE,
-                'title' => __("Active"),
+                'title' => __('Active'),
                 'class' => 'success',
             ],
             self::STATUS_INACTIVE => [
                 'id' => self::STATUS_INACTIVE,
-                'title' => __("Inactive"),
+                'title' => __('Inactive'),
                 'class' => 'danger',
             ],
             self::STATUS_INACTIVE_SEASONABLE => [
                 'id' => self::STATUS_INACTIVE_SEASONABLE,
-                'title' => __("Inactive Seasonable"),
+                'title' => __('Inactive Seasonable'),
                 'class' => 'warning',
             ],
         ];
@@ -279,12 +284,12 @@ class Product extends Model implements HasMedia
 
     /**
      *
-     * @param  \Illuminate\Database\Eloquent\Builder  $query
+     * @param  Builder  $query
      *
      * @param $categoryId
-     * @return \Illuminate\Database\Eloquent\Builder
+     * @return Builder
      */
-    public function scopeForCategory($query, $categoryId): \Illuminate\Database\Eloquent\Builder
+    public function scopeForCategory($query, $categoryId): Builder
     {
         return $query->where('category_id', $categoryId);
     }

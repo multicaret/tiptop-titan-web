@@ -4,7 +4,11 @@ namespace App\Models;
 
 use App\Traits\HasStatuses;
 use Astrotomic\Translatable\Translatable;
+use Eloquent;
+use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Carbon;
 
 /**
  * App\Models\Language
@@ -15,54 +19,54 @@ use Illuminate\Database\Eloquent\Model;
  * @property string $locale_country
  * @property bool $is_rtl
  * @property int $status 1:draft, 2:active, 3:Inactive, 4..n:CUSTOM
- * @property \Illuminate\Support\Carbon|null $created_at
- * @property \Illuminate\Support\Carbon|null $updated_at
- * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\Country[] $countries
+ * @property Carbon|null $created_at
+ * @property Carbon|null $updated_at
+ * @property-read Collection|Country[] $countries
  * @property-read int|null $countries_count
  * @property-read bool $is_active
  * @property-read bool $is_inactive
  * @property-read mixed $status_name
- * @property-read \App\Models\LanguageTranslation|null $translation
- * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\LanguageTranslation[] $translations
+ * @property-read LanguageTranslation|null $translation
+ * @property-read Collection|LanguageTranslation[] $translations
  * @property-read int|null $translations_count
- * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\User[] $users
+ * @property-read Collection|User[] $users
  * @property-read int|null $users_count
- * @method static \Illuminate\Database\Eloquent\Builder|Language active()
- * @method static \Illuminate\Database\Eloquent\Builder|Language draft()
- * @method static \Illuminate\Database\Eloquent\Builder|Language inactive()
- * @method static \Illuminate\Database\Eloquent\Builder|Language listsTranslations(string $translationField)
- * @method static \Illuminate\Database\Eloquent\Builder|Language newModelQuery()
- * @method static \Illuminate\Database\Eloquent\Builder|Language newQuery()
- * @method static \Illuminate\Database\Eloquent\Builder|Language notActive()
- * @method static \Illuminate\Database\Eloquent\Builder|Language notTranslatedIn(?string $locale = null)
- * @method static \Illuminate\Database\Eloquent\Builder|Language orWhereTranslation(string $translationField, $value, ?string $locale = null)
- * @method static \Illuminate\Database\Eloquent\Builder|Language orWhereTranslationLike(string $translationField, $value, ?string $locale = null)
- * @method static \Illuminate\Database\Eloquent\Builder|Language orderByTranslation(string $translationField, string $sortMethod = 'asc')
- * @method static \Illuminate\Database\Eloquent\Builder|Language query()
- * @method static \Illuminate\Database\Eloquent\Builder|Language translated()
- * @method static \Illuminate\Database\Eloquent\Builder|Language translatedIn(?string $locale = null)
- * @method static \Illuminate\Database\Eloquent\Builder|Language whereCode($value)
- * @method static \Illuminate\Database\Eloquent\Builder|Language whereCreatedAt($value)
- * @method static \Illuminate\Database\Eloquent\Builder|Language whereEnglishName($value)
- * @method static \Illuminate\Database\Eloquent\Builder|Language whereId($value)
- * @method static \Illuminate\Database\Eloquent\Builder|Language whereIsRtl($value)
- * @method static \Illuminate\Database\Eloquent\Builder|Language whereLocaleCountry($value)
- * @method static \Illuminate\Database\Eloquent\Builder|Language whereStatus($value)
- * @method static \Illuminate\Database\Eloquent\Builder|Language whereTranslation(string $translationField, $value, ?string $locale = null, string $method = 'whereHas', string $operator = '=')
- * @method static \Illuminate\Database\Eloquent\Builder|Language whereTranslationLike(string $translationField, $value, ?string $locale = null)
- * @method static \Illuminate\Database\Eloquent\Builder|Language whereUpdatedAt($value)
- * @method static \Illuminate\Database\Eloquent\Builder|Language withTranslation()
- * @mixin \Eloquent
+ * @method static Builder|Language active()
+ * @method static Builder|Language draft()
+ * @method static Builder|Language inactive()
+ * @method static Builder|Language listsTranslations(string $translationField)
+ * @method static Builder|Language newModelQuery()
+ * @method static Builder|Language newQuery()
+ * @method static Builder|Language notActive()
+ * @method static Builder|Language notTranslatedIn(?string $locale = null)
+ * @method static Builder|Language orWhereTranslation(string $translationField, $value, ?string $locale = null)
+ * @method static Builder|Language orWhereTranslationLike(string $translationField, $value, ?string $locale = null)
+ * @method static Builder|Language orderByTranslation(string $translationField, string $sortMethod = 'asc')
+ * @method static Builder|Language query()
+ * @method static Builder|Language translated()
+ * @method static Builder|Language translatedIn(?string $locale = null)
+ * @method static Builder|Language whereCode($value)
+ * @method static Builder|Language whereCreatedAt($value)
+ * @method static Builder|Language whereEnglishName($value)
+ * @method static Builder|Language whereId($value)
+ * @method static Builder|Language whereIsRtl($value)
+ * @method static Builder|Language whereLocaleCountry($value)
+ * @method static Builder|Language whereStatus($value)
+ * @method static Builder|Language whereTranslation(string $translationField, $value, ?string $locale = null, string $method = 'whereHas', string $operator = '=')
+ * @method static Builder|Language whereTranslationLike(string $translationField, $value, ?string $locale = null)
+ * @method static Builder|Language whereUpdatedAt($value)
+ * @method static Builder|Language withTranslation()
+ * @mixin Eloquent
  */
 class Language extends Model
 {
-    use Translatable,
-        HasStatuses;
+    use HasStatuses;
+    use Translatable;
 
 
-    const STATUS_DRAFT = 1;
-    const STATUS_ACTIVE = 2;
-    const STATUS_INACTIVE = 3;
+    public const STATUS_DRAFT = 1;
+    public const STATUS_ACTIVE = 2;
+    public const STATUS_INACTIVE = 3;
 
     protected $translatedAttributes = ['name'];
     protected $fillable = ['name'];

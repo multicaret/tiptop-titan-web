@@ -2,7 +2,10 @@
 
 namespace App\Models;
 
+use Eloquent;
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Relations\Pivot;
+use Illuminate\Support\Carbon;
 
 /**
  * App\Models\BranchSupervisor
@@ -11,18 +14,18 @@ use Illuminate\Database\Eloquent\Relations\Pivot;
  * @property int $branch_id
  * @property int $supervisor_id
  * @property int $is_primary
- * @property \Illuminate\Support\Carbon|null $created_at
- * @property \Illuminate\Support\Carbon|null $updated_at
- * @method static \Illuminate\Database\Eloquent\Builder|BranchSupervisor newModelQuery()
- * @method static \Illuminate\Database\Eloquent\Builder|BranchSupervisor newQuery()
- * @method static \Illuminate\Database\Eloquent\Builder|BranchSupervisor query()
- * @method static \Illuminate\Database\Eloquent\Builder|BranchSupervisor whereBranchId($value)
- * @method static \Illuminate\Database\Eloquent\Builder|BranchSupervisor whereCreatedAt($value)
- * @method static \Illuminate\Database\Eloquent\Builder|BranchSupervisor whereId($value)
- * @method static \Illuminate\Database\Eloquent\Builder|BranchSupervisor whereIsPrimary($value)
- * @method static \Illuminate\Database\Eloquent\Builder|BranchSupervisor whereSupervisorId($value)
- * @method static \Illuminate\Database\Eloquent\Builder|BranchSupervisor whereUpdatedAt($value)
- * @mixin \Eloquent
+ * @property Carbon|null $created_at
+ * @property Carbon|null $updated_at
+ * @method static Builder|BranchSupervisor newModelQuery()
+ * @method static Builder|BranchSupervisor newQuery()
+ * @method static Builder|BranchSupervisor query()
+ * @method static Builder|BranchSupervisor whereBranchId($value)
+ * @method static Builder|BranchSupervisor whereCreatedAt($value)
+ * @method static Builder|BranchSupervisor whereId($value)
+ * @method static Builder|BranchSupervisor whereIsPrimary($value)
+ * @method static Builder|BranchSupervisor whereSupervisorId($value)
+ * @method static Builder|BranchSupervisor whereUpdatedAt($value)
+ * @mixin Eloquent
  */
 class BranchSupervisor extends Pivot
 {

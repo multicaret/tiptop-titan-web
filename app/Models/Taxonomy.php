@@ -11,10 +11,18 @@ use App\Traits\HasViewCount;
 use Astrotomic\Translatable\Contracts\Translatable as TranslatableContract;
 use Astrotomic\Translatable\Translatable;
 use Baum\Node;
+use Eloquent;
 use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Database\Eloquent\Collection;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
+use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Database\Eloquent\Relations\MorphToMany;
 use Illuminate\Database\Eloquent\SoftDeletes;
+use Illuminate\Support\Carbon;
 use Illuminate\Support\Str;
 use Spatie\MediaLibrary\HasMedia;
+use Spatie\MediaLibrary\MediaCollections\Models\Collections\MediaCollection;
 use Spatie\MediaLibrary\MediaCollections\Models\Media;
 
 
@@ -38,19 +46,19 @@ use Spatie\MediaLibrary\MediaCollections\Models\Media;
  * @property string $step
  * @property int|null $order_column
  * @property int $status 1:draft, 2:active, 3:Inactive, 4..n:CUSTOM
- * @property \Illuminate\Support\Carbon|null $created_at
- * @property \Illuminate\Support\Carbon|null $updated_at
- * @property \Illuminate\Support\Carbon|null $deleted_at
- * @property-read \App\Models\Branch|null $branch
- * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\Branch[] $branches
+ * @property Carbon|null $created_at
+ * @property Carbon|null $updated_at
+ * @property Carbon|null $deleted_at
+ * @property-read Branch|null $branch
+ * @property-read Collection|Branch[] $branches
  * @property-read int|null $branches_count
- * @property-read \App\Models\Chain|null $chain
- * @property-read \Illuminate\Database\Eloquent\Collection|Taxonomy[] $children
+ * @property-read Chain|null $chain
+ * @property-read Collection|Taxonomy[] $children
  * @property-read int|null $children_count
- * @property-read \App\Models\User $creator
- * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\Product[] $crossSellsProducts
+ * @property-read User $creator
+ * @property-read Collection|Product[] $crossSellsProducts
  * @property-read int|null $cross_sells_products_count
- * @property-read \App\Models\User $editor
+ * @property-read User $editor
  * @property-read mixed $cover
  * @property-read mixed $cover_small
  * @property-read bool $is_active
@@ -58,23 +66,23 @@ use Spatie\MediaLibrary\MediaCollections\Models\Media;
  * @property-read mixed $link
  * @property-read mixed $status_name
  * @property-read Taxonomy|null $ingredientCategory
- * @property-read \Spatie\MediaLibrary\MediaCollections\Models\Collections\MediaCollection|Media[] $media
+ * @property-read MediaCollection|Media[] $media
  * @property-read int|null $media_count
  * @property-read Taxonomy|null $parent
- * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\Post[] $posts
+ * @property-read Collection|Post[] $posts
  * @property-read int|null $posts_count
- * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\Product[] $products
+ * @property-read Collection|Product[] $products
  * @property-read int|null $products_count
- * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\Post[] $tagPosts
+ * @property-read Collection|Post[] $tagPosts
  * @property-read int|null $tag_posts_count
- * @property-read \App\Models\TaxonomyTranslation|null $translation
- * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\TaxonomyTranslation[] $translations
+ * @property-read TaxonomyTranslation|null $translation
+ * @property-read Collection|TaxonomyTranslation[] $translations
  * @property-read int|null $translations_count
- * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\Product[] $upSellsProducts
+ * @property-read Collection|Product[] $upSellsProducts
  * @property-read int|null $up_sells_products_count
- * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\User[] $usersOfCategory
+ * @property-read Collection|User[] $usersOfCategory
  * @property-read int|null $users_of_category_count
- * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\User[] $usersOfSkill
+ * @property-read Collection|User[] $usersOfSkill
  * @property-read int|null $users_of_skill_count
  * @method static Builder|Taxonomy active()
  * @method static Builder|Taxonomy draft()
@@ -83,7 +91,7 @@ use Spatie\MediaLibrary\MediaCollections\Models\Media;
  * @method static Builder|Taxonomy inactive()
  * @method static Builder|Taxonomy ingredientCategories()
  * @method static Builder|Taxonomy ingredients()
- * @method static \Illuminate\Database\Eloquent\Builder|Node limitDepth($limit)
+ * @method static Builder|Node limitDepth($limit)
  * @method static Builder|Taxonomy listsTranslations(string $translationField)
  * @method static Builder|Taxonomy menuCategories()
  * @method static Builder|Taxonomy newModelQuery()
@@ -128,37 +136,37 @@ use Spatie\MediaLibrary\MediaCollections\Models\Media;
  * @method static Builder|Taxonomy whereViewCount($value)
  * @method static Builder|Taxonomy withTranslation()
  * @method static \Illuminate\Database\Query\Builder|Taxonomy withTrashed()
- * @method static \Illuminate\Database\Eloquent\Builder|Node withoutNode($node)
- * @method static \Illuminate\Database\Eloquent\Builder|Node withoutRoot()
- * @method static \Illuminate\Database\Eloquent\Builder|Node withoutSelf()
+ * @method static Builder|Node withoutNode($node)
+ * @method static Builder|Node withoutRoot()
+ * @method static Builder|Node withoutSelf()
  * @method static \Illuminate\Database\Query\Builder|Taxonomy withoutTrashed()
- * @mixin \Eloquent
+ * @mixin Eloquent
  */
 class Taxonomy extends Node implements HasMedia, ShouldHaveTypes, TranslatableContract
 {
-    use Translatable,
-        HasMediaTrait,
-        SoftDeletes,
-        HasViewCount,
-        HasTypes,
-        HasUuid,
-        HasStatuses;
+    use HasMediaTrait;
+    use HasStatuses;
+    use HasTypes;
+    use HasUuid;
+    use HasViewCount;
+    use SoftDeletes;
+    use Translatable;
 
 
-    const STATUS_DRAFT = 1;
-    const STATUS_ACTIVE = 2;
-    const STATUS_INACTIVE = 3;
+    public const STATUS_DRAFT = 1;
+    public const STATUS_ACTIVE = 2;
+    public const STATUS_INACTIVE = 3;
 
-    const TYPE_POST_CATEGORY = 1;
-    const TYPE_TAG = 2;
-    const TYPE_GROCERY_CATEGORY = 3;
-    const TYPE_FOOD_CATEGORY = 4;
-    const TYPE_MENU_CATEGORY = 5;
-    const TYPE_SEARCH_TAGS = 7;
-    const TYPE_RATING_ISSUE = 10;
-    const TYPE_INGREDIENT = 11;
-    const TYPE_INGREDIENT_CATEGORY = 12;
-    const TYPE_UNIT = 15;
+    public const TYPE_POST_CATEGORY = 1;
+    public const TYPE_TAG = 2;
+    public const TYPE_GROCERY_CATEGORY = 3;
+    public const TYPE_FOOD_CATEGORY = 4;
+    public const TYPE_MENU_CATEGORY = 5;
+    public const TYPE_SEARCH_TAGS = 7;
+    public const TYPE_RATING_ISSUE = 10;
+    public const TYPE_INGREDIENT = 11;
+    public const TYPE_INGREDIENT_CATEGORY = 12;
+    public const TYPE_UNIT = 15;
 
     protected $fillable = ['title', 'description', 'parent_id', 'type', 'order_column'];
     protected $translatedAttributes = ['title', 'description'];
@@ -287,50 +295,50 @@ class Taxonomy extends Node implements HasMedia, ShouldHaveTypes, TranslatableCo
         return $query->where('type', '=', self::TYPE_INGREDIENT_CATEGORY);
     }
 
-    public function creator(): \Illuminate\Database\Eloquent\Relations\BelongsTo
+    public function creator(): BelongsTo
     {
         return $this->belongsTo(User::class, 'creator_id');
     }
 
-    public function editor(): \Illuminate\Database\Eloquent\Relations\BelongsTo
+    public function editor(): BelongsTo
     {
         return $this->belongsTo(User::class, 'editor_id');
     }
 
-    public function chain(): \Illuminate\Database\Eloquent\Relations\BelongsTo
+    public function chain(): BelongsTo
     {
         return $this->belongsTo(Chain::class, 'chain_id');
     }
 
-    public function branch(): \Illuminate\Database\Eloquent\Relations\BelongsTo
+    public function branch(): BelongsTo
     {
         return $this->belongsTo(Branch::class, 'branch_id');
     }
 
-    public function ingredientCategory(): \Illuminate\Database\Eloquent\Relations\BelongsTo
+    public function ingredientCategory(): BelongsTo
     {
         return $this->belongsTo(Taxonomy::class, 'ingredient_category_id');
     }
 
-    public function branches(): \Illuminate\Database\Eloquent\Relations\BelongsToMany
+    public function branches(): BelongsToMany
     {
         return $this->belongsToMany(Branch::class, 'category_branch', 'category_id', 'branch_id')
                     ->withTimestamps();
     }
 
-    public function products(): \Illuminate\Database\Eloquent\Relations\BelongsToMany
+    public function products(): BelongsToMany
     {
         return $this->belongsToMany(Product::class, 'category_product', 'category_id', 'product_id')
                     ->withTimestamps();
     }
 
-    public function upSellsProducts(): \Illuminate\Database\Eloquent\Relations\BelongsToMany
+    public function upSellsProducts(): BelongsToMany
     {
         return $this->belongsToMany(Product::class, 'category_product_up_sell', 'category_id', 'product_id')
                     ->withTimestamps();
     }
 
-    public function crossSellsProducts(): \Illuminate\Database\Eloquent\Relations\BelongsToMany
+    public function crossSellsProducts(): BelongsToMany
     {
         return $this->belongsToMany(Product::class, 'category_product_cross_sell', 'category_id', 'product_id')
                     ->withTimestamps();
@@ -363,7 +371,7 @@ class Taxonomy extends Node implements HasMedia, ShouldHaveTypes, TranslatableCo
     }
 
 
-    public function posts(): \Illuminate\Database\Eloquent\Relations\HasMany
+    public function posts(): HasMany
     {
         return $this->hasMany(Post::class, 'category_id');
     }
@@ -371,7 +379,7 @@ class Taxonomy extends Node implements HasMedia, ShouldHaveTypes, TranslatableCo
     /**
      * Get all of the posts that are assigned this tag.
      */
-    public function tagPosts(): \Illuminate\Database\Eloquent\Relations\MorphToMany
+    public function tagPosts(): MorphToMany
     {
         return $this->morphedByMany(Post::class, 'taggable')
                     ->withPivot(['order_column'])

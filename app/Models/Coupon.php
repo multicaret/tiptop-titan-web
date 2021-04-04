@@ -5,7 +5,12 @@ namespace App\Models;
 use App\Http\Resources\CouponResource;
 use App\Traits\HasAppTypes;
 use App\Traits\HasStatuses;
+use Eloquent;
+use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Support\Carbon;
 
 /**
  * App\Models\Coupon
@@ -26,61 +31,62 @@ use Illuminate\Database\Eloquent\Model;
  * @property int $total_redeemed_count
  * @property int $max_usable_count_by_user
  * @property float $money_redeemed_so_far
- * @property \Illuminate\Support\Carbon|null $expired_at
+ * @property Carbon|null $expired_at
  * @property string $redeem_code
  * @property int $status 1:draft, 2:active, 3:Inactive, 4..n:CUSTOM
- * @property \Illuminate\Support\Carbon|null $created_at
- * @property \Illuminate\Support\Carbon|null $updated_at
+ * @property Carbon|null $created_at
+ * @property Carbon|null $updated_at
  * @property string|null $deleted_at
- * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\CouponUsage[] $couponUsage
+ * @property-read Collection|CouponUsage[] $couponUsage
  * @property-read int|null $coupon_usage_count
  * @property-read bool $is_active
  * @property-read bool $is_inactive
  * @property-read mixed $status_name
- * @method static \Illuminate\Database\Eloquent\Builder|Coupon active()
- * @method static \Illuminate\Database\Eloquent\Builder|Coupon draft()
- * @method static \Illuminate\Database\Eloquent\Builder|Coupon food()
- * @method static \Illuminate\Database\Eloquent\Builder|Coupon grocery()
- * @method static \Illuminate\Database\Eloquent\Builder|Coupon inactive()
- * @method static \Illuminate\Database\Eloquent\Builder|Coupon newModelQuery()
- * @method static \Illuminate\Database\Eloquent\Builder|Coupon newQuery()
- * @method static \Illuminate\Database\Eloquent\Builder|Coupon notActive()
- * @method static \Illuminate\Database\Eloquent\Builder|Coupon query()
- * @method static \Illuminate\Database\Eloquent\Builder|Coupon whereCreatedAt($value)
- * @method static \Illuminate\Database\Eloquent\Builder|Coupon whereCreatorId($value)
- * @method static \Illuminate\Database\Eloquent\Builder|Coupon whereCurrencyId($value)
- * @method static \Illuminate\Database\Eloquent\Builder|Coupon whereDeletedAt($value)
- * @method static \Illuminate\Database\Eloquent\Builder|Coupon whereDescription($value)
- * @method static \Illuminate\Database\Eloquent\Builder|Coupon whereDiscountAmount($value)
- * @method static \Illuminate\Database\Eloquent\Builder|Coupon whereDiscountByPercentage($value)
- * @method static \Illuminate\Database\Eloquent\Builder|Coupon whereEditorId($value)
- * @method static \Illuminate\Database\Eloquent\Builder|Coupon whereExpiredAt($value)
- * @method static \Illuminate\Database\Eloquent\Builder|Coupon whereHasFreeDelivery($value)
- * @method static \Illuminate\Database\Eloquent\Builder|Coupon whereId($value)
- * @method static \Illuminate\Database\Eloquent\Builder|Coupon whereMaxAllowedDiscountAmount($value)
- * @method static \Illuminate\Database\Eloquent\Builder|Coupon whereMaxUsableCount($value)
- * @method static \Illuminate\Database\Eloquent\Builder|Coupon whereMaxUsableCountByUser($value)
- * @method static \Illuminate\Database\Eloquent\Builder|Coupon whereMinCartValueAllowed($value)
- * @method static \Illuminate\Database\Eloquent\Builder|Coupon whereMoneyRedeemedSoFar($value)
- * @method static \Illuminate\Database\Eloquent\Builder|Coupon whereName($value)
- * @method static \Illuminate\Database\Eloquent\Builder|Coupon whereRedeemCode($value)
- * @method static \Illuminate\Database\Eloquent\Builder|Coupon whereStatus($value)
- * @method static \Illuminate\Database\Eloquent\Builder|Coupon whereTotalRedeemedCount($value)
- * @method static \Illuminate\Database\Eloquent\Builder|Coupon whereType($value)
- * @method static \Illuminate\Database\Eloquent\Builder|Coupon whereUpdatedAt($value)
- * @mixin \Eloquent
+ * @method static Builder|Coupon active()
+ * @method static Builder|Coupon draft()
+ * @method static Builder|Coupon food()
+ * @method static Builder|Coupon grocery()
+ * @method static Builder|Coupon inactive()
+ * @method static Builder|Coupon newModelQuery()
+ * @method static Builder|Coupon newQuery()
+ * @method static Builder|Coupon notActive()
+ * @method static Builder|Coupon query()
+ * @method static Builder|Coupon whereCreatedAt($value)
+ * @method static Builder|Coupon whereCreatorId($value)
+ * @method static Builder|Coupon whereCurrencyId($value)
+ * @method static Builder|Coupon whereDeletedAt($value)
+ * @method static Builder|Coupon whereDescription($value)
+ * @method static Builder|Coupon whereDiscountAmount($value)
+ * @method static Builder|Coupon whereDiscountByPercentage($value)
+ * @method static Builder|Coupon whereEditorId($value)
+ * @method static Builder|Coupon whereExpiredAt($value)
+ * @method static Builder|Coupon whereHasFreeDelivery($value)
+ * @method static Builder|Coupon whereId($value)
+ * @method static Builder|Coupon whereMaxAllowedDiscountAmount($value)
+ * @method static Builder|Coupon whereMaxUsableCount($value)
+ * @method static Builder|Coupon whereMaxUsableCountByUser($value)
+ * @method static Builder|Coupon whereMinCartValueAllowed($value)
+ * @method static Builder|Coupon whereMoneyRedeemedSoFar($value)
+ * @method static Builder|Coupon whereName($value)
+ * @method static Builder|Coupon whereRedeemCode($value)
+ * @method static Builder|Coupon whereStatus($value)
+ * @method static Builder|Coupon whereTotalRedeemedCount($value)
+ * @method static Builder|Coupon whereType($value)
+ * @method static Builder|Coupon whereUpdatedAt($value)
+ * @mixin Eloquent
  */
 class Coupon extends Model
 {
-    use HasStatuses, HasAppTypes;
+    use HasAppTypes;
+    use HasStatuses;
 
 
-    const STATUS_DRAFT = 1;
-    const STATUS_ACTIVE = 2;
-    const STATUS_INACTIVE = 3;
+    public const STATUS_DRAFT = 1;
+    public const STATUS_ACTIVE = 2;
+    public const STATUS_INACTIVE = 3;
 
-    const TYPE_GROCERY_OBJECT = 1;
-    const TYPE_FOOD_OBJECT = 2;
+    public const TYPE_GROCERY_OBJECT = 1;
+    public const TYPE_FOOD_OBJECT = 2;
 
     protected $casts = [
         'discount_amount' => 'double',
@@ -91,7 +97,7 @@ class Coupon extends Model
         'expired_at' => 'date',
     ];
 
-    public function couponUsage(): \Illuminate\Database\Eloquent\Relations\HasMany
+    public function couponUsage(): HasMany
     {
         return $this->hasMany(CouponUsage::class, 'coupon_id');
     }

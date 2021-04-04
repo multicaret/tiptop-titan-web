@@ -8,6 +8,7 @@ use App\Http\Controllers\Controller;
 use App\Http\Resources\UserResource;
 use App\Models\Country;
 use App\Models\User;
+use Exception;
 use Illuminate\Auth\Events\Registered;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
@@ -246,7 +247,7 @@ class OtpController extends BaseApiController
 
                     return $this->respond($response);
                 } else {
-                    $errorMessage = $result->getErrorMessage().", error code : ".$result->getErrorCode();
+                    $errorMessage = $result->getErrorMessage().', error code : '.$result->getErrorCode();
                 }
             } else {
                 $errorMessage = $otpCheck->getErrorMessage();
@@ -254,7 +255,7 @@ class OtpController extends BaseApiController
             }
         } catch (CountryCodeEmptyException | PhoneNumberEmptyException |
         OTPCodeEmptyException | CurlException |
-        ReferenceEmptyException | ServerKeyEmptyException | \Exception $e) {
+        ReferenceEmptyException | ServerKeyEmptyException | Exception $e) {
             $errorMessage = $e->getMessage();
         }
 
@@ -267,7 +268,7 @@ class OtpController extends BaseApiController
 
 
     /**
-     * @return \Exception|ServerKeyEmptyException|Web
+     * @return Exception|ServerKeyEmptyException|Web
      */
     private function getVFK()
     {

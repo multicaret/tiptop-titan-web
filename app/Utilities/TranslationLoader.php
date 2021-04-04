@@ -3,6 +3,7 @@
 namespace App\Utilities;
 
 use App\Models\Translation;
+use Arr;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Translation\FileLoader;
 
@@ -58,7 +59,7 @@ class TranslationLoader extends FileLoader
 
         foreach ($translations as $key => $value) {
             if (strpos($key, '*') === false) {
-                \Arr::set($array, $key, $value);
+                Arr::set($array, $key, $value);
             } else {
                 $array[$key] = $value;
             }

@@ -4,8 +4,14 @@ namespace App\Models;
 
 use App\Traits\HasAppTypes;
 use App\Traits\HasTypes;
+use Eloquent;
+use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\SoftDeletes;
+use Illuminate\Database\Query\Builder;
+use Illuminate\Support\Carbon;
 
 /**
  * App\Models\Order
@@ -39,9 +45,9 @@ use Illuminate\Database\Eloquent\SoftDeletes;
  * @property int|null $has_good_packaging_quality_rating
  * @property int|null $has_good_order_accuracy_rating
  * @property int|null $rating_issue_id
- * @property \Illuminate\Support\Carbon|null $completed_at
+ * @property Carbon|null $completed_at
  * @property string|null $notes
- * @property int $status 
+ * @property int $status
  *                     0: Cancelled,
  *                     1: Draft,
  *                     6: Waiting Courier,
@@ -49,20 +55,20 @@ use Illuminate\Database\Eloquent\SoftDeletes;
  *                     16: On the way,
  *                     18: At the address,
  *                     20: Delivered,
- * @property \Illuminate\Support\Carbon|null $created_at
- * @property \Illuminate\Support\Carbon|null $updated_at
- * @property \Illuminate\Support\Carbon|null $deleted_at
- * @property-read \App\Models\Location $address
- * @property-read \App\Models\Branch $branch
- * @property-read \App\Models\Cart $cart
- * @property-read \App\Models\Chain $chain
- * @property-read \App\Models\Coupon|null $coupon
- * @property-read \App\Models\PaymentMethod $paymentMethod
+ * @property Carbon|null $created_at
+ * @property Carbon|null $updated_at
+ * @property Carbon|null $deleted_at
+ * @property-read Location $address
+ * @property-read Branch $branch
+ * @property-read Cart $cart
+ * @property-read Chain $chain
+ * @property-read Coupon|null $coupon
+ * @property-read PaymentMethod $paymentMethod
  * @property-read Order|null $previousOrder
- * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\Product[] $products
+ * @property-read Collection|Product[] $products
  * @property-read int|null $products_count
- * @property-read \App\Models\Taxonomy|null $ratingIssue
- * @property-read \App\Models\User $user
+ * @property-read Taxonomy|null $ratingIssue
+ * @property-read User $user
  * @method static \Illuminate\Database\Eloquent\Builder|Order atTheAddress()
  * @method static \Illuminate\Database\Eloquent\Builder|Order cancelled()
  * @method static \Illuminate\Database\Eloquent\Builder|Order delivered()
@@ -73,7 +79,7 @@ use Illuminate\Database\Eloquent\SoftDeletes;
  * @method static \Illuminate\Database\Eloquent\Builder|Order newModelQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|Order newQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|Order onTheWay()
- * @method static \Illuminate\Database\Query\Builder|Order onlyTrashed()
+ * @method static Builder|Order onlyTrashed()
  * @method static \Illuminate\Database\Eloquent\Builder|Order preparing()
  * @method static \Illuminate\Database\Eloquent\Builder|Order query()
  * @method static \Illuminate\Database\Eloquent\Builder|Order waitingCourier()
@@ -112,9 +118,9 @@ use Illuminate\Database\Eloquent\SoftDeletes;
  * @method static \Illuminate\Database\Eloquent\Builder|Order whereType($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Order whereUpdatedAt($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Order whereUserId($value)
- * @method static \Illuminate\Database\Query\Builder|Order withTrashed()
- * @method static \Illuminate\Database\Query\Builder|Order withoutTrashed()
- * @mixin \Eloquent
+ * @method static Builder|Order withTrashed()
+ * @method static Builder|Order withoutTrashed()
+ * @mixin Eloquent
  */
 class Order extends Model
 {
@@ -157,53 +163,53 @@ class Order extends Model
         });
     }
 
-    public function user(): \Illuminate\Database\Eloquent\Relations\BelongsTo
+    public function user(): BelongsTo
     {
         return $this->belongsTo(User::class);
     }
 
-    public function chain(): \Illuminate\Database\Eloquent\Relations\BelongsTo
+    public function chain(): BelongsTo
     {
         return $this->belongsTo(Chain::class);
     }
 
-    public function branch(): \Illuminate\Database\Eloquent\Relations\BelongsTo
+    public function branch(): BelongsTo
     {
         return $this->belongsTo(Branch::class);
     }
 
 
-    public function cart(): \Illuminate\Database\Eloquent\Relations\BelongsTo
+    public function cart(): BelongsTo
     {
         return $this->belongsTo(Cart::class);
     }
 
-    public function paymentMethod(): \Illuminate\Database\Eloquent\Relations\BelongsTo
+    public function paymentMethod(): BelongsTo
     {
         return $this->belongsTo(PaymentMethod::class);
     }
 
-    public function address(): \Illuminate\Database\Eloquent\Relations\BelongsTo
+    public function address(): BelongsTo
     {
         return $this->belongsTo(Location::class);
     }
 
-    public function coupon(): \Illuminate\Database\Eloquent\Relations\BelongsTo
+    public function coupon(): BelongsTo
     {
         return $this->belongsTo(Coupon::class);
     }
 
-    public function previousOrder(): \Illuminate\Database\Eloquent\Relations\BelongsTo
+    public function previousOrder(): BelongsTo
     {
         return $this->belongsTo(self::class, 'previous_order_id');
     }
 
-    public function ratingIssue(): \Illuminate\Database\Eloquent\Relations\BelongsTo
+    public function ratingIssue(): BelongsTo
     {
         return $this->belongsTo(Taxonomy::class, 'rating_issue_id');
     }
 
-    public function products(): \Illuminate\Database\Eloquent\Relations\BelongsToMany
+    public function products(): BelongsToMany
     {
         return $this->belongsToMany(Product::class, 'order_product', 'order_id', 'product_id')
                     ->withPivot('product_object')

@@ -13,9 +13,14 @@ use App\Traits\HasUuid;
 use App\Traits\HasViewCount;
 use App\Traits\RecordsActivity;
 use Astrotomic\Translatable\Translatable;
+use Eloquent;
+use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
+use Illuminate\Support\Carbon;
 use Spatie\MediaLibrary\HasMedia;
+use Spatie\MediaLibrary\MediaCollections\Models\Collections\MediaCollection;
 use Spatie\MediaLibrary\MediaCollections\Models\Media;
 
 /**
@@ -32,110 +37,110 @@ use Spatie\MediaLibrary\MediaCollections\Models\Media;
  * @property int $view_count
  * @property int|null $order_column
  * @property int $status 1:draft, 2:active, 3:Inactive, 4..n:CUSTOM
- * @property \Illuminate\Support\Carbon|null $created_at
- * @property \Illuminate\Support\Carbon|null $updated_at
- * @property \Illuminate\Support\Carbon|null $deleted_at
- * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\Activity[] $activity
+ * @property Carbon|null $created_at
+ * @property Carbon|null $updated_at
+ * @property Carbon|null $deleted_at
+ * @property-read Collection|Activity[] $activity
  * @property-read int|null $activity_count
- * @property-read \App\Models\Taxonomy|null $category
- * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\Comment[] $comments
+ * @property-read Taxonomy|null $category
+ * @property-read Collection|Comment[] $comments
  * @property-read int|null $comments_count
- * @property-read \App\Models\User $creator
- * @property-read \App\Models\User $editor
+ * @property-read User $creator
+ * @property-read User $editor
  * @property-read mixed $cover
  * @property-read mixed $gallery
  * @property-read bool $is_active
  * @property-read bool $is_inactive
  * @property-read mixed $link
  * @property-read mixed $status_name
- * @property-read \Spatie\MediaLibrary\MediaCollections\Models\Collections\MediaCollection|Media[] $media
+ * @property-read MediaCollection|Media[] $media
  * @property-read int|null $media_count
- * @property-read \App\Models\MetaData $meta
- * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\Comment[] $ratings
+ * @property-read MetaData $meta
+ * @property-read Collection|Comment[] $ratings
  * @property-read int|null $ratings_count
- * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\Taxonomy[] $tags
+ * @property-read Collection|Taxonomy[] $tags
  * @property-read int|null $tags_count
- * @property-read \App\Models\PostTranslation|null $translation
- * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\PostTranslation[] $translations
+ * @property-read PostTranslation|null $translation
+ * @property-read Collection|PostTranslation[] $translations
  * @property-read int|null $translations_count
- * @method static \Illuminate\Database\Eloquent\Builder|Post active()
- * @method static \Illuminate\Database\Eloquent\Builder|Post articles()
- * @method static \Illuminate\Database\Eloquent\Builder|Post blog()
- * @method static \Illuminate\Database\Eloquent\Builder|Post companiesTestimonials()
- * @method static \Illuminate\Database\Eloquent\Builder|Post draft()
- * @method static \Illuminate\Database\Eloquent\Builder|Post faq()
- * @method static \Illuminate\Database\Eloquent\Builder|Post inactive()
- * @method static \Illuminate\Database\Eloquent\Builder|Post listsTranslations(string $translationField)
- * @method static \Illuminate\Database\Eloquent\Builder|Post newModelQuery()
- * @method static \Illuminate\Database\Eloquent\Builder|Post newQuery()
- * @method static \Illuminate\Database\Eloquent\Builder|Post news()
- * @method static \Illuminate\Database\Eloquent\Builder|Post notActive()
- * @method static \Illuminate\Database\Eloquent\Builder|Post notTranslatedIn(?string $locale = null)
+ * @method static Builder|Post active()
+ * @method static Builder|Post articles()
+ * @method static Builder|Post blog()
+ * @method static Builder|Post companiesTestimonials()
+ * @method static Builder|Post draft()
+ * @method static Builder|Post faq()
+ * @method static Builder|Post inactive()
+ * @method static Builder|Post listsTranslations(string $translationField)
+ * @method static Builder|Post newModelQuery()
+ * @method static Builder|Post newQuery()
+ * @method static Builder|Post news()
+ * @method static Builder|Post notActive()
+ * @method static Builder|Post notTranslatedIn(?string $locale = null)
  * @method static \Illuminate\Database\Query\Builder|Post onlyTrashed()
- * @method static \Illuminate\Database\Eloquent\Builder|Post orWhereTranslation(string $translationField, $value, ?string $locale = null)
- * @method static \Illuminate\Database\Eloquent\Builder|Post orWhereTranslationLike(string $translationField, $value, ?string $locale = null)
- * @method static \Illuminate\Database\Eloquent\Builder|Post orderByTranslation(string $translationField, string $sortMethod = 'asc')
- * @method static \Illuminate\Database\Eloquent\Builder|Post pages()
- * @method static \Illuminate\Database\Eloquent\Builder|Post portfolios()
- * @method static \Illuminate\Database\Eloquent\Builder|Post query()
- * @method static \Illuminate\Database\Eloquent\Builder|Post services()
- * @method static \Illuminate\Database\Eloquent\Builder|Post translated()
- * @method static \Illuminate\Database\Eloquent\Builder|Post translatedIn(?string $locale = null)
- * @method static \Illuminate\Database\Eloquent\Builder|Post usersTestimonials()
- * @method static \Illuminate\Database\Eloquent\Builder|Post whereAvgRating($value)
- * @method static \Illuminate\Database\Eloquent\Builder|Post whereCategoryId($value)
- * @method static \Illuminate\Database\Eloquent\Builder|Post whereCreatedAt($value)
- * @method static \Illuminate\Database\Eloquent\Builder|Post whereCreatorId($value)
- * @method static \Illuminate\Database\Eloquent\Builder|Post whereDeletedAt($value)
- * @method static \Illuminate\Database\Eloquent\Builder|Post whereEditorId($value)
- * @method static \Illuminate\Database\Eloquent\Builder|Post whereId($value)
- * @method static \Illuminate\Database\Eloquent\Builder|Post whereOrderColumn($value)
- * @method static \Illuminate\Database\Eloquent\Builder|Post whereRatingCount($value)
- * @method static \Illuminate\Database\Eloquent\Builder|Post whereStatus($value)
- * @method static \Illuminate\Database\Eloquent\Builder|Post whereTranslation(string $translationField, $value, ?string $locale = null, string $method = 'whereHas', string $operator = '=')
- * @method static \Illuminate\Database\Eloquent\Builder|Post whereTranslationLike(string $translationField, $value, ?string $locale = null)
- * @method static \Illuminate\Database\Eloquent\Builder|Post whereType($value)
- * @method static \Illuminate\Database\Eloquent\Builder|Post whereUpdatedAt($value)
- * @method static \Illuminate\Database\Eloquent\Builder|Post whereUuid($value)
- * @method static \Illuminate\Database\Eloquent\Builder|Post whereViewCount($value)
- * @method static \Illuminate\Database\Eloquent\Builder|Post withTranslation()
+ * @method static Builder|Post orWhereTranslation(string $translationField, $value, ?string $locale = null)
+ * @method static Builder|Post orWhereTranslationLike(string $translationField, $value, ?string $locale = null)
+ * @method static Builder|Post orderByTranslation(string $translationField, string $sortMethod = 'asc')
+ * @method static Builder|Post pages()
+ * @method static Builder|Post portfolios()
+ * @method static Builder|Post query()
+ * @method static Builder|Post services()
+ * @method static Builder|Post translated()
+ * @method static Builder|Post translatedIn(?string $locale = null)
+ * @method static Builder|Post usersTestimonials()
+ * @method static Builder|Post whereAvgRating($value)
+ * @method static Builder|Post whereCategoryId($value)
+ * @method static Builder|Post whereCreatedAt($value)
+ * @method static Builder|Post whereCreatorId($value)
+ * @method static Builder|Post whereDeletedAt($value)
+ * @method static Builder|Post whereEditorId($value)
+ * @method static Builder|Post whereId($value)
+ * @method static Builder|Post whereOrderColumn($value)
+ * @method static Builder|Post whereRatingCount($value)
+ * @method static Builder|Post whereStatus($value)
+ * @method static Builder|Post whereTranslation(string $translationField, $value, ?string $locale = null, string $method = 'whereHas', string $operator = '=')
+ * @method static Builder|Post whereTranslationLike(string $translationField, $value, ?string $locale = null)
+ * @method static Builder|Post whereType($value)
+ * @method static Builder|Post whereUpdatedAt($value)
+ * @method static Builder|Post whereUuid($value)
+ * @method static Builder|Post whereViewCount($value)
+ * @method static Builder|Post withTranslation()
  * @method static \Illuminate\Database\Query\Builder|Post withTrashed()
  * @method static \Illuminate\Database\Query\Builder|Post withoutTrashed()
- * @mixin \Eloquent
+ * @mixin Eloquent
  */
 class Post extends Model implements HasMedia, ShouldHaveTypes
 {
-    use HasMediaTrait,
-        SoftDeletes,
-        Translatable,
-        Commentable,
-        HasViewCount,
-        RecordsActivity,
-        HasUuid,
-        HasTypes,
-        HasMetaData,
-        HasStatuses,
-        HasTags;
+    use Commentable;
+    use HasMediaTrait;
+    use HasMetaData;
+    use HasStatuses;
+    use HasTags;
+    use HasTypes;
+    use HasUuid;
+    use HasViewCount;
+    use RecordsActivity;
+    use SoftDeletes;
+    use Translatable;
 
-    const TYPE_ARTICLE = 1;
-    const TYPE_PAGE = 2;
-    const TYPE_TESTIMONIAL_USER = 3;
-    const TYPE_TESTIMONIAL_COMPANY = 4;
-    const TYPE_FAQ = 5;
-    const TYPE_PORTFOLIO = 6;
-    const TYPE_SERVICE = 7;
-    const TYPE_NEWS = 8;
+    public const TYPE_ARTICLE = 1;
+    public const TYPE_PAGE = 2;
+    public const TYPE_TESTIMONIAL_USER = 3;
+    public const TYPE_TESTIMONIAL_COMPANY = 4;
+    public const TYPE_FAQ = 5;
+    public const TYPE_PORTFOLIO = 6;
+    public const TYPE_SERVICE = 7;
+    public const TYPE_NEWS = 8;
 
 
-    const STATUS_DRAFT = 1;
-    const STATUS_ACTIVE = 2;
-    const STATUS_INACTIVE = 3;
+    public const STATUS_DRAFT = 1;
+    public const STATUS_ACTIVE = 2;
+    public const STATUS_INACTIVE = 3;
 
     //These values are hardcoded here because they are part of the DB seeder
-    const ABOUT_PAGE_ID = 1;
-    const CONTACT_PAGE_ID = 2;
-    const PRIVACY_PAGE_ID = 3;
-    const TERMS_PAGE_ID = 4;
+    public const ABOUT_PAGE_ID = 1;
+    public const CONTACT_PAGE_ID = 2;
+    public const PRIVACY_PAGE_ID = 3;
+    public const TERMS_PAGE_ID = 4;
     /**
      * The attributes that are mass assignable.
      *
@@ -223,9 +228,9 @@ class Post extends Model implements HasMedia, ShouldHaveTypes
     /**
      * Scope a query to only all blog alike posts.
      *
-     * @param  \Illuminate\Database\Eloquent\Builder  $query
+     * @param  Builder  $query
      *
-     * @return \Illuminate\Database\Eloquent\Builder
+     * @return Builder
      */
     public function scopeBlog($query)
     {
@@ -235,9 +240,9 @@ class Post extends Model implements HasMedia, ShouldHaveTypes
     /**
      * Scope a query to only include articles.
      *
-     * @param  \Illuminate\Database\Eloquent\Builder  $query
+     * @param  Builder  $query
      *
-     * @return \Illuminate\Database\Eloquent\Builder
+     * @return Builder
      */
     public function scopeArticles($query)
     {
@@ -247,9 +252,9 @@ class Post extends Model implements HasMedia, ShouldHaveTypes
     /**
      * Scope a query to only include news.
      *
-     * @param  \Illuminate\Database\Eloquent\Builder  $query
+     * @param  Builder  $query
      *
-     * @return \Illuminate\Database\Eloquent\Builder
+     * @return Builder
      */
     public function scopeNews($query)
     {
@@ -259,9 +264,9 @@ class Post extends Model implements HasMedia, ShouldHaveTypes
     /**
      * Scope a query to only include portfolio items.
      *
-     * @param  \Illuminate\Database\Eloquent\Builder  $query
+     * @param  Builder  $query
      *
-     * @return \Illuminate\Database\Eloquent\Builder
+     * @return Builder
      */
     public function scopePortfolios($query)
     {
@@ -271,9 +276,9 @@ class Post extends Model implements HasMedia, ShouldHaveTypes
     /**
      * Scope a query to only include services.
      *
-     * @param  \Illuminate\Database\Eloquent\Builder  $query
+     * @param  Builder  $query
      *
-     * @return \Illuminate\Database\Eloquent\Builder
+     * @return Builder
      */
     public function scopeServices($query)
     {
@@ -283,9 +288,9 @@ class Post extends Model implements HasMedia, ShouldHaveTypes
     /**
      * Scope a query to only include user testimonials.
      *
-     * @param  \Illuminate\Database\Eloquent\Builder  $query
+     * @param  Builder  $query
      *
-     * @return \Illuminate\Database\Eloquent\Builder
+     * @return Builder
      */
     public function scopeUsersTestimonials($query)
     {
@@ -295,9 +300,9 @@ class Post extends Model implements HasMedia, ShouldHaveTypes
     /**
      * Scope a query to only include company testimonials.
      *
-     * @param  \Illuminate\Database\Eloquent\Builder  $query
+     * @param  Builder  $query
      *
-     * @return \Illuminate\Database\Eloquent\Builder
+     * @return Builder
      */
     public function scopeCompaniesTestimonials($query)
     {
@@ -307,9 +312,9 @@ class Post extends Model implements HasMedia, ShouldHaveTypes
     /**
      * Scope a query to only include FAQ.
      *
-     * @param  \Illuminate\Database\Eloquent\Builder  $query
+     * @param  Builder  $query
      *
-     * @return \Illuminate\Database\Eloquent\Builder
+     * @return Builder
      */
     public function scopeFaq($query)
     {
@@ -319,9 +324,9 @@ class Post extends Model implements HasMedia, ShouldHaveTypes
     /**
      * Scope a query to only include pages.
      *
-     * @param  \Illuminate\Database\Eloquent\Builder  $query
+     * @param  Builder  $query
      *
-     * @return \Illuminate\Database\Eloquent\Builder
+     * @return Builder
      */
     public function scopePages($query)
     {

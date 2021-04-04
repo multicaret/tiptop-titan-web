@@ -10,14 +10,20 @@ use App\Models\Currency;
 use App\Models\Language;
 use App\Models\Region;
 use App\Models\User;
+use Auth;
 use Cviebrock\EloquentSluggable\Services\SlugService;
+use Exception;
 use Illuminate\Auth\Events\Registered;
+use Illuminate\Database\Eloquent\Model;
 use Illuminate\Foundation\Auth\RegistersUsers;
 use Illuminate\Http\Request;
+use Illuminate\Http\Response;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Validator;
 use Laravel\Socialite\Facades\Socialite;
+use Log;
 use Spatie\MediaLibrary\Exceptions\FileCannotBeAdded;
+use Str;
 
 class RegisterController extends Controller
 {
@@ -72,9 +78,9 @@ class RegisterController extends Controller
     /**
      * Handle a registration request for the application.
      *
-     * @param  \Illuminate\Http\Request  $request
+     * @param  Request  $request
      *
-     * @return \Illuminate\Http\Response
+     * @return Response
      */
     public function register(Request $request)
     {
@@ -100,11 +106,11 @@ class RegisterController extends Controller
      *
      * @param  array  $data
      *
-     * @return User|\Illuminate\Database\Eloquent\Model
+     * @return User|Model
      */
     protected function create(array $data)
     {
-        list($first, $last) = $this->setFirstAndLastNames($data['name']);
+        [$first, $last] = $this->setFirstAndLastNames($data['name']);
         $email = $data['email'];
         $username = $data['username'];
         $password = $data['password'];
@@ -129,7 +135,7 @@ class RegisterController extends Controller
     /**
      * Show the application registration form.
      *
-     * @return \Illuminate\Http\Response
+     * @return Response
      */
     public function showRegistrationForm()
     {
@@ -147,7 +153,7 @@ class RegisterController extends Controller
     {
         try {
             $socialiteUser = Socialite::driver($provider)->user();
-        } catch (\Exception $e) {
+        } catch (Exception $e) {
             return redirect(action('Auth\LoginController@redirectToProvider', $provider));
         }
 
@@ -174,7 +180,7 @@ class RegisterController extends Controller
                 $user->addMediaFromUrl($avatarUrl)
                      ->toMediaCollection('avatar');
             } catch (FileCannotBeAdded $e) {
-                \Log::alert('A user\'s is trying to sign in using a social provider and got no avatar URL! Strange ha!'
+                Log::alert('A user\'s is trying to sign in using a social provider and got no avatar URL! Strange ha!'
                     , ['user_id' => $user->id]);
             }
         }
@@ -292,24 +298,24 @@ class RegisterController extends Controller
      * @param  String  $socialiteUser
      * @param  User|null  $user
      *
-     * @return \Illuminate\Database\Eloquent\Model
+     * @return Model
      */
     protected function createOrUpdateThenAuthenticate(
         $socialMediaProvider,
         $socialiteUser,
         User $user = null
-    ): \Illuminate\Database\Eloquent\Model {
+    ): Model {
         $isCreating = false;
         $randomPass = null;
         if (empty($user)) {
             $isCreating = true;
-            list($first, $last) = $this->setFirstAndLastNames($socialiteUser->getName());
+            [$first, $last] = $this->setFirstAndLastNames($socialiteUser->getName());
             $email = $socialiteUser->getEmail();
             $username = $socialNetworks = null;
             if ($socialMediaProvider != 'facebook') {
                 $username = $socialiteUser->getNickname();
             }
-            $randomPass = \Str::random(3).mt_rand(100, 999);
+            $randomPass = Str::random(3).mt_rand(100, 999);
             $password = $randomPass;
         } else {
             $first = $user->first;
@@ -331,7 +337,7 @@ class RegisterController extends Controller
         }
 
         $this->uploadAvatarPicture($socialiteUser->getAvatar(), $user);
-        \Auth::login($user, true);
+        Auth::login($user, true);
 
         if ($isCreating) {
             Activity::create([
@@ -351,7 +357,7 @@ class RegisterController extends Controller
      */
     private function writeToLog($message): void
     {
-        \Log::alert($message,
+        Log::alert($message,
             [
                 'geoip' => [
                     'country' => geoip()->getLocation()->getAttribute('country'),

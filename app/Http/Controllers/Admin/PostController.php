@@ -5,13 +5,17 @@ namespace App\Http\Controllers\Admin;
 use App\Http\Controllers\Controller;
 use App\Models\Post;
 use App\Models\Taxonomy;
+use DB;
+use Exception;
+use Illuminate\Contracts\View\Factory;
+use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\View\View;
 
 class PostController extends Controller
 {
 
-    function __construct()
+    public function __construct()
     {
         $this->middleware('permission:post.permissions.index', ['only' => ['index', 'store']]);
         $this->middleware('permission:post.permissions.create', ['only' => ['create', 'store']]);
@@ -92,9 +96,9 @@ class PostController extends Controller
     /**
      * Store a newly created resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
+     * @param  Request  $request
      *
-     * @return \Illuminate\Http\RedirectResponse
+     * @return RedirectResponse
      */
     public function store(Request $request)
     {
@@ -108,7 +112,7 @@ class PostController extends Controller
 
         $previousOrderValue = Post::orderBy('order_column', 'ASC')->first();
         $order = is_null($previousOrderValue) ? 1 : $previousOrderValue->order_column + 1;
-        \DB::beginTransaction();
+        DB::beginTransaction();
         $post = new Post();
         $post->creator_id = $post->editor_id = auth()->id();
         $post->type = $correctType;
@@ -134,7 +138,7 @@ class PostController extends Controller
 
         $this->handleSubmittedMedia($request, 'gallery', $post, 'gallery');
 
-        \DB::commit();
+        DB::commit();
 
         return redirect()
             ->route('admin.posts.index', ['type' => $request->type])
@@ -151,7 +155,7 @@ class PostController extends Controller
      *
      * @param  Request  $request
      *
-     * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
+     * @return Factory|View
      */
     public function edit(Post $post, Request $request)
     {
@@ -164,10 +168,10 @@ class PostController extends Controller
     /**
      * Update the specified resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
+     * @param  Request  $request
      * @param  Post  $post
      *
-     * @return \Illuminate\Http\RedirectResponse
+     * @return RedirectResponse
      */
     public function update(Request $request, Post $post)
     {
@@ -179,7 +183,7 @@ class PostController extends Controller
 
         $correctType = Post::getCorrectType($request->type);
 
-        \DB::beginTransaction();
+        DB::beginTransaction();
         $post->category_id = $request->category_id;
 
         // Filling translations
@@ -200,7 +204,7 @@ class PostController extends Controller
 
         $this->handleSubmittedMedia($request, 'gallery', $post, 'gallery');
         // Todo: Handle deleting the images after they've been uploaded if they didn't come back with the request
-        \DB::commit();
+        DB::commit();
 
         return redirect()
             ->route('admin.posts.index', ['type' => $request->type])
@@ -215,8 +219,8 @@ class PostController extends Controller
      *
      * @param  Post  $post
      *
-     * @return \Illuminate\Http\RedirectResponse
-     * @throws \Exception
+     * @return RedirectResponse
+     * @throws Exception
      */
     public function destroy(Post $post)
     {

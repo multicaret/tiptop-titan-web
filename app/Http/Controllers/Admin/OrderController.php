@@ -4,13 +4,15 @@ namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
 use App\Models\Order;
+use Illuminate\Contracts\Foundation\Application;
+use Illuminate\Contracts\View\Factory;
 use Illuminate\Http\Request;
 use Illuminate\View\View;
 
 class OrderController extends Controller
 {
 
-    function __construct()
+    public function __construct()
     {
 //        $this->middleware('permission:chain.permissions.index', ['only' => ['index', 'store']]);
     }
@@ -30,7 +32,7 @@ class OrderController extends Controller
      *
      * @param  Request  $request
      *
-     * @return \Illuminate\Contracts\Foundation\Application|\Illuminate\Contracts\View\Factory|\Illuminate\Contracts\View\View|View
+     * @return Application|Factory|\Illuminate\Contracts\View\View|View
      */
     public function ratings(Request $request)
     {

@@ -12,6 +12,7 @@ use App\Models\City;
 use App\Models\Product;
 use App\Models\Region;
 use App\Models\User;
+use DB;
 use Illuminate\Http\Request;
 
 class UserController extends BaseApiController
@@ -57,7 +58,7 @@ class UserController extends BaseApiController
             return $this->respondValidationFails($validator->errors());
         }
 
-        \DB::beginTransaction();
+        DB::beginTransaction();
         [$user->first, $user->last] = User::extractFirstAndLastNames($request->full_name);
         if ($request->email) {
             $user->email = $request->email;
@@ -76,7 +77,7 @@ class UserController extends BaseApiController
                  ->toMediaCollection('avatar');
         }
 
-        \DB::commit();
+        DB::commit();
 
         return $this->respond([
             'user' => new UserResource($user),

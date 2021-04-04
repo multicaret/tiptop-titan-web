@@ -2,7 +2,10 @@
 
 namespace App\Models;
 
+use Eloquent;
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Relations\Pivot;
+use Illuminate\Support\Carbon;
 
 /**
  * App\Models\CategoryBranch
@@ -10,17 +13,17 @@ use Illuminate\Database\Eloquent\Relations\Pivot;
  * @property int $id
  * @property int $category_id
  * @property int $branch_id
- * @property \Illuminate\Support\Carbon|null $created_at
- * @property \Illuminate\Support\Carbon|null $updated_at
- * @method static \Illuminate\Database\Eloquent\Builder|CategoryBranch newModelQuery()
- * @method static \Illuminate\Database\Eloquent\Builder|CategoryBranch newQuery()
- * @method static \Illuminate\Database\Eloquent\Builder|CategoryBranch query()
- * @method static \Illuminate\Database\Eloquent\Builder|CategoryBranch whereBranchId($value)
- * @method static \Illuminate\Database\Eloquent\Builder|CategoryBranch whereCategoryId($value)
- * @method static \Illuminate\Database\Eloquent\Builder|CategoryBranch whereCreatedAt($value)
- * @method static \Illuminate\Database\Eloquent\Builder|CategoryBranch whereId($value)
- * @method static \Illuminate\Database\Eloquent\Builder|CategoryBranch whereUpdatedAt($value)
- * @mixin \Eloquent
+ * @property Carbon|null $created_at
+ * @property Carbon|null $updated_at
+ * @method static Builder|CategoryBranch newModelQuery()
+ * @method static Builder|CategoryBranch newQuery()
+ * @method static Builder|CategoryBranch query()
+ * @method static Builder|CategoryBranch whereBranchId($value)
+ * @method static Builder|CategoryBranch whereCategoryId($value)
+ * @method static Builder|CategoryBranch whereCreatedAt($value)
+ * @method static Builder|CategoryBranch whereId($value)
+ * @method static Builder|CategoryBranch whereUpdatedAt($value)
+ * @mixin Eloquent
  */
 class CategoryBranch extends Pivot
 {

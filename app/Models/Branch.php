@@ -10,10 +10,18 @@ use App\Traits\HasUuid;
 use App\Traits\HasViewCount;
 use App\Traits\HasWorkingHours;
 use Astrotomic\Translatable\Translatable;
+use Eloquent;
+use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo as BelongsTo;
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
+use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Support\Carbon;
+use Multicaret\Acquaintances\Models\InteractionRelation;
 use Multicaret\Acquaintances\Traits\CanBeRated;
 use Spatie\MediaLibrary\HasMedia;
+use Spatie\MediaLibrary\MediaCollections\Models\Collections\MediaCollection;
 
 /**
  * App\Models\Branch
@@ -48,11 +56,11 @@ use Spatie\MediaLibrary\HasMedia;
  * @property int $rating_count
  * @property int $view_count
  * @property int $status 1:draft, 2:active, 3:Inactive, 4..n:CUSTOM
- * @property \Illuminate\Support\Carbon|null $created_at
- * @property \Illuminate\Support\Carbon|null $updated_at
+ * @property Carbon|null $created_at
+ * @property Carbon|null $updated_at
  * @property string|null $deleted_at
- * @property-read \App\Models\Chain $chain
- * @property-read \App\Models\City|null $city
+ * @property-read Chain $chain
+ * @property-read City|null $city
  * @property-read mixed $average_rating_all_types
  * @property-read mixed $average_rating
  * @property-read bool $has_been_rated
@@ -65,77 +73,77 @@ use Spatie\MediaLibrary\HasMedia;
  * @property-read mixed $user_average_rating
  * @property-read mixed $user_sum_rating_all_types
  * @property-read mixed $user_sum_rating
- * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\Location[] $locations
+ * @property-read Collection|Location[] $locations
  * @property-read int|null $locations_count
- * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\User[] $managers
+ * @property-read Collection|User[] $managers
  * @property-read int|null $managers_count
- * @property-read \Spatie\MediaLibrary\MediaCollections\Models\Collections\MediaCollection|\Spatie\MediaLibrary\MediaCollections\Models\Media[] $media
+ * @property-read MediaCollection|\Spatie\MediaLibrary\MediaCollections\Models\Media[] $media
  * @property-read int|null $media_count
- * @property-read \Illuminate\Database\Eloquent\Collection|\Multicaret\Acquaintances\Models\InteractionRelation[] $ratings
+ * @property-read Collection|InteractionRelation[] $ratings
  * @property-read int|null $ratings_count
- * @property-read \Illuminate\Database\Eloquent\Collection|\Multicaret\Acquaintances\Models\InteractionRelation[] $ratingsPure
+ * @property-read Collection|InteractionRelation[] $ratingsPure
  * @property-read int|null $ratings_pure_count
- * @property-read \App\Models\Region|null $region
- * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\User[] $supervisors
+ * @property-read Region|null $region
+ * @property-read Collection|User[] $supervisors
  * @property-read int|null $supervisors_count
- * @property-read \App\Models\BranchTranslation|null $translation
- * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\BranchTranslation[] $translations
+ * @property-read BranchTranslation|null $translation
+ * @property-read Collection|BranchTranslation[] $translations
  * @property-read int|null $translations_count
- * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\WorkingHour[] $workingHours
+ * @property-read Collection|WorkingHour[] $workingHours
  * @property-read int|null $working_hours_count
- * @method static \Illuminate\Database\Eloquent\Builder|Branch active()
- * @method static \Illuminate\Database\Eloquent\Builder|Branch draft()
- * @method static \Illuminate\Database\Eloquent\Builder|Branch food()
- * @method static \Illuminate\Database\Eloquent\Builder|Branch grocery()
- * @method static \Illuminate\Database\Eloquent\Builder|Branch inactive()
- * @method static \Illuminate\Database\Eloquent\Builder|Branch listsTranslations(string $translationField)
- * @method static \Illuminate\Database\Eloquent\Builder|Branch newModelQuery()
- * @method static \Illuminate\Database\Eloquent\Builder|Branch newQuery()
- * @method static \Illuminate\Database\Eloquent\Builder|Branch notActive()
- * @method static \Illuminate\Database\Eloquent\Builder|Branch notTranslatedIn(?string $locale = null)
- * @method static \Illuminate\Database\Eloquent\Builder|Branch orWhereTranslation(string $translationField, $value, ?string $locale = null)
- * @method static \Illuminate\Database\Eloquent\Builder|Branch orWhereTranslationLike(string $translationField, $value, ?string $locale = null)
- * @method static \Illuminate\Database\Eloquent\Builder|Branch orderByTranslation(string $translationField, string $sortMethod = 'asc')
- * @method static \Illuminate\Database\Eloquent\Builder|Branch query()
- * @method static \Illuminate\Database\Eloquent\Builder|Branch translated()
- * @method static \Illuminate\Database\Eloquent\Builder|Branch translatedIn(?string $locale = null)
- * @method static \Illuminate\Database\Eloquent\Builder|Branch whereAvgRating($value)
- * @method static \Illuminate\Database\Eloquent\Builder|Branch whereChainId($value)
- * @method static \Illuminate\Database\Eloquent\Builder|Branch whereCityId($value)
- * @method static \Illuminate\Database\Eloquent\Builder|Branch whereCreatedAt($value)
- * @method static \Illuminate\Database\Eloquent\Builder|Branch whereCreatorId($value)
- * @method static \Illuminate\Database\Eloquent\Builder|Branch whereDeletedAt($value)
- * @method static \Illuminate\Database\Eloquent\Builder|Branch whereEditorId($value)
- * @method static \Illuminate\Database\Eloquent\Builder|Branch whereFixedDeliveryFee($value)
- * @method static \Illuminate\Database\Eloquent\Builder|Branch whereHasRestaurantDelivery($value)
- * @method static \Illuminate\Database\Eloquent\Builder|Branch whereHasTipTopDelivery($value)
- * @method static \Illuminate\Database\Eloquent\Builder|Branch whereId($value)
- * @method static \Illuminate\Database\Eloquent\Builder|Branch whereLatitude($value)
- * @method static \Illuminate\Database\Eloquent\Builder|Branch whereLongitude($value)
- * @method static \Illuminate\Database\Eloquent\Builder|Branch whereMaxDeliveryMinutes($value)
- * @method static \Illuminate\Database\Eloquent\Builder|Branch whereMinDeliveryMinutes($value)
- * @method static \Illuminate\Database\Eloquent\Builder|Branch whereMinimumOrder($value)
- * @method static \Illuminate\Database\Eloquent\Builder|Branch whereOrderColumn($value)
- * @method static \Illuminate\Database\Eloquent\Builder|Branch wherePrimaryPhoneNumber($value)
- * @method static \Illuminate\Database\Eloquent\Builder|Branch whereRatingCount($value)
- * @method static \Illuminate\Database\Eloquent\Builder|Branch whereRegionId($value)
- * @method static \Illuminate\Database\Eloquent\Builder|Branch whereRestaurantFixedDeliveryFee($value)
- * @method static \Illuminate\Database\Eloquent\Builder|Branch whereRestaurantMaxDeliveryMinutes($value)
- * @method static \Illuminate\Database\Eloquent\Builder|Branch whereRestaurantMinDeliveryMinutes($value)
- * @method static \Illuminate\Database\Eloquent\Builder|Branch whereRestaurantMinimumOrder($value)
- * @method static \Illuminate\Database\Eloquent\Builder|Branch whereRestaurantUnderMinimumOrderDeliveryFee($value)
- * @method static \Illuminate\Database\Eloquent\Builder|Branch whereSecondaryPhoneNumber($value)
- * @method static \Illuminate\Database\Eloquent\Builder|Branch whereStatus($value)
- * @method static \Illuminate\Database\Eloquent\Builder|Branch whereTranslation(string $translationField, $value, ?string $locale = null, string $method = 'whereHas', string $operator = '=')
- * @method static \Illuminate\Database\Eloquent\Builder|Branch whereTranslationLike(string $translationField, $value, ?string $locale = null)
- * @method static \Illuminate\Database\Eloquent\Builder|Branch whereType($value)
- * @method static \Illuminate\Database\Eloquent\Builder|Branch whereUnderMinimumOrderDeliveryFee($value)
- * @method static \Illuminate\Database\Eloquent\Builder|Branch whereUpdatedAt($value)
- * @method static \Illuminate\Database\Eloquent\Builder|Branch whereUuid($value)
- * @method static \Illuminate\Database\Eloquent\Builder|Branch whereViewCount($value)
- * @method static \Illuminate\Database\Eloquent\Builder|Branch whereWhatsappPhoneNumber($value)
- * @method static \Illuminate\Database\Eloquent\Builder|Branch withTranslation()
- * @mixin \Eloquent
+ * @method static Builder|Branch active()
+ * @method static Builder|Branch draft()
+ * @method static Builder|Branch food()
+ * @method static Builder|Branch grocery()
+ * @method static Builder|Branch inactive()
+ * @method static Builder|Branch listsTranslations(string $translationField)
+ * @method static Builder|Branch newModelQuery()
+ * @method static Builder|Branch newQuery()
+ * @method static Builder|Branch notActive()
+ * @method static Builder|Branch notTranslatedIn(?string $locale = null)
+ * @method static Builder|Branch orWhereTranslation(string $translationField, $value, ?string $locale = null)
+ * @method static Builder|Branch orWhereTranslationLike(string $translationField, $value, ?string $locale = null)
+ * @method static Builder|Branch orderByTranslation(string $translationField, string $sortMethod = 'asc')
+ * @method static Builder|Branch query()
+ * @method static Builder|Branch translated()
+ * @method static Builder|Branch translatedIn(?string $locale = null)
+ * @method static Builder|Branch whereAvgRating($value)
+ * @method static Builder|Branch whereChainId($value)
+ * @method static Builder|Branch whereCityId($value)
+ * @method static Builder|Branch whereCreatedAt($value)
+ * @method static Builder|Branch whereCreatorId($value)
+ * @method static Builder|Branch whereDeletedAt($value)
+ * @method static Builder|Branch whereEditorId($value)
+ * @method static Builder|Branch whereFixedDeliveryFee($value)
+ * @method static Builder|Branch whereHasRestaurantDelivery($value)
+ * @method static Builder|Branch whereHasTipTopDelivery($value)
+ * @method static Builder|Branch whereId($value)
+ * @method static Builder|Branch whereLatitude($value)
+ * @method static Builder|Branch whereLongitude($value)
+ * @method static Builder|Branch whereMaxDeliveryMinutes($value)
+ * @method static Builder|Branch whereMinDeliveryMinutes($value)
+ * @method static Builder|Branch whereMinimumOrder($value)
+ * @method static Builder|Branch whereOrderColumn($value)
+ * @method static Builder|Branch wherePrimaryPhoneNumber($value)
+ * @method static Builder|Branch whereRatingCount($value)
+ * @method static Builder|Branch whereRegionId($value)
+ * @method static Builder|Branch whereRestaurantFixedDeliveryFee($value)
+ * @method static Builder|Branch whereRestaurantMaxDeliveryMinutes($value)
+ * @method static Builder|Branch whereRestaurantMinDeliveryMinutes($value)
+ * @method static Builder|Branch whereRestaurantMinimumOrder($value)
+ * @method static Builder|Branch whereRestaurantUnderMinimumOrderDeliveryFee($value)
+ * @method static Builder|Branch whereSecondaryPhoneNumber($value)
+ * @method static Builder|Branch whereStatus($value)
+ * @method static Builder|Branch whereTranslation(string $translationField, $value, ?string $locale = null, string $method = 'whereHas', string $operator = '=')
+ * @method static Builder|Branch whereTranslationLike(string $translationField, $value, ?string $locale = null)
+ * @method static Builder|Branch whereType($value)
+ * @method static Builder|Branch whereUnderMinimumOrderDeliveryFee($value)
+ * @method static Builder|Branch whereUpdatedAt($value)
+ * @method static Builder|Branch whereUuid($value)
+ * @method static Builder|Branch whereViewCount($value)
+ * @method static Builder|Branch whereWhatsappPhoneNumber($value)
+ * @method static Builder|Branch withTranslation()
+ * @mixin Eloquent
  */
 class Branch extends Model implements HasMedia
 {
@@ -150,12 +158,12 @@ class Branch extends Model implements HasMedia
     use Translatable;
 
 
-    const STATUS_DRAFT = 1;
-    const STATUS_ACTIVE = 2;
-    const STATUS_INACTIVE = 3;
+    public const STATUS_DRAFT = 1;
+    public const STATUS_ACTIVE = 2;
+    public const STATUS_INACTIVE = 3;
 
-    const TYPE_GROCERY_OBJECT = 1;
-    const TYPE_FOOD_OBJECT = 2;
+    public const TYPE_GROCERY_OBJECT = 1;
+    public const TYPE_FOOD_OBJECT = 2;
 
     protected $fillable = [
         'has_tip_top_delivery',
@@ -182,12 +190,12 @@ class Branch extends Model implements HasMedia
     ];
 
 
-    public function chain(): \Illuminate\Database\Eloquent\Relations\BelongsTo
+    public function chain(): BelongsTo
     {
         return $this->belongsTo(Chain::class, 'chain_id');
     }
 
-    public function managers(): \Illuminate\Database\Eloquent\Relations\BelongsToMany
+    public function managers(): BelongsToMany
     {
         return $this->belongsToMany(User::class, 'branch_manager', 'manager_id', 'branch_id')
                     ->withPivot('is_primary')
@@ -199,7 +207,7 @@ class Branch extends Model implements HasMedia
         return $this->managers()->wherePivot('is_primary', true)->first();
     }
 
-    public function supervisors(): \Illuminate\Database\Eloquent\Relations\BelongsToMany
+    public function supervisors(): BelongsToMany
     {
         return $this->belongsToMany(User::class, 'branch_supervisor', 'supervisor_id', 'branch_id')
                     ->withPivot('is_primary')
@@ -227,7 +235,7 @@ class Branch extends Model implements HasMedia
         return $this->belongsTo(City::class);
     }
 
-    public function locations(): \Illuminate\Database\Eloquent\Relations\HasMany
+    public function locations(): HasMany
     {
         return $this->hasMany(Location::class, 'contactable_id');
     }

@@ -16,11 +16,12 @@ use App\Models\Location;
 use App\Models\Order;
 use App\Models\Slide;
 use App\Models\Taxonomy;
+use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 
 class HomeController extends BaseApiController
 {
-    public function boot(Request $request): \Illuminate\Http\JsonResponse
+    public function boot(Request $request): JsonResponse
     {
         /*$validationRules = [
             'build_number' => 'required|numeric',

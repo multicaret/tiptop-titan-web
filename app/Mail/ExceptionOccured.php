@@ -8,7 +8,8 @@ use Illuminate\Queue\SerializesModels;
 
 class ExceptionOccured extends Mailable
 {
-    use Queueable, SerializesModels;
+    use Queueable;
+    use SerializesModels;
 
     /**
      * The body of the message.

@@ -6,9 +6,13 @@ use App\Traits\HasAppTypes;
 use App\Traits\HasStatuses;
 use App\Traits\HasUuid;
 use Astrotomic\Translatable\Translatable;
+use Eloquent;
+use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo as BelongsTo;
 use Illuminate\Database\Eloquent\SoftDeletes;
+use Illuminate\Database\Query\Builder;
+use Illuminate\Support\Carbon;
 
 /**
  * App\Models\Slide
@@ -24,22 +28,22 @@ use Illuminate\Database\Eloquent\SoftDeletes;
  * @property int $link_type
  * @property string|null $link_value
  * @property string|null $linkage The entity the deeplink will point to that has ID of link_value (i.e: Restaurant::class
- * @property \Illuminate\Support\Carbon|null $begins_at
- * @property \Illuminate\Support\Carbon|null $expires_at
+ * @property Carbon|null $begins_at
+ * @property Carbon|null $expires_at
  * @property int $channel 8:food and grocery, 9:grocery, 10:food
  * @property int $has_been_authenticated
  * @property int|null $order_column
  * @property int $status 1:draft, 2:active, 3:Inactive, 4..n:CUSTOM
- * @property \Illuminate\Support\Carbon|null $created_at
- * @property \Illuminate\Support\Carbon|null $updated_at
- * @property \Illuminate\Support\Carbon|null $deleted_at
- * @property-read \App\Models\City|null $city
+ * @property Carbon|null $created_at
+ * @property Carbon|null $updated_at
+ * @property Carbon|null $deleted_at
+ * @property-read City|null $city
  * @property-read bool $is_active
  * @property-read bool $is_inactive
  * @property-read mixed $status_name
- * @property-read \App\Models\Region|null $region
- * @property-read \App\Models\SlideTranslation|null $translation
- * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\SlideTranslation[] $translations
+ * @property-read Region|null $region
+ * @property-read SlideTranslation|null $translation
+ * @property-read Collection|SlideTranslation[] $translations
  * @property-read int|null $translations_count
  * @method static \Illuminate\Database\Eloquent\Builder|Slide active()
  * @method static \Illuminate\Database\Eloquent\Builder|Slide draft()
@@ -51,7 +55,7 @@ use Illuminate\Database\Eloquent\SoftDeletes;
  * @method static \Illuminate\Database\Eloquent\Builder|Slide newQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|Slide notActive()
  * @method static \Illuminate\Database\Eloquent\Builder|Slide notTranslatedIn(?string $locale = null)
- * @method static \Illuminate\Database\Query\Builder|Slide onlyTrashed()
+ * @method static Builder|Slide onlyTrashed()
  * @method static \Illuminate\Database\Eloquent\Builder|Slide orWhereTranslation(string $translationField, $value, ?string $locale = null)
  * @method static \Illuminate\Database\Eloquent\Builder|Slide orWhereTranslationLike(string $translationField, $value, ?string $locale = null)
  * @method static \Illuminate\Database\Eloquent\Builder|Slide orderByTranslation(string $translationField, string $sortMethod = 'asc')
@@ -81,9 +85,9 @@ use Illuminate\Database\Eloquent\SoftDeletes;
  * @method static \Illuminate\Database\Eloquent\Builder|Slide whereUpdatedAt($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Slide whereUuid($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Slide withTranslation()
- * @method static \Illuminate\Database\Query\Builder|Slide withTrashed()
- * @method static \Illuminate\Database\Query\Builder|Slide withoutTrashed()
- * @mixin \Eloquent
+ * @method static Builder|Slide withTrashed()
+ * @method static Builder|Slide withoutTrashed()
+ * @mixin Eloquent
  */
 class Slide extends Model
 {
@@ -133,17 +137,17 @@ class Slide extends Model
         return [
             self::TYPE_GROCERY_OBJECT => [
                 'id' => self::TYPE_GROCERY_OBJECT,
-                'title' => trans("strings.grocery"),
+                'title' => trans('strings.grocery'),
                 'class' => 'success',
             ],
             self::TYPE_FOOD_OBJECT => [
                 'id' => self::TYPE_FOOD_OBJECT,
-                'title' => trans("strings.food"),
+                'title' => trans('strings.food'),
                 'class' => 'dark',
             ],
             self::TYPE_FOOD_AND_GROCERY_OBJECT => [
                 'id' => self::TYPE_FOOD_AND_GROCERY_OBJECT,
-                'title' => trans("strings.grocery_and_food"),
+                'title' => trans('strings.grocery_and_food'),
                 'class' => 'info',
             ],
         ];

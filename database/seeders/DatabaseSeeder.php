@@ -31,7 +31,7 @@ use Str;
 
 class DatabaseSeeder extends Seeder
 {
-    const DEFAULT_USERS_NUMBER = 50;
+    public const DEFAULT_USERS_NUMBER = 50;
 
     /**
      * Seed the application's database.
@@ -647,7 +647,7 @@ class DatabaseSeeder extends Seeder
                     $imageName = str_replace('&_', '_&_', Str::snake($item['translations'][0]['title']));
                     if (File::exists(public_path("/images/product-categories/{$imageName}.png"))) {
                         $taxonomy->addMediaFromUrl(asset("/images/product-categories/{$imageName}.png"))
-                                 ->toMediaCollection("cover");
+                                 ->toMediaCollection('cover');
                     } else {
                         var_dump("The image: $imageName not found");
                     }
@@ -779,17 +779,17 @@ class DatabaseSeeder extends Seeder
                     [
                         'locale' => 'en',
                         'title' => 'adipisicing elit. Ad atque beatae eos impedit quaerat sequi?',
-                        'content' => "eligendi hic illo libero maiores pariatur porro vel voluptatem voluptates"
+                        'content' => 'eligendi hic illo libero maiores pariatur porro vel voluptatem voluptates'
                     ],
                     [
                         'locale' => 'ar',
                         'title' => 'كونسيكتيتور أدايبا يسكينج أليايت,سيت دو أيوسمود تيمبور؟',
-                        'content' => "دو أيوسمود تيمبور ماجنا أليكيوا . يوت انيم أد مينيم فينايم,كيواس نوستريد أكسير أكس أيا كوممودو"
+                        'content' => 'دو أيوسمود تيمبور ماجنا أليكيوا . يوت انيم أد مينيم فينايم,كيواس نوستريد أكسير أكس أيا كوممودو'
                     ],
                     [
                         'locale' => 'ku',
                         'title' => 'كونسيكتيتور أدايبا يسكينج أليايت,سيت دو أيوسمود تيمبور؟',
-                        'content' => "دو أيوسمود تيمبور ماجنا أليكيوا . يوت انيم أد مينيم فينايم,كيواس نوستريد أكسير أكس أيا كوممودو"
+                        'content' => 'دو أيوسمود تيمبور ماجنا أليكيوا . يوت انيم أد مينيم فينايم,كيواس نوستريد أكسير أكس أيا كوممودو'
                     ],
                 ]
             ],
@@ -799,17 +799,17 @@ class DatabaseSeeder extends Seeder
                     [
                         'locale' => 'en',
                         'title' => 'adipisicing elit. Ad atque beatae eos impedit quaerat sequi?',
-                        'content' => "eligendi hic illo libero maiores pariatur porro vel voluptatem voluptates"
+                        'content' => 'eligendi hic illo libero maiores pariatur porro vel voluptatem voluptates'
                     ],
                     [
                         'locale' => 'ar',
                         'title' => 'كونسيكتيتور أدايبا يسكينج أليايت,سيت دو أيوسمود تيمبور؟',
-                        'content' => "دو أيوسمود تيمبور ماجنا أليكيوا . يوت انيم أد مينيم فينايم,كيواس نوستريد أكسير أكس أيا كوممودو"
+                        'content' => 'دو أيوسمود تيمبور ماجنا أليكيوا . يوت انيم أد مينيم فينايم,كيواس نوستريد أكسير أكس أيا كوممودو'
                     ],
                     [
                         'locale' => 'ku',
                         'title' => 'كونسيكتيتور أدايبا يسكينج أليايت,سيت دو أيوسمود تيمبور؟',
-                        'content' => "دو أيوسمود تيمبور ماجنا أليكيوا . يوت انيم أد مينيم فينايم,كيواس نوستريد أكسير أكس أيا كوممودو"
+                        'content' => 'دو أيوسمود تيمبور ماجنا أليكيوا . يوت انيم أد مينيم فينايم,كيواس نوستريد أكسير أكس أيا كوممودو'
                     ],
                 ]
             ],
@@ -819,17 +819,17 @@ class DatabaseSeeder extends Seeder
                     [
                         'locale' => 'en',
                         'title' => 'adipisicing elit. Ad atque beatae eos impedit quaerat sequi?',
-                        'content' => "eligendi hic illo libero maiores pariatur porro vel voluptatem voluptates"
+                        'content' => 'eligendi hic illo libero maiores pariatur porro vel voluptatem voluptates'
                     ],
                     [
                         'locale' => 'ar',
                         'title' => 'كونسيكتيتور أدايبا يسكينج أليايت,سيت دو أيوسمود تيمبور؟',
-                        'content' => "دو أيوسمود تيمبور ماجنا أليكيوا . يوت انيم أد مينيم فينايم,كيواس نوستريد أكسير أكس أيا كوممودو"
+                        'content' => 'دو أيوسمود تيمبور ماجنا أليكيوا . يوت انيم أد مينيم فينايم,كيواس نوستريد أكسير أكس أيا كوممودو'
                     ],
                     [
                         'locale' => 'ku',
                         'title' => 'كونسيكتيتور أدايبا يسكينج أليايت,سيت دو أيوسمود تيمبور؟',
-                        'content' => "دو أيوسمود تيمبور ماجنا أليكيوا . يوت انيم أد مينيم فينايم,كيواس نوستريد أكسير أكس أيا كوممودو"
+                        'content' => 'دو أيوسمود تيمبور ماجنا أليكيوا . يوت انيم أد مينيم فينايم,كيواس نوستريد أكسير أكس أيا كوممودو'
                     ],
                 ]
             ],
@@ -1233,9 +1233,9 @@ class DatabaseSeeder extends Seeder
         $chain->city_id = config('defaults.city.id');
         $chain->currency_id = config('defaults.currency.id');
         $chain->type = Chain::TYPE_GROCERY_OBJECT;
-        $chain->primary_phone_number = "+964539551234";
-        $chain->secondary_phone_number = "+964539551234";
-        $chain->whatsapp_phone_number = "+964539551234";
+        $chain->primary_phone_number = '+964539551234';
+        $chain->secondary_phone_number = '+964539551234';
+        $chain->whatsapp_phone_number = '+964539551234';
         $chain->status = Chain::STATUS_ACTIVE;
         $chain->save();
 
@@ -1243,7 +1243,7 @@ class DatabaseSeeder extends Seeder
             $translation = new ChainTranslation();
             $translation->chain_id = $chain->id;
             $translation->locale = $locale;
-            $translation->title = "TipTop Market";
+            $translation->title = 'TipTop Market';
             $translation->save();
         }
     }
@@ -1267,9 +1267,9 @@ class DatabaseSeeder extends Seeder
             $item->minimum_order = 500 * ($branchIndex + 1);
             $item->under_minimum_order_delivery_fee = 200 * ($branchIndex + 1);
             $item->fixed_delivery_fee = 2000;
-            $item->primary_phone_number = "+964539551234";
-            $item->secondary_phone_number = "+964539551234";
-            $item->whatsapp_phone_number = "+964539551234";
+            $item->primary_phone_number = '+964539551234';
+            $item->secondary_phone_number = '+964539551234';
+            $item->whatsapp_phone_number = '+964539551234';
             $item->latitude = config('defaults.geolocation.latitude') + ($branchIndex / 50);
             $item->longitude = config('defaults.geolocation.longitude') + ($branchIndex / 50);
             $item->status = Branch::STATUS_ACTIVE;
@@ -1302,7 +1302,7 @@ class DatabaseSeeder extends Seeder
             [
                 'name' => 'Kuzeydan 5L',
                 'category_id' => 19,
-                'gallery' => config("defaults.product_gallery"),
+                'gallery' => config('defaults.product_gallery'),
             ],
             [
                 'name' => 'Kuzeydan 1.5L',
@@ -1486,7 +1486,7 @@ class DatabaseSeeder extends Seeder
             $item->price_discount_amount = rand(0, 100);
             $item->price_discount_by_percentage = rand(0, 1);
             $item->available_quantity = rand(1, 5);
-            $item->sku = "000SKU123".rand(1, 000);
+            $item->sku = '000SKU123'.rand(1, 000);
 //            $item->upc = "123456789012";
             $item->is_storage_tracking_enabled = true;
             $item->width = 20.5;
@@ -1518,10 +1518,10 @@ class DatabaseSeeder extends Seeder
                 $translation->description = file_get_contents(storage_path('seeders/product_description.html'));
                 $translation->save();
             }
-            if (array_key_exists("gallery", $product)) {
-                $gallery = $product["gallery"];
+            if (array_key_exists('gallery', $product)) {
+                $gallery = $product['gallery'];
                 foreach ($gallery as $image) {
-                    $item->addMediaFromUrl(asset($image))->toMediaCollection("gallery");
+                    $item->addMediaFromUrl(asset($image))->toMediaCollection('gallery');
                 }
             }
         }

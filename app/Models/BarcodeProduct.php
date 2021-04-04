@@ -2,7 +2,10 @@
 
 namespace App\Models;
 
+use Eloquent;
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Relations\Pivot;
+use Illuminate\Support\Carbon;
 
 /**
  * App\Models\BarcodeProduct
@@ -10,17 +13,17 @@ use Illuminate\Database\Eloquent\Relations\Pivot;
  * @property int $id
  * @property int $barcode_id
  * @property int $product_id
- * @property \Illuminate\Support\Carbon|null $created_at
- * @property \Illuminate\Support\Carbon|null $updated_at
- * @method static \Illuminate\Database\Eloquent\Builder|BarcodeProduct newModelQuery()
- * @method static \Illuminate\Database\Eloquent\Builder|BarcodeProduct newQuery()
- * @method static \Illuminate\Database\Eloquent\Builder|BarcodeProduct query()
- * @method static \Illuminate\Database\Eloquent\Builder|BarcodeProduct whereBarcodeId($value)
- * @method static \Illuminate\Database\Eloquent\Builder|BarcodeProduct whereCreatedAt($value)
- * @method static \Illuminate\Database\Eloquent\Builder|BarcodeProduct whereId($value)
- * @method static \Illuminate\Database\Eloquent\Builder|BarcodeProduct whereProductId($value)
- * @method static \Illuminate\Database\Eloquent\Builder|BarcodeProduct whereUpdatedAt($value)
- * @mixin \Eloquent
+ * @property Carbon|null $created_at
+ * @property Carbon|null $updated_at
+ * @method static Builder|BarcodeProduct newModelQuery()
+ * @method static Builder|BarcodeProduct newQuery()
+ * @method static Builder|BarcodeProduct query()
+ * @method static Builder|BarcodeProduct whereBarcodeId($value)
+ * @method static Builder|BarcodeProduct whereCreatedAt($value)
+ * @method static Builder|BarcodeProduct whereId($value)
+ * @method static Builder|BarcodeProduct whereProductId($value)
+ * @method static Builder|BarcodeProduct whereUpdatedAt($value)
+ * @mixin Eloquent
  */
 class BarcodeProduct extends Pivot
 {

@@ -4,7 +4,11 @@ namespace App\Models;
 
 use App\Scopes\ActiveScope;
 use App\Traits\HasStatuses;
+use Eloquent;
+use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Carbon;
 
 /**
  * App\Models\Currency
@@ -18,44 +22,44 @@ use Illuminate\Database\Eloquent\Model;
  * @property string|null $thousands_separator
  * @property bool|null $is_symbol_after
  * @property int $status 1:draft, 2:active, 3:Inactive, 4..n:CUSTOM
- * @property \Illuminate\Support\Carbon|null $created_at
- * @property \Illuminate\Support\Carbon|null $updated_at
- * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\Country[] $countries
+ * @property Carbon|null $created_at
+ * @property Carbon|null $updated_at
+ * @property-read Collection|Country[] $countries
  * @property-read int|null $countries_count
  * @property-read bool $is_active
  * @property-read bool $is_inactive
  * @property-read mixed $status_name
- * @method static \Illuminate\Database\Eloquent\Builder|Currency active()
- * @method static \Illuminate\Database\Eloquent\Builder|Currency draft()
- * @method static \Illuminate\Database\Eloquent\Builder|Currency inactive()
- * @method static \Illuminate\Database\Eloquent\Builder|Currency newModelQuery()
- * @method static \Illuminate\Database\Eloquent\Builder|Currency newQuery()
- * @method static \Illuminate\Database\Eloquent\Builder|Currency notActive()
- * @method static \Illuminate\Database\Eloquent\Builder|Currency query()
- * @method static \Illuminate\Database\Eloquent\Builder|Currency whereCode($value)
- * @method static \Illuminate\Database\Eloquent\Builder|Currency whereCreatedAt($value)
- * @method static \Illuminate\Database\Eloquent\Builder|Currency whereDecimalSeparator($value)
- * @method static \Illuminate\Database\Eloquent\Builder|Currency whereEnglishName($value)
- * @method static \Illuminate\Database\Eloquent\Builder|Currency whereId($value)
- * @method static \Illuminate\Database\Eloquent\Builder|Currency whereIsSymbolAfter($value)
- * @method static \Illuminate\Database\Eloquent\Builder|Currency whereRate($value)
- * @method static \Illuminate\Database\Eloquent\Builder|Currency whereStatus($value)
- * @method static \Illuminate\Database\Eloquent\Builder|Currency whereSymbol($value)
- * @method static \Illuminate\Database\Eloquent\Builder|Currency whereThousandsSeparator($value)
- * @method static \Illuminate\Database\Eloquent\Builder|Currency whereUpdatedAt($value)
- * @mixin \Eloquent
+ * @method static Builder|Currency active()
+ * @method static Builder|Currency draft()
+ * @method static Builder|Currency inactive()
+ * @method static Builder|Currency newModelQuery()
+ * @method static Builder|Currency newQuery()
+ * @method static Builder|Currency notActive()
+ * @method static Builder|Currency query()
+ * @method static Builder|Currency whereCode($value)
+ * @method static Builder|Currency whereCreatedAt($value)
+ * @method static Builder|Currency whereDecimalSeparator($value)
+ * @method static Builder|Currency whereEnglishName($value)
+ * @method static Builder|Currency whereId($value)
+ * @method static Builder|Currency whereIsSymbolAfter($value)
+ * @method static Builder|Currency whereRate($value)
+ * @method static Builder|Currency whereStatus($value)
+ * @method static Builder|Currency whereSymbol($value)
+ * @method static Builder|Currency whereThousandsSeparator($value)
+ * @method static Builder|Currency whereUpdatedAt($value)
+ * @mixin Eloquent
  */
 class Currency extends Model
 {
     use HasStatuses;
 
 
-    const STATUS_DRAFT = 1;
-    const STATUS_ACTIVE = 2;
-    const STATUS_INACTIVE = 3;
+    public const STATUS_DRAFT = 1;
+    public const STATUS_ACTIVE = 2;
+    public const STATUS_INACTIVE = 3;
 
-    const IS_SYMBOL_BEFORE = 0;
-    const IS_SYMBOL_AFTER = 1;
+    public const IS_SYMBOL_BEFORE = 0;
+    public const IS_SYMBOL_AFTER = 1;
     /**
      * The attributes that should be casted to native types.
      *
@@ -128,7 +132,7 @@ class Currency extends Model
     {
         [$isSymbolAfter, $numberFormatted, $symbol] = self::renderFormat($amount, $currencyCode, $decimals);
 
-        return vsprintf("%s %s", $isSymbolAfter ?
+        return vsprintf('%s %s', $isSymbolAfter ?
             [$numberFormatted, $symbol] : [$symbol, $numberFormatted]);
     }
 
@@ -137,9 +141,9 @@ class Currency extends Model
     {
         [$isSymbolAfter, $numberFormatted, $symbol] = self::renderFormat($amount, $currencyCode, $decimals);
         if ($isSymbolAfter) {
-            return sprintf("%s <sup>%s</sup>", $numberFormatted, $symbol);
+            return sprintf('%s <sup>%s</sup>', $numberFormatted, $symbol);
         } else {
-            return sprintf("<sup>%s</sup> %s", $symbol, $numberFormatted);
+            return sprintf('<sup>%s</sup> %s', $symbol, $numberFormatted);
         }
     }
 

@@ -2,6 +2,8 @@
 
 namespace App\Models;
 
+use Eloquent;
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
 
 /**
@@ -13,16 +15,16 @@ use Illuminate\Database\Eloquent\Model;
  * @property string|null $description
  * @property string $locale
  * @property string|null $slug
- * @method static \Illuminate\Database\Eloquent\Builder|CityTranslation newModelQuery()
- * @method static \Illuminate\Database\Eloquent\Builder|CityTranslation newQuery()
- * @method static \Illuminate\Database\Eloquent\Builder|CityTranslation query()
- * @method static \Illuminate\Database\Eloquent\Builder|CityTranslation whereCityId($value)
- * @method static \Illuminate\Database\Eloquent\Builder|CityTranslation whereDescription($value)
- * @method static \Illuminate\Database\Eloquent\Builder|CityTranslation whereId($value)
- * @method static \Illuminate\Database\Eloquent\Builder|CityTranslation whereLocale($value)
- * @method static \Illuminate\Database\Eloquent\Builder|CityTranslation whereName($value)
- * @method static \Illuminate\Database\Eloquent\Builder|CityTranslation whereSlug($value)
- * @mixin \Eloquent
+ * @method static Builder|CityTranslation newModelQuery()
+ * @method static Builder|CityTranslation newQuery()
+ * @method static Builder|CityTranslation query()
+ * @method static Builder|CityTranslation whereCityId($value)
+ * @method static Builder|CityTranslation whereDescription($value)
+ * @method static Builder|CityTranslation whereId($value)
+ * @method static Builder|CityTranslation whereLocale($value)
+ * @method static Builder|CityTranslation whereName($value)
+ * @method static Builder|CityTranslation whereSlug($value)
+ * @mixin Eloquent
  */
 class CityTranslation extends Model
 {

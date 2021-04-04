@@ -5,8 +5,13 @@ namespace App\Models;
 use App\Traits\HasMediaTrait;
 use App\Traits\HasStatuses;
 use Astrotomic\Translatable\Translatable;
+use Eloquent;
+use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Carbon;
 use Spatie\MediaLibrary\HasMedia;
+use Spatie\MediaLibrary\MediaCollections\Models\Collections\MediaCollection;
 use Spatie\MediaLibrary\MediaCollections\Models\Media;
 
 /**
@@ -18,60 +23,60 @@ use Spatie\MediaLibrary\MediaCollections\Models\Media;
  * @property string|null $code
  * @property int|null $order_column
  * @property int $status 1:draft, 2:active, 3:Inactive, 4..n:CUSTOM
- * @property \Illuminate\Support\Carbon|null $created_at
- * @property \Illuminate\Support\Carbon|null $updated_at
- * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\City[] $cities
+ * @property Carbon|null $created_at
+ * @property Carbon|null $updated_at
+ * @property-read Collection|City[] $cities
  * @property-read int|null $cities_count
- * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\Location[] $contacts
+ * @property-read Collection|Location[] $contacts
  * @property-read int|null $contacts_count
- * @property-read \App\Models\Country $country
+ * @property-read Country $country
  * @property-read mixed $cover
  * @property-read mixed $gallery
  * @property-read bool $is_active
  * @property-read bool $is_inactive
  * @property-read mixed $status_name
- * @property-read \Spatie\MediaLibrary\MediaCollections\Models\Collections\MediaCollection|Media[] $media
+ * @property-read MediaCollection|Media[] $media
  * @property-read int|null $media_count
- * @property-read \App\Models\RegionTranslation|null $translation
- * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\RegionTranslation[] $translations
+ * @property-read RegionTranslation|null $translation
+ * @property-read Collection|RegionTranslation[] $translations
  * @property-read int|null $translations_count
- * @method static \Illuminate\Database\Eloquent\Builder|Region active()
- * @method static \Illuminate\Database\Eloquent\Builder|Region draft()
- * @method static \Illuminate\Database\Eloquent\Builder|Region inactive()
- * @method static \Illuminate\Database\Eloquent\Builder|Region listsTranslations(string $translationField)
- * @method static \Illuminate\Database\Eloquent\Builder|Region newModelQuery()
- * @method static \Illuminate\Database\Eloquent\Builder|Region newQuery()
- * @method static \Illuminate\Database\Eloquent\Builder|Region notActive()
- * @method static \Illuminate\Database\Eloquent\Builder|Region notTranslatedIn(?string $locale = null)
- * @method static \Illuminate\Database\Eloquent\Builder|Region orWhereTranslation(string $translationField, $value, ?string $locale = null)
- * @method static \Illuminate\Database\Eloquent\Builder|Region orWhereTranslationLike(string $translationField, $value, ?string $locale = null)
- * @method static \Illuminate\Database\Eloquent\Builder|Region orderByTranslation(string $translationField, string $sortMethod = 'asc')
- * @method static \Illuminate\Database\Eloquent\Builder|Region query()
- * @method static \Illuminate\Database\Eloquent\Builder|Region translated()
- * @method static \Illuminate\Database\Eloquent\Builder|Region translatedIn(?string $locale = null)
- * @method static \Illuminate\Database\Eloquent\Builder|Region whereCode($value)
- * @method static \Illuminate\Database\Eloquent\Builder|Region whereCountryId($value)
- * @method static \Illuminate\Database\Eloquent\Builder|Region whereCreatedAt($value)
- * @method static \Illuminate\Database\Eloquent\Builder|Region whereEnglishName($value)
- * @method static \Illuminate\Database\Eloquent\Builder|Region whereId($value)
- * @method static \Illuminate\Database\Eloquent\Builder|Region whereOrderColumn($value)
- * @method static \Illuminate\Database\Eloquent\Builder|Region whereStatus($value)
- * @method static \Illuminate\Database\Eloquent\Builder|Region whereTranslation(string $translationField, $value, ?string $locale = null, string $method = 'whereHas', string $operator = '=')
- * @method static \Illuminate\Database\Eloquent\Builder|Region whereTranslationLike(string $translationField, $value, ?string $locale = null)
- * @method static \Illuminate\Database\Eloquent\Builder|Region whereUpdatedAt($value)
- * @method static \Illuminate\Database\Eloquent\Builder|Region withTranslation()
- * @mixin \Eloquent
+ * @method static Builder|Region active()
+ * @method static Builder|Region draft()
+ * @method static Builder|Region inactive()
+ * @method static Builder|Region listsTranslations(string $translationField)
+ * @method static Builder|Region newModelQuery()
+ * @method static Builder|Region newQuery()
+ * @method static Builder|Region notActive()
+ * @method static Builder|Region notTranslatedIn(?string $locale = null)
+ * @method static Builder|Region orWhereTranslation(string $translationField, $value, ?string $locale = null)
+ * @method static Builder|Region orWhereTranslationLike(string $translationField, $value, ?string $locale = null)
+ * @method static Builder|Region orderByTranslation(string $translationField, string $sortMethod = 'asc')
+ * @method static Builder|Region query()
+ * @method static Builder|Region translated()
+ * @method static Builder|Region translatedIn(?string $locale = null)
+ * @method static Builder|Region whereCode($value)
+ * @method static Builder|Region whereCountryId($value)
+ * @method static Builder|Region whereCreatedAt($value)
+ * @method static Builder|Region whereEnglishName($value)
+ * @method static Builder|Region whereId($value)
+ * @method static Builder|Region whereOrderColumn($value)
+ * @method static Builder|Region whereStatus($value)
+ * @method static Builder|Region whereTranslation(string $translationField, $value, ?string $locale = null, string $method = 'whereHas', string $operator = '=')
+ * @method static Builder|Region whereTranslationLike(string $translationField, $value, ?string $locale = null)
+ * @method static Builder|Region whereUpdatedAt($value)
+ * @method static Builder|Region withTranslation()
+ * @mixin Eloquent
  */
 class Region extends Model implements HasMedia
 {
-    use HasMediaTrait,
-        Translatable,
-        HasStatuses;
+    use HasMediaTrait;
+    use HasStatuses;
+    use Translatable;
 
 
-    const STATUS_DRAFT = 1;
-    const STATUS_ACTIVE = 2;
-    const STATUS_INACTIVE = 3;
+    public const STATUS_DRAFT = 1;
+    public const STATUS_ACTIVE = 2;
+    public const STATUS_INACTIVE = 3;
 
     protected $fillable = ['name', 'slug'];
     protected $with = ['translations'];

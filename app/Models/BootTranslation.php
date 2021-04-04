@@ -2,6 +2,8 @@
 
 namespace App\Models;
 
+use Eloquent;
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
 
 /**
@@ -12,15 +14,15 @@ use Illuminate\Database\Eloquent\Model;
  * @property string|null $title
  * @property array|null $data_translated
  * @property string $locale
- * @method static \Illuminate\Database\Eloquent\Builder|BootTranslation newModelQuery()
- * @method static \Illuminate\Database\Eloquent\Builder|BootTranslation newQuery()
- * @method static \Illuminate\Database\Eloquent\Builder|BootTranslation query()
- * @method static \Illuminate\Database\Eloquent\Builder|BootTranslation whereBootId($value)
- * @method static \Illuminate\Database\Eloquent\Builder|BootTranslation whereDataTranslated($value)
- * @method static \Illuminate\Database\Eloquent\Builder|BootTranslation whereId($value)
- * @method static \Illuminate\Database\Eloquent\Builder|BootTranslation whereLocale($value)
- * @method static \Illuminate\Database\Eloquent\Builder|BootTranslation whereTitle($value)
- * @mixin \Eloquent
+ * @method static Builder|BootTranslation newModelQuery()
+ * @method static Builder|BootTranslation newQuery()
+ * @method static Builder|BootTranslation query()
+ * @method static Builder|BootTranslation whereBootId($value)
+ * @method static Builder|BootTranslation whereDataTranslated($value)
+ * @method static Builder|BootTranslation whereId($value)
+ * @method static Builder|BootTranslation whereLocale($value)
+ * @method static Builder|BootTranslation whereTitle($value)
+ * @mixin Eloquent
  */
 class BootTranslation extends Model
 {
