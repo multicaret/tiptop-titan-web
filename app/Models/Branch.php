@@ -137,11 +137,22 @@ class Branch extends Model implements HasMedia
     const TYPE_GROCERY_OBJECT = 1;
     const TYPE_FOOD_OBJECT = 2;
 
-    protected $fillable = ['title', 'description'];
+    protected $fillable = [
+        'has_tip_top_delivery',
+        'minimum_order',
+        'under_minimum_order_delivery_fee',
+        'fixed_delivery_fee',
+        'has_restaurant_delivery',
+        'restaurant_minimum_order',
+        'restaurant_under_minimum_order_delivery_fee',
+        'restaurant_fixed_delivery_fee',
+    ];
     protected $with = ['translations'];
     protected $translatedAttributes = ['title', 'description'];
 
     protected $casts = [
+        'has_tip_top_delivery' => 'boolean',
+        'has_restaurant_delivery' => 'boolean',
         'minimum_order' => 'double',
         'under_minimum_order_delivery_fee' => 'double',
         'fixed_delivery_fee' => 'double',

@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreateCouponInstancesTable extends Migration
+class CreateCouponUsagesTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,7 +13,7 @@ class CreateCouponInstancesTable extends Migration
      */
     public function up()
     {
-        Schema::create('coupon_instances', function (Blueprint $table) {
+        Schema::create('coupon_usages', function (Blueprint $table) {
             $table->id();
             $table->unsignedBigInteger('coupon_id');
             $table->unsignedBigInteger('redeemer_id');
@@ -37,6 +37,6 @@ class CreateCouponInstancesTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('coupon_instances');
+        Schema::dropIfExists('coupon_usages');
     }
 }

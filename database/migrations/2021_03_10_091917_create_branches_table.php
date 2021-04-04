@@ -22,12 +22,14 @@ class CreateBranchesTable extends Migration
             $table->unsignedBigInteger('region_id')->nullable();
             $table->unsignedBigInteger('city_id')->nullable();
             // TipTop Delivery
+            $table->boolean('has_tip_top_delivery')->default(true);
             $table->unsignedDouble('minimum_order')->default(0); // 50
             $table->unsignedDouble('under_minimum_order_delivery_fee')->default(0); // 10
             $table->unsignedDouble('fixed_delivery_fee')->default(0); // 5
             $table->unsignedInteger('min_delivery_minutes')->default(20);
             $table->unsignedInteger('max_delivery_minutes')->default(30);
             // Restaurant Delivery
+            $table->boolean('has_restaurant_delivery')->default(false);
             $table->unsignedDouble('restaurant_minimum_order')->default(0);
             $table->unsignedDouble('restaurant_under_minimum_order_delivery_fee')->default(0);
             $table->unsignedDouble('restaurant_fixed_delivery_fee')->default(0);

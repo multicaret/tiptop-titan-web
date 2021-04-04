@@ -479,6 +479,12 @@ class User extends Authenticatable implements HasMedia, MustVerifyEmail
         return $this->morphMany(Location::class, 'contactable');
     }
 
+
+    public function couponUsage(): \Illuminate\Database\Eloquent\Relations\HasMany
+    {
+        return $this->hasMany(CouponUsage::class, 'redeemer_id');
+    }
+
     /**
      * @param $fullName
      *
