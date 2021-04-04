@@ -201,6 +201,9 @@ class BranchController extends Controller
             "minimum_order" => 'required',
             "under_minimum_order_delivery_fee" => 'required',
             "fixed_delivery_fee" => 'required',
+            "restaurant_minimum_order" => 'required',
+            "restaurant_under_minimum_order_delivery_fee" => 'required',
+            "restaurant_fixed_delivery_fee" => 'required',
         ];
     }
 
@@ -216,9 +219,14 @@ class BranchController extends Controller
         $branch->region_id = isset($region) ? $region->id : null;
         $branch->latitude = $request->input('latitude');
         $branch->longitude = $request->input('longitude');
+        $branch->has_tip_top_delivery = $request->input('has_tip_top_delivery') ? 1 : 0;
         $branch->minimum_order = $request->input('minimum_order');
+        $branch->restaurant_minimum_order = $request->input('restaurant_minimum_order');
+        $branch->has_restaurant_delivery = $request->input('has_restaurant_delivery') ? 1 : 0;
         $branch->under_minimum_order_delivery_fee = $request->input('under_minimum_order_delivery_fee');
+        $branch->restaurant_under_minimum_order_delivery_fee = $request->input('restaurant_under_minimum_order_delivery_fee');
         $branch->fixed_delivery_fee = $request->input('fixed_delivery_fee');
+        $branch->restaurant_fixed_delivery_fee = $request->input('restaurant_fixed_delivery_fee');
         $branch->primary_phone_number = $request->input('primary_phone_number');
 //        $branch->secondary_phone_number = $request->input('secondary_phone_number');
 //        $branch->whatsapp_phone_number = $request->input('whatsapp_phone_number');
