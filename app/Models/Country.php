@@ -71,17 +71,17 @@ use Illuminate\Database\Eloquent\Model;
  */
 class Country extends Model
 {
-    use Translatable,
-        HasStatuses;
+    use HasStatuses;
+    use Translatable;
 
-    const STATUS_INCOMPLETE = 0;
-    const STATUS_DRAFT = 1;
-    const STATUS_PUBLISHED = 2;
-    const STATUS_INACTIVE = 3;
+    public const STATUS_INCOMPLETE = 0;
+    public const STATUS_DRAFT = 1;
+    public const STATUS_PUBLISHED = 2;
+    public const STATUS_INACTIVE = 3;
 
 
-    const IRAQ_COUNTRY_ID = 107;
-    const TURKEY_COUNTRY_ID = 225;
+    public const IRAQ_COUNTRY_ID = 107;
+    public const TURKEY_COUNTRY_ID = 225;
 
     protected $translatedAttributes = ['name', 'slug'];
     protected $fillable = ['name', 'slug'];
