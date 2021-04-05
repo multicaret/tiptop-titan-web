@@ -355,7 +355,6 @@ class Taxonomy extends Node implements HasMedia, ShouldHaveTypes, TranslatableCo
             'parent' => [
                 Taxonomy::TYPE_POST_CATEGORY,
                 Taxonomy::TYPE_GROCERY_CATEGORY,
-                Taxonomy::TYPE_FOOD_CATEGORY,
 
             ],
             'cover_image' => [
