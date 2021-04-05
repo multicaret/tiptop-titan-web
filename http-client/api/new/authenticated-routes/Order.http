@@ -65,7 +65,12 @@ Authorization: Bearer {{token}}
 }
 
 ### coupon
-GET {{host}}/{{locale}}/api/v1/coupons/3213rwerwer/validate
+GET {{host}}/{{locale}}/api/v1/coupons/{{couponCode}}/validate
 Accept: application/json
 Content-Type: application/json
 Authorization: Bearer {{token}}
+
+{
+    "branch_id": "{{branchId}}",
+    "cart_id": "{{cartId}}"
+}
