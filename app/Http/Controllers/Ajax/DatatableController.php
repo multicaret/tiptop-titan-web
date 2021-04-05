@@ -110,7 +110,7 @@ class DatatableController extends AjaxController
                               ->where('type', $correctType);
 
         return DataTables::of($taxonomies)
-                         ->editColumn('action', function ($taxonomy) {
+                         ->editColumn('action', function ($taxonomy) use ($correctType) {
                              $data = [
                                  'editAction' => route('admin.taxonomies.edit', [
                                      $taxonomy->uuid,
@@ -121,6 +121,20 @@ class DatatableController extends AjaxController
                                      'type' => request('type')
                                  ]),
                              ];
+
+                             $isGroceryType = $correctType === Taxonomy::TYPE_GROCERY_CATEGORY;
+                             $isFoodType = $correctType === Taxonomy::TYPE_FOOD_CATEGORY;
+                             if ( ! is_null($taxonomy->parent_id) && ($isGroceryType || $isFoodType)) {
+                                 $deepLinkParams = [
+                                     'uuid' => $taxonomy->uuid,
+                                     'id' => $taxonomy->id,
+                                     'parent_id' => $taxonomy->parent_id,
+                                     'type' => request('type')
+                                 ];
+                                 $data['deepLink'] = [
+                                     'url' => Controller::getDeepLink('market_food_category_show', $deepLinkParams)
+                                 ];
+                             }
 
                              return view('admin.components.datatables._row-actions', $data)->render();
                          })

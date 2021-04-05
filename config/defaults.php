@@ -350,14 +350,16 @@ return [
                 'channel' => config('app.app-channels.grocery')
             ],
         ],
-        'market_branch_product_index' => [
+        'market_food_category_show' => [
             'url' => 'https://app.adjust.com/657i79u',
             'campaign' => null,
             'adgroup' => null,
             'creative' => null,
             'deep_link' => null,
             'deep_link_params' => [
-                'id' => 1
+                'id' => 2,
+                'type' => 'food',
+                'parent_id' => 1,
             ],
         ],
         'my_addresses' => [
@@ -410,16 +412,6 @@ return [
             'deep_link_params' => [
                 'id' => 1
             ],
-        ],
-        'restaurant_branch_product_index' => [
-            'url' => 'https://app.adjust.com/ag91sls',
-            'campaign' => null,
-            'adgroup' => null,
-            'creative' => null,
-            'deep_link' => null,
-            'deep_link_params' => [
-                'id' => 1
-            ],
-        ],
+        ]
     ]
 ];
