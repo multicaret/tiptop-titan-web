@@ -90,16 +90,15 @@ class OrderController extends BaseApiController
         $deliveryFee = null;
         if ($userCart->total >= $minimumOrder) {
             $deliveryFee = $branch->fixed_delivery_fee;
-        } else {
-            if ( ! $underMinimumOrderDeliveryFee) {
-                $message = trans('api.cart_total_under_minimum');
+        } elseif ( ! $underMinimumOrderDeliveryFee) {
+            $message = trans('api.cart_total_under_minimum');
 
-                return $this->setStatusCode(Response::HTTP_NOT_ACCEPTABLE)
-                            ->respondWithMessage($message);
-            } else {
-                $deliveryFee = $underMinimumOrderDeliveryFee;
-            }
+            return $this->setStatusCode(Response::HTTP_NOT_ACCEPTABLE)
+                        ->respondWithMessage($message);
+        } else {
+            $deliveryFee = $underMinimumOrderDeliveryFee;
         }
+
 
         $paymentMethods = PaymentMethod::active()->get()->map(function ($method) {
             return [
@@ -219,17 +218,18 @@ class OrderController extends BaseApiController
             if ( ! is_null($coupon && $coupon->expired_at < now())) {
                 if ($coupon->min_cart_value_allowed < $newOrder->grand_total) {
                     if ($coupon->max_usable_count > $coupon->total_redeemed_count) {
-                        $coupon->money_redeemed_so_far = $coupon->discount_amount;
+                        // Todo: fix
+                        $coupon->money_redeemed_so_far += $coupon->discount_amount;
                         $coupon->total_redeemed_count++;
-                        $coupon->status = Coupon::STATUS_ACTIVE;
                         $coupon->save();
 
                         $couponUsage = new CouponUsage;
                         $couponUsage->coupon_id = $coupon->id;
                         $couponUsage->cart_id = $cart->id;
-                        $couponUsage->redeemer_id = auth()->id();
+                        $couponUsage->redeemer_id = $user->id;
                         $couponUsage->order_id = $newOrder->id;
                         $couponUsage->redeemed_at = now();
+                        // Todo: fix
                         $couponUsage->discounted_amount = $coupon->discount_amount;
                         $couponUsage->save();
                     } else {
@@ -271,7 +271,7 @@ class OrderController extends BaseApiController
                 } else {
                     $cartTotalAfterDiscount = ($grandTotal - $couponDiscountAmount);
                 }
-            } elseif ($hasFreeDelivery && ! $coupon->discount_by_percentage) {
+            } elseif ( ! $hasFreeDelivery && ! $coupon->discount_by_percentage) {
                 if ($couponDiscountAmount > $couponMaxAllowedDiscountAmount) {
                     $cartTotalAfterDiscount = ($newOrder->total - $couponMaxAllowedDiscountAmount) + $newOrder->delivery_fee;
                 } else {
