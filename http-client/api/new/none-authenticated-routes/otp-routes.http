@@ -35,6 +35,6 @@ Content-Type: application/json
 {
     "phone_country_code": "90",
     "phone_number": "5395534325",
-    "code": "918351",
+    "code": "964291",
     "reference": "{{otpReference}}"
 }
