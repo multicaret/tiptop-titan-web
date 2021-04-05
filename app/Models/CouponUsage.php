@@ -52,4 +52,32 @@ class CouponUsage extends Model
     {
         return $this->belongsTo(User::class, 'redeemer_id');
     }
+
+    /**
+     * @param $totalDiscountedAmount
+     * @param  Coupon  $coupon
+     * @param  Int  $cartId
+     * @param  Int  $userId
+     * @param  Int  $orderId
+     */
+    public static function storeCouponUsage(
+        $totalDiscountedAmount,
+        Coupon $coupon,
+        int $cartId,
+        int $userId,
+        int $orderId
+    ): void {
+        $coupon->money_redeemed_so_far += $totalDiscountedAmount;
+        $coupon->total_redeemed_count++;
+        $coupon->save();
+
+        $couponUsage = new self;
+        $couponUsage->coupon_id = $coupon->id;
+        $couponUsage->cart_id = $cartId;
+        $couponUsage->redeemer_id = $userId;
+        $couponUsage->order_id = $orderId;
+        $couponUsage->redeemed_at = now();
+        $couponUsage->discounted_amount = $totalDiscountedAmount;
+        $couponUsage->save();
+    }
 }
