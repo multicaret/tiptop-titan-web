@@ -7,6 +7,7 @@ use App\Models\Chain;
 use App\Models\Location;
 use App\Models\Region;
 use App\Models\Branch;
+use App\Models\Taxonomy;
 use DB;
 use Exception;
 use Illuminate\Contracts\Foundation\Application;
@@ -101,8 +102,10 @@ class BranchController extends Controller
         $regions = Region::whereCountryId(config('defaults.country.id'))->get();
         $chains = Chain::whereType($type)->get();
         $branch->chain = Chain::whereType($type)->first();
+        $foodCategories = Taxonomy::foodCategories()->get();
 
-        return view('admin.branches.form', compact('branch', 'regions', 'chains', 'typeName', 'type', 'contacts'));
+        return view('admin.branches.form',
+            compact('branch', 'regions', 'chains', 'typeName', 'type', 'contacts', 'foodCategories'));
     }
 
     /**
@@ -152,8 +155,10 @@ class BranchController extends Controller
         $regions = Region::whereCountryId(config('defaults.country.id'))->get();
         $branch->load(['region', 'city', 'chain']);
         $chains = Chain::whereType($type)->get();
+        $foodCategories = Taxonomy::foodCategories()->get();
 
-        return view('admin.branches.form', compact('branch', 'regions', 'typeName', 'type', 'chains', 'contacts'));
+        return view('admin.branches.form',
+            compact('branch', 'regions', 'typeName', 'type', 'chains', 'contacts', 'foodCategories'));
     }
 
     /**
@@ -259,6 +264,7 @@ class BranchController extends Controller
                 $branch->translateOrNew($key)->description = $request->input($key.'.description');
             }
         }
+        $branch->foodCategories()->sync($request->input('food_categories'));
         $requestContactDetails = json_decode($request->contactDetails);
         $contactToDelete = $branch->locations()->get()->pluck('id')->toArray();
         $contactToDelete = array_combine($contactToDelete, $contactToDelete);

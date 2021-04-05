@@ -197,6 +197,21 @@
                                         ></multiselect>
                                     </div>
                                 </div>
+                                @if($type == \App\Models\Branch::TYPE_FOOD_OBJECT)
+                                    <div class="col-6">
+                                        @component('admin.components.form-group', ['name' => 'food_categories', 'type' => 'select'])
+                                            @slot('label', 'Food categories')
+                                            @slot('attributes', [
+                                               'class' => 'select2-categories w-100',
+                                               'multiple'
+                                           ])
+                                            @slot('options', $foodCategories->pluck('title','id')->prepend('',''))
+                                            @slot('selected', $branch->foodCategories)
+                                        @endcomponent
+                                    </div>
+                                @endif
+
+
                                 <div class="col-6">
                                     @component('admin.components.form-group', ['name' => 'status', 'type' => 'select'])
                                         @slot('label', trans('strings.status'))
@@ -205,7 +220,7 @@
                                     @endcomponent
                                 </div>
 
-                                <div class="col-md-4 mt-3">
+                                <div class="col-md-6 {{$type == \App\Models\Branch::TYPE_FOOD_OBJECT ? '':'mt-3'}}">
                                     @component('admin.components.form-group', ['name' => 'primary_phone_number', 'type' => 'tel'])
                                         @slot('label', 'Primary phone number')
                                         @slot('value', $branch->primary_phone_number)
@@ -406,6 +421,9 @@
 
     <script>
         $(function () {
+            $('.select2-categories').select2({
+                placeholder: 'Select Cities',
+            });
             const lat = {!! json_encode(isset($branch->latitude) ? $branch->latitude: config('defaults.geolocation.latitude')) !!};
             const lng = {!! json_encode(isset($branch->longitude)? $branch->longitude : config('defaults.geolocation.longitude')) !!};
             latitude.value = lat;
@@ -428,6 +446,7 @@
             data: {
                 branch: @json($branch),
                 regions: @json($regions),
+                foodCategories: @json($foodCategories),
                 cities: [],
                 chains: @json($chains),
                 contactDetails: @json($contacts),

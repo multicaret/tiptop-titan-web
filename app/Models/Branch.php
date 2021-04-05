@@ -240,6 +240,12 @@ class Branch extends Model implements HasMedia
         return $this->hasMany(Location::class, 'contactable_id');
     }
 
+    public function foodCategories(): BelongsToMany
+    {
+        return $this->belongsToMany(Taxonomy::class, 'category_branch', 'branch_id',
+            'category_id')->withTimestamps();
+    }
+
     public static function getClosestAvailableBranch($latitude, $longitude): array
     {
         $distance = $branch = null;
