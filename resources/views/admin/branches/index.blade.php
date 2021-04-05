@@ -8,13 +8,24 @@
             Food Branches
         @endif
         @if(request()->has('type'))
-            <a href="{{ route('admin.branches.create',['type'=> request()->type]) }}">
-                <button type="button" class="btn btn-primary rounded-pill d-block">
-                    <span class="ion ion-md-add"></span>
-                    &nbsp;
-                    {{trans('strings.add')}}
-                </button>
-            </a>
+            <div>
+                @if(\App\Models\Branch::isFood())
+                    <a href="{{ route('admin.restaurants.create') }}">
+                        <button type="button" class="btn btn-primary rounded-pill">
+                            <span class="ion ion-md-add"></span>
+                            &nbsp;
+                            {{trans('strings.add_restaurant')}}
+                        </button>
+                    </a>
+                @endif
+                <a href="{{ route('admin.branches.create',['type'=> request()->type]) }}">
+                    <button type="button" class="btn btn-primary rounded-pill">
+                        <span class="ion ion-md-add"></span>
+                        &nbsp;
+                        {{trans('strings.add')}}
+                    </button>
+                </a>
+            </div>
         @endif
     </h4>
 

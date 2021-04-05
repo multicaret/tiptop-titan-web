@@ -250,4 +250,5 @@ return [
     'guest' => 'Guest',
     'everyone' => 'Everyone',
     'placement' => 'Placement',
+    'add_restaurant' => 'Add Restaurant',
 ];
