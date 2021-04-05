@@ -85,7 +85,8 @@
                                 <div class="input-group mb-1">
                                     <div class="input-group-prepend">
                                         <span v-if="coupon.discount_by_percentage" class="input-group-text">%</span>
-                                        <span v-else class="input-group-text">{{config('defaults.currency.code')}}</span>
+                                        <span v-else
+                                              class="input-group-text">{{config('defaults.currency.code')}}</span>
                                     </div>
                                     <input
                                         v-model="coupon.discount_amount"
@@ -153,10 +154,20 @@
             </div>
             <div class="col-md-12 mt-2">
                 <div class="card card-outline-inverse">
-                    <h4 class="card-header">Status</h4>
+                    <h4 class="card-header">Selectors</h4>
                     <div class="card-body">
                         <div class="row">
-                            <div class="col-12">
+                            <div class="col-6">
+                                @component('admin.components.form-group', ['name' => 'type', 'type' => 'select'])
+                                    @slot('label', 'Type')
+                                    @slot('options', [
+                                        App\Models\Coupon::TYPE_GROCERY_OBJECT => 'Market',
+                                        App\Models\Coupon::TYPE_FOOD_OBJECT => 'Food'
+                                        ])
+                                    @slot('selected', $coupon->type)
+                                @endcomponent
+                            </div>
+                            <div class="col-6">
                                 @component('admin.components.form-group', ['name' => 'status', 'type' => 'select'])
                                     @slot('label', trans('strings.status'))
                                     @slot('options', \App\Models\Coupon::getStatusesArray())
