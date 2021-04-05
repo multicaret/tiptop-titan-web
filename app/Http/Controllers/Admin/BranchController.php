@@ -35,7 +35,6 @@ class BranchController extends Controller
      */
     public function index(Request $request)
     {
-        $typeName = Chain::getCorrectTypeName($request->type, false);
         $columns = [
             [
                 'data' => 'id',
@@ -81,7 +80,7 @@ class BranchController extends Controller
             ],
         ];
 
-        return view('admin.branches.index', compact('columns', 'typeName'));
+        return view('admin.branches.index', compact('columns'));
     }
 
     /**
@@ -93,8 +92,8 @@ class BranchController extends Controller
      */
     public function create(Request $request)
     {
-        $typeName = Branch::getCorrectTypeName($request->type, false);
-        $type = Branch::getCorrectType($request->type);
+        $typeName = Branch::getCorrectChannelName($request->type, false);
+        $type = Branch::getCorrectChannel($request->type);
         $contacts = [];
 
         $branch = new Branch();
@@ -139,8 +138,8 @@ class BranchController extends Controller
      */
     public function edit(Branch $branch, Request $request)
     {
-        $typeName = Branch::getCorrectTypeName($request->type, false);
-        $type = Branch::getCorrectType($request->type);
+        $typeName = Branch::getCorrectChannelName($request->type, false);
+        $type = Branch::getCorrectChannel($request->type);
         $contacts = $branch->locations()->get()->map(function ($item) {
             return [
                 'id' => $item->id,
@@ -235,7 +234,7 @@ class BranchController extends Controller
         $branch->primary_phone_number = $request->input('primary_phone_number');
 //        $branch->secondary_phone_number = $request->input('secondary_phone_number');
 //        $branch->whatsapp_phone_number = $request->input('whatsapp_phone_number');
-        $branch->type = Branch::getCorrectType($request->type);
+        $branch->type = Branch::getCorrectChannel($request->type);
         $branch->status = $request->input('status');
         $branch->save();
 

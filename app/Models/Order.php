@@ -128,8 +128,8 @@ class Order extends Model
     use HasTypes;
     use SoftDeletes;
 
-    public const TYPE_GROCERY_OBJECT = 1;
-    public const TYPE_FOOD_OBJECT = 2;
+    public const CHANNEL_GROCERY_OBJECT = 1;
+    public const CHANNEL_FOOD_OBJECT = 2;
 
     public const STATUS_CANCELLED = 0;
     public const STATUS_DRAFT = 1;

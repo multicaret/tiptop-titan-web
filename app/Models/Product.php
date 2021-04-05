@@ -170,8 +170,8 @@ class Product extends Model implements HasMedia
     public const STATUS_INACTIVE = 3;
     public const STATUS_INACTIVE_SEASONABLE = 4;
 
-    public const TYPE_GROCERY_OBJECT = 1;
-    public const TYPE_FOOD_OBJECT = 2;
+    public const CHANNEL_GROCERY_OBJECT = 1;
+    public const CHANNEL_FOOD_OBJECT = 2;
 
     protected $with = [
         'chain',
@@ -328,7 +328,7 @@ class Product extends Model implements HasMedia
 
     public function registerMediaCollections(): void
     {
-        $isGrocery = $this->type === self::TYPE_GROCERY_OBJECT;
+        $isGrocery = $this->type === self::CHANNEL_GROCERY_OBJECT;
         $fallBackImageUrl = config('defaults.images.product_cover');
         $this->addMediaCollection('cover')
              ->useFallbackUrl(url($fallBackImageUrl))

@@ -36,7 +36,7 @@ class OrderController extends Controller
      */
     public function ratings(Request $request)
     {
-        $typeName = Order::getCorrectTypeName($request->type, false);
+        $typeName = Order::getCorrectChannelName($request->type, false);
         $columns = [
             [
                 'data' => 'id',

@@ -8,12 +8,12 @@ trait HasAppTypes
 {
     public static function isFood(): bool
     {
-        return request()->type === self::getTypesArray()[self::TYPE_FOOD_OBJECT];
+        return request()->type === self::getChannelsArray()[self::CHANNEL_FOOD_OBJECT];
     }
 
     public static function isGrocery(): bool
     {
-        return request()->type === self::getTypesArray()[self::TYPE_GROCERY_OBJECT];
+        return request()->type === self::getChannelsArray()[self::CHANNEL_GROCERY_OBJECT];
     }
 
     /**
@@ -23,7 +23,7 @@ trait HasAppTypes
      */
     public function scopeGrocery($query)
     {
-        return $query->where('type', self::TYPE_GROCERY_OBJECT);
+        return $query->where('type', self::CHANNEL_GROCERY_OBJECT);
     }
 
     /**
@@ -33,7 +33,7 @@ trait HasAppTypes
      */
     public function scopeFood($query)
     {
-        return $query->where('type', self::TYPE_FOOD_OBJECT);
+        return $query->where('type', self::CHANNEL_FOOD_OBJECT);
     }
 
 
@@ -43,23 +43,41 @@ trait HasAppTypes
         return new class {
             public static function isFood(): bool
             {
-                return request()->type === $model::getTypesArray()[self::TYPE_FOOD_OBJECT];
+                return request()->type === $model::getChannelsArray()[self::CHANNEL_FOOD_OBJECT];
             }
 
             public static function isGrocery(): bool
             {
-                return request()->type === $model::getTypesArray()[self::TYPE_GROCERY_OBJECT];
+                return request()->type === $model::getChannelsArray()[self::CHANNEL_GROCERY_OBJECT];
             }
         };
     }*/
 
-    public static function getTypesArray(): array
+    public static function getCorrectChannelName($channel = null, $isLocalized = true): ?string
+    {
+        if ( ! is_null($channel) && ! is_numeric($channel)) {
+            $channel = self::getCorrectChannel($channel);
+        }
+        if (array_key_exists($channel, self::getChannelsArray())) {
+            return $isLocalized ? self::getChannelsArray()[$channel] : self::getChannelsArray()[$channel];
+        }
+
+        return null;
+    }
+
+
+    public static function getChannelsArray(): array
     {
         $model = (last(explode('\\', Str::lower(get_class()))));
 
         return [
-            self::TYPE_GROCERY_OBJECT => "grocery-$model",
-            self::TYPE_FOOD_OBJECT => "food-$model",
+            self::CHANNEL_GROCERY_OBJECT => "grocery-$model",
+            self::CHANNEL_FOOD_OBJECT => "food-$model",
         ];
+    }
+
+    public static function getCorrectChannel(string $type = null): int
+    {
+        return array_search($type, self::getChannelsArray());
     }
 }

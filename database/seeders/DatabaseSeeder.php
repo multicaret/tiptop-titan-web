@@ -1232,7 +1232,7 @@ class DatabaseSeeder extends Seeder
         $chain->region_id = config('defaults.region.id');
         $chain->city_id = config('defaults.city.id');
         $chain->currency_id = config('defaults.currency.id');
-        $chain->type = Chain::TYPE_GROCERY_OBJECT;
+        $chain->type = Chain::CHANNEL_GROCERY_OBJECT;
         $chain->primary_phone_number = '+964539551234';
         $chain->secondary_phone_number = '+964539551234';
         $chain->whatsapp_phone_number = '+964539551234';
@@ -1262,7 +1262,7 @@ class DatabaseSeeder extends Seeder
             $item->editor_id = $super->id;
             $item->region_id = config('defaults.region.id');
             $item->city_id = config('defaults.city.id');
-            $item->type = Branch::TYPE_GROCERY_OBJECT;
+            $item->type = Branch::CHANNEL_GROCERY_OBJECT;
 
             $item->minimum_order = 500 * ($branchIndex + 1);
             $item->under_minimum_order_delivery_fee = 200 * ($branchIndex + 1);
