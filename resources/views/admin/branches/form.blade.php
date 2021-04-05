@@ -34,7 +34,7 @@
         @endif
         <div class="row mb-4">
             <div class="col-md-12">
-                <div class="col-12">
+                {{--<div class="col-12">
                     <ul class="nav nav-tabs border-bottom-0">
                         @foreach(localization()->getSupportedLocales() as $key => $locale)
                             <li class="nav-item">
@@ -69,6 +69,43 @@
                                                               :content="optional($branch->translate($langKey))->description"/>
                                         </div>
 
+                                    </div>
+                                </div>
+                            </div>
+                        @endforeach
+                    </div>
+                </div>--}}
+                <div class="col-md-12">
+                    <div class="row">
+                        @foreach(localization()->getSupportedLocales() as $langKey => $locale)
+                            <div class="col-md-4 mt-4">
+                                <div class="card card-outline-inverse">
+                                    <h4 class="card-header">{{Str::upper($langKey)}}</h4>
+                                    <div class="card-body row">
+                                        <div class="col-md-12">
+                                            @component('admin.components.form-group', ['name' => $langKey .'[title]', 'type' => 'text'])
+                                                @slot('label', trans('strings.name'))
+                                                @if(! is_null($branch->id))
+                                                    @slot('value', optional($branch->translate($langKey))->title)
+                                                @endif
+                                            @endcomponent
+                                        </div>
+                                        <div class="col-md-12">
+                                            {{--<x-admin.textarea :id="$langKey.'-description'"--}}
+                                            {{--                  :name="$langKey.'[description]'"--}}
+                                            {{--                  label="Description"--}}
+                                            {{--                  :content="optional($branch->translate($langKey))->description"/>--}}
+
+                                            @component('admin.components.form-group', ['name' => $langKey .'[description]', 'type' => 'textarea'])
+                                                @slot('label', 'Description')
+                                                @slot('attributes', [
+                                                        'rows' => 5,
+                                                        ])
+                                                @if(! is_null($branch->id))
+                                                    @slot('value', optional($branch->translate($langKey))->description)
+                                                @endif
+                                            @endcomponent
+                                        </div>
                                     </div>
                                 </div>
                             </div>
@@ -190,56 +227,14 @@
                         </div>
                     </div>
                 </div>
-                <div class="row px-3">
-                    <div class="{{$type == \App\Models\Branch::TYPE_FOOD_OBJECT ? "col-md-6" : "col-md-12" }} mt-2">
-                        <div class="card card-outline-inverse">
-                            <h4 class="card-header">Tiptop Delivery
-                                <label class="switcher switcher-primary m-3">
-                                    <input type="checkbox" class="switcher-input"
-                                           name="has_tip_top_delivery" {{$branch->has_tip_top_delivery ? 'checked' : ''}}>
-                                    <span class="switcher-indicator">
-                                    <span class="switcher-yes">
-                                        <span class="ion ion-md-checkmark"></span>
-                                    </span>
-                                      <span class="switcher-no">
-                                        <span class="ion ion-md-close"></span>
-                                      </span>
-                                </span>
-                                </label></h4>
-                            <div class="card-body">
-                                <div class="row">
-                                    <div class="col-md-6 mt-3">
-                                        @component('admin.components.form-group', ['name' => 'minimum_order', 'type' => 'number'])
-                                            @slot('label', 'Minimum order')
-                                            @slot('value', is_null($branch->minimum_order) ? 0 : $branch->minimum_order)
-                                            @slot('attributes',['step'=>1,'min'=>1])
-                                        @endcomponent
-                                    </div>
-                                    <div class="col-md-6 mt-3">
-                                        @component('admin.components.form-group', ['name' => 'fixed_delivery_fee', 'type' => 'number'])
-                                            @slot('label', 'Fixed delivery fee')
-                                            @slot('value', is_null($branch->fixed_delivery_fee) ? 0 : $branch->fixed_delivery_fee)
-                                            @slot('attributes',['step'=>1,'min'=>1])
-                                        @endcomponent
-                                    </div>
-                                    <div class="col-md-12 mt-3">
-                                        @component('admin.components.form-group', ['name' => 'under_minimum_order_delivery_fee', 'type' => 'number'])
-                                            @slot('label', 'Under minimum order delivery fee')
-                                            @slot('value', is_null($branch->under_minimum_order_delivery_fee) ? 0 : $branch->under_minimum_order_delivery_fee)
-                                            @slot('attributes',['step'=>1,'min'=>1])
-                                        @endcomponent
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    @if($type == \App\Models\Branch::TYPE_FOOD_OBJECT)
-                        <div class="col-md-6 mt-2">
+                <div class="col-md-12">
+                    <div class="row">
+                        <div class="{{$type == \App\Models\Branch::TYPE_FOOD_OBJECT ? "col-md-6" : "col-md-12" }} mt-2">
                             <div class="card card-outline-inverse">
-                                <h4 class="card-header">Restaurant Delivery
+                                <h4 class="card-header">Tiptop Delivery
                                     <label class="switcher switcher-primary m-3">
                                         <input type="checkbox" class="switcher-input"
-                                               name="has_restaurant_delivery" {{$branch->has_restaurant_delivery ? 'checked' : ''}}>
+                                               name="has_tip_top_delivery" {{$branch->has_tip_top_delivery ? 'checked' : ''}}>
                                         <span class="switcher-indicator">
                                     <span class="switcher-yes">
                                         <span class="ion ion-md-checkmark"></span>
@@ -251,25 +246,24 @@
                                     </label></h4>
                                 <div class="card-body">
                                     <div class="row">
-
                                         <div class="col-md-6 mt-3">
-                                            @component('admin.components.form-group', ['name' => 'restaurant_minimum_order', 'type' => 'number'])
+                                            @component('admin.components.form-group', ['name' => 'minimum_order', 'type' => 'number'])
                                                 @slot('label', 'Minimum order')
-                                                @slot('value', is_null($branch->restaurant_minimum_order) ? 0 : $branch->restaurant_minimum_order )
+                                                @slot('value', is_null($branch->minimum_order) ? 0 : $branch->minimum_order)
                                                 @slot('attributes',['step'=>1,'min'=>1])
                                             @endcomponent
                                         </div>
                                         <div class="col-md-6 mt-3">
-                                            @component('admin.components.form-group', ['name' => 'restaurant_fixed_delivery_fee', 'type' => 'number'])
+                                            @component('admin.components.form-group', ['name' => 'fixed_delivery_fee', 'type' => 'number'])
                                                 @slot('label', 'Fixed delivery fee')
-                                                @slot('value', is_null($branch->restaurant_fixed_delivery_fee) ? 0 : $branch->restaurant_fixed_delivery_fee)
+                                                @slot('value', is_null($branch->fixed_delivery_fee) ? 0 : $branch->fixed_delivery_fee)
                                                 @slot('attributes',['step'=>1,'min'=>1])
                                             @endcomponent
                                         </div>
                                         <div class="col-md-12 mt-3">
-                                            @component('admin.components.form-group', ['name' => 'restaurant_under_minimum_order_delivery_fee', 'type' => 'number'])
+                                            @component('admin.components.form-group', ['name' => 'under_minimum_order_delivery_fee', 'type' => 'number'])
                                                 @slot('label', 'Under minimum order delivery fee')
-                                                @slot('value', is_null($branch->restaurant_under_minimum_order_delivery_fee) ? 0 : $branch->restaurant_under_minimum_order_delivery_fee)
+                                                @slot('value', is_null($branch->under_minimum_order_delivery_fee) ? 0 : $branch->under_minimum_order_delivery_fee)
                                                 @slot('attributes',['step'=>1,'min'=>1])
                                             @endcomponent
                                         </div>
@@ -277,7 +271,51 @@
                                 </div>
                             </div>
                         </div>
-                    @endif
+                        @if($type == \App\Models\Branch::TYPE_FOOD_OBJECT)
+                            <div class="col-md-6 mt-2">
+                                <div class="card card-outline-inverse">
+                                    <h4 class="card-header">Restaurant Delivery
+                                        <label class="switcher switcher-primary m-3">
+                                            <input type="checkbox" class="switcher-input"
+                                                   name="has_restaurant_delivery" {{$branch->has_restaurant_delivery ? 'checked' : ''}}>
+                                            <span class="switcher-indicator">
+                                    <span class="switcher-yes">
+                                        <span class="ion ion-md-checkmark"></span>
+                                    </span>
+                                      <span class="switcher-no">
+                                        <span class="ion ion-md-close"></span>
+                                      </span>
+                                </span>
+                                        </label></h4>
+                                    <div class="card-body">
+                                        <div class="row">
+                                            <div class="col-md-6 mt-3">
+                                                @component('admin.components.form-group', ['name' => 'restaurant_minimum_order', 'type' => 'number'])
+                                                    @slot('label', 'Minimum order')
+                                                    @slot('value', is_null($branch->restaurant_minimum_order) ? 0 : $branch->restaurant_minimum_order )
+                                                    @slot('attributes',['step'=>1,'min'=>1])
+                                                @endcomponent
+                                            </div>
+                                            <div class="col-md-6 mt-3">
+                                                @component('admin.components.form-group', ['name' => 'restaurant_fixed_delivery_fee', 'type' => 'number'])
+                                                    @slot('label', 'Fixed delivery fee')
+                                                    @slot('value', is_null($branch->restaurant_fixed_delivery_fee) ? 0 : $branch->restaurant_fixed_delivery_fee)
+                                                    @slot('attributes',['step'=>1,'min'=>1])
+                                                @endcomponent
+                                            </div>
+                                            <div class="col-md-12 mt-3">
+                                                @component('admin.components.form-group', ['name' => 'restaurant_under_minimum_order_delivery_fee', 'type' => 'number'])
+                                                    @slot('label', 'Under minimum order delivery fee')
+                                                    @slot('value', is_null($branch->restaurant_under_minimum_order_delivery_fee) ? 0 : $branch->restaurant_under_minimum_order_delivery_fee)
+                                                    @slot('attributes',['step'=>1,'min'=>1])
+                                                @endcomponent
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        @endif
+                    </div>
                 </div>
                 <div class="col-md-12 mt-2">
                     <div id="accordion">
@@ -319,7 +357,7 @@
                                                         <td>
                                                             <a class="btn btn-danger text-white"
                                                                @click="removeItem(contactDetail.id)">
-                                                                <i class="fa fa-trash-alt"></i>
+                                                                <i class="fa fa-trash-alt fa-sm"></i>
                                                             </a></td>
                                                     </tr>
                                                     </tbody>
