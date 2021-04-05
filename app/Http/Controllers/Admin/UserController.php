@@ -7,13 +7,16 @@ use App\Models\City;
 use App\Models\Country;
 use App\Models\Region;
 use App\Models\User;
+use DB;
+use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
+use Illuminate\Http\Response;
 use Spatie\Permission\Models\Role;
 
 class UserController extends Controller
 {
 
-    function __construct()
+    public function __construct()
     {
         $this->middleware('permission:user.permissions.index', ['only' => ['index', 'store']]);
         $this->middleware('permission:user.permissions.create', ['only' => ['create', 'store']]);
@@ -26,7 +29,7 @@ class UserController extends Controller
      *
      * @param  Request  $request
      *
-     * @return \Illuminate\Http\Response
+     * @return Response
      */
     public function index($type)
     {
@@ -39,14 +42,14 @@ class UserController extends Controller
      * @param $type
      * @param  Request  $request
      *
-     * @return \Illuminate\Http\Response
+     * @return Response
      */
     public function create($type, Request $request)
     {
         $data = $this->essentialData();
 
         $user = new User();
-        $user->status = User::STATUS_PUBLISHED;
+        $user->status = User::STATUS_ACTIVE;
         $user->country_id = config('defaults.country.id');
         $user->region_id = config('defaults.region.id');
         $user->city_id = config('defaults.city.id');
@@ -63,9 +66,9 @@ class UserController extends Controller
     /**
      * Store a newly created resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
+     * @param  Request  $request
      *
-     * @return \Illuminate\Http\RedirectResponse
+     * @return RedirectResponse
      */
     public function store($type, Request $request)
     {
@@ -78,7 +81,7 @@ class UserController extends Controller
         $order = is_null($previousOrderValue) ? 1 : $previousOrderValue->order_column + 1;
         $role = $request->type;
 
-        \DB::beginTransaction();
+        DB::beginTransaction();
         $user = new User();
         $user->first = $request->first;
         $user->last = $request->last;
@@ -115,7 +118,7 @@ class UserController extends Controller
 
         $this->handleSubmittedSingleMedia('avatar', $request, $user);
 
-        \DB::commit();
+        DB::commit();
 
         $roleName = $this->getRoleFromUserType($role)->name;
         $user->assignRole($roleName);
@@ -132,13 +135,13 @@ class UserController extends Controller
      * Show the form for editing the specified resource.
      *
      * @param  Request  $request
-     * @param  \App\Models\User  $user
+     * @param  User  $user
      *
-     * @return \Illuminate\Http\Response
+     * @return Response
      */
     public function edit($type, User $user, Request $request)
     {
-        if(is_null($type)){
+        if (is_null($type)) {
             dd('type is null in edit');
         }
         $type = $request->type;
@@ -155,14 +158,14 @@ class UserController extends Controller
      * Update the specified resource in storage.
      *
      * @param $type
-     * @param  \App\Models\User  $user
+     * @param  User  $user
      *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\RedirectResponse
+     * @param  Request  $request
+     * @return RedirectResponse
      */
     public function update($type, User $user, Request $request)
     {
-        if(is_null($type)){
+        if (is_null($type)) {
             dd('type is null in edit');
         }
         $validationRules = [
@@ -176,7 +179,7 @@ class UserController extends Controller
 
         $request->validate($validationRules);
 
-        \DB::beginTransaction();
+        DB::beginTransaction();
         $user->first = $request->first;
         $user->last = $request->last;
         $user->gender = $request->gender;
@@ -213,7 +216,7 @@ class UserController extends Controller
         $address->save();*/
 
         $this->handleSubmittedSingleMedia('avatar', $request, $user);
-        \DB::commit();
+        DB::commit();
 
         $roleName = $this->getRoleFromUserType($request->type)->name;
         $user->assignRole($roleName);
@@ -233,9 +236,9 @@ class UserController extends Controller
     /**
      * Remove the specified resource from storage.
      *
-     * @param  \App\Models\User  $user
+     * @param  User  $user
      *
-     * @return \Illuminate\Http\Response
+     * @return Response
      */
     public function destroy($type, User $user)
     {
@@ -258,7 +261,7 @@ class UserController extends Controller
             'roles' => [
 //                User::ROLE_SUPER => trans('strings.' . User::ROLE_SUPER),
                 User::ROLE_ADMIN => trans('strings.'.User::ROLE_ADMIN),
-                User::ROLE_EDITOR => trans('strings.'.User::ROLE_EDITOR),
+                User::ROLE_CONTENT_EDITOR => trans('strings.'.User::ROLE_CONTENT_EDITOR),
             ],
             'countries' => Country::all(),
             'regions' => Region::where('country_id', config('defaults.country.id'))->get(),

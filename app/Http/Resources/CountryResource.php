@@ -2,18 +2,21 @@
 
 namespace App\Http\Resources;
 
+use App\Models\Country;
+use Exception;
+use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
 
-/** @mixin \App\Models\Country */
+/** @mixin Country */
 class CountryResource extends JsonResource
 {
     /**
      * Transform the resource into an array.
      *
-     * @param  \Illuminate\Http\Request  $request
+     * @param  Request  $request
      *
      * @return array
-     * @throws \Exception
+     * @throws Exception
      */
     public function toArray($request)
     {
@@ -34,18 +37,13 @@ class CountryResource extends JsonResource
             }
 
             return [
-                'id' => $this->id,
-                'name' => [
-                    'original' => $this->english_name,
-                    'translated' => $this->name,
-                ],
+                'id' => (int) $this->id,
+                'nameEnglish' => $this->english_name,
+                'name' => $this->name,
+                'phoneCode' => $this->phone_code,
                 'alpha2Code' => $this->alpha2_code,
                 'alpha3Code' => $this->alpha3_code,
-                'numericCode' => $this->numeric_code,
-                'phoneCode' => $this->phone_code,
                 'flagUrl' => $flag_url,
-                'currency' => $this->currency ? new CurrencyResource($this->currency) : null,
-                'timezone' => $this->timezone ? new TimezoneResource($this->timezone) : null,
             ];
         });
 

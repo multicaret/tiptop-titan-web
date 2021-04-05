@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Api\V1;
 
 use App\Http\Controllers\Api\BaseApiController;
+use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Log;
 
@@ -11,7 +12,7 @@ class LogController extends BaseApiController
     /**
      * @param  Request  $request
      *
-     * @return \Illuminate\Http\JsonResponse
+     * @return JsonResponse
      */
     public function store(Request $request)
     {

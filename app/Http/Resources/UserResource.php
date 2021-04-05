@@ -4,15 +4,17 @@ namespace App\Http\Resources;
 
 use App\Http\Controllers\Controller;
 use App\Models\Product;
+use App\Models\User;
+use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
 
-/** @mixin \App\Models\User */
+/** @mixin User */
 class UserResource extends JsonResource
 {
     /**
      * Transform the resource into an array.
      *
-     * @param  \Illuminate\Http\Request  $request
+     * @param  Request  $request
      *
      * @return array
      */
@@ -72,7 +74,6 @@ class UserResource extends JsonResource
                 'diffForHumans' => $this->updated_at->diffForHumans(),
                 'timestamp' => $this->updated_at->timestamp,
             ],
-            'mobileApp' => $this->mobile_app,
             'settings' => $this->settings,
             'currency' => new CurrencyResource($this->currency),
             'country' => new CountryResource($this->country),

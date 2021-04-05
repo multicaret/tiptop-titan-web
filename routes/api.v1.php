@@ -32,7 +32,7 @@ Route::middleware('throttle:15')
          Route::get('about-us', 'PostController@aboutUs');
          Route::get('faq', 'PostController@faq');
          Route::get('support', 'SettingController@support');
-         Route::get('countries-with-flags', 'CountryController@countreisWithFlags');
+         Route::get('countries', 'CountryController@index');
 
          /* misc. */
          Route::post('logs/create', 'LogController@store');
@@ -68,6 +68,8 @@ Route::middleware('auth:sanctum')
          // Carts
          Route::post('carts/{cart}/products/adjust-quantity', 'CartController@adjustQuantity');
          Route::post('carts/{cart}/delete', 'CartController@destroy');
+
+         Route::get('coupons/{code}/validate', 'CouponController@validateCoupon');
 
 
 //         Route::get('taxonomies', 'TaxonomyController@index');

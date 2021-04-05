@@ -84,7 +84,7 @@
                                 <div class="col-6">
                                     <div class="form-group">
                                         <label class="control-label">
-                                            @lang('strings.region')
+                                            @lang('strings.city')
                                         </label>
                                         <multiselect
                                             :options="regions"
@@ -105,7 +105,7 @@
                                 <div class="col-6">
                                     <div class="form-group">
                                         <label class="control-label">
-                                            @lang('strings.city')
+                                            Neighborhood
                                         </label>
                                         <multiselect
                                             :options="cities"
@@ -280,7 +280,20 @@
                 chain: @json($chain),
                 regions: @json($regions),
                 cities: [],
-
+                selectedRegion: null
+            },
+            watch: {
+                chain: {
+                    handler: function (val) {
+                        if (!this.selectedRegion || this.selectedRegion.id != val.region.id) {
+                            this.selectedRegion = val.region;
+                            if (this.chain.city != null) {
+                                this.chain.city = null
+                            }
+                        }
+                    },
+                    deep: true,
+                }
             },
             methods: {
                 retrieveCities: function (region) {

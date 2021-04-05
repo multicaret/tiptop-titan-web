@@ -2,15 +2,17 @@
 
 namespace App\Http\Resources;
 
+use App\Models\Taxonomy;
+use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
 
-/** @mixin \App\Models\Taxonomy */
+/** @mixin Taxonomy */
 class GroceryCategoryParentIndexResource extends JsonResource
 {
     /**
      * Transform the resource into an array.
      *
-     * @param  \Illuminate\Http\Request  $request
+     * @param  Request  $request
      *
      * @return array
      */
@@ -18,8 +20,9 @@ class GroceryCategoryParentIndexResource extends JsonResource
     {
 
         return [
-            'id' => (int)$this->id,
+            'id' => (int) $this->id,
             'icon' => $this->icon,
+            'englishTitle' => $this->translate('en')->title,
             'title' => $this->title,
             'description' => [
                 'raw' => strip_tags($this->description),

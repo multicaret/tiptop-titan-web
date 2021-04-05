@@ -10,7 +10,7 @@ class CustomPathGenerator implements PathGenerator
 {
     public function getPath(Media $media): string
     {
-        return sprintf("uploads/%s/%d/", lcfirst(Str::plural(explode('\\', $media->model_type)[2])), $media->id);
+        return sprintf('uploads/%s/%d/', lcfirst(Str::plural(explode('\\', $media->model_type)[2])), $media->id);
     }
 
     public function getPathForConversions(Media $media): string

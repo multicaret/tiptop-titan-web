@@ -1,5 +1,6 @@
 <?php
 
+use App\Models\Taxonomy;
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
@@ -20,21 +21,24 @@ class CreateTaxonomiesTable extends Migration
             $table->unsignedBigInteger('editor_id');
             $table->unsignedBigInteger('parent_id')->index()->nullable();
             $table->unsignedBigInteger('branch_id')->index()->nullable();
+            $table->unsignedBigInteger('chain_id')->index()->nullable();
+            $table->unsignedBigInteger('ingredient_category_id')->nullable();
             $table->unsignedTinyInteger('type')->default(1)->comment('1:Category, 2: Tag, 3..n: CUSTOM');
             $table->string('icon')->nullable();
-            $table->integer('view_count')->default(1);
+            $table->unsignedBigInteger('view_count')->default(1);
             $table->integer('left');
             $table->integer('right');
             $table->integer('depth')->nullable();
             $table->decimal('step')->default(1);
-            $table->unsignedInteger('order_column')->nullable();
-            $table->unsignedTinyInteger('status')->default(1)->comment('0:incomplete, 1:draft, 2:published, 3:Inactive, 4..n:CUSTOM');
+            $table->unsignedBigInteger('order_column')->nullable();
+            $table->unsignedTinyInteger('status')->default(Taxonomy::STATUS_DRAFT)->comment('1:draft, 2:active, 3:Inactive, 4..n:CUSTOM');
             $table->timestamps();
             $table->softDeletes();
 
             $table->foreign('creator_id')->references('id')->on('users');
             $table->foreign('editor_id')->references('id')->on('users');
             $table->foreign('parent_id')->references('id')->on('taxonomies');
+            $table->foreign('ingredient_category_id')->references('id')->on('taxonomies');
         });
     }
 

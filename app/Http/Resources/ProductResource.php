@@ -2,13 +2,15 @@
 
 namespace App\Http\Resources;
 
+use App\Models\Product;
+use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
 
-/** @mixin \App\Models\Product */
+/** @mixin Product */
 class ProductResource extends JsonResource
 {
     /**
-     * @param  \Illuminate\Http\Request  $request
+     * @param  Request  $request
      * @return array
      */
     public function toArray($request)
@@ -19,6 +21,7 @@ class ProductResource extends JsonResource
         return [
             'id' => (int) $this->id,
             'uuid' => $this->uuid,
+            'englishTitle' => $this->translate('en')->title,
             'title' => $this->title,
             'description' => [
                 'raw' => strip_tags($this->description),

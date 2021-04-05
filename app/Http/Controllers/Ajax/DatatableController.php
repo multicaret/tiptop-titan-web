@@ -5,13 +5,17 @@ namespace App\Http\Controllers\Ajax;
 use App\Models\Branch;
 use App\Models\Chain;
 use App\Models\City;
+use App\Models\Coupon;
+use App\Models\Order;
 use App\Models\Post;
+use App\Models\Product;
 use App\Models\Region;
 use App\Models\Slide;
 use App\Models\Taxonomy;
 use App\Models\Translation;
 use App\Models\User;
 use Carbon\Carbon;
+use Exception;
 use Illuminate\Http\Request;
 use Illuminate\Support\Str;
 use Yajra\DataTables\DataTables;
@@ -22,7 +26,7 @@ class DatatableController extends AjaxController
      * @param  Request  $request
      *
      * @return mixed
-     * @throws \Exception
+     * @throws Exception
      */
     public function users(Request $request)
     {
@@ -69,7 +73,7 @@ class DatatableController extends AjaxController
                                  ])->render();
                              }
 
-                             return "<i>Never</i>";
+                             return '<i>Never</i>';
                          })
                          ->editColumn('created_at', function ($item) {
                              return view('admin.components.datatables._date', [
@@ -95,13 +99,13 @@ class DatatableController extends AjaxController
      * @param  Request  $request
      *
      * @return mixed
-     * @throws \Exception
+     * @throws Exception
      */
     public function taxonomies(Request $request)
     {
         $correctType = Taxonomy::getCorrectType($request->type);
         $taxonomies = Taxonomy::orderBy('order_column')
-                              ->with('parent')
+                              ->with('parent', 'chain', 'branches', 'branch')
                               ->where('type', $correctType);
 
         return DataTables::of($taxonomies)
@@ -119,6 +123,22 @@ class DatatableController extends AjaxController
 
                              return view('admin.components.datatables._row-actions', $data)->render();
                          })
+                         ->editColumn('parent', function ($item) {
+                             return $item->parent ? $item->parent->title : null;
+                         })
+                         ->editColumn('chain', function ($item) {
+                             return $item->chain ? $item->chain->title : null;
+                         })
+                         ->editColumn('branches', function ($item) {
+                             $branches = $item->branches->pluck('title')->toArray();
+
+                             return view('admin.components.datatables._badge-items', [
+                                 'items' => $branches
+                             ])->render();
+                         })
+                         ->editColumn('ingredientCategory', function ($item) {
+                             return ! is_null($item->ingredientCategory) ? $item->ingredientCategory->title : null;
+                         })
                          ->editColumn('order_column', function ($item) {
                              return view('admin.components.datatables._row-reorder')->render();
                          })
@@ -133,9 +153,13 @@ class DatatableController extends AjaxController
                              ])->render();
                          })
                          ->rawColumns([
+//                             'chain',
+                             'step',
+                             'branches',
                              'action',
                              'order_column',
-                             'created_at'
+                             'created_at',
+                             'ingredientCategory'
                          ])
                          ->setRowAttr([
                              'row-id' => function ($taxonomy) {
@@ -149,7 +173,7 @@ class DatatableController extends AjaxController
      * @param  Request  $request
      *
      * @return mixed
-     * @throws \Exception
+     * @throws Exception
      */
     public function posts(Request $request)
     {
@@ -304,7 +328,7 @@ class DatatableController extends AjaxController
 
     public function slides(Request $request)
     {
-        $slides = Slide::selectRaw('slides.*');
+        $slides = Slide::selectRaw('slides.*')->latest();
 
         return DataTables::of($slides)
                          ->editColumn('action', function ($slide) {
@@ -379,7 +403,7 @@ class DatatableController extends AjaxController
                              if ( ! is_null($item->expires_at)) {
                                  return view('admin.components.datatables._time-left', [
                                      'title' => $title,
-                                     'tooltip' => Str::kebab($item->expires_at->diffForHumans(\Carbon\Carbon::now())),
+                                     'tooltip' => Str::kebab($item->expires_at->diffForHumans(Carbon::now())),
                                      'icon' => $icon,
                                      'color' => $color,
                                  ])->render();
@@ -387,14 +411,23 @@ class DatatableController extends AjaxController
 
                              return null;
                          })
-                         ->editColumn('status', function ($item) {
-                             $currentStatus = Post::getAllStatusesRich()[$item->status];
+                         ->editColumn('region', function ($item) {
+                             return ! is_null($item->region) ? $item->region->name : '';
+                         })
+                         ->editColumn('city', function ($item) {
+                             return ! is_null($item->city) ? $item->city->name : '';
+                         })
+                         ->editColumn('has_been_authenticated', function ($item) {
+                             return Slide::getTargetsArray()[$item->has_been_authenticated];
+                         })
+                         ->editColumn('channel', function ($item) {
+                             $currentChannel = Slide::getAllChannelsRich()[$item->channel];
                              $data = [
                                  'item' => $item,
-                                 'currentStatus' => $currentStatus,
+                                 'currentChannel' => $currentChannel,
                              ];
 
-                             return view('admin.components.datatables._row-actions-status', $data)
+                             return view('admin.components.datatables._row-actions-channel', $data)
                                  ->render();
                          })
                          ->editColumn('thumbnail', function (Slide $item) {
@@ -425,7 +458,10 @@ class DatatableController extends AjaxController
                              'status',
                              'begins_at',
                              'expires_at',
+                             'region',
+                             'city',
                              'state',
+                             'channel',
                              'time_left',
                              'thumbnail',
                          ])
@@ -449,7 +485,7 @@ class DatatableController extends AjaxController
                                      'type' => request('type')
                                  ]),
                                  'deleteAction' => route('admin.chains.destroy', [
-                                     $chain->id,
+                                     $chain->uuid,
                                      'type' => request('type')
                                  ]),
                              ];
@@ -476,6 +512,60 @@ class DatatableController extends AjaxController
                          ->setRowAttr([
                              'row-id' => function ($chain) {
                                  return $chain->id;
+                             }
+                         ])
+                         ->make(true);
+    }
+
+
+    public function coupons(Request $request)
+    {
+        $coupons = Coupon::selectRaw('coupons.*');
+
+        return DataTables::of($coupons)
+                         ->editColumn('action', function ($coupon) {
+                             $data = [
+                                 'editAction' => route('admin.coupons.edit', [
+                                     $coupon->id,
+                                 ]),
+                                 'deleteAction' => route('admin.coupons.destroy', [
+                                     $coupon->id,
+                                 ]),
+                             ];
+
+                             return view('admin.components.datatables._row-actions', $data)->render();
+                         })
+                         ->editColumn('discount', function ($coupon) {
+
+                             $prefix = $coupon->discount_by_percentage ? '%' : config('defaults.currency.code');
+
+                             return $prefix.' '.$coupon->discount_amount;
+                         })
+                         ->editColumn('expired_at', function ($coupon) {
+                             return view('admin.components.datatables._date', [
+                                 'date' => $coupon->expired_at
+                             ])->render();
+                         })
+                         ->editColumn('status', function ($coupon) {
+                             return view('admin.components.datatables._status', [
+                                 'status' => $coupon->status
+                             ])->render();
+                         })
+                         ->editColumn('created_at', function ($coupon) {
+                             return view('admin.components.datatables._date', [
+                                 'date' => $coupon->created_at
+                             ])->render();
+                         })
+                         ->rawColumns([
+                             'action',
+                             'status',
+                             'discount',
+                             'created_at',
+                             'expired_at',
+                         ])
+                         ->setRowAttr([
+                             'row-id' => function ($coupon) {
+                                 return $coupon->id;
                              }
                          ])
                          ->make(true);
@@ -541,8 +631,8 @@ class DatatableController extends AjaxController
             'order_column'
         ];
         foreach (localization()->getSupportedLocalesKeys() as $key) {
-            array_push($rawColumns, $key."_value");
-            $of->editColumn($key."_value", function ($transition) use ($key) {
+            array_push($rawColumns, $key.'_value');
+            $of->editColumn($key.'_value', function ($transition) use ($key) {
                 $hasTranslation = $transition->hasTranslation($key);
                 $value = $hasTranslation ? $transition->getTranslation($key)->value : '';
 
@@ -552,7 +642,7 @@ class DatatableController extends AjaxController
                     'localeKey' => $key,
                     'is_empty' => ! $hasTranslation,
                 ])->render();
-            })->filterColumn($key."_value", function ($builderData, $search) use ($key) {
+            })->filterColumn($key.'_value', function ($builderData, $search) use ($key) {
                 if (strpos(Str::lower($search), 'empty') !== false) {
                     return $builderData->notTranslatedIn($key);
                 }
@@ -570,5 +660,111 @@ class DatatableController extends AjaxController
             ->rawColumns($rawColumns)
             ->make(true);
     }
+
+    public function products(Request $request)
+    {
+        $products = Product::whereType(Product::getCorrectType($request->type))->selectRaw('products.*');
+
+        return DataTables::of($products)
+                         ->editColumn('action', function ($product) {
+                             $data = [
+                                 'editAction' => route('admin.products.edit', [
+                                     $product->uuid,
+                                     'type' => request('type')
+                                 ]),
+                                 'deleteAction' => route('admin.products.destroy', [
+                                     $product->uuid,
+                                     'type' => request('type')
+                                 ]),
+                             ];
+
+                             return view('admin.components.datatables._row-actions', $data)->render();
+                         })
+                         ->editColumn('chain', function ($product) {
+                             return ! is_null($product->chain) ? $product->chain->title : '';
+                         })
+                         ->editColumn('branch', function ($product) {
+                             return ! is_null($product->branch) ? $product->branch->title : '';
+                         })
+                         ->editColumn('price', function ($product) {
+                             return ! is_null($product->price) ? $product->price_formatted : '';
+                         })
+                         ->editColumn('created_at', function ($product) {
+                             return view('admin.components.datatables._date', [
+                                 'date' => $product->created_at
+                             ])->render();
+                         })
+                         ->rawColumns([
+                             'action',
+                             'chain',
+                             'branch',
+                             'price',
+                             'created_at',
+                         ])
+                         ->setRowAttr([
+                             'row-id' => function ($branch) {
+                                 return $branch->id;
+                             }
+                         ])
+                         ->make(true);
+    }
+
+    public function orderRatings(Request $request)
+    {
+        $orders = Order::whereType(Order::getCorrectType($request->type))->selectRaw('orders.*');
+
+        return DataTables::of($orders)
+                         ->editColumn('action', function ($order) {
+                             $data = [];
+
+                             return view('admin.components.datatables._row-actions', $data)->render();
+                         })
+                         ->editColumn('branch', function ($order) {
+                             return ! is_null($order->branch) ? $order->branch->title : '';
+                         })
+                         ->editColumn('order', function ($order) {
+                             return view('admin.components.datatables._link', [
+                                 'text' => $order->reference_code,
+                                 'link' => route('admin.products.index'),
+//                                 'link' => route('admin.orders.edit', [$order->id]),
+
+                             ])->render();
+                         })
+                         ->editColumn('comment', function ($order) {
+                             return view('admin.components.datatables._comment', [
+                                 'order' => $order,
+                             ])->render();
+                         })
+                         ->editColumn('issue', function ($order) {
+                             return ! is_null($order->ratingIssue) ? $order->ratingIssue->title : '';
+                         })
+                         ->editColumn('rating', function ($order) {
+                             return view('admin.components.datatables._rating', [
+                                 'rating' => $order->branch_rating_value
+                             ])->render();
+                         })
+                         ->editColumn('created_at', function ($order) {
+                             return view('admin.components.datatables._date', [
+                                 'date' => $order->created_at
+                             ])->render();
+                         })
+                         ->rawColumns([
+                             'action',
+                             'order',
+                             'comment',
+                             'branch',
+                             'rating',
+                             'issue',
+                             'rating_comment',
+                             'created_at',
+                         ])
+                         ->setRowAttr([
+                             'row-id' => function ($branch) {
+                                 return $branch->id;
+                             }
+                         ])
+                         ->make(true);
+    }
+
 
 }

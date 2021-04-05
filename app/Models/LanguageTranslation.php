@@ -2,6 +2,8 @@
 
 namespace App\Models;
 
+use Eloquent;
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
 
 /**
@@ -11,14 +13,14 @@ use Illuminate\Database\Eloquent\Model;
  * @property int $language_id
  * @property string $name
  * @property string $locale
- * @method static \Illuminate\Database\Eloquent\Builder|LanguageTranslation newModelQuery()
- * @method static \Illuminate\Database\Eloquent\Builder|LanguageTranslation newQuery()
- * @method static \Illuminate\Database\Eloquent\Builder|LanguageTranslation query()
- * @method static \Illuminate\Database\Eloquent\Builder|LanguageTranslation whereId($value)
- * @method static \Illuminate\Database\Eloquent\Builder|LanguageTranslation whereLanguageId($value)
- * @method static \Illuminate\Database\Eloquent\Builder|LanguageTranslation whereLocale($value)
- * @method static \Illuminate\Database\Eloquent\Builder|LanguageTranslation whereName($value)
- * @mixin \Eloquent
+ * @method static Builder|LanguageTranslation newModelQuery()
+ * @method static Builder|LanguageTranslation newQuery()
+ * @method static Builder|LanguageTranslation query()
+ * @method static Builder|LanguageTranslation whereId($value)
+ * @method static Builder|LanguageTranslation whereLanguageId($value)
+ * @method static Builder|LanguageTranslation whereLocale($value)
+ * @method static Builder|LanguageTranslation whereName($value)
+ * @mixin Eloquent
  */
 class LanguageTranslation extends Model
 {

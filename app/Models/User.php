@@ -2,27 +2,40 @@
 
 namespace App\Models;
 
+use App\Http\Controllers\Controller;
 use App\Mail\Welcome;
 use App\Notifications\ResetPassword;
 use App\Traits\HasGender;
 use App\Traits\HasMediaTrait;
 use App\Traits\HasStatuses;
 use App\Traits\HasViewCount;
+use Database\Factories\UserFactory;
+use Eloquent;
 use Illuminate\Auth\Passwords\CanResetPassword;
 use Illuminate\Contracts\Auth\MustVerifyEmail;
+use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo as BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany as HasMany;
+use Illuminate\Database\Eloquent\Relations\MorphMany;
 use Illuminate\Foundation\Auth\User as Authenticatable;
+use Illuminate\Notifications\DatabaseNotification;
+use Illuminate\Notifications\DatabaseNotificationCollection;
 use Illuminate\Notifications\Notifiable;
+use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Str;
 use Laravel\Sanctum\HasApiTokens;
+use Laravel\Sanctum\NewAccessToken;
 use Multicaret\Acquaintances\Traits\CanFavorite;
 use Multicaret\Acquaintances\Traits\CanRate;
 use Spatie\Image\Manipulations;
 use Spatie\MediaLibrary\HasMedia;
+use Spatie\MediaLibrary\MediaCollections\Models\Collections\MediaCollection;
 use Spatie\MediaLibrary\MediaCollections\Models\Media;
+use Spatie\Permission\Models\Permission;
 use Spatie\Permission\Models\Role;
 use Spatie\Permission\Traits\HasRoles;
 
@@ -38,7 +51,7 @@ use Spatie\Permission\Traits\HasRoles;
  * @property string|null $phone_country_code
  * @property string|null $phone_number
  * @property string|null $bio
- * @property \Illuminate\Support\Carbon|null $dob
+ * @property Carbon|null $dob
  * @property int|null $gender
  * @property string $wallet_reserved_total
  * @property string $wallet_free_total
@@ -56,144 +69,142 @@ use Spatie\Permission\Traits\HasRoles;
  * @property int $view_count
  * @property int $total_number_of_orders
  * @property int|null $order_column
- * @property object $mobile_app
  * @property mixed|null $social_networks
  * @property object $settings to handle all sort of settings including notification related such as is_notifiable by email or by push notifications ...etc
- * @property int $status 0:incomplete, 1:draft, 2:published, 3:Inactive, 4..n:CUSTOM
- * @property \Illuminate\Support\Carbon|null $approved_at
- * @property \Illuminate\Support\Carbon|null $phone_verified_at
- * @property \Illuminate\Support\Carbon|null $suspended_at
- * @property \Illuminate\Support\Carbon|null $email_verified_at
- * @property \Illuminate\Support\Carbon|null $last_logged_in_at
- * @property \Illuminate\Support\Carbon|null $last_logged_out_at
+ * @property int $status 1:draft, 2:active, 3:Inactive, 4..n:CUSTOM
+ * @property Carbon|null $approved_at
+ * @property Carbon|null $phone_verified_at
+ * @property Carbon|null $suspended_at
+ * @property Carbon|null $email_verified_at
+ * @property Carbon|null $last_logged_in_at
+ * @property Carbon|null $last_logged_out_at
  * @property string|null $remember_token
- * @property \Illuminate\Support\Carbon|null $created_at
- * @property \Illuminate\Support\Carbon|null $updated_at
- * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\Location[] $addresses
+ * @property Carbon|null $created_at
+ * @property Carbon|null $updated_at
+ * @property-read Collection|Location[] $addresses
  * @property-read int|null $addresses_count
- * @property-read \App\Models\City|null $city
- * @property-read \App\Models\Country|null $country
- * @property-read \App\Models\Currency|null $currency
+ * @property-read City|null $city
+ * @property-read Country|null $country
+ * @property-read Collection|CouponUsage[] $couponUsage
+ * @property-read int|null $coupon_usage_count
+ * @property-read Currency|null $currency
  * @property-read mixed $analyst
  * @property-read bool $avatar
  * @property-read bool $cover
  * @property-read mixed $international_phone
+ * @property-read bool $is_active
  * @property-read mixed $is_admin
+ * @property-read bool $is_inactive
  * @property-read bool $is_manager
  * @property-read mixed $is_owner
- * @property-read mixed $is_published
  * @property-read bool $is_super
  * @property-read mixed $is_user
  * @property-read mixed $name
  * @property-read mixed $status_name
  * @property-read mixed $translator
- * @property-read \App\Models\Language|null $language
- * @property-read \Spatie\MediaLibrary\MediaCollections\Models\Collections\MediaCollection|Media[] $media
+ * @property-read Language|null $language
+ * @property-read MediaCollection|Media[] $media
  * @property-read int|null $media_count
- * @property-read \Illuminate\Notifications\DatabaseNotificationCollection|\Illuminate\Notifications\DatabaseNotification[] $notifications
+ * @property-read DatabaseNotificationCollection|DatabaseNotification[] $notifications
  * @property-read int|null $notifications_count
- * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\Order[] $orders
+ * @property-read Collection|Order[] $orders
  * @property-read int|null $orders_count
- * @property-read \Illuminate\Database\Eloquent\Collection|\Spatie\Permission\Models\Permission[] $permissions
+ * @property-read Collection|Permission[] $permissions
  * @property-read int|null $permissions_count
- * @property-read \App\Models\Region|null $region
- * @property-read \Illuminate\Database\Eloquent\Collection|Role[] $roles
+ * @property-read Region|null $region
+ * @property-read Collection|Role[] $roles
  * @property-read int|null $roles_count
- * @property-read \Illuminate\Database\Eloquent\Collection|\Laravel\Sanctum\PersonalAccessToken[] $tokens
+ * @property-read Collection|PersonalAccessToken[] $tokens
  * @property-read int|null $tokens_count
- * @method static \Illuminate\Database\Eloquent\Builder|User active()
- * @method static \Illuminate\Database\Eloquent\Builder|User draft()
- * @method static \Database\Factories\UserFactory factory(...$parameters)
- * @method static \Illuminate\Database\Eloquent\Builder|User inActive()
- * @method static \Illuminate\Database\Eloquent\Builder|User incomplete()
- * @method static \Illuminate\Database\Eloquent\Builder|User managers()
- * @method static \Illuminate\Database\Eloquent\Builder|User newModelQuery()
- * @method static \Illuminate\Database\Eloquent\Builder|User newQuery()
- * @method static \Illuminate\Database\Eloquent\Builder|User notPublished()
- * @method static \Illuminate\Database\Eloquent\Builder|User notSuper()
- * @method static \Illuminate\Database\Eloquent\Builder|User owners()
- * @method static \Illuminate\Database\Eloquent\Builder|User permission($permissions)
- * @method static \Illuminate\Database\Eloquent\Builder|User published()
- * @method static \Illuminate\Database\Eloquent\Builder|User query()
- * @method static \Illuminate\Database\Eloquent\Builder|User role($roles, $guard = null)
- * @method static \Illuminate\Database\Eloquent\Builder|User whereApprovedAt($value)
- * @method static \Illuminate\Database\Eloquent\Builder|User whereAvgRating($value)
- * @method static \Illuminate\Database\Eloquent\Builder|User whereBio($value)
- * @method static \Illuminate\Database\Eloquent\Builder|User whereCityId($value)
- * @method static \Illuminate\Database\Eloquent\Builder|User whereCountryId($value)
- * @method static \Illuminate\Database\Eloquent\Builder|User whereCreatedAt($value)
- * @method static \Illuminate\Database\Eloquent\Builder|User whereCurrencyId($value)
- * @method static \Illuminate\Database\Eloquent\Builder|User whereDob($value)
- * @method static \Illuminate\Database\Eloquent\Builder|User whereEmail($value)
- * @method static \Illuminate\Database\Eloquent\Builder|User whereEmailVerifiedAt($value)
- * @method static \Illuminate\Database\Eloquent\Builder|User whereFirst($value)
- * @method static \Illuminate\Database\Eloquent\Builder|User whereGender($value)
- * @method static \Illuminate\Database\Eloquent\Builder|User whereId($value)
- * @method static \Illuminate\Database\Eloquent\Builder|User whereLanguageId($value)
- * @method static \Illuminate\Database\Eloquent\Builder|User whereLast($value)
- * @method static \Illuminate\Database\Eloquent\Builder|User whereLastLoggedInAt($value)
- * @method static \Illuminate\Database\Eloquent\Builder|User whereLastLoggedOutAt($value)
- * @method static \Illuminate\Database\Eloquent\Builder|User whereLatitude($value)
- * @method static \Illuminate\Database\Eloquent\Builder|User whereLongitude($value)
- * @method static \Illuminate\Database\Eloquent\Builder|User whereMobileApp($value)
- * @method static \Illuminate\Database\Eloquent\Builder|User whereOrderColumn($value)
- * @method static \Illuminate\Database\Eloquent\Builder|User wherePassword($value)
- * @method static \Illuminate\Database\Eloquent\Builder|User wherePhoneCountryCode($value)
- * @method static \Illuminate\Database\Eloquent\Builder|User wherePhoneNumber($value)
- * @method static \Illuminate\Database\Eloquent\Builder|User wherePhoneVerifiedAt($value)
- * @method static \Illuminate\Database\Eloquent\Builder|User whereProfessionId($value)
- * @method static \Illuminate\Database\Eloquent\Builder|User whereRatingCount($value)
- * @method static \Illuminate\Database\Eloquent\Builder|User whereRegionId($value)
- * @method static \Illuminate\Database\Eloquent\Builder|User whereRememberToken($value)
- * @method static \Illuminate\Database\Eloquent\Builder|User whereSelectedAddressId($value)
- * @method static \Illuminate\Database\Eloquent\Builder|User whereSettings($value)
- * @method static \Illuminate\Database\Eloquent\Builder|User whereSocialNetworks($value)
- * @method static \Illuminate\Database\Eloquent\Builder|User whereStatus($value)
- * @method static \Illuminate\Database\Eloquent\Builder|User whereSuspendedAt($value)
- * @method static \Illuminate\Database\Eloquent\Builder|User whereTotalNumberOfOrders($value)
- * @method static \Illuminate\Database\Eloquent\Builder|User whereUpdatedAt($value)
- * @method static \Illuminate\Database\Eloquent\Builder|User whereUsername($value)
- * @method static \Illuminate\Database\Eloquent\Builder|User whereViewCount($value)
- * @method static \Illuminate\Database\Eloquent\Builder|User whereWalletFreeTotal($value)
- * @method static \Illuminate\Database\Eloquent\Builder|User whereWalletReservedTotal($value)
- * @mixin \Eloquent
+ * @method static Builder|User active()
+ * @method static Builder|User draft()
+ * @method static UserFactory factory(...$parameters)
+ * @method static Builder|User inActive()
+ * @method static Builder|User managers()
+ * @method static Builder|User newModelQuery()
+ * @method static Builder|User newQuery()
+ * @method static Builder|User notActive()
+ * @method static Builder|User notSuper()
+ * @method static Builder|User owners()
+ * @method static Builder|User permission($permissions)
+ * @method static Builder|User query()
+ * @method static Builder|User role($roles, $guard = null)
+ * @method static Builder|User whereApprovedAt($value)
+ * @method static Builder|User whereAvgRating($value)
+ * @method static Builder|User whereBio($value)
+ * @method static Builder|User whereCityId($value)
+ * @method static Builder|User whereCountryId($value)
+ * @method static Builder|User whereCreatedAt($value)
+ * @method static Builder|User whereCurrencyId($value)
+ * @method static Builder|User whereDob($value)
+ * @method static Builder|User whereEmail($value)
+ * @method static Builder|User whereEmailVerifiedAt($value)
+ * @method static Builder|User whereFirst($value)
+ * @method static Builder|User whereGender($value)
+ * @method static Builder|User whereId($value)
+ * @method static Builder|User whereLanguageId($value)
+ * @method static Builder|User whereLast($value)
+ * @method static Builder|User whereLastLoggedInAt($value)
+ * @method static Builder|User whereLastLoggedOutAt($value)
+ * @method static Builder|User whereLatitude($value)
+ * @method static Builder|User whereLongitude($value)
+ * @method static Builder|User whereOrderColumn($value)
+ * @method static Builder|User wherePassword($value)
+ * @method static Builder|User wherePhoneCountryCode($value)
+ * @method static Builder|User wherePhoneNumber($value)
+ * @method static Builder|User wherePhoneVerifiedAt($value)
+ * @method static Builder|User whereProfessionId($value)
+ * @method static Builder|User whereRatingCount($value)
+ * @method static Builder|User whereRegionId($value)
+ * @method static Builder|User whereRememberToken($value)
+ * @method static Builder|User whereSelectedAddressId($value)
+ * @method static Builder|User whereSettings($value)
+ * @method static Builder|User whereSocialNetworks($value)
+ * @method static Builder|User whereStatus($value)
+ * @method static Builder|User whereSuspendedAt($value)
+ * @method static Builder|User whereTotalNumberOfOrders($value)
+ * @method static Builder|User whereUpdatedAt($value)
+ * @method static Builder|User whereUsername($value)
+ * @method static Builder|User whereViewCount($value)
+ * @method static Builder|User whereWalletFreeTotal($value)
+ * @method static Builder|User whereWalletReservedTotal($value)
+ * @mixin Eloquent
  */
 class User extends Authenticatable implements HasMedia, MustVerifyEmail
 {
-    use HasApiTokens,
-        Notifiable,
-        HasViewCount,
-        HasMediaTrait,
-        CanResetPassword,
-        CanRate,
-        HasGender,
-        HasStatuses,
-        HasRoles,
-        HasFactory,
-        CanFavorite;
+    use CanFavorite;
+    use CanRate;
+    use CanResetPassword;
+    use HasApiTokens;
+    use HasFactory;
+    use HasGender;
+    use HasMediaTrait;
+    use HasRoles;
+    use HasStatuses;
+    use HasViewCount;
+    use Notifiable;
 
-    const ROLE_SUPER = 'Super';
-    const ROLE_ADMIN = 'Admin';
-    const ROLE_SUPERVISOR = 'Supervisor';
-    const ROLE_AGENT = 'Agent';
-    const ROLE_CONTENT_EDITOR = 'Content Editor';
-    const ROLE_MARKETER = 'Marketer';
-    const ROLE_BRANCH_OWNER = 'Branch Owner';
-    const ROLE_BRANCH_MANAGER = 'Branch Manager';
-    const ROLE_EDITOR = 'Editor';
-    const ROLE_TRANSLATOR = 'Translator';
-    const ROLE_RESTAURANT_DRIVER = 'Restaurant Driver';
-    const ROLE_TIPTOP_DRIVER = 'Tiptop Driver';
-    const ROLE_USER = 'User';
+    public const ROLE_SUPER = 'super';
+    public const ROLE_ADMIN = 'admin';
+    public const ROLE_SUPERVISOR = 'supervisor';
+    public const ROLE_AGENT = 'agent';
+    public const ROLE_CONTENT_EDITOR = 'content-editor';
+    public const ROLE_MARKETER = 'marketer';
+    public const ROLE_BRANCH_OWNER = 'branch-owner';
+    public const ROLE_BRANCH_MANAGER = 'branch-manager';
+    public const ROLE_TRANSLATOR = 'translator';
+    public const ROLE_RESTAURANT_DRIVER = 'restaurant-driver';
+    public const ROLE_TIPTOP_DRIVER = 'tiptop-driver';
+    public const ROLE_USER = 'user';
 
-    const STATUS_INCOMPLETE = 0;
-    const STATUS_DRAFT = 1;
-    const STATUS_PUBLISHED = 2;
-    const STATUS_INACTIVE = 3;
 
-    const GENDER_UNSPECIFIED = 0;
-    const GENDER_MALE = 1;
-    const GENDER_FEMALE = 2;
+    public const STATUS_DRAFT = 1;
+    public const STATUS_ACTIVE = 2;
+    public const STATUS_INACTIVE = 3;
+
+    public const GENDER_UNSPECIFIED = 0;
+    public const GENDER_MALE = 1;
+    public const GENDER_FEMALE = 2;
 
     protected $fillable = [
         'last_logged_in_at',
@@ -207,7 +218,6 @@ class User extends Authenticatable implements HasMedia, MustVerifyEmail
      */
     protected $casts = [
         'dob' => 'date',
-        'mobile_app' => 'object',
         'settings' => 'object',
         'email_verified_at' => 'datetime',
         'approved_at' => 'datetime',
@@ -251,13 +261,32 @@ class User extends Authenticatable implements HasMedia, MustVerifyEmail
             }
         });
         static::creating(function (User $user) {
-            if (is_null($user->mobile_app)) {
-                $user->mobile_app = json_decode(json_encode(config('defaults.user.mobile_app')));
-            }
             if (is_null($user->settings)) {
                 $user->settings = json_decode(json_encode(config('defaults.user.settings')));
             }
         });
+    }
+
+    /**
+     * Set the user's first name.
+     *
+     * @param  string  $value
+     * @return void
+     */
+    public function setFirstAttribute($value)
+    {
+        $this->attributes['first'] = ucfirst(Controller::convertNumbersToArabic($value));
+    }
+
+    /**
+     * Set the user's first name.
+     *
+     * @param  string  $value
+     * @return void
+     */
+    public function setLastAttribute($value)
+    {
+        $this->attributes['last'] = ucfirst(Controller::convertNumbersToArabic($value));
     }
 
     /**
@@ -280,7 +309,7 @@ class User extends Authenticatable implements HasMedia, MustVerifyEmail
      *
      * @param $query
      *
-     * @return \Illuminate\Database\Eloquent\Builder
+     * @return Builder
      */
     public function scopeNotSuper($query)
     {
@@ -292,7 +321,7 @@ class User extends Authenticatable implements HasMedia, MustVerifyEmail
      *
      * @param $query
      *
-     * @return \Illuminate\Database\Eloquent\Builder
+     * @return Builder
      */
     public function scopeOwners($query)
     {
@@ -327,7 +356,7 @@ class User extends Authenticatable implements HasMedia, MustVerifyEmail
 
     public function getInternationalPhoneAttribute()
     {
-        return $this->phone_country_code.$this->phone_number;
+        return '+'.$this->phone_country_code.$this->phone_number;
     }
 
     /**
@@ -398,7 +427,7 @@ class User extends Authenticatable implements HasMedia, MustVerifyEmail
      *
      * @param $query
      *
-     * @return \Illuminate\Database\Eloquent\Builder
+     * @return Builder
      */
     public function scopeManagers($query)
     {
@@ -461,6 +490,17 @@ class User extends Authenticatable implements HasMedia, MustVerifyEmail
         return $this->morphMany(Location::class, 'contactable');
     }
 
+
+    public function couponUsages(): HasMany
+    {
+        return $this->hasMany(CouponUsage::class, 'redeemer_id');
+    }
+
+    public function carts(): HasMany
+    {
+        return $this->hasMany(Cart::class, 'user_id');
+    }
+
     /**
      * @param $fullName
      *
@@ -485,7 +525,7 @@ class User extends Authenticatable implements HasMedia, MustVerifyEmail
      * @param $phoneCountryCode
      * @param $phoneNumber
      *
-     * @return User|\Illuminate\Database\Eloquent\Model|object|null
+     * @return User|Model|object|null
      */
     public static function getUserByPhone($phoneCountryCode, $phoneNumber)
     {
@@ -543,7 +583,6 @@ class User extends Authenticatable implements HasMedia, MustVerifyEmail
             'marketer' => self::ROLE_MARKETER,
             'branch_owner' => self::ROLE_BRANCH_OWNER,
             'branch_manager' => self::ROLE_BRANCH_MANAGER,
-            'editor' => self::ROLE_EDITOR,
             'translator' => self::ROLE_TRANSLATOR,
             'restaurant_driver' => self::ROLE_RESTAURANT_DRIVER,
             'tiptop_driver' => self::ROLE_TIPTOP_DRIVER,
@@ -563,4 +602,45 @@ class User extends Authenticatable implements HasMedia, MustVerifyEmail
     {
         return ['include_external_user_ids' => [$this->id]];
     }
+
+
+    /**
+     * Get the access tokens that belong to model.
+     *
+     * @return MorphMany
+     */
+    public function tokens()
+    {
+        return $this->morphMany(PersonalAccessToken::class, 'tokenable');
+    }
+
+    /**
+     * Create a new personal access token for the user.
+     *
+     * @param  string  $name
+     * @param $deviceDetails
+     * @param  array  $abilities
+     * @return NewAccessToken
+     */
+    public function createToken(string $name, $deviceDetails, array $abilities = ['*']): NewAccessToken
+    {
+        $token = $this->tokens()->create([
+            'name' => $name,
+            'token' => hash('sha256', $plainTextToken = Str::random(40)),
+            'abilities' => $abilities,
+            'mobile_app_details' => json_encode($deviceDetails),
+        ]);
+
+        return new NewAccessToken($token, $token->getKey().'|'.$plainTextToken);
+    }
+
+    /**
+     * @param $branchId
+     * @return Cart|Model|object|null
+     */
+    public function activeCart($branchId): Cart
+    {
+        return Cart::getCurrentlyActiveCart($this->id, $branchId);
+    }
+
 }

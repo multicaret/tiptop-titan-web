@@ -2,7 +2,10 @@
 
 namespace App\Models;
 
+use Eloquent;
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Relations\Pivot;
+use Illuminate\Support\Carbon;
 
 /**
  * App\Models\ProductTag
@@ -10,17 +13,17 @@ use Illuminate\Database\Eloquent\Relations\Pivot;
  * @property int $id
  * @property int $product_id
  * @property int $tag_id
- * @property \Illuminate\Support\Carbon|null $created_at
- * @property \Illuminate\Support\Carbon|null $updated_at
- * @method static \Illuminate\Database\Eloquent\Builder|ProductTag newModelQuery()
- * @method static \Illuminate\Database\Eloquent\Builder|ProductTag newQuery()
- * @method static \Illuminate\Database\Eloquent\Builder|ProductTag query()
- * @method static \Illuminate\Database\Eloquent\Builder|ProductTag whereCreatedAt($value)
- * @method static \Illuminate\Database\Eloquent\Builder|ProductTag whereId($value)
- * @method static \Illuminate\Database\Eloquent\Builder|ProductTag whereProductId($value)
- * @method static \Illuminate\Database\Eloquent\Builder|ProductTag whereTagId($value)
- * @method static \Illuminate\Database\Eloquent\Builder|ProductTag whereUpdatedAt($value)
- * @mixin \Eloquent
+ * @property Carbon|null $created_at
+ * @property Carbon|null $updated_at
+ * @method static Builder|ProductTag newModelQuery()
+ * @method static Builder|ProductTag newQuery()
+ * @method static Builder|ProductTag query()
+ * @method static Builder|ProductTag whereCreatedAt($value)
+ * @method static Builder|ProductTag whereId($value)
+ * @method static Builder|ProductTag whereProductId($value)
+ * @method static Builder|ProductTag whereTagId($value)
+ * @method static Builder|ProductTag whereUpdatedAt($value)
+ * @mixin Eloquent
  */
 class ProductTag extends Pivot
 {

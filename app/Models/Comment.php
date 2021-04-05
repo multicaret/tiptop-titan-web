@@ -3,7 +3,12 @@
 namespace App\Models;
 
 use Baum\Node as Model;
+use Eloquent;
+use Illuminate\Database\Eloquent\Collection;
+use Illuminate\Database\Eloquent\Relations\MorphTo;
 use Illuminate\Database\Eloquent\SoftDeletes;
+use Illuminate\Database\Query\Builder;
+use Illuminate\Support\Carbon;
 
 /**
  * App\Models\Comment
@@ -20,18 +25,18 @@ use Illuminate\Database\Eloquent\SoftDeletes;
  * @property int|null $depth
  * @property int $votes
  * @property int $status 1:shown, 2:reported
- * @property \Illuminate\Support\Carbon|null $created_at
- * @property \Illuminate\Support\Carbon|null $updated_at
- * @property \Illuminate\Support\Carbon|null $deleted_at
- * @property-read \Illuminate\Database\Eloquent\Collection|Comment[] $children
+ * @property Carbon|null $created_at
+ * @property Carbon|null $updated_at
+ * @property Carbon|null $deleted_at
+ * @property-read Collection|Comment[] $children
  * @property-read int|null $children_count
- * @property-read \Illuminate\Database\Eloquent\Model|\Eloquent $commentable
+ * @property-read \Illuminate\Database\Eloquent\Model|Eloquent $commentable
  * @property-read Comment|null $parent
- * @property-read \App\Models\User $user
+ * @property-read User $user
  * @method static \Illuminate\Database\Eloquent\Builder|Node limitDepth($limit)
  * @method static \Illuminate\Database\Eloquent\Builder|Comment newModelQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|Comment newQuery()
- * @method static \Illuminate\Database\Query\Builder|Comment onlyTrashed()
+ * @method static Builder|Comment onlyTrashed()
  * @method static \Illuminate\Database\Eloquent\Builder|Comment query()
  * @method static \Illuminate\Database\Eloquent\Builder|Comment whereCommentableId($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Comment whereCommentableType($value)
@@ -48,19 +53,19 @@ use Illuminate\Database\Eloquent\SoftDeletes;
  * @method static \Illuminate\Database\Eloquent\Builder|Comment whereUpdatedAt($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Comment whereUserId($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Comment whereVotes($value)
- * @method static \Illuminate\Database\Query\Builder|Comment withTrashed()
+ * @method static Builder|Comment withTrashed()
  * @method static \Illuminate\Database\Eloquent\Builder|Node withoutNode($node)
  * @method static \Illuminate\Database\Eloquent\Builder|Node withoutRoot()
  * @method static \Illuminate\Database\Eloquent\Builder|Node withoutSelf()
- * @method static \Illuminate\Database\Query\Builder|Comment withoutTrashed()
- * @mixin \Eloquent
+ * @method static Builder|Comment withoutTrashed()
+ * @mixin Eloquent
  */
 class Comment extends Model
 {
     use SoftDeletes;
 
-    const STATUS_SHOWN = 1;
-    const STATUS_REPORTED = 2;
+    public const STATUS_SHOWN = 1;
+    public const STATUS_REPORTED = 2;
 
     /**
      * Determine if the comment has children.
@@ -77,7 +82,7 @@ class Comment extends Model
      *
      * @param  array  $columns
      *
-     * @return \Illuminate\Database\Eloquent\Collection
+     * @return Collection
      */
     public function getChildren($columns = ['*'])
     {
@@ -87,7 +92,7 @@ class Comment extends Model
     /**
      * Get all of the owning commentable models.
      *
-     * @return \Illuminate\Database\Eloquent\Relations\MorphTo
+     * @return MorphTo
      */
     public function commentable()
     {

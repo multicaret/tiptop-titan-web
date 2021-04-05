@@ -2,16 +2,18 @@
 
 namespace App\Http\Resources;
 
+use App\Models\WorkingHour;
 use Carbon\Carbon;
+use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
 
-/** @mixin \App\Models\WorkingHour */
+/** @mixin WorkingHour */
 class WorkingHourResource extends JsonResource
 {
     /**
      * Transform the resource into an array.
      *
-     * @param  \Illuminate\Http\Request  $request
+     * @param  Request  $request
      *
      * @return array
      */

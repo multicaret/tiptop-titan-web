@@ -7,11 +7,14 @@ use App\Http\Resources\OrderResource;
 use App\Models\Branch;
 use App\Models\Cart;
 use App\Models\Chain;
+use App\Models\Coupon;
+use App\Models\CouponUsage;
 use App\Models\Currency;
 use App\Models\Location;
 use App\Models\Order;
 use App\Models\PaymentMethod;
 use App\Models\Taxonomy;
+use DB;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -87,18 +90,17 @@ class OrderController extends BaseApiController
         $deliveryFee = null;
         if ($userCart->total >= $minimumOrder) {
             $deliveryFee = $branch->fixed_delivery_fee;
-        } else {
-            if ( ! $underMinimumOrderDeliveryFee) {
-                $message = trans('api.cart_total_under_minimum');
+        } elseif ( ! $underMinimumOrderDeliveryFee) {
+            $message = trans('api.cart_total_under_minimum');
 
-                return $this->setStatusCode(Response::HTTP_NOT_ACCEPTABLE)
-                            ->respondWithMessage($message);
-            } else {
-                $deliveryFee = $underMinimumOrderDeliveryFee;
-            }
+            return $this->setStatusCode(Response::HTTP_NOT_ACCEPTABLE)
+                        ->respondWithMessage($message);
+        } else {
+            $deliveryFee = $underMinimumOrderDeliveryFee;
         }
 
-        $paymentMethods = PaymentMethod::published()->get()->map(function ($method) {
+
+        $paymentMethods = PaymentMethod::active()->get()->map(function ($method) {
             return [
                 'id' => $method->id,
                 'title' => $method->title,
@@ -162,7 +164,7 @@ class OrderController extends BaseApiController
             $deliveryFee = $underMinimumOrderDeliveryFee;
         }
 
-        \DB::beginTransaction();
+        DB::beginTransaction();
         $newOrder = new Order();
         $newOrder->user_id = auth()->id();
         $newOrder->chain_id = $request->input('chain_id');
@@ -174,16 +176,12 @@ class OrderController extends BaseApiController
         $newOrder->total = $userCart->total;
         $newOrder->delivery_fee = $deliveryFee;
         $newOrder->grand_total = $userCart->total + $deliveryFee;
-//        $newOrder->coupon_discount_amount = $deliveryFee;
         $newOrder->private_total = $newOrder->total;
         $newOrder->private_delivery_fee = $newOrder->delivery_fee;
         $newOrder->private_grand_total = $newOrder->grand_total;
-        $newOrder->completed_at = now();
 //        $newOrder->private_payment_method_commission = $request->input('private_payment_method_commission');
-//        $newOrder->avg_rating = $request->input('avg_rating');
-//        $newOrder->rating_count = $request->input('rating_count');
         $newOrder->notes = $request->input('notes');
-        $newOrder->status = Order::STATUS_DELIVERED;
+        $newOrder->status = Order::STATUS_NEW;
         $newOrder->type = $branch->type;
         $newOrder->save();
 
@@ -195,17 +193,59 @@ class OrderController extends BaseApiController
         // Deduct the purchased quantity from the available quantity of each product.
         foreach ($cart->products as $product) {
             if ($product->is_storage_tracking_enabled) {
-                $product->available_quantity = $product->available_quantity - $product->pivot->quantity;
-                $product->save();
+                if ($product->available_quantity > 0) {
+                    $newAvailableQuantity = $product->available_quantity - $product->pivot->quantity;
+                    if ($newAvailableQuantity >= 0) {
+                        $product->available_quantity = $newAvailableQuantity;
+                    }
+                    $product->save();
+                } else {
+                    $productName = $product->title;
+
+                    return $this->respondWithMessage("{$productName} Product Unavailable");
+                }
             }
         }
+
+
+        if ( ! is_null($couponRedeemCode = $request->input('coupon_redeem_code'))) {
+            $coupon = Coupon::where('redeem_code', $couponRedeemCode)->first();
+
+            [
+                $isExpirationDateAndUsageValid, $validationExpirationAndUsageMessage
+            ] = $coupon->validateExpirationDateAndUsageCount();
+
+            [$isAmountValid, $totalDiscountedAmount] = $coupon->validateCouponDiscountAmount($newOrder->total);
+
+            $deliveryFee = $branch->calculateDeliveryFee($newOrder->total);
+            if ($coupon->has_free_delivery) {
+                $deliveryFee = 0;
+            }
+
+            if ($isExpirationDateAndUsageValid && $isAmountValid) {
+                $couponDiscountAmount = $userCart->total - $totalDiscountedAmount;
+                $newOrder->coupon_id = $coupon->id;
+                $newOrder->delivery_fee = $deliveryFee;
+                $newOrder->coupon_discount_amount = $couponDiscountAmount;
+                $newOrder->grand_total = $userCart->total + $deliveryFee - ($couponDiscountAmount);
+                $newOrder->private_delivery_fee = $newOrder->delivery_fee;
+                $newOrder->private_grand_total = $newOrder->grand_total;
+                $newOrder->completed_at = now();
+                $newOrder->save();
+
+                CouponUsage::storeCouponUsage($totalDiscountedAmount, $coupon, $cart->id, $user->id, $newOrder->id);
+            }
+        }
+
 
         $user->increment('total_number_of_orders');
         $user->save();
 
-        \DB::commit();
+        DB::commit();
 
-        return $this->respond(new OrderResource($newOrder));
+        return $this->respond([
+            'order' => new OrderResource($newOrder),
+        ]);
     }
 
 
@@ -217,11 +257,11 @@ class OrderController extends BaseApiController
     public function createRate(Order $order, Request $request): JsonResponse
     {
         $response = [];
-        if ($order->type === Order::TYPE_GROCERY_ORDER) {
+        if ($order->type === Order::TYPE_GROCERY_OBJECT) {
             $response = [
                 'availableIssues' => $this->getIssuesLists(),
             ];
-        } elseif ($order->type === Order::TYPE_FOOD_ORDER) {
+        } elseif ($order->type === Order::TYPE_FOOD_OBJECT) {
             $response = [
                 ['key' => 'has_good_food_quality_rating', 'label' => 'Good Food Quality'],
                 ['key' => 'has_good_packaging_quality_rating', 'label' => 'Good Packaging Quality'],
@@ -236,10 +276,10 @@ class OrderController extends BaseApiController
     public function storeRate(Order $order, Request $request): JsonResponse
     {
         $branchRatingValue = $request->input('branch_rating_value');
-        if ($order->type === Chain::TYPE_GROCERY_CHAIN) {
+        if ($order->type === Chain::TYPE_GROCERY_OBJECT) {
             $order->rating_issue_id = $request->input('grocery_issue_id');
         }
-        if ($order->type === Chain::TYPE_FOOD_CHAIN) {
+        if ($order->type === Chain::TYPE_FOOD_OBJECT) {
             $driverRatingValue = $request->input('driver_rating_value');
             $order->driver_rating_value = $driverRatingValue;
             $order->has_good_food_quality_rating = $request->input('food_rating_factors.has_good_food_quality_rating');
@@ -253,9 +293,10 @@ class OrderController extends BaseApiController
             */
         }
 
-        \DB::beginTransaction();
+        DB::beginTransaction();
         $order->rating_comment = $request->input('comment');
         $order->branch_rating_value = $branchRatingValue;
+        $order->rated_at = now();
         $order->save();
 
         $branch = Branch::find($order->branch_id);
@@ -264,7 +305,7 @@ class OrderController extends BaseApiController
         $branch->avg_rating = $branch->average_rating;
         $branch->increment('rating_count');
         $branch->save();
-        \DB::commit();
+        DB::commit();
 
         return $this->respondWithMessage(trans('strings.successfully_done'));
     }

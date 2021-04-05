@@ -1,5 +1,6 @@
 <?php
 
+use App\Models\Product;
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
@@ -24,26 +25,27 @@ class CreateProductsTable extends Migration
             $table->unsignedBigInteger('unit_id')->nullable();
             $table->double('price')->nullable();
             $table->double('price_discount_amount')->nullable();
-            $table->boolean('price_discount_by_percentage')->nullable()->comment('true: percentage, false: fixed amount');
             $table->unsignedBigInteger('available_quantity')->nullable();
             $table->string('sku')->nullable();
             $table->unsignedBigInteger('upc')->nullable();
-            $table->boolean('is_storage_tracking_enabled')->nullable(true);
             $table->unsignedFloat('width')->nullable()->comment('x');
             $table->unsignedFloat('height')->nullable()->comment('y');
             $table->unsignedFloat('depth')->nullable()->comment('z');
             $table->unsignedFloat('weight')->nullable()->comment('w');
+            $table->unsignedTinyInteger('type')->default(Product::TYPE_GROCERY_OBJECT)->comment('1:Market, 2: Food');
             $table->integer('minimum_orderable_quantity')->default(1)->nullable();
-            $table->unsignedInteger('order_column')->nullable();
+            $table->unsignedBigInteger('order_column')->nullable();
             $table->decimal('avg_rating', 3)->default(0);
             $table->unsignedInteger('rating_count')->default(0);
             $table->unsignedBigInteger('search_count')->default(1);
             $table->unsignedBigInteger('view_count')->default(1);
-            $table->integer('status')->default(1)->nullable();
+            $table->unsignedTinyInteger('status')->default(Product::STATUS_DRAFT)->comment('1:draft, 2:active, 3:Inactive, 4..n:CUSTOM');
             $table->timestamp('price_discount_began_at')->nullable();
             $table->timestamp('price_discount_finished_at')->nullable();
             $table->timestamp('custom_banner_began_at')->nullable();
             $table->timestamp('custom_banner_ended_at')->nullable();
+            $table->boolean('is_storage_tracking_enabled')->nullable(true);
+            $table->boolean('price_discount_by_percentage')->nullable()->comment('true: percentage, false: fixed amount');
             $table->unsignedTinyInteger('on_mobile_grid_tile_weight')->default(3);
             $table->timestamps();
             $table->softDeletes();

@@ -2,14 +2,16 @@
 
 namespace App\Http\Resources;
 
+use App\Models\Cart;
 use App\Models\Currency;
+use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
 
-/** @mixin \App\Models\Cart */
+/** @mixin Cart */
 class CartResource extends JsonResource
 {
     /**
-     * @param  \Illuminate\Http\Request  $request
+     * @param  Request  $request
      * @return array
      */
     public function toArray($request)

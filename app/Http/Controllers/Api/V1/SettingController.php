@@ -5,7 +5,9 @@ namespace App\Http\Controllers\Api\V1;
 use App\Http\Controllers\Api\BaseApiController;
 use App\Http\Resources\PreferenceResource;
 use App\Models\Preference;
+use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
+use Illuminate\Http\Resources\Json\AnonymousResourceCollection;
 
 class SettingController extends BaseApiController
 {
@@ -13,7 +15,7 @@ class SettingController extends BaseApiController
     /**
      * @param  Request  $request
      *
-     * @return \Illuminate\Http\Resources\Json\AnonymousResourceCollection
+     * @return AnonymousResourceCollection
      */
     public function index(Request $request)
     {
@@ -24,7 +26,7 @@ class SettingController extends BaseApiController
     /**
      * @param  Request  $request
      *
-     * @return \Illuminate\Http\JsonResponse
+     * @return JsonResponse
      */
     public function updateProfileSettings(Request $request)
     {
@@ -40,7 +42,7 @@ class SettingController extends BaseApiController
     /**
      * @param  Request  $request
      *
-     * @return \Illuminate\Http\JsonResponse
+     * @return JsonResponse
      */
     public function defaults(Request $request)
     {
@@ -57,7 +59,7 @@ class SettingController extends BaseApiController
     /**
      * @param  Request  $request
      *
-     * @return \Illuminate\Http\JsonResponse
+     * @return JsonResponse
      */
     public function support(Request $request)
     {

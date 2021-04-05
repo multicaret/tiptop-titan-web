@@ -2,6 +2,8 @@
 
 namespace App\Models;
 
+use Eloquent;
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
 
 /**
@@ -18,21 +20,21 @@ use Illuminate\Database\Eloquent\Model;
  * @property string|null $twitter_card
  * @property string|null $twitter_title
  * @property string|null $twitter_description
- * @method static \Illuminate\Database\Eloquent\Builder|MetaDataTranslation newModelQuery()
- * @method static \Illuminate\Database\Eloquent\Builder|MetaDataTranslation newQuery()
- * @method static \Illuminate\Database\Eloquent\Builder|MetaDataTranslation query()
- * @method static \Illuminate\Database\Eloquent\Builder|MetaDataTranslation whereId($value)
- * @method static \Illuminate\Database\Eloquent\Builder|MetaDataTranslation whereLocale($value)
- * @method static \Illuminate\Database\Eloquent\Builder|MetaDataTranslation whereMetaDataId($value)
- * @method static \Illuminate\Database\Eloquent\Builder|MetaDataTranslation whereMetaDescription($value)
- * @method static \Illuminate\Database\Eloquent\Builder|MetaDataTranslation whereMetaTitle($value)
- * @method static \Illuminate\Database\Eloquent\Builder|MetaDataTranslation whereOgDescription($value)
- * @method static \Illuminate\Database\Eloquent\Builder|MetaDataTranslation whereOgTitle($value)
- * @method static \Illuminate\Database\Eloquent\Builder|MetaDataTranslation whereOgType($value)
- * @method static \Illuminate\Database\Eloquent\Builder|MetaDataTranslation whereTwitterCard($value)
- * @method static \Illuminate\Database\Eloquent\Builder|MetaDataTranslation whereTwitterDescription($value)
- * @method static \Illuminate\Database\Eloquent\Builder|MetaDataTranslation whereTwitterTitle($value)
- * @mixin \Eloquent
+ * @method static Builder|MetaDataTranslation newModelQuery()
+ * @method static Builder|MetaDataTranslation newQuery()
+ * @method static Builder|MetaDataTranslation query()
+ * @method static Builder|MetaDataTranslation whereId($value)
+ * @method static Builder|MetaDataTranslation whereLocale($value)
+ * @method static Builder|MetaDataTranslation whereMetaDataId($value)
+ * @method static Builder|MetaDataTranslation whereMetaDescription($value)
+ * @method static Builder|MetaDataTranslation whereMetaTitle($value)
+ * @method static Builder|MetaDataTranslation whereOgDescription($value)
+ * @method static Builder|MetaDataTranslation whereOgTitle($value)
+ * @method static Builder|MetaDataTranslation whereOgType($value)
+ * @method static Builder|MetaDataTranslation whereTwitterCard($value)
+ * @method static Builder|MetaDataTranslation whereTwitterDescription($value)
+ * @method static Builder|MetaDataTranslation whereTwitterTitle($value)
+ * @mixin Eloquent
  */
 class MetaDataTranslation extends Model
 {

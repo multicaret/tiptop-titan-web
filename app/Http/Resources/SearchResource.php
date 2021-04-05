@@ -3,13 +3,15 @@
 namespace App\Http\Resources;
 
 use App\Http\Controllers\Controller;
+use App\Models\Search;
+use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
 
-/** @mixin \App\Models\Search */
+/** @mixin Search */
 class SearchResource extends JsonResource
 {
     /**
-     * @param  \Illuminate\Http\Request  $request
+     * @param  Request  $request
      * @return array
      */
     public function toArray($request)

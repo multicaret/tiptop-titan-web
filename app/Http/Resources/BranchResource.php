@@ -3,15 +3,17 @@
 namespace App\Http\Resources;
 
 use App\Http\Controllers\Controller;
+use App\Models\Branch;
 use App\Models\Currency;
 use App\Models\Place;
+use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
 
-/** @mixin \App\Models\Branch */
+/** @mixin Branch */
 class BranchResource extends JsonResource
 {
     /**
-     * @param  \Illuminate\Http\Request  $request
+     * @param  Request  $request
      * @return array
      */
     public function toArray($request)
@@ -32,6 +34,18 @@ class BranchResource extends JsonResource
             'fixedDeliveryFee' => [
                 'raw' => $this->fixed_delivery_fee,
                 'formatted' => Currency::format($this->fixed_delivery_fee),
+            ],
+            'restaurantMinimumOrder' => [
+                'raw' => $this->restaurant_minimum_order,
+                'formatted' => Currency::format($this->restaurant_minimum_order),
+            ],
+            'restaurantUnderMinimumOrderDeliveryFee' => [
+                'raw' => $this->restaurant_under_minimum_order_delivery_fee,
+                'formatted' => Currency::format($this->restaurant_under_minimum_order_delivery_fee),
+            ],
+            'restaurantFixedDeliveryFee' => [
+                'raw' => $this->restaurant_fixed_delivery_fee,
+                'formatted' => Currency::format($this->restaurant_fixed_delivery_fee),
             ],
             'primaryPhoneNumber' => $this->primary_phone_number,
             'secondaryPhoneNumber' => $this->secondary_phone_number,

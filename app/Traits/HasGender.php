@@ -5,7 +5,8 @@ namespace App\Traits;
 
 use App\Models\User;
 
-trait HasGender {
+trait HasGender
+{
 
 
     public static function determineGender($gender)

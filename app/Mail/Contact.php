@@ -8,7 +8,8 @@ use Illuminate\Queue\SerializesModels;
 
 class Contact extends Mailable
 {
-    use Queueable, SerializesModels;
+    use Queueable;
+    use SerializesModels;
 
     /**
      * The sender instance.

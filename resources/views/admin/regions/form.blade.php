@@ -1,9 +1,9 @@
 @extends('layouts.admin')
 
 @if(!is_null($region->id))
-    @section('title', trans('strings.editing') .' - ' . trans('strings.regions'))
+    @section('title', trans('strings.editing') .' - ' . trans('strings.cities'))
 @else
-    @section('title', trans('strings.add_new_region'))
+    @section('title', trans('strings.city'))
 @endif
 
 @push('styles')
@@ -15,9 +15,9 @@
 
     <div class="mb-4">
         @if(!is_null($region->id))
-            <h5>Editing Region - {{ $region->name }}</h5>
+            <h5>Editing City - {{ $region->name }}</h5>
         @else
-            <h5>{{trans('strings.add_new')}} {{trans('strings.region')}}</h5>
+            <h5>{{trans('strings.add_new')}} {{trans('strings.city')}}</h5>
         @endif
     </div>
 

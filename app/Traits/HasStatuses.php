@@ -2,51 +2,51 @@
 
 namespace App\Traits;
 
+use Illuminate\Database\Eloquent\Builder;
+
 trait HasStatuses
 {
 
-    /**
-     * Scope a query to only include published records.
-     *
-     * @param  \Illuminate\Database\Eloquent\Builder  $query
-     *
-     * @return \Illuminate\Database\Eloquent\Builder
-     */
-    public function scopePublished($query)
+    public function getIsActiveAttribute(): bool
     {
-        return $query->where('status', self::STATUS_PUBLISHED);
+        return $this->status === self::STATUS_ACTIVE;
+    }
+
+    public function getIsInactiveAttribute(): bool
+    {
+        return $this->status === self::STATUS_INACTIVE;
     }
 
     /**
-     * Scope a query to only include NOT published records.
+     * Scope a query to only include active records.
      *
-     * @param  \Illuminate\Database\Eloquent\Builder  $query
+     * @param  Builder  $query
      *
-     * @return \Illuminate\Database\Eloquent\Builder
+     * @return Builder
      */
-    public function scopeNotPublished($query)
+    public function scopeActive($query)
     {
-        return $query->where('status', '!=', self::STATUS_PUBLISHED);
+        return $query->where('status', self::STATUS_ACTIVE);
     }
 
     /**
-     * Scope a query to only include incomplete records.
+     * Scope a query to only include everything BUT active records.
      *
-     * @param  \Illuminate\Database\Eloquent\Builder  $query
+     * @param  Builder  $query
      *
-     * @return \Illuminate\Database\Eloquent\Builder
+     * @return Builder
      */
-    public function scopeIncomplete($query)
+    public function scopeNotActive($query)
     {
-        return $query->where('status', self::STATUS_INCOMPLETE);
+        return $query->where('status', '!=', self::STATUS_ACTIVE);
     }
 
     /**
      * Scope a query to only include draft records.
      *
-     * @param  \Illuminate\Database\Eloquent\Builder  $query
+     * @param  Builder  $query
      *
-     * @return \Illuminate\Database\Eloquent\Builder
+     * @return Builder
      */
     public function scopeDraft($query)
     {
@@ -56,29 +56,22 @@ trait HasStatuses
     /**
      * Scope a query to only include inactive records.
      *
-     * @param  \Illuminate\Database\Eloquent\Builder  $query
+     * @param  Builder  $query
      *
-     * @return \Illuminate\Database\Eloquent\Builder
+     * @return Builder
      */
     public function scopeInactive($query)
     {
         return $query->where('status', self::STATUS_INACTIVE);
     }
 
-    public function getIsPublishedAttribute()
-    {
-        return $this->status === self::STATUS_PUBLISHED;
-    }
-
     public function getStatusNameAttribute()
     {
         switch ($this->status) {
-            case self::STATUS_INCOMPLETE:
-                return trans('strings.incomplete');
             case self::STATUS_DRAFT:
                 return trans('strings.draft');
-            case self::STATUS_PUBLISHED:
-                return trans('strings.published');
+            case self::STATUS_ACTIVE:
+                return trans('strings.active');
             case self::STATUS_INACTIVE:
                 return trans('strings.inactive');
             default:
@@ -89,9 +82,8 @@ trait HasStatuses
     public static function getStatusesArray(): array
     {
         return [
-            self::STATUS_INCOMPLETE => 'Incomplete',
             self::STATUS_DRAFT => 'Draft',
-            self::STATUS_PUBLISHED => 'Published',
+            self::STATUS_ACTIVE => 'Active',
             self::STATUS_INACTIVE => 'Inactive',
         ];
     }
@@ -99,24 +91,19 @@ trait HasStatuses
     public static function getAllStatusesRich(): array
     {
         return [
-            self::STATUS_PUBLISHED => [
-                'id' => self::STATUS_PUBLISHED,
-                'title' => trans("strings.published"),
+            self::STATUS_ACTIVE => [
+                'id' => self::STATUS_ACTIVE,
+                'title' => trans('strings.active'),
                 'class' => 'primary',
             ],
             self::STATUS_DRAFT => [
                 'id' => self::STATUS_DRAFT,
-                'title' => trans("strings.draft"),
+                'title' => trans('strings.draft'),
                 'class' => 'light',
-            ],
-            self::STATUS_INCOMPLETE => [
-                'id' => self::STATUS_INCOMPLETE,
-                'title' => trans("strings.incomplete"),
-                'class' => 'danger',
             ],
             self::STATUS_INACTIVE => [
                 'id' => self::STATUS_INACTIVE,
-                'title' => trans("strings.inactive"),
+                'title' => trans('strings.inactive'),
                 'class' => 'dark',
             ],
         ];

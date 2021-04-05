@@ -4,15 +4,17 @@ namespace App\Http\Resources;
 
 use App\Models\Currency;
 use App\Models\Location;
+use App\Models\Order;
+use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
 
-/** @mixin \App\Models\Order */
+/** @mixin Order */
 class OrderResource extends JsonResource
 {
     /**
      * Transform the resource into an array.
      *
-     * @param  \Illuminate\Http\Request  $request
+     * @param  Request  $request
      *
      * @return array
      */
@@ -36,14 +38,17 @@ class OrderResource extends JsonResource
             ],
             'rating' => [
                 'branchHasBeenRated' => ! is_null($this->branch_rating_value),
-                'branchRatingValue' => $this->branch_rating_value,
+                'branchRatingValue' => (double) $this->branch_rating_value,
                 'driverHasBeenRated' => ! is_null($this->driver_rating_value),
-                'driverRatingValue' => $this->driver_rating_value,
+                'driverRatingValue' => (double) $this->driver_rating_value,
                 'ratingComment' => $this->rating_comment,
                 'hasGoodFoodQualityRating' => $this->has_good_food_quality_rating,
                 'hasGoodPackagingQualityRating' => $this->has_good_packaging_quality_rating,
                 'hasGoodOrderAccuracyRating' => $this->has_good_order_accuracy_rating,
-                'ratingIssue' => $this->ratingIssue->title,
+                'ratingIssue' => [
+                    'id' => (int) optional($this->ratingIssue)->id,
+                    'title' => optional($this->ratingIssue)->title,
+                ],
             ],
             'cart' => new CartResource($this->cart),
             'paymentMethod' => new PaymentMethodResource($this->paymentMethod),

@@ -13,13 +13,15 @@ use App\Models\Boot;
 use App\Models\Branch;
 use App\Models\Cart;
 use App\Models\Location;
+use App\Models\Order;
 use App\Models\Slide;
 use App\Models\Taxonomy;
+use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 
 class HomeController extends BaseApiController
 {
-    public function boot(Request $request): \Illuminate\Http\JsonResponse
+    public function boot(Request $request): JsonResponse
     {
         /*$validationRules = [
             'build_number' => 'required|numeric',
@@ -66,8 +68,9 @@ class HomeController extends BaseApiController
         }
 
 
-        $channel = strtolower($request->input('channel'));
         $user = auth('sanctum')->user();
+        $channel = strtolower($request->input('channel'));
+        // Todo: retrieve slides based on channel.
         $slides = SlideResource::collection(Slide::all());
         $cart = null;
 
@@ -92,7 +95,7 @@ class HomeController extends BaseApiController
             ];
 
             $response['categories'] = cache()->rememberForever('all_grocery_categories_with_products', function () {
-                $groceryParentCategories = Taxonomy::published()->groceryCategories()->parents()->get();
+                $groceryParentCategories = Taxonomy::active()->groceryCategories()->parents()->get();
 
                 return GroceryCategoryParentResource::collection($groceryParentCategories);
             });
@@ -100,6 +103,9 @@ class HomeController extends BaseApiController
 
             if ( ! is_null($user) && ! is_null($selectedAddress = $request->input('selected_address_id'))) {
                 $selectedAddress = Location::find($selectedAddress);
+                if (is_null($selectedAddress)) {
+                    return $this->respondNotFound('Address not found!');
+                }
                 $latitude = $selectedAddress->latitude;
                 $longitude = $selectedAddress->longitude;
             }
@@ -116,6 +122,13 @@ class HomeController extends BaseApiController
                     $userCart = Cart::retrieve($branch->chain_id, $branch->id, $user->id);
                     $cart = new CartResource($userCart);
                     $sharedResponse['cart'] = $cart;
+                    $sharedResponse['activeOrders'] = Order::whereUserId($user->id)
+                                                           ->whereNotIn('status', [
+                                                               Order::STATUS_CANCELLED,
+                                                               Order::STATUS_DELIVERED,
+                                                           ])
+                                                           ->whereChainId($branch->chain_id)
+                                                           ->get();
                 }
 //            } else {
                 // It's too late no branch is open for now, so sorry

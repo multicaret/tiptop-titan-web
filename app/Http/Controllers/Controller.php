@@ -3,6 +3,8 @@
 namespace App\Http\Controllers;
 
 use App\Models\Media;
+use Arr;
+use DB;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Model as ModelAlias;
 use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
@@ -10,12 +12,17 @@ use Illuminate\Foundation\Bus\DispatchesJobs;
 use Illuminate\Foundation\Validation\ValidatesRequests;
 use Illuminate\Http\Request;
 use Illuminate\Routing\Controller as BaseController;
+use Mail;
+use Schema;
 use Spatie\MediaLibrary\MediaCollections\FileAdder as FileAdderAlias;
 use Spatie\MediaLibrary\MediaCollections\Models\Media as MediaAlias;
+use Str;
 
 class Controller extends BaseController
 {
-    use AuthorizesRequests, DispatchesJobs, ValidatesRequests;
+    use AuthorizesRequests;
+    use DispatchesJobs;
+    use ValidatesRequests;
 
     public static function distanceBetween($point1latitude, $point1longitude, $point2latitude, $point2longitude)
     {
@@ -99,7 +106,7 @@ class Controller extends BaseController
             $manipulations = [];
             if (isset($editorMediaObject->editor->crop)) {
                 $manipulations['*']['manualCrop'] =
-                    sprintf("%d,%d,%d,%d",
+                    sprintf('%d,%d,%d,%d',
                         $editorMediaObject->editor->crop->width,
                         $editorMediaObject->editor->crop->height,
                         $editorMediaObject->editor->crop->left,
@@ -118,9 +125,11 @@ class Controller extends BaseController
             }
         }
 
-        if ( ! empty($fileName)) {
-            $media = $media->usingName($fileName);
-        }
+
+// Todo: try to solve it
+//        if ( ! empty($fileName)) {
+//            $media = $media->usingName($fileName);
+//        }
 
 
         $customProperties = [
@@ -149,7 +158,7 @@ class Controller extends BaseController
             $manipulations = [];
             if (isset($editor->editor->crop)) {
                 $manipulations['*']['manualCrop'] =
-                    sprintf("%d,%d,%d,%d",
+                    sprintf('%d,%d,%d,%d',
                         $editor->editor->crop->width,
                         $editor->editor->crop->height,
                         $editor->editor->crop->left,
@@ -221,7 +230,7 @@ class Controller extends BaseController
         }
         app()->setLocale($emailLocale);
         $emailClassFullPath = "App\\Mail\\$emailClass";
-        \Mail::to($to)->send(new $emailClassFullPath(...$params));
+        Mail::to($to)->send(new $emailClassFullPath(...$params));
         app()->setLocale($oldLocale);
     }
 
@@ -243,7 +252,7 @@ class Controller extends BaseController
         return str_replace($eastern_arabic, $western_arabic, $number);
     }
 
-    static public function uuid()
+    public static function uuid()
     {
         return hash('crc32', time().hash('crc32', time().uniqid()));
     }
@@ -271,7 +280,7 @@ class Controller extends BaseController
     }
 
 
-    static public function numberToReadable($number, $precision = 1, $divisors = null)
+    public static function numberToReadable($number, $precision = 1, $divisors = null)
     {
         $shorthand = '';
         $divisor = pow(1000, 0);
@@ -305,6 +314,39 @@ class Controller extends BaseController
         return $number1 / $number2 * 100;
     }
 
+    /**
+     * @param $amount
+     * @param $discountAmount
+     * @param  bool  $isByPercentage
+     * @return float|int
+     */
+    public static function calculateDiscountedAmount($amount, $discountAmount, $isByPercentage = true)
+    {
+        if ( ! is_null($discountAmount) || $discountAmount != 0) {
+            if ($isByPercentage) {
+                $discountAmount = Controller::deductPercentage($amount, $discountAmount);
+            } else {
+                $discountAmount = $amount - $discountAmount;
+            }
+
+            return $amount - $discountAmount;
+        } else {
+            return 0;
+        }
+    }
+
+
+    /**
+     * @param $amount
+     * @param $discountAmount
+     * @param  bool  $isByPercentage
+     * @return float|int
+     */
+    public static function getAmountAfterApplyingDiscount($amount, $discountAmount, $isByPercentage = true)
+    {
+        return $amount - Controller::calculateDiscountedAmount($amount, $discountAmount, $isByPercentage);
+    }
+
     public static function rgb2hex($rgb)
     {
         return '#'.sprintf('%02x', $rgb['r']).sprintf('%02x', $rgb['g']).sprintf('%02x', $rgb['b']);
@@ -312,7 +354,7 @@ class Controller extends BaseController
 
     public static function hex2rgb($hex)
     {
-        return sscanf($hex, "#%02x%02x%02x");
+        return sscanf($hex, '#%02x%02x%02x');
     }
 
     /**
@@ -336,7 +378,7 @@ class Controller extends BaseController
 
     public static function adjustUploadedMediaLocation($localUrl)
     {
-        return str_replace('../../', "../../../", $localUrl);
+        return str_replace('../../', '../../../', $localUrl);
     }
 
     public function handleSubmittedSingleMedia(string $mediaType, Request $request, ModelAlias $model): ?MediaAlias
@@ -370,9 +412,9 @@ class Controller extends BaseController
     {
         if ($rating < 2) {
             return '#f53d3d';
-        } else if ($rating < 3) {
+        } elseif ($rating < 3) {
             return '#ffb700';
-        } else if ($rating <= 5) {
+        } elseif ($rating <= 5) {
             return '#32db64';
         }
 
@@ -383,13 +425,57 @@ class Controller extends BaseController
     {
         if ($rating < 2) {
             return 'rgba(245, 61, 61, 0.25)';
-        } else if ($rating < 3) {
+        } elseif ($rating < 3) {
             return 'rgba(255, 183, 0, 0.25)';
-        } else if ($rating <= 5) {
+        } elseif ($rating <= 5) {
             return 'rgba(50, 219, 100, 0.25)';
         }
 
         return 'rgba(245, 61, 61, 0.25)';
+    }
+
+
+    public static function getAttributesFromTable($tableName = 'taxonomies', $droppedColumns = []): array
+    {
+        return self::workColumns($tableName, $droppedColumns);
+    }
+
+    public static function getTranslatedAttributesFromTable($tableName = 'taxonomies', $droppedColumns = []): array
+    {
+        $translatedTableName = Str::singular($tableName).'_translations';
+
+        return self::workColumns($translatedTableName, $droppedColumns);
+    }
+
+    private static function getOriginalColumns($tableName = 'taxonomies'): array
+    {
+        $databaseName = env('DB_DATABASE');
+        $queryString = 'SELECT column_name FROM information_schema.columns WHERE table_schema ='."'$databaseName'".' AND table_name = '."'$tableName'".' ORDER BY ordinal_position';
+        $tableColumns = DB::select($queryString);
+        $orderedTableColumns = Arr::flatten(json_decode(json_encode($tableColumns), true));
+        if (empty($orderedTableColumns)) {
+            $orderedTableColumns = Schema::getColumnListing($tableName);
+        }
+
+        return $orderedTableColumns;
+    }
+
+    private static function workColumns(string $translatedTableName, array $droppedColumns): array
+    {
+        $arr = [];
+        $tableColumns = self::getOriginalColumns($translatedTableName);
+        foreach ($tableColumns as $type) {
+            if ( ! in_array($type, $droppedColumns)) {
+                if (Str::contains($type, '_id')) {
+                    $arr[$type] = 'select';
+                } else {
+                    $dbColumnTypesToFE = config('defaults.db_column_types');
+                    $arr[$type] = $dbColumnTypesToFE[Schema::getColumnType($translatedTableName, $type)];
+                }
+            }
+        }
+
+        return $arr;
     }
 
 }

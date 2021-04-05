@@ -12,6 +12,7 @@ use Illuminate\Validation\ValidationException;
 use Illuminate\View\View;
 use Spatie\Permission\Models\Permission;
 use Spatie\Permission\Models\Role;
+use Str;
 
 class RoleController extends Controller
 {
@@ -20,7 +21,7 @@ class RoleController extends Controller
      *
      * @return Response
      */
-    function __construct()
+    public function __construct()
     {
         $this->middleware('permission:role.permissions.index', ['only' => ['index', 'store']]);
         $this->middleware('permission:role.permissions.create', ['only' => ['create', 'store']]);
@@ -56,7 +57,7 @@ class RoleController extends Controller
     /**
      * Store a newly created resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
+     * @param  Request  $request
      * @return RedirectResponse
      */
     public function store(Request $request)
@@ -67,7 +68,7 @@ class RoleController extends Controller
             'permissions' => 'required',
         ]);
         $permissions = array_keys($request->input('permissions', []));
-        $roleName = \Str::ucfirst($request->input('name'));
+        $roleName = Str::ucfirst($request->input('name'));
         $role = Role::create(['name' => $roleName]);
         $role->syncPermissions($permissions);
 
@@ -83,9 +84,9 @@ class RoleController extends Controller
      */
     public function show(Role $role)
     {
-        $rolePermissions = Permission::join("role_has_permissions", "role_has_permissions.permission_id", "=",
-            "permissions.id")
-                                     ->where("role_has_permissions.role_id", $role->id)
+        $rolePermissions = Permission::join('role_has_permissions', 'role_has_permissions.permission_id', '=',
+            'permissions.id')
+                                     ->where('role_has_permissions.role_id', $role->id)
                                      ->get();
 
         return view('admin.roles.show', compact('role', 'rolePermissions'));
@@ -109,7 +110,7 @@ class RoleController extends Controller
     /**
      * Update the specified resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
+     * @param  Request  $request
      * @param  Role  $role
      * @return RedirectResponse
      * @throws ValidationException
@@ -121,7 +122,7 @@ class RoleController extends Controller
             'permissions' => 'required',
         ]);
         $permissions = array_keys($request->input('permissions', []));
-        $role->name = \Str::ucfirst($request->input('name'));
+        $role->name = Str::ucfirst($request->input('name'));
         $role->syncPermissions($permissions);
         $role->save();
 

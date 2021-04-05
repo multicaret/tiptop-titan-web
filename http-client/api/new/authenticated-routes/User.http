@@ -16,7 +16,7 @@ Authorization: Bearer {{token}}
     "full_name": "Mohammad Kawsara",
     "email": "mkwsra@tiptop.com",
     "city_id": "1",
-    "region_id": "1"
+    "region_id": "2"
 }
 
 

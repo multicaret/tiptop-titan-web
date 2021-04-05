@@ -2,15 +2,17 @@
 
 namespace App\Http\Resources;
 
+use App\Models\Region;
+use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
 
-/** @mixin \App\Models\Region */
+/** @mixin Region */
 class RegionResource extends JsonResource
 {
     /**
      * Transform the resource into an array.
      *
-     * @param  \Illuminate\Http\Request  $request
+     * @param  Request  $request
      *
      * @return array
      */
@@ -18,10 +20,8 @@ class RegionResource extends JsonResource
     {
         return [
             'id' => (int) $this->id,
-            'name' => [
-                'original' => $this->english_name,
-                'translated' => $this->name,
-            ],
+            'nameEnglish' => $this->english_name,
+            'name' => $this->name,
             'code' => $this->code,
         ];
     }

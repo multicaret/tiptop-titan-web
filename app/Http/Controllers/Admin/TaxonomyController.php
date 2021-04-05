@@ -3,15 +3,21 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
+use App\Models\Branch;
 use App\Models\Taxonomy;
 use App\Models\TaxonomyTranslation;
+use Exception;
+use Illuminate\Contracts\Foundation\Application;
+use Illuminate\Contracts\View\Factory;
+use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
+use Illuminate\Http\Response;
 use Illuminate\View\View;
 
 class TaxonomyController extends Controller
 {
 
-    function __construct()
+    public function __construct()
     {
         $this->middleware('permission:taxonomy.permissions.index', ['only' => ['index', 'store']]);
         $this->middleware('permission:taxonomy.permissions.create', ['only' => ['create', 'store']]);
@@ -24,7 +30,7 @@ class TaxonomyController extends Controller
      *
      * @param  Request  $request
      *
-     * @return \Illuminate\Http\Response
+     * @return Response
      */
     public function index(Request $request)
     {
@@ -61,6 +67,64 @@ class TaxonomyController extends Controller
                 ]
             ]);
         }
+        if ($correctType == Taxonomy::TYPE_UNIT) {
+            $columns = array_merge($columns, [
+                [
+                    'data' => 'step',
+                    'name' => 'step',
+                    'title' => trans('strings.step'),
+                    'orderable' => false,
+                    'searchable' => false
+                ]
+            ]);
+        }
+        if ($correctType == Taxonomy::TYPE_INGREDIENT) {
+            $columns = array_merge($columns, [
+                [
+                    'data' => 'ingredientCategory',
+                    'name' => 'ingredientCategory',
+                    'title' => 'Ingredient Category',
+                    'orderable' => false,
+                    'searchable' => false
+                ]
+            ]);
+        }
+        if ($correctType == Taxonomy::TYPE_FOOD_CATEGORY) {
+            $columns = array_merge($columns, [
+                [
+                    'data' => 'branches',
+                    'name' => 'branches',
+                    'title' => trans('strings.branches'),
+                    'orderable' => false,
+                    'searchable' => false
+                ]
+            ]);
+        }
+
+        if (in_array($correctType,
+            [Taxonomy::TYPE_GROCERY_CATEGORY, Taxonomy::TYPE_FOOD_CATEGORY])) {
+            $columns = array_merge($columns, [
+                [
+                    'data' => 'chain',
+                    'name' => 'chain.title',
+                    'title' => trans('strings.chain'),
+                    'orderable' => false,
+                    'searchable' => false
+                ]
+            ]);
+        }
+
+        if ($correctType == Taxonomy::TYPE_MENU_CATEGORY) {
+            $columns = array_merge($columns, [
+                [
+                    'data' => 'branch.title',
+                    'name' => 'branch.title',
+                    'title' => trans('strings.branch'),
+                    'orderable' => false,
+                    'searchable' => false
+                ]
+            ]);
+        }
 
         return view('admin.taxonomies.index', compact('typeName', 'columns'));
     }
@@ -70,24 +134,28 @@ class TaxonomyController extends Controller
      *
      * @param  Request  $request
      *
-     * @return View
+     * @return Application|Factory|\Illuminate\Contracts\View\View|View
      */
     public function create(Request $request)
     {
-        [$typeName, $correctType, $roots, $fontAwesomeIcons] = $this->loadData($request);
+        [
+            $typeName, $correctType, $roots, $fontAwesomeIcons, $branches, $ingredientCategories
+        ] = $this->loadData($request);
 
         $taxonomy = new Taxonomy();
         $taxonomy->type = $correctType;
 
-        return view('admin.taxonomies.form', compact('taxonomy', 'roots', 'typeName', 'fontAwesomeIcons'));
+        return view('admin.taxonomies.form',
+            compact('taxonomy', 'roots', 'correctType', 'typeName', 'fontAwesomeIcons', 'branches',
+                'ingredientCategories'));
     }
 
     /**
      * Store a newly created resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
+     * @param  Request  $request
      *
-     * @return \Illuminate\Http\Response
+     * @return Response
      */
     public function store(Request $request)
     {
@@ -106,8 +174,15 @@ class TaxonomyController extends Controller
         $taxonomy = new Taxonomy();
         $taxonomy->creator_id = $taxonomy->editor_id = auth()->id();
         $taxonomy->type = $correctType;
+        $taxonomy->ingredient_category_id = $request->ingredient_category_id;
         if ( ! is_null($request->status)) {
             $taxonomy->status = $request->status;
+        }
+        if ( ! is_null($request->chain_id)) {
+            $taxonomy->chain_id = $request->chain_id;
+        }
+        if ( ! is_null($request->step)) {
+            $taxonomy->step = $request->step;
         }
         if ( ! is_null($request->branch_id)) {
             $taxonomy->branch_id = $request->branch_id;
@@ -115,8 +190,8 @@ class TaxonomyController extends Controller
         $taxonomy->order_column = $order;
         $taxonomy->save();
 
+        $taxonomy->branches()->sync($request->input('branches'));
         $this->handleSubmittedSingleMedia('cover', $request, $taxonomy);
-
 
         // Filling translations
         foreach (localization()->getSupportedLocales() as $key => $value) {
@@ -160,18 +235,22 @@ class TaxonomyController extends Controller
      */
     public function edit(Taxonomy $taxonomy, Request $request)
     {
-        [$typeName, $correctType, $roots, $fontAwesomeIcons] = $this->loadData($request);
+        [
+            $typeName, $correctType, $roots, $fontAwesomeIcons, $branches, $ingredientCategories
+        ] = $this->loadData($request);
 
-        return view('admin.taxonomies.form', compact('taxonomy', 'roots', 'typeName', 'fontAwesomeIcons'));
+        return view('admin.taxonomies.form',
+            compact('taxonomy', 'roots', 'correctType', 'typeName', 'fontAwesomeIcons', 'branches',
+                'ingredientCategories'));
     }
 
     /**
      * Update the specified resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
+     * @param  Request  $request
      * @param  Taxonomy  $taxonomy
      *
-     * @return \Illuminate\Http\RedirectResponse
+     * @return RedirectResponse
      */
     public function update(Request $request, Taxonomy $taxonomy)
     {
@@ -184,14 +263,21 @@ class TaxonomyController extends Controller
         $request->validate($validationRules);
 
         $taxonomy->editor_id = auth()->id();
+        $taxonomy->ingredient_category_id = $request->ingredient_category_id;
         if ($request->has('icon')) {
             $taxonomy->icon = $request->icon;
         }
         if ( ! is_null($request->status)) {
             $taxonomy->status = $request->status;
         }
+        if ( ! is_null($request->step)) {
+            $taxonomy->step = $request->step;
+        }
         if ( ! is_null($request->branch_id)) {
             $taxonomy->branch_id = $request->branch_id;
+        }
+        if ( ! is_null($request->chain_id)) {
+            $taxonomy->chain_id = $request->chain_id;
         }
         $taxonomy->save();
 
@@ -219,6 +305,8 @@ class TaxonomyController extends Controller
             $taxonomy->makeChildOf($parent);
         }
 
+        $taxonomy->branches()->sync($request->input('branches'));
+
         $this->handleSubmittedSingleMedia('cover', $request, $taxonomy);
 
         cache()->tags('taxonomies')->flush();
@@ -236,8 +324,8 @@ class TaxonomyController extends Controller
      *
      * @param  Taxonomy  $taxonomy
      *
-     * @return \Illuminate\Http\RedirectResponse
-     * @throws \Exception
+     * @return RedirectResponse
+     * @throws Exception
      */
     public function destroy(Taxonomy $taxonomy)
     {
@@ -292,13 +380,25 @@ class TaxonomyController extends Controller
         $roots = collect([]);
         $hasParent = in_array($correctType, Taxonomy::typesHaving('parent'));
         if ($hasParent) {
-            $roots = Taxonomy::roots()
-                             ->postCategories()
-                             ->get();
+            $roots = Taxonomy::roots();
+            if ($correctType == Taxonomy::TYPE_GROCERY_CATEGORY) {
+                $roots = $roots->groceryCategories();
+            } elseif ($correctType == Taxonomy::TYPE_FOOD_CATEGORY) {
+                $roots = $roots->foodCategories();
+            }
+
+            $roots = $roots->get();
         }
 
         $fontAwesomeIcons = $this->getFontAwesomeIcons();
+        $branches = Branch::whereType(Branch::TYPE_FOOD_OBJECT)
+                          ->active()
+                          ->get()
+                          ->mapWithKeys(function ($item) {
+                              return [$item['id'] => $item['title'].' - '.$item['chain']['title'].' ('.$item['city']['english_name'].')'];
+                          });
+        $ingredientCategories = Taxonomy::ingredientCategories()->active()->get();
 
-        return [$typeName, $correctType, $roots, $fontAwesomeIcons];
+        return [$typeName, $correctType, $roots, $fontAwesomeIcons, $branches, $ingredientCategories];
     }
 }

@@ -3,16 +3,19 @@
 namespace App\Http\Controllers\Ajax;
 
 use App\Http\Controllers\Controller;
+use App\Models\Chain;
 use App\Models\Preference;
+use Exception;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Pagination\LengthAwarePaginator;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Schema;
+use Response;
 
 class AjaxController extends Controller
 {
-    const PAGINATION = 10;
+    public const PAGINATION = 10;
     private $statusCode = 200;
 
     /**
@@ -24,7 +27,7 @@ class AjaxController extends Controller
     }
 
     /**
-     * @param int $statusCode
+     * @param  int  $statusCode
      *
      * @return $this
      */
@@ -52,7 +55,7 @@ class AjaxController extends Controller
 
     public function respond($data, $headers = [])
     {
-        return \Response::json($data, $this->getStatusCode(), $headers);
+        return Response::json($data, $this->getStatusCode(), $headers);
     }
 
     public function respondWithPagination(LengthAwarePaginator $items, $data)
@@ -80,7 +83,7 @@ class AjaxController extends Controller
 
         return $this->respond([
             'isSuccess' => true,
-            'message' => "Successfully updated",
+            'message' => 'Successfully updated',
             'currentStatus' => $request->relatedModel::getAllStatusesRich()[$objectName->status],
         ]);
     }
@@ -105,6 +108,41 @@ class AjaxController extends Controller
         }
     }
 
+    //todo: refactor this and the status functions to be dynamic
+    public function channelChange(Request $request)
+    {
+        $modelName = $request->relatedModel;
+        $objectName = $modelName::find($request->itemId);
+
+        $objectName->channel = $request->channel;
+        $objectName->save();
+        return $this->respond([
+            'isSuccess' => true,
+            'message' => 'Successfully updated',
+            'currentStatus' => $request->relatedModel::getAllChannelsRich()[$objectName->channel],
+        ]);
+    }
+
+    public function channelToggle(Request $request)
+    {
+        $request->validate([
+            'table' => 'required',
+            'id' => 'required'
+        ]);
+
+        if (Schema::hasTable($request->input('table'))) {
+            $item = DB::table($request->input('table'))->where('id', $request->input('id'))->first();
+            if ($item) {
+                $newStatus = $item->channel ? 0 : 1;
+                $data = ['channel' => $newStatus];
+                if (Schema::hasColumn($request->input('table'), 'suspended_at')) {
+                    $data['suspended_at'] = ($newStatus == 0) ? now() : null;
+                }
+                DB::table($request->input('table'))->where('id', $request->input('id'))->update($data);
+            }
+        }
+    }
+
     public function saveAdminThemeSettings(Request $request): JsonResponse
     {
         $userId = optional(auth()->user())->id;
@@ -112,7 +150,7 @@ class AjaxController extends Controller
         $value = $request->input('value');
         $retrieve = Preference::retrieve("$key-$userId");
         try {
-            if (!is_null($retrieve)) {
+            if ( ! is_null($retrieve)) {
                 $retrieve->value = $value;
                 $retrieve->notes = "userId-$userId";
                 $retrieve->save();
@@ -123,10 +161,11 @@ class AjaxController extends Controller
                     'value' => $value
                 ]);
             }
+
             return $this->respond([
                 'isSuccess' => true
             ]);
-        } catch (\Exception $e) {
+        } catch (Exception $e) {
             return $this->respondWithError($e->getMessage());
         }
 
@@ -136,10 +175,26 @@ class AjaxController extends Controller
     {
         $userId = optional(auth()->user())->id;
         $themeSettingsForAuthUser = Preference::where('notes', "userId-$userId")->get();
-        if (!is_null($themeSettingsForAuthUser)) {
+        if ( ! is_null($themeSettingsForAuthUser)) {
             return $this->respond($themeSettingsForAuthUser->toArray());
         } else {
             return $this->respond([]);
         }
+    }
+
+    public function loadChainBranches(Request $request): JsonResponse
+    {
+        $chainId = $request->input('chain_id');
+        try {
+            $chain = Chain::find($chainId);
+            $getIdTitle = function ($item) {
+                return ['id' => $item->id, 'title' => $item->title];
+            };
+            $allBranches = $chain->branches->map($getIdTitle)->all();
+        } catch (Exception $e) {
+            return $this->respondWithError($e->getMessage());
+        }
+
+        return $this->respond(['branches' => $allBranches]);
     }
 }

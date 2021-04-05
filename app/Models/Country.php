@@ -4,7 +4,11 @@ namespace App\Models;
 
 use App\Traits\HasStatuses;
 use Astrotomic\Translatable\Translatable;
+use Eloquent;
+use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Carbon;
 
 /**
  * App\Models\Country
@@ -19,69 +23,69 @@ use Illuminate\Database\Eloquent\Model;
  * @property int $numeric_code
  * @property string|null $phone_code
  * @property int|null $order_column
- * @property int $status 0:incomplete, 1:draft, 2:published, 3:Inactive, 4..n:CUSTOM
- * @property \Illuminate\Support\Carbon|null $created_at
- * @property \Illuminate\Support\Carbon|null $updated_at
- * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\City[] $cities
+ * @property int $status 1:draft, 2:active, 3:Inactive, 4..n:CUSTOM
+ * @property Carbon|null $created_at
+ * @property Carbon|null $updated_at
+ * @property-read Collection|City[] $cities
  * @property-read int|null $cities_count
- * @property-read \App\Models\Currency|null $currency
- * @property-read mixed $is_published
+ * @property-read Currency|null $currency
+ * @property-read bool $is_active
+ * @property-read bool $is_inactive
  * @property-read mixed $status_name
- * @property-read \App\Models\Language|null $language
- * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\Location[] $locations
+ * @property-read Language|null $language
+ * @property-read Collection|Location[] $locations
  * @property-read int|null $locations_count
- * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\Region[] $regions
+ * @property-read Collection|Region[] $regions
  * @property-read int|null $regions_count
- * @property-read \App\Models\Timezone|null $timezone
- * @property-read \App\Models\CountryTranslation|null $translation
- * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\CountryTranslation[] $translations
+ * @property-read Timezone|null $timezone
+ * @property-read CountryTranslation|null $translation
+ * @property-read Collection|CountryTranslation[] $translations
  * @property-read int|null $translations_count
- * @method static \Illuminate\Database\Eloquent\Builder|Country draft()
- * @method static \Illuminate\Database\Eloquent\Builder|Country inactive()
- * @method static \Illuminate\Database\Eloquent\Builder|Country incomplete()
- * @method static \Illuminate\Database\Eloquent\Builder|Country listsTranslations(string $translationField)
- * @method static \Illuminate\Database\Eloquent\Builder|Country newModelQuery()
- * @method static \Illuminate\Database\Eloquent\Builder|Country newQuery()
- * @method static \Illuminate\Database\Eloquent\Builder|Country notPublished()
- * @method static \Illuminate\Database\Eloquent\Builder|Country notTranslatedIn(?string $locale = null)
- * @method static \Illuminate\Database\Eloquent\Builder|Country orWhereTranslation(string $translationField, $value, ?string $locale = null)
- * @method static \Illuminate\Database\Eloquent\Builder|Country orWhereTranslationLike(string $translationField, $value, ?string $locale = null)
- * @method static \Illuminate\Database\Eloquent\Builder|Country orderByTranslation(string $translationField, string $sortMethod = 'asc')
- * @method static \Illuminate\Database\Eloquent\Builder|Country published()
- * @method static \Illuminate\Database\Eloquent\Builder|Country query()
- * @method static \Illuminate\Database\Eloquent\Builder|Country translated()
- * @method static \Illuminate\Database\Eloquent\Builder|Country translatedIn(?string $locale = null)
- * @method static \Illuminate\Database\Eloquent\Builder|Country whereAlpha2Code($value)
- * @method static \Illuminate\Database\Eloquent\Builder|Country whereAlpha3Code($value)
- * @method static \Illuminate\Database\Eloquent\Builder|Country whereCreatedAt($value)
- * @method static \Illuminate\Database\Eloquent\Builder|Country whereCurrencyId($value)
- * @method static \Illuminate\Database\Eloquent\Builder|Country whereEnglishName($value)
- * @method static \Illuminate\Database\Eloquent\Builder|Country whereId($value)
- * @method static \Illuminate\Database\Eloquent\Builder|Country whereLanguageId($value)
- * @method static \Illuminate\Database\Eloquent\Builder|Country whereNumericCode($value)
- * @method static \Illuminate\Database\Eloquent\Builder|Country whereOrderColumn($value)
- * @method static \Illuminate\Database\Eloquent\Builder|Country wherePhoneCode($value)
- * @method static \Illuminate\Database\Eloquent\Builder|Country whereStatus($value)
- * @method static \Illuminate\Database\Eloquent\Builder|Country whereTimezoneId($value)
- * @method static \Illuminate\Database\Eloquent\Builder|Country whereTranslation(string $translationField, $value, ?string $locale = null, string $method = 'whereHas', string $operator = '=')
- * @method static \Illuminate\Database\Eloquent\Builder|Country whereTranslationLike(string $translationField, $value, ?string $locale = null)
- * @method static \Illuminate\Database\Eloquent\Builder|Country whereUpdatedAt($value)
- * @method static \Illuminate\Database\Eloquent\Builder|Country withTranslation()
- * @mixin \Eloquent
+ * @method static Builder|Country active()
+ * @method static Builder|Country draft()
+ * @method static Builder|Country inactive()
+ * @method static Builder|Country listsTranslations(string $translationField)
+ * @method static Builder|Country newModelQuery()
+ * @method static Builder|Country newQuery()
+ * @method static Builder|Country notActive()
+ * @method static Builder|Country notTranslatedIn(?string $locale = null)
+ * @method static Builder|Country orWhereTranslation(string $translationField, $value, ?string $locale = null)
+ * @method static Builder|Country orWhereTranslationLike(string $translationField, $value, ?string $locale = null)
+ * @method static Builder|Country orderByTranslation(string $translationField, string $sortMethod = 'asc')
+ * @method static Builder|Country query()
+ * @method static Builder|Country translated()
+ * @method static Builder|Country translatedIn(?string $locale = null)
+ * @method static Builder|Country whereAlpha2Code($value)
+ * @method static Builder|Country whereAlpha3Code($value)
+ * @method static Builder|Country whereCreatedAt($value)
+ * @method static Builder|Country whereCurrencyId($value)
+ * @method static Builder|Country whereEnglishName($value)
+ * @method static Builder|Country whereId($value)
+ * @method static Builder|Country whereLanguageId($value)
+ * @method static Builder|Country whereNumericCode($value)
+ * @method static Builder|Country whereOrderColumn($value)
+ * @method static Builder|Country wherePhoneCode($value)
+ * @method static Builder|Country whereStatus($value)
+ * @method static Builder|Country whereTimezoneId($value)
+ * @method static Builder|Country whereTranslation(string $translationField, $value, ?string $locale = null, string $method = 'whereHas', string $operator = '=')
+ * @method static Builder|Country whereTranslationLike(string $translationField, $value, ?string $locale = null)
+ * @method static Builder|Country whereUpdatedAt($value)
+ * @method static Builder|Country withTranslation()
+ * @mixin Eloquent
  */
 class Country extends Model
 {
-    use Translatable,
-        HasStatuses;
-
-    const STATUS_INCOMPLETE = 0;
-    const STATUS_DRAFT = 1;
-    const STATUS_PUBLISHED = 2;
-    const STATUS_INACTIVE = 3;
+    use HasStatuses;
+    use Translatable;
 
 
-    const IRAQ_COUNTRY_ID = 107;
-    const TURKEY_COUNTRY_ID = 225;
+    public const STATUS_DRAFT = 1;
+    public const STATUS_ACTIVE = 2;
+    public const STATUS_INACTIVE = 3;
+
+
+    public const IRAQ_COUNTRY_ID = 107;
+    public const TURKEY_COUNTRY_ID = 225;
 
     protected $translatedAttributes = ['name', 'slug'];
     protected $fillable = ['name', 'slug'];

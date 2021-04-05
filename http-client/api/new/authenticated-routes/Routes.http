@@ -59,7 +59,7 @@ Authorization: Bearer {{token}}
 }
 
 ### countries with flags
-GET {{host}}/{{locale}}/api/v1/countries-with-flags?all=true
+GET {{host}}/{{locale}}/api/v1/countries?all=true
 Accept: application/json
 Content-Type: application/json
 Authorization: Bearer {{token}}

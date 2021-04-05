@@ -6,14 +6,20 @@ use App\Http\Controllers\Controller;
 use App\Models\Region;
 use App\Models\Slide;
 use App\Models\SlideTranslation;
+use Arr;
+use DB;
+use Exception;
+use Illuminate\Contracts\View\Factory;
+use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\View\View;
+use Str;
 use function PHPUnit\Framework\isEmpty;
 
 class SlideController extends Controller
 {
 
-    function __construct()
+    public function __construct()
     {
 //        $this->middleware('permission:slide.permissions.index', ['only' => ['index', 'store']]);
 //        $this->middleware('permission:slide.permissions.create', ['only' => ['create', 'store']]);
@@ -46,6 +52,29 @@ class SlideController extends Controller
                 'data' => 'title',
                 'name' => 'title',
                 'title' => trans('strings.title'),
+                'width' => '40',
+            ],
+            [
+                'data' => 'region',
+                'name' => 'region',
+                'title' => trans('strings.city'),
+                'width' => '40',
+            ],
+            [
+                'data' => 'city',
+                'name' => 'city',
+                'title' => trans('strings.neighborhood'),
+                'width' => '40',
+            ],
+            [
+                'data' => 'channel',
+                'name' => 'channel',
+                'title' => 'Channel',
+            ],
+            [
+                'data' => 'has_been_authenticated',
+                'name' => 'has_been_authenticated',
+                'title' => trans('strings.placement'),
                 'width' => '40',
             ],
             [
@@ -103,9 +132,9 @@ class SlideController extends Controller
     /**
      * Store a newly created resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
+     * @param  Request  $request
      *
-     * @return \Illuminate\Http\RedirectResponse
+     * @return RedirectResponse
      */
     public function store(Request $request)
     {
@@ -129,11 +158,12 @@ class SlideController extends Controller
      *
      * @param  Request  $request
      *
-     * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
+     * @return Factory|View
      */
     public function edit(Slide $slide, Request $request)
     {
         $data = $this->essentialData($request);
+        $slide->load(['region', 'city']);
         $data['slide'] = $slide;
 
         return view('admin.slides.form', $data);
@@ -142,10 +172,10 @@ class SlideController extends Controller
     /**
      * Update the specified resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
+     * @param  Request  $request
      * @param  Slide  $slide
      *
-     * @return \Illuminate\Http\RedirectResponse
+     * @return RedirectResponse
      */
     public function update(Request $request, Slide $slide)
     {
@@ -164,8 +194,8 @@ class SlideController extends Controller
      *
      * @param  Slide  $slide
      *
-     * @return \Illuminate\Http\RedirectResponse
-     * @throws \Exception
+     * @return RedirectResponse
+     * @throws Exception
      */
     public function destroy(Slide $slide)
     {
@@ -180,9 +210,9 @@ class SlideController extends Controller
     private function essentialData(Request $request): array
     {
         $linkTypes = Slide::getTypesArray();
+        $regions = Region::whereCountryId(config('defaults.country.id'))->get();
 
-
-        return compact('linkTypes');
+        return compact('linkTypes', 'regions');
     }
 
     private function validationRules(): array
@@ -198,10 +228,14 @@ class SlideController extends Controller
 
     private function saveLogic($request, Slide $slide, bool $isUpdating = false)
     {
-        \DB::beginTransaction();
+        $region = json_decode($request->region);
+        $city = json_decode($request->city);
+
+        DB::beginTransaction();
         if ( ! $isUpdating) {
             $slide->creator_id = auth()->id();
         }
+
         $slide->editor_id = auth()->id();
         $slide->title = $request->input('title');
         $slide->description = $request->input('description');
@@ -210,16 +244,20 @@ class SlideController extends Controller
         $slide->linkage = $request->input('linkage');
         $slide->begins_at = $request->input('begins_at');
         $slide->expires_at = $request->input('expires_at');
+        $slide->city_id = isset($city) ? $city->id : null;
+        $slide->region_id = isset($region) ? $region->id : null;
         $slide->status = $request->input('status');
+        $slide->has_been_authenticated = $request->input('has_been_authenticated');
+        $slide->channel = $request->input('channel');
         $slide->save();
         // Filling translations
 
         foreach (localization()->getSupportedLocales() as $key => $value) {
             $slide->translateOrNew($key)->alt_tag = $request->input($key.'.alt_tag');
-            $inputKey = $key.".image";
+            $inputKey = $key.'.image';
             if ($request->has($inputKey)) {
                 $slideTranslation = SlideTranslation::whereSlideId($slide->id)
-                                                    ->where('locale', \Str::beforeLast($key, '.'))
+                                                    ->where('locale', Str::beforeLast($key, '.'))
                                                     ->first();
 
 //                $this->handleSubmittedSingleMedia($key.".image", $request, $slideTranslation); todo: fix this. It's the delete logic but it breaks storing
@@ -227,10 +265,10 @@ class SlideController extends Controller
         }
         $slide->save();
 
-        $allFiles = \Arr::dot($request->allFiles());
+        $allFiles = Arr::dot($request->allFiles());
         foreach ($allFiles as $tempKey => $file) {
             $slideTranslation = SlideTranslation::whereSlideId($slide->id)
-                                                ->where('locale', \Str::beforeLast($tempKey, '.'))
+                                                ->where('locale', Str::beforeLast($tempKey, '.'))
                                                 ->first();
             if ( ! is_null($slideTranslation->addMediaFromRequest($tempKey))) {
                 $slideTranslation->addMediaFromRequest($tempKey)
@@ -241,7 +279,7 @@ class SlideController extends Controller
 //        dd($slide->toArray());
 //        $slide->???()->sync($request->???);
 
-        \DB::commit();
+        DB::commit();
     }
 
 }

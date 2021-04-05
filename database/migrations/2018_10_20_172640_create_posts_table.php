@@ -1,5 +1,6 @@
 <?php
 
+use App\Models\Post;
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
@@ -22,9 +23,9 @@ class CreatePostsTable extends Migration
             $table->unsignedTinyInteger('type')->default(1)->comment('1:Article, 2:Page, 3:Testimonial, 4..n: CUSTOM');
             $table->decimal('avg_rating', 3)->default(0);
             $table->unsignedInteger('rating_count')->default(0);
-            $table->integer('view_count')->default(1);
-            $table->unsignedInteger('order_column')->nullable();
-            $table->unsignedTinyInteger('status')->default(1)->comment('0:incomplete, 1:draft, 2:published, 3:Inactive, 4..n:CUSTOM');
+            $table->unsignedBigInteger('view_count')->default(1);
+            $table->unsignedBigInteger('order_column')->nullable();
+            $table->unsignedTinyInteger('status')->default(Post::STATUS_DRAFT)->comment('1:draft, 2:active, 3:Inactive, 4..n:CUSTOM');
             $table->timestamps();
             $table->softDeletes();
 

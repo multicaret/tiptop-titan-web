@@ -14,21 +14,21 @@ Authorization: Bearer {{token}}
 
 
 ###  remove or add product
-POST {{host}}/{{locale}}/api/v1/carts/{{cart}}/products/adjust-quantity
+POST {{host}}/{{locale}}/api/v1/carts/{{cartId}}/products/adjust-quantity
 Accept: application/json
 Content-Type: application/json
 Authorization: Bearer {{token}}
 
 {
-    "product_id": "5",
-    "chain_id": "1",
-    "branch_id": "3",
-    "is_adding": "1",
-    "status": "0"
+    "product_id": 5,
+    "chain_id": 1,
+    "branch_id": "{{branchId}}",
+    "is_adding": true,
+    "status": 0
 }
 
 ###  clear cart
-POST {{host}}/{{locale}}/api/v1/carts/{cart}/delete
+POST {{host}}/{{locale}}/api/v1/carts/{{cart}}/delete
 Accept: application/json
 Content-Type: application/json
 Authorization: Bearer {{token}}

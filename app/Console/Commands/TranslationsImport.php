@@ -3,6 +3,7 @@
 namespace App\Console\Commands;
 
 use App\Models\Translation;
+use File;
 use Illuminate\Console\Command;
 use Illuminate\Support\Arr;
 use Illuminate\Translation\FileLoader;
@@ -110,9 +111,9 @@ class TranslationsImport extends Command
      */
     private function loadedTranslationsByLocale(string $defaultLocale, array &$allTranslations): void
     {
-        $directoryIsExists = \File::exists(app()['path.lang'] . "/{$defaultLocale}/");
+        $directoryIsExists = File::exists(app()['path.lang'] . "/{$defaultLocale}/");
         if ($directoryIsExists) {
-            $allFiles = \File::files(app()['path.lang'] . "/{$defaultLocale}/");
+            $allFiles = File::files(app()['path.lang'] . "/{$defaultLocale}/");
             $allGroupsFiles = collect($allFiles)->map(function ($file) {
                 return pathinfo($file, PATHINFO_FILENAME);
             })->toArray();

@@ -1,7 +1,7 @@
 <?php
 return [
     'user' => [
-        'mobile_app' => [
+        'mobile_app_details' => [
             'version' => "0.0.0",
             'buildNumber' => 0,
             'device' => [
@@ -88,6 +88,20 @@ return [
                 'height' => 1024,
             ],
         ],
+        'icon' => [
+            '128' => [
+                'width' => 128,
+                'height' => 128,
+            ],
+            '256' => [
+                'width' => 256,
+                'height' => 256,
+            ],
+            '512' => [
+                'width' => 512,
+                'height' => 512,
+            ],
+        ],
         'generic_cover' => [
             'SD' => [
                 'width' => 640,
@@ -128,6 +142,9 @@ return [
     'date' => [
         'short_format' => 'Y-m-d',
         'normal_format' => 'd M Y',
+    ],
+    'time' => [
+        'normal_format' => 'H:i',
     ],
     'geolocation' => [
         'latitude' => 36.195238,
@@ -271,4 +288,14 @@ return [
             'name' => 'User',
         ],
     ],
+    'db_column_types' => [
+        'bigint' => 'number',
+        'decimal' => 'number',
+        'datetime' => 'datetime-local',
+        'float' => 'number',
+        'boolean' => 'checkbox',
+        'integer' => 'number',
+        'string' => 'text',
+        'text' => 'editor',
+    ]
 ];

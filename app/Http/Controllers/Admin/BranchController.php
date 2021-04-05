@@ -4,15 +4,22 @@ namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
 use App\Models\Chain;
+use App\Models\Location;
 use App\Models\Region;
 use App\Models\Branch;
+use App\Models\Taxonomy;
+use DB;
+use Exception;
+use Illuminate\Contracts\Foundation\Application;
+use Illuminate\Contracts\View\Factory;
+use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\View\View;
 
 class BranchController extends Controller
 {
 
-    function __construct()
+    public function __construct()
     {
 //        $this->middleware('permission:branch.permissions.index', ['only' => ['index', 'store']]);
 //        $this->middleware('permission:branch.permissions.create', ['only' => ['create', 'store']]);
@@ -25,7 +32,7 @@ class BranchController extends Controller
      *
      * @param  Request  $request
      *
-     * @return \Illuminate\Contracts\Foundation\Application|\Illuminate\Contracts\View\Factory|\Illuminate\Contracts\View\View|View
+     * @return Application|Factory|\Illuminate\Contracts\View\View|View
      */
     public function index(Request $request)
     {
@@ -54,7 +61,7 @@ class BranchController extends Controller
             [
                 'data' => 'region',
                 'name' => 'region',
-                'title' => 'Region',
+                'title' => 'City',
                 'searchable' => false,
                 'bSortable' => false,
                 'width' => '10',
@@ -62,7 +69,7 @@ class BranchController extends Controller
             [
                 'data' => 'city',
                 'name' => 'city',
-                'title' => 'City',
+                'title' => 'Neighborhood',
                 'searchable' => false,
                 'bSortable' => false,
                 'width' => '10',
@@ -83,31 +90,34 @@ class BranchController extends Controller
      *
      * @param  Request  $request
      *
-     * @return \Illuminate\Contracts\Foundation\Application|\Illuminate\Contracts\View\Factory|\Illuminate\Contracts\View\View|View
+     * @return Application|Factory|\Illuminate\Contracts\View\View|View
      */
     public function create(Request $request)
     {
         $typeName = Branch::getCorrectTypeName($request->type, false);
         $type = Branch::getCorrectType($request->type);
+        $contacts = [];
 
         $branch = new Branch();
         $regions = Region::whereCountryId(config('defaults.country.id'))->get();
         $chains = Chain::whereType($type)->get();
         $branch->chain = Chain::whereType($type)->first();
+        $foodCategories = Taxonomy::foodCategories()->get();
 
-        return view('admin.branches.form', compact('branch', 'regions', 'chains', 'typeName', 'type'));
+        return view('admin.branches.form',
+            compact('branch', 'regions', 'chains', 'typeName', 'type', 'contacts', 'foodCategories'));
     }
 
     /**
      * Store a newly created resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
+     * @param  Request  $request
      *
-     * @return \Illuminate\Http\RedirectResponse
+     * @return RedirectResponse
      */
     public function store(Request $request)
     {
-        $request->validate($this->validationRules());
+        $request->validate($this->validationRules($request));
 
         $branch = new Branch();
         $branch->creator_id = $branch->editor_id = auth()->id();
@@ -128,31 +138,40 @@ class BranchController extends Controller
      *
      * @param  Request  $request
      *
-     * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
+     * @return Factory|View
      */
     public function edit(Branch $branch, Request $request)
     {
         $typeName = Branch::getCorrectTypeName($request->type, false);
         $type = Branch::getCorrectType($request->type);
-
+        $contacts = $branch->locations()->get()->map(function ($item) {
+            return [
+                'id' => $item->id,
+                'name' => $item->name,
+                'email' => $item->emails,
+                'phone' => $item->phones
+            ];
+        });
         $regions = Region::whereCountryId(config('defaults.country.id'))->get();
         $branch->load(['region', 'city', 'chain']);
         $chains = Chain::whereType($type)->get();
+        $foodCategories = Taxonomy::foodCategories()->get();
 
-        return view('admin.branches.form', compact('branch', 'regions', 'typeName', 'type', 'chains'));
+        return view('admin.branches.form',
+            compact('branch', 'regions', 'typeName', 'type', 'chains', 'contacts', 'foodCategories'));
     }
 
     /**
      * Update the specified resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
+     * @param  Request  $request
      * @param  Branch  $branch
      *
-     * @return \Illuminate\Http\RedirectResponse
+     * @return RedirectResponse
      */
     public function update(Request $request, Branch $branch)
     {
-        $request->validate($this->validationRules());
+        $request->validate($this->validationRules($request));
         $branch->editor_id = auth()->id();
         $this->storeUpdateLogic($request, $branch);
 
@@ -169,8 +188,8 @@ class BranchController extends Controller
      *
      * @param  Branch  $branch
      *
-     * @return \Illuminate\Http\RedirectResponse
-     * @throws \Exception
+     * @return RedirectResponse
+     * @throws Exception
      */
     public function destroy(Branch $branch)
     {
@@ -183,16 +202,27 @@ class BranchController extends Controller
     }
 
 
-    private function validationRules(): array
+    private function validationRules($request): array
     {
         $defaultLocale = localization()->getDefaultLocale();
+        $toValidateInFood = [];
+        if ($request->type == Branch::getCorrectTypeName(Branch::TYPE_FOOD_OBJECT, 0)) {
+            $toValidateInFood = [
+                'restaurant_minimum_order' => 'required',
+                'restaurant_under_minimum_order_delivery_fee' => 'required',
+                'restaurant_fixed_delivery_fee' => 'required',
+            ];
+        }
 
-        return [
+        $generalValidateItems = [
             "{$defaultLocale}.title" => 'required',
-            "minimum_order" => 'required',
-            "under_minimum_order_delivery_fee" => 'required',
-            "fixed_delivery_fee" => 'required',
+            'minimum_order' => 'required',
+            'under_minimum_order_delivery_fee' => 'required',
+            'fixed_delivery_fee' => 'required',
         ];
+
+
+        return array_merge($toValidateInFood, $generalValidateItems);
     }
 
 
@@ -201,18 +231,29 @@ class BranchController extends Controller
         $region = json_decode($request->region);
         $city = json_decode($request->city);
         $chain = json_decode($request->chain);
-        \DB::beginTransaction();
+        DB::beginTransaction();
         $branch->chain_id = $chain->id;
         $branch->city_id = isset($city) ? $city->id : null;
         $branch->region_id = isset($region) ? $region->id : null;
         $branch->latitude = $request->input('latitude');
         $branch->longitude = $request->input('longitude');
+        $branch->has_tip_top_delivery = $request->input('has_tip_top_delivery') ? 1 : 0;
         $branch->minimum_order = $request->input('minimum_order');
+        if ($request->has('restaurant_minimum_order')) {
+            $branch->restaurant_minimum_order = $request->input('restaurant_minimum_order');
+        }
+        if ($request->has('restaurant_under_minimum_order_delivery_fee')) {
+            $branch->restaurant_under_minimum_order_delivery_fee = $request->input('restaurant_under_minimum_order_delivery_fee');
+        }
+        if ($request->has('restaurant_fixed_delivery_fee')) {
+            $branch->restaurant_fixed_delivery_fee = $request->input('restaurant_fixed_delivery_fee');
+        }
+        $branch->has_restaurant_delivery = $request->input('has_restaurant_delivery') ? 1 : 0;
         $branch->under_minimum_order_delivery_fee = $request->input('under_minimum_order_delivery_fee');
         $branch->fixed_delivery_fee = $request->input('fixed_delivery_fee');
         $branch->primary_phone_number = $request->input('primary_phone_number');
-        $branch->secondary_phone_number = $request->input('secondary_phone_number');
-        $branch->whatsapp_phone_number = $request->input('whatsapp_phone_number');
+//        $branch->secondary_phone_number = $request->input('secondary_phone_number');
+//        $branch->whatsapp_phone_number = $request->input('whatsapp_phone_number');
         $branch->type = Branch::getCorrectType($request->type);
         $branch->status = $request->input('status');
         $branch->save();
@@ -223,8 +264,33 @@ class BranchController extends Controller
                 $branch->translateOrNew($key)->description = $request->input($key.'.description');
             }
         }
+        $branch->foodCategories()->sync($request->input('food_categories'));
+        $requestContactDetails = json_decode($request->contactDetails);
+        $contactToDelete = $branch->locations()->get()->pluck('id')->toArray();
+        $contactToDelete = array_combine($contactToDelete, $contactToDelete);
+        foreach ($requestContactDetails as $requestContactDetail) {
+            if (isset($requestContactDetail->id) && ! is_null($location = Location::whereId($requestContactDetail->id)->first())) {
+                $location->name = $requestContactDetail->name;
+                $location->phones = $requestContactDetail->phone;
+                $location->emails = $requestContactDetail->email;
+                $location->type = Location::TYPE_CONTACT;
+                unset($contactToDelete[$location->id]);
+            } else {
+                $location = new Location();
+                $location->creator_id = $location->editor_id = auth()->id();
+                $location->contactable_id = $branch->id;
+                $location->contactable_type = Branch::class;
+                $location->type = Location::TYPE_CONTACT;
+                $location->name = $requestContactDetail->name;
+                $location->emails = $requestContactDetail->email;
+                $location->phones = $requestContactDetail->phone;
+            }
+            $location->save();
+        }
+        Location::whereIn('id', $contactToDelete)->delete();
+
         $branch->save();
-        \DB::commit();
+        DB::commit();
     }
 
 }

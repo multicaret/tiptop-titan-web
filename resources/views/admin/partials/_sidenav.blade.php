@@ -10,15 +10,15 @@
 <div id="layout-sidenav"
      class="layout-sidenav sidenav-vertical sidenav layout-fixed bg-sidenav-theme">
     <!-- Brand demo (see assets/css/demo/demo.css) -->
-    <div class="app-brand demo ml-5">
+    <div class="app-brand demo ml-2">
         {{--
          use this class (.side-nav-logo) if you want to change the logo if sidenav collapsed
         --}}
-        <a href="{{route('admin.index')}}" class="app-brand-text demo sidenav-text font-weight-normal ml-2">
-            <img src="/images/logo.jpeg" alt="@preferences('app_title')" width="70px"
+        <a href="{{route('admin.index')}}" class="app-brand-text demo sidenav-text font-weight-normal">
+            <img src="/images/logo.svg" alt="@preferences('app_title')" width="135px"
                  class="">
         </a>
-        <a href="javascript:void(0)" class="layout-sidenav-toggle sidenav-link text-large ml-auto">
+        <a href="javascript:void(0)" class="layout-sidenav-toggle sidenav-link text-large">
             <i class="ion ion-md-menu align-middle"></i>
         </a>
     </div>
@@ -35,7 +35,7 @@
                 <li class="sidenav-item {{$link['status']}}">
                     <a href="{{ $link['route'] }}"
                        class="sidenav-link {{isset($link['subChildren']) ? 'sidenav-toggle': ''}}">
-                        <i class="sidenav-icon text-primary {{ $link['icon'] }}" style="font-size:1.4em"></i>
+                        <i class="sidenav-icon text-primary {{ $link['icon'] }} fa-fw" style="font-size:1.4em"></i>
                         &nbsp;<div class="font-weight-bold">{{ $link['title'] }}</div>
                     </a>
                     @if(isset($link['subChildren']))
@@ -44,7 +44,7 @@
                                 <li class="sidenav-item {{$childItem['status']}}">
                                     <a href="{{$childItem['route']}}"
                                        class="sidenav-link {{\Str::title(request()->input('type')) === $childItem['title']? 'active': '' }}">
-                                        <i class="mr-2 text-secondary {{ $childItem['icon'] }}"
+                                        <i class="mr-2 text-secondary {{ $childItem['icon'] }} fa-fw"
                                            style="font-size:1.4em"></i>
                                         <div class="font-weight-semibold">{{$childItem['title']}}</div>
                                     </a>

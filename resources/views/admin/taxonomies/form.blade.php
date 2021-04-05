@@ -92,7 +92,7 @@
         <div class="card-body">
             <div class="row">
                 @if(in_array($correctType, \App\Models\Taxonomy::typesHaving('parent')))
-                    <div class="col-md-12">
+                    <div class="col-md-4">
                         @component('admin.components.form-group', ['name' => 'parent_id', 'type' => 'select'])
                             @slot('label', 'Parent')
                             @slot('options', $roots->push([
@@ -103,22 +103,81 @@
                         @endcomponent
                     </div>
                 @endif
-
-                @if(in_array($correctType, \App\Models\Taxonomy::typesHaving('branch')))
-                        <div class="col-12">
-                            @component('admin.components.form-group', ['name' => 'branch_id', 'type' => 'select'])
-                                @slot('label', trans('strings.branch'))
-                                @slot('options',  \App\Models\Branch::whereType(\App\Models\Branch::TYPE_GROCERY_BRANCH)->get()->pluck('title', 'id')->prepend('',''))
-                                @slot('attributes', [
-                                    'class' => 'select2-branch w-100',
-                                    'required',
-                                ])
-                                @slot('selected', $taxonomy->branch_id)
-                            @endcomponent
-                        </div>
+                @if($correctType == \App\Models\Taxonomy::TYPE_INGREDIENT)
+                    <div class="col-6">
+                        @component('admin.components.form-group', ['name' => 'ingredient_category_id', 'type' => 'select'])
+                            @slot('label', 'Ingredient Category')
+                            @slot('options', $ingredientCategories->prepend(null)->pluck('title','id'))
+                            @slot('attributes', ['required','class'=>'select-2-ingredient-category w-100'])
+                            @slot('selected', $taxonomy->ingredient_category_id)
+                        @endcomponent
+                    </div>
                 @endif
-                @if(in_array($correctType, \App\Models\Taxonomy::typesHaving('cover_image')))
+                @if(in_array($correctType, [\App\Models\Taxonomy::TYPE_MENU_CATEGORY]))
+                    <div class="col-4">
+                        @component('admin.components.form-group', ['name' => 'branch_id', 'type' => 'select'])
+                            @slot('label', trans('strings.branch'))
+                            @slot('options', $branches)
+                            @slot('attributes', [
+                                'class' => 'select2-branch w-100',
+                                'required',
+                            ])
+                            @slot('selected', $taxonomy->branch_id)
+                        @endcomponent
+                    </div>
+                @endif
+                <div
+                    class="{{in_array($correctType, [\App\Models\Taxonomy::TYPE_INGREDIENT,\App\Models\Taxonomy::TYPE_INGREDIENT_CATEGORY]) ? 'col-6':'col-4'}}">
+                    @component('admin.components.form-group', ['name' => 'status', 'type' => 'select'])
+                        @slot('label', trans('strings.status'))
+                        @slot('attributes', ['class'=>'select-2-status w-100'])
+                        @slot('options', \App\Models\Taxonomy::getStatusesArray())
+                        @slot('selected', $taxonomy->status)
+                    @endcomponent
+                </div>
+
+                @if($correctType == \App\Models\Taxonomy::TYPE_UNIT)
                     <div class="col-md-12">
+                        @component('admin.components.form-group', ['name' => 'step', 'type' => 'number'])
+                            @slot('label', 'Step')
+                            @slot('attributes', [
+                                'step' => 'any',
+                                'min'=>'0'
+                            ])
+                            @slot('value', $taxonomy->step)
+                        @endcomponent
+                    </div>
+                @endif
+                @if(in_array($correctType, [\App\Models\Taxonomy::TYPE_GROCERY_CATEGORY]))
+                    <div class="col-4">
+                        @component('admin.components.form-group', ['name' => 'chain_id', 'type' => 'select'])
+                            @slot('label', trans('strings.chain'))
+                            @slot('options',  \App\Models\Chain::whereType(\App\Models\Chain::TYPE_GROCERY_OBJECT)->get()->pluck('title', 'id')->prepend('',''))
+                            @slot('attributes', [
+                                'class' => 'select2-chain w-100',
+                                'required',
+                            ])
+                            @slot('selected', $taxonomy->chain_id)
+                        @endcomponent
+                    </div>
+                @endif
+                {{--@if($correctType == \App\Models\Taxonomy::TYPE_FOOD_CATEGORY)
+                    --}}{{-- Branches --}}{{--
+                    <div class="col-4">
+                        @component('admin.components.form-group', ['name' => 'branches[]', 'type' => 'select'])
+                            @slot('label', trans('strings.branches'))
+                            @slot('options', $branches->pluck('title', 'id'))
+                            @slot('attributes', [
+                                'multiple',
+                                'required',
+                                'class' => 'select2-branches w-100',
+                            ])
+                            @slot('selected', $taxonomy->branches)
+                        @endcomponent
+                    </div>
+                @endif--}}
+                @if(in_array($correctType, \App\Models\Taxonomy::typesHaving('cover_image')))
+                    <div class="col-md-4">
                         @component('admin.components.form-group', ['name' => 'cover', 'type' => 'file'])
                             @slot('label', 'Cover')
                             @slot('attributes', [
@@ -136,21 +195,6 @@
         </div>
     </div>
 
-    <div class="card card-outline-inverse mb-4">
-        <h4 class="card-header">Status</h4>
-        <div class="card-body">
-            <div class="row">
-                <div class="col-12">
-                    @component('admin.components.form-group', ['name' => 'status', 'type' => 'select'])
-                        @slot('label', trans('strings.status'))
-                        @slot('options', \App\Models\Taxonomy::getStatusesArray())
-                        @slot('selected', $taxonomy->status)
-                    @endcomponent
-                </div>
-            </div>
-        </div>
-    </div>
-
     <button class="btn btn-success" type="submit">@lang('strings.submit')</button>
     {!! Form::close() !!}
 
@@ -161,8 +205,24 @@
     <script src="/admin-assets/libs/select2/select2.js"></script>
     <script>
         $(function () {
+            $('.select2-branches').select2({
+                placeholder: 'Select Branches',
+            });
+        });
+        $(function () {
             $('.select2-branch').select2({
                 placeholder: 'Select Branch',
+            });
+            $('.select-2-ingredient-category').select2({
+                placeholder: 'Select Ingredient Category',
+            });
+            $('.select-2-status').select2({
+                placeholder: 'Select Status',
+            });
+        });
+        $(function () {
+            $('.select2-chain').select2({
+                placeholder: 'Select Chain',
             });
         });
     </script>

@@ -32,19 +32,21 @@ trait HasMetaData
     /**
      * Save meta data for the model.
      *
-     * @param array $data
+     * @param  array  $data
      * @return void
      */
     public function saveMetaData($data = []): void
     {
-        $data = collect($data)->filter(function ($item , $key) {
-            return !$this->containsOnlyNull($item);
+        $data = collect($data)->filter(function ($item, $key) {
+            return ! $this->containsOnlyNull($item);
         })->toArray();
         $this->meta->fill($data)->save();
     }
 
     private function containsOnlyNull($input): bool
     {
-        return empty(array_filter($input, function ($a) { return $a !== null;}));
+        return empty(array_filter($input, function ($a) {
+            return $a !== null;
+        }));
     }
 }

@@ -2,13 +2,15 @@
 
 namespace App\Http\Resources;
 
+use App\Models\Slide;
+use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
 
-/** @mixin \App\Models\Slide */
+/** @mixin Slide */
 class SlideResource extends JsonResource
 {
     /**
-     * @param  \Illuminate\Http\Request  $request
+     * @param  Request  $request
      * @return array
      */
     public function toArray($request)

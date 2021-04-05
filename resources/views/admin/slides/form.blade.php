@@ -63,7 +63,7 @@
                             <div class="col-md-12">
                                 @component('admin.components.form-group', ['name' => $langKey .'[alt_tag]', 'type' => 'text'])
                                     @slot('label', trans('strings.alt-tag'))
-
+                                    @slot('attributes',['required'])
                                     @if(! is_null($slide->id))
                                         @slot('value', optional($slide->translate($langKey))->alt_tag)
                                     @endif
@@ -94,6 +94,49 @@
                 <div class="card card-outline-inverse">
                     <h4 class="card-header">Details</h4>
                     <div class="card-body row">
+
+                        <div class="col-6">
+                            <div class="form-group">
+                                <label class="control-label">
+                                    @lang('strings.city')
+                                </label>
+                                <multiselect
+                                    :options="regions"
+                                    v-model="slide.region"
+                                    track-by="name"
+                                    label="name"
+                                    :searchable="true"
+                                    :allow-empty="true"
+                                    select-label=""
+                                    selected-label=""
+                                    deselect-label=""
+                                    placeholder=""
+                                    @select="retrieveCities"
+                                    autocomplete="false"
+                                ></multiselect>
+                            </div>
+                        </div>
+                        <div class="col-6">
+                            <div class="form-group">
+                                <label class="control-label">
+                                    Neighborhood
+                                </label>
+                                <multiselect
+                                    :options="cities"
+                                    v-model="slide.city"
+                                    track-by="name"
+                                    label="name"
+                                    :searchable="true"
+                                    :allow-empty="true"
+                                    select-label=""
+                                    selected-label=""
+                                    deselect-label=""
+                                    placeholder=""
+                                    {{--                                        @select="retrieveNeighborhoods"--}}
+                                    autocomplete="false"
+                                ></multiselect>
+                            </div>
+                        </div>
                         <div class="col-6">
                             @component('admin.components.form-group', ['name' =>'begins_at', 'type' => 'datetime-local'])
                                 @slot('label', 'Begins At')
@@ -128,21 +171,38 @@
                                 @endif
                             @endcomponent
                         </div>
-                        <div class="col-3">
+                        <div class="col-4">
                             @component('admin.components.form-group', ['name' => 'status', 'type' => 'select'])
                                 @slot('label', trans('strings.status'))
                                 @slot('options', \App\Models\Slide::getStatusesArray())
                                 @slot('selected', $slide->status)
                             @endcomponent
                         </div>
-
+                        <div class="col-4">
+                            @component('admin.components.form-group', ['name' => 'channel', 'type' => 'select'])
+                                @slot('label', trans('strings.channel'))
+                                @slot('options', \App\Models\Slide::getChannelsArray())
+                                @slot('selected', $slide->channel)
+                            @endcomponent
+                        </div>
+                        <div class="col-4">
+                            @component('admin.components.form-group', ['name' => 'has_been_authenticated', 'type' => 'select'])
+                                @slot('label', trans('strings.placement'))
+                                @slot('options', \App\Models\Slide::getTargetsArray())
+                                @slot('selected', $slide->has_been_authenticated)
+                            @endcomponent
+                        </div>
                     </div>
                 </div>
             </div>
 
         </div>
         <button class="btn btn-success" type="submit">{{trans('strings.submit')}}</button>
-        <input type="hidden" name="unattached-media" class="deleted-file" value="">
+        <div class="col-md-12">
+            <input type="hidden" name="unattached-media" class="deleted-file" value="">
+            <input type="hidden" name="region" :value="JSON.stringify(slide.region)">
+            <input type="hidden" name="city" :value="JSON.stringify(slide.city)">
+        </div>
     </form>
 
 @endsection
@@ -156,5 +216,37 @@
                 placeholder: 'Select link',
             });
         });
+    </script>
+    <script>
+        new Vue({
+            el: '#vue-app',
+            data: {
+                slide: @json($slide),
+                regions: @json($regions),
+                cities: [],
+                selectedRegion: null
+            },
+            watch: {
+                slide: {
+                    handler: function (val) {
+                        if (!this.selectedRegion || this.selectedRegion.id != val.region.id) {
+                            this.selectedRegion = val.region;
+                            if (this.slide.city != null) {
+                                this.slide.city = null
+                            }
+                        }
+                    },
+                    deep: true,
+                }
+            },
+            methods: {
+                retrieveCities: function (region) {
+                    axios.post(window.App.domain + `/ajax/countries/${region.country_id}/regions/${region.id}/cities`)
+                        .then((res) => {
+                            this.cities = res.data;
+                        });
+                },
+            },
+        })
     </script>
 @endpush

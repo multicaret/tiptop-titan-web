@@ -56,16 +56,16 @@ class SearchController extends BaseApiController
         $searchQuery = $request->input('q');
 
         $products = Product::whereHas('translations', function ($query) use ($searchQuery) {
-            $query->where('title', 'like', "%".$searchQuery."%");
+            $query->where('title', 'like', '%'.$searchQuery.'%');
         })
                            ->orWhereHas('tags', function ($query) use ($searchQuery) {
                                $query->whereHas('translations', function ($query) use ($searchQuery) {
-                                   $query->where('title', 'like', "%".$searchQuery."%");
+                                   $query->where('title', 'like', '%'.$searchQuery.'%');
                                });
                            })
                            ->orWhereHas('masterCategory', function ($query) use ($searchQuery) {
                                $query->whereHas('translations', function ($query) use ($searchQuery) {
-                                   $query->where('title', 'like', "%".$searchQuery."%");
+                                   $query->where('title', 'like', '%'.$searchQuery.'%');
                                });
                            })
                            ->get();
