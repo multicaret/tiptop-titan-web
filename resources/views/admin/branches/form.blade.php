@@ -422,7 +422,7 @@
     <script>
         $(function () {
             $('.select2-categories').select2({
-                placeholder: 'Select Cities',
+                placeholder: 'Select food categories',
             });
             const lat = {!! json_encode(isset($branch->latitude) ? $branch->latitude: config('defaults.geolocation.latitude')) !!};
             const lng = {!! json_encode(isset($branch->longitude)? $branch->longitude : config('defaults.geolocation.longitude')) !!};
