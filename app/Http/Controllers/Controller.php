@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Media;
+use App\Models\Preference;
 use Arr;
 use DB;
 use Illuminate\Database\Eloquent\Model;
@@ -476,6 +477,28 @@ class Controller extends BaseController
         }
 
         return $arr;
+    }
+
+    public static function getDeepLink($adjustTrackerKey, array $extraParams): string
+    {
+        $value = env('APP_URL');
+        try {
+            $adjustTracker = config('defaults.adjust_trackers')[$adjustTrackerKey];
+            $defaultUriScheme = Preference::retrieveValue('adjust_deep_link_uri_scheme');// Load from db stored by seeder
+            $value = Preference::retrieveValue($adjustTrackerKey);
+            if (isset($adjustTracker['url'])) {
+                $deepLinkUri = $defaultUriScheme.'//'.$adjustTrackerKey;
+                if (count($extraParams) > 0) {
+                    $deepLinkUri .= '?'.http_build_query($extraParams);
+                }
+                $value = $adjustTracker['url'].'?deep_link='.urlencode($deepLinkUri);
+            }
+        } catch (\Exception $e) {
+            info("Try to get key: $adjustTrackerKey");
+            info($e->getMessage());
+        }
+
+        return $value;
     }
 
 }

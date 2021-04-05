@@ -63,12 +63,12 @@ use Spatie\MediaLibrary\MediaCollections\Models\Media;
  * @property Carbon|null $deleted_at
  * @property-read Collection|Barcode[] $barcodes
  * @property-read int|null $barcodes_count
- * @property-read Branch $branch
+ * @property Branch $branch
  * @property-read Collection|Cart[] $carts
  * @property-read int|null $carts_count
  * @property-read Collection|Taxonomy[] $categories
  * @property-read int|null $categories_count
- * @property-read Chain $chain
+ * @property Chain $chain
  * @property-read User $creator
  * @property-read User $editor
  * @property-read Collection|User[] $favoriters

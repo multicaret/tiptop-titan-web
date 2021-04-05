@@ -250,4 +250,11 @@ return [
     'guest' => 'Guest',
     'everyone' => 'Everyone',
     'placement' => 'Placement',
+    'Success' => 'Success',
+    'deep_link' => 'Deep Link',
+    'deep_links' => 'Deep Links',
+    'product_deep_link' => 'Product Link',
+    'link' => 'Link',
+    'copy' => 'Copy',
+    'copy_deep_link' => 'Copy Deep Link',
 ];
