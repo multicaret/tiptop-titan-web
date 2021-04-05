@@ -17,6 +17,7 @@ use App\Models\Slide;
 use App\Models\SlideTranslation;
 use App\Models\Taxonomy;
 use App\Models\TaxonomyTranslation;
+use App\Models\Translation;
 use App\Models\User;
 use App\Models\WorkingHour;
 use DB;
@@ -952,6 +953,7 @@ class DatabaseSeeder extends Seeder
 
     private function preferences($host)
     {
+        $defaultUriScheme = 'app.trytiptop.flutter';
         $preferences = [
             'General Settings' => [
                 'type' => 'section',
@@ -1084,6 +1086,11 @@ class DatabaseSeeder extends Seeder
                         'value' => '',
                         'notes' => 'Google Analytics ID'
                     ],
+                    'adjust_deep_link_uri_scheme' => [
+                        'type' => 'text',
+                        'value' => $defaultUriScheme,
+                        'notes' => 'Choose your custom URI scheme'
+                    ],
                 ]
             ],
             /*'Notifications Settings' => [
@@ -1154,6 +1161,12 @@ class DatabaseSeeder extends Seeder
                 $this->createPreferenceItem($childKey, $child);
                 echo '.';
             }
+        }
+
+        echo PHP_EOL.'Inserting Adjust Trackers'.PHP_EOL;
+        $adjustTrackers = config('defaults.adjust_trackers');
+        foreach ($adjustTrackers as $key => $data) {
+            $this->createAdjustTrackerPreferenceItem($key, $data, $defaultUriScheme);
         }
         echo PHP_EOL.'J\'ai fini 🤖 Préférences';
     }
@@ -1567,4 +1580,36 @@ class DatabaseSeeder extends Seeder
         $paymentMethod->save();
         $paymentMethod->addMediaFromUrl(asset('/images/payment-methods/mobile-gateway-payment.png'))->toMediaCollection('logo');
     }
+
+    private function createAdjustTrackerPreferenceItem($key, $data, $defaultUriScheme): void
+    {
+        $value = null;
+        $translation = new Translation();
+        $translation->key = $key;
+        $preference = new Preference;
+        $preference->key = $key;
+        $preference->type = 'text';
+
+        if (isset($data['url'])) {
+            $deepLinkUri = $defaultUriScheme.'//'.$key;
+            if (isset($data['deep_link_params'])) {
+                $callback = function ($item) {
+                    return [$item['key'] => $item['value']];
+                };
+                $deepLinkParams = collect($data['deep_link_params'])->mapWithKeys($callback)->all();
+                $deepLinkUri .= '?'.http_build_query($deepLinkParams);
+            }
+            $value = $data['url'].'?deep_link='.urlencode($deepLinkUri);
+        }
+
+        if ( ! is_null($value)) {
+            $title = \Str::title(\Str::replaceArray('_', [' '], $key));
+            $translation->translateOrNew(app()->getLocale())->value = $title;
+            $preference->translateOrNew(app()->getLocale())->value = $value;
+        }
+        $translation->group = 'Integrations';
+        $translation->save();
+        $preference->save();
+    }
+
 }

@@ -145,7 +145,7 @@ class Slide extends Model
         ];
     }
 
-    public static function getChannelsArray(): array
+    public static function getSlideChannelsArray(): array
     {
         return [
             self::CHANNEL_GROCERY_OBJECT => trans('strings.grocery'),

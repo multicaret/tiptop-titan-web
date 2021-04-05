@@ -209,7 +209,7 @@ class SlideController extends Controller
 
     private function essentialData(Request $request): array
     {
-        $linkTypes = Slide::getChannelsArray();
+        $linkTypes = Slide::getTypesArray();
         $regions = Region::whereCountryId(config('defaults.country.id'))->get();
 
         return compact('linkTypes', 'regions');

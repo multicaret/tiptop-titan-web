@@ -137,9 +137,29 @@
                 @include('admin.branches.partials._branch-delivery-methods')
                 <div class="col-md-12 mt-2">
                     <div class="card card-outline-inverse">
-                        <h4 class="card-header">Primary Contacts</h4>
+                        <h4 class="card-header">Details</h4>
                         <div class="card-body">
                             <div class="row">
+                                @if($type == \App\Models\Branch::CHANNEL_FOOD_OBJECT)
+                                    <div class="col-md-6 mt-3">
+                                        @component('admin.components.form-group', ['name' => 'food_categories', 'type' => 'select'])
+                                            @slot('label', 'Food categories')
+                                            @slot('attributes', [
+                                               'class' => 'select2-categories w-100',
+                                               'multiple'
+                                           ])
+                                            @slot('options', $foodCategories->pluck('title','id')->prepend('',''))
+                                            @slot('selected', $branch->foodCategories)
+                                        @endcomponent
+                                    </div>
+                                @endif
+                                <div class="col-md-6 mt-3">
+                                    @component('admin.components.form-group', ['name' => 'status', 'type' => 'select'])
+                                        @slot('label', trans('strings.status'))
+                                        @slot('options', \App\Models\Chain::getStatusesArray())
+                                        @slot('selected', $chain->status)
+                                    @endcomponent
+                                </div>
                                 <div class="col-md-4 mt-3">
                                     @component('admin.components.form-group', ['name' => 'primary_phone_number', 'type' => 'tel'])
                                         @slot('label', 'Primary phone number')
@@ -191,23 +211,6 @@
                         </div>
                     </div>
                 </div>--}}
-                <div class="col-md-12 mt-2">
-
-                    <div class="card card-outline-inverse">
-                        <h4 class="card-header">Status</h4>
-                        <div class="card-body">
-                            <div class="row">
-                                <div class="col-12">
-                                    @component('admin.components.form-group', ['name' => 'status', 'type' => 'select'])
-                                        @slot('label', trans('strings.status'))
-                                        @slot('options', \App\Models\Chain::getStatusesArray())
-                                        @slot('selected', $chain->status)
-                                    @endcomponent
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
             </div>
             <div class="col-md-3" style="margin-top: 2.2rem !important;">
                 <div class="row">

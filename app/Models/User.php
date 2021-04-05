@@ -356,7 +356,7 @@ class User extends Authenticatable implements HasMedia, MustVerifyEmail
 
     public function getInternationalPhoneAttribute()
     {
-        return $this->phone_country_code.$this->phone_number;
+        return '+'.$this->phone_country_code.$this->phone_number;
     }
 
     /**
@@ -491,9 +491,14 @@ class User extends Authenticatable implements HasMedia, MustVerifyEmail
     }
 
 
-    public function couponUsage(): HasMany
+    public function couponUsages(): HasMany
     {
         return $this->hasMany(CouponUsage::class, 'redeemer_id');
+    }
+
+    public function carts(): HasMany
+    {
+        return $this->hasMany(Cart::class, 'user_id');
     }
 
     /**
@@ -628,4 +633,14 @@ class User extends Authenticatable implements HasMedia, MustVerifyEmail
 
         return new NewAccessToken($token, $token->getKey().'|'.$plainTextToken);
     }
+
+    /**
+     * @param $branchId
+     * @return Cart|Model|object|null
+     */
+    public function activeCart($branchId): Cart
+    {
+        return Cart::getCurrentlyActiveCart($this->id, $branchId);
+    }
+
 }

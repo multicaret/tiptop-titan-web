@@ -7,13 +7,9 @@
         @else
             Food Products
         @endif
-        <a href="{{ route('admin.products.create',['type'=> request()->type]) }}">
-            <button type="button" class="btn btn-primary rounded-pill d-block">
-                <span class="ion ion-md-add"></span>
-                &nbsp;
-                {{trans('strings.add')}}
-            </button>
-        </a>
+            <x-admin.add-copy-buttons
+                :createRoute="route('admin.products.create',['type'=> request()->type])">
+            </x-admin.add-copy-buttons>
     </h4>
 
     <div class="card">

@@ -34,7 +34,7 @@
         @endif
         <div class="row mb-4">
             <div class="col-md-12">
-                <div class="col-12">
+                {{--<div class="col-12">
                     <ul class="nav nav-tabs border-bottom-0">
                         @foreach(localization()->getSupportedLocales() as $key => $locale)
                             <li class="nav-item">
@@ -69,6 +69,43 @@
                                                               :content="optional($branch->translate($langKey))->description"/>
                                         </div>
 
+                                    </div>
+                                </div>
+                            </div>
+                        @endforeach
+                    </div>
+                </div>--}}
+                <div class="col-md-12">
+                    <div class="row">
+                        @foreach(localization()->getSupportedLocales() as $langKey => $locale)
+                            <div class="col-md-4 mt-4">
+                                <div class="card card-outline-inverse">
+                                    <h4 class="card-header">{{Str::upper($langKey)}}</h4>
+                                    <div class="card-body row">
+                                        <div class="col-md-12">
+                                            @component('admin.components.form-group', ['name' => $langKey .'[title]', 'type' => 'text'])
+                                                @slot('label', trans('strings.name'))
+                                                @if(! is_null($branch->id))
+                                                    @slot('value', optional($branch->translate($langKey))->title)
+                                                @endif
+                                            @endcomponent
+                                        </div>
+                                        <div class="col-md-12">
+                                            {{--<x-admin.textarea :id="$langKey.'-description'"--}}
+                                            {{--                  :name="$langKey.'[description]'"--}}
+                                            {{--                  label="Description"--}}
+                                            {{--                  :content="optional($branch->translate($langKey))->description"/>--}}
+
+                                            @component('admin.components.form-group', ['name' => $langKey .'[description]', 'type' => 'textarea'])
+                                                @slot('label', 'Description')
+                                                @slot('attributes', [
+                                                        'rows' => 5,
+                                                        ])
+                                                @if(! is_null($branch->id))
+                                                    @slot('value', optional($branch->translate($langKey))->description)
+                                                @endif
+                                            @endcomponent
+                                        </div>
                                     </div>
                                 </div>
                             </div>
@@ -160,6 +197,19 @@
                                         ></multiselect>
                                     </div>
                                 </div>
+                                @if($type == \App\Models\Branch::CHANNEL_FOOD_OBJECT)
+                                    <div class="col-6">
+                                        @component('admin.components.form-group', ['name' => 'food_categories', 'type' => 'select'])
+                                            @slot('label', 'Food categories')
+                                            @slot('attributes', [
+                                               'class' => 'select2-categories w-100',
+                                               'multiple'
+                                           ])
+                                            @slot('options', $foodCategories->pluck('title','id')->prepend('',''))
+                                            @slot('selected', $branch->foodCategories)
+                                        @endcomponent
+                                    </div>
+                                @endif
                                 <div class="col-6">
                                     @component('admin.components.form-group', ['name' => 'status', 'type' => 'select'])
                                         @slot('label', trans('strings.status'))
@@ -168,7 +218,7 @@
                                     @endcomponent
                                 </div>
 
-                                <div class="col-md-4 mt-3">
+                                <div class="col-md-6 {{$type == \App\Models\Branch::CHANNEL_FOOD_OBJECT ? '':'mt-3'}}">
                                     @component('admin.components.form-group', ['name' => 'primary_phone_number', 'type' => 'tel'])
                                         @slot('label', 'Primary phone number')
                                         @slot('value', $branch->primary_phone_number)
@@ -218,4 +268,3 @@
     {{--    <script src="/js/charts_gmaps.js"></script>--}}
     @include('admin.branches.partials._branch-js')
 @endpush
-

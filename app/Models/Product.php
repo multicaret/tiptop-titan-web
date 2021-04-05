@@ -63,12 +63,12 @@ use Spatie\MediaLibrary\MediaCollections\Models\Media;
  * @property Carbon|null $deleted_at
  * @property-read Collection|Barcode[] $barcodes
  * @property-read int|null $barcodes_count
- * @property-read Branch $branch
+ * @property Branch $branch
  * @property-read Collection|Cart[] $carts
  * @property-read int|null $carts_count
  * @property-read Collection|Taxonomy[] $categories
  * @property-read int|null $categories_count
- * @property-read Chain $chain
+ * @property Chain $chain
  * @property-read User $creator
  * @property-read User $editor
  * @property-read Collection|User[] $favoriters
@@ -200,10 +200,10 @@ class Product extends Model implements HasMedia
         'price' => 'double',
         'is_storage_tracking_enabled' => 'boolean',
         'price_discount_by_percentage' => 'boolean',
-        'price_discount_began_at' => 'timestamp',
-        'price_discount_finished_at' => 'timestamp',
-        'custom_banner_began_at' => 'timestamp',
-        'custom_banner_ended_at' => 'timestamp',
+        'price_discount_began_at' => 'datetime',
+        'price_discount_finished_at' => 'datetime',
+        'custom_banner_began_at' => 'datetime',
+        'custom_banner_ended_at' => 'datetime',
         'width' => 'float',
         'height' => 'float',
         'depth' => 'float',
@@ -378,17 +378,9 @@ class Product extends Model implements HasMedia
 
     public function getDiscountedPriceAttribute()
     {
-        if ( ! is_null($this->price_discount_amount) || $this->price_discount_amount != 0) {
-            if ($this->price_discount_by_percentage) {
-                $discountAmount = Controller::deductPercentage($this->price, $this->price_discount_amount);
-            } else {
-                $discountAmount = $this->price - $this->price_discount_amount;
-            }
+        return Controller::calculateDiscountedAmount($this->price, $this->price_discount_amount,
+            $this->price_discount_by_percentage);
 
-            return $this->price - $discountAmount;
-        } else {
-            return null;
-        }
     }
 
     public function getDiscountedPriceFormattedAttribute(): string

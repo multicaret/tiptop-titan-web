@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Media;
+use App\Models\Preference;
 use Arr;
 use DB;
 use Illuminate\Database\Eloquent\Model;
@@ -314,6 +315,39 @@ class Controller extends BaseController
         return $number1 / $number2 * 100;
     }
 
+    /**
+     * @param $amount
+     * @param $discountAmount
+     * @param  bool  $isByPercentage
+     * @return float|int
+     */
+    public static function calculateDiscountedAmount($amount, $discountAmount, $isByPercentage = true)
+    {
+        if ( ! is_null($discountAmount) || $discountAmount != 0) {
+            if ($isByPercentage) {
+                $discountAmount = Controller::deductPercentage($amount, $discountAmount);
+            } else {
+                $discountAmount = $amount - $discountAmount;
+            }
+
+            return $amount - $discountAmount;
+        } else {
+            return 0;
+        }
+    }
+
+
+    /**
+     * @param $amount
+     * @param $discountAmount
+     * @param  bool  $isByPercentage
+     * @return float|int
+     */
+    public static function getAmountAfterApplyingDiscount($amount, $discountAmount, $isByPercentage = true)
+    {
+        return $amount - Controller::calculateDiscountedAmount($amount, $discountAmount, $isByPercentage);
+    }
+
     public static function rgb2hex($rgb)
     {
         return '#'.sprintf('%02x', $rgb['r']).sprintf('%02x', $rgb['g']).sprintf('%02x', $rgb['b']);
@@ -404,12 +438,13 @@ class Controller extends BaseController
 
     public static function getAttributesFromTable($tableName = 'taxonomies', $droppedColumns = []): array
     {
-       return self::workColumns($tableName, $droppedColumns);
+        return self::workColumns($tableName, $droppedColumns);
     }
 
     public static function getTranslatedAttributesFromTable($tableName = 'taxonomies', $droppedColumns = []): array
     {
         $translatedTableName = Str::singular($tableName).'_translations';
+
         return self::workColumns($translatedTableName, $droppedColumns);
     }
 
@@ -442,6 +477,28 @@ class Controller extends BaseController
         }
 
         return $arr;
+    }
+
+    public static function getDeepLink($adjustTrackerKey, array $extraParams): string
+    {
+        $value = env('APP_URL');
+        try {
+            $adjustTracker = config('defaults.adjust_trackers')[$adjustTrackerKey];
+            $defaultUriScheme = Preference::retrieveValue('adjust_deep_link_uri_scheme');// Load from db stored by seeder
+            $value = Preference::retrieveValue($adjustTrackerKey);
+            if (isset($adjustTracker['url'])) {
+                $deepLinkUri = $defaultUriScheme.'//'.$adjustTrackerKey;
+                if (count($extraParams) > 0) {
+                    $deepLinkUri .= '?'.http_build_query($extraParams);
+                }
+                $value = $adjustTracker['url'].'?deep_link='.urlencode($deepLinkUri);
+            }
+        } catch (\Exception $e) {
+            info("Try to get key: $adjustTrackerKey");
+            info($e->getMessage());
+        }
+
+        return $value;
     }
 
 }

@@ -103,7 +103,7 @@ class AddressController extends BaseApiController
 
     public function destroy($address)
     {
-
+        //Todo: only if Super Admin or the owner of the address should be able to delete.
         $address = Location::find($address);
         if (is_null($address)) {
             return $this->respondNotFound();

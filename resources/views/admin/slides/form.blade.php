@@ -181,7 +181,7 @@
                         <div class="col-4">
                             @component('admin.components.form-group', ['name' => 'channel', 'type' => 'select'])
                                 @slot('label', trans('strings.channel'))
-                                @slot('options', \App\Models\Slide::getChannelsArray())
+                                @slot('options', \App\Models\Slide::getSlideChannelsArray())
                                 @slot('selected', $slide->channel)
                             @endcomponent
                         </div>

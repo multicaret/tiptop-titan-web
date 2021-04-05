@@ -2,11 +2,12 @@
 
 namespace App\Http\Controllers\Ajax;
 
+use App\Http\Controllers\Controller;
 use App\Models\Branch;
 use App\Models\Chain;
 use App\Models\City;
-use App\Models\Order;
 use App\Models\Coupon;
+use App\Models\Order;
 use App\Models\Post;
 use App\Models\Product;
 use App\Models\Region;
@@ -109,7 +110,7 @@ class DatatableController extends AjaxController
                               ->where('type', $correctType);
 
         return DataTables::of($taxonomies)
-                         ->editColumn('action', function ($taxonomy) {
+                         ->editColumn('action', function ($taxonomy) use ($correctType) {
                              $data = [
                                  'editAction' => route('admin.taxonomies.edit', [
                                      $taxonomy->uuid,
@@ -121,6 +122,20 @@ class DatatableController extends AjaxController
                                  ]),
                              ];
 
+                             $isGroceryType = $correctType === Taxonomy::TYPE_GROCERY_CATEGORY;
+                             $isFoodType = $correctType === Taxonomy::TYPE_FOOD_CATEGORY;
+                             if ( ! is_null($taxonomy->parent_id) && ($isGroceryType || $isFoodType)) {
+                                 $deepLinkParams = [
+                                     'uuid' => $taxonomy->uuid,
+                                     'id' => $taxonomy->id,
+                                     'parent_id' => $taxonomy->parent_id,
+                                     'type' => request('type')
+                                 ];
+                                 $data['deepLink'] = [
+                                     'url' => Controller::getDeepLink('market_food_category_show', $deepLinkParams)
+                                 ];
+                             }
+
                              return view('admin.components.datatables._row-actions', $data)->render();
                          })
                          ->editColumn('parent', function ($item) {
@@ -129,10 +144,13 @@ class DatatableController extends AjaxController
                          ->editColumn('chain', function ($item) {
                              return $item->chain ? $item->chain->title : null;
                          })
-                         ->editColumn('branches', function ($item) {
+                         ->editColumn('branches', function ($item) use ($correctType) {
                              $branches = $item->branches->pluck('title')->toArray();
+                             $isFoodCategory = $correctType === Taxonomy::TYPE_FOOD_CATEGORY;
+                             $isGroceryCategory = $correctType === Taxonomy::TYPE_GROCERY_CATEGORY;
 
                              return view('admin.components.datatables._badge-items', [
+                                 'showDeepLink' => count($branches) && ($isGroceryCategory || $isFoodCategory),
                                  'items' => $branches
                              ])->render();
                          })
@@ -193,6 +211,17 @@ class DatatableController extends AjaxController
                                      'type' => request('type')
                                  ]),
                              ];
+
+                             if (\request('type') === Post::getCorrectTypeName(Post::TYPE_ARTICLE, false)) {
+                                 $deepLinkParams = [
+                                     'uuid' => $post->uuid,
+                                     'id' => $post->id,
+                                     'type' => request('type')
+                                 ];
+                                 $data['deepLink'] = [
+                                     'url' => Controller::getDeepLink('blog_show', $deepLinkParams)
+                                 ];
+                             }
 
                              return view('admin.components.datatables._row-actions', $data)->render();
                          })
@@ -587,6 +616,14 @@ class DatatableController extends AjaxController
                                      'type' => request('type')
                                  ]),
                              ];
+                             $deepLinkParams = [
+                                 'uuid' => $branch->uuid,
+                                 'id' => $branch->id,
+                                 'type' => request('type')
+                             ];
+                             $data['deepLink'] = [
+                                 'url' => Controller::getDeepLink('market_branch_product_index', $deepLinkParams)
+                             ];
 
                              return view('admin.components.datatables._row-actions', $data)->render();
                          })
@@ -677,6 +714,15 @@ class DatatableController extends AjaxController
                                  ]),
                              ];
 
+                             $deepLinkParams = [
+                                 'uuid' => $product->uuid,
+                                 'id' => $product->id,
+                                 'type' => request('type')
+                             ];
+                             $data['deepLink'] = [
+                                 'url' => Controller::getDeepLink('product_show', $deepLinkParams)
+                             ];
+
                              return view('admin.components.datatables._row-actions', $data)->render();
                          })
                          ->editColumn('chain', function ($product) {
@@ -699,6 +745,7 @@ class DatatableController extends AjaxController
                              'branch',
                              'price',
                              'created_at',
+                             'product_deep_link',
                          ])
                          ->setRowAttr([
                              'row-id' => function ($branch) {

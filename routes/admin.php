@@ -42,13 +42,14 @@ Route::resource('regions', 'RegionController')->except(['show']);
 Route::resource('slides', 'SlideController')->except(['show']);
 Route::resource('chains', 'ChainController')->except(['show']);
 Route::resource('branches', 'BranchController')->except(['show']);
-Route::resource('restaurants', 'RestaurantController')->except(['show', 'index']);
+Route::resource('restaurants', 'RestaurantController')->only(['create', 'store']);
 Route::resource('products', 'ProductController')->except(['show']);
 Route::get('orders/ratings', 'OrderController@ratings')->name('orders.ratings');
 Route::get('orders', 'OrderController@index')->name('orders.index');
 Route::get('orders/{order}', 'OrderController@show')->name('orders.show');
 Route::resource('coupons', 'CouponController')->except(['show']);
 
+Route::get('preferences/adjust-trackers', 'PreferenceController@adjustTrackers')->name('preferences.adjust-trackers');
 Route::get('preferences/{section}/edit', 'PreferenceController@edit')->name('preferences.edit');
 Route::post('preferences/{section}', 'PreferenceController@update')->name('preferences.update');
 Route::get('preferences', 'PreferenceController@index')->name('preferences.index');

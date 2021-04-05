@@ -7,6 +7,7 @@ use App\Models\Branch;
 use App\Models\Location;
 use App\Models\Region;
 use App\Models\Chain;
+use App\Models\Taxonomy;
 use DB;
 use Exception;
 use Illuminate\Contracts\Foundation\Application;
@@ -41,9 +42,10 @@ class RestaurantController extends Controller
         $chains = [];
         $contacts = [];
         $branch = new Branch();
+        $foodCategories = Taxonomy::foodCategories()->get();
 
         return view('admin.restaurants.form',
-            compact('chains', 'chain', 'branch', 'contacts', 'regions', 'typeName', 'type'));
+            compact('chains', 'chain', 'branch', 'contacts', 'regions', 'typeName', 'type', 'foodCategories'));
     }
 
     /**
@@ -185,7 +187,7 @@ class RestaurantController extends Controller
             }
         }
         $chain->save();
-
+        $branch->foodCategories()->sync($request->input('food_categories'));
         $requestContactDetails = json_decode($request->contactDetails);
         $contactToDelete = $branch->locations()->get()->pluck('id')->toArray();
         $contactToDelete = array_combine($contactToDelete, $contactToDelete);

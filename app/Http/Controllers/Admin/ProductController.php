@@ -168,7 +168,7 @@ class ProductController extends Controller
         if (Product::isGrocery()) {
             $data['categories'] = Taxonomy::groceryCategories()->whereNotNull('parent_id')->get()->map($getIdTitle)->all();
         } else {
-            $data['categories'] = Taxonomy::menuCategories()->whereNotNull('parent_id')->get()->map($getIdTitle)->all();
+            $data['categories'] = Taxonomy::foodCategories()->whereNotNull('parent_id')->get()->map($getIdTitle)->all();
         }
 
         return $data;

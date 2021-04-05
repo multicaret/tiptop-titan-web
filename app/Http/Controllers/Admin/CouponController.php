@@ -26,17 +26,20 @@ class CouponController extends Controller
                 'data' => 'id',
                 'name' => 'id',
                 'title' => trans('strings.id'),
-                'width' => '50',
+                'width' => '15',
+                'searchable' => false,
+            ],
+            [
+                'data' => 'redeem_code',
+                'name' => 'redeem_code',
+                'title' => 'Redeem code',
+                'width' => '70',
             ],
             [
                 'data' => 'name',
                 'name' => 'name',
                 'title' => 'Name',
-            ],
-            [
-                'data' => 'description',
-                'name' => 'description',
-                'title' => 'Description',
+                'width' => '70',
             ],
             [
                 'data' => 'discount',
@@ -45,11 +48,29 @@ class CouponController extends Controller
                 'searchable' => false,
             ],
             [
-                'data' => 'status',
-                'name' => 'status',
-                'title' => 'Status',
+                'data' => 'max_usable_count',
+                'name' => 'max_usable_count',
+                'title' => 'Max usable count',
                 'searchable' => false,
             ],
+            [
+                'data' => 'total_redeemed_count',
+                'name' => 'total_redeemed_count',
+                'title' => 'Total redeemed count',
+                'searchable' => false,
+            ],
+            [
+                'data' => 'money_redeemed_so_far',
+                'name' => 'money_redeemed_so_far',
+                'title' => 'Money redeemed so far',
+                'searchable' => false,
+            ],
+            /* [
+                 'data' => 'status',
+                 'name' => 'status',
+                 'title' => 'Status',
+                 'searchable' => false,
+             ],*/
             [
                 'data' => 'expired_at',
                 'name' => 'expired_at',
@@ -184,6 +205,7 @@ class CouponController extends Controller
         $coupon->max_allowed_discount_amount = $request->input('max_allowed_discount_amount');
         $coupon->expired_at = Carbon::parse($request->input('expired_at'));
         $coupon->status = $request->input('status');
+        $coupon->type = $request->input('type');
         $coupon->save();
     }
 }

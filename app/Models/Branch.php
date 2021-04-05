@@ -59,7 +59,7 @@ use Spatie\MediaLibrary\MediaCollections\Models\Collections\MediaCollection;
  * @property Carbon|null $created_at
  * @property Carbon|null $updated_at
  * @property string|null $deleted_at
- * @property-read Chain $chain
+ * @property Chain $chain
  * @property-read City|null $city
  * @property-read mixed $average_rating_all_types
  * @property-read mixed $average_rating
@@ -240,6 +240,12 @@ class Branch extends Model implements HasMedia
         return $this->hasMany(Location::class, 'contactable_id');
     }
 
+    public function foodCategories(): BelongsToMany
+    {
+        return $this->belongsToMany(Taxonomy::class, 'category_branch', 'branch_id',
+            'category_id')->withTimestamps();
+    }
+
     public static function getClosestAvailableBranch($latitude, $longitude): array
     {
         $distance = $branch = null;
@@ -264,5 +270,17 @@ class Branch extends Model implements HasMedia
     public function getHasBeenRatedAttribute(): bool
     {
         return $this->raters->count() > 0;
+    }
+
+    public function calculateDeliveryFee($totalAmount): float
+    {
+        $deliveryFee = $this->fixed_delivery_fee;
+        if ($this->under_minimum_order_delivery_fee > 0) {
+            if ($totalAmount < $this->minimum_order) {
+                $deliveryFee += $this->under_minimum_order_delivery_fee;
+            }
+        }
+
+        return $deliveryFee;
     }
 }

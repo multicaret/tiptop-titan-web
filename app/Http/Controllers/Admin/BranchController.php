@@ -7,6 +7,7 @@ use App\Models\Chain;
 use App\Models\Location;
 use App\Models\Region;
 use App\Models\Branch;
+use App\Models\Taxonomy;
 use DB;
 use Exception;
 use Illuminate\Contracts\Foundation\Application;
@@ -100,8 +101,10 @@ class BranchController extends Controller
         $regions = Region::whereCountryId(config('defaults.country.id'))->get();
         $chains = Chain::whereType($type)->get();
         $branch->chain = Chain::whereType($type)->first();
+        $foodCategories = Taxonomy::foodCategories()->get();
 
-        return view('admin.branches.form', compact('branch', 'regions', 'chains', 'typeName', 'type', 'contacts'));
+        return view('admin.branches.form',
+            compact('branch', 'regions', 'chains', 'typeName', 'type', 'contacts', 'foodCategories'));
     }
 
     /**
@@ -113,7 +116,7 @@ class BranchController extends Controller
      */
     public function store(Request $request)
     {
-        $request->validate($this->validationRules());
+        $request->validate($this->validationRules($request));
 
         $branch = new Branch();
         $branch->creator_id = $branch->editor_id = auth()->id();
@@ -151,8 +154,10 @@ class BranchController extends Controller
         $regions = Region::whereCountryId(config('defaults.country.id'))->get();
         $branch->load(['region', 'city', 'chain']);
         $chains = Chain::whereType($type)->get();
+        $foodCategories = Taxonomy::foodCategories()->get();
 
-        return view('admin.branches.form', compact('branch', 'regions', 'typeName', 'type', 'chains', 'contacts'));
+        return view('admin.branches.form',
+            compact('branch', 'regions', 'typeName', 'type', 'chains', 'contacts', 'foodCategories'));
     }
 
     /**
@@ -165,7 +170,7 @@ class BranchController extends Controller
      */
     public function update(Request $request, Branch $branch)
     {
-        $request->validate($this->validationRules());
+        $request->validate($this->validationRules($request));
         $branch->editor_id = auth()->id();
         $this->storeUpdateLogic($request, $branch);
 
@@ -196,19 +201,27 @@ class BranchController extends Controller
     }
 
 
-    private function validationRules(): array
+    private function validationRules($request): array
     {
         $defaultLocale = localization()->getDefaultLocale();
+        $toValidateInFood = [];
+        if ($request->type == Branch::getCorrectChannelName(Branch::CHANNEL_FOOD_OBJECT, 0)) {
+            $toValidateInFood = [
+                'restaurant_minimum_order' => 'required',
+                'restaurant_under_minimum_order_delivery_fee' => 'required',
+                'restaurant_fixed_delivery_fee' => 'required',
+            ];
+        }
 
-        return [
+        $generalValidateItems = [
             "{$defaultLocale}.title" => 'required',
             'minimum_order' => 'required',
             'under_minimum_order_delivery_fee' => 'required',
             'fixed_delivery_fee' => 'required',
-            'restaurant_minimum_order' => 'required',
-            'restaurant_under_minimum_order_delivery_fee' => 'required',
-            'restaurant_fixed_delivery_fee' => 'required',
         ];
+
+
+        return array_merge($toValidateInFood, $generalValidateItems);
     }
 
 
@@ -225,12 +238,18 @@ class BranchController extends Controller
         $branch->longitude = $request->input('longitude');
         $branch->has_tip_top_delivery = $request->input('has_tip_top_delivery') ? 1 : 0;
         $branch->minimum_order = $request->input('minimum_order');
-        $branch->restaurant_minimum_order = $request->input('restaurant_minimum_order');
+        if ($request->has('restaurant_minimum_order')) {
+            $branch->restaurant_minimum_order = $request->input('restaurant_minimum_order');
+        }
+        if ($request->has('restaurant_under_minimum_order_delivery_fee')) {
+            $branch->restaurant_under_minimum_order_delivery_fee = $request->input('restaurant_under_minimum_order_delivery_fee');
+        }
+        if ($request->has('restaurant_fixed_delivery_fee')) {
+            $branch->restaurant_fixed_delivery_fee = $request->input('restaurant_fixed_delivery_fee');
+        }
         $branch->has_restaurant_delivery = $request->input('has_restaurant_delivery') ? 1 : 0;
         $branch->under_minimum_order_delivery_fee = $request->input('under_minimum_order_delivery_fee');
-        $branch->restaurant_under_minimum_order_delivery_fee = $request->input('restaurant_under_minimum_order_delivery_fee');
         $branch->fixed_delivery_fee = $request->input('fixed_delivery_fee');
-        $branch->restaurant_fixed_delivery_fee = $request->input('restaurant_fixed_delivery_fee');
         $branch->primary_phone_number = $request->input('primary_phone_number');
 //        $branch->secondary_phone_number = $request->input('secondary_phone_number');
 //        $branch->whatsapp_phone_number = $request->input('whatsapp_phone_number');
@@ -244,6 +263,7 @@ class BranchController extends Controller
                 $branch->translateOrNew($key)->description = $request->input($key.'.description');
             }
         }
+        $branch->foodCategories()->sync($request->input('food_categories'));
         $requestContactDetails = json_decode($request->contactDetails);
         $contactToDelete = $branch->locations()->get()->pluck('id')->toArray();
         $contactToDelete = array_combine($contactToDelete, $contactToDelete);

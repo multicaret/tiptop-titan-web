@@ -161,6 +161,30 @@
 <!-- Libs -->
 <script src="{{ asset('/admin-assets/libs/perfect-scrollbar/perfect-scrollbar.js') }}"></script>
 
+<script src="https://unpkg.com/clipboard@2/dist/clipboard.min.js"></script>
+<script>
+    $('document').ready(function () {
+        var clipboard;
+        if (ClipboardJS.isSupported()) {
+            clipboard = new ClipboardJS('.clipboard-btn');
+        } else {
+            $('.clipboard-btn').prop('disabled', true);
+        }
+        if (clipboard) {
+            clipboard.on('success', function (e) {
+                console.info('Text:', e.text);
+                e.clearSelection();
+                const capitalizeAction = e.action.charAt(0).toUpperCase() + e.action.slice(1);
+                const message = capitalizeAction + ' ' + @json(trans('strings.successfully_done'));
+                window.toast.fire({
+                    icon: 'success',
+                    title: message,
+                });
+            });
+        }
+
+    });
+</script>
 
 @if(session()->has('message'))
     <script type="text/javascript">

@@ -151,7 +151,7 @@ class Order extends Model
         'private_grand_total' => 'double',
         'completed_at' => 'datetime',
         'is_delivery_by_tiptop' => 'boolean',
-        'rated_at' => 'timestamp',
+        'rated_at' => 'datetime',
     ];
 
     protected static function boot()
