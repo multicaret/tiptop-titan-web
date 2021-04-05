@@ -313,7 +313,7 @@ return [
             'creative' => null,
             'deep_link' => null,
             'deep_link_params' => [
-                'id' => 1
+                ['key' => 'id', 'value' => 1]
             ],
         ],
         'campaign_index' => [
@@ -330,7 +330,7 @@ return [
             'creative' => null,
             'deep_link' => null,
             'deep_link_params' => [
-                'id' => 1
+                ['key' => 'id', 'value' => 1]
             ],
         ],
         'favorite_screen' => [
@@ -347,7 +347,7 @@ return [
             'creative' => null,
             'deep_link' => null,
             'deep_link_params' => [
-                'channel' => config('app.app-channels.grocery')
+                ['key' => 'channel', 'value' => config('app.app-channels.grocery')]
             ],
         ],
         'market_food_category_show' => [
@@ -357,9 +357,9 @@ return [
             'creative' => null,
             'deep_link' => null,
             'deep_link_params' => [
-                'id' => 2,
-                'type' => 'food',
-                'parent_id' => 1,
+                ['key' => 'id', 'value' => 1],
+                ['key' => 'type', 'value' => 'food'],
+                ['key' => 'parent_id', 'value' => 1],
             ],
         ],
         'my_addresses' => [
@@ -376,7 +376,7 @@ return [
             'creative' => null,
             'deep_link' => null,
             'deep_link_params' => [
-                'id' => 1
+                ['key' => 'id', 'value' => 1]
             ],
         ],
         'order_tracking' => [
@@ -386,7 +386,7 @@ return [
             'creative' => null,
             'deep_link' => null,
             'deep_link_params' => [
-                'id' => 1
+                ['key' => 'id', 'value' => 1]
             ],
         ],
         'payment_options' => [
@@ -410,7 +410,7 @@ return [
             'creative' => null,
             'deep_link' => null,
             'deep_link_params' => [
-                'id' => 1
+                ['key' => 'id', 'value' => 1]
             ],
         ]
     ]

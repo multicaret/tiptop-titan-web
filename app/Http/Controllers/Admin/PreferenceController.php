@@ -31,9 +31,8 @@ class PreferenceController extends Controller
     {
         $exceptedKeys = [
             'blog_show',
-            'market_branch_product_index',
+            'market_food_category_show',
             'product_show',
-            'restaurant_branch_product_index',
         ];
 
         $callback = function ($item, $key) {
@@ -47,8 +46,14 @@ class PreferenceController extends Controller
 
         $adjustTrackers = collect(config('defaults.adjust_trackers'))
             ->except($exceptedKeys)->mapWithKeys($callback)->values();
-
-        return view('admin.preferences.form', compact('adjustTrackers'));
+        $channelCallback = function ($item){
+            return [
+                'key' => $item,
+                'title' => \Str::title($item),
+            ];
+        };
+        $appChannels = collect(config('app.app-channels'))->map($channelCallback)->values();
+        return view('admin.preferences.form', compact('adjustTrackers', 'appChannels'));
     }
 
 

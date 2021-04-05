@@ -1593,7 +1593,11 @@ class DatabaseSeeder extends Seeder
         if (isset($data['url'])) {
             $deepLinkUri = $defaultUriScheme.'//'.$key;
             if (isset($data['deep_link_params'])) {
-                $deepLinkUri .= '?'.http_build_query($data['deep_link_params']);
+                $callback = function ($item) {
+                    return [$item['key'] => $item['value']];
+                };
+                $deepLinkParams = collect($data['deep_link_params'])->mapWithKeys($callback)->all();
+                $deepLinkUri .= '?'.http_build_query($deepLinkParams);
             }
             $value = $data['url'].'?deep_link='.urlencode($deepLinkUri);
         }
@@ -1603,8 +1607,9 @@ class DatabaseSeeder extends Seeder
             $translation->translateOrNew(app()->getLocale())->value = $title;
             $preference->translateOrNew(app()->getLocale())->value = $value;
         }
+        $translation->group = 'Integrations';
         $translation->save();
-//        $preference->save();
+        $preference->save();
     }
 
 }
