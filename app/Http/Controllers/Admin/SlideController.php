@@ -74,7 +74,7 @@ class SlideController extends Controller
             [
                 'data' => 'has_been_authenticated',
                 'name' => 'has_been_authenticated',
-                'title' => trans('strings.has_been_authenticated'),
+                'title' => trans('strings.placement'),
                 'width' => '40',
             ],
             [
@@ -247,6 +247,8 @@ class SlideController extends Controller
         $slide->city_id = isset($city) ? $city->id : null;
         $slide->region_id = isset($region) ? $region->id : null;
         $slide->status = $request->input('status');
+        $slide->has_been_authenticated = $request->input('has_been_authenticated');
+        $slide->channel = $request->input('channel');
         $slide->save();
         // Filling translations
 

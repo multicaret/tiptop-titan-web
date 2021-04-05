@@ -315,6 +315,39 @@ class Controller extends BaseController
         return $number1 / $number2 * 100;
     }
 
+    /**
+     * @param $amount
+     * @param $discountAmount
+     * @param  bool  $isByPercentage
+     * @return float|int
+     */
+    public static function calculateDiscountedAmount($amount, $discountAmount, $isByPercentage = true)
+    {
+        if ( ! is_null($discountAmount) || $discountAmount != 0) {
+            if ($isByPercentage) {
+                $discountAmount = Controller::deductPercentage($amount, $discountAmount);
+            } else {
+                $discountAmount = $amount - $discountAmount;
+            }
+
+            return $amount - $discountAmount;
+        } else {
+            return 0;
+        }
+    }
+
+
+    /**
+     * @param $amount
+     * @param $discountAmount
+     * @param  bool  $isByPercentage
+     * @return float|int
+     */
+    public static function getAmountAfterApplyingDiscount($amount, $discountAmount, $isByPercentage = true)
+    {
+        return $amount - Controller::calculateDiscountedAmount($amount, $discountAmount, $isByPercentage);
+    }
+
     public static function rgb2hex($rgb)
     {
         return '#'.sprintf('%02x', $rgb['r']).sprintf('%02x', $rgb['g']).sprintf('%02x', $rgb['b']);
@@ -405,12 +438,13 @@ class Controller extends BaseController
 
     public static function getAttributesFromTable($tableName = 'taxonomies', $droppedColumns = []): array
     {
-       return self::workColumns($tableName, $droppedColumns);
+        return self::workColumns($tableName, $droppedColumns);
     }
 
     public static function getTranslatedAttributesFromTable($tableName = 'taxonomies', $droppedColumns = []): array
     {
         $translatedTableName = Str::singular($tableName).'_translations';
+
         return self::workColumns($translatedTableName, $droppedColumns);
     }
 

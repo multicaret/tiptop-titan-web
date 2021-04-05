@@ -58,6 +58,20 @@ class Cart extends Model
         'without_discount_total' => 'double',
     ];
 
+    /**
+     * @param  int|null  $userId
+     * @param $branchId
+     * @param  int  $status
+     * @return Cart|Model|object|null
+     */
+    public static function getCurrentlyActiveCart(?int $userId, $branchId, int $status = self::STATUS_IN_PROGRESS)
+    {
+        return Cart::where('user_id', $userId)
+                   ->where('branch_id', $branchId)
+                   ->where('status', $status)
+                   ->first();
+    }
+
     public function user(): BelongsTo
     {
         return $this->belongsTo(User::class);
@@ -92,10 +106,7 @@ class Cart extends Model
             $userId = auth()->id();
         }
 
-        if (is_null($cart = Cart::where('user_id', $userId)
-                                ->where('branch_id', $branchId)
-                                ->where('status', $status)
-                                ->first())) {
+        if (is_null($cart = self::getCurrentlyActiveCart($userId, $branchId, $status))) {
             $cart = new Cart();
             $cart->chain_id = $chainId;
             $cart->branch_id = $branchId;

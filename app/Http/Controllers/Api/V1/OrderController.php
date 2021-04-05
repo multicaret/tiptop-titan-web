@@ -7,6 +7,8 @@ use App\Http\Resources\OrderResource;
 use App\Models\Branch;
 use App\Models\Cart;
 use App\Models\Chain;
+use App\Models\Coupon;
+use App\Models\CouponUsage;
 use App\Models\Currency;
 use App\Models\Location;
 use App\Models\Order;
@@ -88,16 +90,15 @@ class OrderController extends BaseApiController
         $deliveryFee = null;
         if ($userCart->total >= $minimumOrder) {
             $deliveryFee = $branch->fixed_delivery_fee;
-        } else {
-            if ( ! $underMinimumOrderDeliveryFee) {
-                $message = trans('api.cart_total_under_minimum');
+        } elseif ( ! $underMinimumOrderDeliveryFee) {
+            $message = trans('api.cart_total_under_minimum');
 
-                return $this->setStatusCode(Response::HTTP_NOT_ACCEPTABLE)
-                            ->respondWithMessage($message);
-            } else {
-                $deliveryFee = $underMinimumOrderDeliveryFee;
-            }
+            return $this->setStatusCode(Response::HTTP_NOT_ACCEPTABLE)
+                        ->respondWithMessage($message);
+        } else {
+            $deliveryFee = $underMinimumOrderDeliveryFee;
         }
+
 
         $paymentMethods = PaymentMethod::active()->get()->map(function ($method) {
             return [
@@ -175,14 +176,10 @@ class OrderController extends BaseApiController
         $newOrder->total = $userCart->total;
         $newOrder->delivery_fee = $deliveryFee;
         $newOrder->grand_total = $userCart->total + $deliveryFee;
-//        $newOrder->coupon_discount_amount = $deliveryFee;
         $newOrder->private_total = $newOrder->total;
         $newOrder->private_delivery_fee = $newOrder->delivery_fee;
         $newOrder->private_grand_total = $newOrder->grand_total;
-        $newOrder->completed_at = now();
 //        $newOrder->private_payment_method_commission = $request->input('private_payment_method_commission');
-//        $newOrder->avg_rating = $request->input('avg_rating');
-//        $newOrder->rating_count = $request->input('rating_count');
         $newOrder->notes = $request->input('notes');
         $newOrder->status = Order::STATUS_NEW;
         $newOrder->type = $branch->type;
@@ -196,17 +193,59 @@ class OrderController extends BaseApiController
         // Deduct the purchased quantity from the available quantity of each product.
         foreach ($cart->products as $product) {
             if ($product->is_storage_tracking_enabled) {
-                $product->available_quantity = $product->available_quantity - $product->pivot->quantity;
-                $product->save();
+                if ($product->available_quantity > 0) {
+                    $newAvailableQuantity = $product->available_quantity - $product->pivot->quantity;
+                    if ($newAvailableQuantity >= 0) {
+                        $product->available_quantity = $newAvailableQuantity;
+                    }
+                    $product->save();
+                } else {
+                    $productName = $product->title;
+
+                    return $this->respondWithMessage("{$productName} Product Unavailable");
+                }
             }
         }
+
+
+        if ( ! is_null($couponRedeemCode = $request->input('coupon_redeem_code'))) {
+            $coupon = Coupon::where('redeem_code', $couponRedeemCode)->first();
+
+            [
+                $isExpirationDateAndUsageValid, $validationExpirationAndUsageMessage
+            ] = $coupon->validateExpirationDateAndUsageCount();
+
+            [$isAmountValid, $totalDiscountedAmount] = $coupon->validateCouponDiscountAmount($newOrder->total);
+
+            $deliveryFee = $branch->calculateDeliveryFee($newOrder->total);
+            if ($coupon->has_free_delivery) {
+                $deliveryFee = 0;
+            }
+
+            if ($isExpirationDateAndUsageValid && $isAmountValid) {
+                $couponDiscountAmount = $userCart->total - $totalDiscountedAmount;
+                $newOrder->coupon_id = $coupon->id;
+                $newOrder->delivery_fee = $deliveryFee;
+                $newOrder->coupon_discount_amount = $couponDiscountAmount;
+                $newOrder->grand_total = $userCart->total + $deliveryFee - ($couponDiscountAmount);
+                $newOrder->private_delivery_fee = $newOrder->delivery_fee;
+                $newOrder->private_grand_total = $newOrder->grand_total;
+                $newOrder->completed_at = now();
+                $newOrder->save();
+
+                CouponUsage::storeCouponUsage($totalDiscountedAmount, $coupon, $cart->id, $user->id, $newOrder->id);
+            }
+        }
+
 
         $user->increment('total_number_of_orders');
         $user->save();
 
         DB::commit();
 
-        return $this->respond(new OrderResource($newOrder));
+        return $this->respond([
+            'order' => new OrderResource($newOrder),
+        ]);
     }
 
 

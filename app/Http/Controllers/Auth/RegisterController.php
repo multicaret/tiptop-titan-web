@@ -110,7 +110,7 @@ class RegisterController extends Controller
      */
     protected function create(array $data)
     {
-        [$first, $last] = $this->setFirstAndLastNames($data['name']);
+        [$first, $last] = User::extractFirstAndLastNames($data['name']);
         $email = $data['email'];
         $username = $data['username'];
         $password = $data['password'];
@@ -250,25 +250,6 @@ class RegisterController extends Controller
     }
 
     /**
-     * @param $fullName
-     *
-     * @return array
-     */
-    private function setFirstAndLastNames($fullName): array
-    {
-        $first = $fullName;
-        $last = null;
-        $fullName = explode(' ', $fullName);
-        if (count($fullName) > 1) {
-            $last = $fullName[count($fullName) - 1];
-            unset($fullName[count($fullName) - 1]);
-            $first = implode(' ', $fullName);
-        }
-
-        return [$first, $last];
-    }
-
-    /**
      * @param $email
      *
      * @return string
@@ -309,7 +290,7 @@ class RegisterController extends Controller
         $randomPass = null;
         if (empty($user)) {
             $isCreating = true;
-            [$first, $last] = $this->setFirstAndLastNames($socialiteUser->getName());
+            [$first, $last] = User::extractFirstAndLastNames($socialiteUser->getName());
             $email = $socialiteUser->getEmail();
             $username = $socialNetworks = null;
             if ($socialMediaProvider != 'facebook') {

@@ -6,8 +6,8 @@ use App\Http\Controllers\Controller;
 use App\Models\Branch;
 use App\Models\Chain;
 use App\Models\City;
-use App\Models\Order;
 use App\Models\Coupon;
+use App\Models\Order;
 use App\Models\Post;
 use App\Models\Product;
 use App\Models\Region;
@@ -433,7 +433,7 @@ class DatatableController extends AjaxController
                              return ! is_null($item->city) ? $item->city->name : '';
                          })
                          ->editColumn('has_been_authenticated', function ($item) {
-                             return $item->has_been_authenticated ? 'Yes' : 'No';
+                             return Slide::getTargetsArray()[$item->has_been_authenticated];
                          })
                          ->editColumn('channel', function ($item) {
                              $currentChannel = Slide::getAllChannelsRich()[$item->channel];

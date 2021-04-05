@@ -111,6 +111,10 @@ class Slide extends Model
     public const TYPE_FOOD_OBJECT = 9;
     public const TYPE_FOOD_AND_GROCERY_OBJECT = 10;
 
+    public const TARGET_LOGGED_IN = 13;
+    public const TARGET_GUEST = 14;
+    public const TARGET_EVERYONE = 15;
+
     protected $with = ['translations'];
 
     protected $translatedAttributes = ['alt_tag', 'image'];
@@ -129,6 +133,24 @@ class Slide extends Model
             self::LINK_TYPE_UNIVERSAL => 'universal',
             self::LINK_TYPE_DEFERRED_DEEPLINK => 'deferred-deeplink',
             self::LINK_TYPE_DEEPLINK => 'deeplink',
+        ];
+    }
+
+    public static function getTargetsArray(): array
+    {
+        return [
+            self::TARGET_LOGGED_IN => trans('strings.logged_in'),
+            self::TARGET_GUEST => trans('strings.guest'),
+            self::TARGET_EVERYONE => trans('strings.everyone'),
+        ];
+    }
+
+    public static function getChannelsArray(): array
+    {
+        return [
+            self::TYPE_GROCERY_OBJECT => trans('strings.grocery'),
+            self::TYPE_FOOD_OBJECT => trans('strings.food'),
+            self::TYPE_FOOD_AND_GROCERY_OBJECT => trans('strings.grocery_and_food'),
         ];
     }
 

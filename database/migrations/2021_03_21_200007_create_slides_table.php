@@ -31,9 +31,9 @@ class CreateSlidesTable extends Migration
             $table->timestamp('begins_at')->nullable();
             $table->timestamp('expires_at')->nullable();
             $table->unsignedTinyInteger('channel')->default(Slide::TYPE_FOOD_AND_GROCERY_OBJECT)->comment('8:food and grocery, 9:grocery, 10:food');
-            $table->boolean('has_been_authenticated')->default(false);
             $table->unsignedInteger('order_column')->nullable();
             $table->unsignedTinyInteger('status')->default(Slide::STATUS_DRAFT)->comment('1:draft, 2:active, 3:Inactive, 4..n:CUSTOM');
+            $table->unsignedTinyInteger('has_been_authenticated')->default(Slide::TARGET_EVERYONE)->comment('1:TARGET_LOGGED_IN, 2:TARGET_GUEST, 3:TARGET_EVERYONE');
 
             $table->timestamps();
             $table->softDeletes();
