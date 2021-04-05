@@ -27,6 +27,31 @@ class PreferenceController extends Controller
     }
 
 
+    public function adjustTrackers(Request $request)
+    {
+        $exceptedKeys = [
+            'blog_show',
+            'market_branch_product_index',
+            'product_show',
+            'restaurant_branch_product_index',
+        ];
+
+        $callback = function ($item, $key) {
+            $item['title'] = \Str::title(str_replace('_', ' ', $key));
+            $item['key'] = $key;
+            $item['value'] = Preference::retrieveValue($key);
+            $item['deep_link'] = Preference::retrieveValue('adjust_deep_link_uri_scheme');
+
+            return [$key => $item];
+        };
+
+        $adjustTrackers = collect(config('defaults.adjust_trackers'))
+            ->except($exceptedKeys)->mapWithKeys($callback)->values();
+
+        return view('admin.preferences.form', compact('adjustTrackers'));
+    }
+
+
     /**
      * Store a newly created resource in storage.
      *

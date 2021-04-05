@@ -297,5 +297,129 @@ return [
         'integer' => 'number',
         'string' => 'text',
         'text' => 'editor',
+    ],
+    'adjust_trackers' => [
+        'blog_index' => [
+            'url' => 'https://app.adjust.com/sek5use',
+            'campaign' => null,
+            'adgroup' => null,
+            'creative' => null,
+            'deep_link' => null,
+        ],
+        'blog_show' => [
+            'url' => 'https://app.adjust.com/6j6msza',
+            'campaign' => null,
+            'adgroup' => null,
+            'creative' => null,
+            'deep_link' => null,
+            'deep_link_params' => [
+                'id' => 1
+            ],
+        ],
+        'campaign_index' => [
+            'url' => 'https://app.adjust.com/tfnvbr8',
+            'campaign' => null,
+            'adgroup' => null,
+            'creative' => null,
+            'deep_link' => null,
+        ],
+        'campaign_show' => [
+            'url' => 'https://app.adjust.com/5dsbxo9',
+            'campaign' => null,
+            'adgroup' => null,
+            'creative' => null,
+            'deep_link' => null,
+            'deep_link_params' => [
+                'id' => 1
+            ],
+        ],
+        'favorite_screen' => [
+            'url' => 'https://app.adjust.com/793c8og',
+            'campaign' => null,
+            'adgroup' => null,
+            'creative' => null,
+            'deep_link' => null,
+        ],
+        'home_screen_by_channel' => [
+            'url' => 'https://app.adjust.com/wtk63gn',
+            'campaign' => null,
+            'adgroup' => null,
+            'creative' => null,
+            'deep_link' => null,
+            'deep_link_params' => [
+                'channel' => config('app.app-channels.grocery')
+            ],
+        ],
+        'market_branch_product_index' => [
+            'url' => 'https://app.adjust.com/657i79u',
+            'campaign' => null,
+            'adgroup' => null,
+            'creative' => null,
+            'deep_link' => null,
+            'deep_link_params' => [
+                'id' => 1
+            ],
+        ],
+        'my_addresses' => [
+            'url' => 'https://app.adjust.com/vt24507',
+            'campaign' => null,
+            'adgroup' => null,
+            'creative' => null,
+            'deep_link' => null,
+        ],
+        'order_rating' => [
+            'url' => 'https://app.adjust.com/et3lk95',
+            'campaign' => null,
+            'adgroup' => null,
+            'creative' => null,
+            'deep_link' => null,
+            'deep_link_params' => [
+                'id' => 1
+            ],
+        ],
+        'order_tracking' => [
+            'url' => 'https://app.adjust.com/d3aoyg1',
+            'campaign' => null,
+            'adgroup' => null,
+            'creative' => null,
+            'deep_link' => null,
+            'deep_link_params' => [
+                'id' => 1
+            ],
+        ],
+        'payment_options' => [
+            'url' => 'https://app.adjust.com/jlq8rsu',
+            'campaign' => null,
+            'adgroup' => null,
+            'creative' => null,
+            'deep_link' => null,
+        ],
+        'previous_orders' => [
+            'url' => 'https://app.adjust.com/ivl1knb',
+            'campaign' => null,
+            'adgroup' => null,
+            'creative' => null,
+            'deep_link' => null,
+        ],
+        'product_show' => [
+            'url' => 'https://app.adjust.com/8b7qe4e',
+            'campaign' => null,
+            'adgroup' => null,
+            'creative' => null,
+            'deep_link' => null,
+            'deep_link_params' => [
+                'id' => 1
+            ],
+        ],
+        'restaurant_branch_product_index' => [
+            'url' => 'https://app.adjust.com/ag91sls',
+            'campaign' => null,
+            'adgroup' => null,
+            'creative' => null,
+            'deep_link' => null,
+            'deep_link_params' => [
+                'id' => 1
+            ],
+        ],
     ]
 ];
