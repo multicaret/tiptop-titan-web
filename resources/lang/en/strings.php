@@ -245,4 +245,11 @@ return [
     'grocery_and_food' => 'Grocery And Food',
     'grocery' => 'Grocery',
     'food' => 'Food',
+    'Success' => 'Success',
+    'deep_link' => 'Deep Link',
+    'deep_links' => 'Deep Links',
+    'product_deep_link' => 'Product Link',
+    'link' => 'Link',
+    'copy' => 'Copy',
+    'copy_deep_link' => 'Copy Deep Link',
 ];
