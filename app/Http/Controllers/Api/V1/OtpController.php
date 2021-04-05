@@ -203,7 +203,7 @@ class OtpController extends BaseApiController
         return $this->respond($response);
     }
 
-    public function otpSmsValidate(\Request $request): JsonResponse
+    public function otpSmsValidate(Request $request): JsonResponse
     {
         $validationRules = [
             'phone_country_code' => 'required|numeric|digits_between:1,3',
