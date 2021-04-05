@@ -265,4 +265,16 @@ class Branch extends Model implements HasMedia
     {
         return $this->raters->count() > 0;
     }
+
+    public function calculateDeliveryFee($totalAmount): float
+    {
+        $deliveryFee = $this->fixed_delivery_fee;
+        if ($this->under_minimum_order_delivery_fee > 0) {
+            if ($totalAmount < $this->minimum_order) {
+                $deliveryFee += $this->under_minimum_order_delivery_fee;
+            }
+        }
+
+        return $deliveryFee;
+    }
 }

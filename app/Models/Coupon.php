@@ -2,7 +2,7 @@
 
 namespace App\Models;
 
-use App\Http\Resources\CouponResource;
+use App\Http\Controllers\Controller;
 use App\Traits\HasAppTypes;
 use App\Traits\HasStatuses;
 use Eloquent;
@@ -94,7 +94,7 @@ class Coupon extends Model
         'min_cart_value_allowed' => 'double',
         'discount_by_percentage' => 'boolean',
         'has_free_delivery' => 'boolean',
-        'expired_at' => 'date',
+        'expired_at' => 'datetime',
     ];
 
     public function couponUsages(): HasMany
@@ -107,45 +107,49 @@ class Coupon extends Model
      * @param  User|null  $user
      * @return array|string[]
      */
-    public static function retrieveValidation(Coupon $coupon, User $user = null): array
+    public function validateExpirationDateAndUsageCount(User $user = null): array
     {
         if (is_null($user)) {
             $user = auth()->user();
         }
 
-        if (is_null($coupon)) {
-            return [
-                'type' => 'undefined',
-                'message' => 'Coupon code is wrong'
-            ];
+        $isValid = false;
+        $message = 'Coupon code is invalid';
 
+        if ( ! is_null($this->expired_at) && $this->expired_at->isPast()) {
+            $message = 'Coupon is expired';
         }
 
-        if ( ! is_null($coupon->expired_at) && $coupon->expired_at->isPast()) {
-            return [
-                'type' => 'error',
-                'message' => 'Coupon is expired'
-            ];
-        }
-
-        if ($coupon->max_usable_count > $coupon->total_redeemed_count) {
-            if ($coupon->max_usable_count_by_user > $user->couponUsages()->count()) {
-                return [
-                    'type' => 'Success',
-                    'data' => new CouponResource($coupon)
-                ];
+        if ($this->max_usable_count > $this->total_redeemed_count) {
+            if ($this->max_usable_count_by_user > $user->couponUsages()->count()) {
+                $isValid = true;
             } else {
-                return [
-                    'type' => 'error',
-                    'message' => 'User Cannot Use the current coupon'
-                ];
+                $message = 'User Cannot Use the current coupon';
             }
         } else {
-            return [
-                'type' => 'error',
-                'message' => 'The total usage count full'
-            ];
+            $message = 'The exceeded the total usage amount';
         }
+
+        return [$isValid, $message];
+
+    }
+
+
+    public function validateCouponDiscountAmount($amount): array
+    {
+        $isValid = $this->min_cart_value_allowed <= $amount;
+
+        $totalDiscountedAmount = Controller::calculateDiscountedAmount($amount, $this->discount_amount,
+            $this->discount_by_percentage);
+        if ($this->max_allowed_discount_amount < $totalDiscountedAmount) {
+            $isValid = $isValid && true;
+            $totalDiscountedAmount = $this->max_allowed_discount_amount;
+        }
+
+        return [
+            $isValid,
+            $totalDiscountedAmount,
+        ];
 
     }
 }

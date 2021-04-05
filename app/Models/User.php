@@ -496,6 +496,11 @@ class User extends Authenticatable implements HasMedia, MustVerifyEmail
         return $this->hasMany(CouponUsage::class, 'redeemer_id');
     }
 
+    public function carts(): HasMany
+    {
+        return $this->hasMany(Cart::class, 'user_id');
+    }
+
     /**
      * @param $fullName
      *
@@ -628,4 +633,14 @@ class User extends Authenticatable implements HasMedia, MustVerifyEmail
 
         return new NewAccessToken($token, $token->getKey().'|'.$plainTextToken);
     }
+
+    /**
+     * @param $branchId
+     * @return Cart|Model|object|null
+     */
+    public function activeCart($branchId): Cart
+    {
+        return Cart::getCurrentlyActiveCart($this->id, $branchId);
+    }
+
 }

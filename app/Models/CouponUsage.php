@@ -40,7 +40,7 @@ class CouponUsage extends Model
 {
 
     protected $casts = [
-        'redeemed_at' => 'timestamp'
+        'redeemed_at' => 'datetime'
     ];
 
     public function coupon(): BelongsTo
