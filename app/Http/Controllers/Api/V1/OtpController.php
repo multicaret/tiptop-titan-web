@@ -198,7 +198,7 @@ class OtpController extends BaseApiController
             'country_code' => 'required|min:2|max:2',
             'phone_country_code' => 'required|min:1|max:3',
             'phone_number' => 'required|numeric|digits_between:7,15',
-            'code' => 'required|numeric|min:4|max:8',
+            'code' => 'required|numeric|digits_between:4,8',
             'reference' => 'required',
             'mobile_app_details' => 'json',
         ];
