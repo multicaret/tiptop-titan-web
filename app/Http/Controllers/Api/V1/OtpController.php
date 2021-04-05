@@ -101,8 +101,13 @@ class OtpController extends BaseApiController
         $vfk2 = $this->getVFK(true);
         $result = $vfk2->getResult($validationCheck->getSessionId());
         if ($result->isSuccess()) {
-            $phoneCountryCode = '+'.Country::whereAlpha2Code($result->getCountryCode())->first()->phone_code;
-            $phoneNumber = str_replace($phoneCountryCode, '', $result->getPhoneNumber());
+            $country = Country::whereAlpha2Code($result->getCountryCode())->first();
+            if (is_null($country)) {
+                return $this->setStatusCode(Response::HTTP_BAD_REQUEST)
+                            ->respondWithMessage('No country found for this country alpha2 code  code');
+            }
+            $phoneCountryCode = $country->phone_code;
+            $phoneNumber = str_replace('+'.$phoneCountryCode, '', $result->getPhoneNumber());
 //                echo "Validation Date : " . $result->getValidationDate()->format('Y-m-d H:i:s') . PHP_EOL;
             /*} else {
                 echo "Error message : " . $result->getErrorMessage() . ", error code : " . $result->getErrorCode() . PHP_EOL;*/
@@ -149,8 +154,7 @@ class OtpController extends BaseApiController
     public function otpSmsSend(Request $request): JsonResponse
     {
         $validationRules = [
-            'country_code' => 'required|min:2|max:2',
-            'phone_country_code' => 'required|min:1|max:3',
+            'phone_country_code' => 'required|numeric|digits_between:1,3',
             'phone_number' => 'required|numeric|digits_between:7,15',
             'mobile_app_details' => 'json',
         ];
@@ -160,18 +164,25 @@ class OtpController extends BaseApiController
             return $this->respondValidationFails($validator->errors());
         }
 
-        // For OTP verification to work best, you should send us the MCC and MNC code of the sim card in the user's device.
-        $mcc = '999'; // Mobile Country Code (MCC) of the sim card in the user's device. Default value is '999'. Not required.
-        $mnc = '999'; // Mobile Network Code (MNC) of the sim card in the user's device. Default value is '999'. Not required.
+        $statusCode = Response::HTTP_BAD_REQUEST;
+        $country = Country::wherePhoneCode($request->input('phone_country_code'))->first();
+        if (is_null($country)) {
+            return $this->setStatusCode($statusCode)->respondWithMessage('No country found for this phone code');
+        }
 
         $phoneNumber = Controller::convertNumbersToArabic($request->input('phone_number'));  // '+90'.$request->phone;
-        $countryCode = $request->input('country_code');  // 'TR';
+
+        $phoneCountryCode = $country->phone_code;
+        $countryCode = $country->alpha2_code;
 
         $lang = localization()->getCurrentLocale();
 
         try {
+            // For OTP verification to work best, you should send us the MCC and MNC code of the sim card in the user's device.
+            $mcc = '999'; // Mobile Country Code (MCC) of the sim card in the user's device. Default value is '999'. Not required.
+            $mnc = '999'; // Mobile Network Code (MNC) of the sim card in the user's device. Default value is '999'. Not required.
             $vfk = $this->getVFK();
-            $result = $vfk->sendOTP($phoneNumber, $countryCode, $mcc, $mnc, $lang);
+            $result = $vfk->sendOTP('+'.$phoneCountryCode.$phoneNumber, $countryCode, $mcc, $mnc, $lang);
         } catch (CountryCodeEmptyException | PhoneNumberEmptyException | CurlException $e) {
             $errorMessage = $e->getMessage();
         }
@@ -192,11 +203,10 @@ class OtpController extends BaseApiController
         return $this->respond($response);
     }
 
-    public function otpSmsValidate(Request $request): JsonResponse
+    public function otpSmsValidate(\Request $request): JsonResponse
     {
         $validationRules = [
-            'country_code' => 'required|min:2|max:2',
-            'phone_country_code' => 'required|min:1|max:3',
+            'phone_country_code' => 'required|numeric|digits_between:1,3',
             'phone_number' => 'required|numeric|digits_between:7,15',
             'code' => 'required|numeric|digits_between:4,8',
             'reference' => 'required',
@@ -208,17 +218,21 @@ class OtpController extends BaseApiController
             return $this->respondValidationFails($validator->errors());
         }
 
-
         $statusCode = Response::HTTP_BAD_REQUEST;
+        $country = Country::wherePhoneCode($request->input('phone_country_code'))->first();
+        if (is_null($country)) {
+            return $this->setStatusCode($statusCode)->respondWithMessage('No country found for this phone code');
+        }
+
         $phoneNumber = Controller::convertNumbersToArabic($request->input('phone_number'));
-        $phoneCountryCode = $request->input('phone_country_code');
-        $countryCode = $request->input('country_code');
+        $phoneCountryCode = $country->phone_code;
+        $countryCode = $country->alpha2_code;
         $code = $request->input('code');
         $reference = $request->input('reference');
 
         try {
             $vfkWeb = $this->getVFK();
-            $otpCheck = $vfkWeb->checkOtp($phoneCountryCode.$phoneNumber, $countryCode, $reference, $code);
+            $otpCheck = $vfkWeb->checkOtp('+'.$phoneCountryCode.$phoneNumber, $countryCode, $reference, $code);
             if ($otpCheck->getValidationStatus()) {
                 [$serverKey, $clientIp] = $this->getServerKeyAndClientIP();
                 $VFK = new VerifyKit($serverKey, $clientIp);
