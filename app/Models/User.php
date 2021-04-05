@@ -491,7 +491,7 @@ class User extends Authenticatable implements HasMedia, MustVerifyEmail
     }
 
 
-    public function couponUsage(): HasMany
+    public function couponUsages(): HasMany
     {
         return $this->hasMany(CouponUsage::class, 'redeemer_id');
     }

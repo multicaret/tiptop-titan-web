@@ -97,28 +97,39 @@ class Coupon extends Model
         'expired_at' => 'date',
     ];
 
-    public function couponUsage(): HasMany
+    public function couponUsages(): HasMany
     {
         return $this->hasMany(CouponUsage::class, 'coupon_id');
     }
 
-    public static function retrieveValidation($coupon): array
+    /**
+     * @param  Coupon  $coupon
+     * @param  User|null  $user
+     * @return array|string[]
+     */
+    public static function retrieveValidation(Coupon $coupon, User $user = null): array
     {
+        if (is_null($user)) {
+            $user = auth()->user();
+        }
+
         if (is_null($coupon)) {
             return [
                 'type' => 'undefined',
                 'message' => 'Coupon code is wrong'
             ];
 
-        } elseif ( ! is_null($coupon->expired_at) && $coupon->expired_at < now()) {
+        }
+
+        if ( ! is_null($coupon->expired_at) && $coupon->expired_at->isPast()) {
             return [
                 'type' => 'error',
                 'message' => 'Coupon is expired'
             ];
         }
-//        $totalUsageBuilder = $coupon->couponUsage();
-        if ($coupon->max_usable_count > $coupon->total_redeemed_count/*$totalUsageBuilder->count()*/) {
-            if ($coupon->max_usable_count_by_user > auth()->user()->couponUsage()->count()) {
+
+        if ($coupon->max_usable_count > $coupon->total_redeemed_count) {
+            if ($coupon->max_usable_count_by_user > $user->couponUsages()->count()) {
                 return [
                     'type' => 'Success',
                     'data' => new CouponResource($coupon)
