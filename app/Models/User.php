@@ -356,7 +356,7 @@ class User extends Authenticatable implements HasMedia, MustVerifyEmail
 
     public function getInternationalPhoneAttribute()
     {
-        return $this->phone_country_code.$this->phone_number;
+        return '+'.$this->phone_country_code.$this->phone_number;
     }
 
     /**
