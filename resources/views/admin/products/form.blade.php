@@ -136,7 +136,7 @@
                                     <div class="col-6">
                                         <div class="form-group">
                                             <label class="control-label">
-                                                @lang('strings.categories')
+                                                @lang('strings.categories')&nbsp;<b class="text-danger">*</b>
                                             </label>
                                             <multiselect
                                                 :options="categories"
@@ -152,6 +152,7 @@
                                                 deselect-label=""
                                                 placeholder=""
                                                 autocomplete="false"
+                                                required
                                             ></multiselect>
                                         </div>
                                     </div>
@@ -179,6 +180,14 @@
                                         </div>
                                     </div>
                                 @endisset
+                                <div class="col-6">
+                                    @component('admin.components.form-group', ['name' => 'status', 'type' => 'select'])
+                                        @slot('label', trans('strings.status'))
+                                        @slot('options', \App\Models\Product::getStatusesArray())
+                                        @slot('attributes', ['required'])
+                                        @slot('selected', $product->status)
+                                    @endcomponent
+                                </div>
                             </div>
                         </div>
                     </div>

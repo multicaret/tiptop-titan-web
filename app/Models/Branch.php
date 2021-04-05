@@ -59,7 +59,7 @@ use Spatie\MediaLibrary\MediaCollections\Models\Collections\MediaCollection;
  * @property Carbon|null $created_at
  * @property Carbon|null $updated_at
  * @property string|null $deleted_at
- * @property-read Chain $chain
+ * @property Chain $chain
  * @property-read City|null $city
  * @property-read mixed $average_rating_all_types
  * @property-read mixed $average_rating
