@@ -14,9 +14,6 @@
     <tr v-for="(day , selectedDoctorIndex) in workingHours">
         <td>
             <b-row>
-                <pre>
-                    @{{  day, selectedDoctorIndex}}
-                </pre>
                 <b-col class="justify-content-center">
                     @{{ daysTranslation['working_day_'+ (day.day )] }}
                 </b-col>
