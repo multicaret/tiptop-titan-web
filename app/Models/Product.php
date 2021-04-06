@@ -260,6 +260,11 @@ class Product extends Model implements HasMedia
         return $this->belongsToMany(Cart::class, 'cart_product', 'product_id', 'cart_id');
     }
 
+    public function options(): BelongsToMany
+    {
+        return $this->belongsToMany(Taxonomy::class, 'product_options', 'product_id', 'ingredient_id');
+    }
+
 
     public static function getAllStatusesRich(): array
     {
