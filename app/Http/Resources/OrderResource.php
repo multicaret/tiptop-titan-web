@@ -28,6 +28,10 @@ class OrderResource extends JsonResource
                 'diffForHumans' => $this->completed_at->diffForHumans(),
                 'timestamp' => $this->completed_at->timestamp,
             ],
+            'couponDiscountAmount' => [
+                'raw' => (double) $this->coupon_discount_amount,
+                'formatted' => Currency::format($this->coupon_discount_amount),
+            ],
             'deliveryFee' => [
                 'raw' => (double) $this->branch->fixed_delivery_fee,
                 'formatted' => Currency::format($this->branch->fixed_delivery_fee),
