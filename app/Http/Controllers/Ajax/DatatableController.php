@@ -622,7 +622,7 @@ class DatatableController extends AjaxController
                                  'type' => request('type')
                              ];
                              $data['deepLink'] = [
-                                 'url' => Controller::getDeepLink('market_branch_product_index', $deepLinkParams)
+                                 'url' => Controller::getDeepLink('market_food_category_show', $deepLinkParams)
                              ];
 
                              return view('admin.components.datatables._row-actions', $data)->render();
