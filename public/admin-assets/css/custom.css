@@ -17,3 +17,11 @@
 .b-form-timepicker > label {
     margin-bottom: 0 !important;
 }
+
+.multiselect__tag {
+    background: #FEC63D !important;
+}
+
+.multiselect__tag-icon:after {
+    color: #ffffff !important;
+}
