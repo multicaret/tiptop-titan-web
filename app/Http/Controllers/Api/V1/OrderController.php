@@ -243,9 +243,7 @@ class OrderController extends BaseApiController
 
         DB::commit();
 
-        return $this->respond([
-            'order' => new OrderResource($newOrder),
-        ]);
+        return $this->respond(new OrderResource($newOrder));
     }
 
 
