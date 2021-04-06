@@ -92,13 +92,11 @@
                 <tbody {{--wire:poll.1s--}}>
                 @if($orders)
                     @forelse($orders as $order)
-                        <tr class="{{ $order->getLateCssBgClass()}}">
+                        <tr class="cursor-pointer {{ $order->getLateCssBgClass()}}"
+                            data-toggle="modal" data-target="#orderShowModal"
+                            wire:click="show({{ $order->id }})">
                             <td style="width:10px">
                                 {{$order->reference_code}}
-                                <button data-toggle="modal" data-target="#orderShowModal"
-                                        wire:click="show({{ $order->id }})" class="btn btn-primary btn-sm">
-                                    Show
-                                </button>
                             </td>
                             <td>
                                 <span data-toggle="tooltip" data-placement="top" title="{{$order->getStatusName()}}">
