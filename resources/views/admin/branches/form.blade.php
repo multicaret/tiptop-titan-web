@@ -97,8 +97,18 @@
 @endsection
 
 @push('scripts')
-    @livewireScripts
     <script src="{{ asset('/admin-assets/libs/quill/quill.js') }}"></script>
     {{--    <script src="/js/charts_gmaps.js"></script>--}}
     @include('admin.branches.partials._branch-js')
+
+
+    @livewireScripts
+    <script>
+        Livewire.on('productStored', (params) => {
+            window.toast.fire({
+                icon: params.icon,
+                title: params.message,
+            });
+        });
+    </script>
 @endpush

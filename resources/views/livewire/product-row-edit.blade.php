@@ -7,21 +7,55 @@
         <img src="{{$product->cover}}" width="150px" class="img-fluid-fit-cover">
     </td>
     @foreach(localization()->getSupportedLocales() as $key => $locale)
-        <td>{{$product->translate($key)->title}}</td>
+        <td>
+            <div class="form-group">
+                <input type="text" title="price" class="form-control" placeholder="{{$locale->native()}}"
+                       wire:model.lazy="title{{ucfirst($key)}}">
+            </div>
+        </td>
     @endforeach
     <td>
         {{ implode(',',$product->categories->pluck('title')->toArray()) }}
     </td>
-    <td>{{$product->order_column}}</td>
     <td>
         <div class="form-group">
-            <input type="text" title="price" class="form-control" placeholder="Price"
-                   wire:model="product.price">
+            <input type="text" title="price" class="form-control" placeholder="Order column"
+                   wire:model.lazy="product.order_column">
         </div>
     </td>
     <td>
-        {{$product->price_discount_amount}}
-        {{$product->price_discount_by_percentage?'%':'FIXED'}}
+        <div class="form-group">
+            <input type="text" title="price" class="form-control" placeholder="Price"
+                   wire:model.lazy="product.price">
+        </div>
+    </td>
+    <td>
+        <div class="form-group">
+            <input type="text" title="price" class="form-control" placeholder="Discount amount"
+                   wire:model.lazy="product.price_discount_amount">
+        </div>
+        <div class="form-group">
+            <select class="form-control" wire:model="product.price_discount_by_percentage">
+                <option value="false" {{ !$product->price_discount_by_percentage? 'selected':''}}>
+                    Fixed
+                </option>
+                <option value="true" {{ $product->price_discount_by_percentage? 'selected':''}}>
+                    Percentage %
+                </option>
+            </select>
+        </div>
+        <hr>
+        <span class="text-muted">
+            Discount Amount:
+        </span>
+        <br>
+        {{ $product->discounted_price_formatted }}
+        <br>
+        <span class="text-muted">
+            Price After:
+        </span>
+        <br>
+        {{ \App\Models\Currency::format($product->price - $product->discounted_price) }}
     </td>
     <td>{{$product->status_name}}</td>
     <td>
