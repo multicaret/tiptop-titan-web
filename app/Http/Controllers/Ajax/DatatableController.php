@@ -104,10 +104,19 @@ class DatatableController extends AjaxController
      */
     public function taxonomies(Request $request)
     {
+        $parentId = ($request->input('parent_id'));
         $correctType = Taxonomy::getCorrectType($request->type);
         $taxonomies = Taxonomy::orderBy('order_column')
                               ->with('parent', 'chain', 'branches', 'branch')
                               ->where('type', $correctType);
+        if(Taxonomy::getCorrectType($request->type) == Taxonomy::TYPE_GROCERY_CATEGORY){
+            if ( ! is_null($parentId)) {
+                $taxonomies = $taxonomies->where('parent_id', $parentId);
+            }
+            else{
+                $taxonomies = $taxonomies->where('parent_id', null);
+            }
+        }
 
         return DataTables::of($taxonomies)
                          ->editColumn('action', function ($taxonomy) use ($correctType) {
