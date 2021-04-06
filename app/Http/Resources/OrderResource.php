@@ -33,7 +33,7 @@ class OrderResource extends JsonResource
                 'formatted' => Currency::format($this->coupon_discount_amount),
             ],
             'deliveryFee' => [
-                'raw' => (double) $this->branch->fixed_delivery_fee,
+                'raw' => (double) $this->branch->calculateDeliveryFee($this->total),
                 'formatted' => Currency::format($this->branch->fixed_delivery_fee),
             ],
             'grandTotal' => [
