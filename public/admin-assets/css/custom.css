@@ -13,3 +13,7 @@
 .app-brand .layout-sidenav-toggle {
     margin-left: 55px !important;
 }
+
+.b-form-timepicker > label {
+    margin-bottom: 0 !important;
+}

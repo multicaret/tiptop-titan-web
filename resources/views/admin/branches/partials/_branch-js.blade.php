@@ -34,6 +34,8 @@
             cities: [],
             chains: @json($chains),
             contactDetails: @json($contacts),
+            daysTranslation: window.App.translations,
+            workingHours: @json($workingHours),
             contactDetail: {
                 name: '',
                 email: '',

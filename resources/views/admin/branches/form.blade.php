@@ -35,17 +35,17 @@
                 </a>
             </li>
             <li class="nav-item">
-                <a class="nav-link" data-toggle="tab" href="#navs-bottom-responsive-link-2">
+                <a class="nav-link" data-toggle="tab" href="#navs-bottom-responsive-link-3">
                     <i class="fas fa-code-branch"></i>&nbsp;Products (meals)
                 </a>
             </li>
             <li class="nav-item">
-                <a class="nav-link" data-toggle="tab" href="#navs-bottom-responsive-link-2">
+                <a class="nav-link" data-toggle="tab" href="#navs-bottom-responsive-link-4">
                     <i class="fas fa-code-branch"></i>&nbsp;Categories
                 </a>
             </li>
             <li class="nav-item">
-                <a class="nav-link" data-toggle="tab" href="#navs-bottom-responsive-link-2">
+                <a class="nav-link" data-toggle="tab" href="#navs-bottom-responsive-link-5">
                     <i class="fas fa-user-tie"></i>&nbsp;Managers & Drivers
                 </a>
             </li>
@@ -68,6 +68,24 @@
                 </div>
             </div>
             <div class="tab-pane fade" id="navs-bottom-responsive-link-2">
+                <div class="card-body">
+                    @include('admin.branches.partials._working-hours')
+                </div>
+            </div>
+
+            <div class="tab-pane fade" id="navs-bottom-responsive-link-3">
+                <div class="card-body">
+                    <p>Tab content</p>
+                </div>
+            </div>
+
+            <div class="tab-pane fade" id="navs-bottom-responsive-link-4">
+                <div class="card-body">
+                    <p>Tab content</p>
+                </div>
+            </div>
+
+            <div class="tab-pane fade" id="navs-bottom-responsive-link-5">
                 <div class="card-body">
                     <p>Tab content</p>
                 </div>
