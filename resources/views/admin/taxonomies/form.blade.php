@@ -165,7 +165,7 @@
                     <div class="col-4">
                         @component('admin.components.form-group', ['name' => 'chain_id', 'type' => 'select'])
                             @slot('label', trans('strings.chain'))
-                            @slot('options',  \App\Models\Chain::whereType(\App\Models\Chain::TYPE_GROCERY_OBJECT)->get()->pluck('title', 'id')->prepend('',''))
+                            @slot('options',  \App\Models\Chain::whereType(\App\Models\Chain::CHANNEL_GROCERY_OBJECT)->get()->pluck('title', 'id')->prepend('',''))
                             @slot('attributes', [
                                 'class' => 'select2-chain w-100',
                                 'required',

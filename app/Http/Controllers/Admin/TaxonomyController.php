@@ -391,7 +391,7 @@ class TaxonomyController extends Controller
         }
 
         $fontAwesomeIcons = $this->getFontAwesomeIcons();
-        $branches = Branch::whereType(Branch::TYPE_FOOD_OBJECT)
+        $branches = Branch::whereType(Branch::CHANNEL_FOOD_OBJECT)
                           ->active()
                           ->get()
                           ->mapWithKeys(function ($item) {

@@ -98,7 +98,7 @@ class ComposerServiceProvider extends ServiceProvider
                                 'icon' => 'fas fa-link',
                                 'params' => [
                                     'type' =>
-                                        Chain::getCorrectTypeName(Chain::TYPE_GROCERY_OBJECT, false),
+                                        Chain::getCorrectChannelName(Chain::CHANNEL_GROCERY_OBJECT, false),
                                 ],
                                 'routeName' => 'admin.chains.index',
                             ],
@@ -106,7 +106,7 @@ class ComposerServiceProvider extends ServiceProvider
                                 'title' => 'Branches',
                                 'icon' => 'fas fa-store-alt',
                                 'params' => [
-                                    'type' => Branch::getCorrectTypeName(Branch::TYPE_GROCERY_OBJECT, false),
+                                    'type' => Branch::getCorrectChannelName(Branch::CHANNEL_GROCERY_OBJECT, false),
                                 ],
                                 'routeName' => 'admin.branches.index',
                             ],
@@ -114,7 +114,7 @@ class ComposerServiceProvider extends ServiceProvider
                                 'title' => 'Products',
                                 'icon' => 'fas fa-box-open',
                                 'params' => [
-                                    'type' => Product::getCorrectTypeName(Product::TYPE_GROCERY_OBJECT, false)
+                                    'type' => Product::getCorrectChannelName(Product::CHANNEL_GROCERY_OBJECT, false)
                                 ],
                                 'routeName' => 'admin.products.index',
                             ],
@@ -141,7 +141,7 @@ class ComposerServiceProvider extends ServiceProvider
                             [
                                 'title' => 'Ratings',
                                 'icon' => 'fas fa-star',
-                                'params' => ['type' => Order::getCorrectTypeName(Order::TYPE_GROCERY_OBJECT, false)],
+                                'params' => ['type' => Order::getCorrectChannelName(Order::CHANNEL_GROCERY_OBJECT, false)],
                                 'routeName' => 'admin.orders.ratings',
                             ],
                         ]
@@ -160,7 +160,7 @@ class ComposerServiceProvider extends ServiceProvider
                                 'title' => 'Chains',
                                 'icon' => 'fas fa-link',
                                 'params' => [
-                                    'type' => Chain::getCorrectTypeName(Chain::TYPE_FOOD_OBJECT, false),
+                                    'type' => Chain::getCorrectChannelName(Chain::CHANNEL_FOOD_OBJECT, false),
                                 ],
                                 'routeName' => 'admin.chains.index',
                             ],
@@ -168,14 +168,14 @@ class ComposerServiceProvider extends ServiceProvider
                                 'title' => 'Branches',
                                 'icon' => 'fas fa-store-alt',
                                 'params' => [
-                                    'type' => Branch::getCorrectTypeName(Branch::TYPE_FOOD_OBJECT, false),
+                                    'type' => Branch::getCorrectChannelName(Branch::CHANNEL_FOOD_OBJECT, false),
                                 ],
                                 'routeName' => 'admin.branches.index',
                             ],
                             [
                                 'title' => 'Products',
                                 'icon' => 'fas fa-box-open',
-                                'params' => ['type' => Product::getCorrectTypeName(Product::TYPE_FOOD_OBJECT, false)],
+                                'params' => ['type' => Product::getCorrectChannelName(Product::CHANNEL_FOOD_OBJECT, false)],
                                 'routeName' => 'admin.products.index',
                             ],
                             [

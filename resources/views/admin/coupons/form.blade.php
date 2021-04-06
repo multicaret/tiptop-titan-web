@@ -161,8 +161,8 @@
                                 @component('admin.components.form-group', ['name' => 'type', 'type' => 'select'])
                                     @slot('label', 'Type')
                                     @slot('options', [
-                                        App\Models\Coupon::TYPE_GROCERY_OBJECT => 'Market',
-                                        App\Models\Coupon::TYPE_FOOD_OBJECT => 'Food'
+                                        App\Models\Coupon::CHANNEL_GROCERY_OBJECT => 'Market',
+                                        App\Models\Coupon::CHANNEL_FOOD_OBJECT => 'Food'
                                         ])
                                     @slot('selected', $coupon->type)
                                 @endcomponent

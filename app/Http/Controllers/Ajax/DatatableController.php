@@ -504,7 +504,7 @@ class DatatableController extends AjaxController
 
     public function chains(Request $request)
     {
-        $chains = Chain::where('type', Chain::getCorrectType($request->type))->selectRaw('chains.*');
+        $chains = Chain::where('type', Chain::getCorrectChannel($request->type))->selectRaw('chains.*');
 
         return DataTables::of($chains)
                          ->editColumn('action', function ($chain) {
@@ -602,8 +602,7 @@ class DatatableController extends AjaxController
 
     public function branches(Request $request)
     {
-
-        $branches = Branch::whereType(Branch::getCorrectType($request->type))->selectRaw('branches.*');
+        $branches = Branch::whereType(Branch::getCorrectChannel($request->type))->selectRaw('branches.*');
 
         return DataTables::of($branches)
                          ->editColumn('action', function ($branch) {
@@ -700,7 +699,7 @@ class DatatableController extends AjaxController
 
     public function products(Request $request)
     {
-        $products = Product::whereType(Product::getCorrectType($request->type))->selectRaw('products.*');
+        $products = Product::whereType(Product::getCorrectChannel($request->type))->selectRaw('products.*');
 
         return DataTables::of($products)
                          ->editColumn('action', function ($product) {
@@ -758,7 +757,7 @@ class DatatableController extends AjaxController
 
     public function orderRatings(Request $request)
     {
-        $orders = Order::whereType(Order::getCorrectType($request->type))->selectRaw('orders.*');
+        $orders = Order::whereType(Order::getCorrectChannel($request->type))->selectRaw('orders.*');
 
         return DataTables::of($orders)
                          ->editColumn('action', function ($order) {

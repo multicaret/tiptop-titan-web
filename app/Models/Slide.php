@@ -107,8 +107,8 @@ class Slide extends Model
     public const LINK_TYPE_DEFERRED_DEEPLINK = 3;
     public const LINK_TYPE_DEEPLINK = 4;
 
-    public const TYPE_GROCERY_OBJECT = 8;
-    public const TYPE_FOOD_OBJECT = 9;
+    public const CHANNEL_GROCERY_OBJECT = 8;
+    public const CHANNEL_FOOD_OBJECT = 9;
     public const TYPE_FOOD_AND_GROCERY_OBJECT = 10;
 
     public const TARGET_LOGGED_IN = 13;
@@ -145,11 +145,11 @@ class Slide extends Model
         ];
     }
 
-    public static function getChannelsArray(): array
+    public static function getSlideChannelsArray(): array
     {
         return [
-            self::TYPE_GROCERY_OBJECT => trans('strings.grocery'),
-            self::TYPE_FOOD_OBJECT => trans('strings.food'),
+            self::CHANNEL_GROCERY_OBJECT => trans('strings.grocery'),
+            self::CHANNEL_FOOD_OBJECT => trans('strings.food'),
             self::TYPE_FOOD_AND_GROCERY_OBJECT => trans('strings.grocery_and_food'),
         ];
     }
@@ -157,13 +157,13 @@ class Slide extends Model
     public static function getAllChannelsRich(): array
     {
         return [
-            self::TYPE_GROCERY_OBJECT => [
-                'id' => self::TYPE_GROCERY_OBJECT,
+            self::CHANNEL_GROCERY_OBJECT => [
+                'id' => self::CHANNEL_GROCERY_OBJECT,
                 'title' => trans('strings.grocery'),
                 'class' => 'success',
             ],
-            self::TYPE_FOOD_OBJECT => [
-                'id' => self::TYPE_FOOD_OBJECT,
+            self::CHANNEL_FOOD_OBJECT => [
+                'id' => self::CHANNEL_FOOD_OBJECT,
                 'title' => trans('strings.food'),
                 'class' => 'dark',
             ],

@@ -63,9 +63,7 @@ class ProductController extends Controller
             ],
         ];
 
-        $typeName = $request->input('type');
-
-        return view('admin.products.index', compact('columns', 'typeName'));
+        return view('admin.products.index', compact('columns'));
     }
 
     public function create(Request $request)
@@ -164,8 +162,8 @@ class ProductController extends Controller
         $getIdTitle = function ($item) {
             return ['id' => $item->id, 'title' => $item->title];
         };
-        $data['chains'] = Chain::whereType(Chain::TYPE_GROCERY_OBJECT)->get()->map($getIdTitle)->all();
-        $data['branches'] = Branch::whereType(Branch::TYPE_GROCERY_OBJECT)->get()->map($getIdTitle)->all();
+        $data['chains'] = Chain::whereType(Chain::CHANNEL_GROCERY_OBJECT)->get()->map($getIdTitle)->all();
+        $data['branches'] = Branch::whereType(Branch::CHANNEL_GROCERY_OBJECT)->get()->map($getIdTitle)->all();
         $data['units'] = Taxonomy::unitCategories()->get()->map($getIdTitle)->all();
         if (Product::isGrocery()) {
             $data['categories'] = Taxonomy::groceryCategories()->whereNotNull('parent_id')->get()->map($getIdTitle)->all();
@@ -211,7 +209,7 @@ class ProductController extends Controller
         $product->is_storage_tracking_enabled = $request->input('is_storage_tracking_enabled') === 'on';
         $product->price_discount_by_percentage = $request->input('price_discount_by_percentage') === 'on';
         $product->status = $request->input('status');
-        $product->type = Product::getCorrectType($request->input('type'));
+        $product->type = Product::getCorrectChannel($request->input('type'));
         $product->save();
 
         $product->categories()->sync($ids);

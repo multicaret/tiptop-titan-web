@@ -118,7 +118,7 @@
                                 </small>
                             </td>
                             <td>
-                                @if($order->type == \App\Models\Order::TYPE_FOOD_OBJECT)
+                                @if($order->type == \App\Models\Order::CHANNEL_FOOD_OBJECT)
                                     <img src="/images/icons/food-delivery-186/svg/019-food tray.svg"
                                          alt="Food Orders" class="d-inline-block ui-w-20" title="Food">
                                 @else

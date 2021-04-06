@@ -257,4 +257,5 @@ return [
     'link' => 'Link',
     'copy' => 'Copy',
     'copy_deep_link' => 'Copy Deep Link',
+    'add_restaurant' => 'Add Restaurant',
 ];

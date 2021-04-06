@@ -32,7 +32,7 @@ class CreateProductsTable extends Migration
             $table->unsignedFloat('height')->nullable()->comment('y');
             $table->unsignedFloat('depth')->nullable()->comment('z');
             $table->unsignedFloat('weight')->nullable()->comment('w');
-            $table->unsignedTinyInteger('type')->default(Product::TYPE_GROCERY_OBJECT)->comment('1:Market, 2: Food');
+            $table->unsignedTinyInteger('type')->default(Product::CHANNEL_GROCERY_OBJECT)->comment('1:Market, 2: Food');
             $table->integer('minimum_orderable_quantity')->default(1)->nullable();
             $table->unsignedBigInteger('order_column')->nullable();
             $table->decimal('avg_rating', 3)->default(0);

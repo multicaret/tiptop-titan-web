@@ -122,8 +122,8 @@ class Chain extends Model implements HasMedia
     public const STATUS_ACTIVE = 2;
     public const STATUS_INACTIVE = 3;
 
-    public const TYPE_GROCERY_OBJECT = 1;
-    public const TYPE_FOOD_OBJECT = 2;
+    public const CHANNEL_GROCERY_OBJECT = 1;
+    public const CHANNEL_FOOD_OBJECT = 2;
 
     protected $fillable = ['title', 'description'];
     protected $with = ['translations'];
@@ -165,7 +165,7 @@ class Chain extends Model implements HasMedia
      */
     public function scopeGroceries($query): Builder
     {
-        return $query->where('type', self::TYPE_GROCERY_OBJECT);
+        return $query->where('type', self::CHANNEL_GROCERY_OBJECT);
     }
 
     /**
@@ -177,7 +177,7 @@ class Chain extends Model implements HasMedia
      */
     public function scopeFoods($query): Builder
     {
-        return $query->where('type', self::TYPE_FOOD_OBJECT);
+        return $query->where('type', self::CHANNEL_FOOD_OBJECT);
     }
 
 
