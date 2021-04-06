@@ -129,8 +129,10 @@ class HomeController extends BaseApiController
                                              Order::STATUS_DELIVERED,
                                          ])
                                          ->whereChainId($branch->chain_id)
-                                         ->get();
-                    $sharedResponse['activeOrders'] = OrderResource::collection($activeOrders);
+                                         ->latest();
+                    $activeOrdersCount = $activeOrders->count();
+                    $sharedResponse['activeOrders'] = OrderResource::collection($activeOrders->take(4)->get());
+                    $sharedResponse['totalActiveOrders'] = $activeOrdersCount;
                 }
 //            } else {
                 // It's too late no branch is open for now, so sorry
