@@ -32,6 +32,11 @@ class OrderResource extends JsonResource
                 'raw' => (double) $this->coupon_discount_amount,
                 'formatted' => Currency::format($this->coupon_discount_amount),
             ],
+            'totalAfterCouponDiscount' => [
+                'raw' => $this->total - $this->coupon_discount_amount,
+                'formatted' => Currency::format($this->grand_total),
+            ],
+            'couponCode' => optional($this->coupon)->redeem_code,
             'deliveryFee' => [
                 'raw' => (double) $this->delivery_fee,
                 'formatted' => Currency::format($this->delivery_fee),
