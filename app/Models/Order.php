@@ -209,13 +209,6 @@ class Order extends Model
         return $this->belongsTo(Taxonomy::class, 'rating_issue_id');
     }
 
-    public function products(): BelongsToMany
-    {
-        return $this->belongsToMany(Product::class, 'order_product', 'order_id', 'product_id')
-                    ->withPivot('product_object')
-                    ->withTimestamps();
-    }
-
     public function scopeCancelled($query)
     {
         return $query->where('status', self::STATUS_CANCELLED);

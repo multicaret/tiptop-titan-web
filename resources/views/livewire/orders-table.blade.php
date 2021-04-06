@@ -25,6 +25,12 @@
             z-index: 1 !important;
         }
 
+        #order-show-modal {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            column-gap: 10px;
+        }
     </style>
     <div class="card">
         <div class="card-body">
