@@ -182,6 +182,7 @@ class OrderController extends BaseApiController
 //        $newOrder->private_payment_method_commission = $request->input('private_payment_method_commission');
         $newOrder->notes = $request->input('notes');
         $newOrder->status = Order::STATUS_NEW;
+        $newOrder->completed_at = now();
         $newOrder->type = $branch->type;
         $newOrder->save();
 
@@ -230,7 +231,6 @@ class OrderController extends BaseApiController
                 $newOrder->grand_total = $userCart->total + $deliveryFee - ($couponDiscountAmount);
                 $newOrder->private_delivery_fee = $newOrder->delivery_fee;
                 $newOrder->private_grand_total = $newOrder->grand_total;
-                $newOrder->completed_at = now();
                 $newOrder->save();
 
                 CouponUsage::storeCouponUsage($totalDiscountedAmount, $coupon, $cart->id, $user->id, $newOrder->id);

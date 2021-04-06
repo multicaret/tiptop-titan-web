@@ -76,7 +76,7 @@ class CouponController extends BaseApiController
                 'discountedAmount' => $totalDiscountedAmount,
                 'deliveryFee' => $deliveryFee,
                 'totalBefore' => $activeCart->total,
-                'totalAfter' => $activeCart->total - $totalDiscountedAmount,
+                'totalAfter' => ($activeCart->total - $totalDiscountedAmount) + $deliveryFee,
             ] as $index => $item
         ) {
             $data[$index] = [
