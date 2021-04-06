@@ -109,12 +109,12 @@
                 },
                 getUpdateDeepLinkEncoded: function (trackerObject) {
                     let updatedParam = {};
-                    trackerObject.deep_link_params.map(obj => {
-                        updatedParam = {[obj.key]: obj.value.key ? obj.value.key : obj.value};
-                    });
                     updatedParam[trackerObject.key] = '';
+                    trackerObject.deep_link_params.map(obj => {
+                        updatedParam[obj.key] = obj.value.key ? obj.value.key : obj.value;
+                    });
                     const encodedParams = new URLSearchParams(updatedParam).toString();
-                    const encodedString = encodeURIComponent(trackerObject.deep_link + '&' + encodedParams);
+                    const encodedString = encodeURIComponent(trackerObject.deep_link + '//' + encodedParams);
                     return trackerObject.url + '?deep_link=' + encodedString;
                 },
             },
