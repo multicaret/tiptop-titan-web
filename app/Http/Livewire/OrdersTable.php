@@ -9,6 +9,7 @@ class OrdersTable extends Component
 {
     public $orders;
     public $selectedOrder;
+    public $orderProducts;
 
     /*use WithPagination;
 
@@ -98,7 +99,8 @@ class OrdersTable extends Component
     public function show($id)
     {
         $this->showModal = true;
-        $this->selectedOrder = Order::where('id', $id)->first();
+        $selectedOrder = $this->selectedOrder = Order::where('id', $id)->first();
+        $this->orderProducts = $selectedOrder->cart->cartProducts;
     }
 //        $this->emit('userStore');
 }

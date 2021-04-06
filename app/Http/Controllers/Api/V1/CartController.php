@@ -7,6 +7,7 @@ use App\Http\Controllers\Api\BaseApiController;
 use App\Http\Resources\CartResource;
 use App\Models\Cart;
 use App\Models\CartProduct;
+use App\Models\Product;
 use Exception;
 use Illuminate\Http\Request;
 
@@ -61,6 +62,7 @@ class CartController extends BaseApiController
             $cartProduct = new CartProduct();
             $cartProduct->cart_id = $cart->id;
             $cartProduct->product_id = $productId;
+            $cartProduct->product_object =  Product::find($productId);
             $cartProduct->quantity = 1;
             $cartProduct->save();
         }
