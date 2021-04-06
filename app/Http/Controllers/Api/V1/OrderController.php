@@ -80,23 +80,16 @@ class OrderController extends BaseApiController
             return $this->respondValidationFails($validator->errors());
         }
 
-        // TODO: work on it later with Suheyl
         $branchId = $request->input('branch_id');
         $chainId = $request->input('chain_id');
         $userCart = Cart::retrieve($chainId, $branchId, auth()->id());
         $branch = Branch::find($branchId);
-        $underMinimumOrderDeliveryFee = $branch->under_minimum_order_delivery_fee;
-        $minimumOrder = $branch->minimum_order;
-        $deliveryFee = null;
-        if ($userCart->total >= $minimumOrder) {
-            $deliveryFee = $branch->fixed_delivery_fee;
-        } elseif ( ! $underMinimumOrderDeliveryFee) {
+
+        if ($userCart->total < $branch->minimum_order && $branch->under_minimum_order_delivery_fee == 0) {
             $message = trans('api.cart_total_under_minimum');
 
-            return $this->setStatusCode(Response::HTTP_NOT_ACCEPTABLE)
+            return $this->setStatusCode(Response::HTTP_BAD_REQUEST)
                         ->respondWithMessage($message);
-        } else {
-            $deliveryFee = $underMinimumOrderDeliveryFee;
         }
 
 
@@ -109,12 +102,14 @@ class OrderController extends BaseApiController
                 'logo' => $method->logo,
             ];
         });
-        $grandTotal = ! is_null($deliveryFee) ? $deliveryFee + $userCart->total : $userCart->total;
-        $response = [
+        $deliveryFeeCalculated = $branch->calculateDeliveryFee($userCart->total);
+        $grandTotal = $deliveryFeeCalculated + $userCart->total;
+
+        return $this->respond([
             'paymentMethods' => $paymentMethods,
             'deliveryFee' => [
-                'raw' => $deliveryFee,
-                'formatted' => Currency::format($deliveryFee),
+                'raw' => $deliveryFeeCalculated,
+                'formatted' => Currency::format($deliveryFeeCalculated),
             ],
             'total' => [
                 'raw' => (double) $userCart->total,
@@ -124,9 +119,7 @@ class OrderController extends BaseApiController
                 'raw' => (double) $grandTotal,
                 'formatted' => Currency::format($grandTotal),
             ]
-        ];
-
-        return $this->respond($response);
+        ]);
     }
 
 
