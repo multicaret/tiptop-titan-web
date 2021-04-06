@@ -14,14 +14,14 @@
                     <div class="modal-body bg-light">
                         {{--                    <h1>Modal Body</h1>--}}
 
-                        <div class="form-group">
+                        {{--<div class="form-group">
                             <label for="reference-code">Status</label>
-                            <select type="text" inputmode="numeric" {{--wire:model.debounce.300ms="referenceCode"--}}
+                            <select type="text" inputmode="numeric" --}}{{--wire:model.debounce.300ms="referenceCode"--}}{{--
                             class="form-control" id="reference-code">
                                 <option>Preparing</option>
                                 <option>Cancelled</option>
                             </select>
-                        </div>
+                        </div>--}}
                         <div class="nav-tabs-top nav-responsive-xl">
                             <ul class="nav nav-tabs nav-justified">
                                 <li class="nav-item">
