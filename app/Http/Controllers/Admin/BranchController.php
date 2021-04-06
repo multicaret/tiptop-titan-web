@@ -214,6 +214,8 @@ class BranchController extends Controller
                 'restaurant_minimum_order' => 'required',
                 'restaurant_under_minimum_order_delivery_fee' => 'required',
                 'restaurant_fixed_delivery_fee' => 'required',
+                'has_tip_top_delivery' => 'required_without:has_restaurant_delivery',
+                'has_restaurant_delivery' => 'required_without:has_tip_top_delivery',
             ];
         }
 

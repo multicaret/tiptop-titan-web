@@ -69,7 +69,7 @@
             </div>
             <div class="tab-pane fade" id="navs-bottom-responsive-link-2">
                 <div class="card-body">
-                    @include('admin.branches.partials._working-hours')
+{{--                    @include('admin.branches.partials._working-hours')--}}
                 </div>
             </div>
 
