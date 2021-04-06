@@ -9,6 +9,7 @@
 @push('styles')
     <link rel="stylesheet" href="/admin-assets/libs/quill/typography.css">
     <link rel="stylesheet" href="/admin-assets/libs/quill/editor.css">
+    @livewireStyles
 @endpush
 
 @section('content')
@@ -35,7 +36,7 @@
                 </a>
             </li>
             <li class="nav-item">
-                <a class="nav-link" data-toggle="tab" href="#navs-bottom-responsive-link-3">
+                <a class="nav-link" data-toggle="tab" href="#products-tab">
                     <i class="fas fa-code-branch"></i>&nbsp;Products (meals)
                 </a>
             </li>
@@ -73,9 +74,9 @@
                 </div>
             </div>
 
-            <div class="tab-pane fade" id="navs-bottom-responsive-link-3">
+            <div class="tab-pane fade" id="products-tab">
                 <div class="card-body">
-                    <p>Tab content</p>
+                    <livewire:products-index :branch-id="$branch->id"/>
                 </div>
             </div>
 
@@ -96,6 +97,7 @@
 @endsection
 
 @push('scripts')
+    @livewireScripts
     <script src="{{ asset('/admin-assets/libs/quill/quill.js') }}"></script>
     {{--    <script src="/js/charts_gmaps.js"></script>--}}
     @include('admin.branches.partials._branch-js')
