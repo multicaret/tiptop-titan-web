@@ -4,10 +4,12 @@ namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
 use App\Models\Chain;
+use App\Models\Clinic;
 use App\Models\Location;
 use App\Models\Region;
 use App\Models\Branch;
 use App\Models\Taxonomy;
+use App\Models\WorkingHour;
 use DB;
 use Exception;
 use Illuminate\Contracts\Foundation\Application;
@@ -102,9 +104,10 @@ class BranchController extends Controller
         $chains = Chain::whereType($type)->get();
         $branch->chain = Chain::whereType($type)->first();
         $foodCategories = Taxonomy::foodCategories()->get();
+        $workingHours = $branch->getWorkingHours();
 
         return view('admin.branches.form',
-            compact('branch', 'regions', 'chains', 'typeName', 'type', 'contacts', 'foodCategories'));
+            compact('branch', 'regions', 'chains', 'typeName', 'type', 'contacts', 'foodCategories', 'workingHours'));
     }
 
     /**
@@ -155,9 +158,10 @@ class BranchController extends Controller
         $branch->load(['region', 'city', 'chain']);
         $chains = Chain::whereType($type)->get();
         $foodCategories = Taxonomy::foodCategories()->get();
+        $workingHours = $branch->getWorkingHours();
 
         return view('admin.branches.form',
-            compact('branch', 'regions', 'typeName', 'type', 'chains', 'contacts', 'foodCategories'));
+            compact('branch', 'regions', 'typeName', 'type', 'chains', 'contacts', 'foodCategories', 'workingHours'));
     }
 
     /**
@@ -287,6 +291,32 @@ class BranchController extends Controller
             $location->save();
         }
         Location::whereIn('id', $contactToDelete)->delete();
+
+
+        if ( ! is_null($request->days) && is_array($days = json_decode($request->days)) && count($days)) {
+            foreach ($days as $dayNumber => $day) {
+                if (is_null(
+                    $workingHour = WorkingHour::where('workable_id', $branch->id)
+                                              ->where('workable_type', Branch::class)
+                                              ->where('day', $dayNumber + 1)
+                                              ->first()
+                )) {
+                    $workingHour = new WorkingHour();
+                    $workingHour->workable_id = $branch->id;
+                    $workingHour->workable_type = Branch::class;
+                }
+                $workingHour->day = $dayNumber + 1;
+                if ($day->is_day_off) {
+                    $workingHour->is_day_off = true;
+                    $workingHour->opens_at = 0;
+                    $workingHour->closes_at = 0;
+                } else {
+                    $workingHour->opens_at = $day->opens_at;
+                    $workingHour->closes_at = $day->closes_at;
+                }
+                $workingHour->save();
+            }
+        }
 
         $branch->save();
         DB::commit();
