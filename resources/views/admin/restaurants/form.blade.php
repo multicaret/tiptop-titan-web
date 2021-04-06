@@ -298,5 +298,5 @@
             });
         </script>
     --}}
-    @include('admin.branches.partials._branch-js', ['chains' => []])
+    @include('admin.branches.partials._branch-js', ['chains' => [], 'workingHours' => []])
 @endpush
