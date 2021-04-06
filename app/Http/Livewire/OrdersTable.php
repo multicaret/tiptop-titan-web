@@ -47,7 +47,7 @@ class OrdersTable extends Component
     private function retrieveOrders()
     {
         if (is_null($this->filterByDate)) {
-            $this->filterByDate = now()->today()->format(config('defaults.date.short_format'));
+            $this->filterByDate = now()->format(config('defaults.date.short_format'));
         }
         $orders = Order::orderBy('created_at', 'desc')
                        ->orderBy('status');
@@ -90,7 +90,7 @@ class OrdersTable extends Component
         $this->customerEmail = null;
         $this->customerPhone = null;
         $this->branchName = null;
-        $this->filterByDate = now()->today()->format(config('defaults.date.short_format'));
+        $this->filterByDate = now()->format(config('defaults.date.short_format'));
     }
 
     public $showModal = false;

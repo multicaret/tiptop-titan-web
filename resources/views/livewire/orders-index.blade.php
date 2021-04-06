@@ -6,9 +6,9 @@
                     <div class="card-body shadow px-4 py-3 rounded-lg">
                         <h4 class="card-title">
                             Food New Orders
-                            <span wire:loading wire:target="foodNewOrdersCount">
+                            {{--<span wire:loading wire:target="foodNewOrdersCount">
                                   <i class="fas fa-sync fa-spin"></i>
-                            </span>
+                            </span>--}}
                         </h4>
                         <div class="card-text">
                             <div class="media align-items-center">
@@ -30,9 +30,9 @@
                     <div class="card-body shadow px-4 py-3 rounded-lg">
                         <h4 class="card-title">
                             Grocery New Orders
-                            <span wire:loading wire:target="groceryNewOrdersCount">
+                            {{--<span wire:loading wire:target="groceryNewOrdersCount">
                                   <i class="fas fa-sync fa-spin"></i>
-                            </span>
+                            </span>--}}
                         </h4>
                         <div class="card-text">
                             <div class="media align-items-center">

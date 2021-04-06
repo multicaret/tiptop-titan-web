@@ -8,6 +8,7 @@ use App\Http\Resources\BootResource;
 use App\Http\Resources\BranchResource;
 use App\Http\Resources\CartResource;
 use App\Http\Resources\GroceryCategoryParentResource;
+use App\Http\Resources\OrderResource;
 use App\Http\Resources\SlideResource;
 use App\Models\Boot;
 use App\Models\Branch;
@@ -122,13 +123,14 @@ class HomeController extends BaseApiController
                     $userCart = Cart::retrieve($branch->chain_id, $branch->id, $user->id);
                     $cart = new CartResource($userCart);
                     $sharedResponse['cart'] = $cart;
-                    $sharedResponse['activeOrders'] = Order::whereUserId($user->id)
-                                                           ->whereNotIn('status', [
-                                                               Order::STATUS_CANCELLED,
-                                                               Order::STATUS_DELIVERED,
-                                                           ])
-                                                           ->whereChainId($branch->chain_id)
-                                                           ->get();
+                    $activeOrders = Order::whereUserId($user->id)
+                                         ->whereNotIn('status', [
+                                             Order::STATUS_CANCELLED,
+                                             Order::STATUS_DELIVERED,
+                                         ])
+                                         ->whereChainId($branch->chain_id)
+                                         ->get();
+                    $sharedResponse['activeOrders'] = OrderResource::collection($activeOrders);
                 }
 //            } else {
                 // It's too late no branch is open for now, so sorry
