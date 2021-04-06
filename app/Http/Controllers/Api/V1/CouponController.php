@@ -61,9 +61,7 @@ class CouponController extends BaseApiController
 
         [$isAmountValid, $totalDiscountedAmount] = $coupon->validateCouponDiscountAmount($activeCart->total);
         if ( ! $isAmountValid) {
-            return $this->setStatusCode(Response::HTTP_BAD_REQUEST)->respond([
-                'errors' => 'Coupon is invalid'
-            ]);
+            return $this->setStatusCode(Response::HTTP_BAD_REQUEST)->respond(null,['Coupon is invalid']);
         }
         $deliveryFee = $branch->calculateDeliveryFee($activeCart->total);
         if ($coupon->has_free_delivery) {
@@ -77,6 +75,7 @@ class CouponController extends BaseApiController
                 'deliveryFee' => $deliveryFee,
                 'totalBefore' => $activeCart->total,
                 'totalAfter' => $activeCart->total - $totalDiscountedAmount,
+                'grandTotal' => ($activeCart->total - $totalDiscountedAmount) + $deliveryFee,
             ] as $index => $item
         ) {
             $data[$index] = [
