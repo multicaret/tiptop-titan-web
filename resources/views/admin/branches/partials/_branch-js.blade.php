@@ -44,6 +44,8 @@
             validationData: [],
             formErrorMessage: null,
             selectedRegion: null,
+            isTipTopDelivery: true,
+            isRestaurantDelivery: true,
         },
         watch: {
             branch: {

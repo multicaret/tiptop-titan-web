@@ -4,7 +4,8 @@
         <div class="card card-outline-inverse">
             <h4 class="card-header">Tiptop Delivery
                 <label class="switcher switcher-primary m-3">
-                    <input type="checkbox" class="switcher-input"
+                    <input type="checkbox" class="switcher-input" v-model="isTipTopDelivery"
+                           @change="isRestaurantDelivery == false ? (isRestaurantDelivery = true) : null"
                            name="has_tip_top_delivery" {{$branch->has_tip_top_delivery ? 'checked' : ''}}>
                     <span class="switcher-indicator">
                                     <span class="switcher-yes">
@@ -48,6 +49,8 @@
                 <h4 class="card-header">Restaurant Delivery
                     <label class="switcher switcher-primary m-3">
                         <input type="checkbox" class="switcher-input"
+                               v-model="isRestaurantDelivery"
+                               @change="isTipTopDelivery == false ? (isTipTopDelivery = true) : null"
                                name="has_restaurant_delivery" {{$branch->has_restaurant_delivery ? 'checked' : ''}}>
                         <span class="switcher-indicator">
                                     <span class="switcher-yes">

@@ -258,4 +258,6 @@ return [
     'copy' => 'Copy',
     'copy_deep_link' => 'Copy Deep Link',
     'add_restaurant' => 'Add Restaurant',
+    'add_chain' => 'Add Chain',
+    'add_branch' => 'Add Branch',
 ];

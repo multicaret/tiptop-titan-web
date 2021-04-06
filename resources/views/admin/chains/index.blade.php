@@ -10,7 +10,7 @@
         <div>
             @if(\App\Models\Chain::isFood())
                 <a href="{{ route('admin.restaurants.create') }}">
-                    <button type="button" class="btn btn-primary rounded-pill">
+                    <button type="button" class="btn btn-secondary rounded-pill">
                         <span class="ion ion-md-add"></span>
                         &nbsp;
                         {{trans('strings.add_restaurant')}}
@@ -21,7 +21,7 @@
                 <button type="button" class="btn btn-primary rounded-pill">
                     <span class="ion ion-md-add"></span>
                     &nbsp;
-                    {{trans('strings.add')}}
+                    {{trans('strings.add_chain')}}
                 </button>
             </a>
         </div>
