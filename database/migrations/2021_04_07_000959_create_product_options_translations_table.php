@@ -20,7 +20,7 @@ class CreateProductOptionsTranslationsTable extends Migration
             $table->string('option_title')->nullable();
             $table->string('locale')->index();
 
-            $table->unique(['slide_id', 'locale']);
+            $table->unique(['product_options_id', 'locale']);
             $table->timestamps();
 
             $table->foreign('product_options_id')->references('id')->on('product_options')->onDelete('cascade');
