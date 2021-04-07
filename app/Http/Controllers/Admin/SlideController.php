@@ -54,7 +54,7 @@ class SlideController extends Controller
                 'title' => trans('strings.title'),
                 'width' => '40',
             ],
-            [
+            /*[
                 'data' => 'region',
                 'name' => 'region',
                 'title' => trans('strings.city'),
@@ -65,11 +65,18 @@ class SlideController extends Controller
                 'name' => 'city',
                 'title' => trans('strings.neighborhood'),
                 'width' => '40',
+            ],*/
+            [
+                'data' => 'location',
+                'name' => 'location',
+                'title' => trans('strings.location'),
+                'width' => '30',
             ],
             [
                 'data' => 'channel',
                 'name' => 'channel',
                 'title' => 'Channel',
+                'width' => '20',
             ],
             [
                 'data' => 'has_been_authenticated',

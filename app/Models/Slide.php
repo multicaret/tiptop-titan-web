@@ -169,7 +169,7 @@ class Slide extends Model
             ],
             self::TYPE_FOOD_AND_GROCERY_OBJECT => [
                 'id' => self::TYPE_FOOD_AND_GROCERY_OBJECT,
-                'title' => trans('strings.grocery_and_food'),
+                'title' => trans('strings.both'),
                 'class' => 'info',
             ],
         ];
