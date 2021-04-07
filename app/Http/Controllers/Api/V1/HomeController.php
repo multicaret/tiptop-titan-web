@@ -179,7 +179,7 @@ class HomeController extends BaseApiController
                               ->latest('published_at')->get();
 
             $featuredBranches = Branch::active()->whereType(Branch::CHANNEL_FOOD_OBJECT)
-                                                ->whereNotNull('being_featured_at')
+                                                ->whereNotNull('featured_at')
                                                 ->get();
             $response['branches'] = FoodBranchResource::collection($branches);
             $response['featuredBranches'] = FoodBranchResource::collection($featuredBranches);
