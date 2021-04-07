@@ -88,6 +88,16 @@ class ProductController extends Controller
             ]);
         }
 
+        if ($request->has('branch_id')) {
+            return redirect()
+                ->route('admin.products.edit', ['type' => $request->type, $product->uuid])
+                ->with('message', [
+                    'type' => 'Success',
+                    'text' => 'Stored successfully',
+                ]);
+
+        }
+
         return redirect()
             ->route('admin.products.index', ['type' => $request->type])
             ->with('message', [
@@ -118,6 +128,15 @@ class ProductController extends Controller
                 'type' => 'Error',
                 'text' => $e->getMessage(),
             ]);
+        }
+        if ($request->has('branch_id')) {
+            return redirect()
+                ->route('admin.products.edit', ['type' => $request->type, $product->uuid])
+                ->with('message', [
+                    'type' => 'Success',
+                    'text' => 'Updated successfully',
+                ]);
+
         }
 
         return redirect()
@@ -180,8 +199,8 @@ class ProductController extends Controller
 
         return [
             "{$defaultLocale}.title" => 'required',
-            'chain_id' => 'required',
-            'branch_id' => 'required',
+//            'chain_id' => 'required',
+//            'branch_id' => 'required',
             'categories' => 'required',
             'unit_id' => 'required',
             'price' => 'required',
@@ -195,8 +214,16 @@ class ProductController extends Controller
         $ids = Arr::pluck(json_decode($request->input('categories'), true), 'id');
         $product->creator_id = $product->editor_id = auth()->id();
         $product->category_id = count($ids) > 0 ? $ids[0] : null;
-        $product->chain_id = optional(json_decode($request->input('chain_id')))->id;
-        $product->branch_id = optional(json_decode($request->input('branch_id')))->id;
+        if ($request->has('chain_id') && ! is_null($request->input('chain_id'))) {
+            $product->chain_id = $request->input('chain_id');
+        } else {
+            $product->chain_id = optional(json_decode($request->input('chain')))->id;
+        }
+        if ($request->has('branch_id') && ! is_null($request->input('branch_id'))) {
+            $product->branch_id = $request->input('branch_id');
+        } else {
+            $product->branch_id = optional(json_decode($request->input('branch')))->id;
+        }
         $product->unit_id = optional(json_decode($request->input('unit_id')))->id;
         $product->price = $request->input('price');
         $product->price_discount_amount = $request->input('price_discount_amount');

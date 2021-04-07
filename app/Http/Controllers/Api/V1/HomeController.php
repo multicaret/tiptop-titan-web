@@ -7,6 +7,8 @@ use App\Http\Controllers\Api\BaseApiController;
 use App\Http\Resources\BootResource;
 use App\Http\Resources\BranchResource;
 use App\Http\Resources\CartResource;
+use App\Http\Resources\FoodBranchResource;
+use App\Http\Resources\FoodCategoryResource;
 use App\Http\Resources\GroceryCategoryParentResource;
 use App\Http\Resources\OrderResource;
 use App\Http\Resources\SlideResource;
@@ -73,23 +75,28 @@ class HomeController extends BaseApiController
         $channel = strtolower($request->input('channel'));
 
         $address = Location::find($request->input('selected_address_id'));
-        $region = $address->region;
-        $city = $address->city;
-        if ($channel == "food") {
+        if (is_null($address)) {
+            $cityId = null;
+            $regionId = null;
+        } else {
+            $cityId = optional($address->city)->id;
+            $regionId = optional($address->region)->id;
+        }
+        if ($channel == config('app.app-channels.food')) {
             $slideChannel = Slide::CHANNEL_FOOD_OBJECT;
-        } elseif ($channel == "grocery") {
+        } elseif ($channel == config('app.app-channels.grocery')) {
             $slideChannel = Slide::CHANNEL_GROCERY_OBJECT;
         }
         $hasBeenAuthenticated = ! is_null($user) ? Slide::TARGET_LOGGED_IN : Slide::TARGET_GUEST;
-        $slides = Slide::where('region_id', $region->id)
-                       ->where('city_id', $city->id)
+        $slides = Slide::where('region_id', $regionId)
+                       ->where('city_id', $cityId)
                        ->whereIn('channel', [$slideChannel, Slide::TYPE_FOOD_AND_GROCERY_OBJECT])
                        ->whereIn('has_been_authenticated', [$hasBeenAuthenticated, Slide::TARGET_EVERYONE])
                        ->where('expires_at', '>', now())
                        ->where('begins_at', '<', now())
                        ->get();
 
-        $slides = SlideResource::collection(Slide::all());
+        $slides = SlideResource::collection($slides);
 
         $cart = null;
 
@@ -162,7 +169,20 @@ class HomeController extends BaseApiController
             $sharedResponse['estimated_arrival_time']['value'] = '20-30';
 
         } else {
-            $response = [];
+            $response['categories'] = cache()->rememberForever('all_food_categories_with_products', function () {
+                $categories = Taxonomy::active()->foodCategories()->get();
+
+                return FoodCategoryResource::collection($categories);
+            });
+
+            $branches = Branch::active()->whereType(Branch::CHANNEL_FOOD_OBJECT)
+                              ->latest('published_at')->get();
+
+            $featuredBranches = Branch::active()->whereType(Branch::CHANNEL_FOOD_OBJECT)
+                                                ->whereNotNull('being_featured_at')
+                                                ->get();
+            $response['branches'] = FoodBranchResource::collection($branches);
+            $response['featuredBranches'] = FoodBranchResource::collection($featuredBranches);
         }
 
         return $this->respond(array_merge($sharedResponse, $response));

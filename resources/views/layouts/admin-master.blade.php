@@ -153,9 +153,9 @@
 </div>
 
 
-<script src="https://cdn.jsdelivr.net/npm/vue@2.6.12/dist/vue.js"></script>
+
 <!-- Core scripts -->
-<script src="{{ asset('js/admin.js') }}"></script>
+<script src="{{ asset('js/admin.js'). '?ver='. rand(1000, 9999) }}"></script>
 <script src="{{ asset('/admin-assets/js/sidenav.js') }}"></script>
 
 <!-- Libs -->

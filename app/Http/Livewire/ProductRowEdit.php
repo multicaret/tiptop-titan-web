@@ -13,9 +13,9 @@ class ProductRowEdit extends Component
 
     public function mount()
     {
-        $this->titleEn = $this->product->translate('en')->title;
-        $this->titleKu = $this->product->translate('ku')->title;
-        $this->titleAr = $this->product->translate('ar')->title;
+        $this->titleEn = optional($this->product->translate('en'))->title;
+        $this->titleKu = optional($this->product->translate('ku'))->title;
+        $this->titleAr = optional($this->product->translate('ar'))->title;
     }
 
     protected $rules = [

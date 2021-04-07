@@ -169,6 +169,10 @@ use Spatie\Permission\Traits\HasRoles;
  * @method static Builder|User whereWalletFreeTotal($value)
  * @method static Builder|User whereWalletReservedTotal($value)
  * @mixin Eloquent
+ * @property-read Collection|\App\Models\Cart[] $carts
+ * @property-read int|null $carts_count
+ * @property-read Collection|\App\Models\CouponUsage[] $couponUsages
+ * @property-read int|null $coupon_usages_count
  */
 class User extends Authenticatable implements HasMedia, MustVerifyEmail
 {
