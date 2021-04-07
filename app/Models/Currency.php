@@ -24,7 +24,7 @@ use Illuminate\Support\Carbon;
  * @property int $status 1:draft, 2:active, 3:Inactive, 4..n:CUSTOM
  * @property Carbon|null $created_at
  * @property Carbon|null $updated_at
- * @property-read Collection|Country[] $countries
+ * @property-read Collection|\App\Models\Country[] $countries
  * @property-read int|null $countries_count
  * @property-read bool $is_active
  * @property-read bool $is_inactive

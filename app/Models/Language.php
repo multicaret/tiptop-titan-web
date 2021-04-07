@@ -21,15 +21,15 @@ use Illuminate\Support\Carbon;
  * @property int $status 1:draft, 2:active, 3:Inactive, 4..n:CUSTOM
  * @property Carbon|null $created_at
  * @property Carbon|null $updated_at
- * @property-read Collection|Country[] $countries
+ * @property-read Collection|\App\Models\Country[] $countries
  * @property-read int|null $countries_count
  * @property-read bool $is_active
  * @property-read bool $is_inactive
  * @property-read mixed $status_name
- * @property-read LanguageTranslation|null $translation
- * @property-read Collection|LanguageTranslation[] $translations
+ * @property-read \App\Models\LanguageTranslation|null $translation
+ * @property-read Collection|\App\Models\LanguageTranslation[] $translations
  * @property-read int|null $translations_count
- * @property-read Collection|User[] $users
+ * @property-read Collection|\App\Models\User[] $users
  * @property-read int|null $users_count
  * @method static Builder|Language active()
  * @method static Builder|Language draft()
