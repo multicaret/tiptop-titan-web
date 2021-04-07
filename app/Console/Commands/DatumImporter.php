@@ -148,6 +148,7 @@ class DatumImporter extends Command
         $tempProduct['status'] = 2;
         $tempProduct['type'] = 1;
         $tempProduct['available_quantity'] = 100;
+        $tempProduct['is_storage_tracking_enabled'] = 0;
         $tempProduct['price_discount_by_percentage'] = $oldProduct->discount_type === OldProduct::TYPE_DISCOUNT_PERCENTAGE;
         $isInserted = Product::insert($tempProduct);
         if ($isInserted) {
