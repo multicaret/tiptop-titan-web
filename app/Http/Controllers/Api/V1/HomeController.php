@@ -7,6 +7,8 @@ use App\Http\Controllers\Api\BaseApiController;
 use App\Http\Resources\BootResource;
 use App\Http\Resources\BranchResource;
 use App\Http\Resources\CartResource;
+use App\Http\Resources\FoodBranchResource;
+use App\Http\Resources\FoodCategoryResource;
 use App\Http\Resources\GroceryCategoryParentResource;
 use App\Http\Resources\OrderResource;
 use App\Http\Resources\SlideResource;
@@ -167,7 +169,20 @@ class HomeController extends BaseApiController
             $sharedResponse['estimated_arrival_time']['value'] = '20-30';
 
         } else {
-            $response = [];
+            $response['categories'] = cache()->rememberForever('all_food_categories_with_products', function () {
+                $categories = Taxonomy::active()->foodCategories()->get();
+
+                return FoodCategoryResource::collection($categories);
+            });
+
+            $branches = Branch::active()->whereType(Branch::CHANNEL_FOOD_OBJECT)
+                              ->latest('published_at')->get();
+
+            $featuredBranches = Branch::active()->whereType(Branch::CHANNEL_FOOD_OBJECT)
+                                                ->whereNotNull('featured_at')
+                                                ->get();
+            $response['branches'] = FoodBranchResource::collection($branches);
+            $response['featuredBranches'] = FoodBranchResource::collection($featuredBranches);
         }
 
         return $this->respond(array_merge($sharedResponse, $response));

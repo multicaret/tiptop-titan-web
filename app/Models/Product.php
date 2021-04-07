@@ -51,27 +51,27 @@ use Spatie\MediaLibrary\MediaCollections\Models\Media;
  * @property int $search_count
  * @property int $view_count
  * @property int $status 1:draft, 2:active, 3:Inactive, 4..n:CUSTOM
- * @property int|null $price_discount_began_at
- * @property int|null $price_discount_finished_at
- * @property int|null $custom_banner_began_at
- * @property int|null $custom_banner_ended_at
+ * @property Carbon|null $price_discount_began_at
+ * @property Carbon|null $price_discount_finished_at
+ * @property Carbon|null $custom_banner_began_at
+ * @property Carbon|null $custom_banner_ended_at
  * @property bool|null $is_storage_tracking_enabled
  * @property bool|null $price_discount_by_percentage true: percentage, false: fixed amount
  * @property int $on_mobile_grid_tile_weight
  * @property Carbon|null $created_at
  * @property Carbon|null $updated_at
  * @property Carbon|null $deleted_at
- * @property-read Collection|Barcode[] $barcodes
+ * @property-read Collection|\App\Models\Barcode[] $barcodes
  * @property-read int|null $barcodes_count
- * @property Branch $branch
- * @property-read Collection|Cart[] $carts
+ * @property-read \App\Models\Branch $branch
+ * @property-read Collection|\App\Models\Cart[] $carts
  * @property-read int|null $carts_count
- * @property-read Collection|Taxonomy[] $categories
+ * @property-read Collection|\App\Models\Taxonomy[] $categories
  * @property-read int|null $categories_count
- * @property Chain $chain
- * @property-read User $creator
- * @property-read User $editor
- * @property-read Collection|User[] $favoriters
+ * @property-read \App\Models\Chain $chain
+ * @property-read \App\Models\User $creator
+ * @property-read \App\Models\User $editor
+ * @property-read Collection|\App\Models\User[] $favoriters
  * @property-read int|null $favoriters_count
  * @property-read mixed $cover
  * @property-read mixed $cover_full
@@ -83,15 +83,17 @@ use Spatie\MediaLibrary\MediaCollections\Models\Media;
  * @property-read mixed $price_formatted
  * @property-read mixed $status_name
  * @property-read mixed $thumbnail
- * @property-read Taxonomy $masterCategory
+ * @property-read \App\Models\Taxonomy $masterCategory
  * @property-read MediaCollection|Media[] $media
  * @property-read int|null $media_count
- * @property-read Collection|Taxonomy[] $tags
+ * @property-read Collection|\App\Models\Taxonomy[] $options
+ * @property-read int|null $options_count
+ * @property-read Collection|\App\Models\Taxonomy[] $tags
  * @property-read int|null $tags_count
- * @property-read ProductTranslation|null $translation
- * @property-read Collection|ProductTranslation[] $translations
+ * @property-read \App\Models\ProductTranslation|null $translation
+ * @property-read Collection|\App\Models\ProductTranslation[] $translations
  * @property-read int|null $translations_count
- * @property-read Taxonomy|null $unit
+ * @property-read \App\Models\Taxonomy|null $unit
  * @method static Builder|Product active()
  * @method static Builder|Product draft()
  * @method static Builder|Product food()

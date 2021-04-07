@@ -60,22 +60,22 @@
                                                 <div class="card-body">
                                                     <div class="row">
                                                         <div class="col-12 pb-3 border-bottom">
-                                                            <b>Name</b> : <a target="_blank" class="text-primary"
+                                                            <b>Name:</b> <a target="_blank" class="text-primary"
                                                                              href="{{route('admin.users.edit',$selectedOrder->user->id)}}">{{$selectedOrder->user->name}}</a>
                                                         </div>
                                                         <div class="col-12 py-3 border-bottom">
-                                                            <b>Email</b> :
+                                                            <b>Email:</b>
                                                             <a class="text-primary" target="_blank"
                                                                href="mailto:{{$selectedOrder->user->email}}">
                                                                 {{$selectedOrder->user->email}}
                                                             </a>
                                                         </div>
                                                         <div class="col-12 py-3 border-bottom">
-                                                            <b>Phone</b> : {{$selectedOrder->user->phone_number}}
+                                                            <b>Phone:</b> {{$selectedOrder->user->phone_number}}
                                                         </div>
                                                         <div class="col-12 py-3 border-bottom"
                                                              style="height: 110px;overflow:scroll">
-                                                            <b>Notes</b> : {{$selectedOrder->notes}}
+                                                            <b>Notes:</b> {{$selectedOrder->notes}}
                                                         </div>
                                                     </div>
                                                 </div>
@@ -88,14 +88,14 @@
                                                 <div class="card-body">
                                                     <div class="row">
                                                         <div class="col-12 pb-3 border-bottom">
-                                                            <b>Name</b> : <a class="text-primary"
+                                                            <b>Name:</b> <a class="text-primary"
                                                                              target="_blank"
                                                                              href="{{route('admin.branches.edit',[$selectedOrder->branch->uuid,\App\Models\Branch::getCorrectChannelName($selectedOrder->branch->type)])}}">
                                                                 {{$selectedOrder->branch->title}}
                                                             </a>
                                                         </div>
                                                         <div class="col-12 py-3 border-bottom">
-                                                            <b>Email</b> :
+                                                            <b>Email:</b>
                                                             <a class="text-primary" target="_blank"
                                                                href="mailto:{{$selectedOrder->user->email}}">
                                                                 {{$selectedOrder->user->email}}
@@ -122,14 +122,12 @@
                                                 <th>Name</th>
                                                 <th>Price</th>
                                                 <th>Quantity</th>
-                                                @if($selectedOrder->coupon_discount_amount != 0)
-                                                    <th>Total Price</th>
-                                                @endif
+                                                <th>Total Price</th>
                                             </tr>
                                             </thead>
                                             <tbody>
-                                            <tr>
-                                                @foreach($orderProducts as $orderProduct)
+                                            @foreach($orderProducts as $orderProduct)
+                                                <tr>
                                                     <td>
                                                         <img src="{{$orderProduct->product_object['cover']}}"
                                                              alt="Product cover" width="50">
@@ -137,11 +135,9 @@
                                                     <td>{{$orderProduct->product_object['title']}}</td>
                                                     <td>{{$orderProduct->product_object['price']}}</td>
                                                     <td>{{$orderProduct->quantity}}</td>
-                                                    @if($selectedOrder->coupon_discount_amount != 0)
-                                                        <td>{{($orderProduct->product_object['price'] * $orderProduct->quantity)}}</td>
-                                                    @endif
-                                                @endforeach
-                                            </tr>
+                                                    <td>{{($orderProduct->product_object['price'] * $orderProduct->quantity)}}</td>
+                                                </tr>
+                                            @endforeach
                                             </tbody>
                                         </table>
                                     </div>
@@ -153,25 +149,25 @@
                                                 <div class="card-body">
                                                     <div class="row">
                                                         <div class="col-md-12 pb-3 border-bottom">
-                                                            <b>Total</b> :
+                                                            <b>Total:</b>
                                                             {!! \App\Models\Currency::formatHtml($selectedOrder->total) !!}
                                                         </div>
                                                         @if($selectedOrder->coupon_discount_amount != 0)
                                                             <div class="col-md-12 py-3 border-bottom">
-                                                                <b>Coupon discount amount</b> :
+                                                                <b>Coupon discount amount:</b>
                                                                 {!! \App\Models\Currency::formatHtml($selectedOrder->coupon_discount_amount) !!}
                                                             </div>
                                                             <div class="col-md-12 py-3 border-bottom">
-                                                                <b>Coupon
-                                                                   Code</b>: {{$selectedOrder->coupon->redeem_code}}
+                                                                <b>Coupon Code:</b>
+                                                                {{$selectedOrder->coupon->redeem_code}}
                                                             </div>
                                                         @endif
                                                         <div class="col-md-12 py-3 border-bottom">
-                                                            <b>Delivery fee</b> :
+                                                            <b>Delivery fee:</b>
                                                             {!! \App\Models\Currency::formatHtml($selectedOrder->delivery_fee) !!}
                                                         </div>
                                                         <div class="col-md-12 py-3 border-bottom">
-                                                            <b>Grand total</b> :
+                                                            <b>Grand total:</b>
                                                             {!! \App\Models\Currency::formatHtml($selectedOrder->grand_total) !!}
                                                         </div>
                                                         <div class="col-md-12 py-3 border-bottom">

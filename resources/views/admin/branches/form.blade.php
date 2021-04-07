@@ -114,10 +114,14 @@
     @livewireScripts
     <script>
         Livewire.on('productStored', (params) => {
-            window.toast.fire({
-                icon: params.icon,
-                title: params.message,
-            });
+            if (params.timeout) {
+                setTimeout(function () {
+                    showToast(params.icon, params.message);
+                }, params.timeout)
+            } else {
+                showToast(params.icon, params.message);
+            }
+
         });
     </script>
 @endpush

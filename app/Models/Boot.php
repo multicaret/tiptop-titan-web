@@ -21,8 +21,8 @@ use Illuminate\Support\Carbon;
  * @property array|null $data
  * @property Carbon|null $created_at
  * @property Carbon|null $updated_at
- * @property-read BootTranslation|null $translation
- * @property-read Collection|BootTranslation[] $translations
+ * @property-read \App\Models\BootTranslation|null $translation
+ * @property-read Collection|\App\Models\BootTranslation[] $translations
  * @property-read int|null $translations_count
  * @method static Builder|Boot listsTranslations(string $translationField)
  * @method static Builder|Boot newModelQuery()

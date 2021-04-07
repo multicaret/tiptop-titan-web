@@ -2,7 +2,7 @@
 return [
     'user' => [
         'mobile_app_details' => [
-            'version' => "0.0.0",
+            'version' => '0.0.0',
             'buildNumber' => 0,
             'device' => [
                 'manufacturer' => '',

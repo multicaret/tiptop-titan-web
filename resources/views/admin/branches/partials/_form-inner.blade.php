@@ -187,6 +187,12 @@
                                         @slot('selected', $branch->foodCategories)
                                     @endcomponent
                                 </div>
+                                <div class="col-12">
+                                    @component('admin.components.form-group', ['name' => 'featured_at', 'type' => 'datetime-local'])
+                                        @slot('label', 'Featured at')
+                                        @slot('value', $branch->featured_at)
+                                    @endcomponent
+                                </div>
                             @endif
                             <div class="col-6">
                                 @component('admin.components.form-group', ['name' => 'status', 'type' => 'select'])

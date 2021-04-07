@@ -38,7 +38,7 @@ use Illuminate\Support\Carbon;
  * @property float $private_grand_total
  * @property bool $is_delivery_by_tiptop
  * @property string|null $branch_rating_value
- * @property int|null $rated_at
+ * @property Carbon|null $rated_at
  * @property string|null $rating_comment
  * @property string|null $driver_rating_value
  * @property int|null $has_good_food_quality_rating
@@ -47,7 +47,7 @@ use Illuminate\Support\Carbon;
  * @property int|null $rating_issue_id
  * @property Carbon|null $completed_at
  * @property string|null $notes
- * @property int $status
+ * @property int $status 
  *                     0: Cancelled,
  *                     1: Draft,
  *                     6: Waiting Courier,
@@ -58,17 +58,15 @@ use Illuminate\Support\Carbon;
  * @property Carbon|null $created_at
  * @property Carbon|null $updated_at
  * @property Carbon|null $deleted_at
- * @property-read Location $address
- * @property-read Branch $branch
- * @property-read Cart $cart
- * @property-read Chain $chain
- * @property-read Coupon|null $coupon
- * @property-read PaymentMethod $paymentMethod
+ * @property-read \App\Models\Location $address
+ * @property-read \App\Models\Branch $branch
+ * @property-read \App\Models\Cart $cart
+ * @property-read \App\Models\Chain $chain
+ * @property-read \App\Models\Coupon|null $coupon
+ * @property-read \App\Models\PaymentMethod $paymentMethod
  * @property-read Order|null $previousOrder
- * @property-read Collection|Product[] $products
- * @property-read int|null $products_count
- * @property-read Taxonomy|null $ratingIssue
- * @property-read User $user
+ * @property-read \App\Models\Taxonomy|null $ratingIssue
+ * @property-read \App\Models\User $user
  * @method static \Illuminate\Database\Eloquent\Builder|Order atTheAddress()
  * @method static \Illuminate\Database\Eloquent\Builder|Order cancelled()
  * @method static \Illuminate\Database\Eloquent\Builder|Order delivered()

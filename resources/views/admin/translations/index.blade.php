@@ -83,13 +83,6 @@
             $(`#${id}-${localeKey}-input`).val(defaultValue);
         }
 
-        function showToast(type, message) {
-            window.toast.fire({
-                icon: type,
-                type: type,
-                title: message,
-            });
-        }
 
         function showAlert(title, message, type) {
             window.swal.fire({

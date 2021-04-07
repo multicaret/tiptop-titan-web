@@ -448,11 +448,14 @@ class DatatableController extends AjaxController
 
                              return null;
                          })
-                         ->editColumn('region', function ($item) {
-                             return ! is_null($item->region) ? $item->region->name : '';
-                         })
-                         ->editColumn('city', function ($item) {
-                             return ! is_null($item->city) ? $item->city->name : '';
+            /*->editColumn('region', function ($item) {
+                return ! is_null($item->region) ? $item->region->name : '';
+            })*/
+            /*->editColumn('city', function ($item) {
+            return ! is_null($item->city) ? $item->city->name : '';
+            })*/
+                         ->editColumn('location', function ($item) {
+                             return (! is_null($item->city) ? $item->city->name : '')." - ". (! is_null($item->region) ? $item->region->name : '');
                          })
                          ->editColumn('has_been_authenticated', function ($item) {
                              return Slide::getTargetsArray()[$item->has_been_authenticated];
@@ -495,8 +498,7 @@ class DatatableController extends AjaxController
                              'status',
                              'begins_at',
                              'expires_at',
-                             'region',
-                             'city',
+                             'location',
                              'state',
                              'channel',
                              'time_left',
