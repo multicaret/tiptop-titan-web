@@ -125,11 +125,10 @@ class BranchController extends Controller
         $this->storeUpdateLogic($request, $branch);
 
         return redirect()
-            ->back()
-//            ->route('admin.branches.index', ['type' => $request->type])
+            ->route('admin.branches.edit', ['type' => $request->type, $branch->uuid])
             ->with('message', [
                 'type' => 'Success',
-                'text' => __('strings.successfully_created'),
+                'text' => 'Successfully created',
             ]);
     }
 
@@ -265,6 +264,13 @@ class BranchController extends Controller
 //        $branch->whatsapp_phone_number = $request->input('whatsapp_phone_number');
         $branch->type = Branch::getCorrectChannel($request->type);
         $branch->status = $request->input('status');
+
+        if ($request->input('status') == Branch::STATUS_ACTIVE) {
+            $branch->published_at = $request->input('published_at');
+        }
+        $branch->being_featured_at = $request->input('being_featured_at');
+        $branch->being_unfeatured_at = $request->input('being_unfeatured_at');
+
         $branch->save();
 
         foreach (localization()->getSupportedLocales() as $key => $value) {

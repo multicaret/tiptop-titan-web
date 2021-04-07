@@ -50,6 +50,9 @@ class CreateBranchesTable extends Migration
             $table->unsignedInteger('rating_count')->default(0);
             $table->unsignedBigInteger('view_count')->default(1);
             $table->unsignedTinyInteger('status')->default(Branch::STATUS_DRAFT)->comment('1:draft, 2:active, 3:Inactive, 4..n:CUSTOM');
+            $table->timestamp('published_at')->nullable();
+            $table->timestamp('being_featured_at')->nullable();
+            $table->timestamp('being_unfeatured_at')->nullable();
             $table->timestamps();
             $table->softDeletes();
 
