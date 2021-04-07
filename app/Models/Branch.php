@@ -149,7 +149,7 @@ use Spatie\MediaLibrary\MediaCollections\Models\Collections\MediaCollection;
  * @property int $free_delivery_threshold
  * @property int $restaurant_free_delivery_threshold
  * @property Carbon|null $published_at
- * @property Carbon|null $being_featured_at
+ * @property Carbon|null $featured_at
  * @property Carbon|null $being_unfeatured_at
  * @method static Builder|Branch whereBeingFeaturedAt($value)
  * @method static Builder|Branch whereBeingUnfeaturedAt($value)
@@ -189,8 +189,7 @@ class Branch extends Model implements HasMedia
         'free_delivery_threshold',
         'restaurant_free_delivery_threshold',
         'published_at',
-        'being_featured_at',
-        'being_unfeatured_at',
+        'featured_at',
     ];
     protected $with = ['translations'];
     protected $translatedAttributes = ['title', 'description'];
@@ -205,8 +204,7 @@ class Branch extends Model implements HasMedia
         'restaurant_under_minimum_order_delivery_fee' => 'double',
         'restaurant_fixed_delivery_fee' => 'double',
         'published_at' => 'datetime',
-        'being_featured_at' => 'datetime',
-        'being_unfeatured_at' => 'datetime',
+        'featured_at' => 'datetime',
     ];
 
 

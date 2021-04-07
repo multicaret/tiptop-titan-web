@@ -268,8 +268,7 @@ class BranchController extends Controller
         if ($request->input('status') == Branch::STATUS_ACTIVE) {
             $branch->published_at = $request->input('published_at');
         }
-        $branch->being_featured_at = $request->input('being_featured_at');
-        $branch->being_unfeatured_at = $request->input('being_unfeatured_at');
+        $branch->featured_at = $request->input('featured_at');
 
         $branch->save();
 

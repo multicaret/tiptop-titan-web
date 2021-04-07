@@ -187,16 +187,10 @@
                                         @slot('selected', $branch->foodCategories)
                                     @endcomponent
                                 </div>
-                                <div class="col-6">
-                                    @component('admin.components.form-group', ['name' => 'being_featured_at', 'type' => 'datetime-local'])
-                                        @slot('label', 'Being featured at')
-                                        @slot('value', $branch->being_featured_at)
-                                    @endcomponent
-                                </div>
-                                <div class="col-6">
-                                    @component('admin.components.form-group', ['name' => 'being_unfeatured_at', 'type' => 'datetime-local'])
-                                        @slot('label', 'Being unfeatured at')
-                                        @slot('value', $branch->being_unfeatured_at)
+                                <div class="col-12">
+                                    @component('admin.components.form-group', ['name' => 'featured_at', 'type' => 'datetime-local'])
+                                        @slot('label', 'Featured at')
+                                        @slot('value', $branch->featured_at)
                                     @endcomponent
                                 </div>
                             @endif
