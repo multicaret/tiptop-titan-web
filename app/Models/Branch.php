@@ -197,12 +197,15 @@ class Branch extends Model implements HasMedia
     protected $casts = [
         'has_tip_top_delivery' => 'boolean',
         'has_restaurant_delivery' => 'boolean',
+        'is_open_now' => 'boolean',
+
         'minimum_order' => 'double',
         'under_minimum_order_delivery_fee' => 'double',
         'fixed_delivery_fee' => 'double',
         'restaurant_minimum_order' => 'double',
         'restaurant_under_minimum_order_delivery_fee' => 'double',
         'restaurant_fixed_delivery_fee' => 'double',
+
         'published_at' => 'datetime',
         'featured_at' => 'datetime',
     ];
