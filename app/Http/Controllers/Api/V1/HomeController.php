@@ -175,8 +175,14 @@ class HomeController extends BaseApiController
                 return FoodCategoryResource::collection($categories);
             });
 
-            $branches = Branch::active()->whereType(Branch::CHANNEL_FOOD_OBJECT)->latest()->get();
+            $branches = Branch::active()->whereType(Branch::CHANNEL_FOOD_OBJECT)
+                              ->latest('published_at')->get();
+
+            $featuredBranches = Branch::active()->whereType(Branch::CHANNEL_FOOD_OBJECT)
+                                                ->whereNotNull('being_featured_at')
+                                                ->get();
             $response['branches'] = FoodBranchResource::collection($branches);
+            $response['featuredBranches'] = FoodBranchResource::collection($featuredBranches);
         }
 
         return $this->respond(array_merge($sharedResponse, $response));
