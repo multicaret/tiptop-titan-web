@@ -189,12 +189,5 @@
                 });
         }
 
-        function showToast(type, message) {
-            window.toast.fire({
-                icon: type,
-                type: type,
-                title: message,
-            });
-        }
     </script>
 @endpush
