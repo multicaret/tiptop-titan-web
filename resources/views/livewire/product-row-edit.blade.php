@@ -59,9 +59,13 @@
     </td>
     <td>{{$product->status_name}}</td>
     <td>
-        <button class="btn btn-outline-success btn-sm d-inline-block mb-1">
+        <a target="_blank" class="btn btn-outline-success btn-sm d-inline-block mb-1" href="{{route('admin.products.edit',
+                            ['type'=> request()->type,
+                            'branch_id' => $product->branch_id,
+                            'chain_id' => $product->chain_id,
+                            $product->uuid])}}">
             Edit
-        </button>
+        </a>
         <button class="btn btn-outline-info btn-sm d-inline-block mb-1">
             Options
         </button>

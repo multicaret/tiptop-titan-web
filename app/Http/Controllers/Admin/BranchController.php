@@ -4,7 +4,6 @@ namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
 use App\Models\Chain;
-use App\Models\Clinic;
 use App\Models\Location;
 use App\Models\Region;
 use App\Models\Branch;
@@ -126,7 +125,8 @@ class BranchController extends Controller
         $this->storeUpdateLogic($request, $branch);
 
         return redirect()
-            ->route('admin.branches.index', ['type' => $request->type])
+            ->back()
+//            ->route('admin.branches.index', ['type' => $request->type])
             ->with('message', [
                 'type' => 'Success',
                 'text' => __('strings.successfully_created'),
@@ -178,9 +178,9 @@ class BranchController extends Controller
         $branch->editor_id = auth()->id();
         $this->storeUpdateLogic($request, $branch);
 
-        return redirect()
-            ->route('admin.branches.index', ['type' => $request->type])
-            ->with('message', [
+        return redirect()->back()
+//            ->route('admin.branches.index', ['type' => $request->type])
+                         ->with('message', [
                 'type' => 'Success',
                 'text' => 'Edited successfully',
             ]);

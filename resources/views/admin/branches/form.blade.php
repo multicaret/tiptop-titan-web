@@ -76,6 +76,15 @@
 
             <div class="tab-pane fade" id="products-tab">
                 <div class="card-body">
+                    <div class="d-flex justify-content-end mb-3">
+                        <a class="btn btn-primary" target="_blank"
+                           href="{{route('admin.products.create',
+                            ['type'=> request()->type,
+                            'branch_id' => $branch->id,
+                            'chain_id' => optional($branch->chain)->id])}}">
+                            Add new product
+                        </a>
+                    </div>
                     <livewire:products-index :branch-id="$branch->id"/>
                 </div>
             </div>
