@@ -170,7 +170,7 @@ class DatumImporter extends Command
     private function storeLocation($first, $freshBranch)
     {
         $location = new Location();
-        $location->creator_id = $location->editor_id = auth()->id();
+        $location->creator_id = $location->editor_id = 1;
         $location->contactable_id = $freshBranch->id;
         $location->contactable_type = Branch::class;
         $location->type = Location::TYPE_CONTACT;
