@@ -285,6 +285,10 @@ class Branch extends Model implements HasMedia
             }
         }
 
+        if ($totalAmount >= $this->free_delivery_threshold) {
+            $deliveryFee = 0;
+        }
+
         return $deliveryFee;
     }
 }
