@@ -39,6 +39,9 @@ class CreateBranchesTable extends Migration
             $table->unsignedInteger('restaurant_max_delivery_minutes')->default(30);
             $table->unsignedInteger('restaurant_free_delivery_threshold')->default(0);
 
+            $table->unsignedInteger('management_commission_rate')->default(0)->comment('0 means there is no commission atall');
+            $table->boolean('is_open_now')->default(true);
+
             $table->string('primary_phone_number')->nullable();
             $table->string('secondary_phone_number')->nullable();
             $table->string('whatsapp_phone_number')->nullable();
@@ -51,8 +54,7 @@ class CreateBranchesTable extends Migration
             $table->unsignedBigInteger('view_count')->default(1);
             $table->unsignedTinyInteger('status')->default(Branch::STATUS_DRAFT)->comment('1:draft, 2:active, 3:Inactive, 4..n:CUSTOM');
             $table->timestamp('published_at')->nullable();
-            $table->timestamp('being_featured_at')->nullable();
-            $table->timestamp('being_unfeatured_at')->nullable();
+            $table->timestamp('featured_at')->nullable();
             $table->timestamps();
             $table->softDeletes();
 

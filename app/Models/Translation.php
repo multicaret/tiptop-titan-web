@@ -24,8 +24,8 @@ use Illuminate\Support\Carbon;
  * @property-read bool $is_active
  * @property-read bool $is_inactive
  * @property-read mixed $status_name
- * @property-read TranslationTranslation|null $translation
- * @property-read Collection|TranslationTranslation[] $translations
+ * @property-read \App\Models\TranslationTranslation|null $translation
+ * @property-read Collection|\App\Models\TranslationTranslation[] $translations
  * @property-read int|null $translations_count
  * @method static Builder|Translation active()
  * @method static Builder|Translation draft()

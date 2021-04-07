@@ -243,6 +243,7 @@ return [
     'order_status_18' => 'At the address',
     'order_status_20' => 'Delivered',
     'grocery_and_food' => 'Grocery And Food',
+    'both' => 'Both',
     'grocery' => 'Grocery',
     'food' => 'Food',
     'channel' => 'Channel',
@@ -260,4 +261,5 @@ return [
     'add_restaurant' => 'Add Restaurant',
     'add_chain' => 'Add Chain',
     'add_branch' => 'Add Branch',
+    'location' => 'Location',
 ];

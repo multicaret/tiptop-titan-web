@@ -17,8 +17,8 @@ use Illuminate\Support\Carbon;
  * @property int $model_id
  * @property Carbon|null $created_at
  * @property Carbon|null $updated_at
- * @property-read MetaDataTranslation|null $translation
- * @property-read Collection|MetaDataTranslation[] $translations
+ * @property-read \App\Models\MetaDataTranslation|null $translation
+ * @property-read Collection|\App\Models\MetaDataTranslation[] $translations
  * @property-read int|null $translations_count
  * @method static Builder|MetaData listsTranslations(string $translationField)
  * @method static Builder|MetaData newModelQuery()

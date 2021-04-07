@@ -28,6 +28,13 @@
             <input type="text" title="price" class="form-control" placeholder="Price"
                    wire:model.lazy="product.price">
         </div>
+
+        <hr>
+        <span class="text-muted">Price Before:</span><br>
+        <del>{{ \App\Models\Currency::format($product->price) }}</del>
+        <br>
+        <span class="text-muted">Price After:</span><br>
+        <b>{{ \App\Models\Currency::format($product->price - $product->discounted_price) }}</b>
     </td>
     <td>
         <div class="form-group">
@@ -35,6 +42,23 @@
                    wire:model.lazy="product.price_discount_amount">
         </div>
         <div class="form-group">
+            {{--<div class="form-check">
+                <input class="form-check-input" type="radio" id="discount-fixed"
+                       value="'false'"
+                       wire:model="product.price_discount_by_percentage">
+                <label class="form-check-label" for="discount-fixed">
+                    Fixed
+                </label>
+            </div>
+            <div class="form-check">
+                <input class="form-check-input" type="radio" id="discount-percentage"
+                       value="'true'"
+                       wire:model="product.price_discount_by_percentage"
+                >
+                <label class="form-check-label" for="discount-percentage">
+                    Percentage %
+                </label>
+            </div>--}}
             <select class="form-control" wire:model="product.price_discount_by_percentage">
                 <option value="false" {{ !$product->price_discount_by_percentage? 'selected':''}}>
                     Fixed
@@ -44,18 +68,11 @@
                 </option>
             </select>
         </div>
-        <hr>
         <span class="text-muted">
             Discount Amount:
         </span>
         <br>
         {{ $product->discounted_price_formatted }}
-        <br>
-        <span class="text-muted">
-            Price After:
-        </span>
-        <br>
-        {{ \App\Models\Currency::format($product->price - $product->discounted_price) }}
     </td>
     <td>{{$product->status_name}}</td>
     <td>

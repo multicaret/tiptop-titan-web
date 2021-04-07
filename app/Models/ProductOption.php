@@ -12,7 +12,7 @@ use Illuminate\Database\Eloquent\Model;
  * @property int $id
  * @property int $product_id
  * @property int $ingredient_id
- * @property int $type
+ * @property int $type 
  *                     1: Including,
  *                     2: Excluding,
  * @property bool $is_behaviour_method_excluding
@@ -52,7 +52,6 @@ use Illuminate\Database\Eloquent\Model;
  */
 class ProductOption extends Model
 {
-    use HasFactory;
     use Translatable;
 
 //    protected $fillable = [''];
