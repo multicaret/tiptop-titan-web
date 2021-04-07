@@ -74,6 +74,8 @@ use Illuminate\Support\Carbon;
  * @method static Builder|Coupon whereType($value)
  * @method static Builder|Coupon whereUpdatedAt($value)
  * @mixin Eloquent
+ * @property-read Collection|\App\Models\CouponUsage[] $couponUsages
+ * @property-read int|null $coupon_usages_count
  */
 class Coupon extends Model
 {

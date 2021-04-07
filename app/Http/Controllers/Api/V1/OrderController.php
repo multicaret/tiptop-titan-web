@@ -149,12 +149,15 @@ class OrderController extends BaseApiController
         $branch = $userCart->branch;
         $minimumOrder = $branch->minimum_order;
         $underMinimumOrderDeliveryFee = $branch->under_minimum_order_delivery_fee;
+        $freeDeliveryThreshold = $branch->free_delivery_threshold;
 
-        $deliveryFee = null;
+        $deliveryFee = 0;
         if ($userCart->total >= $minimumOrder) {
-            $deliveryFee = $branch->fixed_delivery_fee;
-        } else {
-            $deliveryFee = $underMinimumOrderDeliveryFee;
+            $deliveryFee = $branch->fixed_delivery_fee + $underMinimumOrderDeliveryFee;
+        }
+
+        if ($userCart->total >= $freeDeliveryThreshold) {
+            $deliveryFee = 0;
         }
 
         DB::beginTransaction();

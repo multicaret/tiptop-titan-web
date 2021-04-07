@@ -125,11 +125,10 @@ class BranchController extends Controller
         $this->storeUpdateLogic($request, $branch);
 
         return redirect()
-            ->back()
-//            ->route('admin.branches.index', ['type' => $request->type])
+            ->route('admin.branches.edit', ['type' => $request->type, $branch->uuid])
             ->with('message', [
                 'type' => 'Success',
-                'text' => __('strings.successfully_created'),
+                'text' => 'Successfully created',
             ]);
     }
 
@@ -244,6 +243,7 @@ class BranchController extends Controller
         $branch->longitude = $request->input('longitude');
         $branch->has_tip_top_delivery = $request->input('has_tip_top_delivery') ? 1 : 0;
         $branch->minimum_order = $request->input('minimum_order');
+        $branch->free_delivery_threshold = $request->input('free_delivery_threshold');
         if ($request->has('restaurant_minimum_order')) {
             $branch->restaurant_minimum_order = $request->input('restaurant_minimum_order');
         }
@@ -253,6 +253,9 @@ class BranchController extends Controller
         if ($request->has('restaurant_fixed_delivery_fee')) {
             $branch->restaurant_fixed_delivery_fee = $request->input('restaurant_fixed_delivery_fee');
         }
+        if ($request->has('restaurant_free_delivery_threshold')) {
+            $branch->restaurant_fixed_delivery_fee = $request->input('restaurant_free_delivery_threshold');
+        }
         $branch->has_restaurant_delivery = $request->input('has_restaurant_delivery') ? 1 : 0;
         $branch->under_minimum_order_delivery_fee = $request->input('under_minimum_order_delivery_fee');
         $branch->fixed_delivery_fee = $request->input('fixed_delivery_fee');
@@ -261,6 +264,13 @@ class BranchController extends Controller
 //        $branch->whatsapp_phone_number = $request->input('whatsapp_phone_number');
         $branch->type = Branch::getCorrectChannel($request->type);
         $branch->status = $request->input('status');
+
+        if ($request->input('status') == Branch::STATUS_ACTIVE) {
+            $branch->published_at = $request->input('published_at');
+        }
+        $branch->being_featured_at = $request->input('being_featured_at');
+        $branch->being_unfeatured_at = $request->input('being_unfeatured_at');
+
         $branch->save();
 
         foreach (localization()->getSupportedLocales() as $key => $value) {

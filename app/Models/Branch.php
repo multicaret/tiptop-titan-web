@@ -144,6 +144,18 @@ use Spatie\MediaLibrary\MediaCollections\Models\Collections\MediaCollection;
  * @method static Builder|Branch whereWhatsappPhoneNumber($value)
  * @method static Builder|Branch withTranslation()
  * @mixin Eloquent
+ * @property-read Collection|\App\Models\Taxonomy[] $foodCategories
+ * @property-read int|null $food_categories_count
+ * @property int $free_delivery_threshold
+ * @property int $restaurant_free_delivery_threshold
+ * @property Carbon|null $published_at
+ * @property Carbon|null $being_featured_at
+ * @property Carbon|null $being_unfeatured_at
+ * @method static Builder|Branch whereBeingFeaturedAt($value)
+ * @method static Builder|Branch whereBeingUnfeaturedAt($value)
+ * @method static Builder|Branch whereFreeDeliveryThreshold($value)
+ * @method static Builder|Branch wherePublishedAt($value)
+ * @method static Builder|Branch whereRestaurantFreeDeliveryThreshold($value)
  */
 class Branch extends Model implements HasMedia
 {
@@ -174,6 +186,11 @@ class Branch extends Model implements HasMedia
         'restaurant_minimum_order',
         'restaurant_under_minimum_order_delivery_fee',
         'restaurant_fixed_delivery_fee',
+        'free_delivery_threshold',
+        'restaurant_free_delivery_threshold',
+        'published_at',
+        'being_featured_at',
+        'being_unfeatured_at',
     ];
     protected $with = ['translations'];
     protected $translatedAttributes = ['title', 'description'];
@@ -187,6 +204,9 @@ class Branch extends Model implements HasMedia
         'restaurant_minimum_order' => 'double',
         'restaurant_under_minimum_order_delivery_fee' => 'double',
         'restaurant_fixed_delivery_fee' => 'double',
+        'published_at' => 'datetime',
+        'being_featured_at' => 'datetime',
+        'being_unfeatured_at' => 'datetime',
     ];
 
 
@@ -279,6 +299,10 @@ class Branch extends Model implements HasMedia
             if ($totalAmount < $this->minimum_order) {
                 $deliveryFee += $this->under_minimum_order_delivery_fee;
             }
+        }
+
+        if ($totalAmount >= $this->free_delivery_threshold) {
+            $deliveryFee = 0;
         }
 
         return $deliveryFee;
