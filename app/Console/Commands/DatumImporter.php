@@ -107,7 +107,7 @@ class DatumImporter extends Command
         $tempBranch['editor_id'] = 1;
         $tempBranch['region_id'] = 2;
         $tempBranch['city_id'] = 1;
-        $tempBranch['type'] = 1;
+        $tempBranch['type'] = Branch::CHANNEL_GROCERY_OBJECT;
         $tempBranch['status'] = 2;
         $isInserted = Branch::insert($tempBranch);
         if ($isInserted) {

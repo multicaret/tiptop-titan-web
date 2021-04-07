@@ -249,22 +249,36 @@ class Product extends Model implements HasMedia
 
     public function categories(): BelongsToMany
     {
-        return $this->belongsToMany(Taxonomy::class, 'category_product', 'product_id', 'category_id');
+        return $this->belongsToMany(Taxonomy::class, 'category_product', 'product_id', 'category_id')
+                    ->withTimestamps();
     }
 
     public function tags(): BelongsToMany
     {
-        return $this->belongsToMany(Taxonomy::class, 'product_tag', 'product_id', 'tag_id');
+        return $this->belongsToMany(Taxonomy::class, 'product_tag', 'product_id', 'tag_id')
+                    ->withTimestamps();
     }
 
     public function carts(): BelongsToMany
     {
-        return $this->belongsToMany(Cart::class, 'cart_product', 'product_id', 'cart_id');
+        return $this->belongsToMany(Cart::class, 'cart_product', 'product_id', 'cart_id')
+                    ->withPivot(['quantity', 'product_object'])
+                    ->withTimestamps();
     }
 
+    /*Todo: to @Ghaith This shouldn't be a M2M relations, right? */
     public function options(): BelongsToMany
     {
-        return $this->belongsToMany(Taxonomy::class, 'product_options', 'product_id', 'ingredient_id');
+        return $this->belongsToMany(Taxonomy::class, 'product_options', 'product_id', 'ingredient_id')
+                    ->withPivot([
+                        'type',
+                        'is_behaviour_method_excluding',
+                        'max_number_of_selection',
+                        'min_number_of_selection',
+                        'extra_price',
+                        'selection_type',
+                    ])
+                    ->withTimestamps();
     }
 
 
