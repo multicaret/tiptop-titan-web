@@ -73,23 +73,28 @@ class HomeController extends BaseApiController
         $channel = strtolower($request->input('channel'));
 
         $address = Location::find($request->input('selected_address_id'));
-        $region = $address->region;
-        $city = $address->city;
-        if ($channel == "food") {
+        if (is_null($address)) {
+            $cityId = null;
+            $regionId = null;
+        } else {
+            $cityId = optional($address->city)->id;
+            $regionId = optional($address->region)->id;
+        }
+        if ($channel == config('app.app-channels.food')) {
             $slideChannel = Slide::CHANNEL_FOOD_OBJECT;
-        } elseif ($channel == "grocery") {
+        } elseif ($channel == config('app.app-channels.grocery')) {
             $slideChannel = Slide::CHANNEL_GROCERY_OBJECT;
         }
         $hasBeenAuthenticated = ! is_null($user) ? Slide::TARGET_LOGGED_IN : Slide::TARGET_GUEST;
-        $slides = Slide::where('region_id', $region->id)
-                       ->where('city_id', $city->id)
+        $slides = Slide::where('region_id', $regionId)
+                       ->where('city_id', $cityId)
                        ->whereIn('channel', [$slideChannel, Slide::TYPE_FOOD_AND_GROCERY_OBJECT])
                        ->whereIn('has_been_authenticated', [$hasBeenAuthenticated, Slide::TARGET_EVERYONE])
                        ->where('expires_at', '>', now())
                        ->where('begins_at', '<', now())
                        ->get();
 
-        $slides = SlideResource::collection(Slide::all());
+        $slides = SlideResource::collection($slides);
 
         $cart = null;
 
