@@ -155,7 +155,7 @@
 
 
 <!-- Core scripts -->
-<script src="{{ asset('js/admin.js') }}"></script>
+<script src="{{ asset('js/admin.js'). '?ver='. rand(1000, 9999) }}"></script>
 <script src="{{ asset('/admin-assets/js/sidenav.js') }}"></script>
 
 <!-- Libs -->
