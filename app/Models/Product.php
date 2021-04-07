@@ -151,6 +151,8 @@ use Spatie\MediaLibrary\MediaCollections\Models\Media;
  * @method static \Illuminate\Database\Query\Builder|Product withTrashed()
  * @method static \Illuminate\Database\Query\Builder|Product withoutTrashed()
  * @mixin Eloquent
+ * @property-read Collection|\App\Models\Taxonomy[] $options
+ * @property-read int|null $options_count
  */
 class Product extends Model implements HasMedia
 {

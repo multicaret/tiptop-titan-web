@@ -144,6 +144,8 @@ use Spatie\MediaLibrary\MediaCollections\Models\Collections\MediaCollection;
  * @method static Builder|Branch whereWhatsappPhoneNumber($value)
  * @method static Builder|Branch withTranslation()
  * @mixin Eloquent
+ * @property-read Collection|\App\Models\Taxonomy[] $foodCategories
+ * @property-read int|null $food_categories_count
  */
 class Branch extends Model implements HasMedia
 {
