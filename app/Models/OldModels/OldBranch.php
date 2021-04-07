@@ -145,10 +145,8 @@ class OldBranch extends Model
             'rating_count' => 'rating_count',
             'created_at' => 'created_at',
             'updated_at' => 'updated_at',
-            'contact_name' => 'contact_name',
             'contact_phone_1' => 'primary_phone_number',
             'contact_phone_2' => 'secondary_phone_number',
-            'contact_email' => 'contact_email',
         ];
     }
 }
