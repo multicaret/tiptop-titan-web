@@ -89,17 +89,19 @@ class ProductRowEdit extends Component
         $this->product->price_discount_amount = $newValue;
         $this->product->save();
 
-        if ($this->product->price_discount_amount == 100 && $this->product->price_discount_by_percentage) {
+        if ($this->product->price_discount_amount > 100 && $this->product->price_discount_by_percentage) {
+            $this->product->price_discount_amount = 100;
+            $this->product->save();
             $this->emit('productStored', [
                 'icon' => 'error',
                 'message' => 'Product will be free in this case',
             ]);
+        } else {
+            $this->emit('productStored', [
+                'icon' => 'success',
+                'message' => 'Price discount amount has been changed',
+            ]);
         }
-
-        $this->emit('productStored', [
-            'icon' => 'success',
-            'message' => 'Price discount amount has been changed',
-        ]);
     }
 
     public function updatedProductPriceDiscountByPercentage($newValue)
@@ -108,17 +110,20 @@ class ProductRowEdit extends Component
         $this->product->save();
 
 
-        if ($this->product->price_discount_amount == 100 && $this->product->price_discount_by_percentage) {
+        if ($this->product->price_discount_amount > 100 && $this->product->price_discount_by_percentage) {
+            $this->product->price_discount_amount = 100;
+            $this->product->save();
             $this->emit('productStored', [
                 'icon' => 'error',
                 'message' => 'Product will be free in this case',
             ]);
+        } else {
+            $this->emit('productStored', [
+                'icon' => 'success',
+                'message' => 'Price discount by percentage has been changed',
+            ]);
         }
 
-        $this->emit('productStored', [
-            'icon' => 'success',
-            'message' => 'Price discount by percentage has been changed',
-        ]);
     }
 
     public function render()
