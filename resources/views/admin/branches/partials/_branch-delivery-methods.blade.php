@@ -2,12 +2,14 @@
 <div class="row px-3">
     <div class="{{$type == \App\Models\Branch::CHANNEL_FOOD_OBJECT ? "col-md-6" : "col-md-12" }} mt-2">
         <div class="card card-outline-inverse">
-            <h4 class="card-header">Tiptop Delivery
-                <label class="switcher switcher-primary m-3">
-                    <input type="checkbox" class="switcher-input" v-model="isTipTopDelivery"
-                           @change="isRestaurantDelivery == false ? (isRestaurantDelivery = true) : null"
-                           name="has_tip_top_delivery" {{$branch->has_tip_top_delivery ? 'checked' : ''}}>
-                    <span class="switcher-indicator">
+            <h4 class="card-header">
+                Tiptop Delivery
+                @if($type == \App\Models\Branch::CHANNEL_FOOD_OBJECT)
+                    <label class="switcher switcher-primary m-3">
+                        <input type="checkbox" class="switcher-input" v-model="isTipTopDelivery"
+                               @change="isRestaurantDelivery == false ? (isRestaurantDelivery = true) : null"
+                               name="has_tip_top_delivery" {{$branch->has_tip_top_delivery ? 'checked' : ''}}>
+                        <span class="switcher-indicator">
                                     <span class="switcher-yes">
                                         <span class="ion ion-md-checkmark"></span>
                                     </span>
@@ -15,7 +17,10 @@
                                         <span class="ion ion-md-close"></span>
                                       </span>
                                 </span>
-                </label></h4>
+                    </label>
+                    <input type="hidden" name="has_tip_top_delivery" value="1">
+                @endif
+            </h4>
             <div class="card-body">
                 <div class="row">
                     <div class="col-md-6 mt-3">
