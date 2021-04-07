@@ -39,6 +39,13 @@
                             @slot('attributes',['step'=>1,'min'=>1])
                         @endcomponent
                     </div>
+                    <div class="col-md-12 mt-3">
+                        @component('admin.components.form-group', ['name' => 'free_delivery_threshold', 'type' => 'number'])
+                            @slot('label', 'Free delivery threshold')
+                            @slot('value', is_null($branch->free_delivery_threshold) ? 0 : $branch->free_delivery_threshold)
+                            @slot('attributes',['step'=>1,'min'=>1])
+                        @endcomponent
+                    </div>
                 </div>
             </div>
         </div>
@@ -81,6 +88,13 @@
                         <div class="col-md-12 mt-3">
                             @component('admin.components.form-group', ['name' => 'restaurant_under_minimum_order_delivery_fee', 'type' => 'number'])
                                 @slot('label', 'Under minimum order delivery fee')
+                                @slot('value', is_null($branch->restaurant_under_minimum_order_delivery_fee) ? 0 : $branch->restaurant_under_minimum_order_delivery_fee)
+                                @slot('attributes',['step'=>1,'min'=>1])
+                            @endcomponent
+                        </div>
+                        <div class="col-md-12 mt-3">
+                            @component('admin.components.form-group', ['name' => 'free_delivery_threshold', 'type' => 'number'])
+                                @slot('label', 'Free delivery threshold')
                                 @slot('value', is_null($branch->restaurant_under_minimum_order_delivery_fee) ? 0 : $branch->restaurant_under_minimum_order_delivery_fee)
                                 @slot('attributes',['step'=>1,'min'=>1])
                             @endcomponent

@@ -176,6 +176,8 @@ class Branch extends Model implements HasMedia
         'restaurant_minimum_order',
         'restaurant_under_minimum_order_delivery_fee',
         'restaurant_fixed_delivery_fee',
+        'free_delivery_threshold',
+        'restaurant_free_delivery_threshold',
     ];
     protected $with = ['translations'];
     protected $translatedAttributes = ['title', 'description'];

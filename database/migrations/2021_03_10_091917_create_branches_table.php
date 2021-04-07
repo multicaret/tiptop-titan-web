@@ -29,6 +29,7 @@ class CreateBranchesTable extends Migration
             $table->unsignedDouble('fixed_delivery_fee')->default(0); // 5
             $table->unsignedInteger('min_delivery_minutes')->default(20);
             $table->unsignedInteger('max_delivery_minutes')->default(30);
+            $table->unsignedInteger('free_delivery_threshold')->default(0);
             // Restaurant Delivery
             $table->boolean('has_restaurant_delivery')->default(false);
             $table->unsignedDouble('restaurant_minimum_order')->default(0);
@@ -36,6 +37,7 @@ class CreateBranchesTable extends Migration
             $table->unsignedDouble('restaurant_fixed_delivery_fee')->default(0);
             $table->unsignedInteger('restaurant_min_delivery_minutes')->default(20);
             $table->unsignedInteger('restaurant_max_delivery_minutes')->default(30);
+            $table->unsignedInteger('restaurant_free_delivery_threshold')->default(0);
 
             $table->string('primary_phone_number')->nullable();
             $table->string('secondary_phone_number')->nullable();

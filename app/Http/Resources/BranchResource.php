@@ -35,6 +35,14 @@ class BranchResource extends JsonResource
                 'raw' => $this->fixed_delivery_fee,
                 'formatted' => Currency::format($this->fixed_delivery_fee),
             ],
+            'free_delivery_threshold' => [
+                'raw' => $this->free_delivery_threshold,
+                'formatted' => Currency::format($this->free_delivery_threshold),
+            ],
+            'restaurant_free_delivery_threshold' => [
+                'raw' => $this->restaurant_free_delivery_threshold,
+                'formatted' => Currency::format($this->restaurant_free_delivery_threshold),
+            ],
             'restaurantMinimumOrder' => [
                 'raw' => $this->restaurant_minimum_order,
                 'formatted' => Currency::format($this->restaurant_minimum_order),
