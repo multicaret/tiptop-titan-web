@@ -21,7 +21,7 @@ class CategoryMiniResource extends JsonResource
 
         $products = null;
         if ($this->type == Taxonomy::TYPE_MENU_CATEGORY) {
-            $products = ProductMiniResource::collection($this->products()->orderByDesc('order_column')->get());
+            $products = ProductMiniResource::collection($this->menuProducts()->orderByDesc('order_column')->get());
         }
 
         return [

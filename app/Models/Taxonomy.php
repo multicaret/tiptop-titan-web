@@ -332,6 +332,11 @@ class Taxonomy extends Node implements HasMedia, ShouldHaveTypes, TranslatableCo
                     ->withTimestamps();
     }
 
+    public function menuProducts(): HasMany
+    {
+        return $this->hasMany(Product::class, 'category_id');
+    }
+
     public function upSellsProducts(): BelongsToMany
     {
         return $this->belongsToMany(Product::class, 'category_product_up_sell', 'category_id', 'product_id')

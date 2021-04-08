@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Api\V1;
 
 use App\Http\Controllers\Api\BaseApiController;
+use App\Http\Resources\FoodBranchResource;
 use App\Models\Branch;
 use Illuminate\Http\Request;
 

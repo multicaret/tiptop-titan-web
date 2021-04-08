@@ -19,6 +19,7 @@ class FoodBranchResource extends JsonResource
      */
     public function toArray($request)
     {
+
         $workingHours = WorkingHour::retrieve($this);
 
         if ( ! $this->is_open_now) {
@@ -90,7 +91,7 @@ class FoodBranchResource extends JsonResource
             'longitude' => (float) $this->longitude,
             'chain' => new ChainResource($this->chain),
             'isFavorited' => $isFavorited,
-            'categories' => CategoryMiniResource::collection($this->foodCategories()->orderByDesc('order_column')->get()),
+            'categories' => CategoryMiniResource::collection($this->menuCategories()->orderByDesc('order_column')->get()),
         ];
     }
 }

@@ -271,6 +271,11 @@ class Branch extends Model implements HasMedia
             'category_id')->withTimestamps();
     }
 
+    public function menuCategories(): HasMany
+    {
+        return $this->hasMany(Taxonomy::class);
+    }
+
     public static function getClosestAvailableBranch($latitude, $longitude): array
     {
         $distance = $branch = null;
