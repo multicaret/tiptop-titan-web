@@ -133,7 +133,7 @@
                                             </tr>
                                             </thead>
                                             <tbody>
-                                            @foreach($orderProducts as $orderProduct)
+                                            @foreach($selectedOrder->cart->cartProducts as $orderProduct)
                                                 <tr>
                                                     <td>
                                                         <img src="{{$orderProduct->product_object['cover']}}"
