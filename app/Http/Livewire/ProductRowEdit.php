@@ -76,7 +76,7 @@ class ProductRowEdit extends Component
 
     public function updatedProductOrderColumn($newValue)
     {
-        $this->product->order_column = $newValue;
+        $this->product->order_column = Controller::convertNumbersToArabic($newValue);
         $this->product->save();
 
         $this->emit('productStored', [
@@ -87,7 +87,7 @@ class ProductRowEdit extends Component
 
     public function updatedProductPriceDiscountAmount($newValue)
     {
-        $this->product->price_discount_amount = $newValue;
+        $this->product->price_discount_amount = Controller::convertNumbersToArabic($newValue);
         $this->product->save();
 
         if ($this->product->price_discount_amount > 100 && $this->product->price_discount_by_percentage) {
@@ -107,7 +107,7 @@ class ProductRowEdit extends Component
 
     public function updatedProductPriceDiscountByPercentage($newValue)
     {
-        $this->product->price_discount_by_percentage = $newValue == 'true';
+        $this->product->price_discount_by_percentage = $newValue;
         $this->product->save();
 
 

@@ -6,13 +6,11 @@
                 <tr>
                     <th style="width:10px">#</th>
                     <th>Thumbnail</th>
-                    @foreach(localization()->getSupportedLocales() as $key => $locale)
-                        <th>{{$locale->name()}} Translation</th>
-                    @endforeach
+                    <th>Title</th>
                     <th>Category</th>
-                    <th>Order</th>
                     <th>Price</th>
                     <th>Price Discount</th>
+                    <th>Order</th>
                     <th>Status</th>
                     <th>Actions</th>
                 </tr>
