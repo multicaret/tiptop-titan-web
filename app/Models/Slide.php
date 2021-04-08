@@ -47,8 +47,8 @@ use Illuminate\Support\Carbon;
  * @property-read int|null $translations_count
  * @method static \Illuminate\Database\Eloquent\Builder|Slide active()
  * @method static \Illuminate\Database\Eloquent\Builder|Slide draft()
- * @method static \Illuminate\Database\Eloquent\Builder|Slide food()
- * @method static \Illuminate\Database\Eloquent\Builder|Slide grocery()
+ * @method static \Illuminate\Database\Eloquent\Builder|Slide foods()
+ * @method static \Illuminate\Database\Eloquent\Builder|Slide groceries()
  * @method static \Illuminate\Database\Eloquent\Builder|Slide inactive()
  * @method static \Illuminate\Database\Eloquent\Builder|Slide listsTranslations(string $translationField)
  * @method static \Illuminate\Database\Eloquent\Builder|Slide newModelQuery()

@@ -68,6 +68,8 @@ use Spatie\MediaLibrary\MediaCollections\Models\Media;
  * @property-read Taxonomy|null $ingredientCategory
  * @property-read MediaCollection|Media[] $media
  * @property-read int|null $media_count
+ * @property-read Collection|\App\Models\Product[] $menuProducts
+ * @property-read int|null $menu_products_count
  * @property-read Taxonomy|null $parent
  * @property-read Collection|\App\Models\Post[] $posts
  * @property-read int|null $posts_count

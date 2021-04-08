@@ -102,6 +102,7 @@ use Spatie\Permission\Traits\HasRoles;
  * @property-read bool $is_super
  * @property-read mixed $is_user
  * @property-read mixed $name
+ * @property-read mixed $role
  * @property-read mixed $status_name
  * @property-read mixed $translator
  * @property-read \App\Models\Language|null $language
@@ -121,6 +122,8 @@ use Spatie\Permission\Traits\HasRoles;
  * @method static Builder|User active()
  * @method static Builder|User draft()
  * @method static \Database\Factories\UserFactory factory(...$parameters)
+ * @method static Builder|User foods()
+ * @method static Builder|User groceries()
  * @method static Builder|User inActive()
  * @method static Builder|User managers()
  * @method static Builder|User newModelQuery()
@@ -130,6 +133,7 @@ use Spatie\Permission\Traits\HasRoles;
  * @method static Builder|User owners()
  * @method static Builder|User permission($permissions)
  * @method static Builder|User query()
+ * @method static Builder|User role($roles, $guard = null)
  * @method static Builder|User whereApprovedAt($value)
  * @method static Builder|User whereAvgRating($value)
  * @method static Builder|User whereBio($value)
