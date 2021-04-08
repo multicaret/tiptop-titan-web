@@ -123,12 +123,14 @@
                                 </small>
                             </td>
                             <td>
-                                @if($order->type == \App\Models\Order::CHANNEL_FOOD_OBJECT)
-                                    <img src="/images/icons/food-delivery-186/svg/019-food tray.svg"
-                                         alt="Food Orders" class="d-inline-block ui-w-20" title="Food">
+                                @if($order->type == \App\Models\Order::CHANNEL_GROCERY_OBJECT)
+                                    {{--<img src="/images/icons/food-delivery-186/svg/019-food tray.svg"
+                                         alt="Food Orders" class="d-inline-block ui-w-20" title="Food">--}}
+                                    <i class="fas fa-shopping-basket fa-1x text-primary"></i>
                                 @else
-                                    <img src="/images/icons/food-delivery-186/svg/021-food delivery.svg"
-                                         alt="Grocery Orders" class="d-inline-block ui-w-20" title="Grocery">
+                                    {{-- <img src="/images/icons/food-delivery-186/svg/021-food delivery.svg"
+                                          alt="Grocery Orders" class="d-inline-block ui-w-20" title="Grocery">--}}
+                                    <i class="fas fa-concierge-bell fa-1x text-primary"></i>
                                 @endif
                             </td>
                             <td>
