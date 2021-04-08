@@ -320,12 +320,12 @@ class Product extends Model implements HasMedia
         $image = config('defaults.images.product_cover');
 
         if ( ! is_null($media = $this->getFirstMedia('gallery'))) {
-            $image = $media->getUrl('1K');
+            $image = $media->getUrl('HD');
         }
 
         if ( ! is_null($media = $this->getFirstMedia('cover'))) {
             //$media->responsive_images
-            $image = $media->getUrl('1K');
+            $image = $media->getUrl('HD');
         }
 
         return url($image);
@@ -333,7 +333,7 @@ class Product extends Model implements HasMedia
 
     public function getCoverFullAttribute()
     {
-        return $this->getFirstMediaUrl('cover', 'HD');
+        return $this->getFirstMediaUrl('cover', '1K');
     }
 
     public function getThumbnailAttribute()
