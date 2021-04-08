@@ -7,7 +7,6 @@ use App\Http\Controllers\Api\BaseApiController;
 use App\Http\Resources\BootResource;
 use App\Http\Resources\BranchResource;
 use App\Http\Resources\CartResource;
-use App\Http\Resources\FoodBranchResource;
 use App\Http\Resources\FoodCategoryResource;
 use App\Http\Resources\GroceryCategoryParentResource;
 use App\Http\Resources\OrderResource;
@@ -184,7 +183,7 @@ class HomeController extends BaseApiController
             'branch' => new BranchResource($branch),
             'distance' => $distance,
             // Food Related
-            'restaurants' => FoodBranchResource::collection($foodBranches),
+            'restaurants' => is_null($foodBranches) ? null : BranchResource::collection($foodBranches),
         ]);
     }
 
