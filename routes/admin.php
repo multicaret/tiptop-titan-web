@@ -15,13 +15,13 @@ Route::get('/', function () {
     return view('admin.dashboard');
 })->name('index');
 
-Route::get('users/{type}', 'UserController@index')->name('users.index');
-Route::get('users/{type}/create', 'UserController@create')->name('users.create');
-Route::post('users/{type}/store', 'UserController@store')->name('users.store');
-//Bottom ones don't have a "type" wildcard (cue in angry MK sounds)
+Route::get('users/{role}', 'UserController@index')->name('users.index');
+Route::get('users/{role}/create', 'UserController@create')->name('users.create');
+Route::post('users/{role}/store', 'UserController@store')->name('users.store');
+//Bottom ones don't have a "role" wildcard (cue in angry MK sounds)
 Route::get('users/{user}/edit', 'UserController@edit')->name('users.edit');
-Route::post('users/{user}/update', 'UserController@update')->name('users.update');
-Route::delete('users/{user}/delete', 'UserController@destory')->name('users.destroy');
+Route::put('users/{user}/update', 'UserController@update')->name('users.update');
+Route::delete('users/{user}/delete', 'UserController@destroy')->name('users.destroy');
 /*
 
 Route::resource('users', 'UserController')->except(['show']);

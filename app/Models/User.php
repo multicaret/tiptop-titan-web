@@ -5,6 +5,7 @@ namespace App\Models;
 use App\Http\Controllers\Controller;
 use App\Mail\Welcome;
 use App\Notifications\ResetPassword;
+use App\Traits\HasAppTypes;
 use App\Traits\HasGender;
 use App\Traits\HasMediaTrait;
 use App\Traits\HasStatuses;
@@ -130,7 +131,6 @@ use Spatie\Permission\Traits\HasRoles;
  * @method static Builder|User owners()
  * @method static Builder|User permission($permissions)
  * @method static Builder|User query()
- * @method static Builder|User role($roles, $guard = null)
  * @method static Builder|User whereApprovedAt($value)
  * @method static Builder|User whereAvgRating($value)
  * @method static Builder|User whereBio($value)
@@ -183,6 +183,7 @@ class User extends Authenticatable implements HasMedia, MustVerifyEmail
     use HasMediaTrait;
     use HasRoles;
     use HasStatuses;
+    use HasAppTypes;
     use HasViewCount;
     use Notifiable;
 
@@ -394,6 +395,11 @@ class User extends Authenticatable implements HasMedia, MustVerifyEmail
         }
 
         return $cover;
+    }
+
+    public function getRoleAttribute()
+    {
+        return $this->roles()->first();
     }
 
     public function getIsUserAttribute()
