@@ -62,7 +62,7 @@ class ProductRowEdit extends Component
 
         $this->emit('showToast', [
             'icon' => 'success',
-            'message' => 'Arabic title has been changed',
+            'message' => 'Kurdish title has been changed',
         ]);
     }
 
