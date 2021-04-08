@@ -17,6 +17,9 @@ use App\Models\Taxonomy;
 use Carbon\Carbon;
 use Illuminate\Console\Command;
 use Illuminate\Support\Collection as Collection;
+use Spatie\MediaLibrary\MediaCollections\Exceptions\FileCannotBeAdded;
+use Spatie\MediaLibrary\MediaCollections\Exceptions\FileDoesNotExist;
+use Spatie\MediaLibrary\MediaCollections\Exceptions\FileIsTooBig;
 use Symfony\Component\Console\Helper\ProgressBar;
 
 class DatumImporter extends Command
@@ -77,14 +80,30 @@ class DatumImporter extends Command
         }
     }
 
-    private function addSingleImage($newModel, string $oldModelName, int $oldModelId, $imageCollection = 'cover'): void
+    private function addSingleImage($newModel, string $oldModelName, $imageCollection = 'cover'): void
     {
         $oldMediaData = OldMedia::where([
-            ['model_type', "Modules\\Jo3aan\\Entities\\$oldModelName"], ['model_id', $oldModelId]
+            ['model_type', "Modules\\Jo3aan\\Entities\\$oldModelName"], ['model_id', $newModel->id]
         ])->first();
-        if ( ! is_null($oldMediaData) && ! in_array( $oldMediaData->id,[9041, 8160])) {
+        if ( ! is_null($oldMediaData)) {
             $s3Url = $oldMediaData->getProductS3Url($oldMediaData->id, $oldMediaData->file_name);
-            $newModel->addMediaFromUrl($s3Url)->toMediaCollection($imageCollection);
+            $errorMessage = null;
+            try {
+                $uuid = self::getUuidString(25);
+                $newModel->addMediaFromUrl($s3Url)
+                         ->setFileName("{$newModel->id}-{$uuid}.{$oldMediaData->getExtensionAttribute()}")
+                         ->toMediaCollection($imageCollection);
+            } catch (FileDoesNotExist $e) {
+                $errorMessage = 'Failed to load image because file does not exist: '.$e->getMessage();
+            } catch (FileIsTooBig $e) {
+                $errorMessage = 'Failed to load image because file is too big: '.$e->getMessage();
+            } catch (FileCannotBeAdded $e) {
+                $errorMessage = 'Failed to load image because file cannot be added: '.$e->getMessage();
+            }
+            if ( ! is_null($errorMessage)) {
+                $this->line($errorMessage);
+                \Log::info($errorMessage);
+            }
         }
     }
 
@@ -120,15 +139,15 @@ class DatumImporter extends Command
                 BranchTranslation::insert($tempTranslation);
             }
             $this->storeLocation($first, $freshBranch);
-            $this->addSingleImage($freshBranch, 'Dish', $first->id, 'cover');
+            $this->addSingleImage($freshBranch, 'Dish');
         }
         $this->bar->finish();
     }
 
 
-    private function getUuidString(): string
+    private function getUuidString($min = 10 , $max = 99): string
     {
-        return Controller::uuid().mt_rand(10, 99);
+        return Controller::uuid().mt_rand($min, $max);
     }
 
 
@@ -163,7 +182,7 @@ class DatumImporter extends Command
                 }
                 ProductTranslation::insert($tempTranslation);
             }
-            $this->addSingleImage($freshProduct, 'Dish', $oldProduct->id, 'cover');
+            $this->addSingleImage($freshProduct, 'Dish');
         }
     }
 
