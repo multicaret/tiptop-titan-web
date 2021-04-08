@@ -2,7 +2,7 @@
     <div class="col-11">
         <div id="accordion{{$option->id}}">
             <div class="card mb-2">
-                <div class="card-header">
+                <div class="card-header shadow-sm">
                     <a class="d-flex justify-content-between text-body" data-toggle="collapse" aria-expanded="true"
                        href="#accordion{{$option->id}}-1">
                     <span>
@@ -60,13 +60,23 @@
                                     <input class="form-control" wire:model.lazy="option.min_number_of_selection"
                                            placeholder="Min number of selection">
                                 </div>
-                                <div class="form-group col-md-6">
-                                    <label class="form-label">Max number of selection</label>
-                                    <input class="form-control" wire:model.lazy="option.max_number_of_selection"
-                                           placeholder="Max number of selection">
-                                </div>
+                                @if($option->type != \App\Models\ProductOption::TYPE_EXCLUDING)
+                                    <div class="form-group col-md-6">
+                                        <label class="form-label">Max number of selection</label>
+                                        <input class="form-control" wire:model.lazy="option.max_number_of_selection"
+                                               placeholder="Max number of selection">
+                                    </div>
+                                @endif
                             </div>
                         </form>
+
+                        <div>
+                            @forelse($option->selections as $optionSelection)
+                                <livewire:product-option-selection :selection="$optionSelection"/>
+                            @empty
+                                Got no selections babe!
+                            @endforelse
+                        </div>
                         {{-- <button wire:click="clone" class="btn btn-outline-warning btn-sm">
                              <i class="fas fa-clone"></i>
                              Clone
