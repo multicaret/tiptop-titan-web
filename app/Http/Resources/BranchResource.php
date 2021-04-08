@@ -78,8 +78,8 @@ class BranchResource extends JsonResource
             'rating' => [
                 'colorHexadecimal' => Controller::ratingColorHexadecimal($this->avg_rating),
                 'colorRGBA' => Controller::ratingColorRGBA($this->avg_rating),
-                'averageRaw' => $this->avg_rating,
-                'averageFormatted' => (float) number_format($this->avg_rating, 1),
+                'averageRaw' => (float) $this->avg_rating,
+                'averageFormatted' => number_format($this->avg_rating, 1),
                 'countRaw' => $this->rating_count,
                 'countFormatted' => Controller::numberToReadable($this->rating_count),
             ],
