@@ -10,7 +10,6 @@ use App\Traits\HasGender;
 use App\Traits\HasMediaTrait;
 use App\Traits\HasStatuses;
 use App\Traits\HasViewCount;
-use Database\Factories\UserFactory;
 use Eloquent;
 use Illuminate\Auth\Passwords\CanResetPassword;
 use Illuminate\Contracts\Auth\MustVerifyEmail;

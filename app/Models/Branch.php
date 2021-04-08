@@ -19,6 +19,7 @@ use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Support\Carbon;
 use Multicaret\Acquaintances\Models\InteractionRelation;
+use Multicaret\Acquaintances\Traits\CanBeFavorited;
 use Multicaret\Acquaintances\Traits\CanBeRated;
 use Spatie\MediaLibrary\HasMedia;
 use Spatie\MediaLibrary\MediaCollections\Models\Collections\MediaCollection;
@@ -170,6 +171,7 @@ class Branch extends Model implements HasMedia
     use HasViewCount;
     use HasWorkingHours;
     use Translatable;
+    use CanBeFavorited;
 
 
     public const STATUS_DRAFT = 1;
