@@ -7,9 +7,34 @@ use Astrotomic\Translatable\Translatable;
 use Illuminate\Database\Eloquent\Model;
 
 
-class OldCategory extends Model
+/**
+ * App\Models\OldModels\OldCategoryTranslation
+ *
+ * @property int $id
+ * @property int $category_id
+ * @property string $locale
+ * @property string $title
+ * @property string|null $description
+ * @property string|null $icon
+ * @property string|null $image
+ * @property \Illuminate\Support\Carbon|null $created_at
+ * @property \Illuminate\Support\Carbon|null $updated_at
+ * @method static \Illuminate\Database\Eloquent\Builder|OldCategoryTranslation newModelQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder|OldCategoryTranslation newQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder|OldCategoryTranslation query()
+ * @method static \Illuminate\Database\Eloquent\Builder|OldCategoryTranslation whereCategoryId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|OldCategoryTranslation whereCreatedAt($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|OldCategoryTranslation whereDescription($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|OldCategoryTranslation whereIcon($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|OldCategoryTranslation whereId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|OldCategoryTranslation whereImage($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|OldCategoryTranslation whereLocale($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|OldCategoryTranslation whereTitle($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|OldCategoryTranslation whereUpdatedAt($value)
+ * @mixin \Eloquent
+ */
+class OldCategoryTranslation extends Model
 {
-    use Translatable;
 
 
     protected $connection = 'mysql-old';
@@ -20,14 +45,10 @@ class OldCategory extends Model
     {
         return [
             'id' => 'id',
-            'price' => 'price',
-            'discount' => 'price_discount_amount',
-            'discount_type' => 'price_discount_by_percentage',
-            'discount_deadline' => 'price_discount_finished_at',
-            'rating' => 'avg_rating',
-            'rating_count' => 'rating_count',
-            'created_at' => 'created_at',
-            'updated_at' => 'updated_at',
+            'title' => 'title',
+            'description' => 'description',
+            'locale' => 'locale',
+            'category_id' => 'taxonomy_id',
         ];
     }
 

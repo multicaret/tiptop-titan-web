@@ -8,12 +8,15 @@ use App\Models\BranchTranslation;
 use App\Models\Location;
 use App\Models\OldModels\OldBranch;
 use App\Models\OldModels\OldBranchTranslation;
+use App\Models\OldModels\OldCategory;
+use App\Models\OldModels\OldCategoryTranslation;
 use App\Models\OldModels\OldMedia;
 use App\Models\OldModels\OldProduct;
 use App\Models\OldModels\OldProductTranslation;
 use App\Models\Product;
 use App\Models\ProductTranslation;
 use App\Models\Taxonomy;
+use App\Models\TaxonomyTranslation;
 use Carbon\Carbon;
 use Illuminate\Console\Command;
 use Illuminate\Support\Collection as Collection;
@@ -24,13 +27,16 @@ use Symfony\Component\Console\Helper\ProgressBar;
 
 class DatumImporter extends Command
 {
-    protected $signature = 'datum:importer
-                                {model? : The name of the model}';
+    protected $signature = 'datum:importer {model? : The name of the model}';
     protected $description = 'Command to import branch';
     private string $modelName;// 'Product';
     private const DEFAULT_BRANCH_ID = 473;
+    public const DEFAULT_REGION = 2;
+    public const DEFAULT_CITY = 1;
+    private const CREATOR_EDITOR_ID = 1;
+    private const DEFAULT_CHAIN = 1;
+    private const DEFAULT_RESTAURANT_ID = 269;
     private ProgressBar $bar;
-    public Collection $groceryCategoriesIds;
 
     public function __construct()
     {
@@ -44,20 +50,23 @@ class DatumImporter extends Command
         if ($this->modelName === 'Branch') {
             $this->insertDefaultBranch();
         } elseif ($this->modelName === 'Product') {
-            $this->getGroceryCategories();
-            Product::truncate();
-            ProductTranslation::truncate();
-            $oldProducts = OldProduct::orderBy('created_at')
-                                     ->where('restaurant_id', 269)
-                                     ->take(500)->get();
-            $this->bar = $this->output->createProgressBar($oldProducts->count());
+            $this->importProducts(500);
+        } elseif ($this->modelName === 'Category') {
+            Taxonomy::truncate();
+            TaxonomyTranslation::truncate();
+            $parentIds = [31, 441, 508, 509, 510, 511, 512, 554, 557, 597, 654, 666];
+            $groceryCategories = OldCategory::whereIn('id', $parentIds)->get();
+            foreach ($parentIds as $parentId) {
+                $groceryCategories = $groceryCategories->merge(OldCategory::whereParentId($parentId)->get());
+            }
+            $this->bar = $this->output->createProgressBar($groceryCategories->count());
             $this->bar->start();
-            foreach ($oldProducts as $oldProduct) {
-                $this->insertProducts($oldProduct);
+            foreach ($groceryCategories as $oldCategory) {
+                $this->insertCategory($oldCategory);
                 $this->bar->advance();
             }
-            $this->bar->finish();
         }
+        $this->bar->finish();
         \DB::statement('SET FOREIGN_KEY_CHECKS=1;');
         $this->newLine(2);
         $this->info('Import is finished 🤪.');
@@ -71,7 +80,7 @@ class DatumImporter extends Command
         if (empty($this->modelName)) {
             $this->modelName = $this->choice(
                 'What is model name?',
-                ['Branch', 'Product'],
+                ['Branch', 'Product', 'Category'],
                 1
             );
         }
@@ -98,7 +107,7 @@ class DatumImporter extends Command
                 $errorMessage = 'Failed to load image because file cannot be added: '.$e->getMessage();
             }
             if ( ! is_null($errorMessage)) {
-                $this->line($errorMessage);
+//                $this->line($errorMessage);
                 \Log::info($errorMessage);
             }
         }
@@ -117,13 +126,13 @@ class DatumImporter extends Command
             $tempBranch[$newModelKey] = $first->{$oldModelKey};
         }
         $tempBranch['uuid'] = $this->getUuidString();
-        $tempBranch['chain_id'] = 1;
-        $tempBranch['creator_id'] = 1;
-        $tempBranch['editor_id'] = 1;
-        $tempBranch['region_id'] = 2;
-        $tempBranch['city_id'] = 1;
-        $tempBranch['type'] = Branch::CHANNEL_GROCERY_OBJECT;
-        $tempBranch['status'] = 2;
+        $tempBranch['chain_id'] = self::DEFAULT_CHAIN;
+        $tempBranch['creator_id'] = self::CREATOR_EDITOR_ID;
+        $tempBranch['editor_id'] = self::CREATOR_EDITOR_ID;
+        $tempBranch['region_id'] = self::DEFAULT_REGION;
+        $tempBranch['city_id'] = self::DEFAULT_CITY;
+        $tempBranch['type'] = Branch::CHANNEL_GROCERY_OBJECT; // Todo: must update
+        $tempBranch['status'] = Branch::STATUS_ACTIVE;
         $isInserted = Branch::insert($tempBranch);
         if ($isInserted) {
             $freshBranch = Branch::find(self::DEFAULT_BRANCH_ID);
@@ -138,11 +147,10 @@ class DatumImporter extends Command
             $this->storeLocation($first, $freshBranch);
             $this->addSingleImage($freshBranch, 'Dish');
         }
-        $this->bar->finish();
     }
 
 
-    private function getUuidString($min = 10 , $max = 99): string
+    private function getUuidString($min = 10, $max = 99): string
     {
         return Controller::uuid().mt_rand($min, $max);
     }
@@ -151,25 +159,29 @@ class DatumImporter extends Command
     private function insertProducts(OldProduct $oldProduct)
     {
         $tempProduct = [];
+        $categories = $oldProduct->categories_count > 0 ? $oldProduct->categories : collect([]);
+        $mainCategory = optional($categories->first())->id;
+        if (is_null($mainCategory)) {
+            dd($oldProduct->toArray());
+        }
         foreach (OldProduct::attributesComparing() as $oldModelKey => $newModelKey) {
             $tempProduct[$newModelKey] = $oldProduct->{$oldModelKey};
         }
         $tempProduct['uuid'] = $this->getUuidString();
-        $tempProduct['chain_id'] = 1;
+        $tempProduct['chain_id'] = self::DEFAULT_CHAIN;
         $tempProduct['branch_id'] = self::DEFAULT_BRANCH_ID;
-        $tempProduct['creator_id'] = 1;
-        $tempProduct['editor_id'] = 1;
-        $tempProduct['category_id'] = $this->groceryCategoriesIds->random(1)->first();
-        $tempProduct['status'] = 2;
-        $tempProduct['type'] = 1;
+        $tempProduct['creator_id'] = self::CREATOR_EDITOR_ID;
+        $tempProduct['editor_id'] = self::CREATOR_EDITOR_ID;
+        $tempProduct['category_id'] = $mainCategory;
+        $tempProduct['status'] = Product::STATUS_ACTIVE;
+        $tempProduct['type'] = Product::CHANNEL_GROCERY_OBJECT; // Todo: must update
         $tempProduct['available_quantity'] = 100;
         $tempProduct['is_storage_tracking_enabled'] = 0;
         $tempProduct['price_discount_by_percentage'] = $oldProduct->discount_type === OldProduct::TYPE_DISCOUNT_PERCENTAGE;
         $isInserted = Product::insert($tempProduct);
         if ($isInserted) {
             $freshProduct = Product::find($oldProduct->id);
-            $randomCount = array_rand(array_flip([1, 2, 3]));
-            $groceryCategoriesIds = $this->groceryCategoriesIds->random($randomCount);
+            $groceryCategoriesIds = $categories->pluck('id');
             $freshProduct->categories()->sync($groceryCategoriesIds);
             foreach ($oldProduct->translations as $translation) {
                 $attributesComparing = OldProductTranslation::attributesComparing();
@@ -196,13 +208,59 @@ class DatumImporter extends Command
         $location->save();
     }
 
-    private function getGroceryCategories(): void
-    {
-        $this->groceryCategoriesIds = Taxonomy::groceryCategories()->whereNotNull('parent_id')->pluck('id');
-    }
-
     public function remoteFileExists($url): bool
     {
         return \Http::get($url)->successful();
+    }
+
+
+    private function insertCategory(OldCategory $oldCategory)
+    {
+        $tempCategory = [
+            'uuid' => $this->getUuidString(),
+            'chain_id' => self::DEFAULT_CHAIN,
+            'branch_id' => self::DEFAULT_BRANCH_ID,
+            'creator_id' => self::CREATOR_EDITOR_ID,
+            'editor_id' => self::CREATOR_EDITOR_ID,
+            'left' => 1,
+            'right' => 1,
+            'depth' => 1,
+            'step' => 1,
+            'status' => Taxonomy::STATUS_ACTIVE,
+            'type' => OldCategory::typesComparing()[$oldCategory->type],
+        ];
+        foreach (OldCategory::attributesComparing() as $oldModelKey => $newModelKey) {
+            $tempCategory[$newModelKey] = $oldCategory->{$oldModelKey};
+        }
+
+        $isInserted = Taxonomy::insert($tempCategory);
+        if ($isInserted) {
+            $freshCategory = Taxonomy::find($oldCategory->id);
+            foreach ($oldCategory->translations as $translation) {
+                $attributesComparing = OldCategoryTranslation::attributesComparing();
+                $tempTranslation = [];
+                foreach ($attributesComparing as $oldAttribute => $newAttribute) {
+                    $tempTranslation[$newAttribute] = $translation->{$oldAttribute};
+                }
+                TaxonomyTranslation::insert($tempTranslation);
+            }
+//            $this->addSingleImage($freshCategory, 'Dish');
+        }
+    }
+
+    private function importProducts(int $count): void
+    {
+        Product::truncate();
+        ProductTranslation::truncate();
+        $oldProducts = OldProduct::orderBy('created_at')
+                                 ->withCount('categories')
+                                 ->where('restaurant_id', self::DEFAULT_RESTAURANT_ID)
+                                 ->take($count)->get();
+        $this->bar = $this->output->createProgressBar($oldProducts->count());
+        $this->bar->start();
+        foreach ($oldProducts as $oldProduct) {
+            $this->insertProducts($oldProduct);
+            $this->bar->advance();
+        }
     }
 }
