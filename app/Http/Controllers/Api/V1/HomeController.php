@@ -160,7 +160,7 @@ class HomeController extends BaseApiController
                                          Order::STATUS_CANCELLED,
                                          Order::STATUS_DELIVERED,
                                      ])
-                                     ->whereChainId($branch->chain_id)
+                                     ->where('type', Order::CHANNEL_FOOD_OBJECT)
                                      ->latest();
                 $activeOrdersCount = $activeOrders->count();
                 $activeOrders = OrderResource::collection($activeOrders->take(4)->get());
