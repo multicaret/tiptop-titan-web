@@ -88,7 +88,7 @@ class HomeController extends BaseApiController
         $distance = 0;
         $branch = null;
         // Food Related Initializers
-        $foodBranches = null;
+        $foodBranches = [];
 
         // GeoLocation handling
         $latitude = $request->input('latitude');
