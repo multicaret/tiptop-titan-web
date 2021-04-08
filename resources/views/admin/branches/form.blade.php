@@ -27,38 +27,48 @@
         <ul class="nav nav-tabs nav-justified">
             <li class="nav-item">
                 <a class="nav-link active" data-toggle="tab" href="#navs-bottom-responsive-link-1">
-                    <i class="fas fa-shopping-basket"></i>&nbsp;Settings
+                    <i class="fas fa-edit"></i>&nbsp;Settings
                 </a>
             </li>
             <li class="nav-item">
                 <a class="nav-link" data-toggle="tab" href="#navs-bottom-responsive-link-2">
-                    <i class="fas fa-user"></i>&nbsp;Working Hours
+                    <i class="far fa-clock"></i>&nbsp;Working Hours
                 </a>
             </li>
             <li class="nav-item">
                 <a class="nav-link" data-toggle="tab" href="#products-tab">
-                    <i class="fas fa-code-branch"></i>&nbsp;Products (meals)
+                    @if($branch->type == \App\Models\Branch::CHANNEL_GROCERY_OBJECT)
+                        <i class="fas fa-carrot"></i>&nbsp;
+                                                     Products
+                    @else
+                        <i class="fas fa-pizza-slice"></i>&nbsp;
+                                                     Meals
+                    @endif
                 </a>
             </li>
             <li class="nav-item">
                 <a class="nav-link" data-toggle="tab" href="#navs-bottom-responsive-link-4">
-                    <i class="fas fa-code-branch"></i>&nbsp;Categories
+                    <i class="fas fa-shapes"></i>&nbsp;Categories
                 </a>
             </li>
             <li class="nav-item">
                 <a class="nav-link" data-toggle="tab" href="#navs-bottom-responsive-link-5">
-                    <i class="fas fa-user-tie"></i>&nbsp;Managers & Drivers
+                    <i class="fas fa-user-tie"></i>&nbsp;Users
                 </a>
             </li>
             <li class="nav-item">
                 <a class="nav-link" target="_blank" href="{{route('admin.orders.index',['branch-id' => $branch->id])}}">
-                    <i class="fas fa-code-branch"></i>&nbsp;Orders
+                    @if($branch->type == \App\Models\Branch::CHANNEL_GROCERY_OBJECT)
+                        <i class="fas fa-shopping-basket"></i>&nbsp;Orders
+                    @else
+                        <i class="fas fa-concierge-bell"></i>&nbsp;Orders
+                    @endif
                 </a>
             </li>
             <li class="nav-item">
                 <a class="nav-link" target="_blank"
                    href="{{route('admin.orders.ratings',['branch-id' => $branch->id])}}">
-                    <i class="fas fa-code-branch"></i>&nbsp;Ratings
+                    <i class="fas fa-star"></i>&nbsp;Ratings
                 </a>
             </li>
         </ul>
