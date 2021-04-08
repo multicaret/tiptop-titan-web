@@ -149,6 +149,7 @@ class BranchController extends Controller
             return [
                 'id' => $item->id,
                 'name' => $item->name,
+                'position' => $item->position,
                 'email' => $item->emails,
                 'phone' => $item->phones
             ];
@@ -285,6 +286,7 @@ class BranchController extends Controller
         foreach ($requestContactDetails as $requestContactDetail) {
             if (isset($requestContactDetail->id) && ! is_null($location = Location::whereId($requestContactDetail->id)->first())) {
                 $location->name = $requestContactDetail->name;
+                $location->position = $requestContactDetail->position;
                 $location->phones = $requestContactDetail->phone;
                 $location->emails = $requestContactDetail->email;
                 $location->type = Location::TYPE_CONTACT;
@@ -296,6 +298,7 @@ class BranchController extends Controller
                 $location->contactable_type = Branch::class;
                 $location->type = Location::TYPE_CONTACT;
                 $location->name = $requestContactDetail->name;
+                $location->position = $requestContactDetail->position;
                 $location->emails = $requestContactDetail->email;
                 $location->phones = $requestContactDetail->phone;
             }

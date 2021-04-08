@@ -38,6 +38,7 @@
             workingHours: @json($workingHours),
             contactDetail: {
                 name: '',
+                position: '',
                 email: '',
                 phone: ''
             },
