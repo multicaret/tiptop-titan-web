@@ -179,7 +179,7 @@ class HomeController extends BaseApiController
             'activeOrders' => $activeOrders,
             'totalActiveOrders' => $totalActiveOrders,
             // Grocery Related
-            'branch' => new BranchResource($branch),
+            'branch' => is_null($branch) ? null : new BranchResource($branch),
             'distance' => $distance,
             // Food Related
             'restaurants' => is_null($foodBranches) ? null : BranchResource::collection($foodBranches),
