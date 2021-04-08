@@ -118,7 +118,6 @@ class HomeController extends BaseApiController
                 return GroceryCategoryParentResource::collection($groceryParentCategories);
             });
 
-
             [$distance, $branch] = Branch::getClosestAvailableBranch($latitude, $longitude);
             if ( ! is_null($branch)) {
                 if ( ! is_null($user)) {
@@ -166,15 +165,15 @@ class HomeController extends BaseApiController
                 $activeOrders = OrderResource::collection($activeOrders->take(4)->get());
                 $totalActiveOrders = $activeOrdersCount;
             }
-        }
 
+        }
 
         return $this->respond([
             'estimated_arrival_time' => [
                 'value' => $eta,
                 'unit' => $etaUnit,
             ],
-            'cart' => ! is_null($cart) ? null : new CartResource($cart),
+            'cart' => is_null($cart) ? null : new CartResource($cart),
             'slides' => $slides,
             'categories' => $categories,
             'activeOrders' => $activeOrders,
