@@ -2,6 +2,7 @@
 
 namespace App\Http\Livewire;
 
+use App\Http\Controllers\Controller;
 use Livewire\Component;
 
 class ProductRowEdit extends Component
@@ -64,7 +65,7 @@ class ProductRowEdit extends Component
 
     public function updatedProductPrice($newValue)
     {
-        $this->product->price = $newValue;
+        $this->product->price = Controller::convertNumbersToArabic($newValue);
         $this->product->save();
 
         $this->emit('productStored', [
