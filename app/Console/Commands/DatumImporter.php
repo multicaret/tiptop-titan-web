@@ -69,7 +69,7 @@ class DatumImporter extends Command
         $this->bar->finish();
         \DB::statement('SET FOREIGN_KEY_CHECKS=1;');
         $this->newLine(2);
-        $this->info('Import is finished 🤪.');
+        $this->info('Import '.$this->modelName.' is finished 🤪.');
         $this->newLine(2);
     }
 
@@ -191,7 +191,7 @@ class DatumImporter extends Command
                 }
                 ProductTranslation::insert($tempTranslation);
             }
-            $this->addSingleImage($freshProduct, 'Dish');
+//            $this->addSingleImage($freshProduct, 'Dish');
         }
     }
 
