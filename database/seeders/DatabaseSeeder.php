@@ -43,14 +43,16 @@ class DatabaseSeeder extends Seeder
      */
     public function run()
     {
-        Artisan::call('datum:importer Branch');
-        echo Artisan::output();
-        Artisan::call('datum:importer Category');
-        echo Artisan::output();
-        Artisan::call('datum:importer Product');
-        echo Artisan::output();
-        $this->lastTaxonomyId = Taxonomy::latest()->first()->id;
-        $this->lastBranchId = Branch::latest()->first()->id;
+        if ( ! is_null(env('DB_DATABASE_OLD'))) {
+            Artisan::call('datum:importer Branch');
+            echo Artisan::output();
+            Artisan::call('datum:importer Category');
+            echo Artisan::output();
+            Artisan::call('datum:importer Product');
+            echo Artisan::output();
+            $this->lastTaxonomyId = Taxonomy::latest()->first()->id;
+            $this->lastBranchId = Branch::latest()->first()->id;
+        }
         DB::statement('SET FOREIGN_KEY_CHECKS=0;');
         $this->rolesAndPermissions();
 
@@ -773,6 +775,7 @@ class DatabaseSeeder extends Seeder
         foreach (range(1, 224) as $number) {
             $products[$number]['name'] = "Product $number";
             $products[$number]['category_id'] = $categoryId;
+            $products[$number]['type'] = Product::CHANNEL_FOOD_OBJECT;
             if ($number % 4 == 0) {
                 $categoryId++;
             }
@@ -979,6 +982,7 @@ class DatabaseSeeder extends Seeder
         $item->rating_count = 3.5;
         $item->view_count = 400;
         $item->status = Product::STATUS_ACTIVE;
+        $item->type = isset($product['type']) ? $product['type'] : Product::CHANNEL_GROCERY_OBJECT;
         $item->save();
 
         foreach (config('localization.supported-locales') as $locale) {
