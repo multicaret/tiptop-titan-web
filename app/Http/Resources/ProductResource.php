@@ -51,7 +51,6 @@ class ProductResource extends JsonResource
                 'raw' => (double) $this->discounted_price,
                 'formatted' => $this->discounted_price_formatted,
             ],
-            'barcodes' => $this->barcodes,
             'media' => [
                 'cover' => $this->cover,
                 'coverThumbnail' => $this->cover_thumbnail,
