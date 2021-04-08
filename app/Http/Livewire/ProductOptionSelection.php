@@ -13,11 +13,16 @@ class ProductOptionSelection extends Component
     public $titleAr;
     public bool $markedAsDeleted = false;
 
+    public function render()
+    {
+        return view('livewire.products.option-selection');
+    }
+
     public function mount()
     {
-        $this->titleEn = selectional($this->selection->translate('en'))->title;
-        $this->titleKu = selectional($this->selection->translate('ku'))->title;
-        $this->titleAr = selectional($this->selection->translate('ar'))->title;
+        $this->titleEn = optional($this->selection->translate('en'))->title;
+        $this->titleKu = optional($this->selection->translate('ku'))->title;
+        $this->titleAr = optional($this->selection->translate('ar'))->title;
     }
 
     protected $rules = [
@@ -83,6 +88,6 @@ class ProductOptionSelection extends Component
     public function delete()
     {
         $this->markedAsDeleted = true;
-        $this->emitUp('selectionDeleted', ['selectionId' => selectional($this->selection)->id]);
+        $this->emitUp('selectionDeleted', ['selectionId' => optional($this->selection)->id]);
     }
 }

@@ -21,7 +21,7 @@ trait HasAppTypes
      *
      * @return mixed
      */
-    public function scopeGrocery($query)
+    public function scopeGroceries($query)
     {
         return $query->where('type', self::CHANNEL_GROCERY_OBJECT);
     }
@@ -31,7 +31,7 @@ trait HasAppTypes
      *
      * @return mixed
      */
-    public function scopeFood($query)
+    public function scopeFoods($query)
     {
         return $query->where('type', self::CHANNEL_FOOD_OBJECT);
     }

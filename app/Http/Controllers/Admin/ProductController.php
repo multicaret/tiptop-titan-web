@@ -68,7 +68,9 @@ class ProductController extends Controller
 
     public function create(Request $request)
     {
-        $data = $this->essentialData($request);
+        $product = new Product();
+        $product->type = Product::getCorrectType($request->type);
+        $data = $this->essentialData($request, $product);
 
         return view('admin.products.form', $data);
     }
@@ -108,7 +110,7 @@ class ProductController extends Controller
 
     public function edit(Request $request, Product $product)
     {
-        $data = $this->essentialData($request);
+        $data = $this->essentialData($request, $product);
         $data['product'] = $product;
         $product->load(['unit']);
 
@@ -166,11 +168,16 @@ class ProductController extends Controller
         ]);
     }
 
-    private function essentialData(Request $request): array
+    private function essentialData(Request $request, $product): array
     {
-        $product = new Product();
-        $product->chain = Chain::first();
-        $product->branch = Branch::whereChainId(optional($product->chain)->id)->first();
+        if (is_null($product->id)) {
+            if ($product->type == Product::CHANNEL_GROCERY_OBJECT) {
+                $product->chain = Chain::groceries()->first();
+            } else {
+                $product->chain = Chain::foods()->first();
+            }
+            $product->branch = Branch::whereChainId(optional($product->chain)->id)->first();
+        }
         $data['product'] = $product;
         $tableName = $data['product']->getTable();
         $droppedColumns = array_merge(Product::getDroppedColumns(), $this->getDroppedColumnsByType());
@@ -181,13 +188,27 @@ class ProductController extends Controller
         $getIdTitle = function ($item) {
             return ['id' => $item->id, 'title' => $item->title];
         };
-        $data['chains'] = Chain::whereType(Chain::CHANNEL_GROCERY_OBJECT)->get()->map($getIdTitle)->all();
-        $data['branches'] = Branch::whereType(Branch::CHANNEL_GROCERY_OBJECT)->get()->map($getIdTitle)->all();
+        if ($product->type == Product::CHANNEL_GROCERY_OBJECT) {
+            $data['chains'] = Chain::groceries()->get()->map($getIdTitle)->all();
+            $data['branches'] = Branch::groceries()->get()->map($getIdTitle)->all();
+        } else {
+            $chains = Chain::foods()->get();
+            $branches = Branch::whereChainId($chains->first()->id)->foods()->get();
+            $data['chains'] = $chains->map($getIdTitle)->all();
+            if (is_null($product->branch_id)) {
+                $product->branch = $branches->first();
+            }
+            $data['branches'] = $branches->map($getIdTitle)->all();
+        }
         $data['units'] = Taxonomy::unitCategories()->get()->map($getIdTitle)->all();
         if (Product::isGrocery()) {
             $data['categories'] = Taxonomy::groceryCategories()->whereNotNull('parent_id')->get()->map($getIdTitle)->all();
         } else {
-            $data['categories'] = Taxonomy::foodCategories()->get()->map($getIdTitle)->all();
+            $data['categories'] = Taxonomy::menuCategories()
+                                          ->where('branch_id', $product->branch->id)
+                                          ->get()
+                                          ->map($getIdTitle)
+                                          ->all();
         }
 
         return $data;

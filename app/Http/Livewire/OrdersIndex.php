@@ -12,8 +12,8 @@ class OrdersIndex extends Component
 
     public function render()
     {
-        $this->foodNewOrdersCount = Order::food()->new()->count();
-        $this->groceryNewOrdersCount = Order::grocery()->new()->count();
+        $this->foodNewOrdersCount = Order::foods()->new()->count();
+        $this->groceryNewOrdersCount = Order::groceries()->new()->count();
 
         return view('livewire.orders-index');
     }
