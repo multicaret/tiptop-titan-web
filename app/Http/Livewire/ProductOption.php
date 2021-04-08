@@ -111,7 +111,7 @@ class ProductOption extends Component
 
         $this->emit('showToast', [
             'icon' => 'success',
-            'message' => 'Arabic title has been changed',
+            'message' => 'Kurdish title has been changed',
         ]);
     }
 
@@ -120,6 +120,12 @@ class ProductOption extends Component
     {
         return view('livewire.products.option');
     }
+
+    /*public function clone()
+    {
+        $this->emitUp('optionCloned', ['optionId' => optional($this->option)->id]);
+    }*/
+
 
     public function delete()
     {

@@ -19,6 +19,7 @@ use Carbon\Carbon;
 use Exception;
 use Illuminate\Http\Request;
 use Illuminate\Support\Str;
+use Spatie\Permission\Models\Role;
 use Yajra\DataTables\DataTables;
 
 class DatatableController extends AjaxController
@@ -31,14 +32,16 @@ class DatatableController extends AjaxController
      */
     public function users(Request $request)
     {
-        $type = Str::ucfirst($request->type);
-        if ( ! in_array($type, User::getAllRoles())) {
-            $type = User::ROLE_USER;
+        $role = $request->all()['role'];
+        if (in_array($role, User::getAllRoles())) {
+            $role = ucwords(str_replace('-', ' ', Str::title($role)));
+        } else {
+//            $role = User::ROLE_USER;
+            $role = [];
         }
-
         $users = User::with(['defaultAddress'])
                      ->orderBy('order_column')
-                     ->role($type)
+                     ->role($role)
                      ->selectRaw('users.*');
 
         return DataTables::of($users)
@@ -455,8 +458,8 @@ class DatatableController extends AjaxController
             return ! is_null($item->city) ? $item->city->name : '';
             })*/
                          ->editColumn('location', function ($item) {
-                             return (! is_null($item->city) ? $item->city->name : '')." - ". (! is_null($item->region) ? $item->region->name : '');
-                         })
+                return (! is_null($item->city) ? $item->city->name : '')." - ".(! is_null($item->region) ? $item->region->name : '');
+            })
                          ->editColumn('has_been_authenticated', function ($item) {
                              return Slide::getTargetsArray()[$item->has_been_authenticated];
                          })
