@@ -15,7 +15,7 @@ class ProductController extends BaseApiController
     {
         $product = Product::find($id);
         if ( ! is_null($product)) {
-            return new ProductResource($product);
+            return $this->respond(new ProductResource($product));
         }
 
         return $this->respondNotFound();
