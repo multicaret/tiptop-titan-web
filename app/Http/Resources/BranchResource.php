@@ -30,39 +30,47 @@ class BranchResource extends JsonResource
             'title' => $this->title,
             'regionId' => $this->region_id,
             'cityId' => $this->city_id,
-            'minimumOrder' => [
-                'raw' => $this->minimum_order,
-                'formatted' => Currency::format($this->minimum_order),
+            'tiptopDelivery' => [
+                'isDeliveryEnabled' => $this->has_tip_top_delivery,
+                'minimumOrder' => [
+                    'raw' => $this->minimum_order,
+                    'formatted' => Currency::format($this->minimum_order),
+                ],
+                'underMinimumOrderDeliveryFee' => [
+                    'raw' => $this->under_minimum_order_delivery_fee,
+                    'formatted' => Currency::format($this->under_minimum_order_delivery_fee),
+                ],
+                'fixedDeliveryFee' => [
+                    'raw' => $this->fixed_delivery_fee,
+                    'formatted' => Currency::format($this->fixed_delivery_fee),
+                ],
+                'freeDeliveryThreshold' => [
+                    'raw' => $this->free_delivery_threshold,
+                    'formatted' => Currency::format($this->free_delivery_threshold),
+                ],
+                'minDeliveryMinutes' => $this->min_delivery_minutes,
+                'maxDeliveryMinutes' => $this->max_delivery_minutes,
             ],
-            'underMinimumOrderDeliveryFee' => [
-                'raw' => $this->under_minimum_order_delivery_fee,
-                'formatted' => Currency::format($this->under_minimum_order_delivery_fee),
-            ],
-            'hasTipTopDelivery' => $this->has_tip_top_delivery,
-            'fixedDeliveryFee' => [
-                'raw' => $this->fixed_delivery_fee,
-                'formatted' => Currency::format($this->fixed_delivery_fee),
-            ],
-            'freeDeliveryThreshold' => [
-                'raw' => $this->free_delivery_threshold,
-                'formatted' => Currency::format($this->free_delivery_threshold),
-            ],
-            'hasRestaurantDelivery' => $this->has_restaurant_delivery,
-            'restaurantFreeDeliveryThreshold' => [
-                'raw' => $this->restaurant_free_delivery_threshold,
-                'formatted' => Currency::format($this->restaurant_free_delivery_threshold),
-            ],
-            'restaurantMinimumOrder' => [
-                'raw' => $this->restaurant_minimum_order,
-                'formatted' => Currency::format($this->restaurant_minimum_order),
-            ],
-            'restaurantUnderMinimumOrderDeliveryFee' => [
-                'raw' => $this->restaurant_under_minimum_order_delivery_fee,
-                'formatted' => Currency::format($this->restaurant_under_minimum_order_delivery_fee),
-            ],
-            'restaurantFixedDeliveryFee' => [
-                'raw' => $this->restaurant_fixed_delivery_fee,
-                'formatted' => Currency::format($this->restaurant_fixed_delivery_fee),
+            'restaurantDelivery' => [
+                'isDeliveryEnabled' => $this->has_restaurant_delivery,
+                'minimumOrder' => [
+                    'raw' => $this->restaurant_minimum_order,
+                    'formatted' => Currency::format($this->restaurant_minimum_order),
+                ],
+                'underMinimumOrderDeliveryFee' => [
+                    'raw' => $this->restaurant_under_minimum_order_delivery_fee,
+                    'formatted' => Currency::format($this->restaurant_under_minimum_order_delivery_fee),
+                ],
+                'fixedDeliveryFee' => [
+                    'raw' => $this->restaurant_fixed_delivery_fee,
+                    'formatted' => Currency::format($this->restaurant_fixed_delivery_fee),
+                ],
+                'freeDeliveryThreshold' => [
+                    'raw' => $this->restaurant_free_delivery_threshold,
+                    'formatted' => Currency::format($this->restaurant_free_delivery_threshold),
+                ],
+                'minDeliveryMinutes' => $this->restaurant_min_delivery_minutes,
+                'maxDeliveryMinutes' => $this->restaurant_max_delivery_minutes,
             ],
             'primaryPhoneNumber' => $this->primary_phone_number,
             'secondaryPhoneNumber' => $this->secondary_phone_number,
