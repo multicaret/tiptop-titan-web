@@ -394,7 +394,11 @@ class Controller extends BaseController
 
         if ($request->hasFile($mediaType)) {
             $originalName = $request->file($mediaType)->getClientOriginalName();
-            $mediaFile = $model->addMedia($request->file($mediaType));
+            $originalExtension = $request->file($mediaType)->extension();
+            $uuid = self::uuid();
+            $modelName = \Str::afterLast(get_class($model), '\\');
+            $mediaFile = $model->addMedia($request->file($mediaType))
+                               ->setFileName("{$modelName}-{$mediaType}-{$model->id}-{$uuid}.{$originalExtension}");
             $editor = isset($editorFiles[0]) ? $editorFiles[0] : null;
             $alternativeText = $request->input('$mediaType'.'_alternative_text', $originalName);
             $customProperties = [
