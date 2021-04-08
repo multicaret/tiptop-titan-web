@@ -710,7 +710,7 @@ class DatabaseSeeder extends Seeder
                 'Taco Bell 2',
             ] as $branchIndex => $branchName
         ) {
-            $this->createBranch($super, $branchIndex, $branchName, 2, true);
+            $this->createBranch($super, $branchIndex, $branchName, 2, Branch::CHANNEL_FOOD_OBJECT, true);
         }
 
         foreach (
@@ -721,7 +721,7 @@ class DatabaseSeeder extends Seeder
                 'Subway 4',
             ] as $branchIndex => $branchName
         ) {
-            $this->createBranch($super, $branchIndex, $branchName, 3, true);
+            $this->createBranch($super, $branchIndex, $branchName, 3, Branch::CHANNEL_FOOD_OBJECT, true);
         }
         foreach (
             [
@@ -736,7 +736,7 @@ class DatabaseSeeder extends Seeder
                 'StarBucks 9',
             ] as $branchIndex => $branchName
         ) {
-            $this->createBranch($super, $branchIndex, $branchName, 4, true);
+            $this->createBranch($super, $branchIndex, $branchName, 4, Branch::CHANNEL_FOOD_OBJECT, true);
         }
     }
 
@@ -848,13 +848,18 @@ class DatabaseSeeder extends Seeder
      * @param  int  $branchIndex
      * @param  string  $branchName
      * @param  int  $chainId
+     * @param  int  $type
      * @param  bool  $createCategories
+     * @throws \Spatie\MediaLibrary\MediaCollections\Exceptions\FileCannotBeAdded
+     * @throws \Spatie\MediaLibrary\MediaCollections\Exceptions\FileDoesNotExist
+     * @throws \Spatie\MediaLibrary\MediaCollections\Exceptions\FileIsTooBig
      */
     private function createBranch(
         $super,
         int $branchIndex,
         string $branchName,
         int $chainId,
+        int $type = Branch::CHANNEL_GROCERY_OBJECT,
         bool $createCategories = false
     ): void {
         $item = new Branch();
@@ -863,7 +868,7 @@ class DatabaseSeeder extends Seeder
         $item->editor_id = $super->id;
         $item->region_id = config('defaults.region.id');
         $item->city_id = config('defaults.city.id');
-        $item->type = Branch::CHANNEL_GROCERY_OBJECT;
+        $item->type = $type;
 
         $item->minimum_order = 500 * ($branchIndex + 1);
         $item->under_minimum_order_delivery_fee = 200 * ($branchIndex + 1);
