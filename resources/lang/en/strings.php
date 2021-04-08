@@ -262,4 +262,5 @@ return [
     'add_chain' => 'Add Chain',
     'add_branch' => 'Add Branch',
     'location' => 'Location',
+    'maximum_orderable_quantity' => 'Maximum orderable quantity',
 ];

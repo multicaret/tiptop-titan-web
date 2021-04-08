@@ -229,6 +229,7 @@ class ProductController extends Controller
         $product->price_discount_amount = $request->input('price_discount_amount');
         $product->available_quantity = $request->input('available_quantity');
         $product->minimum_orderable_quantity = $request->input('minimum_orderable_quantity');
+        $product->maximum_orderable_quantity = $request->input('maximum_orderable_quantity');
         $product->price_discount_began_at = $request->input('price_discount_began_at');
         $product->price_discount_finished_at = $request->input('price_discount_finished_at');
         $product->custom_banner_began_at = $request->input('custom_banner_began_at');
