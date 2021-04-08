@@ -175,7 +175,7 @@ class HomeController extends BaseApiController
                 'value' => $eta,
                 'unit' => $etaUnit,
             ],
-            'cart' => new CartResource($cart),
+            'cart' => ! is_null($cart) ? null : new CartResource($cart),
             'slides' => $slides,
             'categories' => $categories,
             'activeOrders' => $activeOrders,
