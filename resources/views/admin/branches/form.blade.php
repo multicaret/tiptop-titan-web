@@ -9,7 +9,7 @@
 @push('styles')
     <link rel="stylesheet" href="/admin-assets/libs/quill/typography.css">
     <link rel="stylesheet" href="/admin-assets/libs/quill/editor.css">
-    @livewireStyles
+{{--    @livewireStyles--}}
 @endpush
 
 @section('content')
@@ -121,19 +121,4 @@
     <script src="{{ asset('/admin-assets/libs/quill/quill.js') }}"></script>
     {{--    <script src="/js/charts_gmaps.js"></script>--}}
     @include('admin.branches.partials._branch-js')
-
-
-    @livewireScripts
-    <script>
-        Livewire.on('productStored', (params) => {
-            if (params.timeout) {
-                setTimeout(function () {
-                    showToast(params.icon, params.message);
-                }, params.timeout)
-            } else {
-                showToast(params.icon, params.message);
-            }
-
-        });
-    </script>
 @endpush

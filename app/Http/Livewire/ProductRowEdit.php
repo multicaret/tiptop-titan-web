@@ -36,7 +36,7 @@ class ProductRowEdit extends Component
         $this->product->translateOrNew('en')->title = $newValue;
         $this->product->save();
 
-        $this->emit('productStored', [
+        $this->emit('showToast', [
             'icon' => 'success',
             'message' => 'English title has been changed',
         ]);
@@ -48,7 +48,7 @@ class ProductRowEdit extends Component
         $this->product->translateOrNew('ar')->title = $newValue;
         $this->product->save();
 
-        $this->emit('productStored', [
+        $this->emit('showToast', [
             'icon' => 'success',
             'message' => 'Arabic title has been changed',
         ]);
@@ -60,7 +60,7 @@ class ProductRowEdit extends Component
         $this->product->translateOrNew('ku')->title = $newValue;
         $this->product->save();
 
-        $this->emit('productStored', [
+        $this->emit('showToast', [
             'icon' => 'success',
             'message' => 'Arabic title has been changed',
         ]);
@@ -72,7 +72,7 @@ class ProductRowEdit extends Component
         $this->product->price = Controller::convertNumbersToArabic($newValue);
         $this->product->save();
 
-        $this->emit('productStored', [
+        $this->emit('showToast', [
             'icon' => 'success',
             'message' => 'Price has been changed',
         ]);
@@ -84,7 +84,7 @@ class ProductRowEdit extends Component
         $this->product->order_column = Controller::convertNumbersToArabic($newValue);
         $this->product->save();
 
-        $this->emit('productStored', [
+        $this->emit('showToast', [
             'icon' => 'success',
             'message' => 'Order column has been changed',
         ]);
@@ -130,7 +130,7 @@ class ProductRowEdit extends Component
             $productStoredEventMessage = 'Price discount amount has been changed';
         }
 
-        $this->emit('productStored', [
+        $this->emit('showToast', [
             'icon' => $productStoredEventIcon,
             'message' => $productStoredEventMessage,
         ]);

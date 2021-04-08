@@ -43,6 +43,7 @@ Route::resource('slides', 'SlideController')->except(['show']);
 Route::resource('chains', 'ChainController')->except(['show']);
 Route::resource('branches', 'BranchController')->except(['show']);
 Route::resource('restaurants', 'RestaurantController')->only(['create', 'store']);
+Route::get('products/{product}/options', 'ProductOptionsController@create')->name('products.options');
 Route::resource('products', 'ProductController')->except(['show']);
 Route::get('orders/ratings', 'OrderController@ratings')->name('orders.ratings');
 Route::get('orders', 'OrderController@index')->name('orders.index');

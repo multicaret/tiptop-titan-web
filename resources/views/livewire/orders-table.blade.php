@@ -206,10 +206,6 @@
             });
             /*document.addEventListener('livewire:load', function () {
             });*/
-
-            /*window.livewire.on('userStore', () => {
-                $('#exampleModal').modal('hide');
-            });*/
         </script>
     @endpush
 </div>

@@ -15,8 +15,8 @@ use Illuminate\Support\Carbon;
  *
  * @property int $id
  * @property int $user_id
- * @property int $chain_id
- * @property int $branch_id
+ * @property int|null $chain_id
+ * @property int|null $branch_id
  * @property float $total
  * @property float $without_discount_total
  * @property int|null $crm_id
@@ -24,10 +24,10 @@ use Illuminate\Support\Carbon;
  * @property int $status 0:In Progress, 1: Completed
  * @property Carbon|null $created_at
  * @property Carbon|null $updated_at
- * @property-read \App\Models\Branch $branch
+ * @property-read \App\Models\Branch|null $branch
  * @property-read Collection|\App\Models\CartProduct[] $cartProducts
  * @property-read int|null $cart_products_count
- * @property-read \App\Models\Chain $chain
+ * @property-read \App\Models\Chain|null $chain
  * @property-read Collection|\App\Models\Product[] $products
  * @property-read int|null $products_count
  * @property-read \App\Models\User $user

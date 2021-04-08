@@ -16,6 +16,7 @@ use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Support\Carbon;
 use Multicaret\Acquaintances\Traits\CanBeFavorited;
@@ -36,6 +37,9 @@ use Spatie\MediaLibrary\MediaCollections\Models\Media;
  * @property int|null $unit_id
  * @property float|null $price
  * @property float|null $price_discount_amount
+ * @property bool|null $price_discount_by_percentage true: percentage, false: fixed amount
+ * @property Carbon|null $price_discount_began_at
+ * @property Carbon|null $price_discount_finished_at
  * @property int|null $available_quantity
  * @property string|null $sku
  * @property int|null $upc
@@ -45,18 +49,16 @@ use Spatie\MediaLibrary\MediaCollections\Models\Media;
  * @property float|null $weight w
  * @property int $type 1:Market, 2: Food
  * @property int|null $minimum_orderable_quantity
+ * @property int|null $maximum_orderable_quantity
  * @property int|null $order_column
  * @property string $avg_rating
  * @property int $rating_count
  * @property int $search_count
  * @property int $view_count
  * @property int $status 1:draft, 2:active, 3:Inactive, 4..n:CUSTOM
- * @property Carbon|null $price_discount_began_at
- * @property Carbon|null $price_discount_finished_at
  * @property Carbon|null $custom_banner_began_at
  * @property Carbon|null $custom_banner_ended_at
  * @property bool|null $is_storage_tracking_enabled
- * @property bool|null $price_discount_by_percentage true: percentage, false: fixed amount
  * @property int $on_mobile_grid_tile_weight
  * @property Carbon|null $created_at
  * @property Carbon|null $updated_at
@@ -88,7 +90,7 @@ use Spatie\MediaLibrary\MediaCollections\Models\Media;
  * @property-read \App\Models\Taxonomy $masterCategory
  * @property-read MediaCollection|Media[] $media
  * @property-read int|null $media_count
- * @property-read Collection|\App\Models\Taxonomy[] $options
+ * @property-read Collection|\App\Models\ProductOption[] $options
  * @property-read int|null $options_count
  * @property-read Collection|\App\Models\Taxonomy[] $tags
  * @property-read int|null $tags_count
@@ -129,6 +131,7 @@ use Spatie\MediaLibrary\MediaCollections\Models\Media;
  * @method static Builder|Product whereHeight($value)
  * @method static Builder|Product whereId($value)
  * @method static Builder|Product whereIsStorageTrackingEnabled($value)
+ * @method static Builder|Product whereMaximumOrderableQuantity($value)
  * @method static Builder|Product whereMinimumOrderableQuantity($value)
  * @method static Builder|Product whereOnMobileGridTileWeight($value)
  * @method static Builder|Product whereOrderColumn($value)
@@ -155,7 +158,6 @@ use Spatie\MediaLibrary\MediaCollections\Models\Media;
  * @method static \Illuminate\Database\Query\Builder|Product withTrashed()
  * @method static \Illuminate\Database\Query\Builder|Product withoutTrashed()
  * @mixin Eloquent
- * @property-read mixed $cover_thumbnail
  */
 class Product extends Model implements HasMedia
 {
@@ -271,18 +273,9 @@ class Product extends Model implements HasMedia
     }
 
     /*Todo: to @Ghaith This shouldn't be a M2M relations, right? */
-    public function options(): BelongsToMany
+    public function options(): HasMany
     {
-        return $this->belongsToMany(Taxonomy::class, 'product_options', 'product_id', 'ingredient_id')
-                    ->withPivot([
-                        'type',
-                        'is_behaviour_method_excluding',
-                        'max_number_of_selection',
-                        'min_number_of_selection',
-                        'extra_price',
-                        'selection_type',
-                    ])
-                    ->withTimestamps();
+        return $this->hasMany(ProductOption::class);
     }
 
 
