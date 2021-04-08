@@ -33,6 +33,8 @@ use Str;
 class DatabaseSeeder extends Seeder
 {
     public const DEFAULT_USERS_NUMBER = 50;
+    private int $lastTaxonomyId = 0;
+    private int $lastBranchId = 0;
 
     /**
      * Seed the application's database.
@@ -41,6 +43,14 @@ class DatabaseSeeder extends Seeder
      */
     public function run()
     {
+        Artisan::call('datum:importer Branch');
+        echo Artisan::output();
+        Artisan::call('datum:importer Category');
+        echo Artisan::output();
+        Artisan::call('datum:importer Product');
+        echo Artisan::output();
+        $this->lastTaxonomyId = Taxonomy::latest()->first()->id;
+        $this->lastBranchId = Branch::latest()->first()->id;
         DB::statement('SET FOREIGN_KEY_CHECKS=0;');
         $this->rolesAndPermissions();
 
@@ -748,8 +758,10 @@ class DatabaseSeeder extends Seeder
         foreach ($products as $product) {
             $item = $this->createProduct($product, 1, rand(1, 3));
 
+            $modifiedId = ! is_null($product['category_id']) ? $product['category_id'] + $this->lastTaxonomyId : NULL;
+            echo $modifiedId;
             DB::table('category_product')->insert([
-                'category_id' => $product['category_id'],
+                'category_id' => $modifiedId,
                 'product_id' => $item->id,
                 'created_at' => now(),
                 'updated_at' => now(),
@@ -950,9 +962,9 @@ class DatabaseSeeder extends Seeder
         $item = new Product();
         $item->creator_id = $item->editor_id = 1;
         $item->chain_id = $chainId;
-        $item->branch_id = $branchId;
-        $item->category_id = $product['category_id'];
-        $item->unit_id = 1;
+        $item->branch_id = $branchId + $this->lastBranchId;
+        $item->category_id = !is_null($product['category_id']) ? $product['category_id'] + $this->lastTaxonomyId: NULL;
+        $item->unit_id = 1 + $this->lastTaxonomyId;
         $item->price = rand(1000, 20000);
         $item->price_discount_amount = rand(0, 100);
         $item->price_discount_by_percentage = rand(0, 1);
@@ -1367,10 +1379,10 @@ class DatabaseSeeder extends Seeder
         $taxonomy = new Taxonomy();
         $taxonomy->type = $item['type'];
         if (array_key_exists('parent_id', $item)) {
-            $taxonomy->parent_id = $item['parent_id'];
+            $taxonomy->parent_id = ! is_null($item['parent_id']) ? $item['parent_id'] + $this->lastTaxonomyId : NULL;
         }
         if (array_key_exists('branch_id', $item)) {
-            $taxonomy->branch_id = $item['branch_id'];
+            $taxonomy->branch_id = $item['branch_id'] + $this->lastBranchId;
         }
         if ($item['type'] == Taxonomy::TYPE_GROCERY_CATEGORY) {
             $imageName = str_replace('&_', '_&_', Str::snake($item['translations'][0]['title']));
