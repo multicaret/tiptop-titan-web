@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Models\Branch;
 use App\Models\Currency;
 use App\Models\Place;
+use App\Models\WorkingHour;
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
 
@@ -18,9 +19,15 @@ class BranchResource extends JsonResource
      */
     public function toArray($request)
     {
+        $workingHours = WorkingHour::retrieve($this);
+
+        if ( ! $this->is_open_now) {
+            $workingHours['isOpen'] = false;
+        }
 
         return [
             'id' => (int) $this->id,
+            'title' => $this->title,
             'regionId' => $this->region_id,
             'cityId' => $this->city_id,
             'minimumOrder' => [
@@ -31,6 +38,7 @@ class BranchResource extends JsonResource
                 'raw' => $this->under_minimum_order_delivery_fee,
                 'formatted' => Currency::format($this->under_minimum_order_delivery_fee),
             ],
+            'hasTipTopDelivery' => $this->has_tip_top_delivery,
             'fixedDeliveryFee' => [
                 'raw' => $this->fixed_delivery_fee,
                 'formatted' => Currency::format($this->fixed_delivery_fee),
@@ -39,6 +47,7 @@ class BranchResource extends JsonResource
                 'raw' => $this->free_delivery_threshold,
                 'formatted' => Currency::format($this->free_delivery_threshold),
             ],
+            'hasRestaurantDelivery' => $this->has_restaurant_delivery,
             'restaurantFreeDeliveryThreshold' => [
                 'raw' => $this->restaurant_free_delivery_threshold,
                 'formatted' => Currency::format($this->restaurant_free_delivery_threshold),
@@ -66,6 +75,7 @@ class BranchResource extends JsonResource
                 'countRaw' => $this->rating_count,
                 'countFormatted' => Controller::numberToReadable($this->rating_count),
             ],
+            'workingHours' => $workingHours,
             'latitude' => (float) $this->latitude,
             'longitude' => (float) $this->longitude,
             'chain' => new ChainResource($this->chain),
