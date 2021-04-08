@@ -38,7 +38,6 @@ class DatumImporter extends Command
 
     public function handle(): void
     {
-//        $img = 'https://tiptop-backend-production.s3.eu-central-1.amazonaws.com/media/dishes/9041/التونسا-خميرة.jpg';
         $this->showChoice();
         \DB::statement('SET FOREIGN_KEY_CHECKS=0;');
         if ($this->modelName === 'Branch') {
@@ -83,7 +82,7 @@ class DatumImporter extends Command
         $oldMediaData = OldMedia::where([
             ['model_type', "Modules\\Jo3aan\\Entities\\$oldModelName"], ['model_id', $oldModelId]
         ])->first();
-        if ( ! is_null($oldMediaData) && $oldMediaData->id !== 9041) {
+        if ( ! is_null($oldMediaData) && ! in_array( $oldMediaData->id,[9041, 8160])) {
             $s3Url = $oldMediaData->getProductS3Url($oldMediaData->id, $oldMediaData->file_name);
             $newModel->addMediaFromUrl($s3Url)->toMediaCollection($imageCollection);
         }
