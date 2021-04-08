@@ -4,8 +4,9 @@ namespace App\Models\OldModels;
 
 
 use Astrotomic\Translatable\Translatable;
+use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Model;
-
+use Illuminate\Database\Eloquent\Builder;
 
 /**
  * App\Models\OldModels\OldBranch
@@ -132,6 +133,14 @@ class OldBranch extends Model
     protected $with = ['translations'];
     protected $translationForeignKey = 'branch_id';
     protected $translatedAttributes = ['title_suffex', 'description'];
+
+    protected static function booted()
+    {
+        static::addGlobalScope('ancient', function (Builder $builder) {
+            $beginsAt = Carbon::parse('2020-12-25')->setTimeFromTimeString('00:00');
+            $builder->where('created_at', '>=', $beginsAt);
+        });
+    }
 
     public static function attributesComparing(): array
     {

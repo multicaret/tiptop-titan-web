@@ -4,35 +4,17 @@ namespace App\Models\OldModels;
 
 
 use Astrotomic\Translatable\Translatable;
-use Carbon\Carbon;
-use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
 
 
-class OldProduct extends Model
+class OldCategory extends Model
 {
     use Translatable;
 
 
     protected $connection = 'mysql-old';
-    protected $table = 'jo3aan_dishes';
+    protected $table = 'cms_categories_translations';
     protected $primaryKey = 'id';
-    protected $with = ['translations'];
-    protected array $translatedAttributes = ['title', 'description', 'image'];
-    protected $translationForeignKey = 'dish_id';
-
-    public const TYPE_DISCOUNT_PERCENTAGE = 'PERCENTAGE';
-    public const TYPE_DISCOUNT_CASH = 'CASH';
-
-
-
-    protected static function booted()
-    {
-        static::addGlobalScope('ancient', function (Builder $builder) {
-            $beginsAt = Carbon::parse('2020-12-25')->setTimeFromTimeString('00:00');
-            $builder->where('created_at', '>=', $beginsAt);
-        });
-    }
 
     public static function attributesComparing(): array
     {

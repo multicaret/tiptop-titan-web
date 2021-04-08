@@ -27,7 +27,6 @@ class DatumImporter extends Command
     protected $signature = 'datum:importer
                                 {model? : The name of the model}';
     protected $description = 'Command to import branch';
-    private Carbon $beginsAt;
     private string $modelName;// 'Product';
     private const DEFAULT_BRANCH_ID = 473;
     private ProgressBar $bar;
@@ -35,7 +34,6 @@ class DatumImporter extends Command
 
     public function __construct()
     {
-        $this->beginsAt = Carbon::parse('2020-12-25')->setTimeFromTimeString('00:00');
         parent::__construct();
     }
 
@@ -49,8 +47,7 @@ class DatumImporter extends Command
             $this->getGroceryCategories();
             Product::truncate();
             ProductTranslation::truncate();
-            $oldProducts = OldProduct::where('created_at', '>=', $this->beginsAt)
-                                     ->orderBy('created_at')
+            $oldProducts = OldProduct::orderBy('created_at')
                                      ->where('restaurant_id', 269)
                                      ->take(500)->get();
             $this->bar = $this->output->createProgressBar($oldProducts->count());
@@ -112,7 +109,7 @@ class DatumImporter extends Command
         Branch::truncate();
         BranchTranslation::truncate();
         $first = OldBranch::find(self::DEFAULT_BRANCH_ID);
-        $this->bar = $this->output->createProgressBar($first->count());
+        $this->bar = $this->output->createProgressBar(1);
         $tempBranch = [];
         $this->bar->start();
         $this->bar->advance();

@@ -65,7 +65,7 @@ use Spatie\MediaLibrary\MediaCollections\Models\Collections\MediaCollection;
  * @property Carbon|null $created_at
  * @property Carbon|null $updated_at
  * @property string|null $deleted_at
- * @property-read \App\Models\Chain $chain
+ * @property \App\Models\Chain $chain
  * @property-read \App\Models\City|null $city
  * @property-read Collection|\App\Models\Taxonomy[] $foodCategories
  * @property-read int|null $food_categories_count
