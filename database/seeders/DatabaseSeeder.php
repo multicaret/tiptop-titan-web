@@ -358,6 +358,7 @@ class DatabaseSeeder extends Seeder
             $slide->link_type = $item['link_type'];
             $slide->creator_id = $super->id;
             $slide->editor_id = $super->id;
+            $slide->status = Slide::STATUS_ACTIVE;
             $slide->save();
             foreach ($item['translations'] as $translation) {
                 $slideTranslation = new SlideTranslation();
