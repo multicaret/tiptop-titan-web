@@ -22,14 +22,21 @@
         <div class="form-group">
             <input type="text" title="price" class="form-control" placeholder="Price"
                    wire:model.lazy="product.price">
+            @error('product.price')
+            <span class="text-danger">Please fix this field</span>
+            @enderror
         </div>
 
         <hr>
         <span class="text-muted">Price Before:</span><br>
-        <del>{{ \App\Models\Currency::format($product->price) }}</del>
+        <del>{{ $product->price_formatted }}</del>
         <br>
         <span class="text-muted">Price After:</span><br>
-        <b>{{ \App\Models\Currency::format($product->price - $product->discounted_price) }}</b>
+        @if($product->discounted_price != 0)
+            <b>{{ $product->discounted_price_formatted }}</b>
+        @else
+            <b class="text-primary">FREE</b>
+        @endif
     </td>
     <td>
         <div class="form-group">
@@ -67,7 +74,7 @@
             Discount Amount:
         </span>
         <br>
-        {{ $product->discounted_price_formatted }}
+        {{ $product->discount_amount_calculated_formatted }}
     </td>
     <td>
         <div class="form-group">
