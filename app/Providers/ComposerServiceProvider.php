@@ -98,7 +98,7 @@ class ComposerServiceProvider extends ServiceProvider
                                 'icon' => 'fas fa-link',
                                 'params' => [
                                     'type' =>
-                                        Chain::getCorrectTypeName(Chain::TYPE_GROCERY_OBJECT, false),
+                                        Chain::getCorrectChannelName(Chain::CHANNEL_GROCERY_OBJECT, false),
                                 ],
                                 'routeName' => 'admin.chains.index',
                             ],
@@ -106,7 +106,7 @@ class ComposerServiceProvider extends ServiceProvider
                                 'title' => 'Branches',
                                 'icon' => 'fas fa-store-alt',
                                 'params' => [
-                                    'type' => Branch::getCorrectTypeName(Branch::TYPE_GROCERY_OBJECT, false),
+                                    'type' => Branch::getCorrectChannelName(Branch::CHANNEL_GROCERY_OBJECT, false),
                                 ],
                                 'routeName' => 'admin.branches.index',
                             ],
@@ -114,7 +114,7 @@ class ComposerServiceProvider extends ServiceProvider
                                 'title' => 'Products',
                                 'icon' => 'fas fa-box-open',
                                 'params' => [
-                                    'type' => Product::getCorrectTypeName(Product::TYPE_GROCERY_OBJECT, false)
+                                    'type' => Product::getCorrectChannelName(Product::CHANNEL_GROCERY_OBJECT, false)
                                 ],
                                 'routeName' => 'admin.products.index',
                             ],
@@ -141,7 +141,7 @@ class ComposerServiceProvider extends ServiceProvider
                             [
                                 'title' => 'Ratings',
                                 'icon' => 'fas fa-star',
-                                'params' => ['type' => Order::getCorrectTypeName(Order::TYPE_GROCERY_OBJECT, false)],
+                                'params' => ['type' => Order::getCorrectChannelName(Order::CHANNEL_GROCERY_OBJECT, false)],
                                 'routeName' => 'admin.orders.ratings',
                             ],
                         ]
@@ -160,7 +160,7 @@ class ComposerServiceProvider extends ServiceProvider
                                 'title' => 'Chains',
                                 'icon' => 'fas fa-link',
                                 'params' => [
-                                    'type' => Chain::getCorrectTypeName(Chain::TYPE_FOOD_OBJECT, false),
+                                    'type' => Chain::getCorrectChannelName(Chain::CHANNEL_FOOD_OBJECT, false),
                                 ],
                                 'routeName' => 'admin.chains.index',
                             ],
@@ -168,14 +168,14 @@ class ComposerServiceProvider extends ServiceProvider
                                 'title' => 'Branches',
                                 'icon' => 'fas fa-store-alt',
                                 'params' => [
-                                    'type' => Branch::getCorrectTypeName(Branch::TYPE_FOOD_OBJECT, false),
+                                    'type' => Branch::getCorrectChannelName(Branch::CHANNEL_FOOD_OBJECT, false),
                                 ],
                                 'routeName' => 'admin.branches.index',
                             ],
                             [
                                 'title' => 'Products',
                                 'icon' => 'fas fa-box-open',
-                                'params' => ['type' => Product::getCorrectTypeName(Product::TYPE_FOOD_OBJECT, false)],
+                                'params' => ['type' => Product::getCorrectChannelName(Product::CHANNEL_FOOD_OBJECT, false)],
                                 'routeName' => 'admin.products.index',
                             ],
                             [
@@ -315,61 +315,61 @@ class ComposerServiceProvider extends ServiceProvider
                                 'title' => 'End Users',
                                 'icon' => 'fas fa-user',
                                 'routeName' => 'admin.users.index',
-                                'params' => ['type' => User::ROLE_USER],
+                                'params' => ['role' => User::ROLE_USER],
                             ],
                             [
                                 'title' => 'Restaurant Drivers',
                                 'icon' => 'fas fa-truck',
                                 'routeName' => 'admin.users.index',
-                                'params' => ['type' => User::ROLE_RESTAURANT_DRIVER],
+                                'params' => ['role' => User::ROLE_RESTAURANT_DRIVER],
                             ],
                             [
                                 'title' => 'Tiptop Drivers',
                                 'icon' => 'fas fa-car-side',
                                 'routeName' => 'admin.users.index',
-                                'params' => ['type' => User::ROLE_TIPTOP_DRIVER],
+                                'params' => ['role' => User::ROLE_TIPTOP_DRIVER],
                             ],
                             [
                                 'title' => 'Admins',
                                 'icon' => 'fas fa-user-shield',
                                 'routeName' => 'admin.users.index',
-                                'params' => ['type' => User::ROLE_ADMIN],
+                                'params' => ['role' => User::ROLE_ADMIN],
                             ],
                             [
                                 'title' => 'Supervisors',
                                 'icon' => 'fas fa-user-secret',
                                 'routeName' => 'admin.users.index',
-                                'params' => ['type' => User::ROLE_SUPERVISOR],
+                                'params' => ['role' => User::ROLE_SUPERVISOR],
                             ],
                             [
                                 'title' => 'Agents',
                                 'icon' => 'fas fa-user-tie',
                                 'routeName' => 'admin.users.index',
-                                'params' => ['type' => User::ROLE_AGENT],
+                                'params' => ['role' => User::ROLE_AGENT],
                             ],
                             [
                                 'title' => 'Content Editors',
                                 'icon' => 'fas fa-user-edit',
                                 'routeName' => 'admin.users.index',
-                                'params' => ['type' => User::ROLE_CONTENT_EDITOR],
+                                'params' => ['role' => User::ROLE_CONTENT_EDITOR],
                             ],
                             [
                                 'title' => 'Marketers',
                                 'icon' => 'fas fa-users',
                                 'routeName' => 'admin.users.index',
-                                'params' => ['type' => User::ROLE_MARKETER],
+                                'params' => ['role' => User::ROLE_MARKETER],
                             ],
                             [
                                 'title' => 'Branch Owners',
                                 'icon' => 'fas fa-user-plus',
                                 'routeName' => 'admin.users.index',
-                                'params' => ['type' => User::ROLE_BRANCH_OWNER],
+                                'params' => ['role' => User::ROLE_BRANCH_OWNER],
                             ],
                             [
                                 'title' => 'Branch Managers',
                                 'icon' => 'fas fa-users-cog',
                                 'routeName' => 'admin.users.index',
-                                'params' => ['type' => User::ROLE_BRANCH_MANAGER],
+                                'params' => ['role' => User::ROLE_BRANCH_MANAGER],
                             ],
                         ]
                     ]

@@ -7,7 +7,9 @@ use App\Http\Controllers\Api\BaseApiController;
 use App\Http\Resources\BootResource;
 use App\Http\Resources\BranchResource;
 use App\Http\Resources\CartResource;
+use App\Http\Resources\FoodCategoryResource;
 use App\Http\Resources\GroceryCategoryParentResource;
+use App\Http\Resources\OrderResource;
 use App\Http\Resources\SlideResource;
 use App\Models\Boot;
 use App\Models\Branch;
@@ -67,68 +69,69 @@ class HomeController extends BaseApiController
             return $this->respondValidationFails($validator->errors());
         }
 
-
         $user = auth('sanctum')->user();
         $channel = strtolower($request->input('channel'));
-        // Todo: retrieve slides based on channel.
-        $slides = SlideResource::collection(Slide::all());
+        $categories = [];
         $cart = null;
+        $activeOrders = null;
+        $totalActiveOrders = 0;
 
+        $eta = '30-45';
+        $etaUnit = 'min';
+
+        $selectedAddress = null;
+        $cityId = null;
+        $regionId = null;
+
+        // Grocery Related Initializers
+        $distance = 0;
+        $branch = null;
+        // Food Related Initializers
+        $foodBranches = [];
+
+        // GeoLocation handling
         $latitude = $request->input('latitude');
         $longitude = $request->input('longitude');
 
-        $sharedResponse = [
-            'cart' => null,
-            'slides' => $slides,
-            'estimated_arrival_time' => [
-                'value' => '30-45',
-                'unit' => 'min',
-            ],
-        ];
+        if ( ! is_null($user) && ! is_null($selectedAddress = $request->input('selected_address_id'))) {
+            $selectedAddress = Location::find($selectedAddress);
+            if (is_null($selectedAddress)) {
+                return $this->respondNotFound('Address not found!');
+            }
+            $latitude = $selectedAddress->latitude;
+            $longitude = $selectedAddress->longitude;
+        }
+
+        // Todo: fill the Region & City after we finishing the GeoFencing from Jadid.
+        if ( ! is_null($selectedAddress)) {
+            $cityId = $selectedAddress->city->id;
+            $regionId = $selectedAddress->region->id;
+        }
+        $slides = $this->retrieveSlides($channel, $user, $regionId, $cityId);
+
 
         if ($channel == config('app.app-channels.grocery')) {
-            $response = [
-                'branch' => null,
-                'distance' => null,
-                'hasAvailableBranchesNow' => false,
-                'categories' => [],
-            ];
 
-            $response['categories'] = cache()->rememberForever('all_grocery_categories_with_products', function () {
+            $categories = cache()->rememberForever('all_grocery_categories_with_products', function () {
                 $groceryParentCategories = Taxonomy::active()->groceryCategories()->parents()->get();
 
                 return GroceryCategoryParentResource::collection($groceryParentCategories);
             });
 
-
-            if ( ! is_null($user) && ! is_null($selectedAddress = $request->input('selected_address_id'))) {
-                $selectedAddress = Location::find($selectedAddress);
-                if (is_null($selectedAddress)) {
-                    return $this->respondNotFound('Address not found!');
-                }
-                $latitude = $selectedAddress->latitude;
-                $longitude = $selectedAddress->longitude;
-            }
-
             [$distance, $branch] = Branch::getClosestAvailableBranch($latitude, $longitude);
-            if ( ! is_null($distance)) {
-                $response['distance'] = $distance;
-            }
             if ( ! is_null($branch)) {
-                $response['branch'] = new BranchResource($branch);
-                $response['hasAvailableBranchesNow'] = true;
-
                 if ( ! is_null($user)) {
-                    $userCart = Cart::retrieve($branch->chain_id, $branch->id, $user->id);
-                    $cart = new CartResource($userCart);
-                    $sharedResponse['cart'] = $cart;
-                    $sharedResponse['activeOrders'] = Order::whereUserId($user->id)
-                                                           ->whereNotIn('status', [
-                                                               Order::STATUS_CANCELLED,
-                                                               Order::STATUS_DELIVERED,
-                                                           ])
-                                                           ->whereChainId($branch->chain_id)
-                                                           ->get();
+                    $cart = Cart::retrieve($branch->chain_id, $branch->id, $user->id);
+                    $activeOrders = Order::whereUserId($user->id)
+                                         ->whereNotIn('status', [
+                                             Order::STATUS_CANCELLED,
+                                             Order::STATUS_DELIVERED,
+                                         ])
+                                         ->whereChainId($branch->chain_id)
+                                         ->latest();
+                    $activeOrdersCount = $activeOrders->count();
+                    $activeOrders = OrderResource::collection($activeOrders->take(4)->get());
+                    $totalActiveOrders = $activeOrdersCount;
                 }
 //            } else {
                 // It's too late no branch is open for now, so sorry
@@ -137,12 +140,82 @@ class HomeController extends BaseApiController
             }
 
             // Always in grocery the EA is 20-30, for dynamic values use "->distance" attribute from above.
-            $sharedResponse['estimated_arrival_time']['value'] = '20-30';
-
+            $eta = '20-30';
         } else {
-            $response = [];
+            $categories = cache()->rememberForever('all_food_categories', function () {
+                $categories = Taxonomy::active()->foodCategories()->get();
+
+                return FoodCategoryResource::collection($categories);
+            });
+            $foodBranches = Branch::food()
+                                  ->active()
+                                  ->latest('published_at')
+                                  ->get();
+
+            if ( ! is_null($user)) {
+                $cart = Cart::retrieve(null, null, $user->id);
+                $activeOrders = Order::whereUserId($user->id)
+                                     ->whereNotIn('status', [
+                                         Order::STATUS_CANCELLED,
+                                         Order::STATUS_DELIVERED,
+                                     ])
+                                     ->where('type', Order::CHANNEL_FOOD_OBJECT)
+                                     ->latest();
+                $activeOrdersCount = $activeOrders->count();
+                $activeOrders = OrderResource::collection($activeOrders->take(4)->get());
+                $totalActiveOrders = $activeOrdersCount;
+            }
+
         }
 
-        return $this->respond(array_merge($sharedResponse, $response));
+        return $this->respond([
+            'estimated_arrival_time' => [
+                'value' => $eta,
+                'unit' => $etaUnit,
+            ],
+            'cart' => is_null($cart) ? null : new CartResource($cart),
+            'slides' => $slides,
+            'categories' => $categories,
+            'activeOrders' => $activeOrders,
+            'totalActiveOrders' => $totalActiveOrders,
+            // Grocery Related
+            'branch' => is_null($branch) ? null : new BranchResource($branch),
+            'distance' => $distance,
+            // Food Related
+            'restaurants' => is_null($foodBranches) ? null : BranchResource::collection($foodBranches),
+        ]);
+    }
+
+    /**
+     * @param  string  $channel
+     * @param  \App\Models\User|null  $user
+     * @param  int|null  $regionId
+     * @param  int|null  $cityId
+     * @return \Illuminate\Http\Resources\Json\AnonymousResourceCollection
+     */
+    private function retrieveSlides(
+        string $channel,
+        ?\App\Models\User $user,
+        ?int $regionId,
+        ?int $cityId
+    ): \Illuminate\Http\Resources\Json\AnonymousResourceCollection {
+        $slideChannel = Slide::CHANNEL_GROCERY_OBJECT;
+        if ($channel == config('app.app-channels.food')) {
+            $slideChannel = Slide::CHANNEL_FOOD_OBJECT;
+        }
+        $hasBeenAuthenticated = ! is_null($user) ? Slide::TARGET_LOGGED_IN : Slide::TARGET_GUEST;
+        $slides = Slide::whereIn('channel', [$slideChannel, Slide::TYPE_FOOD_AND_GROCERY_OBJECT])
+                       ->whereIn('has_been_authenticated', [$hasBeenAuthenticated, Slide::TARGET_EVERYONE])
+                       ->whereDate('expires_at', '>', now())
+                       ->whereDate('begins_at', '<', now());
+
+        if ( ! is_null($regionId)) {
+            $slides = $slides->where('region_id', $regionId);
+        }
+        if ( ! is_null($cityId)) {
+            $slides = $slides->where('city_id', $cityId);
+        }
+
+        return SlideResource::collection($slides->get());
     }
 }

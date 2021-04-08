@@ -15,8 +15,8 @@ use Illuminate\Support\Carbon;
  *
  * @property int $id
  * @property int $user_id
- * @property int $chain_id
- * @property int $branch_id
+ * @property int|null $chain_id
+ * @property int|null $branch_id
  * @property float $total
  * @property float $without_discount_total
  * @property int|null $crm_id
@@ -24,13 +24,13 @@ use Illuminate\Support\Carbon;
  * @property int $status 0:In Progress, 1: Completed
  * @property Carbon|null $created_at
  * @property Carbon|null $updated_at
- * @property-read Branch $branch
- * @property-read Collection|CartProduct[] $cartProducts
+ * @property-read \App\Models\Branch|null $branch
+ * @property-read Collection|\App\Models\CartProduct[] $cartProducts
  * @property-read int|null $cart_products_count
- * @property-read Chain $chain
- * @property-read Collection|Product[] $products
+ * @property-read \App\Models\Chain|null $chain
+ * @property-read Collection|\App\Models\Product[] $products
  * @property-read int|null $products_count
- * @property-read User $user
+ * @property-read \App\Models\User $user
  * @method static Builder|Cart newModelQuery()
  * @method static Builder|Cart newQuery()
  * @method static Builder|Cart query()
@@ -64,12 +64,21 @@ class Cart extends Model
      * @param  int  $status
      * @return Cart|Model|object|null
      */
-    public static function getCurrentlyActiveCart(?int $userId, $branchId, int $status = self::STATUS_IN_PROGRESS)
-    {
-        return Cart::where('user_id', $userId)
-                   ->where('branch_id', $branchId)
-                   ->where('status', $status)
-                   ->first();
+    public static function getCurrentlyActiveCart(
+        ?int $userId,
+        ?int $branchId = null,
+        int $status = self::STATUS_IN_PROGRESS
+    ) {
+        $cartQuery = Cart::where('user_id', $userId)
+                         ->where('status', $status);
+
+        if ( ! is_null($branchId)) {
+            $cartQuery = $cartQuery->where('branch_id', $branchId);
+        } else {
+            $cartQuery = $cartQuery->whereNull('branch_id');
+        }
+
+        return $cartQuery->first();
     }
 
     public function user(): BelongsTo
@@ -100,8 +109,12 @@ class Cart extends Model
                     ->withTimestamps();
     }
 
-    public static function retrieve($chainId, $branchId, $userId = null, $status = self::STATUS_IN_PROGRESS): Cart
-    {
+    public static function retrieve(
+        ?int $chainId = null,
+        ?int $branchId = null,
+        ?int $userId = null,
+        $status = self::STATUS_IN_PROGRESS
+    ): Cart {
         if (is_null($userId)) {
             $userId = auth()->id();
         }

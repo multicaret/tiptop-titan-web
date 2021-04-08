@@ -1,9 +1,9 @@
 @extends('layouts.admin')
 
 @if(!is_null($product->id))
-    @section('title', trans('strings.editing') .' - ' . trans('strings.chain'))
+    @section('title', 'Editing a product')
 @else
-    @section('title', trans('strings.add_new') .' - ' . trans('strings.chain'))
+    @section('title', 'Add new product')
 @endif
 
 @push('styles')
@@ -85,58 +85,59 @@
                         <h4 class="card-header">Selectors</h4>
                         <div class="card-body">
                             <div class="row">
-                                <div class="col-6">
-                                    <div class="form-group">
-                                        <label class="control-label">
-                                            @lang('strings.chain')
-                                        </label>
-                                        <multiselect
-                                            :options="chains"
-                                            v-model="product.chain"
-                                            track-by="id"
-                                            label="title"
-                                            name="chain_id"
-                                            :searchable="true"
-                                            :allow-empty="true"
-                                            select-label=""
-                                            selected-label=""
-                                            deselect-label=""
-                                            placeholder=""
-                                            @input="getBranches"
-                                            @select="selectChain"
-                                            autocomplete="false"
-                                        ></multiselect>
+                                @if(!request()->has('branch_id'))
+                                    <div class="col-6">
+                                        <div class="form-group">
+                                            <label class="control-label">
+                                                @lang('strings.chain')
+                                            </label>
+                                            <multiselect
+                                                :options="chains"
+                                                v-model="product.chain"
+                                                track-by="id"
+                                                label="title"
+                                                name="chain_id"
+                                                :searchable="true"
+                                                :allow-empty="true"
+                                                select-label=""
+                                                selected-label=""
+                                                deselect-label=""
+                                                placeholder=""
+                                                @input="getBranches"
+                                                @select="selectChain"
+                                                autocomplete="false"
+                                            ></multiselect>
+                                        </div>
                                     </div>
-                                </div>
-                                <div class="col-6">
-                                    <div class="form-group">
-                                        <label class="control-label">
-                                            @lang('strings.branch')
-                                        </label>
-                                        <multiselect
-                                            :options="branches"
-                                            v-model="product.branch"
-                                            track-by="id"
-                                            label="title"
-                                            name="branch_id"
-                                            :searchable="true"
-                                            :allow-empty="true"
-                                            select-label=""
-                                            selected-label=""
-                                            deselect-label=""
-                                            :clear-on-select="false"
-                                            :preselect-first="true"
-                                            placeholder=""
-                                            {{--                                            @select="retrieveCities"--}}
-                                            autocomplete="false"
-                                        ></multiselect>
+                                    <div class="col-6">
+                                        <div class="form-group">
+                                            <label class="control-label">
+                                                @lang('strings.branch')
+                                            </label>
+                                            <multiselect
+                                                :options="branches"
+                                                v-model="product.branch"
+                                                track-by="id"
+                                                label="title"
+                                                name="branch_id"
+                                                :searchable="true"
+                                                :allow-empty="true"
+                                                select-label=""
+                                                selected-label=""
+                                                deselect-label=""
+                                                :clear-on-select="false"
+                                                :preselect-first="true"
+                                                placeholder=""
+                                                autocomplete="false"
+                                            ></multiselect>
+                                        </div>
                                     </div>
-                                </div>
+                                @endif
                                 @isset($allInputs['category_id'])
                                     <div class="col-6">
                                         <div class="form-group">
                                             <label class="control-label">
-                                                @lang('strings.categories')
+                                                @lang('strings.categories')&nbsp;<b class="text-danger">*</b>
                                             </label>
                                             <multiselect
                                                 :options="categories"
@@ -152,6 +153,7 @@
                                                 deselect-label=""
                                                 placeholder=""
                                                 autocomplete="false"
+                                                required
                                             ></multiselect>
                                         </div>
                                     </div>
@@ -179,6 +181,14 @@
                                         </div>
                                     </div>
                                 @endisset
+                                <div class="col-6">
+                                    @component('admin.components.form-group', ['name' => 'status', 'type' => 'select'])
+                                        @slot('label', trans('strings.status'))
+                                        @slot('options', \App\Models\Product::getStatusesArray())
+                                        @slot('attributes', ['required'])
+                                        @slot('selected', $product->status)
+                                    @endcomponent
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -192,7 +202,8 @@
                             <div class="row">
                                 @foreach($allInputs as $input => $type)
                                     @if($type !== 'select')
-                                        <div class="col-6">
+                                        <div
+                                            class="{{$input == 'available_quantity' || $input == 'minimum_orderable_quantity' || $input == 'maximum_orderable_quantity'? 'col-4' : 'col-6'}}">
                                             @component('admin.components.form-group', ['name' => $input, 'type' => $type])
                                                 @slot('label', trans('strings.'. $input))
                                                 @if(! is_null($product->id) && $type === config('defaults.db_column_types.boolean'))
@@ -211,32 +222,32 @@
                 </div>
             </div>
             @if(\App\Models\Product::isGrocery())
-            <div class="col-md-3" style="margin-top: 2.2rem !important;">
-                <div class="row">
-                    <div class="col-md-12 mt-2">
-                        <div class="card card-outline-inverse">
-                            <h4 class="card-header">Cover</h4>
-                            <div class="card-body">
-                                <div class="row">
-                                    <div class="col-12">
-                                        {{--                                        <h5>Cover</h5>--}}
-                                        @component('admin.components.form-group', ['name' => 'cover', 'type' => 'file'])
-                                            @slot('attributes', [
-                                                'class' => 'cover-uploader',
-                                                'accept' => '.jpg, .jpeg, .png, .bmp',
-                                                'dropzone' => 'media-list',
-                                                'data-fileuploader-listInput' => 'media-list',
-                                                'data-fileuploader-extensions' => 'jpg, jpeg, png, bmp',
-                                                'data-fileuploader-files' => json_encode($product->getMediaForUploader('cover'), JSON_UNESCAPED_UNICODE),
-                                            ])
-                                        @endcomponent
+                <div class="col-md-3" style="margin-top: 2.2rem !important;">
+                    <div class="row">
+                        <div class="col-md-12 mt-2">
+                            <div class="card card-outline-inverse">
+                                <h4 class="card-header">Cover</h4>
+                                <div class="card-body">
+                                    <div class="row">
+                                        <div class="col-12">
+                                            {{--                                        <h5>Cover</h5>--}}
+                                            @component('admin.components.form-group', ['name' => 'cover', 'type' => 'file'])
+                                                @slot('attributes', [
+                                                    'class' => 'cover-uploader',
+                                                    'accept' => '.jpg, .jpeg, .png, .bmp',
+                                                    'dropzone' => 'media-list',
+                                                    'data-fileuploader-listInput' => 'media-list',
+                                                    'data-fileuploader-extensions' => 'jpg, jpeg, png, bmp',
+                                                    'data-fileuploader-files' => json_encode($product->getMediaForUploader('cover'), JSON_UNESCAPED_UNICODE),
+                                                ])
+                                            @endcomponent
+                                        </div>
                                     </div>
                                 </div>
                             </div>
                         </div>
                     </div>
                 </div>
-            </div>
             @endif
             <div class="col-md-12 mt-2">
                 <div class="card card-outline-inverse">
@@ -264,8 +275,13 @@
         </div>
 
         <div class="col-md-12">
-            <input type="hidden" name="chain_id" :value="JSON.stringify(product.chain)">
-            <input type="hidden" name="branch_id" :value="JSON.stringify(product.branch)">
+            @if(request()->has('branch_id'))
+                <input type="hidden" name="chain_id" value="{{request()->chain_id}}">
+                <input type="hidden" name="branch_id" value="{{request()->branch_id}}">
+            @else
+                <input type="hidden" name="chain" :value="JSON.stringify(product.chain)">
+                <input type="hidden" name="branch" :value="JSON.stringify(product.branch)">
+            @endif
             <input type="hidden" name="categories" :value="JSON.stringify(product.categories)">
             <input type="hidden" name="unit_id" :value="JSON.stringify(selectedUnit)">
             <input type="hidden" name="unattached-media" class="deleted-file" value="">
@@ -294,7 +310,8 @@
                 selectedUnit: @json(!is_null($product->unit) ? $product->unit : null),
                 allInputs: @json($allInputs)
             },
-            beforeMount() {},
+            beforeMount() {
+            },
             methods: {
                 selectChain: function () {
                     this.branches = [];

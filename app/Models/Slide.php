@@ -31,19 +31,19 @@ use Illuminate\Support\Carbon;
  * @property Carbon|null $begins_at
  * @property Carbon|null $expires_at
  * @property int $channel 8:food and grocery, 9:grocery, 10:food
- * @property int $has_been_authenticated
  * @property int|null $order_column
  * @property int $status 1:draft, 2:active, 3:Inactive, 4..n:CUSTOM
+ * @property int $has_been_authenticated 1:TARGET_LOGGED_IN, 2:TARGET_GUEST, 3:TARGET_EVERYONE
  * @property Carbon|null $created_at
  * @property Carbon|null $updated_at
  * @property Carbon|null $deleted_at
- * @property-read City|null $city
+ * @property-read \App\Models\City|null $city
  * @property-read bool $is_active
  * @property-read bool $is_inactive
  * @property-read mixed $status_name
- * @property-read Region|null $region
- * @property-read SlideTranslation|null $translation
- * @property-read Collection|SlideTranslation[] $translations
+ * @property-read \App\Models\Region|null $region
+ * @property-read \App\Models\SlideTranslation|null $translation
+ * @property-read Collection|\App\Models\SlideTranslation[] $translations
  * @property-read int|null $translations_count
  * @method static \Illuminate\Database\Eloquent\Builder|Slide active()
  * @method static \Illuminate\Database\Eloquent\Builder|Slide draft()
@@ -107,8 +107,8 @@ class Slide extends Model
     public const LINK_TYPE_DEFERRED_DEEPLINK = 3;
     public const LINK_TYPE_DEEPLINK = 4;
 
-    public const TYPE_GROCERY_OBJECT = 8;
-    public const TYPE_FOOD_OBJECT = 9;
+    public const CHANNEL_GROCERY_OBJECT = 8;
+    public const CHANNEL_FOOD_OBJECT = 9;
     public const TYPE_FOOD_AND_GROCERY_OBJECT = 10;
 
     public const TARGET_LOGGED_IN = 13;
@@ -145,11 +145,11 @@ class Slide extends Model
         ];
     }
 
-    public static function getChannelsArray(): array
+    public static function getSlideChannelsArray(): array
     {
         return [
-            self::TYPE_GROCERY_OBJECT => trans('strings.grocery'),
-            self::TYPE_FOOD_OBJECT => trans('strings.food'),
+            self::CHANNEL_GROCERY_OBJECT => trans('strings.grocery'),
+            self::CHANNEL_FOOD_OBJECT => trans('strings.food'),
             self::TYPE_FOOD_AND_GROCERY_OBJECT => trans('strings.grocery_and_food'),
         ];
     }
@@ -157,19 +157,19 @@ class Slide extends Model
     public static function getAllChannelsRich(): array
     {
         return [
-            self::TYPE_GROCERY_OBJECT => [
-                'id' => self::TYPE_GROCERY_OBJECT,
+            self::CHANNEL_GROCERY_OBJECT => [
+                'id' => self::CHANNEL_GROCERY_OBJECT,
                 'title' => trans('strings.grocery'),
                 'class' => 'success',
             ],
-            self::TYPE_FOOD_OBJECT => [
-                'id' => self::TYPE_FOOD_OBJECT,
+            self::CHANNEL_FOOD_OBJECT => [
+                'id' => self::CHANNEL_FOOD_OBJECT,
                 'title' => trans('strings.food'),
                 'class' => 'dark',
             ],
             self::TYPE_FOOD_AND_GROCERY_OBJECT => [
                 'id' => self::TYPE_FOOD_AND_GROCERY_OBJECT,
-                'title' => trans('strings.grocery_and_food'),
+                'title' => trans('strings.both'),
                 'class' => 'info',
             ],
         ];

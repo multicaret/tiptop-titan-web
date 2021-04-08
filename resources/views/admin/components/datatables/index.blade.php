@@ -1,6 +1,14 @@
 @push('styles')
     <link rel="stylesheet" href="/admin-assets/libs/datatables/datatables.css">
     <link rel="stylesheet" href="https://cdn.datatables.net/rowreorder/1.2.7/css/rowReorder.dataTables.min.css">
+    <style>
+        .large-icon > [class^="ion-"]::before, .large-icon >  [class*=" ion-"]::before {
+            font-size: 2em;
+        }
+        .medium-icon > [class^="ion-"]::before, .medium-icon >  [class*=" ion-"]::before {
+            font-size: 1.5em;
+        }
+    </style>
 @endpush
 
 <table class="datatable-table table table-striped table-bordered">
@@ -43,6 +51,9 @@
                             'width' => '5',
             ]);
 
+            $foodTypeName = \App\Models\Taxonomy::getCorrectTypeName(\App\Models\Taxonomy::TYPE_FOOD_CATEGORY, false);
+            $isArticleType = request('type') === \App\Models\Post::getCorrectTypeName(\App\Models\Post::TYPE_ARTICLE, false);
+            $isFoodType = request('type') === $foodTypeName ;
             $columns = array_values(array_merge($columns,
             [
                 'action'=>
@@ -52,7 +63,7 @@
                     'name' => 'action',
                     'orderable' => false,
                     'searchable' => false,
-                    'width' => '10',
+                    'width' => $isFoodType || $isArticleType ? '100' : '10',
                 ]
             ]
              ) );
@@ -178,12 +189,5 @@
                 });
         }
 
-        function showToast(type, message) {
-            window.toast.fire({
-                icon: type,
-                type: type,
-                title: message,
-            });
-        }
     </script>
 @endpush

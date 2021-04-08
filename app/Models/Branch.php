@@ -19,6 +19,7 @@ use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Support\Carbon;
 use Multicaret\Acquaintances\Models\InteractionRelation;
+use Multicaret\Acquaintances\Traits\CanBeFavorited;
 use Multicaret\Acquaintances\Traits\CanBeRated;
 use Spatie\MediaLibrary\HasMedia;
 use Spatie\MediaLibrary\MediaCollections\Models\Collections\MediaCollection;
@@ -39,12 +40,16 @@ use Spatie\MediaLibrary\MediaCollections\Models\Collections\MediaCollection;
  * @property float $fixed_delivery_fee
  * @property int $min_delivery_minutes
  * @property int $max_delivery_minutes
+ * @property int $free_delivery_threshold
  * @property bool $has_restaurant_delivery
  * @property float $restaurant_minimum_order
  * @property float $restaurant_under_minimum_order_delivery_fee
  * @property float $restaurant_fixed_delivery_fee
  * @property int $restaurant_min_delivery_minutes
  * @property int $restaurant_max_delivery_minutes
+ * @property int $restaurant_free_delivery_threshold
+ * @property int $management_commission_rate 0 means there is no commission atall
+ * @property bool $is_open_now
  * @property string|null $primary_phone_number
  * @property string|null $secondary_phone_number
  * @property string|null $whatsapp_phone_number
@@ -56,11 +61,15 @@ use Spatie\MediaLibrary\MediaCollections\Models\Collections\MediaCollection;
  * @property int $rating_count
  * @property int $view_count
  * @property int $status 1:draft, 2:active, 3:Inactive, 4..n:CUSTOM
+ * @property Carbon|null $published_at
+ * @property Carbon|null $featured_at
  * @property Carbon|null $created_at
  * @property Carbon|null $updated_at
  * @property string|null $deleted_at
- * @property-read Chain $chain
- * @property-read City|null $city
+ * @property-read \App\Models\Chain $chain
+ * @property-read \App\Models\City|null $city
+ * @property-read Collection|\App\Models\Taxonomy[] $foodCategories
+ * @property-read int|null $food_categories_count
  * @property-read mixed $average_rating_all_types
  * @property-read mixed $average_rating
  * @property-read bool $has_been_rated
@@ -73,9 +82,9 @@ use Spatie\MediaLibrary\MediaCollections\Models\Collections\MediaCollection;
  * @property-read mixed $user_average_rating
  * @property-read mixed $user_sum_rating_all_types
  * @property-read mixed $user_sum_rating
- * @property-read Collection|Location[] $locations
+ * @property-read Collection|\App\Models\Location[] $locations
  * @property-read int|null $locations_count
- * @property-read Collection|User[] $managers
+ * @property-read Collection|\App\Models\User[] $managers
  * @property-read int|null $managers_count
  * @property-read MediaCollection|\Spatie\MediaLibrary\MediaCollections\Models\Media[] $media
  * @property-read int|null $media_count
@@ -83,13 +92,13 @@ use Spatie\MediaLibrary\MediaCollections\Models\Collections\MediaCollection;
  * @property-read int|null $ratings_count
  * @property-read Collection|InteractionRelation[] $ratingsPure
  * @property-read int|null $ratings_pure_count
- * @property-read Region|null $region
- * @property-read Collection|User[] $supervisors
+ * @property-read \App\Models\Region|null $region
+ * @property-read Collection|\App\Models\User[] $supervisors
  * @property-read int|null $supervisors_count
- * @property-read BranchTranslation|null $translation
- * @property-read Collection|BranchTranslation[] $translations
+ * @property-read \App\Models\BranchTranslation|null $translation
+ * @property-read Collection|\App\Models\BranchTranslation[] $translations
  * @property-read int|null $translations_count
- * @property-read Collection|WorkingHour[] $workingHours
+ * @property-read Collection|\App\Models\WorkingHour[] $workingHours
  * @property-read int|null $working_hours_count
  * @method static Builder|Branch active()
  * @method static Builder|Branch draft()
@@ -114,20 +123,26 @@ use Spatie\MediaLibrary\MediaCollections\Models\Collections\MediaCollection;
  * @method static Builder|Branch whereCreatorId($value)
  * @method static Builder|Branch whereDeletedAt($value)
  * @method static Builder|Branch whereEditorId($value)
+ * @method static Builder|Branch whereFeaturedAt($value)
  * @method static Builder|Branch whereFixedDeliveryFee($value)
+ * @method static Builder|Branch whereFreeDeliveryThreshold($value)
  * @method static Builder|Branch whereHasRestaurantDelivery($value)
  * @method static Builder|Branch whereHasTipTopDelivery($value)
  * @method static Builder|Branch whereId($value)
+ * @method static Builder|Branch whereIsOpenNow($value)
  * @method static Builder|Branch whereLatitude($value)
  * @method static Builder|Branch whereLongitude($value)
+ * @method static Builder|Branch whereManagementCommissionRate($value)
  * @method static Builder|Branch whereMaxDeliveryMinutes($value)
  * @method static Builder|Branch whereMinDeliveryMinutes($value)
  * @method static Builder|Branch whereMinimumOrder($value)
  * @method static Builder|Branch whereOrderColumn($value)
  * @method static Builder|Branch wherePrimaryPhoneNumber($value)
+ * @method static Builder|Branch wherePublishedAt($value)
  * @method static Builder|Branch whereRatingCount($value)
  * @method static Builder|Branch whereRegionId($value)
  * @method static Builder|Branch whereRestaurantFixedDeliveryFee($value)
+ * @method static Builder|Branch whereRestaurantFreeDeliveryThreshold($value)
  * @method static Builder|Branch whereRestaurantMaxDeliveryMinutes($value)
  * @method static Builder|Branch whereRestaurantMinDeliveryMinutes($value)
  * @method static Builder|Branch whereRestaurantMinimumOrder($value)
@@ -156,14 +171,15 @@ class Branch extends Model implements HasMedia
     use HasViewCount;
     use HasWorkingHours;
     use Translatable;
+    use CanBeFavorited;
 
 
     public const STATUS_DRAFT = 1;
     public const STATUS_ACTIVE = 2;
     public const STATUS_INACTIVE = 3;
 
-    public const TYPE_GROCERY_OBJECT = 1;
-    public const TYPE_FOOD_OBJECT = 2;
+    public const CHANNEL_GROCERY_OBJECT = 1;
+    public const CHANNEL_FOOD_OBJECT = 2;
 
     protected $fillable = [
         'has_tip_top_delivery',
@@ -174,6 +190,10 @@ class Branch extends Model implements HasMedia
         'restaurant_minimum_order',
         'restaurant_under_minimum_order_delivery_fee',
         'restaurant_fixed_delivery_fee',
+        'free_delivery_threshold',
+        'restaurant_free_delivery_threshold',
+        'published_at',
+        'featured_at',
     ];
     protected $with = ['translations'];
     protected $translatedAttributes = ['title', 'description'];
@@ -181,12 +201,17 @@ class Branch extends Model implements HasMedia
     protected $casts = [
         'has_tip_top_delivery' => 'boolean',
         'has_restaurant_delivery' => 'boolean',
+        'is_open_now' => 'boolean',
+
         'minimum_order' => 'double',
         'under_minimum_order_delivery_fee' => 'double',
         'fixed_delivery_fee' => 'double',
         'restaurant_minimum_order' => 'double',
         'restaurant_under_minimum_order_delivery_fee' => 'double',
         'restaurant_fixed_delivery_fee' => 'double',
+
+        'published_at' => 'datetime',
+        'featured_at' => 'datetime',
     ];
 
 
@@ -246,6 +271,11 @@ class Branch extends Model implements HasMedia
             'category_id')->withTimestamps();
     }
 
+    public function menuCategories(): HasMany
+    {
+        return $this->hasMany(Taxonomy::class);
+    }
+
     public static function getClosestAvailableBranch($latitude, $longitude): array
     {
         $distance = $branch = null;
@@ -279,6 +309,10 @@ class Branch extends Model implements HasMedia
             if ($totalAmount < $this->minimum_order) {
                 $deliveryFee += $this->under_minimum_order_delivery_fee;
             }
+        }
+
+        if ($totalAmount >= $this->free_delivery_threshold) {
+            $deliveryFee = 0;
         }
 
         return $deliveryFee;

@@ -82,13 +82,13 @@
                 'mark_as_read' => trans('strings.make_as_read'),
                 'saved' => trans('strings.saved'),
                 'error' => trans('strings.error'),
-                'working_day_1' => trans('strings.working_day_1'),
-                'working_day_2' => trans('strings.working_day_2'),
-                'working_day_3' => trans('strings.working_day_3'),
-                'working_day_4' => trans('strings.working_day_4'),
-                'working_day_5' => trans('strings.working_day_5'),
-                'working_day_6' => trans('strings.working_day_6'),
-                'working_day_7' => trans('strings.working_day_7'),
+                'working_day_0' => trans('strings.working_day_1'),
+                'working_day_1' => trans('strings.working_day_2'),
+                'working_day_2' => trans('strings.working_day_3'),
+                'working_day_3' => trans('strings.working_day_4'),
+                'working_day_4' => trans('strings.working_day_5'),
+                'working_day_5' => trans('strings.working_day_6'),
+                'working_day_6' => trans('strings.working_day_7'),
                 'swal' => [
                     'title',
                     'text' => '',
@@ -140,6 +140,9 @@
         </style>
     @endif
 
+
+    @livewireStyles
+
     @stack('head')
 </head>
 <body>
@@ -153,14 +156,37 @@
 </div>
 
 
-<script src="https://cdn.jsdelivr.net/npm/vue@2.6.12/dist/vue.js"></script>
 <!-- Core scripts -->
-<script src="{{ asset('js/admin.js') }}"></script>
+<script src="{{ asset('js/admin.js'). '?ver='. rand(1000, 9999) }}"></script>
 <script src="{{ asset('/admin-assets/js/sidenav.js') }}"></script>
 
 <!-- Libs -->
 <script src="{{ asset('/admin-assets/libs/perfect-scrollbar/perfect-scrollbar.js') }}"></script>
 
+<script src="https://unpkg.com/clipboard@2/dist/clipboard.min.js"></script>
+<script>
+    $('document').ready(function () {
+        var clipboard;
+        if (ClipboardJS.isSupported()) {
+            clipboard = new ClipboardJS('.clipboard-btn');
+        } else {
+            $('.clipboard-btn').prop('disabled', true);
+        }
+        if (clipboard) {
+            clipboard.on('success', function (e) {
+                console.info('Text:', e.text);
+                e.clearSelection();
+                const capitalizeAction = e.action.charAt(0).toUpperCase() + e.action.slice(1);
+                const message = capitalizeAction + ' ' + @json(trans('strings.successfully_done'));
+                window.toast.fire({
+                    icon: 'success',
+                    title: message,
+                });
+            });
+        }
+
+    });
+</script>
 
 @if(session()->has('message'))
     <script type="text/javascript">
@@ -207,8 +233,21 @@
     </script>
 @endif
 
+@livewireScripts
 <script>
     $('[data-toggle="tooltip"]').tooltip();
+
+    function showToast(type, message) {
+        window.toast.fire({
+            icon: type,
+            // type: type,
+            title: message,
+        });
+    }
+
+    Livewire.on('showToast', (params) => {
+        showToast(params.icon, params.message);
+    });
 </script>
 @stack('scripts')
 </body>

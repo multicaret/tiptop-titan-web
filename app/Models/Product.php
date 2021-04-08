@@ -16,6 +16,7 @@ use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Support\Carbon;
 use Multicaret\Acquaintances\Traits\CanBeFavorited;
@@ -36,6 +37,9 @@ use Spatie\MediaLibrary\MediaCollections\Models\Media;
  * @property int|null $unit_id
  * @property float|null $price
  * @property float|null $price_discount_amount
+ * @property bool|null $price_discount_by_percentage true: percentage, false: fixed amount
+ * @property Carbon|null $price_discount_began_at
+ * @property Carbon|null $price_discount_finished_at
  * @property int|null $available_quantity
  * @property string|null $sku
  * @property int|null $upc
@@ -45,36 +49,37 @@ use Spatie\MediaLibrary\MediaCollections\Models\Media;
  * @property float|null $weight w
  * @property int $type 1:Market, 2: Food
  * @property int|null $minimum_orderable_quantity
+ * @property int|null $maximum_orderable_quantity
  * @property int|null $order_column
  * @property string $avg_rating
  * @property int $rating_count
  * @property int $search_count
  * @property int $view_count
  * @property int $status 1:draft, 2:active, 3:Inactive, 4..n:CUSTOM
- * @property int|null $price_discount_began_at
- * @property int|null $price_discount_finished_at
- * @property int|null $custom_banner_began_at
- * @property int|null $custom_banner_ended_at
+ * @property Carbon|null $custom_banner_began_at
+ * @property Carbon|null $custom_banner_ended_at
  * @property bool|null $is_storage_tracking_enabled
- * @property bool|null $price_discount_by_percentage true: percentage, false: fixed amount
  * @property int $on_mobile_grid_tile_weight
  * @property Carbon|null $created_at
  * @property Carbon|null $updated_at
  * @property Carbon|null $deleted_at
- * @property-read Collection|Barcode[] $barcodes
+ * @property-read Collection|\App\Models\Barcode[] $barcodes
  * @property-read int|null $barcodes_count
- * @property-read Branch $branch
- * @property-read Collection|Cart[] $carts
+ * @property-read \App\Models\Branch $branch
+ * @property-read Collection|\App\Models\Cart[] $carts
  * @property-read int|null $carts_count
- * @property-read Collection|Taxonomy[] $categories
+ * @property-read Collection|\App\Models\Taxonomy[] $categories
  * @property-read int|null $categories_count
- * @property-read Chain $chain
- * @property-read User $creator
- * @property-read User $editor
- * @property-read Collection|User[] $favoriters
+ * @property-read \App\Models\Chain $chain
+ * @property-read \App\Models\User $creator
+ * @property-read \App\Models\User $editor
+ * @property-read Collection|\App\Models\User[] $favoriters
  * @property-read int|null $favoriters_count
  * @property-read mixed $cover
  * @property-read mixed $cover_full
+ * @property-read mixed $cover_thumbnail
+ * @property-read mixed $discount_amount_calculated
+ * @property-read mixed $discount_amount_calculated_formatted
  * @property-read mixed $discounted_price
  * @property-read string $discounted_price_formatted
  * @property-read mixed $gallery
@@ -82,16 +87,17 @@ use Spatie\MediaLibrary\MediaCollections\Models\Media;
  * @property-read bool $is_inactive
  * @property-read mixed $price_formatted
  * @property-read mixed $status_name
- * @property-read mixed $thumbnail
- * @property-read Taxonomy $masterCategory
+ * @property-read \App\Models\Taxonomy $masterCategory
  * @property-read MediaCollection|Media[] $media
  * @property-read int|null $media_count
- * @property-read Collection|Taxonomy[] $tags
+ * @property-read Collection|\App\Models\ProductOption[] $options
+ * @property-read int|null $options_count
+ * @property-read Collection|\App\Models\Taxonomy[] $tags
  * @property-read int|null $tags_count
- * @property-read ProductTranslation|null $translation
- * @property-read Collection|ProductTranslation[] $translations
+ * @property-read \App\Models\ProductTranslation|null $translation
+ * @property-read Collection|\App\Models\ProductTranslation[] $translations
  * @property-read int|null $translations_count
- * @property-read Taxonomy|null $unit
+ * @property-read \App\Models\Taxonomy|null $unit
  * @method static Builder|Product active()
  * @method static Builder|Product draft()
  * @method static Builder|Product food()
@@ -125,6 +131,7 @@ use Spatie\MediaLibrary\MediaCollections\Models\Media;
  * @method static Builder|Product whereHeight($value)
  * @method static Builder|Product whereId($value)
  * @method static Builder|Product whereIsStorageTrackingEnabled($value)
+ * @method static Builder|Product whereMaximumOrderableQuantity($value)
  * @method static Builder|Product whereMinimumOrderableQuantity($value)
  * @method static Builder|Product whereOnMobileGridTileWeight($value)
  * @method static Builder|Product whereOrderColumn($value)
@@ -170,8 +177,8 @@ class Product extends Model implements HasMedia
     public const STATUS_INACTIVE = 3;
     public const STATUS_INACTIVE_SEASONABLE = 4;
 
-    public const TYPE_GROCERY_OBJECT = 1;
-    public const TYPE_FOOD_OBJECT = 2;
+    public const CHANNEL_GROCERY_OBJECT = 1;
+    public const CHANNEL_FOOD_OBJECT = 2;
 
     protected $with = [
         'chain',
@@ -187,7 +194,8 @@ class Product extends Model implements HasMedia
     protected $translatedAttributes = ['title', 'description', 'excerpt', 'notes'];
 
     protected $appends = [
-        'thumbnail',
+        'cover_thumbnail',
+        'cover_full',
         'cover',
         'gallery',
         'price_formatted',
@@ -247,17 +255,27 @@ class Product extends Model implements HasMedia
 
     public function categories(): BelongsToMany
     {
-        return $this->belongsToMany(Taxonomy::class, 'category_product', 'product_id', 'category_id');
+        return $this->belongsToMany(Taxonomy::class, 'category_product', 'product_id', 'category_id')
+                    ->withTimestamps();
     }
 
     public function tags(): BelongsToMany
     {
-        return $this->belongsToMany(Taxonomy::class, 'product_tag', 'product_id', 'tag_id');
+        return $this->belongsToMany(Taxonomy::class, 'product_tag', 'product_id', 'tag_id')
+                    ->withTimestamps();
     }
 
     public function carts(): BelongsToMany
     {
-        return $this->belongsToMany(Cart::class, 'cart_product', 'product_id', 'cart_id');
+        return $this->belongsToMany(Cart::class, 'cart_product', 'product_id', 'cart_id')
+                    ->withPivot(['quantity', 'product_object'])
+                    ->withTimestamps();
+    }
+
+    /*Todo: to @Ghaith This shouldn't be a M2M relations, right? */
+    public function options(): HasMany
+    {
+        return $this->hasMany(ProductOption::class);
     }
 
 
@@ -299,12 +317,12 @@ class Product extends Model implements HasMedia
         $image = config('defaults.images.product_cover');
 
         if ( ! is_null($media = $this->getFirstMedia('gallery'))) {
-            $image = $media->getUrl('1K');
+            $image = $media->getUrl('HD');
         }
 
         if ( ! is_null($media = $this->getFirstMedia('cover'))) {
             //$media->responsive_images
-            $image = $media->getUrl('1K');
+            $image = $media->getUrl('HD');
         }
 
         return url($image);
@@ -312,10 +330,10 @@ class Product extends Model implements HasMedia
 
     public function getCoverFullAttribute()
     {
-        return $this->getFirstMediaUrl('cover', 'HD');
+        return $this->getFirstMediaUrl('cover', '1K');
     }
 
-    public function getThumbnailAttribute()
+    public function getCoverThumbnailAttribute()
     {
         return $this->getFirstMediaUrl('cover', 'SD');
     }
@@ -328,7 +346,7 @@ class Product extends Model implements HasMedia
 
     public function registerMediaCollections(): void
     {
-        $isGrocery = $this->type === self::TYPE_GROCERY_OBJECT;
+        $isGrocery = $this->type === self::CHANNEL_GROCERY_OBJECT;
         $fallBackImageUrl = config('defaults.images.product_cover');
         $this->addMediaCollection('cover')
              ->useFallbackUrl(url($fallBackImageUrl))
@@ -378,7 +396,7 @@ class Product extends Model implements HasMedia
 
     public function getDiscountedPriceAttribute()
     {
-        return Controller::calculateDiscountedAmount($this->price, $this->price_discount_amount,
+        return Controller::getAmountAfterApplyingDiscount($this->price, $this->price_discount_amount,
             $this->price_discount_by_percentage);
 
     }
@@ -386,6 +404,20 @@ class Product extends Model implements HasMedia
     public function getDiscountedPriceFormattedAttribute(): string
     {
         return Currency::format($this->discounted_price);
+    }
+
+
+    public function getDiscountAmountCalculatedAttribute()
+    {
+        return Controller::calculateDiscountedAmount($this->price, $this->price_discount_amount,
+            $this->price_discount_by_percentage);
+
+    }
+
+    public function getDiscountAmountCalculatedFormattedAttribute()
+    {
+        return Currency::format($this->discount_amount_calculated);
+
     }
 
 

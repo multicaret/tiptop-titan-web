@@ -7,13 +7,24 @@
         @else
             Food Chains
         @endif
-        <a href="{{ route('admin.chains.create',['type'=> request()->type]) }}">
-            <button type="button" class="btn btn-primary rounded-pill d-block">
-                <span class="ion ion-md-add"></span>
-                &nbsp;
-                {{trans('strings.add')}}
-            </button>
-        </a>
+        <div>
+            @if(\App\Models\Chain::isFood())
+                <a href="{{ route('admin.restaurants.create') }}">
+                    <button type="button" class="btn btn-secondary rounded-pill">
+                        <span class="ion ion-md-add"></span>
+                        &nbsp;
+                        {{trans('strings.add_restaurant')}}
+                    </button>
+                </a>
+            @endif
+            <a href="{{ route('admin.chains.create',['type'=> request()->type]) }}">
+                <button type="button" class="btn btn-primary rounded-pill">
+                    <span class="ion ion-md-add"></span>
+                    &nbsp;
+                    {{trans('strings.add_chain')}}
+                </button>
+            </a>
+        </div>
     </h4>
 
     <div class="card">

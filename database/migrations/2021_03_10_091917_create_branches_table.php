@@ -29,6 +29,7 @@ class CreateBranchesTable extends Migration
             $table->unsignedDouble('fixed_delivery_fee')->default(0); // 5
             $table->unsignedInteger('min_delivery_minutes')->default(20);
             $table->unsignedInteger('max_delivery_minutes')->default(30);
+            $table->unsignedInteger('free_delivery_threshold')->default(0);
             // Restaurant Delivery
             $table->boolean('has_restaurant_delivery')->default(false);
             $table->unsignedDouble('restaurant_minimum_order')->default(0);
@@ -36,18 +37,24 @@ class CreateBranchesTable extends Migration
             $table->unsignedDouble('restaurant_fixed_delivery_fee')->default(0);
             $table->unsignedInteger('restaurant_min_delivery_minutes')->default(20);
             $table->unsignedInteger('restaurant_max_delivery_minutes')->default(30);
+            $table->unsignedInteger('restaurant_free_delivery_threshold')->default(0);
+
+            $table->unsignedInteger('management_commission_rate')->default(0)->comment('0 means there is no commission atall');
+            $table->boolean('is_open_now')->default(true);
 
             $table->string('primary_phone_number')->nullable();
             $table->string('secondary_phone_number')->nullable();
             $table->string('whatsapp_phone_number')->nullable();
             $table->unsignedBigInteger('order_column')->nullable();
-            $table->unsignedTinyInteger('type')->default(Branch::TYPE_FOOD_OBJECT)->comment('1:Market, 2: Food');
+            $table->unsignedTinyInteger('type')->default(Branch::CHANNEL_FOOD_OBJECT)->comment('1:Market, 2: Food');
             $table->decimal('latitude', 11, 8)->nullable();
             $table->decimal('longitude', 11, 8)->nullable();
             $table->decimal('avg_rating', 3)->default(0);
             $table->unsignedInteger('rating_count')->default(0);
             $table->unsignedBigInteger('view_count')->default(1);
             $table->unsignedTinyInteger('status')->default(Branch::STATUS_DRAFT)->comment('1:draft, 2:active, 3:Inactive, 4..n:CUSTOM');
+            $table->timestamp('published_at')->nullable();
+            $table->timestamp('featured_at')->nullable();
             $table->timestamps();
             $table->softDeletes();
 

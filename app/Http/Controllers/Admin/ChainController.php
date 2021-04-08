@@ -33,7 +33,6 @@ class ChainController extends Controller
      */
     public function index(Request $request)
     {
-        $typeName = Chain::getCorrectTypeName($request->type, false);
         $columns = [
             [
                 'data' => 'id',
@@ -71,7 +70,7 @@ class ChainController extends Controller
             ],
         ];
 
-        return view('admin.chains.index', compact('columns', 'typeName'));
+        return view('admin.chains.index', compact('columns'));
     }
 
     /**
@@ -85,8 +84,8 @@ class ChainController extends Controller
     {
         $chain = new Chain();
         $regions = Region::whereCountryId(config('defaults.country.id'))->get();
-        $typeName = Chain::getCorrectTypeName($request->type, false);
-        $type = Chain::getCorrectType($request->type);
+        $typeName = Chain::getCorrectChannelName($request->type, false);
+        $type = Chain::getCorrectChannel($request->type);
 
         return view('admin.chains.form', compact('chain', 'regions', 'typeName', 'type'));
     }
@@ -125,8 +124,8 @@ class ChainController extends Controller
      */
     public function edit(Chain $chain, Request $request)
     {
-        $typeName = Chain::getCorrectTypeName($request->type, false);
-        $type = Chain::getCorrectType($request->type);
+        $typeName = Chain::getCorrectChannelName($request->type, false);
+        $type = Chain::getCorrectChannel($request->type);
         $regions = Region::whereCountryId(config('defaults.country.id'))->get();
         $chain->load(['region', 'city']);
 
@@ -196,7 +195,7 @@ class ChainController extends Controller
         $chain->whatsapp_phone_number = $request->input('whatsapp_phone_number');
 //        $chain->primary_color = $request->input('primary_color');
 //        $chain->secondary_color = $request->input('secondary_color');
-        $chain->type = Chain::getCorrectType($request->type);
+        $chain->type = Chain::getCorrectChannel($request->type);
         $chain->status = $request->input('status');
         $chain->save();
 

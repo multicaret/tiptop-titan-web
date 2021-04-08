@@ -120,8 +120,15 @@
                                 @endcomponent
                             </div>
                             <div class="col-md-6">
+                                @component('admin.components.form-group', ['name' => 'min_cart_value_allowed', 'type' => 'number'])
+                                    @slot('label', 'Min cart value allowed')
+                                    @slot('attributes',['min' => 1])
+                                    @slot('value', $coupon->min_cart_value_allowed)
+                                @endcomponent
+                            </div>
+                            <div class="col-md-6">
                                 @component('admin.components.form-group', ['name' => 'max_usable_count', 'type' => 'number'])
-                                    @slot('label', 'Total usage count')
+                                    @slot('label', 'Max usage count')
                                     @slot('attributes',['min' => 1])
                                     @slot('value', $coupon->max_usable_count)
                                 @endcomponent
@@ -161,8 +168,8 @@
                                 @component('admin.components.form-group', ['name' => 'type', 'type' => 'select'])
                                     @slot('label', 'Type')
                                     @slot('options', [
-                                        App\Models\Coupon::TYPE_GROCERY_OBJECT => 'Market',
-                                        App\Models\Coupon::TYPE_FOOD_OBJECT => 'Food'
+                                        App\Models\Coupon::CHANNEL_GROCERY_OBJECT => 'Market',
+                                        App\Models\Coupon::CHANNEL_FOOD_OBJECT => 'Food'
                                         ])
                                     @slot('selected', $coupon->type)
                                 @endcomponent

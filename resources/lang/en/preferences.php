@@ -55,5 +55,9 @@ return [
 
     'support_number' => 'Support number',
 
+
+    'adjust_deep_link_uri_scheme' => 'Adjust Deep Link Uri Scheme',
+    'choose_your_custom_uri_scheme' => 'Choose Your Custom Uri Scheme',
+
     '' => '',
 ];

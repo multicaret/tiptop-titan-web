@@ -27,16 +27,16 @@ use Spatie\MediaLibrary\MediaCollections\Models\Media;
  * @property Carbon|null $created_at
  * @property Carbon|null $updated_at
  * @property Carbon|null $deleted_at
- * @property-read User $creator
- * @property-read User $editor
+ * @property-read \App\Models\User $creator
+ * @property-read \App\Models\User $editor
  * @property-read bool $is_active
  * @property-read bool $is_inactive
  * @property-read bool $logo
  * @property-read mixed $status_name
  * @property-read MediaCollection|Media[] $media
  * @property-read int|null $media_count
- * @property-read PaymentMethodTranslation|null $translation
- * @property-read Collection|PaymentMethodTranslation[] $translations
+ * @property-read \App\Models\PaymentMethodTranslation|null $translation
+ * @property-read Collection|\App\Models\PaymentMethodTranslation[] $translations
  * @property-read int|null $translations_count
  * @method static \Illuminate\Database\Eloquent\Builder|PaymentMethod active()
  * @method static \Illuminate\Database\Eloquent\Builder|PaymentMethod draft()

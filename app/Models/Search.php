@@ -20,8 +20,8 @@ use Illuminate\Support\Str;
  * @property int $branch_id
  * @property Carbon|null $created_at
  * @property Carbon|null $updated_at
- * @property-read Branch $branch
- * @property-read Chain $chain
+ * @property-read \App\Models\Branch $branch
+ * @property-read \App\Models\Chain $chain
  * @method static Builder|Search newModelQuery()
  * @method static Builder|Search newQuery()
  * @method static Builder|Search query()

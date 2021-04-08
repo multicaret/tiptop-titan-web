@@ -63,9 +63,7 @@ class ProductController extends Controller
             ],
         ];
 
-        $typeName = $request->input('type');
-
-        return view('admin.products.index', compact('columns', 'typeName'));
+        return view('admin.products.index', compact('columns'));
     }
 
     public function create(Request $request)
@@ -88,6 +86,16 @@ class ProductController extends Controller
                 'type' => 'Error',
                 'text' => $e->getMessage(),
             ]);
+        }
+
+        if ($request->has('branch_id')) {
+            return redirect()
+                ->route('admin.products.edit', ['type' => $request->type, $product->uuid])
+                ->with('message', [
+                    'type' => 'Success',
+                    'text' => 'Stored successfully',
+                ]);
+
         }
 
         return redirect()
@@ -120,6 +128,15 @@ class ProductController extends Controller
                 'type' => 'Error',
                 'text' => $e->getMessage(),
             ]);
+        }
+        if ($request->has('branch_id')) {
+            return redirect()
+                ->route('admin.products.edit', ['type' => $request->type, $product->uuid])
+                ->with('message', [
+                    'type' => 'Success',
+                    'text' => 'Updated successfully',
+                ]);
+
         }
 
         return redirect()
@@ -164,13 +181,13 @@ class ProductController extends Controller
         $getIdTitle = function ($item) {
             return ['id' => $item->id, 'title' => $item->title];
         };
-        $data['chains'] = Chain::whereType(Chain::TYPE_GROCERY_OBJECT)->get()->map($getIdTitle)->all();
-        $data['branches'] = Branch::whereType(Branch::TYPE_GROCERY_OBJECT)->get()->map($getIdTitle)->all();
+        $data['chains'] = Chain::whereType(Chain::CHANNEL_GROCERY_OBJECT)->get()->map($getIdTitle)->all();
+        $data['branches'] = Branch::whereType(Branch::CHANNEL_GROCERY_OBJECT)->get()->map($getIdTitle)->all();
         $data['units'] = Taxonomy::unitCategories()->get()->map($getIdTitle)->all();
         if (Product::isGrocery()) {
             $data['categories'] = Taxonomy::groceryCategories()->whereNotNull('parent_id')->get()->map($getIdTitle)->all();
         } else {
-            $data['categories'] = Taxonomy::menuCategories()->whereNotNull('parent_id')->get()->map($getIdTitle)->all();
+            $data['categories'] = Taxonomy::foodCategories()->get()->map($getIdTitle)->all();
         }
 
         return $data;
@@ -182,8 +199,8 @@ class ProductController extends Controller
 
         return [
             "{$defaultLocale}.title" => 'required',
-            'chain_id' => 'required',
-            'branch_id' => 'required',
+//            'chain_id' => 'required',
+//            'branch_id' => 'required',
             'categories' => 'required',
             'unit_id' => 'required',
             'price' => 'required',
@@ -197,13 +214,22 @@ class ProductController extends Controller
         $ids = Arr::pluck(json_decode($request->input('categories'), true), 'id');
         $product->creator_id = $product->editor_id = auth()->id();
         $product->category_id = count($ids) > 0 ? $ids[0] : null;
-        $product->chain_id = optional(json_decode($request->input('chain_id')))->id;
-        $product->branch_id = optional(json_decode($request->input('branch_id')))->id;
+        if ($request->has('chain_id') && ! is_null($request->input('chain_id'))) {
+            $product->chain_id = $request->input('chain_id');
+        } else {
+            $product->chain_id = optional(json_decode($request->input('chain')))->id;
+        }
+        if ($request->has('branch_id') && ! is_null($request->input('branch_id'))) {
+            $product->branch_id = $request->input('branch_id');
+        } else {
+            $product->branch_id = optional(json_decode($request->input('branch')))->id;
+        }
         $product->unit_id = optional(json_decode($request->input('unit_id')))->id;
         $product->price = $request->input('price');
         $product->price_discount_amount = $request->input('price_discount_amount');
         $product->available_quantity = $request->input('available_quantity');
         $product->minimum_orderable_quantity = $request->input('minimum_orderable_quantity');
+        $product->maximum_orderable_quantity = $request->input('maximum_orderable_quantity');
         $product->price_discount_began_at = $request->input('price_discount_began_at');
         $product->price_discount_finished_at = $request->input('price_discount_finished_at');
         $product->custom_banner_began_at = $request->input('custom_banner_began_at');
@@ -211,7 +237,7 @@ class ProductController extends Controller
         $product->is_storage_tracking_enabled = $request->input('is_storage_tracking_enabled') === 'on';
         $product->price_discount_by_percentage = $request->input('price_discount_by_percentage') === 'on';
         $product->status = $request->input('status');
-        $product->type = Product::getCorrectType($request->input('type'));
+        $product->type = Product::getCorrectChannel($request->input('type'));
         $product->save();
 
         $product->categories()->sync($ids);
@@ -235,7 +261,7 @@ class ProductController extends Controller
 
     private function getDroppedColumnsByType(): array
     {
-        if ( Product::isGrocery()) {
+        if (Product::isGrocery()) {
             return [];
         } else {
             return ['unit_id', 'unit_text'];

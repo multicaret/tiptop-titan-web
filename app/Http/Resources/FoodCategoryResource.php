@@ -7,7 +7,7 @@ use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
 
 /** @mixin Taxonomy */
-class GroceryCategoryParentIndexResource extends JsonResource
+class FoodCategoryResource extends JsonResource
 {
     /**
      * Transform the resource into an array.
@@ -18,7 +18,6 @@ class GroceryCategoryParentIndexResource extends JsonResource
      */
     public function toArray($request)
     {
-
         return [
             'id' => (int) $this->id,
             'icon' => $this->icon,
@@ -28,7 +27,8 @@ class GroceryCategoryParentIndexResource extends JsonResource
                 'raw' => strip_tags($this->description),
                 'formatted' => $this->description,
             ],
-            'hasChildren' => $this->hasChildren(),
+            'hasChildren' => null,
+            'children' => null,
             'cover' => $this->cover,
             'thumbnail' => $this->cover_small,
         ];

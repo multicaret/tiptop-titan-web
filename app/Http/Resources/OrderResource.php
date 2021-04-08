@@ -28,9 +28,18 @@ class OrderResource extends JsonResource
                 'diffForHumans' => $this->completed_at->diffForHumans(),
                 'timestamp' => $this->completed_at->timestamp,
             ],
+            'couponDiscountAmount' => [
+                'raw' => (double) $this->coupon_discount_amount,
+                'formatted' => Currency::format($this->coupon_discount_amount),
+            ],
+            'totalAfterCouponDiscount' => [
+                'raw' => $this->total - $this->coupon_discount_amount,
+                'formatted' => Currency::format($this->total - $this->coupon_discount_amount),
+            ],
+            'couponCode' => optional($this->coupon)->redeem_code,
             'deliveryFee' => [
-                'raw' => (double) $this->branch->fixed_delivery_fee,
-                'formatted' => Currency::format($this->branch->fixed_delivery_fee),
+                'raw' => (double) $this->delivery_fee,
+                'formatted' => Currency::format($this->delivery_fee),
             ],
             'grandTotal' => [
                 'raw' => (double) $this->grand_total,

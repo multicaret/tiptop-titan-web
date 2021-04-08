@@ -17,8 +17,8 @@ use Illuminate\Support\Carbon;
  * @property array|null $product_object
  * @property Carbon|null $created_at
  * @property Carbon|null $updated_at
- * @property-read Cart $cart
- * @property-read Product $product
+ * @property-read \App\Models\Cart $cart
+ * @property-read \App\Models\Product $product
  * @method static Builder|CartProduct newModelQuery()
  * @method static Builder|CartProduct newQuery()
  * @method static Builder|CartProduct query()

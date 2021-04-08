@@ -89,7 +89,7 @@ class TaxonomyController extends Controller
                 ]
             ]);
         }
-        if ($correctType == Taxonomy::TYPE_FOOD_CATEGORY) {
+        if ($correctType === Taxonomy::TYPE_GROCERY_CATEGORY) {
             $columns = array_merge($columns, [
                 [
                     'data' => 'branches',
@@ -102,7 +102,7 @@ class TaxonomyController extends Controller
         }
 
         if (in_array($correctType,
-            [Taxonomy::TYPE_GROCERY_CATEGORY, Taxonomy::TYPE_FOOD_CATEGORY])) {
+            [Taxonomy::TYPE_GROCERY_CATEGORY])) {
             $columns = array_merge($columns, [
                 [
                     'data' => 'chain',
@@ -391,7 +391,7 @@ class TaxonomyController extends Controller
         }
 
         $fontAwesomeIcons = $this->getFontAwesomeIcons();
-        $branches = Branch::whereType(Branch::TYPE_FOOD_OBJECT)
+        $branches = Branch::whereType(Branch::CHANNEL_FOOD_OBJECT)
                           ->active()
                           ->get()
                           ->mapWithKeys(function ($item) {

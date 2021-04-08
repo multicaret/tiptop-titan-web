@@ -5,11 +5,11 @@ namespace App\Models;
 use App\Http\Controllers\Controller;
 use App\Mail\Welcome;
 use App\Notifications\ResetPassword;
+use App\Traits\HasAppTypes;
 use App\Traits\HasGender;
 use App\Traits\HasMediaTrait;
 use App\Traits\HasStatuses;
 use App\Traits\HasViewCount;
-use Database\Factories\UserFactory;
 use Eloquent;
 use Illuminate\Auth\Passwords\CanResetPassword;
 use Illuminate\Contracts\Auth\MustVerifyEmail;
@@ -81,13 +81,15 @@ use Spatie\Permission\Traits\HasRoles;
  * @property string|null $remember_token
  * @property Carbon|null $created_at
  * @property Carbon|null $updated_at
- * @property-read Collection|Location[] $addresses
+ * @property-read Collection|\App\Models\Location[] $addresses
  * @property-read int|null $addresses_count
- * @property-read City|null $city
- * @property-read Country|null $country
- * @property-read Collection|CouponUsage[] $couponUsage
- * @property-read int|null $coupon_usage_count
- * @property-read Currency|null $currency
+ * @property-read Collection|\App\Models\Cart[] $carts
+ * @property-read int|null $carts_count
+ * @property-read \App\Models\City|null $city
+ * @property-read \App\Models\Country|null $country
+ * @property-read Collection|\App\Models\CouponUsage[] $couponUsages
+ * @property-read int|null $coupon_usages_count
+ * @property-read \App\Models\Currency|null $currency
  * @property-read mixed $analyst
  * @property-read bool $avatar
  * @property-read bool $cover
@@ -102,23 +104,23 @@ use Spatie\Permission\Traits\HasRoles;
  * @property-read mixed $name
  * @property-read mixed $status_name
  * @property-read mixed $translator
- * @property-read Language|null $language
+ * @property-read \App\Models\Language|null $language
  * @property-read MediaCollection|Media[] $media
  * @property-read int|null $media_count
  * @property-read DatabaseNotificationCollection|DatabaseNotification[] $notifications
  * @property-read int|null $notifications_count
- * @property-read Collection|Order[] $orders
+ * @property-read Collection|\App\Models\Order[] $orders
  * @property-read int|null $orders_count
  * @property-read Collection|Permission[] $permissions
  * @property-read int|null $permissions_count
- * @property-read Region|null $region
+ * @property-read \App\Models\Region|null $region
  * @property-read Collection|Role[] $roles
  * @property-read int|null $roles_count
- * @property-read Collection|PersonalAccessToken[] $tokens
+ * @property-read Collection|\App\Models\PersonalAccessToken[] $tokens
  * @property-read int|null $tokens_count
  * @method static Builder|User active()
  * @method static Builder|User draft()
- * @method static UserFactory factory(...$parameters)
+ * @method static \Database\Factories\UserFactory factory(...$parameters)
  * @method static Builder|User inActive()
  * @method static Builder|User managers()
  * @method static Builder|User newModelQuery()
@@ -128,7 +130,6 @@ use Spatie\Permission\Traits\HasRoles;
  * @method static Builder|User owners()
  * @method static Builder|User permission($permissions)
  * @method static Builder|User query()
- * @method static Builder|User role($roles, $guard = null)
  * @method static Builder|User whereApprovedAt($value)
  * @method static Builder|User whereAvgRating($value)
  * @method static Builder|User whereBio($value)
@@ -181,6 +182,7 @@ class User extends Authenticatable implements HasMedia, MustVerifyEmail
     use HasMediaTrait;
     use HasRoles;
     use HasStatuses;
+    use HasAppTypes;
     use HasViewCount;
     use Notifiable;
 
@@ -392,6 +394,11 @@ class User extends Authenticatable implements HasMedia, MustVerifyEmail
         }
 
         return $cover;
+    }
+
+    public function getRoleAttribute()
+    {
+        return $this->roles()->first();
     }
 
     public function getIsUserAttribute()

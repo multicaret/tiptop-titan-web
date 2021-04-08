@@ -25,6 +25,12 @@
             z-index: 1 !important;
         }
 
+        #order-show-modal {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            column-gap: 10px;
+        }
     </style>
     <div class="card">
         <div class="card-body">
@@ -92,12 +98,11 @@
                 <tbody {{--wire:poll.1s--}}>
                 @if($orders)
                     @forelse($orders as $order)
-                        <tr class="{{ $order->getLateCssBgClass()}}">
+                        <tr class="cursor-pointer {{ $order->getLateCssBgClass()}}"
+                            data-toggle="modal" data-target="#orderShowModal"
+                            wire:click="show({{ $order->id }})">
                             <td style="width:10px">
                                 {{$order->reference_code}}
-                                <button data-toggle="modal" data-target="#orderShowModal"
-                                        wire:click="show({{ $order->id }})" class="btn btn-primary btn-sm">Show
-                                </button>
                             </td>
                             <td>
                                 <span data-toggle="tooltip" data-placement="top" title="{{$order->getStatusName()}}">
@@ -118,12 +123,14 @@
                                 </small>
                             </td>
                             <td>
-                                @if($order->type == \App\Models\Order::TYPE_FOOD_OBJECT)
-                                    <img src="/images/icons/food-delivery-186/svg/019-food tray.svg"
-                                         alt="Food Orders" class="d-inline-block ui-w-20" title="Food">
+                                @if($order->type == \App\Models\Order::CHANNEL_GROCERY_OBJECT)
+                                    {{--<img src="/images/icons/food-delivery-186/svg/019-food tray.svg"
+                                         alt="Food Orders" class="d-inline-block ui-w-20" title="Food">--}}
+                                    <i class="fas fa-shopping-basket fa-1x text-primary"></i>
                                 @else
-                                    <img src="/images/icons/food-delivery-186/svg/021-food delivery.svg"
-                                         alt="Grocery Orders" class="d-inline-block ui-w-20" title="Grocery">
+                                    {{-- <img src="/images/icons/food-delivery-186/svg/021-food delivery.svg"
+                                          alt="Grocery Orders" class="d-inline-block ui-w-20" title="Grocery">--}}
+                                    <i class="fas fa-concierge-bell fa-1x text-primary"></i>
                                 @endif
                             </td>
                             <td>
@@ -172,7 +179,7 @@
                         </tr>
                     @empty
                         <tr>
-                            <td colspan="9" class="text-center">
+                            <td colspan="12" class="text-center">
                                 <h4>
                                     No Orders found!
                                 </h4>
@@ -198,10 +205,6 @@
                 $('[data-toggle="tooltip"]').tooltip();
             });
             /*document.addEventListener('livewire:load', function () {
-            });*/
-
-            /*window.livewire.on('userStore', () => {
-                $('#exampleModal').modal('hide');
             });*/
         </script>
     @endpush

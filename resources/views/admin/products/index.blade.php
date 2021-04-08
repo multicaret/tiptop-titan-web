@@ -1,5 +1,5 @@
 @extends('layouts.admin')
-@section('title', 'Chains')
+@section('title', 'Products')
 @section('content')
     <h4 class="d-flex justify-content-between align-items-center w-100 font-weight-bold py-3 mb-4">
         @if(\App\Models\Product::isGrocery())
@@ -7,13 +7,9 @@
         @else
             Food Products
         @endif
-        <a href="{{ route('admin.products.create',['type'=> request()->type]) }}">
-            <button type="button" class="btn btn-primary rounded-pill d-block">
-                <span class="ion ion-md-add"></span>
-                &nbsp;
-                {{trans('strings.add')}}
-            </button>
-        </a>
+        <x-admin.add-copy-buttons
+            :createRoute="route('admin.products.create',['type'=> request()->type])">
+        </x-admin.add-copy-buttons>
     </h4>
 
     <div class="card">

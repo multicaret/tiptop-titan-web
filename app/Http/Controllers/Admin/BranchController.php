@@ -3,11 +3,12 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
+use App\Models\Branch;
 use App\Models\Chain;
 use App\Models\Location;
 use App\Models\Region;
-use App\Models\Branch;
 use App\Models\Taxonomy;
+use App\Models\WorkingHour;
 use DB;
 use Exception;
 use Illuminate\Contracts\Foundation\Application;
@@ -36,7 +37,6 @@ class BranchController extends Controller
      */
     public function index(Request $request)
     {
-        $typeName = Chain::getCorrectTypeName($request->type, false);
         $columns = [
             [
                 'data' => 'id',
@@ -82,7 +82,7 @@ class BranchController extends Controller
             ],
         ];
 
-        return view('admin.branches.index', compact('columns', 'typeName'));
+        return view('admin.branches.index', compact('columns'));
     }
 
     /**
@@ -94,8 +94,8 @@ class BranchController extends Controller
      */
     public function create(Request $request)
     {
-        $typeName = Branch::getCorrectTypeName($request->type, false);
-        $type = Branch::getCorrectType($request->type);
+        $typeName = Branch::getCorrectChannelName($request->type, false);
+        $type = Branch::getCorrectChannel($request->type);
         $contacts = [];
 
         $branch = new Branch();
@@ -103,9 +103,10 @@ class BranchController extends Controller
         $chains = Chain::whereType($type)->get();
         $branch->chain = Chain::whereType($type)->first();
         $foodCategories = Taxonomy::foodCategories()->get();
+        $workingHours = $branch->getWorkingHours();
 
         return view('admin.branches.form',
-            compact('branch', 'regions', 'chains', 'typeName', 'type', 'contacts', 'foodCategories'));
+            compact('branch', 'regions', 'chains', 'typeName', 'type', 'contacts', 'foodCategories', 'workingHours'));
     }
 
     /**
@@ -124,10 +125,10 @@ class BranchController extends Controller
         $this->storeUpdateLogic($request, $branch);
 
         return redirect()
-            ->route('admin.branches.index', ['type' => $request->type])
+            ->route('admin.branches.edit', ['type' => $request->type, $branch->uuid])
             ->with('message', [
                 'type' => 'Success',
-                'text' => __('strings.successfully_created'),
+                'text' => 'Successfully created',
             ]);
     }
 
@@ -142,12 +143,13 @@ class BranchController extends Controller
      */
     public function edit(Branch $branch, Request $request)
     {
-        $typeName = Branch::getCorrectTypeName($request->type, false);
-        $type = Branch::getCorrectType($request->type);
+        $typeName = Branch::getCorrectChannelName($request->type, false);
+        $type = Branch::getCorrectChannel($request->type);
         $contacts = $branch->locations()->get()->map(function ($item) {
             return [
                 'id' => $item->id,
                 'name' => $item->name,
+                'position' => $item->position,
                 'email' => $item->emails,
                 'phone' => $item->phones
             ];
@@ -156,9 +158,10 @@ class BranchController extends Controller
         $branch->load(['region', 'city', 'chain']);
         $chains = Chain::whereType($type)->get();
         $foodCategories = Taxonomy::foodCategories()->get();
+        $workingHours = $branch->getWorkingHours();
 
         return view('admin.branches.form',
-            compact('branch', 'regions', 'typeName', 'type', 'chains', 'contacts', 'foodCategories'));
+            compact('branch', 'regions', 'typeName', 'type', 'chains', 'contacts', 'foodCategories', 'workingHours'));
     }
 
     /**
@@ -175,9 +178,9 @@ class BranchController extends Controller
         $branch->editor_id = auth()->id();
         $this->storeUpdateLogic($request, $branch);
 
-        return redirect()
-            ->route('admin.branches.index', ['type' => $request->type])
-            ->with('message', [
+        return redirect()->back()
+//            ->route('admin.branches.index', ['type' => $request->type])
+                         ->with('message', [
                 'type' => 'Success',
                 'text' => 'Edited successfully',
             ]);
@@ -206,11 +209,13 @@ class BranchController extends Controller
     {
         $defaultLocale = localization()->getDefaultLocale();
         $toValidateInFood = [];
-        if ($request->type == Branch::getCorrectTypeName(Branch::TYPE_FOOD_OBJECT, 0)) {
+        if ($request->type == Branch::getCorrectChannelName(Branch::CHANNEL_FOOD_OBJECT, 0)) {
             $toValidateInFood = [
                 'restaurant_minimum_order' => 'required',
                 'restaurant_under_minimum_order_delivery_fee' => 'required',
                 'restaurant_fixed_delivery_fee' => 'required',
+                'has_tip_top_delivery' => 'required_without:has_restaurant_delivery',
+                'has_restaurant_delivery' => 'required_without:has_tip_top_delivery',
             ];
         }
 
@@ -239,6 +244,7 @@ class BranchController extends Controller
         $branch->longitude = $request->input('longitude');
         $branch->has_tip_top_delivery = $request->input('has_tip_top_delivery') ? 1 : 0;
         $branch->minimum_order = $request->input('minimum_order');
+        $branch->free_delivery_threshold = $request->input('free_delivery_threshold');
         if ($request->has('restaurant_minimum_order')) {
             $branch->restaurant_minimum_order = $request->input('restaurant_minimum_order');
         }
@@ -248,14 +254,23 @@ class BranchController extends Controller
         if ($request->has('restaurant_fixed_delivery_fee')) {
             $branch->restaurant_fixed_delivery_fee = $request->input('restaurant_fixed_delivery_fee');
         }
+        if ($request->has('restaurant_free_delivery_threshold')) {
+            $branch->restaurant_fixed_delivery_fee = $request->input('restaurant_free_delivery_threshold');
+        }
         $branch->has_restaurant_delivery = $request->input('has_restaurant_delivery') ? 1 : 0;
         $branch->under_minimum_order_delivery_fee = $request->input('under_minimum_order_delivery_fee');
         $branch->fixed_delivery_fee = $request->input('fixed_delivery_fee');
         $branch->primary_phone_number = $request->input('primary_phone_number');
 //        $branch->secondary_phone_number = $request->input('secondary_phone_number');
 //        $branch->whatsapp_phone_number = $request->input('whatsapp_phone_number');
-        $branch->type = Branch::getCorrectType($request->type);
+        $branch->type = Branch::getCorrectChannel($request->type);
         $branch->status = $request->input('status');
+
+        if (is_null($branch->published_at) && $request->input('status') == Branch::STATUS_ACTIVE) {
+            $branch->published_at = now();
+        }
+        $branch->featured_at = $request->input('featured_at');
+
         $branch->save();
 
         foreach (localization()->getSupportedLocales() as $key => $value) {
@@ -271,6 +286,7 @@ class BranchController extends Controller
         foreach ($requestContactDetails as $requestContactDetail) {
             if (isset($requestContactDetail->id) && ! is_null($location = Location::whereId($requestContactDetail->id)->first())) {
                 $location->name = $requestContactDetail->name;
+                $location->position = $requestContactDetail->position;
                 $location->phones = $requestContactDetail->phone;
                 $location->emails = $requestContactDetail->email;
                 $location->type = Location::TYPE_CONTACT;
@@ -282,12 +298,39 @@ class BranchController extends Controller
                 $location->contactable_type = Branch::class;
                 $location->type = Location::TYPE_CONTACT;
                 $location->name = $requestContactDetail->name;
+                $location->position = $requestContactDetail->position;
                 $location->emails = $requestContactDetail->email;
                 $location->phones = $requestContactDetail->phone;
             }
             $location->save();
         }
         Location::whereIn('id', $contactToDelete)->delete();
+
+
+        if ( ! is_null($request->days) && is_array($days = json_decode($request->days)) && count($days)) {
+            foreach ($days as $dayNumber => $day) {
+                if (is_null(
+                    $workingHour = WorkingHour::where('workable_id', $branch->id)
+                                              ->where('workable_type', Branch::class)
+                                              ->where('day', $dayNumber + 1)
+                                              ->first()
+                )) {
+                    $workingHour = new WorkingHour();
+                    $workingHour->workable_id = $branch->id;
+                    $workingHour->workable_type = Branch::class;
+                }
+                $workingHour->day = $dayNumber + 1;
+                if ($day->is_day_off) {
+                    $workingHour->is_day_off = true;
+                    $workingHour->opens_at = 0;
+                    $workingHour->closes_at = 0;
+                } else {
+                    $workingHour->opens_at = $day->opens_at;
+                    $workingHour->closes_at = $day->closes_at;
+                }
+                $workingHour->save();
+            }
+        }
 
         $branch->save();
         DB::commit();

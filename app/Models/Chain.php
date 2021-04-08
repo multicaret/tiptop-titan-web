@@ -46,10 +46,10 @@ use Spatie\MediaLibrary\MediaCollections\Models\Media;
  * @property Carbon|null $created_at
  * @property Carbon|null $updated_at
  * @property string|null $deleted_at
- * @property-read Collection|Branch[] $branches
+ * @property-read Collection|\App\Models\Branch[] $branches
  * @property-read int|null $branches_count
- * @property-read City|null $city
- * @property-read Currency|null $currency
+ * @property-read \App\Models\City|null $city
+ * @property-read \App\Models\Currency|null $currency
  * @property-read mixed $cover
  * @property-read mixed $gallery
  * @property-read bool $is_active
@@ -58,9 +58,9 @@ use Spatie\MediaLibrary\MediaCollections\Models\Media;
  * @property-read mixed $status_name
  * @property-read MediaCollection|Media[] $media
  * @property-read int|null $media_count
- * @property-read Region|null $region
- * @property-read ChainTranslation|null $translation
- * @property-read Collection|ChainTranslation[] $translations
+ * @property-read \App\Models\Region|null $region
+ * @property-read \App\Models\ChainTranslation|null $translation
+ * @property-read Collection|\App\Models\ChainTranslation[] $translations
  * @property-read int|null $translations_count
  * @method static Builder|Chain active()
  * @method static Builder|Chain draft()
@@ -122,8 +122,8 @@ class Chain extends Model implements HasMedia
     public const STATUS_ACTIVE = 2;
     public const STATUS_INACTIVE = 3;
 
-    public const TYPE_GROCERY_OBJECT = 1;
-    public const TYPE_FOOD_OBJECT = 2;
+    public const CHANNEL_GROCERY_OBJECT = 1;
+    public const CHANNEL_FOOD_OBJECT = 2;
 
     protected $fillable = ['title', 'description'];
     protected $with = ['translations'];
@@ -165,7 +165,7 @@ class Chain extends Model implements HasMedia
      */
     public function scopeGroceries($query): Builder
     {
-        return $query->where('type', self::TYPE_GROCERY_OBJECT);
+        return $query->where('type', self::CHANNEL_GROCERY_OBJECT);
     }
 
     /**
@@ -177,7 +177,7 @@ class Chain extends Model implements HasMedia
      */
     public function scopeFoods($query): Builder
     {
-        return $query->where('type', self::TYPE_FOOD_OBJECT);
+        return $query->where('type', self::CHANNEL_FOOD_OBJECT);
     }
 
 

@@ -37,8 +37,8 @@ use Illuminate\Support\Carbon;
  * @property Carbon|null $created_at
  * @property Carbon|null $updated_at
  * @property string|null $deleted_at
- * @property-read Collection|CouponUsage[] $couponUsage
- * @property-read int|null $coupon_usage_count
+ * @property-read Collection|\App\Models\CouponUsage[] $couponUsages
+ * @property-read int|null $coupon_usages_count
  * @property-read bool $is_active
  * @property-read bool $is_inactive
  * @property-read mixed $status_name
@@ -85,8 +85,8 @@ class Coupon extends Model
     public const STATUS_ACTIVE = 2;
     public const STATUS_INACTIVE = 3;
 
-    public const TYPE_GROCERY_OBJECT = 1;
-    public const TYPE_FOOD_OBJECT = 2;
+    public const CHANNEL_GROCERY_OBJECT = 1;
+    public const CHANNEL_FOOD_OBJECT = 2;
 
     protected $casts = [
         'discount_amount' => 'double',

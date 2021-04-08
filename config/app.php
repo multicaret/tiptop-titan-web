@@ -5,7 +5,6 @@ return [
     'app-channels' => [
         'grocery' => 'grocery',
         'food' => 'food',
-        'carrefour' => 'carrefour',
     ],
     /*
     |--------------------------------------------------------------------------
