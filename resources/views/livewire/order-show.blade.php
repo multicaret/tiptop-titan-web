@@ -61,7 +61,7 @@
                                                     <div class="row">
                                                         <div class="col-12 pb-3 border-bottom">
                                                             <b>Name:</b> <a target="_blank" class="text-primary"
-                                                                             href="{{route('admin.users.edit',$selectedOrder->user->id)}}">{{$selectedOrder->user->name}}</a>
+                                                                            href="{{route('admin.users.edit',$selectedOrder->user->id)}}">{{$selectedOrder->user->name}}</a>
                                                         </div>
                                                         <div class="col-12 py-3 border-bottom">
                                                             <b>Email:</b>
@@ -72,6 +72,13 @@
                                                         </div>
                                                         <div class="col-12 py-3 border-bottom">
                                                             <b>Phone:</b> {{$selectedOrder->user->phone_number}}
+                                                        </div>
+                                                        <div class="col-12 py-3 border-bottom">
+                                                            <b>Address:</b>
+                                                            <a target="_blank" class="text-primary"
+                                                               href="https://maps.google.com/?ll={{$selectedOrder->address->latitude}},{{$selectedOrder->address->longitude}}">
+                                                                {{optional($selectedOrder->address)->address1}}
+                                                            </a>
                                                         </div>
                                                         <div class="col-12 py-3 border-bottom"
                                                              style="height: 110px;overflow:scroll">
@@ -89,8 +96,8 @@
                                                     <div class="row">
                                                         <div class="col-12 pb-3 border-bottom">
                                                             <b>Name:</b> <a class="text-primary"
-                                                                             target="_blank"
-                                                                             href="{{route('admin.branches.edit',[$selectedOrder->branch->uuid,\App\Models\Branch::getCorrectChannelName($selectedOrder->branch->type)])}}">
+                                                                            target="_blank"
+                                                                            href="{{route('admin.branches.edit',[$selectedOrder->branch->uuid,\App\Models\Branch::getCorrectChannelName($selectedOrder->branch->type)])}}">
                                                                 {{$selectedOrder->branch->title}}
                                                             </a>
                                                         </div>
