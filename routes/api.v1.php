@@ -14,6 +14,9 @@ Route::middleware('throttle:15')
          Route::get('search', 'SearchController@index');
          Route::get('search/products', 'SearchController@searchProducts');
 
+        // Food related
+         Route::get('restaurants/{restaurant}', 'BranchController@show')->name('branches.show');
+
 
          /* auth related */
          Route::post('login', 'Auth\AuthController@login');
@@ -64,9 +67,6 @@ Route::middleware('auth:sanctum')
          Route::get('orders/create', 'OrderController@create');
          Route::post('orders', 'OrderController@store');
          Route::post('orders/{order}/delete', 'OrderController@destroy');
-
-
-         Route::get('restaurants/{restaurant}', 'BranchController@show')->name('branches.show');
 
          // Carts
          Route::post('carts/{cart}/products/adjust-quantity', 'CartController@adjustQuantity');
