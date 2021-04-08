@@ -189,7 +189,8 @@ class Product extends Model implements HasMedia
     protected $translatedAttributes = ['title', 'description', 'excerpt', 'notes'];
 
     protected $appends = [
-        'thumbnail',
+        'cover_thumbnail',
+        'cover_full',
         'cover',
         'gallery',
         'price_formatted',
@@ -336,7 +337,7 @@ class Product extends Model implements HasMedia
         return $this->getFirstMediaUrl('cover', '1K');
     }
 
-    public function getThumbnailAttribute()
+    public function getCoverThumbnailAttribute()
     {
         return $this->getFirstMediaUrl('cover', 'SD');
     }

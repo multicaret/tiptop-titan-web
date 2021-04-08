@@ -54,7 +54,7 @@ class ProductResource extends JsonResource
             'barcodes' => $this->barcodes,
             'media' => [
                 'cover' => $this->cover,
-                'coverThumbnail' => $this->thumbnail,
+                'coverThumbnail' => $this->cover_thumbnail,
                 'coverFull' => $this->cover_full,
                 'gallery' => $this->gallery,
             ],
