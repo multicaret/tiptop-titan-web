@@ -17,8 +17,8 @@ class CreateCartsTable extends Migration
         Schema::create('carts', function (Blueprint $table) {
             $table->id();
             $table->unsignedBigInteger('user_id')->index();
-            $table->unsignedBigInteger('chain_id')->index();
-            $table->unsignedBigInteger('branch_id')->index();
+            $table->unsignedBigInteger('chain_id')->index()->nullable();
+            $table->unsignedBigInteger('branch_id')->index()->nullable();
             $table->unsignedDouble('total')->default(0);
             $table->unsignedDouble('without_discount_total')->default(0);
             $table->unsignedBigInteger('crm_id')->nullable();

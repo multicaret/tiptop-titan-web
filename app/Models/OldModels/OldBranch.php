@@ -5,8 +5,8 @@ namespace App\Models\OldModels;
 
 use Astrotomic\Translatable\Translatable;
 use Carbon\Carbon;
-use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Database\Eloquent\Model;
 
 /**
  * App\Models\OldModels\OldBranch

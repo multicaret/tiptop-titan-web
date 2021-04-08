@@ -996,6 +996,8 @@ class DatabaseSeeder extends Seeder
             }
         }
 
+        echo "Product ({$product['name']}) created with ID: ".$item->id.PHP_EOL;
+
         return $item;
     }
 
@@ -1406,7 +1408,7 @@ class DatabaseSeeder extends Seeder
             }
             $taxonomyTranslation->save();
         }
-        echo 'Category created with ID: '.$taxonomy->id.PHP_EOL;
+        echo "Category ({$taxonomy->title}) created with ID: ".$taxonomy->id.PHP_EOL;
 //        return $taxonomy;
     }
 

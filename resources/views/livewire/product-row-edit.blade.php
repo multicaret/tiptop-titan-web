@@ -1,5 +1,4 @@
-<tr {{--class="cursor-pointer" data-toggle="modal" data-target="#orderShowModal"
-                            wire:click="show({{ $product->id }})"--}}>
+<tr>
     <td style="width:10px">
         {{$product->id}}
     </td>
@@ -92,8 +91,10 @@
             <i class="far fa-edit"></i>
         </a>
         @if($product->type == \App\Models\Product::CHANNEL_FOOD_OBJECT)
-            <button class="btn btn-outline-info btn-sm d-inline-block mb-1">
-                <i class="fas fa-cog"></i>
+            <button class="btn btn-outline-info btn-sm d-inline-block mb-1"
+                                            data-toggle="modal" data-target="#optionsModal"
+                                            wire:click="show({{ $order->id }})">
+                <i class="fas fa-cog"></i> Options
             </button>
         @endif
     </td>
