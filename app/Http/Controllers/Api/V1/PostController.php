@@ -198,14 +198,14 @@ class PostController extends BaseApiController
 
         $builder = Post::where('type', Post::TYPE_ARTICLE);
 
-        return BlogResource::collection($builder->get());
+        return $this->respond(BlogResource::collection($builder->get()));
     }
 
     public function blogShow($id)
     {
         $post = Post::where('type', Post::TYPE_ARTICLE)->find($id);
         if ( ! empty($post)) {
-            return new BlogResource($post);
+            return $this->respond(new BlogResource($post));
         }
 
         return $this->respondNotFound();
