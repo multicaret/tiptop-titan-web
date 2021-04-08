@@ -25,6 +25,9 @@ class CreateProductsTable extends Migration
             $table->unsignedBigInteger('unit_id')->nullable();
             $table->double('price')->nullable();
             $table->double('price_discount_amount')->nullable();
+            $table->boolean('price_discount_by_percentage')->nullable()->comment('true: percentage, false: fixed amount');
+            $table->timestamp('price_discount_began_at')->nullable();
+            $table->timestamp('price_discount_finished_at')->nullable();
             $table->unsignedBigInteger('available_quantity')->nullable();
             $table->string('sku')->nullable();
             $table->unsignedBigInteger('upc')->nullable();
@@ -41,12 +44,9 @@ class CreateProductsTable extends Migration
             $table->unsignedBigInteger('search_count')->default(1);
             $table->unsignedBigInteger('view_count')->default(1);
             $table->unsignedTinyInteger('status')->default(Product::STATUS_DRAFT)->comment('1:draft, 2:active, 3:Inactive, 4..n:CUSTOM');
-            $table->timestamp('price_discount_began_at')->nullable();
-            $table->timestamp('price_discount_finished_at')->nullable();
             $table->timestamp('custom_banner_began_at')->nullable();
             $table->timestamp('custom_banner_ended_at')->nullable();
             $table->boolean('is_storage_tracking_enabled')->nullable(true);
-            $table->boolean('price_discount_by_percentage')->nullable()->comment('true: percentage, false: fixed amount');
             $table->unsignedTinyInteger('on_mobile_grid_tile_weight')->default(3);
             $table->timestamps();
             $table->softDeletes();

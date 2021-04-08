@@ -53,7 +53,7 @@ class CartController extends BaseApiController
 
             } else {
                 if ($cartProduct->quantity == 1) {
-                    $delete = $cartProduct->delete();
+                    $productRemovedFromCart = $cartProduct->delete();
                 } else {
                     $cartProduct->decrement('quantity');
                 }
@@ -62,12 +62,12 @@ class CartController extends BaseApiController
             $cartProduct = new CartProduct();
             $cartProduct->cart_id = $cart->id;
             $cartProduct->product_id = $productId;
-            $cartProduct->product_object =  Product::find($productId);
+            $cartProduct->product_object = Product::find($productId);
             $cartProduct->quantity = 1;
             $cartProduct->save();
         }
         if ( ! is_null($cartProduct)) {
-            $quantity = isset($delete) && ! ! $delete ? 0 : $cartProduct->quantity;
+            $quantity = isset($productRemovedFromCart) && ! ! $productRemovedFromCart ? 0 : $cartProduct->quantity;
             if ($isAddingMethod == true) {
                 $cart->total += $cartProduct->product->discounted_price;
                 $cart->without_discount_total += $cartProduct->product->price;
