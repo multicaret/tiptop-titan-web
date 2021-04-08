@@ -132,11 +132,11 @@ class OldBranch extends Model
     protected $primaryKey = 'id';
     protected $with = ['translations'];
     protected $translationForeignKey = 'branch_id';
-    protected $translatedAttributes = ['title_suffex', 'description'];
+    protected array $translatedAttributes = ['title_suffex', 'description'];
 
     protected static function booted()
     {
-        static::addGlobalScope('ancient', function (Builder $builder) {
+        static::addGlobalScope('not-ancient', function (Builder $builder) {
             $beginsAt = Carbon::parse('2020-12-25')->setTimeFromTimeString('00:00');
             $builder->where('created_at', '>=', $beginsAt);
         });
