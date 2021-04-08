@@ -189,7 +189,7 @@ class PostController extends BaseApiController
     {
         $builder = Post::where('type', Post::TYPE_FAQ);
 
-        return FaqResource::collection($builder->get());
+        return $this->respond(FaqResource::collection($builder->get()));
     }
 
     //____ BLOG ____//
@@ -211,18 +211,18 @@ class PostController extends BaseApiController
         return $this->respondNotFound();
     }
 
-    public function privacy(): StaticPageResource
+    public function privacy(): \Illuminate\Http\JsonResponse
     {
-        return new StaticPageResource(Post::find(Post::PRIVACY_PAGE_ID));
+        return $this->respond(new StaticPageResource(Post::find(Post::PRIVACY_PAGE_ID)));
     }
 
-    public function terms(): StaticPageResource
+    public function terms(): \Illuminate\Http\JsonResponse
     {
-        return new StaticPageResource(Post::find(Post::TERMS_PAGE_ID));
+        return $this->respond(new StaticPageResource(Post::find(Post::TERMS_PAGE_ID)));
     }
 
-    public function aboutUs(): StaticPageResource
+    public function aboutUs(): \Illuminate\Http\JsonResponse
     {
-        return new StaticPageResource(Post::find(Post::ABOUT_PAGE_ID));
+        return $this->respond(new StaticPageResource(Post::find(Post::ABOUT_PAGE_ID)));
     }
 }
