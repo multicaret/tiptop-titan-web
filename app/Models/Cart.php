@@ -64,12 +64,21 @@ class Cart extends Model
      * @param  int  $status
      * @return Cart|Model|object|null
      */
-    public static function getCurrentlyActiveCart(?int $userId, $branchId, int $status = self::STATUS_IN_PROGRESS)
-    {
-        return Cart::where('user_id', $userId)
-                   ->where('branch_id', $branchId)
-                   ->where('status', $status)
-                   ->first();
+    public static function getCurrentlyActiveCart(
+        ?int $userId,
+        ?int $branchId = null,
+        int $status = self::STATUS_IN_PROGRESS
+    ) {
+        $cartQuery = Cart::where('user_id', $userId)
+                         ->where('status', $status);
+
+        if ( ! is_null($branchId)) {
+            $cartQuery = $cartQuery->where('branch_id', $branchId);
+        } else {
+            $cartQuery = $cartQuery->whereNull('branch_id');
+        }
+
+        return $cartQuery->first();
     }
 
     public function user(): BelongsTo
@@ -100,8 +109,12 @@ class Cart extends Model
                     ->withTimestamps();
     }
 
-    public static function retrieve($chainId, $branchId, $userId = null, $status = self::STATUS_IN_PROGRESS): Cart
-    {
+    public static function retrieve(
+        ?int $chainId = null,
+        ?int $branchId = null,
+        ?int $userId = null,
+        $status = self::STATUS_IN_PROGRESS
+    ): Cart {
         if (is_null($userId)) {
             $userId = auth()->id();
         }
