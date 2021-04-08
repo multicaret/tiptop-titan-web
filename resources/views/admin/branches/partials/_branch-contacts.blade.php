@@ -14,6 +14,7 @@
                                     <tr>
                                         <th>#</th>
                                         <th>Name</th>
+                                        <th>Position</th>
                                         <th>Email</th>
                                         <th>Phone Number</th>
                                         <th>Action</th>
@@ -24,6 +25,11 @@
                                         <th scope="row">@{{index+1}}</th>
                                         <td>
                                             <input type="text" v-model="contactDetail.name"
+                                                   class="form-control" name="contact-name">
+                                            {{--                                                            <small>@{{}}</small>--}}
+                                        </td>
+                                        <td>
+                                            <input type="text" v-model="contactDetail.position"
                                                    class="form-control" name="contact-name">
                                             {{--                                                            <small>@{{}}</small>--}}
                                         </td>

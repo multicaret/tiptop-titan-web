@@ -177,7 +177,7 @@
                         </tr>
                     @empty
                         <tr>
-                            <td colspan="9" class="text-center">
+                            <td colspan="12" class="text-center">
                                 <h4>
                                     No Orders found!
                                 </h4>

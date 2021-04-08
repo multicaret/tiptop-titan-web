@@ -35,25 +35,12 @@
         <div class="row mb-4">
             <div class="col-md-9">
                 <div class="col-12">
-                    <ul class="nav nav-tabs border-bottom-0">
-                        @foreach(localization()->getSupportedLocales() as $key => $locale)
-                            <li class="nav-item">
-                                <a class="nav-link {{ $key == localization()->getDefaultLocale() ? 'active' : '' }}"
-                                   data-toggle="tab"
-                                   href="#title_{{$key}}">
-                                    <span class="hidden-sm-up"><i class="ti-home"></i></span>
-                                    <span class="hidden-xs-down">{{$locale->native()}}</span>
-                                </a>
-                            </li>
-                        @endforeach
-                    </ul>
-                    <div class="tab-content card card-outline-inverse">
+                    <div class="row">
                         @foreach(localization()->getSupportedLocales() as $langKey => $locale)
-                            <div
-                                class="tab-pane {{ $langKey == localization()->getDefaultLocale() ? 'active' : '' }}"
-                                id="title_{{$langKey}}">
-                                <div class="card-body pb-0">
-                                    <div class="row p-t-20">
+                            <div class="col-md-4 mt-4">
+                                <div class="card card-outline-inverse">
+                                    <h4 class="card-header">{{Str::upper($langKey)}}</h4>
+                                    <div class="card-body row">
                                         <div class="col-md-12">
                                             @component('admin.components.form-group', ['name' => $langKey .'[title]', 'type' => 'text'])
                                                 @slot('label', trans('strings.name'))
@@ -63,10 +50,15 @@
                                             @endcomponent
                                         </div>
                                         <div class="col-md-12">
-                                            <x-admin.textarea :id="$langKey.'-description'"
-                                                              :name="$langKey.'[description]'"
-                                                              label="Description"
-                                                              :content="optional($chain->translate($langKey))->description"/>
+                                            @component('admin.components.form-group', ['name' => $langKey .'[description]', 'type' => 'textarea'])
+                                                @slot('label', 'Description')
+                                                @slot('attributes', [
+                                                        'rows' => 5,
+                                                        ])
+                                                @if(! is_null($chain->id))
+                                                    @slot('value', optional($chain->translate($langKey))->description)
+                                                @endif
+                                            @endcomponent
                                         </div>
 
                                     </div>

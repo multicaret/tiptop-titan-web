@@ -202,7 +202,8 @@
                             <div class="row">
                                 @foreach($allInputs as $input => $type)
                                     @if($type !== 'select')
-                                        <div class="col-6">
+                                        <div
+                                            class="{{$input == 'available_quantity' || $input == 'minimum_orderable_quantity' || $input == 'maximum_orderable_quantity'? 'col-4' : 'col-6'}}">
                                             @component('admin.components.form-group', ['name' => $input, 'type' => $type])
                                                 @slot('label', trans('strings.'. $input))
                                                 @if(! is_null($product->id) && $type === config('defaults.db_column_types.boolean'))
@@ -309,7 +310,8 @@
                 selectedUnit: @json(!is_null($product->unit) ? $product->unit : null),
                 allInputs: @json($allInputs)
             },
-            beforeMount() {},
+            beforeMount() {
+            },
             methods: {
                 selectChain: function () {
                     this.branches = [];
