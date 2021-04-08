@@ -91,11 +91,10 @@
             <i class="far fa-edit"></i>
         </a>
         @if($product->type == \App\Models\Product::CHANNEL_FOOD_OBJECT)
-            <button class="btn btn-outline-info btn-sm d-inline-block mb-1"
-                                            data-toggle="modal" data-target="#optionsModal"
-                                            wire:click="show({{ $order->id }})">
+            <a class="btn btn-outline-info btn-sm d-inline-block mb-1"
+               href="{{route('admin.products.options',$product)}}">
                 <i class="fas fa-cog"></i> Options
-            </button>
+            </a>
         @endif
     </td>
 </tr>

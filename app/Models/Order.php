@@ -47,7 +47,7 @@ use Illuminate\Support\Carbon;
  * @property int|null $rating_issue_id
  * @property Carbon|null $completed_at
  * @property string|null $notes
- * @property int $status
+ * @property int $status 
  *                     0: Cancelled,
  *                     1: Draft,
  *                     6: Waiting Courier,

@@ -1,9 +1,9 @@
 @extends('layouts.admin')
 
 @if(!is_null($product->id))
-    @section('title', trans('strings.editing') .' - ' . trans('strings.chain'))
+    @section('title', 'Editing a product')
 @else
-    @section('title', trans('strings.add_new') .' - ' . trans('strings.chain'))
+    @section('title', 'Add new product')
 @endif
 
 @push('styles')

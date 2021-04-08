@@ -140,6 +140,9 @@
         </style>
     @endif
 
+
+    @livewireStyles
+
     @stack('head')
 </head>
 <body>
@@ -151,7 +154,6 @@
 <div id="vue-app">
     @yield('container')
 </div>
-
 
 
 <!-- Core scripts -->
@@ -231,7 +233,10 @@
     </script>
 @endif
 
+@livewireScripts
 <script>
+    $('[data-toggle="tooltip"]').tooltip();
+
     function showToast(type, message) {
         window.toast.fire({
             icon: type,
@@ -239,7 +244,10 @@
             title: message,
         });
     }
-    $('[data-toggle="tooltip"]').tooltip();
+
+    Livewire.on('showToast', (params) => {
+        showToast(params.icon, params.message);
+    });
 </script>
 @stack('scripts')
 </body>
