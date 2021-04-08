@@ -1,24 +1,27 @@
 @extends('layouts.admin')
 
-@section('title', $user->id? trans('strings.edit'. request('type')) : trans('strings.add_new_'. request('type')))
+@section('title', $user->id? trans('strings.edit'. ' '. trans("strings.$role")) : trans(trans('strings.add') . ' ' . trans("strings.$role")))
 
 @section('breadcrumb')
-    <li class="breadcrumb-item"><a href="{{route('admin.users.index', ['type' => request()->type ])}}">@lang('strings.users')</a></li>
-    <li class="breadcrumb-item active">{{ $user->id? trans('strings.edit'. request('type')): trans('strings.add_new_'. request('type'))}}</li>
+    <li class="breadcrumb-item"><a
+            href="{{route('admin.users.index', ['role' => $roleName ])}}">@lang('strings.users')</a></li>
+    <li class="breadcrumb-item active">{{ $user->id? trans('strings.edit'. $roleName): trans('strings.add_new_'. $roleName)}}</li>
 @endsection
 
 
 @section('content')
-    {{--@if(!is_null($user->id))
-        {!! Form::model($user ,['route' => ['admin.users.update', [$user, 'type' => request()->type] ], 'method' => 'put', 'files' => true]) !!}
-    @else
-        {!! Form::open(['route' => ['admin.users.store', ['type' => request()->type] ], 'files' => true]) !!}
-    @endif--}}
+    <div class="mb-4">
+        @if(!is_null($user->id))
+            <h5>{{trans('strings.edit'. ' '. trans("strings.$role"))}}</h5>
+        @else
+            <h5>{{trans('strings.add') . ' ' . trans("strings.$role")}}</h5>
+        @endif
+    </div>
     <form method="POST" enctype="multipart/form-data"
           @if(is_null($user->id))
-          action="{{route('admin.users.store', ['type' => strtolower(request()->type)])}}"
+          action="{{route('admin.users.store', ['role' => $role])}}"
           @else
-          action="{{route('admin.users.update', [$user, 'type' => strtolower(request()->type)])}}"
+          action="{{route('admin.users.update', [$user, 'role' => $role])}}"
         @endif
     >
         {{csrf_field()}}
@@ -400,7 +403,7 @@
                                                                    id="{{'01_' . str_replace('.','-',$permission)}}"
                                                                    name="permissions[{{$permission}}]"
                                                                    value="1"
-                                                                {{$user->hasDirectPermission($permission) || $role->hasPermissionTo($permission)? 'checked' : '' }}
+                                                                {{$user->hasDirectPermission($permission) || $user->hasPermissionTo($permission)? 'checked' : '' }}
                                                             >
                                                             <span class="custom-control-label">Yes</span>
                                                         </label>
@@ -410,7 +413,7 @@
                                                             <input type="radio" class="custom-control-input"
                                                                    id="{{'00_' . str_replace('.','-',$permission)}}"
                                                                    value="0"
-                                                                {{ $role->hasPermissionTo($permission) || !$role->hasDirectPermission($permission) ? '' : 'checked' }}
+                                                                {{ $user->hasPermissionTo($permission) || !$user->hasDirectPermission($permission) ? '' : 'checked' }}
                                                             >
                                                             <span class="custom-control-label">No</span>
                                                         </label>
@@ -420,7 +423,7 @@
                                                             <input type="radio" class="custom-control-input"
                                                                    id="{{'02_' . str_replace('.','-',$permission)}}"
                                                                    value="2"
-                                                                {{$role->hasPermissionTo($permission)? 'checked': 'disabled' }}
+                                                                {{$user->hasPermissionTo($permission)? 'checked': 'disabled' }}
                                                             >
                                                             <span class="custom-control-label">Inherit</span>
                                                         </label>
@@ -478,10 +481,10 @@
                 if (inputId.substring(0, 2) === '00') {
                     inputId = inputId.replace('00', '01');
                     inputId1 = inputId.replace('01', '02');
-                } else if (inputId.substring(0, 2) === '01'){
+                } else if (inputId.substring(0, 2) === '01') {
                     inputId = inputId.replace('01', '00');
                     inputId1 = inputId.replace('00', '02');
-                } else if (inputId.substring(0, 2) === '02'){
+                } else if (inputId.substring(0, 2) === '02') {
                     inputId = inputId.replace('02', '00');
                     inputId1 = inputId.replace('00', '01');
                 }

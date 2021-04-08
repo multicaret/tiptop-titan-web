@@ -11,6 +11,7 @@ use DB;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
+use Illuminate\Support\Str;
 use Spatie\Permission\Models\Role;
 
 class UserController extends Controller
@@ -24,30 +25,63 @@ class UserController extends Controller
         $this->middleware('permission:user.permissions.destroy', ['only' => ['destroy']]);
     }
 
-    /**
-     * Display a listing of the resource.
-     *
-     * @param  Request  $request
-     *
-     * @return Response
-     */
-    public function index($type)
+    public function index(Request $request, $role)
     {
-        return view('admin.users.index');
+        $this->roleValidation($role);
+        $columns = [
+            [
+                'data' => 'first',
+                'name' => 'first',
+                'title' => trans('strings.first_name'),
+            ],
+            [
+                'data' => 'last',
+                'name' => 'last',
+                'title' => trans('strings.last_name'),
+            ],
+            [
+                'data' => 'username',
+                'name' => 'username',
+                'title' => trans('strings.username'),
+            ],
+            [
+                'data' => 'email',
+                'name' => 'email',
+                'title' => trans('strings.email'),
+            ],
+            [
+                'data' => 'status',
+                'name' => 'status',
+                'title' => 'Status',
+            ],
+            [
+                'data' => 'created_at',
+                'name' => 'created_at',
+                'title' => trans('strings.create_date')
+            ],
+            [
+                'data' => 'last_logged_in_at',
+                'name' => 'last_logged_in_at',
+                'title' => __('Last logged In')
+            ],
+        ];
+
+        return view('admin.users.index', compact('columns', 'role'));
     }
 
     /**
      * Show the form for creating a new resource.
      *
-     * @param $type
+     * @param $role
      * @param  Request  $request
      *
      * @return Response
      */
-    public function create($type, Request $request)
+    public function create($role, Request $request)
     {
+        $this->roleValidation($role);
         $data = $this->essentialData();
-
+        $roleName = $this->getRoleName($role);
         $user = new User();
         $user->status = User::STATUS_ACTIVE;
         $user->country_id = config('defaults.country.id');
@@ -56,8 +90,8 @@ class UserController extends Controller
         $user->load(['country', 'region', 'city']);
 
         $data['user'] = $user;
-        $type = $request->type;
-        $data['role'] = $this->getRoleFromUserType($type);
+        $data['role'] = $role;
+        $data['roleName'] = $roleName;
         $data['permissions'] = config('defaults.all_permission.super');
 
         return view('admin.users.form', $data);
@@ -70,8 +104,9 @@ class UserController extends Controller
      *
      * @return RedirectResponse
      */
-    public function store($type, Request $request)
+    public function store($role, Request $request)
     {
+        $this->roleValidation($role);
         $request->validate([
             'first' => 'required|min:3|max:60',
             'email' => 'required|email|min:3|max:255|unique:users,email',
@@ -79,7 +114,6 @@ class UserController extends Controller
         ]);
         $previousOrderValue = User::orderBy('order_column', 'ASC')->first();
         $order = is_null($previousOrderValue) ? 1 : $previousOrderValue->order_column + 1;
-        $role = $request->type;
 
         DB::beginTransaction();
         $user = new User();
@@ -120,11 +154,11 @@ class UserController extends Controller
 
         DB::commit();
 
-        $roleName = $this->getRoleFromUserType($role)->name;
+        $roleName = $this->getRoleName($role);
         $user->assignRole($roleName);
 
         return redirect()
-            ->route('admin.users.index', ['type' => $request->type])
+            ->route('admin.users.index', ['role' => $role])
             ->with('message', [
                 'type' => 'Success',
                 'text' => 'Successfully Created'
@@ -139,16 +173,15 @@ class UserController extends Controller
      *
      * @return Response
      */
-    public function edit($type, User $user, Request $request)
+    public function edit(User $user, Request $request)
     {
-        if (is_null($type)) {
-            dd('type is null in edit');
-        }
-        $type = $request->type;
+        $roleName = $user->role->name;
+        $role = Str::kebab($roleName);
         $data = $this->essentialData();
         $user->load(['country', 'region', 'city']);
         $data['user'] = $user;
-        $data['role'] = $this->getRoleFromUserType($type);
+        $data['role'] = $role;
+        $data['roleName'] = $roleName;
         $data['permissions'] = config('defaults.all_permission.super');
 
         return view('admin.users.form', $data);
@@ -157,17 +190,17 @@ class UserController extends Controller
     /**
      * Update the specified resource in storage.
      *
-     * @param $type
+     * @param $role
      * @param  User  $user
      *
      * @param  Request  $request
      * @return RedirectResponse
      */
-    public function update($type, User $user, Request $request)
+    public function update(User $user, Request $request)
     {
-        if (is_null($type)) {
-            dd('type is null in edit');
-        }
+        $roleName = $user->role->name;
+        $role = Str::kebab($roleName);
+
         $validationRules = [
             'first' => 'required|min:3|max:60',
             'email' => 'required|email|min:3|max:255|unique:users,email,'.$user->id,
@@ -195,13 +228,13 @@ class UserController extends Controller
         }
 
         /*if (is_null($address = Location::where('contactable_id', $user->id)
-                                       ->where('contactable_type', User::class)
+                                       ->where('contactable_role', User::class)
                                        ->whereNull('alias')
                                        ->first())) {
             $address = new Location();
             $address->creator_id = $address->editor_id = auth()->id();
             $address->contactable_id = $user->id;
-            $address->contactable_type = User::class;
+            $address->contactable_role = User::class;
         }
         $address->editor_id = auth()->id();
         $address->editor_id = $user->id;
@@ -218,7 +251,6 @@ class UserController extends Controller
         $this->handleSubmittedSingleMedia('avatar', $request, $user);
         DB::commit();
 
-        $roleName = $this->getRoleFromUserType($request->type)->name;
         $user->assignRole($roleName);
         if (auth()->user()->hasRole([User::ROLE_SUPER, User::ROLE_ADMIN])) {
             $permissions = array_keys($request->input('permissions', []));
@@ -226,7 +258,7 @@ class UserController extends Controller
         }
 
         return redirect()
-            ->route('admin.users.index', ['type' => $request->type])
+            ->route('admin.users.index', ['role' => $request->role, 'roleName' => $roleName])
             ->with('message', [
                 'type' => 'Success',
                 'text' => 'Successfully Updated'
@@ -240,7 +272,7 @@ class UserController extends Controller
      *
      * @return Response
      */
-    public function destroy($type, User $user)
+    public function destroy(User $user)
     {
         if ($user->delete()) {
             return back()->with('message', [
@@ -269,11 +301,11 @@ class UserController extends Controller
         ];
     }
 
-    private function getRoleFromUserType($type): Role
+    private function getRoleName($role)
     {
-        $tempRoleName = str_replace('-', ' ', $type);
+        $tempRoleName = str_replace('-', ' ', $role);
 
-        return Role::findByName(ucwords($tempRoleName));
+        return Role::findByName(ucwords($tempRoleName))->name;
     }
 
     private function checkPermissionsIfUpdated(array $permissions, string $roleName): bool
@@ -283,6 +315,13 @@ class UserController extends Controller
         $tempPermissions = array_intersect($rolePermissions, $permissions);
 
         return count($rolePermissions) !== count($tempPermissions);
+    }
+
+    private function roleValidation(string $role)
+    {
+        if (!in_array($role, User::getAllRoles())) {
+            return abort(404);
+        }
     }
 
 }
