@@ -20,7 +20,7 @@ Content-Type: application/json
 Authorization: Bearer {{token}}
 
 {
-    "product_id": 5,
+    "product_id": {{productId}},
     "chain_id": 1,
     "branch_id": "{{branchId}}",
     "is_adding": true,

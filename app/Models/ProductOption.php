@@ -22,6 +22,7 @@ use Illuminate\Database\Eloquent\Model;
  * @property int $selection_type
  * @property \Illuminate\Support\Carbon|null $created_at
  * @property \Illuminate\Support\Carbon|null $updated_at
+ * @property-read \App\Models\ProductOptionTranslation|null $translation
  * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\ProductOptionTranslation[] $translations
  * @property-read int|null $translations_count
  * @method static \Illuminate\Database\Eloquent\Builder|ProductOption listsTranslations(string $translationField)

@@ -189,7 +189,7 @@ class PostController extends BaseApiController
     {
         $builder = Post::where('type', Post::TYPE_FAQ);
 
-        return FaqResource::collection($builder->get());
+        return $this->respond(FaqResource::collection($builder->get()));
     }
 
     //____ BLOG ____//
@@ -198,31 +198,31 @@ class PostController extends BaseApiController
 
         $builder = Post::where('type', Post::TYPE_ARTICLE);
 
-        return BlogResource::collection($builder->get());
+        return $this->respond(BlogResource::collection($builder->get()));
     }
 
     public function blogShow($id)
     {
         $post = Post::where('type', Post::TYPE_ARTICLE)->find($id);
         if ( ! empty($post)) {
-            return new BlogResource($post);
+            return $this->respond(new BlogResource($post));
         }
 
         return $this->respondNotFound();
     }
 
-    public function privacy(): StaticPageResource
+    public function privacy(): \Illuminate\Http\JsonResponse
     {
-        return new StaticPageResource(Post::find(Post::PRIVACY_PAGE_ID));
+        return $this->respond(new StaticPageResource(Post::find(Post::PRIVACY_PAGE_ID)));
     }
 
-    public function terms(): StaticPageResource
+    public function terms(): \Illuminate\Http\JsonResponse
     {
-        return new StaticPageResource(Post::find(Post::TERMS_PAGE_ID));
+        return $this->respond(new StaticPageResource(Post::find(Post::TERMS_PAGE_ID)));
     }
 
-    public function aboutUs(): StaticPageResource
+    public function aboutUs(): \Illuminate\Http\JsonResponse
     {
-        return new StaticPageResource(Post::find(Post::ABOUT_PAGE_ID));
+        return $this->respond(new StaticPageResource(Post::find(Post::ABOUT_PAGE_ID)));
     }
 }

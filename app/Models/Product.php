@@ -75,6 +75,9 @@ use Spatie\MediaLibrary\MediaCollections\Models\Media;
  * @property-read int|null $favoriters_count
  * @property-read mixed $cover
  * @property-read mixed $cover_full
+ * @property-read mixed $cover_thumbnail
+ * @property-read mixed $discount_amount_calculated
+ * @property-read mixed $discount_amount_calculated_formatted
  * @property-read mixed $discounted_price
  * @property-read string $discounted_price_formatted
  * @property-read mixed $gallery
@@ -82,7 +85,6 @@ use Spatie\MediaLibrary\MediaCollections\Models\Media;
  * @property-read bool $is_inactive
  * @property-read mixed $price_formatted
  * @property-read mixed $status_name
- * @property-read mixed $thumbnail
  * @property-read \App\Models\Taxonomy $masterCategory
  * @property-read MediaCollection|Media[] $media
  * @property-read int|null $media_count
@@ -401,7 +403,7 @@ class Product extends Model implements HasMedia
 
     public function getDiscountedPriceAttribute()
     {
-        return Controller::calculateDiscountedAmount($this->price, $this->price_discount_amount,
+        return Controller::getAmountAfterApplyingDiscount($this->price, $this->price_discount_amount,
             $this->price_discount_by_percentage);
 
     }
@@ -409,6 +411,20 @@ class Product extends Model implements HasMedia
     public function getDiscountedPriceFormattedAttribute(): string
     {
         return Currency::format($this->discounted_price);
+    }
+
+
+    public function getDiscountAmountCalculatedAttribute()
+    {
+        return Controller::calculateDiscountedAmount($this->price, $this->price_discount_amount,
+            $this->price_discount_by_percentage);
+
+    }
+
+    public function getDiscountAmountCalculatedFormattedAttribute()
+    {
+        return Currency::format($this->discount_amount_calculated);
+
     }
 
 

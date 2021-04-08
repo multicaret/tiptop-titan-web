@@ -2,6 +2,7 @@
 
 namespace App\Http\Livewire;
 
+use App\Http\Controllers\Controller;
 use Livewire\Component;
 
 class ProductRowEdit extends Component
@@ -31,6 +32,7 @@ class ProductRowEdit extends Component
 
     public function updatedTitleEn($newValue)
     {
+        $this->validate();
         $this->product->translateOrNew('en')->title = $newValue;
         $this->product->save();
 
@@ -42,6 +44,7 @@ class ProductRowEdit extends Component
 
     public function updatedTitleAr($newValue)
     {
+        $this->validate();
         $this->product->translateOrNew('ar')->title = $newValue;
         $this->product->save();
 
@@ -53,6 +56,7 @@ class ProductRowEdit extends Component
 
     public function updatedTitleKu($newValue)
     {
+        $this->validate();
         $this->product->translateOrNew('ku')->title = $newValue;
         $this->product->save();
 
@@ -64,7 +68,8 @@ class ProductRowEdit extends Component
 
     public function updatedProductPrice($newValue)
     {
-        $this->product->price = $newValue;
+        $this->validate();
+        $this->product->price = Controller::convertNumbersToArabic($newValue);
         $this->product->save();
 
         $this->emit('productStored', [
@@ -75,7 +80,8 @@ class ProductRowEdit extends Component
 
     public function updatedProductOrderColumn($newValue)
     {
-        $this->product->order_column = $newValue;
+        $this->validate();
+        $this->product->order_column = Controller::convertNumbersToArabic($newValue);
         $this->product->save();
 
         $this->emit('productStored', [
@@ -86,48 +92,47 @@ class ProductRowEdit extends Component
 
     public function updatedProductPriceDiscountAmount($newValue)
     {
-        $this->product->price_discount_amount = $newValue;
+        $this->validate();
+        $this->product->price_discount_amount = Controller::convertNumbersToArabic($newValue);
         $this->product->save();
 
-        if ($this->product->price_discount_amount > 100 && $this->product->price_discount_by_percentage) {
-            $this->product->price_discount_amount = 100;
-            $this->product->save();
-            $this->emit('productStored', [
-                'icon' => 'error',
-                'message' => 'Product will be free in this case',
-            ]);
-        } else {
-            $this->emit('productStored', [
-                'icon' => 'success',
-                'message' => 'Price discount amount has been changed',
-            ]);
-        }
+        $this->validateDiscount();
     }
 
     public function updatedProductPriceDiscountByPercentage($newValue)
     {
-        $this->product->price_discount_by_percentage = $newValue == 'true';
+        $this->validate();
+        $this->product->price_discount_by_percentage = $newValue;
         $this->product->save();
 
-
-        if ($this->product->price_discount_amount > 100 && $this->product->price_discount_by_percentage) {
-            $this->product->price_discount_amount = 100;
-            $this->product->save();
-            $this->emit('productStored', [
-                'icon' => 'error',
-                'message' => 'Product will be free in this case',
-            ]);
-        } else {
-            $this->emit('productStored', [
-                'icon' => 'success',
-                'message' => 'Price discount by percentage has been changed',
-            ]);
-        }
+        $this->validateDiscount();
 
     }
 
     public function render()
     {
         return view('livewire.product-row-edit');
+    }
+
+    private function validateDiscount(): void
+    {
+        $productStoredEventIcon = 'error';
+        if ($this->product->price_discount_amount > 100 && $this->product->price_discount_by_percentage) {
+            $this->product->price_discount_amount = 100;
+            $this->product->save();
+            $productStoredEventMessage = 'Product will be free in this case';
+        } elseif ($this->product->price_discount_amount > $this->product->price && ! $this->product->price_discount_by_percentage) {
+            $this->product->price_discount_amount = $this->product->price;
+            $this->product->save();
+            $productStoredEventMessage = 'Product will be free in this case';
+        } else {
+            $productStoredEventIcon = 'success';
+            $productStoredEventMessage = 'Price discount amount has been changed';
+        }
+
+        $this->emit('productStored', [
+            'icon' => $productStoredEventIcon,
+            'message' => $productStoredEventMessage,
+        ]);
     }
 }

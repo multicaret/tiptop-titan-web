@@ -4,37 +4,39 @@
         {{$product->id}}
     </td>
     <td>
-        <img src="{{$product->cover}}" width="150px" class="img-fluid-fit-cover">
+        <img src="{{$product->cover}}" width="100px" class="img-fluid-fit-cover">
     </td>
-    @foreach(localization()->getSupportedLocales() as $key => $locale)
-        <td>
+    <td>
+        @foreach(localization()->getSupportedLocales() as $key => $locale)
             <div class="form-group">
+                <label>{{$locale->native()}}</label>
                 <input type="text" title="price" class="form-control" placeholder="{{$locale->native()}}"
                        wire:model.lazy="title{{ucfirst($key)}}">
             </div>
-        </td>
-    @endforeach
+        @endforeach
+    </td>
     <td>
         {{ implode(',',$product->categories->pluck('title')->toArray()) }}
     </td>
     <td>
         <div class="form-group">
-            <input type="text" title="price" class="form-control" placeholder="Order column"
-                   wire:model.lazy="product.order_column">
-        </div>
-    </td>
-    <td>
-        <div class="form-group">
             <input type="text" title="price" class="form-control" placeholder="Price"
                    wire:model.lazy="product.price">
+            @error('product.price')
+            <span class="text-danger">Please fix this field</span>
+            @enderror
         </div>
 
         <hr>
         <span class="text-muted">Price Before:</span><br>
-        <del>{{ \App\Models\Currency::format($product->price) }}</del>
+        <del>{{ $product->price_formatted }}</del>
         <br>
         <span class="text-muted">Price After:</span><br>
-        <b>{{ \App\Models\Currency::format($product->price - $product->discounted_price) }}</b>
+        @if($product->discounted_price != 0)
+            <b>{{ $product->discounted_price_formatted }}</b>
+        @else
+            <b class="text-primary">FREE</b>
+        @endif
     </td>
     <td>
         <div class="form-group">
@@ -42,9 +44,9 @@
                    wire:model.lazy="product.price_discount_amount">
         </div>
         <div class="form-group">
-            {{--<div class="form-check">
+            <div class="form-check">
                 <input class="form-check-input" type="radio" id="discount-fixed"
-                       value="'false'"
+                       value="0"
                        wire:model="product.price_discount_by_percentage">
                 <label class="form-check-label" for="discount-fixed">
                     Fixed
@@ -52,27 +54,33 @@
             </div>
             <div class="form-check">
                 <input class="form-check-input" type="radio" id="discount-percentage"
-                       value="'true'"
+                       value="1"
                        wire:model="product.price_discount_by_percentage"
                 >
                 <label class="form-check-label" for="discount-percentage">
                     Percentage %
                 </label>
-            </div>--}}
-            <select class="form-control" wire:model="product.price_discount_by_percentage">
+            </div>
+            {{--<select class="form-control" wire:model="product.price_discount_by_percentage">
                 <option value="false" {{ !$product->price_discount_by_percentage? 'selected':''}}>
                     Fixed
                 </option>
                 <option value="true" {{ $product->price_discount_by_percentage? 'selected':''}}>
                     Percentage %
                 </option>
-            </select>
+            </select>--}}
         </div>
         <span class="text-muted">
             Discount Amount:
         </span>
         <br>
-        {{ $product->discounted_price_formatted }}
+        {{ $product->discount_amount_calculated_formatted }}
+    </td>
+    <td>
+        <div class="form-group">
+            <input type="text" title="price" class="form-control" placeholder="Order column"
+                   wire:model.lazy="product.order_column">
+        </div>
     </td>
     <td>{{$product->status_name}}</td>
     <td>
@@ -81,10 +89,12 @@
                             'branch_id' => $product->branch_id,
                             'chain_id' => $product->chain_id,
                             $product->uuid])}}">
-            Edit
+            <i class="far fa-edit"></i>
         </a>
-        <button class="btn btn-outline-info btn-sm d-inline-block mb-1">
-            Options
-        </button>
+        @if($product->type == \App\Models\Product::CHANNEL_FOOD_OBJECT)
+            <button class="btn btn-outline-info btn-sm d-inline-block mb-1">
+                <i class="fas fa-cog"></i>
+            </button>
+        @endif
     </td>
 </tr>
