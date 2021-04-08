@@ -52,19 +52,9 @@ class DatumImporter extends Command
         } elseif ($this->modelName === 'Product') {
             $this->importProducts(500);
         } elseif ($this->modelName === 'Category') {
-            Taxonomy::truncate();
-            TaxonomyTranslation::truncate();
-            $parentIds = [31, 441, 508, 509, 510, 511, 512, 554, 557, 597, 654, 666];
-            $groceryCategories = OldCategory::whereIn('id', $parentIds)->get();
-            foreach ($parentIds as $parentId) {
-                $groceryCategories = $groceryCategories->merge(OldCategory::whereParentId($parentId)->get());
-            }
-            $this->bar = $this->output->createProgressBar($groceryCategories->count());
-            $this->bar->start();
-            foreach ($groceryCategories as $oldCategory) {
-                $this->insertCategory($oldCategory);
-                $this->bar->advance();
-            }
+            $this->importGroceryCategories();
+        }elseif ($this->modelName === 'ProductImages') {
+            $this->importProductsImages(500);
         }
         $this->bar->finish();
         \DB::statement('SET FOREIGN_KEY_CHECKS=1;');
@@ -80,7 +70,7 @@ class DatumImporter extends Command
         if (empty($this->modelName)) {
             $this->modelName = $this->choice(
                 'What is model name?',
-                ['Branch', 'Product', 'Category'],
+                ['Branch', 'Product', 'Category', 'ProductImages'],
                 1
             );
         }
@@ -195,6 +185,13 @@ class DatumImporter extends Command
         }
     }
 
+
+    private function insertProductImage(int $oldProductId)
+    {
+        $freshProduct = Product::find($oldProductId);
+        $this->addSingleImage($freshProduct, 'Dish');
+    }
+
     private function storeLocation($first, $freshBranch)
     {
         $location = new Location();
@@ -260,6 +257,37 @@ class DatumImporter extends Command
         $this->bar->start();
         foreach ($oldProducts as $oldProduct) {
             $this->insertProducts($oldProduct);
+            $this->bar->advance();
+        }
+    }
+
+    private function importProductsImages(int $count): void
+    {
+        $oldProductsIds = OldProduct::orderBy('created_at')
+                                 ->withCount('categories')
+                                 ->where('restaurant_id', self::DEFAULT_RESTAURANT_ID)
+                                 ->take($count)->pluck('id');
+        $this->bar = $this->output->createProgressBar($oldProductsIds->count());
+        $this->bar->start();
+        foreach ($oldProductsIds as $oldProductId) {
+            $this->insertProductImage($oldProductId);
+            $this->bar->advance();
+        }
+    }
+
+    private function importGroceryCategories(): void
+    {
+        Taxonomy::truncate();
+        TaxonomyTranslation::truncate();
+        $parentIds = [31, 441, 508, 509, 510, 511, 512, 554, 557, 597, 654, 666];
+        $groceryCategories = OldCategory::whereIn('id', $parentIds)->get();
+        foreach ($parentIds as $parentId) {
+            $groceryCategories = $groceryCategories->merge(OldCategory::whereParentId($parentId)->get());
+        }
+        $this->bar = $this->output->createProgressBar($groceryCategories->count());
+        $this->bar->start();
+        foreach ($groceryCategories as $oldCategory) {
+            $this->insertCategory($oldCategory);
             $this->bar->advance();
         }
     }

@@ -97,6 +97,13 @@ class DatabaseSeeder extends Seeder
         $this->apiAccessTokensSeeder($super, $admin);
         Artisan::call('translation:import');
         echo 'Done 🤤 '.PHP_EOL;
+        if ( ! is_null(env('IMPORT_IMAGES'))) {
+            Artisan::call('datum:importer ProductImages');
+            echo Artisan::output();
+        } else {
+            echo PHP_EOL;
+            echo 'Run `php artisan datum:importer ProductImages` if you want to import products images'.PHP_EOL;
+        }
     }
 
     private function createPreferenceItem($key, $data): void
