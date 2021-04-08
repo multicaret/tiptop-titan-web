@@ -3,10 +3,10 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
+use App\Models\Branch;
 use App\Models\Chain;
 use App\Models\Location;
 use App\Models\Region;
-use App\Models\Branch;
 use App\Models\Taxonomy;
 use App\Models\WorkingHour;
 use DB;
@@ -266,8 +266,8 @@ class BranchController extends Controller
         $branch->type = Branch::getCorrectChannel($request->type);
         $branch->status = $request->input('status');
 
-        if ($request->input('status') == Branch::STATUS_ACTIVE) {
-            $branch->published_at = $request->input('published_at');
+        if (is_null($branch->published_at) && $request->input('status') == Branch::STATUS_ACTIVE) {
+            $branch->published_at = now();
         }
         $branch->featured_at = $request->input('featured_at');
 
