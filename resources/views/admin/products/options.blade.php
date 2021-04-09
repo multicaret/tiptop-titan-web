@@ -9,8 +9,6 @@
     <h2>
         {{$product->title}} Options
     </h2>
-
-
-    Ingredients:
+    
     <livewire:product-options-index :product="$product"/>
 @endsection

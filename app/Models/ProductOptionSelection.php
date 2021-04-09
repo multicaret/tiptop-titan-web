@@ -12,7 +12,7 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
  * @property int $id
  * @property int $product_option_id
  * @property int $product_id this is a helper
- * @property float|null $extra_price
+ * @property float|null $price
  * @property \Illuminate\Support\Carbon|null $created_at
  * @property \Illuminate\Support\Carbon|null $updated_at
  * @property-read \App\Models\ProductOption $option
@@ -48,7 +48,7 @@ class ProductOptionSelection extends Model
     protected $translatedAttributes = ['title'];
 
     protected $casts = [
-        'extra_price' => 'double',
+        'price' => 'double',
     ];
 
     /**

@@ -2,6 +2,8 @@
 
 namespace App\Http\Livewire;
 
+use App\Models\ProductOptionSelection as ProductOptionSelectionModel;
+use App\Models\Taxonomy;
 use Livewire\Component;
 
 class ProductOption extends Component
@@ -11,9 +13,13 @@ class ProductOption extends Component
     public $titleKu;
     public $titleAr;
     public bool $markedAsDeleted = false;
+    public $ingredientCategories;
+
+    public $selectedIngredients =[];
 
     public function mount()
     {
+        $this->ingredientCategories = Taxonomy::ingredientCategories()->get();
         $this->titleEn = optional($this->option->translate('en'))->title;
         $this->titleKu = optional($this->option->translate('ku'))->title;
         $this->titleAr = optional($this->option->translate('ar'))->title;
@@ -111,7 +117,19 @@ class ProductOption extends Component
 
         $this->emit('showToast', [
             'icon' => 'success',
-            'message' => 'Arabic title has been changed',
+            'message' => 'Kurdish title has been changed',
+        ]);
+    }
+
+    public function updatedSelectedIngredients($newValue)
+    {
+//        $this->validate();
+        $this->option->translateOrNew('ku')->title = $newValue;
+        $this->option->save();
+
+        $this->emit('showToast', [
+            'icon' => 'success',
+            'message' => 'Kurdish title has been changed',
         ]);
     }
 
@@ -121,9 +139,46 @@ class ProductOption extends Component
         return view('livewire.products.option');
     }
 
+    /*public function clone()
+    {
+        $this->emitUp('optionCloned', ['optionId' => optional($this->option)->id]);
+    }*/
+
+
     public function delete()
     {
         $this->markedAsDeleted = true;
         $this->emitUp('optionDeleted', ['optionId' => optional($this->option)->id]);
+    }
+
+
+    protected $listeners = [
+//        'optionCloned' => 'cloneOption'
+        'selectionDeleted' => 'reloadSelections',
+    ];
+
+
+    public function reloadSelections($params)
+    {
+        $selection = $this->option->selections()->where('id', $params['selectionId']);
+        if ( ! is_null($selection)) {
+            $selection->delete();
+        }
+        $this->option->load('selections');
+        $this->emit('showToast', [
+            'icon' => 'success',
+            'message' => 'Selection has been deleted',
+        ]);
+    }
+
+
+    public function addNewSelection()
+    {
+        $selection = new ProductOptionSelectionModel();
+        $selection->product_option_id = $this->option->id;
+        $selection->product_id = $this->option->product_id;
+        $selection->save();
+
+        $this->option->load('selections');
     }
 }

@@ -19,6 +19,10 @@ class ProductMiniResource extends JsonResource
             'id' => (int) $this->id,
             'englishTitle' => $this->translate('en')->title,
             'title' => $this->title,
+            'excerpt' => [
+                'raw' => strip_tags($this->excerpt),
+                'formatted' => $this->excerpt,
+            ],
             'customBannerText' => $this->custom_banner_text,
             'unitText' => $this->unit_text,
             'availableQuantity' => $this->available_quantity,

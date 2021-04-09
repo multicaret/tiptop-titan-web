@@ -17,7 +17,7 @@ class CreateProductOptionSelectionsTable extends Migration
             $table->id();
             $table->unsignedBigInteger('product_option_id')->index();
             $table->unsignedBigInteger('product_id')->index()->comment('this is a helper');
-            $table->unsignedDouble('extra_price')->nullable();
+            $table->unsignedDouble('price')->default(0);
             $table->timestamps();
 
             $table->foreign('product_option_id')->references('id')->on('product_options')->onDelete('cascade');

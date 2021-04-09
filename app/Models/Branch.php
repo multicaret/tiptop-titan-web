@@ -19,6 +19,7 @@ use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Support\Carbon;
 use Multicaret\Acquaintances\Models\InteractionRelation;
+use Multicaret\Acquaintances\Traits\CanBeFavorited;
 use Multicaret\Acquaintances\Traits\CanBeRated;
 use Spatie\MediaLibrary\HasMedia;
 use Spatie\MediaLibrary\MediaCollections\Models\Collections\MediaCollection;
@@ -67,6 +68,8 @@ use Spatie\MediaLibrary\MediaCollections\Models\Collections\MediaCollection;
  * @property string|null $deleted_at
  * @property-read \App\Models\Chain $chain
  * @property-read \App\Models\City|null $city
+ * @property-read Collection|\App\Models\User[] $favoriters
+ * @property-read int|null $favoriters_count
  * @property-read Collection|\App\Models\Taxonomy[] $foodCategories
  * @property-read int|null $food_categories_count
  * @property-read mixed $average_rating_all_types
@@ -87,6 +90,8 @@ use Spatie\MediaLibrary\MediaCollections\Models\Collections\MediaCollection;
  * @property-read int|null $managers_count
  * @property-read MediaCollection|\Spatie\MediaLibrary\MediaCollections\Models\Media[] $media
  * @property-read int|null $media_count
+ * @property-read Collection|\App\Models\Taxonomy[] $menuCategories
+ * @property-read int|null $menu_categories_count
  * @property-read Collection|InteractionRelation[] $ratings
  * @property-read int|null $ratings_count
  * @property-read Collection|InteractionRelation[] $ratingsPure
@@ -101,8 +106,8 @@ use Spatie\MediaLibrary\MediaCollections\Models\Collections\MediaCollection;
  * @property-read int|null $working_hours_count
  * @method static Builder|Branch active()
  * @method static Builder|Branch draft()
- * @method static Builder|Branch food()
- * @method static Builder|Branch grocery()
+ * @method static Builder|Branch foods()
+ * @method static Builder|Branch groceries()
  * @method static Builder|Branch inactive()
  * @method static Builder|Branch listsTranslations(string $translationField)
  * @method static Builder|Branch newModelQuery()
@@ -170,6 +175,7 @@ class Branch extends Model implements HasMedia
     use HasViewCount;
     use HasWorkingHours;
     use Translatable;
+    use CanBeFavorited;
 
 
     public const STATUS_DRAFT = 1;
@@ -273,6 +279,11 @@ class Branch extends Model implements HasMedia
     {
         return $this->belongsToMany(Taxonomy::class, 'category_branch', 'branch_id',
             'category_id')->withTimestamps();
+    }
+
+    public function menuCategories(): HasMany
+    {
+        return $this->hasMany(Taxonomy::class);
     }
 
     public static function getClosestAvailableBranch($latitude, $longitude): array

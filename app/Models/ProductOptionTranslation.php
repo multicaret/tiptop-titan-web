@@ -11,8 +11,8 @@ use Illuminate\Database\Eloquent\Model;
  * @property int $product_option_id
  * @property string|null $title
  * @property string $locale
- * @property string|null $created_at
- * @property string|null $updated_at
+ * @property \Illuminate\Support\Carbon|null $created_at
+ * @property \Illuminate\Support\Carbon|null $updated_at
  * @method static \Illuminate\Database\Eloquent\Builder|ProductOptionTranslation newModelQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|ProductOptionTranslation newQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|ProductOptionTranslation query()

@@ -2,6 +2,7 @@
 
 namespace App\Http\Livewire;
 
+use App\Http\Controllers\Controller;
 use App\Models\Product;
 use App\Models\ProductOption as ProductOptionModel;
 use Livewire\Component;
@@ -25,7 +26,23 @@ class ProductOptionsIndex extends Component
     }
 
 
-    protected $listeners = ['optionDeleted' => 'reloadOptions'];
+    protected $listeners = [
+//        'optionCloned' => 'cloneOption'
+        'optionDeleted' => 'reloadOptions',
+    ];
+
+  /*  public function cloneOption($params)
+    {
+        $oldModel = $this->product->options()->where('id', $params['optionId'])->first();
+        $newModel = new \App\Models\ProductOption();
+        $newModel->product_id = $oldModel->product_id;
+        $oldModel->save();
+        $this->product->load('options');
+        $this->emit('showToast', [
+            'icon' => 'success',
+            'message' => 'Option has been cloned successfully',
+        ]);
+    }*/
 
     public function reloadOptions($params)
     {

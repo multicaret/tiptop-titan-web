@@ -24,6 +24,7 @@ use DB;
 use File;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Arr;
+use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Artisan;
 use Illuminate\Support\Facades\Schema;
 use Spatie\Permission\Models\Permission;
@@ -82,6 +83,7 @@ class DatabaseSeeder extends Seeder
         $this->branches($super);
         $this->products($super);
         $this->paymentMethods($super);
+        $this->ingredientsCategories($super);
 
         /*
             Todo: This line needs root user privileges,
@@ -767,7 +769,7 @@ class DatabaseSeeder extends Seeder
         foreach ($products as $product) {
             $item = $this->createProduct($product, 1, rand(1, 3));
 
-            $modifiedId = ! is_null($product['category_id']) ? $product['category_id'] + $this->lastTaxonomyId : NULL;
+            $modifiedId = ! is_null($product['category_id']) ? $product['category_id'] + $this->lastTaxonomyId : null;
             echo $modifiedId;
             DB::table('category_product')->insert([
                 'category_id' => $modifiedId,
@@ -924,7 +926,7 @@ class DatabaseSeeder extends Seeder
 
         if ($createCategories) {
             $taxonomies = $this->getMenuCategoriesRaw($item->id, 4);
-//            dd($taxonomies);
+
             foreach ($taxonomies as $item) {
                 $this->createTaxonomy($item, $super);
             }
@@ -973,7 +975,7 @@ class DatabaseSeeder extends Seeder
         $item->creator_id = $item->editor_id = 1;
         $item->chain_id = $chainId;
         $item->branch_id = $branchId + $this->lastBranchId;
-        $item->category_id = !is_null($product['category_id']) ? $product['category_id'] + $this->lastTaxonomyId: NULL;
+        $item->category_id = ! is_null($product['category_id']) ? $product['category_id'] + $this->lastTaxonomyId : null;
         $item->unit_id = 1 + $this->lastTaxonomyId;
         $item->price = rand(1000, 20000);
         $item->price_discount_amount = rand(0, 100);
@@ -1385,12 +1387,12 @@ class DatabaseSeeder extends Seeder
      * @throws \Spatie\MediaLibrary\MediaCollections\Exceptions\FileDoesNotExist
      * @throws \Spatie\MediaLibrary\MediaCollections\Exceptions\FileIsTooBig
      */
-    private function createTaxonomy(array $item, User $super): void
+    private function createTaxonomy(array $item, User $super, $ingredientCategory = null): void
     {
         $taxonomy = new Taxonomy();
         $taxonomy->type = $item['type'];
         if (array_key_exists('parent_id', $item)) {
-            $taxonomy->parent_id = ! is_null($item['parent_id']) ? $item['parent_id'] + $this->lastTaxonomyId : NULL;
+            $taxonomy->parent_id = ! is_null($item['parent_id']) ? $item['parent_id'] + $this->lastTaxonomyId : null;
         }
         if (array_key_exists('branch_id', $item)) {
             $taxonomy->branch_id = $item['branch_id'] + $this->lastBranchId;
@@ -1404,7 +1406,10 @@ class DatabaseSeeder extends Seeder
                 var_dump("The image: $imageName not found");
             }
         }
-
+        if ( ! is_null($ingredientCategory)) {
+            $firstIngredient = Taxonomy::whereTranslation('title', $ingredientCategory)->first();
+            $taxonomy->ingredient_category_id = optional($firstIngredient)->id;
+        }
 
         $taxonomy->creator_id = $super->id;
         $taxonomy->editor_id = $super->id;
@@ -1412,6 +1417,7 @@ class DatabaseSeeder extends Seeder
 
         $taxonomy->save();
         foreach ($item['translations'] as $translation) {
+            unset($translation['category']);
             $taxonomyTranslation = new TaxonomyTranslation();
             $taxonomyTranslation->taxonomy_id = $taxonomy->id;
             foreach ($translation as $column => $value) {
@@ -2031,6 +2037,7 @@ class DatabaseSeeder extends Seeder
 
     /**
      * @param $branchId
+     * @param $count
      * @return array[]
      */
     private function getMenuCategoriesRaw($branchId, $count): array
@@ -2058,6 +2065,57 @@ class DatabaseSeeder extends Seeder
         }
 
         return $categories;
+    }
+
+    // Don't ask just do.
+    private function removeBOM($data)
+    {
+        if (0 === strpos(bin2hex($data), 'efbbbf')) {
+            return substr($data, 3);
+        }
+        return $data;
+    }
+
+    private function generateIngredientsRawData(Collection $collection, int $type): array
+    {
+        $localesKeys = localization()->getSupportedLocalesKeys();
+        $generateCollection = function ($item) use ($type, $localesKeys) {
+            $generateSingleItem = fn($key) => [
+                'locale' => $key,
+                'title' => $item[$key],
+                'category' => $item['category'] ?? null,
+            ];
+            $translations = collect($localesKeys)->map($generateSingleItem)->all();
+
+            return [
+                'type' => $type,
+                'translations' => $translations
+            ];
+        };
+
+        return $collection->map($generateCollection)->all();
+    }
+
+
+    private function ingredientsCategories($super)
+    {
+        $ingredientsRawData = file_get_contents(storage_path('seeders/extras/ingredients.json'));
+        $checkJsonFile = $this->removeBOM($ingredientsRawData);
+        $checkJsonFile = json_decode($checkJsonFile, true);
+
+        if ( ! is_null($checkJsonFile)) {
+            $ingredientsCategoriesCollection = collect($checkJsonFile['categories']);
+            $ingredientsCategories = $this->generateIngredientsRawData($ingredientsCategoriesCollection,
+                Taxonomy::TYPE_INGREDIENT_CATEGORY);
+            foreach ($ingredientsCategories as $ingredientsCategory) {
+                $this->createTaxonomy($ingredientsCategory, $super);
+            }
+            $ingredientsCollection = collect($checkJsonFile['ingredients']);
+            $ingredients = $this->generateIngredientsRawData($ingredientsCollection, Taxonomy::TYPE_INGREDIENT);
+            foreach ($ingredients as $ingredient) {
+                $this->createTaxonomy($ingredient, $super, $ingredient['translations'][0]['category']);
+            }
+        }
     }
 
 }

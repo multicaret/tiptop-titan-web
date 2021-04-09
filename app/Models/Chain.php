@@ -64,10 +64,8 @@ use Spatie\MediaLibrary\MediaCollections\Models\Media;
  * @property-read int|null $translations_count
  * @method static Builder|Chain active()
  * @method static Builder|Chain draft()
- * @method static Builder|Chain food()
  * @method static Builder|Chain foods()
  * @method static Builder|Chain groceries()
- * @method static Builder|Chain grocery()
  * @method static Builder|Chain inactive()
  * @method static Builder|Chain listsTranslations(string $translationField)
  * @method static Builder|Chain newModelQuery()
@@ -154,32 +152,6 @@ class Chain extends Model implements HasMedia
     {
         return $this->belongsTo(Currency::class);
     }
-
-
-    /**
-     * Scope a query to only include Grocery.
-     *
-     * @param  Builder  $query
-     *
-     * @return Builder
-     */
-    public function scopeGroceries($query): Builder
-    {
-        return $query->where('type', self::CHANNEL_GROCERY_OBJECT);
-    }
-
-    /**
-     * Scope a query to only include foods.
-     *
-     * @param  Builder  $query
-     *
-     * @return Builder
-     */
-    public function scopeFoods($query): Builder
-    {
-        return $query->where('type', self::CHANNEL_FOOD_OBJECT);
-    }
-
 
     /**
      * Get the logo attribute.

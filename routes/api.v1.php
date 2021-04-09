@@ -14,6 +14,9 @@ Route::middleware('throttle:15')
          Route::get('search', 'SearchController@index');
          Route::get('search/products', 'SearchController@searchProducts');
 
+        // Food related
+         Route::get('restaurants/{restaurant}', 'BranchController@show')->name('branches.show');
+
 
          /* auth related */
          Route::post('login', 'Auth\AuthController@login');

@@ -44,8 +44,8 @@ use Illuminate\Support\Carbon;
  * @property-read mixed $status_name
  * @method static Builder|Coupon active()
  * @method static Builder|Coupon draft()
- * @method static Builder|Coupon food()
- * @method static Builder|Coupon grocery()
+ * @method static Builder|Coupon foods()
+ * @method static Builder|Coupon groceries()
  * @method static Builder|Coupon inactive()
  * @method static Builder|Coupon newModelQuery()
  * @method static Builder|Coupon newQuery()
