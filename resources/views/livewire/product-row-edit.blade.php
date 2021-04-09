@@ -92,7 +92,7 @@
         </a>
         @if($product->type == \App\Models\Product::CHANNEL_FOOD_OBJECT)
             <a class="btn btn-outline-info btn-sm d-inline-block mb-1"
-               href="{{route('admin.products.options',$product)}}">
+               href="{{route('admin.products.options',$product)}}" target="_blank">
                 <i class="fas fa-cog"></i> Options
             </a>
         @endif

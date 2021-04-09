@@ -57,25 +57,35 @@
                             <div class="form-row">
                                 <div class="form-group col-md-6">
                                     <label class="form-label">Min number of selection</label>
-                                    <input class="form-control" wire:model.lazy="option.min_number_of_selection"
+                                    <input class="form-control" type="number" min="0"
+                                           wire:model.lazy="option.min_number_of_selection"
                                            placeholder="Min number of selection">
                                 </div>
                                 @if($option->type != \App\Models\ProductOption::TYPE_EXCLUDING)
                                     <div class="form-group col-md-6">
                                         <label class="form-label">Max number of selection</label>
-                                        <input class="form-control" wire:model.lazy="option.max_number_of_selection"
+                                        <input class="form-control" type="number" min="0"
+                                               wire:model.lazy="option.max_number_of_selection"
                                                placeholder="Max number of selection">
                                     </div>
                                 @endif
                             </div>
                         </form>
 
+                        <hr>
+                        <h6>Selections:</h6>
                         <div>
                             @forelse($option->selections as $optionSelection)
-                                <livewire:product-option-selection :selection="$optionSelection"/>
+                                <livewire:product-option-selection :selection="$optionSelection"
+                                                                   :key="'product-option-selection-'.$optionSelection->id"/>
                             @empty
                                 Got no selections babe!
                             @endforelse
+
+                            <button class="btn btn-sm btn-outline-primary" wire:click="addNewSelection">
+                                <i class="fas fa-plus"></i>
+                                Add New Selection
+                            </button>
                         </div>
                         {{-- <button wire:click="clone" class="btn btn-outline-warning btn-sm">
                              <i class="fas fa-clone"></i>

@@ -2,12 +2,12 @@
 
 namespace App\Http\Livewire;
 
-use App\Models\ProductOptionSelection as ProductSelectionSelectionModel;
+use App\Http\Controllers\Controller;
 use Livewire\Component;
 
 class ProductOptionSelection extends Component
 {
-    public ProductSelectionSelectionModel $selection;
+    public $selection;
     public $titleEn;
     public $titleKu;
     public $titleAr;
@@ -26,25 +26,25 @@ class ProductOptionSelection extends Component
     }
 
     protected $rules = [
-        'selection.type' => 'required|numeric',
-//        'selection.selection_type' => 'required|numeric',
-//        'selection.min_number_of_selection' => 'nullable|numeric',
-//        'selection.max_number_of_selection' => 'nullable|numeric',
+        'selection.price' => 'numeric',
         'titleEn' => 'string',
         'titleKu' => 'string',
         'titleAr' => 'string',
     ];
 
-
-    public function updatedExtraPrice($newValue)
+    public function updatedSelectionPrice($newValue)
     {
 //        $this->validate();
-        $this->selection->type = $newValue;
+        $newValue = Controller::convertNumbersToArabic($newValue);
+        if ($newValue < 0) {
+            $newValue = 0;
+        }
+        $this->selection->price = $newValue;
         $this->selection->save();
 
         $this->emit('showToast', [
             'icon' => 'success',
-            'message' => 'Type has been changed',
+            'message' => 'Price has been changed',
         ]);
     }
 

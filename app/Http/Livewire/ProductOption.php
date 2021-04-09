@@ -2,6 +2,7 @@
 
 namespace App\Http\Livewire;
 
+use App\Models\ProductOptionSelection as ProductOptionSelectionModel;
 use Livewire\Component;
 
 class ProductOption extends Component
@@ -131,5 +132,36 @@ class ProductOption extends Component
     {
         $this->markedAsDeleted = true;
         $this->emitUp('optionDeleted', ['optionId' => optional($this->option)->id]);
+    }
+
+
+    protected $listeners = [
+//        'optionCloned' => 'cloneOption'
+        'selectionDeleted' => 'reloadSelections',
+    ];
+
+
+    public function reloadSelections($params)
+    {
+        $selection = $this->option->selections()->where('id', $params['selectionId']);
+        if ( ! is_null($selection)) {
+            $selection->delete();
+        }
+        $this->option->load('selections');
+        $this->emit('showToast', [
+            'icon' => 'success',
+            'message' => 'Selection has been deleted',
+        ]);
+    }
+
+
+    public function addNewSelection()
+    {
+        $selection = new ProductOptionSelectionModel();
+        $selection->product_option_id = $this->option->id;
+        $selection->product_id = $this->option->product_id;
+        $selection->save();
+
+        $this->option->load('selections');
     }
 }
