@@ -55,9 +55,14 @@ Route::middleware('auth:sanctum')
          // Profile Essentials
          Route::get('profile/edit', 'UserController@edit');
          Route::post('profile', 'UserController@update');
+
          // Favorites
          Route::get('profile/favorites', 'UserController@favorites');
          Route::post('products/{product}/interact', 'UserController@interact');
+
+         // Restaurants Favorites
+         Route::get('profile/restaurants/favorites', 'UserController@foodFavorites');
+         Route::post('restaurants/{restaurant}/interact', 'UserController@foodInteract');
 
          // Orders -- Rating
          Route::get('orders/{order}/rate', 'OrderController@createRate');
