@@ -172,7 +172,7 @@ class UserController extends BaseApiController
         $user = auth()->user();
         if (auth()->check()) {
             return $this->respond([
-                'restaurants' => FoodBranchResource::collection($user->favorites(Branch::class)->get()),
+                'restaurants' => BranchResource::collection($user->favorites(Branch::class)->get()),
             ]);
         }
 

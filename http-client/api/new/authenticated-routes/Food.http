@@ -2,4 +2,9 @@
 GET {{host}}/{{locale}}/api/v1/restaurants/{{restaurantId}}
 Accept: application/json
 Content-Type: application/json
-Authorization: Bearer {{token}}
+
+### Restaurant filter create
+GET {{host}}/{{locale}}/api/v1/restaurants/filter
+Accept: application/json
+Content-Type: application/json
+
