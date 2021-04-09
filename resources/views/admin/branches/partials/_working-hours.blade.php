@@ -1,6 +1,3 @@
-@if($auth->is_doctor)
-    @include('admin.calendar.partials._doctor-top-bar')
-@endif
 <table class="table">
     <thead>
     <tr>
