@@ -8,7 +8,7 @@
     <td>
         @foreach(localization()->getSupportedLocales() as $key => $locale)
             <div class="form-group">
-                <label>{{$locale->native()}}</label>
+                <label>Title {{$locale->native()}}</label>
                 <input type="text" title="price" class="form-control" placeholder="{{$locale->native()}}"
                        wire:model.lazy="title{{ucfirst($key)}}">
             </div>

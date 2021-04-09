@@ -322,6 +322,11 @@ class Taxonomy extends Node implements HasMedia, ShouldHaveTypes, TranslatableCo
         return $this->belongsTo(Taxonomy::class, 'ingredient_category_id');
     }
 
+    public function ingredientsOfCategory()
+    {
+        return $this->hasMany(self::class, 'ingredient_category_id');
+    }
+
     public function branches(): BelongsToMany
     {
         return $this->belongsToMany(Branch::class, 'category_branch', 'category_id', 'branch_id')

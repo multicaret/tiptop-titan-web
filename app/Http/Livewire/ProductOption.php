@@ -3,6 +3,7 @@
 namespace App\Http\Livewire;
 
 use App\Models\ProductOptionSelection as ProductOptionSelectionModel;
+use App\Models\Taxonomy;
 use Livewire\Component;
 
 class ProductOption extends Component
@@ -12,9 +13,13 @@ class ProductOption extends Component
     public $titleKu;
     public $titleAr;
     public bool $markedAsDeleted = false;
+    public $ingredientCategories;
+
+    public $selectedIngredients =[];
 
     public function mount()
     {
+        $this->ingredientCategories = Taxonomy::ingredientCategories()->get();
         $this->titleEn = optional($this->option->translate('en'))->title;
         $this->titleKu = optional($this->option->translate('ku'))->title;
         $this->titleAr = optional($this->option->translate('ar'))->title;
@@ -105,6 +110,18 @@ class ProductOption extends Component
     }
 
     public function updatedTitleKu($newValue)
+    {
+//        $this->validate();
+        $this->option->translateOrNew('ku')->title = $newValue;
+        $this->option->save();
+
+        $this->emit('showToast', [
+            'icon' => 'success',
+            'message' => 'Kurdish title has been changed',
+        ]);
+    }
+
+    public function updatedSelectedIngredients($newValue)
     {
 //        $this->validate();
         $this->option->translateOrNew('ku')->title = $newValue;

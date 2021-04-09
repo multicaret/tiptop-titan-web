@@ -7,7 +7,7 @@
                        href="#accordionSelection{{$selection->id}}-1">
                     <span>
                         <span class="text-muted">
-                        Selection:
+                        Selection
                         </span>
                         {{ $selection->title }}
                     </span>
@@ -23,7 +23,7 @@
                             <div class="form-row">
                                 @foreach(localization()->getSupportedLocales() as $key => $locale)
                                     <div class="form-group col-md-4">
-                                        <label class="form-label">{{$locale->native()}}</label>
+                                        <label class="form-label">Ttitle {{$locale->native()}}</label>
                                         <input type="text" class="form-control"
                                                placeholder="Title {{$locale->name()}}"
                                                wire:model.lazy="title{{ucfirst($key)}}">
