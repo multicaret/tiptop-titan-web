@@ -269,6 +269,12 @@ class Branch extends Model implements HasMedia
         return $this->hasMany(Location::class, 'contactable_id');
     }
 
+    public function users(): BelongsToMany
+    {
+        return $this->belongsToMany(User::class, 'branch_user', 'branch_id',
+            'user_id')->withTimestamps();
+    }
+
     public function foodCategories(): BelongsToMany
     {
         return $this->belongsToMany(Taxonomy::class, 'category_branch', 'branch_id',

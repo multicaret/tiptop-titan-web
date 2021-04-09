@@ -42,6 +42,7 @@ class DatatableController extends AjaxController
         $users = User::with(['defaultAddress'])
                      ->orderBy('order_column')
                      ->role($role)
+                     ->with('branch')
                      ->selectRaw('users.*');
 
         return DataTables::of($users)
@@ -70,6 +71,9 @@ class DatatableController extends AjaxController
                          ->editColumn('order_column', function ($item) {
                              return view('admin.components.datatables._row-reorder')->render();
                          })
+                         ->editColumn('employment', function ($item) {
+                             return User::getEmploymentsArray()[$item->employment];
+                         })
                          ->editColumn('last_logged_in_at', function ($item) {
                              if ( ! is_null($item->last_logged_in_at)) {
                                  return view('admin.components.datatables._date', [
@@ -88,6 +92,7 @@ class DatatableController extends AjaxController
                              'action',
                              'order_column',
                              'created_at',
+                             'employment',
                              'last_logged_in_at',
                              'status',
                          ])

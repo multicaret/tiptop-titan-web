@@ -47,7 +47,7 @@
 
         <div class="card card-outline-inverse mb-4">
             <h4 class="card-header">
-                Personal Details
+                Details
             </h4>
             <div class="card-body row">
                 <div class="col-md-10 row">
@@ -66,7 +66,8 @@
                         @endcomponent
                     </div>
 
-                    <div class="col-md-6">
+{{--                    todo: Do we have a user title here?--}}
+                    {{--<div class="col-md-6">
                         <div class="form-group {{ $errors->has('title') ? 'has-error' : '' }}">
                             <label for="title" class="control-label">Title</label>
                             <input type="text" id="title" name="title" class="form-control"
@@ -77,7 +78,7 @@
                                 </span>
                             @endif
                         </div>
-                    </div>
+                    </div>--}}
                     <div class="col-md-6">
                         @component('admin.components.form-group', ['name' => 'gender', 'type' => 'select'])
                             @slot('label', 'Gender')
@@ -90,6 +91,44 @@
                             @slot('selected', $user->gender)
                         @endcomponent
                     </div>
+                    @if(in_array($role, \App\Models\User::rolesHaving('branch')))
+                        <div class="col-4">
+                            @component('admin.components.form-group', ['name' => 'branch_id', 'type' => 'select'])
+                                @slot('label', trans('strings.branch'))
+                                @slot('options', $branches)
+                                @slot('attributes', [
+                                    'class' => 'select-2-branch w-100',
+                                    'required',
+                                ])
+                                @slot('selected', $user->branch_id)
+                            @endcomponent
+                        </div>
+                    @endif
+                    @if($role == \App\Models\User::ROLE_TIPTOP_DRIVER)
+                        <div class="col-3">
+                            @component('admin.components.form-group', ['name' => 'employment', 'type' => 'select'])
+                                @slot('label', trans('strings.employment'))
+                                @slot('options', \App\Models\User::getEmploymentsArray())
+                                @slot('attributes', [
+                                    'class' => 'select-2-employment w-100',
+                                    'required',
+                                ])
+                                @slot('selected', $user->employment)
+                            @endcomponent
+                        </div>
+                        <div class="col-md-3">
+                            @component('admin.components.form-group', ['name' => 'tokan_team', 'type' => 'text'])
+                                @slot('label', 'Tokan Team')
+                                @slot('value', $user->tokan_team)
+                            @endcomponent
+                        </div>
+                        <div class="col-md-3">
+                            @component('admin.components.form-group', ['name' => 'tokan_id', 'type' => 'number'])
+                                @slot('label', 'Tokan ID')
+                                @slot('value', $user->tokan_id)
+                            @endcomponent
+                        </div>
+                    @endif
                     {{--<div class="col-md-6">
                         @component('admin.components.form-group', ['name' => 'language_id', 'type' => 'select'])
                             @slot('label', 'Languages')
@@ -584,4 +623,19 @@
 
         })
     </script>--}}
+
+    <script src="/admin-assets/libs/select2/select2.js"></script>
+    <script>
+        $(function () {
+            $('.select-2-branch').select2({
+                placeholder: 'Select Branch',
+            });
+            $('.select-2-employment').select2({
+                placeholder: 'Select Employment Type',
+            });
+            $('.select-2-status').select2({
+                placeholder: 'Select Status',
+            });
+        });
+    </script>
 @endpush

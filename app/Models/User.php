@@ -203,6 +203,8 @@ class User extends Authenticatable implements HasMedia, MustVerifyEmail
     public const ROLE_TIPTOP_DRIVER = 'tiptop-driver';
     public const ROLE_USER = 'user';
 
+    public const EMPLOYMENT_EMPLOYEE = 1;
+    public const EMPLOYMENT_FREELANCER = 2;
 
     public const STATUS_DRAFT = 1;
     public const STATUS_ACTIVE = 2;
@@ -293,6 +295,28 @@ class User extends Authenticatable implements HasMedia, MustVerifyEmail
     public function setLastAttribute($value)
     {
         $this->attributes['last'] = ucfirst(Controller::convertNumbersToArabic($value));
+    }
+
+    public static function rolesHaving($index): array
+    {
+        $roleVariations = [
+            'branch' => [
+                User::ROLE_RESTAURANT_DRIVER,
+            ],
+            'employment' => [
+                User::ROLE_TIPTOP_DRIVER,
+            ],
+        ];
+
+        return $roleVariations[$index];
+    }
+
+    public static function getEmploymentsArray()
+    {
+        return [
+            User::EMPLOYMENT_EMPLOYEE => trans('strings.employee'),
+            User::EMPLOYMENT_FREELANCER => trans('strings.freelancer'),
+        ];
     }
 
     /**
@@ -458,6 +482,11 @@ class User extends Authenticatable implements HasMedia, MustVerifyEmail
     public function orders(): HasMany
     {
         return $this->hasMany(Order::class, 'user_id');
+    }
+
+    public function branch(): BelongsTo
+    {
+        return $this->belongsTo(Branch::class);
     }
 
     public function language(): BelongsTo
