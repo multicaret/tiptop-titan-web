@@ -926,7 +926,7 @@ class DatabaseSeeder extends Seeder
 
         if ($createCategories) {
             $taxonomies = $this->getMenuCategoriesRaw($item->id, 4);
-//            dd($taxonomies);
+
             foreach ($taxonomies as $item) {
                 $this->createTaxonomy($item, $super);
             }
@@ -2037,6 +2037,7 @@ class DatabaseSeeder extends Seeder
 
     /**
      * @param $branchId
+     * @param $count
      * @return array[]
      */
     private function getMenuCategoriesRaw($branchId, $count): array
@@ -2072,6 +2073,7 @@ class DatabaseSeeder extends Seeder
         if (0 === strpos(bin2hex($data), 'efbbbf')) {
             return substr($data, 3);
         }
+
         return $data;
     }
 
