@@ -9,7 +9,7 @@
 @push('styles')
     <link rel="stylesheet" href="/admin-assets/libs/quill/typography.css">
     <link rel="stylesheet" href="/admin-assets/libs/quill/editor.css">
-{{--    @livewireStyles--}}
+    {{--    @livewireStyles--}}
 @endpush
 
 @section('content')
@@ -80,36 +80,56 @@
             </div>
             <div class="tab-pane fade" id="navs-bottom-responsive-link-2">
                 <div class="card-body">
-                    @include('admin.branches.partials._working-hours')
+                    @if(is_null($branch->id))
+                        @include('admin.branches.partials._inaccessible')
+                    @else
+                        <form method="post" enctype="multipart/form-data"
+                              action="{{route('admin.branch.working-hours',[$branch->uuid])}}">
+                            {{csrf_field()}}
+                            @include('admin.branches.partials._working-hours')
+                            <input type="hidden" name="workingHours" :value="JSON.stringify(workingHours)">
+                            <button type="submit" class="btn btn-success">Submit</button>
+                        </form>
+                    @endif
                 </div>
             </div>
-
             <div class="tab-pane fade" id="products-tab">
                 <div class="card-body">
-                    @if($branch->id)
-                    <div class="d-flex justify-content-end mb-3">
-                        <a class="btn btn-primary" target="_blank"
-                           href="{{route('admin.products.create',
+                    @if(is_null($branch->id))
+                        @include('admin.branches.partials._inaccessible')
+                    @else
+                        @if($branch->id)
+                            <div class="d-flex justify-content-end mb-3">
+                                <a class="btn btn-primary" target="_blank"
+                                   href="{{route('admin.products.create',
                             ['type'=> request()->type,
                             'branch_id' => $branch->id,
                             'chain_id' => optional($branch->chain)->id])}}">
-                            Add new product
-                        </a>
-                    </div>
+                                    Add new product
+                                </a>
+                            </div>
+                        @endif
+                        <livewire:products-index :branch-id="$branch->id"/>
                     @endif
-                    <livewire:products-index :branch-id="$branch->id"/>
                 </div>
             </div>
-
             <div class="tab-pane fade" id="navs-bottom-responsive-link-4">
                 <div class="card-body">
-                    <p>Tab content</p>
+                    @if(is_null($branch->id))
+                        @include('admin.branches.partials._inaccessible')
+                    @else
+                        <p>Tab content</p>
+                    @endif
                 </div>
             </div>
 
             <div class="tab-pane fade" id="navs-bottom-responsive-link-5">
                 <div class="card-body">
-                    <p>Tab content</p>
+                    @if(is_null($branch->id))
+                        @include('admin.branches.partials._inaccessible')
+                    @else
+                        <p>Tab content</p>
+                    @endif
                 </div>
             </div>
         </div>

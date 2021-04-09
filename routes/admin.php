@@ -41,6 +41,7 @@ Route::resource('regions', 'RegionController')->except(['show']);
 
 Route::resource('slides', 'SlideController')->except(['show']);
 Route::resource('chains', 'ChainController')->except(['show']);
+Route::post('branches/{branch}/workingHours', 'BranchController@storeWorkingHours')->name('branch.working-hours');
 Route::resource('branches', 'BranchController')->except(['show']);
 Route::resource('restaurants', 'RestaurantController')->only(['create', 'store']);
 Route::get('products/{product}/options', 'ProductOptionsController@create')->name('products.options');

@@ -1,13 +1,10 @@
-@if($auth->is_doctor)
-    @include('admin.calendar.partials._doctor-top-bar')
-@endif
 <table class="table">
     <thead>
     <tr>
         <th>Day</th>
         <th>Is the day off</th>
         <th>Open at</th>
-        <th>closes_at</th>
+        <th>Closes at</th>
     </tr>
     </thead>
     <tbody>
@@ -31,7 +28,9 @@
             <div class="">
                 <b-row>
                     <b-col>
-                        <b-form-timepicker class="d-flex h-auto" :disabled="!day.is_day_off ? false : true"
+                        <b-form-timepicker class="d-flex h-auto"
+                                           :class="!day.is_day_off ? 'label-white-bg' : 'bg-light' "
+                                           :disabled="!day.is_day_off ? false : true"
                                            v-model="day.opens_at" minutes-step="15"></b-form-timepicker>
                     </b-col>
                 </b-row>
@@ -41,7 +40,9 @@
             <div>
                 <b-row>
                     <b-col>
-                        <b-form-timepicker class="d-flex h-auto" :disabled="!day.is_day_off ? false : true"
+                        <b-form-timepicker class="d-flex h-auto"
+                                           :class="!day.is_day_off ? 'label-white-bg' : 'bg-light' "
+                                           :disabled="!day.is_day_off ? false : true"
                                            v-model="day.closes_at" minutes-step="15"></b-form-timepicker>
                     </b-col>
                 </b-row>

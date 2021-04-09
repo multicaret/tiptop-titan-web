@@ -37,3 +37,23 @@ GET {{host}}/{{locale}}/api/v1/profile/favorites
 Accept: application/json
 Content-Type: application/json
 Authorization: Bearer {{token}}
+
+
+
+### restaurant favorite
+POST {{host}}/{{locale}}/api/v1/restaurants/17/interact
+Accept: application/json
+Content-Type: application/json
+Authorization: Bearer {{token}}
+
+#unfavorite #favorite
+
+{
+    "action": "favorite"
+}
+
+### favorites
+GET {{host}}/{{locale}}/api/v1/profile/restaurants/favorites
+Accept: application/json
+Content-Type: application/json
+Authorization: Bearer {{token}}

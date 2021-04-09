@@ -305,35 +305,46 @@ class BranchController extends Controller
             $location->save();
         }
         Location::whereIn('id', $contactToDelete)->delete();
+//        $this->storeWorkingHours($request, $branch);
+        $branch->save();
+        DB::commit();
+    }
 
-
-        if ( ! is_null($request->days) && is_array($days = json_decode($request->days)) && count($days)) {
-            foreach ($days as $dayNumber => $day) {
+    /**
+     * @param  Request  $request
+     * @param  Branch  $branch
+     */
+    public function storeWorkingHours(Request $request, Branch $branch): RedirectResponse
+    {
+        if ( ! is_null($request->workingHours) && is_array($workingHours = json_decode($request->workingHours)) && count($workingHours)) {
+            foreach ($workingHours as $dayNumber => $day) {
                 if (is_null(
                     $workingHour = WorkingHour::where('workable_id', $branch->id)
                                               ->where('workable_type', Branch::class)
-                                              ->where('day', $dayNumber + 1)
+                                              ->where('day', $dayNumber)
                                               ->first()
                 )) {
                     $workingHour = new WorkingHour();
                     $workingHour->workable_id = $branch->id;
                     $workingHour->workable_type = Branch::class;
                 }
-                $workingHour->day = $dayNumber + 1;
+                $workingHour->day = $dayNumber;
                 if ($day->is_day_off) {
                     $workingHour->is_day_off = true;
                     $workingHour->opens_at = 0;
                     $workingHour->closes_at = 0;
                 } else {
+                    $workingHour->is_day_off = false;
                     $workingHour->opens_at = $day->opens_at;
                     $workingHour->closes_at = $day->closes_at;
                 }
                 $workingHour->save();
             }
+
         }
 
-        $branch->save();
-        DB::commit();
+        return redirect()->back()->with('message',
+            ['type' => 'Success', 'text' => 'Working hours updated successfully',]);
     }
 
 }

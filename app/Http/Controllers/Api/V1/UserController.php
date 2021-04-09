@@ -4,10 +4,13 @@ namespace App\Http\Controllers\Api\V1;
 
 
 use App\Http\Controllers\Api\BaseApiController;
+use App\Http\Resources\BranchResource;
 use App\Http\Resources\CityResource;
+use App\Http\Resources\FoodBranchResource;
 use App\Http\Resources\ProductResource;
 use App\Http\Resources\RegionResource;
 use App\Http\Resources\UserResource;
+use App\Models\Branch;
 use App\Models\City;
 use App\Models\Product;
 use App\Models\Region;
@@ -132,6 +135,44 @@ class UserController extends BaseApiController
         if (auth()->check()) {
             return $this->respond([
                 'products' => ProductResource::collection($user->favorites(Product::class)->get()),
+            ]);
+        }
+
+        return $this->respondNotFound();
+    }
+
+
+    public function foodInteract($restaurantId, Request $request)
+    {
+        $branch = Branch::find($restaurantId);
+        $user = auth()->user();
+        switch ($request->action) {
+            case 'favorite':
+                if ( ! $user->hasFavorited($branch)) {
+
+                    $user->favorite($branch);
+
+                    return $this->respondWithMessage(__('api.restaurant_added_to_wishlist_successfully'));
+                }
+                break;
+            case 'unfavorite':
+                if ($user->hasFavorited($branch)) {
+                    $user->unfavorite($branch);
+
+                    return $this->respondWithMessage(__('api.restaurant_removed_from_wishlist_successfully'));
+                }
+                break;
+        }
+
+        return $this->respondValidationFails(__('api.interaction_failed_please_check_parameters'));
+    }
+
+    public function foodFavorites()
+    {
+        $user = auth()->user();
+        if (auth()->check()) {
+            return $this->respond([
+                'restaurants' => BranchResource::collection($user->favorites(Branch::class)->get()),
             ]);
         }
 

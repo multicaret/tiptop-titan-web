@@ -4,7 +4,9 @@ namespace App\Http\Controllers\Api\V1;
 
 use App\Http\Controllers\Api\BaseApiController;
 use App\Http\Resources\FoodBranchResource;
+use App\Http\Resources\FoodCategoryResource;
 use App\Models\Branch;
+use App\Models\Taxonomy;
 use Illuminate\Http\Request;
 
 class BranchController extends BaseApiController
@@ -17,6 +19,20 @@ class BranchController extends BaseApiController
         }
 
         return $this->respond(new FoodBranchResource($restaurant));
+    }
+
+
+    public function filterCreate(Request $request)
+    {
+        $categories = cache()->rememberForever('all_food_categories', function () {
+            $categories = Taxonomy::active()->foodCategories()->get();
+
+            return FoodCategoryResource::collection($categories);
+        });
+
+        return $this->respond([
+            'categories' => $categories
+        ]);
     }
 
 }
