@@ -100,9 +100,9 @@ use Spatie\MediaLibrary\MediaCollections\Models\Media;
  * @property-read \App\Models\Taxonomy|null $unit
  * @method static Builder|Product active()
  * @method static Builder|Product draft()
- * @method static Builder|Product food()
+ * @method static Builder|Product foods()
  * @method static Builder|Product forCategory($categoryId)
- * @method static Builder|Product grocery()
+ * @method static Builder|Product groceries()
  * @method static Builder|Product inactive()
  * @method static Builder|Product listsTranslations(string $translationField)
  * @method static Builder|Product newModelQuery()

@@ -276,4 +276,7 @@ return [
     'restaurant-driver' => 'Restaurant Driver',
     'tiptop-driver' => 'Tiptop Driver',
     'user' => 'User',
+    'employment' => 'Employment',
+    'employee' => 'Employee',
+    'freelancer' => 'Freelancer',
 ];

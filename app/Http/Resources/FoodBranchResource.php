@@ -26,7 +26,7 @@ class FoodBranchResource extends JsonResource
             $workingHours['isOpen'] = false;
         }
 
-        $isFavorited = $this->isFavoritedBy(auth()->user());
+        $isFavorited = auth('sanctum')->check() ? $this->isFavoritedBy(auth('sanctum')->user()) : false;
 
         return [
             'id' => (int) $this->id,

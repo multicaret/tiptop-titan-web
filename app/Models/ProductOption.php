@@ -12,7 +12,7 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
  *
  * @property int $id
  * @property int $product_id
- * @property int $type
+ * @property int $type 
  *                     1: Including,
  *                     2: Excluding,
  * @property int|null $max_number_of_selection

@@ -12,6 +12,9 @@ class BranchController extends BaseApiController
     public function show($restaurant, Request $request)
     {
         $restaurant = Branch::find($restaurant);
+        if (is_null($restaurant)) {
+            return $this->respondNotFound('Restaurants not found');
+        }
 
         return $this->respond(new FoodBranchResource($restaurant));
     }

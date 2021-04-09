@@ -2,44 +2,49 @@
 
 namespace App\Http\Livewire;
 
-use App\Models\ProductOptionSelection as ProductSelectionSelectionModel;
+use App\Http\Controllers\Controller;
 use Livewire\Component;
 
 class ProductOptionSelection extends Component
 {
-    public ProductSelectionSelectionModel $selection;
+    public $selection;
     public $titleEn;
     public $titleKu;
     public $titleAr;
     public bool $markedAsDeleted = false;
 
+    public function render()
+    {
+        return view('livewire.products.option-selection');
+    }
+
     public function mount()
     {
-        $this->titleEn = selectional($this->selection->translate('en'))->title;
-        $this->titleKu = selectional($this->selection->translate('ku'))->title;
-        $this->titleAr = selectional($this->selection->translate('ar'))->title;
+        $this->titleEn = optional($this->selection->translate('en'))->title;
+        $this->titleKu = optional($this->selection->translate('ku'))->title;
+        $this->titleAr = optional($this->selection->translate('ar'))->title;
     }
 
     protected $rules = [
-        'selection.type' => 'required|numeric',
-//        'selection.selection_type' => 'required|numeric',
-//        'selection.min_number_of_selection' => 'nullable|numeric',
-//        'selection.max_number_of_selection' => 'nullable|numeric',
+        'selection.price' => 'numeric',
         'titleEn' => 'string',
         'titleKu' => 'string',
         'titleAr' => 'string',
     ];
 
-
-    public function updatedExtraPrice($newValue)
+    public function updatedSelectionPrice($newValue)
     {
 //        $this->validate();
-        $this->selection->type = $newValue;
+        $newValue = Controller::convertNumbersToArabic($newValue);
+        if ($newValue < 0) {
+            $newValue = 0;
+        }
+        $this->selection->price = $newValue;
         $this->selection->save();
 
         $this->emit('showToast', [
             'icon' => 'success',
-            'message' => 'Type has been changed',
+            'message' => 'Price has been changed',
         ]);
     }
 
@@ -83,6 +88,6 @@ class ProductOptionSelection extends Component
     public function delete()
     {
         $this->markedAsDeleted = true;
-        $this->emitUp('selectionDeleted', ['selectionId' => selectional($this->selection)->id]);
+        $this->emitUp('selectionDeleted', ['selectionId' => optional($this->selection)->id]);
     }
 }

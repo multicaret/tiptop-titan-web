@@ -14,6 +14,9 @@ Route::middleware('throttle:15')
          Route::get('search', 'SearchController@index');
          Route::get('search/products', 'SearchController@searchProducts');
 
+        // Food related
+         Route::get('restaurants/{restaurant}', 'BranchController@show')->name('branches.show');
+
 
          /* auth related */
          Route::post('login', 'Auth\AuthController@login');
@@ -52,9 +55,14 @@ Route::middleware('auth:sanctum')
          // Profile Essentials
          Route::get('profile/edit', 'UserController@edit');
          Route::post('profile', 'UserController@update');
+
          // Favorites
          Route::get('profile/favorites', 'UserController@favorites');
          Route::post('products/{product}/interact', 'UserController@interact');
+
+         // Restaurants Favorites
+         Route::get('profile/restaurants/favorites', 'UserController@foodFavorites');
+         Route::post('restaurants/{restaurant}/interact', 'UserController@foodInteract');
 
          // Orders -- Rating
          Route::get('orders/{order}/rate', 'OrderController@createRate');
@@ -64,9 +72,6 @@ Route::middleware('auth:sanctum')
          Route::get('orders/create', 'OrderController@create');
          Route::post('orders', 'OrderController@store');
          Route::post('orders/{order}/delete', 'OrderController@destroy');
-
-
-         Route::get('restaurants/{restaurant}', 'BranchController@show')->name('branches.show');
 
          // Carts
          Route::post('carts/{cart}/products/adjust-quantity', 'CartController@adjustQuantity');

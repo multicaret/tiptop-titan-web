@@ -21,7 +21,7 @@
                             <div class="form-row">
                                 @foreach(localization()->getSupportedLocales() as $key => $locale)
                                     <div class="form-group col-md-4">
-                                        <label class="form-label">{{$locale->native()}}</label>
+                                        <label class="form-label">Title {{$locale->native()}}</label>
                                         <input type="text" class="form-control"
                                                placeholder="Title {{$locale->name()}}"
                                                wire:model.lazy="title{{ucfirst($key)}}">
@@ -57,26 +57,81 @@
                             <div class="form-row">
                                 <div class="form-group col-md-6">
                                     <label class="form-label">Min number of selection</label>
-                                    <input class="form-control" wire:model.lazy="option.min_number_of_selection"
+                                    <input class="form-control" type="number" min="0"
+                                           wire:model.lazy="option.min_number_of_selection"
                                            placeholder="Min number of selection">
                                 </div>
                                 @if($option->type != \App\Models\ProductOption::TYPE_EXCLUDING)
                                     <div class="form-group col-md-6">
                                         <label class="form-label">Max number of selection</label>
-                                        <input class="form-control" wire:model.lazy="option.max_number_of_selection"
+                                        <input class="form-control" type="number" min="0"
+                                               wire:model.lazy="option.max_number_of_selection"
                                                placeholder="Max number of selection">
                                     </div>
                                 @endif
                             </div>
                         </form>
 
-                        <div>
-                            @forelse($option->selections as $optionSelection)
-                                <livewire:product-option-selection :selection="$optionSelection"/>
-                            @empty
-                                Got no selections babe!
-                            @endforelse
-                        </div>
+                        <hr>
+                        @if($option->type != \App\Models\ProductOption::TYPE_EXCLUDING)
+                            <div class="form-group">
+                                {{--<label>Ingredients</label>
+                                <select wire:model="selectedIngredients"
+                                        data-select-two multiple class="form-control">
+                                    <option vlaue="foo">Foo</option>
+                                    <option vlaue="bar">Bar</option>
+                                    <option vlaue="Baz">Baz</option>
+                                </select>--}}
+
+                                <div>
+                                    Selected IDs: {{ implode(', ',$selectedIngredients) }}
+                                </div>
+                                <div class="form-row">
+                                    @foreach($this->ingredientCategories as $ingredientCategory)
+                                        <div class="form-group col-12">
+                                            <hr>
+                                            {{--                                            <label class="custom-control custom-checkbox m-0">--}}
+                                            {{--                                                <input type="checkbox" class="custom-control-input">--}}
+                                            {{--                                            <span class="custom-control-label">--}}
+                                            <b>
+                                                {{$ingredientCategory->title}}
+                                            </b>
+                                            {{--                                                </span>--}}
+                                            {{--                                            </label>--}}
+                                            <div class="form-row">
+                                                @foreach($ingredientCategory->ingredientsOfCategory as $ingredient)
+                                                    <div class="form-group col-4">
+                                                        <label class="custom-control custom-checkbox m-0">
+                                                            <input type="checkbox" class="custom-control-input"
+                                                                   value="{{$ingredient->id}}"
+                                                                   wire:model.lazy="selectedIngredients">
+                                                            <span class="custom-control-label">
+                                                                {{$ingredient->title}}
+                                                            </span>
+                                                        </label>
+                                                    </div>
+                                                @endforeach
+                                            </div>
+                                        </div>
+                                    @endforeach
+                                </div>
+                            </div>
+                        @else
+                            <h6>Selections:</h6>
+                            <div>
+                                @forelse($option->selections as $optionSelection)
+                                    <livewire:product-option-selection :selection="$optionSelection"
+                                                                       :key="'product-option-selection-'.$optionSelection->id"/>
+                                @empty
+                                    Got no selections babe!
+                                @endforelse
+
+                                <button class="btn btn-sm btn-outline-primary" wire:click="addNewSelection">
+                                    <i class="fas fa-plus"></i>
+                                    Add New Selection
+                                </button>
+                            </div>
+                        @endif
                         {{-- <button wire:click="clone" class="btn btn-outline-warning btn-sm">
                              <i class="fas fa-clone"></i>
                              Clone
