@@ -95,7 +95,7 @@
                     <th>Payment</th>
                 </tr>
                 </thead>
-                <tbody {{--wire:poll.1s--}}>
+                <tbody wire:poll.1s>
                 @if($orders)
                     @forelse($orders as $order)
                         <tr class="cursor-pointer {{ $order->getLateCssBgClass()}}"
