@@ -25,3 +25,16 @@
 .multiselect__tag-icon:after {
     color: #ffffff !important;
 }
+
+.b-form-timepicker > label {
+    background-color: rgba(24, 28, 33, 0.06) !important;
+}
+
+.label-white-bg > label {
+    background-color: #FFFFFF !important;
+}
+
+.b-form-timepicker button:focus {
+    outline: 0 !important;
+    box-shadow: unset !important;
+}

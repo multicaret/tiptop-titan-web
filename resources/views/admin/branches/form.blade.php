@@ -9,7 +9,7 @@
 @push('styles')
     <link rel="stylesheet" href="/admin-assets/libs/quill/typography.css">
     <link rel="stylesheet" href="/admin-assets/libs/quill/editor.css">
-{{--    @livewireStyles--}}
+    {{--    @livewireStyles--}}
 @endpush
 
 @section('content')
@@ -80,7 +80,13 @@
             </div>
             <div class="tab-pane fade" id="navs-bottom-responsive-link-2">
                 <div class="card-body">
-                    @include('admin.branches.partials._working-hours')
+                    <form method="post" enctype="multipart/form-data"
+                          action="{{route('admin.branch.working-hours',[$branch->uuid])}}">
+                        {{csrf_field()}}
+                        @include('admin.branches.partials._working-hours')
+                        <input type="hidden" name="workingHours" :value="JSON.stringify(workingHours)">
+                        <button type="submit" class="btn btn-success">Submit</button>
+                    </form>
                 </div>
             </div>
 
