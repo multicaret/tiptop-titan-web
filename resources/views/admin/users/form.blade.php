@@ -66,7 +66,7 @@
                         @endcomponent
                     </div>
 
-{{--                    todo: Do we have a user title here?--}}
+                    {{--                    todo: Do we have a user title here?--}}
                     {{--<div class="col-md-6">
                         <div class="form-group {{ $errors->has('title') ? 'has-error' : '' }}">
                             <label for="title" class="control-label">Title</label>
@@ -91,8 +91,19 @@
                             @slot('selected', $user->gender)
                         @endcomponent
                     </div>
+
+                    <div class="col-md-6">
+                        @component('admin.components.form-group', ['name' => 'status', 'type' => 'select'])
+                            @slot('label', 'Status')
+                            @slot('options', [
+                                App\Models\User::STATUS_INACTIVE => 'Inactive',
+                                App\Models\User::STATUS_ACTIVE => 'Active',
+                            ])
+                            @slot('selected', $user->status)
+                        @endcomponent
+                    </div>
                     @if(in_array($role, \App\Models\User::rolesHaving('branch')))
-                        <div class="col-4">
+                        <div class="col-6">
                             @component('admin.components.form-group', ['name' => 'branch_id', 'type' => 'select'])
                                 @slot('label', trans('strings.branch'))
                                 @slot('options', $branches)
@@ -105,7 +116,7 @@
                         </div>
                     @endif
                     @if($role == \App\Models\User::ROLE_TIPTOP_DRIVER)
-                        <div class="col-3">
+                        <div class="col-6">
                             @component('admin.components.form-group', ['name' => 'employment', 'type' => 'select'])
                                 @slot('label', trans('strings.employment'))
                                 @slot('options', \App\Models\User::getEmploymentsArray())
@@ -394,7 +405,9 @@
                  </div>
             </div>
         </div>--}}
-        @role('Super')
+
+        {{--        Cedit said they didn't want any user-specific permissions--}}
+        {{--@role('Super')
         <div id="accordion">
             <div class="card mb-2">
                 <a class="text-body" data-toggle="collapse" href="#accordion-1">
@@ -479,18 +492,8 @@
                 </div>
             </div>
         </div>
-        @endrole
-        <div>
-            @component('admin.components.form-group', ['name' => 'status', 'type' => 'select'])
-                @slot('label', 'Status')
-                @slot('options', [
-                    App\Models\User::STATUS_INACTIVE => 'Inactive',
-                    App\Models\User::STATUS_ACTIVE => 'Active',
-                ])
-                @slot('selected', $user->status)
-                {{--                    App\Models\User::STATUS_SUSPENDED => 'Suspended',--}}
-            @endcomponent
-
+        @endrole--}}
+        <div class="ml-1">
             @if(is_null($user->id))
                 @component('admin.components.form-group', ['name' => 'send_notification', 'type' => 'checkbox'])
                     @slot('label', 'Send the new user an email about their account.')
