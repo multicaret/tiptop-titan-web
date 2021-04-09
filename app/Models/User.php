@@ -311,22 +311,12 @@ class User extends Authenticatable implements HasMedia, MustVerifyEmail
         return $roleVariations[$index];
     }
 
-    public static function getEmployments()
+    public static function getEmploymentsArray()
     {
         return [
             User::EMPLOYMENT_EMPLOYEE => trans('strings.employee'),
             User::EMPLOYMENT_FREELANCER => trans('strings.freelancer'),
         ];
-    }
-
-    public static function getEmployment($employment)
-    {
-        switch ($employment) {
-            case User::EMPLOYMENT_EMPLOYEE:
-                return trans('strings.employee');
-            case User::EMPLOYMENT_FREELANCER:
-                return trans('strings.freelancer');
-        }
     }
 
     /**

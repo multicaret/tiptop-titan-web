@@ -108,7 +108,7 @@
                         <div class="col-3">
                             @component('admin.components.form-group', ['name' => 'employment', 'type' => 'select'])
                                 @slot('label', trans('strings.employment'))
-                                @slot('options', \App\Models\User::getEmployments())
+                                @slot('options', \App\Models\User::getEmploymentsArray())
                                 @slot('attributes', [
                                     'class' => 'select-2-employment w-100',
                                     'required',

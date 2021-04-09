@@ -72,7 +72,7 @@ class DatatableController extends AjaxController
                              return view('admin.components.datatables._row-reorder')->render();
                          })
                          ->editColumn('employment', function ($item) {
-                             return User::getEmployment($item->employment);
+                             return User::getEmploymentsArray()[$item->employment];
                          })
                          ->editColumn('last_logged_in_at', function ($item) {
                              if ( ! is_null($item->last_logged_in_at)) {
