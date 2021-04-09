@@ -130,8 +130,8 @@ class Slide extends Model
     {
         return [
             self::LINK_TYPE_EXTERNAL => 'external',
-            self::LINK_TYPE_UNIVERSAL => 'universal',
-            self::LINK_TYPE_DEFERRED_DEEPLINK => 'deferred-deeplink',
+//            self::LINK_TYPE_UNIVERSAL =>'universal',
+//            self::LINK_TYPE_DEFERRED_DEEPLINK =>'deferred-deeplink',
             self::LINK_TYPE_DEEPLINK => 'deeplink',
         ];
     }
