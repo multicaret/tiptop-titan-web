@@ -92,8 +92,8 @@ use Spatie\MediaLibrary\MediaCollections\Models\Media;
  * @property-read int|null $media_count
  * @property-read Collection|\App\Models\ProductOption[] $options
  * @property-read int|null $options_count
- * @property-read Collection|\App\Models\Taxonomy[] $tags
- * @property-read int|null $tags_count
+ * @property-read Collection|\App\Models\Taxonomy[] $searchTags
+ * @property-read int|null $search_tags_count
  * @property-read \App\Models\ProductTranslation|null $translation
  * @property-read Collection|\App\Models\ProductTranslation[] $translations
  * @property-read int|null $translations_count
@@ -184,9 +184,7 @@ class Product extends Model implements HasMedia
         'chain',
         'branch',
         'translations',
-        'tags',
-        'categories',
-        'masterCategory'
+        'categories'
     ];
 
     protected $fillable = ['order_column'];
