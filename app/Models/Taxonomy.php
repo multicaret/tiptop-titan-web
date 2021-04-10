@@ -66,6 +66,8 @@ use Spatie\MediaLibrary\MediaCollections\Models\Media;
  * @property-read mixed $link
  * @property-read mixed $status_name
  * @property-read Taxonomy|null $ingredientCategory
+ * @property-read Collection|Taxonomy[] $ingredientsOfCategory
+ * @property-read int|null $ingredients_of_category_count
  * @property-read MediaCollection|Media[] $media
  * @property-read int|null $media_count
  * @property-read Collection|\App\Models\Product[] $menuProducts

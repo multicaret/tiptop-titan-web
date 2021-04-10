@@ -12,7 +12,7 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
  * @property int $id
  * @property int $product_option_id
  * @property int $product_id this is a helper
- * @property float|null $price
+ * @property float $price
  * @property \Illuminate\Support\Carbon|null $created_at
  * @property \Illuminate\Support\Carbon|null $updated_at
  * @property-read \App\Models\ProductOption $option
@@ -31,8 +31,8 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
  * @method static \Illuminate\Database\Eloquent\Builder|ProductOptionSelection translated()
  * @method static \Illuminate\Database\Eloquent\Builder|ProductOptionSelection translatedIn(?string $locale = null)
  * @method static \Illuminate\Database\Eloquent\Builder|ProductOptionSelection whereCreatedAt($value)
- * @method static \Illuminate\Database\Eloquent\Builder|ProductOptionSelection whereExtraPrice($value)
  * @method static \Illuminate\Database\Eloquent\Builder|ProductOptionSelection whereId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|ProductOptionSelection wherePrice($value)
  * @method static \Illuminate\Database\Eloquent\Builder|ProductOptionSelection whereProductId($value)
  * @method static \Illuminate\Database\Eloquent\Builder|ProductOptionSelection whereProductOptionId($value)
  * @method static \Illuminate\Database\Eloquent\Builder|ProductOptionSelection whereTranslation(string $translationField, $value, ?string $locale = null, string $method = 'whereHas', string $operator = '=')
