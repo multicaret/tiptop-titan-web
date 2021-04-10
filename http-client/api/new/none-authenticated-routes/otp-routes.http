@@ -24,7 +24,7 @@ Content-Type: application/json
 
 {
     "phone_country_code": "90",
-    "phone_number": "5395534325"
+    "phone_number": "5070326662"
 }
 
 #### SMS Validation Code
@@ -34,7 +34,7 @@ Content-Type: application/json
 
 {
     "phone_country_code": "90",
-    "phone_number": "5395534325",
+    "phone_number": "5070326662",
     "code": "964291",
     "reference": "{{otpReference}}"
 }

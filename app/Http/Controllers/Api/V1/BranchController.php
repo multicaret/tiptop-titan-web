@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Api\V1;
 
 use App\Http\Controllers\Api\BaseApiController;
+use App\Http\Resources\BranchResource;
 use App\Http\Resources\FoodBranchResource;
 use App\Http\Resources\FoodCategoryResource;
 use App\Models\Branch;
@@ -30,9 +31,55 @@ class BranchController extends BaseApiController
             return FoodCategoryResource::collection($categories);
         });
 
+        $minCart = Branch::foods()->get()->min('minimum_order');
+        $maxCart = Branch::foods()->get()->max('minimum_order');
+
         return $this->respond([
-            'categories' => $categories
+            'categories' => $categories,
+            'minCart' => $minCart,
+            'maxCart' => $maxCart
         ]);
+    }
+
+    public function filter(Request $request)
+    {
+        $deliveryType = $request->input('delivery_type');
+        $minimumOrder = $request->input('minimum_order');
+        $categoryId = $request->input('category_id');
+        $rating = $request->input('rating');
+
+        $branches = Branch::getModel();
+
+        if ($request->has('delivery_type')) {
+            if ($deliveryType == 'tiptop') {
+                $branches->where(['has_tip_top_delivery' == true, 'has_restaurant_delivery', false]);
+            } else {
+                $branches->where(['has_tip_top_delivery' == false, 'has_restaurant_delivery', true]);
+            }
+        }
+
+        if ($request->has('minimum_order')) {
+            $branches->where('minimum_order', $minimumOrder);
+        }
+
+        if ($request->has('category_id') && ($categoryId)) {
+            $branches = $branches->whereHas('foodCategories', function ($query) use ($categoryId) {
+                $query->where('category_id', $categoryId);
+            });
+        }
+        if ($request->has('rating')) {
+            $branches->where('avg_rating', 'like', '%'.$rating.'%');
+        }
+        if ($request->input('sort') == 'restaurants_rating') {
+            $branches = $branches->foods()->orderByDesc('avg_rating')->get();
+
+        } elseif ($request->input('sort') == 'by_distance') {
+            //$branches = $branches->foods()->get();
+        } else {
+            $branches = $branches->foods()->latest('published_at')->get();
+        }
+
+        return $this->respond(BranchResource::collection($branches));
     }
 
 }

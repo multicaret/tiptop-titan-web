@@ -46,7 +46,7 @@ Authorization: Bearer {{token}}
 }
 
 ### delete user
-DELETE {{host}}/{{locale}}/api/v1/profile/addresses/4
+POST {{host}}/{{locale}}/api/v1/profile/addresses/1/delete
 Accept: application/json
 Content-Type: application/json
 Authorization: Bearer {{token}}
