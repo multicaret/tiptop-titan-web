@@ -1,6 +1,6 @@
 <h3 class="px-3 mb-0 mt-4 text-center">Delivery Methods</h3>
 <div class="row px-3">
-    <div class="{{$type == \App\Models\Branch::CHANNEL_FOOD_OBJECT ? "col-md-6" : "col-md-12" }} mt-2">
+    <div class="{{$type == \App\Models\Branch::CHANNEL_FOOD_OBJECT ? 'col-md-6' : 'col-md-12' }} mt-2">
         <div class="card card-outline-inverse">
             <h4 class="card-header">
                 Tiptop Delivery
@@ -48,6 +48,14 @@
                         @component('admin.components.form-group', ['name' => 'free_delivery_threshold', 'type' => 'number'])
                             @slot('label', 'Free delivery threshold')
                             @slot('value', is_null($branch->free_delivery_threshold) ? 0 : $branch->free_delivery_threshold)
+                            @slot('attributes',['step'=>1,'min'=>1])
+                        @endcomponent
+                    </div>
+
+                    <div class="mt-3 col-md-6">
+                        @component('admin.components.form-group', ['name' => 'extra_delivery_fee_per_km', 'type' => 'number'])
+                            @slot('label', 'Extra delivery fee per KM')
+                            @slot('value', is_null($branch->extra_delivery_fee_per_km) ? 0 : $branch->extra_delivery_fee_per_km)
                             @slot('attributes',['step'=>1,'min'=>1])
                         @endcomponent
                     </div>
@@ -103,6 +111,14 @@
                             @component('admin.components.form-group', ['name' => 'free_delivery_threshold', 'type' => 'number'])
                                 @slot('label', 'Free delivery threshold')
                                 @slot('value', is_null($branch->restaurant_under_minimum_order_delivery_fee) ? 0 : $branch->restaurant_under_minimum_order_delivery_fee)
+                                @slot('attributes',['step'=>1,'min'=>1])
+                            @endcomponent
+                        </div>
+
+                        <div class="mt-3 col-md-6">
+                            @component('admin.components.form-group', ['name' => 'restaurant_extra_delivery_fee_per_km', 'type' => 'number'])
+                                @slot('label', 'Restaurant extra delivery fee per KM')
+                                @slot('value', is_null($branch->restaurant_extra_delivery_fee_per_km) ? 0 : $branch->restaurant_extra_delivery_fee_per_km)
                                 @slot('attributes',['step'=>1,'min'=>1])
                             @endcomponent
                         </div>
