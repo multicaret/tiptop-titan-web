@@ -18,8 +18,12 @@ Content-Type: application/json
 
 {
     "delivery_type": "tiptop",
-    "rating": 4,
-    "category_id": 3,
+    "min_rating": 4,
+    "categories": [
+        3,
+        4,
+        5
+    ],
     "minimum_order": 500,
     "sort": "restaurants_rating"
 }

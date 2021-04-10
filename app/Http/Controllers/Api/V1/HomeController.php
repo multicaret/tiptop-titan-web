@@ -100,6 +100,8 @@ class HomeController extends BaseApiController
             }
             $latitude = $selectedAddress->latitude;
             $longitude = $selectedAddress->longitude;
+            $user->selected_address_id = $selectedAddress->id;
+            $user->save();
         }
 
         // Todo: fill the Region & City after we finishing the GeoFencing from Jadid.
