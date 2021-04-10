@@ -24,6 +24,7 @@ class BranchResource extends JsonResource
         if ( ! $this->is_open_now) {
             $workingHours['isOpen'] = false;
         }
+        $isFavorited = auth('sanctum')->check() ? $this->isFavoritedBy(auth('sanctum')->user()) : false;
 
         return [
             'id' => (int) $this->id,
@@ -87,6 +88,7 @@ class BranchResource extends JsonResource
             'latitude' => (float) $this->latitude,
             'longitude' => (float) $this->longitude,
             'chain' => new ChainResource($this->chain),
+            'isFavorited' => $isFavorited,
         ];
     }
 }
