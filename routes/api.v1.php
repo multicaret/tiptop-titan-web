@@ -13,10 +13,11 @@ Route::middleware('throttle:15')
          Route::get('products/{id}', 'ProductController@show');
          Route::get('search', 'SearchController@index');
          Route::get('search/products', 'SearchController@searchProducts');
+         Route::get('search/restaurants', 'SearchController@searchBranches');
 
          // Food related
          Route::get('restaurants/filter', 'BranchController@filterCreate')->name('branches.filter');
-         Route::post('restaurants/filter', 'BranchController@filter');
+         Route::get('restaurants', 'BranchController@index')->name('branches.index');
          Route::get('restaurants/{restaurant}', 'BranchController@show')->name('branches.show');
 
 

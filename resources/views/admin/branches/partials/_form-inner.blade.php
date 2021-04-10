@@ -77,8 +77,8 @@
                                         @component('admin.components.form-group', ['name' => $langKey .'[description]', 'type' => 'textarea'])
                                             @slot('label', 'Description')
                                             @slot('attributes', [
-                                                    'rows' => 5,
-                                                    ])
+                                                'rows' => 5,
+                                            ])
                                             @if(! is_null($branch->id))
                                                 @slot('value', optional($branch->translate($langKey))->description)
                                             @endif

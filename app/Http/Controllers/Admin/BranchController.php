@@ -245,6 +245,7 @@ class BranchController extends Controller
         $branch->has_tip_top_delivery = $request->input('has_tip_top_delivery') ? 1 : 0;
         $branch->minimum_order = $request->input('minimum_order');
         $branch->free_delivery_threshold = $request->input('free_delivery_threshold');
+        $branch->extra_delivery_fee_per_km = $request->input('extra_delivery_fee_per_km');
         if ($request->has('restaurant_minimum_order')) {
             $branch->restaurant_minimum_order = $request->input('restaurant_minimum_order');
         }
@@ -256,6 +257,9 @@ class BranchController extends Controller
         }
         if ($request->has('restaurant_free_delivery_threshold')) {
             $branch->restaurant_fixed_delivery_fee = $request->input('restaurant_free_delivery_threshold');
+        }
+        if ($request->has('restaurant_extra_delivery_fee_per_km')) {
+            $branch->restaurant_extra_delivery_fee_per_km = $request->input('restaurant_extra_delivery_fee_per_km');
         }
         $branch->has_restaurant_delivery = $request->input('has_restaurant_delivery') ? 1 : 0;
         $branch->under_minimum_order_delivery_fee = $request->input('under_minimum_order_delivery_fee');

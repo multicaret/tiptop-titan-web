@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Traits\HasAppTypes;
 use Eloquent;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
@@ -22,6 +23,8 @@ use Illuminate\Support\Str;
  * @property Carbon|null $updated_at
  * @property-read \App\Models\Branch $branch
  * @property-read \App\Models\Chain $chain
+ * @method static Builder|Search foods()
+ * @method static Builder|Search groceries()
  * @method static Builder|Search newModelQuery()
  * @method static Builder|Search newQuery()
  * @method static Builder|Search query()
@@ -37,6 +40,11 @@ use Illuminate\Support\Str;
  */
 class Search extends Model
 {
+    use HasAppTypes;
+
+    public const CHANNEL_GROCERY_OBJECT = 1;
+    public const CHANNEL_FOOD_OBJECT = 2;
+
     /**
      *
      * @param  string  $value
