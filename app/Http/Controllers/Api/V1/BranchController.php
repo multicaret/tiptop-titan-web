@@ -30,8 +30,13 @@ class BranchController extends BaseApiController
             return FoodCategoryResource::collection($categories);
         });
 
+        $minBasket = Branch::foods()->get()->min('minimum_order');
+        $maxBasket = Branch::foods()->get()->max('minimum_order');
+
         return $this->respond([
-            'categories' => $categories
+            'categories' => $categories,
+            'minBasket' => $minBasket,
+            'maxBasket' => $maxBasket
         ]);
     }
 
