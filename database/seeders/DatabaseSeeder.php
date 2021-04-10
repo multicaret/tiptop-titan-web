@@ -427,7 +427,7 @@ class DatabaseSeeder extends Seeder
             'General Settings' => [
                 'type' => 'section',
                 'group_name' => 'general_settings',
-                'icon' => 'lnr lnr-cog',
+                'icon' => 'fas fa-home',
                 'notes' => 'Website name and description',
                 'children' => [
                     'app_title' => [
@@ -445,7 +445,7 @@ class DatabaseSeeder extends Seeder
             /*'Appearance Settings' => [
                 'type' => 'section',
                 'group_name' => 'appearance_settings',
-                'icon' => 'lnr lnr-picture',
+                'icon' => 'fas fa-palette',
                 'notes' => 'Logo, favicon and appearance settings',
                 'children' => [
                     'logo_light' => [
@@ -468,7 +468,7 @@ class DatabaseSeeder extends Seeder
             /*'Homepage Related' => [
                 'type' => 'section',
                 'group_name' => 'home_settings',
-                'icon' => 'lnr lnr-home',
+                'icon' => 'fas fa-home',
                 'notes' => 'All Homepage details & settings',
                 'children' => [
                     'homepage_youtube_video_id' => [
@@ -481,7 +481,7 @@ class DatabaseSeeder extends Seeder
             'Contact Details' => [
                 'type' => 'section',
                 'group_name' => 'contact_details',
-                'icon' => 'lnr lnr-phone-handset',
+                'icon' => 'fas fa-phone-alt',
                 'notes' => 'Phone, email and other contact settings',
                 'children' => [
                     'contact_mobile' => [
@@ -514,7 +514,7 @@ class DatabaseSeeder extends Seeder
             'Social Media' => [
                 'type' => 'section',
                 'group_name' => 'social_media',
-                'icon' => 'lnr lnr-select',
+                'icon' => 'fab fa-twitter',
                 'notes' => 'Facebook, Twitter and other social media settings',
                 'children' => [
                     'social_media_facebook' => [
@@ -542,7 +542,7 @@ class DatabaseSeeder extends Seeder
             'Tools & 3rd parties integrations' => [
                 'type' => 'section',
                 'group_name' => 'tools_integrations',
-                'icon' => 'lnr lnr-briefcase',
+                'icon' => 'fas fa-plug',
                 'notes' => 'Google Search Engine, Google Analytics & Others',
                 'children' => [
                     'google_site_verification' => [
@@ -562,17 +562,12 @@ class DatabaseSeeder extends Seeder
                     ],
                 ]
             ],
-            /*'Notifications Settings' => [
+            'Notifications Settings' => [
                 'type' => 'section',
                 'notes' => 'SMS, Email and other related settings',
                 'group_name' => 'notification_settings',
-                'icon' => 'lnr lnr-bullhorn',
+                'icon' => 'fas fa-bullhorn',
                 'children' => [
-                    'sms_verification_content' => [
-                        'type' => 'text',
-                        'value' => 'Hello and Welcome here is your code %code%',
-                        'notes' => 'Please use the following variable within your text message, %code%',
-                    ],
                     'mobile_app_needs_approval_message' => [
                         'type' => 'text',
                         'value' => 'Hi %name%, welcome your account is not approved yet, please check back soon :)',
@@ -584,12 +579,42 @@ class DatabaseSeeder extends Seeder
                         'notes' => 'Please use the following variable within your text message, %name%'
                     ],
                 ]
-            ],*/
+            ],
+            'Operations' => [
+                'type' => 'section',
+                'notes' => 'Operation section',
+                'group_name' => 'operation_section',
+                'icon' => 'fas fa-truck',
+                'children' => [
+                    'tiptop_fixed_delivery_distance' => [
+                        'type' => 'number',
+                        'value' => '5',
+                        'notes' => 'in KM'
+                    ],
+                    'restaurant_fixed_delivery_distance' => [
+                        'type' => 'number',
+                        'value' => '5',
+                        'notes' => 'in KM'
+                    ],
+                ]
+            ],
+            'Support' => [
+                'type' => 'section',
+                'notes' => 'Support section',
+                'group_name' => 'support_section',
+                'icon' => 'fas fa-headphones-alt',
+                'children' => [
+                    'support_number' => [
+                        'type' => 'text',
+                        'value' => '',
+                    ],
+                ]
+            ],
             'Advanced Settings' => [
                 'type' => 'section',
                 'notes' => 'CSS, JS & codes area',
                 'group_name' => 'advanced_settings',
-                'icon' => 'lnr lnr-construction',
+                'icon' => 'fas fa-hammer',
                 'children' => [
                     'custom_css_head' => [
                         'type' => 'textarea',
@@ -605,18 +630,6 @@ class DatabaseSeeder extends Seeder
                         'type' => 'textarea',
                         'value' => '',
                         'notes' => 'JS or any other code to be placed at the top of the body tag',
-                    ],
-                ]
-            ],
-            'Support' => [
-                'type' => 'section',
-                'notes' => 'Support section',
-                'group_name' => 'support_section',
-                'icon' => 'lnr lnr-user',
-                'children' => [
-                    'support_number' => [
-                        'type' => 'text',
-                        'value' => '',
                     ],
                 ]
             ],
@@ -2073,6 +2086,7 @@ class DatabaseSeeder extends Seeder
         if (0 === strpos(bin2hex($data), 'efbbbf')) {
             return substr($data, 3);
         }
+
         return $data;
     }
 
