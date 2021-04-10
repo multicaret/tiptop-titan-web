@@ -1,5 +1,6 @@
 <?php
 
+use App\Models\Search;
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
@@ -18,8 +19,9 @@ class CreateSearchesTable extends Migration
             $table->string('locale')->index();
             $table->string('term');
             $table->unsignedBigInteger('count')->default(1);
-            $table->unsignedBigInteger('chain_id')->index();
-            $table->unsignedBigInteger('branch_id')->index();
+            $table->unsignedBigInteger('chain_id')->index()->nullable();
+            $table->unsignedBigInteger('branch_id')->index()->nullable();
+            $table->unsignedTinyInteger('type')->default(Search::CHANNEL_FOOD_OBJECT)->comment('1:Market, 2: Food');
             $table->timestamps();
 
             $table->unique(['locale', 'term', 'chain_id']);

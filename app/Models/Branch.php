@@ -94,6 +94,8 @@ use Spatie\MediaLibrary\MediaCollections\Models\Collections\MediaCollection;
  * @property-read int|null $media_count
  * @property-read Collection|\App\Models\Taxonomy[] $menuCategories
  * @property-read int|null $menu_categories_count
+ * @property-read Collection|\App\Models\Product[] $products
+ * @property-read int|null $products_count
  * @property-read Collection|InteractionRelation[] $ratings
  * @property-read int|null $ratings_count
  * @property-read Collection|InteractionRelation[] $ratingsPure
@@ -290,6 +292,11 @@ class Branch extends Model implements HasMedia
     public function menuCategories(): HasMany
     {
         return $this->hasMany(Taxonomy::class);
+    }
+
+    public function products()
+    {
+        return $this->hasMany(Product::class);
     }
 
     public static function getClosestAvailableBranch($latitude, $longitude): array
