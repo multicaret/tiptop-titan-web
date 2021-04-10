@@ -12,7 +12,7 @@ Content-Type: application/json
 ### Restaurant filter create
 ### delivery_type = tiptop or restaurant
 ### sort = restaurants_rating or by_distance or (samrt_sorting as default)
-POST {{host}}/{{locale}}/api/v1/restaurants/filter
+GET {{host}}/{{locale}}/api/v1/restaurants
 Accept: application/json
 Content-Type: application/json
 

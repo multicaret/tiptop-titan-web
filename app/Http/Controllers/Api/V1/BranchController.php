@@ -53,9 +53,15 @@ class BranchController extends BaseApiController
 
         if ($request->has('delivery_type')) {
             if ($deliveryType == 'tiptop') {
-                $branches->where(['has_tip_top_delivery' == true, 'has_restaurant_delivery', false]);
+                $branches->where([
+                    ['has_tip_top_delivery', true],
+                    ['has_restaurant_delivery', false]
+                ]);
             } elseif ($deliveryType == 'restaurant') {
-                $branches->where(['has_tip_top_delivery' == false, 'has_restaurant_delivery', true]);
+                $branches->where([
+                    ['has_tip_top_delivery', false],
+                    ['has_restaurant_delivery', true]
+                ]);
             }
         }
 
