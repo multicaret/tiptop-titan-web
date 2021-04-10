@@ -259,9 +259,9 @@ class Product extends Model implements HasMedia
                     ->withTimestamps();
     }
 
-    public function tags(): BelongsToMany
+    public function searchTags(): BelongsToMany
     {
-        return $this->belongsToMany(Taxonomy::class, 'product_tag', 'product_id', 'tag_id')
+        return $this->belongsToMany(Taxonomy::class, 'product_search_tag', 'product_id', 'search_tag_id')
                     ->withTimestamps();
     }
 
