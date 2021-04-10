@@ -67,6 +67,7 @@ class BranchController extends BaseApiController
 
         if ($request->has('minimum_order')) {
             $branches->where('minimum_order', '=<', (int) $minimumOrder);
+            $branches->Where('restaurant_minimum_order', '=<', (int) $minimumOrder, 'or');
         }
 
         if ($request->has('categories') && ($categories)) {
