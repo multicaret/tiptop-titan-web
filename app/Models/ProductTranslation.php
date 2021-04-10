@@ -38,5 +38,12 @@ use Illuminate\Database\Eloquent\Model;
  */
 class ProductTranslation extends Model
 {
-    protected $fillable = ['title', 'description', 'excerpt', 'notes'];
+    protected $fillable = [
+        'title',
+        'description',
+        'excerpt',
+        'notes',
+        'custom_banner_text',
+        'unit_text',
+    ];
 }

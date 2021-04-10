@@ -189,7 +189,14 @@ class Product extends Model implements HasMedia
 
     protected $fillable = ['order_column'];
 
-    protected $translatedAttributes = ['title', 'description', 'excerpt', 'notes'];
+    protected $translatedAttributes = [
+        'title',
+        'description',
+        'excerpt',
+        'notes',
+        'custom_banner_text',
+        'unit_text',
+    ];
 
     protected $appends = [
         'cover_thumbnail',
