@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Api\V1;
 
 use App\Http\Controllers\Api\BaseApiController;
+use App\Http\Resources\BranchResource;
 use App\Http\Resources\FoodBranchResource;
 use App\Http\Resources\FoodCategoryResource;
 use App\Models\Branch;
@@ -38,6 +39,38 @@ class BranchController extends BaseApiController
             'minBasket' => $minBasket,
             'maxBasket' => $maxBasket
         ]);
+    }
+
+    public function filter(Request $request)
+    {
+        $deliveryType = $request->input('delivery_type');
+        $minimumOrder = $request->input('minimum_order');
+        $categoryId = $request->input('category_id');
+        $rating = $request->input('rating');
+
+        $branches = Branch::getModel();
+
+        if ($deliveryType == 'tiptop') {
+            $branches->where(['has_tip_top_delivery' == true, 'has_restaurant_delivery', false]);
+        } else {
+            $branches->where(['has_tip_top_delivery' == false, 'has_restaurant_delivery', true]);
+        }
+
+        if ($request->has('minimum_order')) {
+            $branches->where('minimum_order', $minimumOrder);
+        }
+
+        if ($request->has('category_id') && ($categoryId)) {
+            $branches = $branches->whereHas('foodCategories', function ($query) use ($categoryId) {
+                $query->where('category_id', $categoryId);
+            });
+        }
+
+        $branches->where('avg_rating', 'like', '%'.$rating.'%');
+
+        $branches = $branches->foods()->get();
+
+        return $this->respond(BranchResource::collection($branches));
     }
 
 }
