@@ -279,4 +279,5 @@ return [
     'employment' => 'Employment',
     'employee' => 'Employee',
     'freelancer' => 'Freelancer',
+    'orders-cancellation-reasons' => 'Orders cancellation reasons',
 ];
