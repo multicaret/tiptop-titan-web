@@ -50,10 +50,12 @@ class BranchController extends BaseApiController
 
         $branches = Branch::getModel();
 
-        if ($deliveryType == 'tiptop') {
-            $branches->where(['has_tip_top_delivery' == true, 'has_restaurant_delivery', false]);
-        } else {
-            $branches->where(['has_tip_top_delivery' == false, 'has_restaurant_delivery', true]);
+        if ($request->has('delivery_type')) {
+            if ($deliveryType == 'tiptop') {
+                $branches->where(['has_tip_top_delivery' == true, 'has_restaurant_delivery', false]);
+            } else {
+                $branches->where(['has_tip_top_delivery' == false, 'has_restaurant_delivery', true]);
+            }
         }
 
         if ($request->has('minimum_order')) {
@@ -65,10 +67,17 @@ class BranchController extends BaseApiController
                 $query->where('category_id', $categoryId);
             });
         }
+        if ($request->has('rating')) {
+            $branches->where('avg_rating', 'like', '%'.$rating.'%');
+        }
+        if ($request->input('sort') == 'restaurants_rating') {
+            $branches = $branches->foods()->orderByDesc('avg_rating')->get();
 
-        $branches->where('avg_rating', 'like', '%'.$rating.'%');
-
-        $branches = $branches->foods()->get();
+        } elseif ($request->input('sort') == 'by_distance') {
+            //$branches = $branches->foods()->get();
+        } else {
+            $branches = $branches->foods()->latest('published_at')->get();
+        }
 
         return $this->respond(BranchResource::collection($branches));
     }
