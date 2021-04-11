@@ -69,7 +69,7 @@ class ProductController extends Controller
     public function create(Request $request)
     {
         $product = new Product();
-        $product->type = Product::getCorrectType($request->type);
+        $product->type = Product::getCorrectChannel($request->type);
         $data = $this->essentialData($request, $product);
 
         return view('admin.products.form', $data);
@@ -81,14 +81,14 @@ class ProductController extends Controller
         $request->validate($this->validationRules());
         $product = new Product();
 
-        try {
-            $this->storeSaveLogic($request, $product);
-        } catch (Exception $e) {
+//        try {
+        $this->storeSaveLogic($request, $product);
+        /*} catch (Exception $e) {
             return back()->with('message', [
                 'type' => 'Error',
                 'text' => $e->getMessage(),
             ]);
-        }
+        }*/
 
         if ($request->has('branch_id')) {
             return redirect()
@@ -172,11 +172,15 @@ class ProductController extends Controller
     {
         if (is_null($product->id)) {
             if ($product->type == Product::CHANNEL_GROCERY_OBJECT) {
-                $product->chain = Chain::groceries()->first();
+                $product->chain_id = Chain::groceries()->first()->id;
             } else {
-                $product->chain = Chain::foods()->first();
+                $product->chain_id = Chain::foods()->first()->id;
             }
-            $product->branch = Branch::whereChainId(optional($product->chain)->id)->first();
+            if ($request->has('branch_id') && ! is_null($request->input('branch_id'))) {
+                $product->branch_id = Branch::find($request->input('branch_id'))->id;
+            } else {
+                $product->branch_id = optional(Branch::whereChainId(optional($product->chain)->id)->first())->id;
+            }
         }
         $data['product'] = $product;
         $tableName = $data['product']->getTable();
@@ -205,7 +209,7 @@ class ProductController extends Controller
             $data['categories'] = Taxonomy::groceryCategories()->whereNotNull('parent_id')->get()->map($getIdTitle)->all();
         } else {
             $data['categories'] = Taxonomy::menuCategories()
-                                          ->where('branch_id', $product->branch->id)
+                                          ->where('branch_id', optional($product->branch)->id)
                                           ->get()
                                           ->map($getIdTitle)
                                           ->all();
