@@ -125,7 +125,6 @@ return [
     'Google Webmasters Site Verification' => 'لتوثيق موقعكم مع غوغل ويب ماسترز',
     'google_analytics' => 'إحصائيات غوغل',
     'Google Analytics ID' => 'الرقم التعريفي لحسابكم على إحصائيات غوغل',
-    'sms_verification_content' => 'SMS verification content',
     'mobile_app_needs_approval_message' => 'Mobile app needs approval_message',
     'mobile_app_account_is_suspended' => 'Mobile app account is_suspended',
     '' => '',

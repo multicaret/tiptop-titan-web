@@ -66,6 +66,8 @@ use Spatie\MediaLibrary\MediaCollections\Models\Media;
  * @property-read mixed $link
  * @property-read mixed $status_name
  * @property-read Taxonomy|null $ingredientCategory
+ * @property-read Collection|Taxonomy[] $ingredientsOfCategory
+ * @property-read int|null $ingredients_of_category_count
  * @property-read MediaCollection|Media[] $media
  * @property-read int|null $media_count
  * @property-read Collection|\App\Models\Product[] $menuProducts
@@ -169,6 +171,7 @@ class Taxonomy extends Node implements HasMedia, ShouldHaveTypes, TranslatableCo
     public const TYPE_INGREDIENT = 11;
     public const TYPE_INGREDIENT_CATEGORY = 12;
     public const TYPE_UNIT = 15;
+    public const TYPE_ORDERS_CANCELLATION_REASONS = 16;
 
     protected $fillable = ['title', 'description', 'parent_id', 'type', 'order_column'];
     protected $translatedAttributes = ['title', 'description'];
@@ -259,6 +262,11 @@ class Taxonomy extends Node implements HasMedia, ShouldHaveTypes, TranslatableCo
     public function scopeMenuCategories($query): Builder
     {
         return $query->where('type', '=', self::TYPE_MENU_CATEGORY);
+    }
+
+    public function scopeOrdersCancellationReasons($query): Builder
+    {
+        return $query->where('type', '=', self::TYPE_ORDERS_CANCELLATION_REASONS);
     }
 
     /**
@@ -414,6 +422,7 @@ class Taxonomy extends Node implements HasMedia, ShouldHaveTypes, TranslatableCo
             self::TYPE_INGREDIENT => 'ingredient',
             self::TYPE_INGREDIENT_CATEGORY => 'ingredient-category',
             self::TYPE_UNIT => 'unit',
+            self::TYPE_ORDERS_CANCELLATION_REASONS => 'orders-cancellation-reasons',
         ];
     }
 

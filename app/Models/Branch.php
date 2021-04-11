@@ -41,6 +41,7 @@ use Spatie\MediaLibrary\MediaCollections\Models\Collections\MediaCollection;
  * @property int $min_delivery_minutes
  * @property int $max_delivery_minutes
  * @property int $free_delivery_threshold
+ * @property int $extra_delivery_fee_per_km
  * @property bool $has_restaurant_delivery
  * @property float $restaurant_minimum_order
  * @property float $restaurant_under_minimum_order_delivery_fee
@@ -48,6 +49,7 @@ use Spatie\MediaLibrary\MediaCollections\Models\Collections\MediaCollection;
  * @property int $restaurant_min_delivery_minutes
  * @property int $restaurant_max_delivery_minutes
  * @property int $restaurant_free_delivery_threshold
+ * @property int $restaurant_extra_delivery_fee_per_km
  * @property int $management_commission_rate 0 means there is no commission atall
  * @property bool $is_open_now
  * @property string|null $primary_phone_number
@@ -92,6 +94,8 @@ use Spatie\MediaLibrary\MediaCollections\Models\Collections\MediaCollection;
  * @property-read int|null $media_count
  * @property-read Collection|\App\Models\Taxonomy[] $menuCategories
  * @property-read int|null $menu_categories_count
+ * @property-read Collection|\App\Models\Product[] $products
+ * @property-read int|null $products_count
  * @property-read Collection|InteractionRelation[] $ratings
  * @property-read int|null $ratings_count
  * @property-read Collection|InteractionRelation[] $ratingsPure
@@ -102,6 +106,8 @@ use Spatie\MediaLibrary\MediaCollections\Models\Collections\MediaCollection;
  * @property-read \App\Models\BranchTranslation|null $translation
  * @property-read Collection|\App\Models\BranchTranslation[] $translations
  * @property-read int|null $translations_count
+ * @property-read Collection|\App\Models\User[] $users
+ * @property-read int|null $users_count
  * @property-read Collection|\App\Models\WorkingHour[] $workingHours
  * @property-read int|null $working_hours_count
  * @method static Builder|Branch active()
@@ -127,6 +133,7 @@ use Spatie\MediaLibrary\MediaCollections\Models\Collections\MediaCollection;
  * @method static Builder|Branch whereCreatorId($value)
  * @method static Builder|Branch whereDeletedAt($value)
  * @method static Builder|Branch whereEditorId($value)
+ * @method static Builder|Branch whereExtraDeliveryFeePerKm($value)
  * @method static Builder|Branch whereFeaturedAt($value)
  * @method static Builder|Branch whereFixedDeliveryFee($value)
  * @method static Builder|Branch whereFreeDeliveryThreshold($value)
@@ -145,6 +152,7 @@ use Spatie\MediaLibrary\MediaCollections\Models\Collections\MediaCollection;
  * @method static Builder|Branch wherePublishedAt($value)
  * @method static Builder|Branch whereRatingCount($value)
  * @method static Builder|Branch whereRegionId($value)
+ * @method static Builder|Branch whereRestaurantExtraDeliveryFeePerKm($value)
  * @method static Builder|Branch whereRestaurantFixedDeliveryFee($value)
  * @method static Builder|Branch whereRestaurantFreeDeliveryThreshold($value)
  * @method static Builder|Branch whereRestaurantMaxDeliveryMinutes($value)
@@ -284,6 +292,11 @@ class Branch extends Model implements HasMedia
     public function menuCategories(): HasMany
     {
         return $this->hasMany(Taxonomy::class);
+    }
+
+    public function products()
+    {
+        return $this->hasMany(Product::class);
     }
 
     public static function getClosestAvailableBranch($latitude, $longitude): array

@@ -141,7 +141,9 @@ class ComposerServiceProvider extends ServiceProvider
                             [
                                 'title' => 'Ratings',
                                 'icon' => 'fas fa-star',
-                                'params' => ['type' => Order::getCorrectChannelName(Order::CHANNEL_GROCERY_OBJECT, false)],
+                                'params' => [
+                                    'type' => Order::getCorrectChannelName(Order::CHANNEL_GROCERY_OBJECT, false)
+                                ],
                                 'routeName' => 'admin.orders.ratings',
                             ],
                         ]
@@ -175,7 +177,9 @@ class ComposerServiceProvider extends ServiceProvider
                             [
                                 'title' => 'Products',
                                 'icon' => 'fas fa-box-open',
-                                'params' => ['type' => Product::getCorrectChannelName(Product::CHANNEL_FOOD_OBJECT, false)],
+                                'params' => [
+                                    'type' => Product::getCorrectChannelName(Product::CHANNEL_FOOD_OBJECT, false)
+                                ],
                                 'routeName' => 'admin.products.index',
                             ],
                             [
@@ -393,6 +397,16 @@ class ComposerServiceProvider extends ServiceProvider
                                 ],
                                 'routeName' => 'admin.taxonomies.index',
                             ],*/
+                            [
+                                'title' => 'Orders cancellation reasons',
+                                'icon' => 'fas fa-bell-slash',
+                                'params' => [
+                                    'type' =>
+                                        \App\Models\Taxonomy::getCorrectTypeName(\App\Models\Taxonomy::TYPE_ORDERS_CANCELLATION_REASONS,
+                                            false)
+                                ],
+                                'routeName' => 'admin.taxonomies.index',
+                            ],
                             [
                                 'title' => 'Roles',
                                 'icon' => 'fas fa-user-cog',

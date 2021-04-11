@@ -61,6 +61,7 @@ use Spatie\Permission\Traits\HasRoles;
  * @property int|null $country_id
  * @property int|null $region_id
  * @property int|null $city_id
+ * @property int|null $branch_id
  * @property int|null $selected_address_id
  * @property string|null $latitude
  * @property string|null $longitude
@@ -78,11 +79,16 @@ use Spatie\Permission\Traits\HasRoles;
  * @property Carbon|null $email_verified_at
  * @property Carbon|null $last_logged_in_at
  * @property Carbon|null $last_logged_out_at
+ * @property int $employment 1:employee, 2:freelancer
+ * @property string|null $shift
+ * @property string|null $tokan_team
+ * @property int|null $tokan_id
  * @property string|null $remember_token
  * @property Carbon|null $created_at
  * @property Carbon|null $updated_at
  * @property-read Collection|\App\Models\Location[] $addresses
  * @property-read int|null $addresses_count
+ * @property-read \App\Models\Branch|null $branch
  * @property-read Collection|\App\Models\Cart[] $carts
  * @property-read int|null $carts_count
  * @property-read \App\Models\City|null $city
@@ -137,6 +143,7 @@ use Spatie\Permission\Traits\HasRoles;
  * @method static Builder|User whereApprovedAt($value)
  * @method static Builder|User whereAvgRating($value)
  * @method static Builder|User whereBio($value)
+ * @method static Builder|User whereBranchId($value)
  * @method static Builder|User whereCityId($value)
  * @method static Builder|User whereCountryId($value)
  * @method static Builder|User whereCreatedAt($value)
@@ -144,6 +151,7 @@ use Spatie\Permission\Traits\HasRoles;
  * @method static Builder|User whereDob($value)
  * @method static Builder|User whereEmail($value)
  * @method static Builder|User whereEmailVerifiedAt($value)
+ * @method static Builder|User whereEmployment($value)
  * @method static Builder|User whereFirst($value)
  * @method static Builder|User whereGender($value)
  * @method static Builder|User whereId($value)
@@ -164,9 +172,12 @@ use Spatie\Permission\Traits\HasRoles;
  * @method static Builder|User whereRememberToken($value)
  * @method static Builder|User whereSelectedAddressId($value)
  * @method static Builder|User whereSettings($value)
+ * @method static Builder|User whereShift($value)
  * @method static Builder|User whereSocialNetworks($value)
  * @method static Builder|User whereStatus($value)
  * @method static Builder|User whereSuspendedAt($value)
+ * @method static Builder|User whereTokanId($value)
+ * @method static Builder|User whereTokanTeam($value)
  * @method static Builder|User whereTotalNumberOfOrders($value)
  * @method static Builder|User whereUpdatedAt($value)
  * @method static Builder|User whereUsername($value)

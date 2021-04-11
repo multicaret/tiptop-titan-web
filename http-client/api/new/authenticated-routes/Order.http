@@ -16,6 +16,10 @@ Accept: application/json
 Content-Type: application/json
 Authorization: Bearer {{token}}
 
+{
+    "chain_id": "1"
+}
+
 ### Store checkout data.
 POST {{host}}/{{locale}}/api/v1/orders
 Accept: application/json
