@@ -135,7 +135,7 @@
                                     <div class="col-6">
                                         <div class="form-group">
                                             <label class="control-label">
-                                                @lang('strings.categories')&nbsp;<b class="text-danger">*</b>
+                                                @lang('strings.menu-categories')&nbsp;<b class="text-danger">*</b>
                                             </label>
                                             <multiselect
                                                 :options="categories"
@@ -144,7 +144,6 @@
                                                 label="title"
                                                 name="categories"
                                                 :searchable="true"
-                                                :multiple="true"
                                                 :allow-empty="true"
                                                 select-label=""
                                                 selected-label=""
