@@ -60,7 +60,7 @@
                                         </div>
                                     </div>
                                 @else
-                                    <em>You've to delete all selections/ingredients first</em>
+                                    <em>You have to delete all selections/ingredients first</em>
                                 @endif
                             </div>
 
