@@ -43,9 +43,11 @@ class DatumImporter extends Command
     private const DEFAULT_RESTAURANT_ID = 269;
     private const CHAIN_SKIPPED_IDS = [207, 269];
     private ProgressBar $bar;
+    private Collection $foodCategories;
 
     public function __construct()
     {
+        $this->foodCategories = collect([]);
         parent::__construct();
     }
 
@@ -54,8 +56,10 @@ class DatumImporter extends Command
         $this->showChoice();
         \DB::statement('SET FOREIGN_KEY_CHECKS=0;');
         if ($this->modelName === 'Branch') {
-            $this->insertDefaultBranch();
+            // Will delete Branch tables
+            $this->insertGroceryDefaultBranch();
         } elseif ($this->modelName === 'Product') {
+            // Will delete Product tables
             $this->importProducts(500);
         } elseif ($this->modelName === 'Chain-Food') {
             $this->importChains(500);
@@ -111,17 +115,13 @@ class DatumImporter extends Command
         }
     }
 
-    private function insertDefaultBranch(): void
+    private function insertBranch(OldBranch $oldBranch, $type): void
     {
-        Branch::truncate();
-        BranchTranslation::truncate();
-        $first = OldBranch::find(self::DEFAULT_BRANCH_ID);
-        $this->bar = $this->output->createProgressBar(1);
         $tempBranch = [];
-        $this->bar->start();
-        $this->bar->advance();
-        foreach (OldBranch::attributesComparing() as $oldModelKey => $newModelKey) {
-            $tempBranch[$newModelKey] = $first->{$oldModelKey};
+        foreach ($oldBranch->attributesComparing($type) as $oldModelKey => $newModelKey) {
+            if ( ! is_null($oldBranch->{$oldModelKey})) {
+                $tempBranch[$newModelKey] = $oldBranch->{$oldModelKey};
+            }
         }
         $tempBranch['uuid'] = $this->getUuidString();
         $tempBranch['chain_id'] = self::DEFAULT_CHAIN;
@@ -129,12 +129,16 @@ class DatumImporter extends Command
         $tempBranch['editor_id'] = self::CREATOR_EDITOR_ID;
         $tempBranch['region_id'] = self::DEFAULT_REGION;
         $tempBranch['city_id'] = self::DEFAULT_CITY;
-        $tempBranch['type'] = Branch::CHANNEL_GROCERY_OBJECT; // Todo: must update
-        $tempBranch['status'] = Branch::STATUS_ACTIVE;
+        $tempBranch['type'] = $type;
+        $tempBranch['status'] = OldBranch::statusesComparing()[$oldBranch->status];
         $isInserted = Branch::insert($tempBranch);
         if ($isInserted) {
-            $freshBranch = Branch::find(self::DEFAULT_BRANCH_ID);
-            foreach ($first->translations as $translation) {
+            $freshBranch = Branch::find($oldBranch->id);
+            if ($type === Branch::CHANNEL_FOOD_OBJECT) {
+                $groceryCategoriesIds = $oldBranch->categories->pluck('id');
+                $freshBranch->foodCategories()->sync($groceryCategoriesIds);
+            }
+            foreach ($oldBranch->translations as $translation) {
                 $attributesComparing = OldBranchTranslation::attributesComparing();
                 $tempTranslation = [];
                 foreach ($attributesComparing as $oldAttribute => $newAttribute) {
@@ -142,8 +146,7 @@ class DatumImporter extends Command
                 }
                 BranchTranslation::insert($tempTranslation);
             }
-            $this->storeLocation($first, $freshBranch);
-            $this->addSingleImage($freshBranch, 'Dish');
+            $this->storeLocation($oldBranch, $freshBranch);
         }
     }
 
@@ -200,16 +203,16 @@ class DatumImporter extends Command
         $this->addSingleImage($freshProduct, 'Dish');
     }
 
-    private function storeLocation($first, $freshBranch)
+    private function storeLocation($oldBranch, $freshBranch)
     {
         $location = new Location();
         $location->creator_id = $location->editor_id = 1;
         $location->contactable_id = $freshBranch->id;
         $location->contactable_type = Branch::class;
         $location->type = Location::TYPE_CONTACT;
-        $location->name = $first->contact_name;
-        $location->emails = $first->contact_email;
-        $location->phones = $first->contact_phone_1;
+        $location->name = $oldBranch->contact_name;
+        $location->emails = $oldBranch->contact_email;
+        $location->phones = $oldBranch->contact_phone_1;
         $location->save();
     }
 
@@ -223,8 +226,8 @@ class DatumImporter extends Command
     {
         $tempCategory = [
             'uuid' => $this->getUuidString(),
-            'chain_id' => self::DEFAULT_CHAIN,
-            'branch_id' => self::DEFAULT_BRANCH_ID,
+            'chain_id' => ! is_null($oldCategory->chain_id) ? $oldCategory->chain_id : self::DEFAULT_CHAIN,
+            'branch_id' => ! is_null($oldCategory->branch_id) ? $oldCategory->branch_id : self::DEFAULT_BRANCH_ID,
             'creator_id' => self::CREATOR_EDITOR_ID,
             'editor_id' => self::CREATOR_EDITOR_ID,
             'left' => 1,
@@ -238,7 +241,13 @@ class DatumImporter extends Command
             $tempCategory[$newModelKey] = $oldCategory->{$oldModelKey};
         }
 
-        $isInserted = Taxonomy::insert($tempCategory);
+        try {
+            $isInserted = Taxonomy::insert($tempCategory);
+        } catch (\Exception $e) {
+            $this->newLine(2);
+            dd($e->getMessage(), $tempCategory, $this->foodCategories->toArray());
+            $this->newLine(2);
+        }
         if ($isInserted) {
             $freshCategory = Taxonomy::find($oldCategory->id);
             foreach ($oldCategory->translations as $translation) {
@@ -255,8 +264,8 @@ class DatumImporter extends Command
 
     private function importProducts(int $count): void
     {
-        Product::truncate();
-        ProductTranslation::truncate();
+//        Product::truncate();
+//        ProductTranslation::truncate();
         $oldProducts = OldProduct::orderBy('created_at')
                                  ->withCount('categories')
                                  ->where('restaurant_id', self::DEFAULT_RESTAURANT_ID)
@@ -285,8 +294,8 @@ class DatumImporter extends Command
 
     private function importGroceryCategories(): void
     {
-        Taxonomy::truncate();
-        TaxonomyTranslation::truncate();
+//        Taxonomy::truncate();
+//        TaxonomyTranslation::truncate();
         $parentIds = [31, 441, 508, 509, 510, 511, 512, 554, 557, 597, 654, 666];
         $groceryCategories = OldCategory::whereIn('id', $parentIds)->get();
         foreach ($parentIds as $parentId) {
@@ -302,10 +311,26 @@ class DatumImporter extends Command
 
     private function importChains(int $count)
     {
-        $oldChains = OldChain::whereNotIn('id', self::CHAIN_SKIPPED_IDS)->take($count)->get();
+        $oldChains = OldChain::with('branches', 'branches.categories')
+                             ->whereNotIn('id', self::CHAIN_SKIPPED_IDS)
+                             ->take($count)
+                             ->get();
         $this->bar = $this->output->createProgressBar($oldChains->count());
         $this->bar->start();
-        foreach ($oldChains as $oldChain){
+        foreach ($oldChains as $oldChain) {
+            foreach ($oldChain->branches->pluck('categories') as $branchIndex => $categories) {
+                foreach ($categories as $category) {
+                    if (is_null($category->parent_id) && ! $this->foodCategories->has($category->id)) {
+                        $this->foodCategories = $this->foodCategories->put($category->id, $category->id);
+                        $category->chain_id = $oldChain->id;
+                        $category->branch_id = optional($oldChain->branches[$branchIndex])->id;
+                        \Log::info('$category->branch_id is: '.json_encode($category->branch_id));
+                        $this->insertCategory($category);
+                    }
+                }
+            }
+        }
+        foreach ($oldChains as $oldChain) {
             $this->insertFoodChain($oldChain);
             $this->bar->advance();
         }
@@ -324,7 +349,7 @@ class DatumImporter extends Command
         $tempChain['city_id'] = config('defaults.city.id');
         $tempChain['currency_id'] = config('defaults.currency.id');
         $tempChain['type'] = Chain::CHANNEL_FOOD_OBJECT;
-        $tempChain['status'] = $oldChain->status === OldChain::STATUS_ACTIVE ? Chain::STATUS_ACTIVE : Chain::STATUS_INACTIVE;
+        $tempChain['status'] = OldChain::statusesComparing()[$oldChain->status];
         $isInserted = Chain::insert($tempChain);
 
         if ($isInserted) {
@@ -337,8 +362,21 @@ class DatumImporter extends Command
                 }
                 ChainTranslation::insert($tempTranslation);
             }
-//            $this->storeLocation($oldChain, $freshChain);
+            foreach ($oldChain->branches as $oldBranch) {
+                $this->insertBranch($oldBranch, Branch::CHANNEL_FOOD_OBJECT);
+            }
         }
+    }
+
+    public function insertGroceryDefaultBranch(): void
+    {
+//        Branch::truncate();
+//        BranchTranslation::truncate();
+        $this->bar = $this->output->createProgressBar(1);
+        $this->bar->start();
+        $oldBranch = OldBranch::find(self::DEFAULT_BRANCH_ID);
+        $this->insertBranch($oldBranch, Branch::CHANNEL_GROCERY_OBJECT);
+        $this->bar->advance();
     }
 
 }
