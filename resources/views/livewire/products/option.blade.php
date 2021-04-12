@@ -35,7 +35,7 @@
                                     <div class="col-1">
                                         <div class="form-check">
                                             <input class="form-check-input" type="radio" id="is-based-on-ingredients"
-                                                   value="0"
+                                                   value="1"
                                                    wire:model="option.is_based_on_ingredients">
                                             <label class="form-check-label" for="is-based-on-ingredients">
                                                 Yes
@@ -46,7 +46,7 @@
                                         <div class="form-check">
                                             <input class="form-check-input" type="radio"
                                                    id="is-not-based-on-ingredients"
-                                                   value="1"
+                                                   value="0"
                                                    wire:model="option.is_based_on_ingredients"
                                             >
                                             <label class="form-check-label" for="is-not-based-on-ingredients">
@@ -58,7 +58,7 @@
                             </div>
 
                             <div class="form-row">
-                                @if(!$option->is_based_on_ingredients)
+                                @if($option->is_based_on_ingredients)
                                     <div class="form-group col-md-6">
                                         <label class="form-label">Type</label>
                                         <select class="form-control" wire:model="option.type">
@@ -106,18 +106,22 @@
                         <hr>
                         @if($option->is_based_on_ingredients)
                             <div class="form-group">
-                                <label>Ingredients</label>
-
-                                <h4>Start</h4>
-                                <x-input.selectmultiple wire:model="selectedIngredients"
-                                                        prettyname="ingredients"
-                                                        :options="$this->ingredientCategories->first()->ingredientsOfCategory->pluck('title', 'id')->toArray()"
-                                                        :selected="3"/>
-                                <h4>End</h4>
-
+                                <label>Ingredients Section</label>
                                 <div>
                                     Selected IDs: {{ implode(', ',$selectedIngredients) }}
                                 </div>
+
+                                <input type="text" wire:model="search"/>
+
+                                <h4>Ingredients:</h4>
+                                @if($ingredients)
+                                    <ul>
+                                        @foreach($ingredients as $ingredient)
+                                            <li wire:click="selectIngredient({{$ingredient}})">{{ $ingredient->title }}</li>
+                                        @endforeach
+                                    </ul>
+                                @endif
+
                             </div>
                         @else
                             <h6>Selections:</h6>

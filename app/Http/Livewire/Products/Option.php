@@ -14,13 +14,9 @@ class Option extends Component
     public $titleKu;
     public $titleAr;
     public bool $markedAsDeleted = false;
-    public $ingredientCategories;
-
-    public $selectedIngredients = [];
 
     public function mount()
     {
-        $this->ingredientCategories = Taxonomy::ingredientCategories()->get();
         $this->titleEn = optional($this->option->translate('en'))->title;
         $this->titleKu = optional($this->option->translate('ku'))->title;
         $this->titleAr = optional($this->option->translate('ar'))->title;
@@ -44,6 +40,7 @@ class Option extends Component
         $this->option->is_based_on_ingredients = $newValue;
         if ($this->option->is_based_on_ingredients) {
             $this->option->type = ProductOptionModel::TYPE_INCLUDING;
+            $this->updatedSearch('');
         }
         $this->option->save();
 
@@ -169,6 +166,34 @@ class Option extends Component
     }
 
 
+    public $ingredients;
+
+    public $selectedIngredients = [];
+    public $search;
+
+    // Working on Ingredients
+    public function updatedSearch($newValue)
+    {
+        $ingredients = Taxonomy::ingredients();
+        if ( ! is_null($newValue)) {
+            $ingredients = $ingredients->wherehas('translations', function ($query) use ($newValue) {
+                $query->where('title', 'like', '%'.$newValue.'%');
+            })/*->whereNotIn('id', $this->selectedIngredients)*/
+            ;
+        } else {
+            $ingredients = [];
+        }
+        $this->ingredients = $ingredients->get();
+    }
+
+    public function selectIngredient($ingredient)
+    {
+        $this->selectedIngredients[] = [
+            'id' => $ingredient['id'],
+            'title' => $ingredient['title'],
+        ];
+    }
+
     protected $listeners = [
 //        'optionCloned' => 'cloneOption'
         'selectionDeleted' => 'reloadSelections',
@@ -198,4 +223,5 @@ class Option extends Component
 
         $this->option->load('selections');
     }
+
 }
