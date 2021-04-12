@@ -28,18 +28,49 @@
                                     </div>
                                 @endforeach
                             </div>
-                            <div class="form-row">
-                                <div class="form-group col-md-6">
-                                    <label class="form-label">Type</label>
-                                    <select class="form-control" wire:model="option.type">
-                                        <option value="{{\App\Models\ProductOption::TYPE_INCLUDING}}">
-                                            Including
-                                        </option>
-                                        <option value="{{\App\Models\ProductOption::TYPE_EXCLUDING}}">
-                                            Excluding
-                                        </option>
-                                    </select>
+
+                            <div class="form-group">
+                                <h4>Is based on ingredients?</h4>
+                                <div class="row">
+                                    <div class="col-1">
+                                        <div class="form-check">
+                                            <input class="form-check-input" type="radio" id="is-based-on-ingredients"
+                                                   value="0"
+                                                   wire:model="option.is_based_on_ingredients">
+                                            <label class="form-check-label" for="is-based-on-ingredients">
+                                                Yes
+                                            </label>
+                                        </div>
+                                    </div>
+                                    <div class="col-1">
+                                        <div class="form-check">
+                                            <input class="form-check-input" type="radio"
+                                                   id="is-not-based-on-ingredients"
+                                                   value="1"
+                                                   wire:model="option.is_based_on_ingredients"
+                                            >
+                                            <label class="form-check-label" for="is-not-based-on-ingredients">
+                                                No
+                                            </label>
+                                        </div>
+                                    </div>
                                 </div>
+                            </div>
+
+                            <div class="form-row">
+                                @if(!$option->is_based_on_ingredients)
+                                    <div class="form-group col-md-6">
+                                        <label class="form-label">Type</label>
+                                        <select class="form-control" wire:model="option.type">
+                                            <option value="{{\App\Models\ProductOption::TYPE_INCLUDING}}">
+                                                Including
+                                            </option>
+                                            <option value="{{\App\Models\ProductOption::TYPE_EXCLUDING}}">
+                                                Excluding
+                                            </option>
+                                        </select>
+                                    </div>
+                                @endif
                                 <div class="form-group col-md-6">
                                     <label class="form-label">Selection</label>
                                     <select class="form-control" wire:model="option.selection_type">
@@ -73,47 +104,19 @@
                         </form>
 
                         <hr>
-                        @if($option->type != \App\Models\ProductOption::TYPE_EXCLUDING)
+                        @if($option->is_based_on_ingredients)
                             <div class="form-group">
-                                {{--<label>Ingredients</label>
-                                <select wire:model="selectedIngredients"
-                                        data-select-two multiple class="form-control">
-                                    <option vlaue="foo">Foo</option>
-                                    <option vlaue="bar">Bar</option>
-                                    <option vlaue="Baz">Baz</option>
-                                </select>--}}
+                                <label>Ingredients</label>
+
+                                <h4>Start</h4>
+                                <x-input.selectmultiple wire:model="selectedIngredients"
+                                                        prettyname="ingredients"
+                                                        :options="$this->ingredientCategories->first()->ingredientsOfCategory->pluck('title', 'id')->toArray()"
+                                                        :selected="3"/>
+                                <h4>End</h4>
 
                                 <div>
                                     Selected IDs: {{ implode(', ',$selectedIngredients) }}
-                                </div>
-                                <div class="form-row">
-                                    @foreach($this->ingredientCategories as $ingredientCategory)
-                                        <div class="form-group col-12">
-                                            <hr>
-                                            {{--                                            <label class="custom-control custom-checkbox m-0">--}}
-                                            {{--                                                <input type="checkbox" class="custom-control-input">--}}
-                                            {{--                                            <span class="custom-control-label">--}}
-                                            <b>
-                                                {{$ingredientCategory->title}}
-                                            </b>
-                                            {{--                                                </span>--}}
-                                            {{--                                            </label>--}}
-                                            <div class="form-row">
-                                                @foreach($ingredientCategory->ingredientsOfCategory as $ingredient)
-                                                    <div class="form-group col-4">
-                                                        <label class="custom-control custom-checkbox m-0">
-                                                            <input type="checkbox" class="custom-control-input"
-                                                                   value="{{$ingredient->id}}"
-                                                                   wire:model.lazy="selectedIngredients">
-                                                            <span class="custom-control-label">
-                                                                {{$ingredient->title}}
-                                                            </span>
-                                                        </label>
-                                                    </div>
-                                                @endforeach
-                                            </div>
-                                        </div>
-                                    @endforeach
                                 </div>
                             </div>
                         @else

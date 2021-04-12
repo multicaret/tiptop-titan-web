@@ -17,16 +17,15 @@ class CreateProductOptionsTable extends Migration
         Schema::create('product_options', function (Blueprint $table) {
             $table->id();
             $table->unsignedBigInteger('product_id')->index();
-
-            // Todo:
-//            $table->unsignedBigInteger('ingredient_id')->index()->nullable();
-//            $table->foreign('ingredient_id')->references('id')->on('taxonomies')->onDelete('cascade');
+            $table->boolean('is_based_on_ingredients')->default(false);
+            // is_based_on_ingredients == true =>
+            // 1.  Including hard coded.
+            // 2.
             $table->unsignedTinyInteger('type')->default(ProductOption::TYPE_INCLUDING)
                   ->comment('
                     1: Including,
                     2: Excluding,
                   ');
-//            $table->boolean('is_behaviour_method_excluding')->default(false);
             $table->unsignedInteger('max_number_of_selection')->nullable();
             $table->unsignedInteger('min_number_of_selection')->nullable();
             $table->unsignedTinyInteger('selection_type')->default(ProductOption::SELECTION_TYPE_SINGLE_VALUE);

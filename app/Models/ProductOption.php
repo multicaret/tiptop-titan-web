@@ -12,7 +12,7 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
  *
  * @property int $id
  * @property int $product_id
- * @property int $type 
+ * @property int $type
  *                     1: Including,
  *                     2: Excluding,
  * @property int|null $max_number_of_selection
@@ -60,6 +60,10 @@ class ProductOption extends Model
 
     public const SELECTION_TYPE_SINGLE_VALUE = 1;
     public const SELECTION_TYPE_MULTIPLE_VALUE = 2;
+
+    protected $casts = [
+        'is_base_don_ingredients' => 'boolean',
+    ];
 
     /**
      * @return BelongsTo
