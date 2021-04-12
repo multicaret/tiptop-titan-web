@@ -135,18 +135,6 @@ class Option extends Component
         ]);
     }
 
-    public function updatedSelectedIngredients($newValue)
-    {
-//        $this->validate();
-        $this->option->translateOrNew('ku')->title = $newValue;
-        $this->option->save();
-
-        $this->emit('showToast', [
-            'icon' => 'success',
-            'message' => 'Kurdish title has been changed',
-        ]);
-    }
-
 
     public function render()
     {
@@ -168,7 +156,6 @@ class Option extends Component
 
     public $ingredients;
 
-    public $selectedIngredients = [];
     public $search;
 
     // Working on Ingredients
@@ -178,20 +165,24 @@ class Option extends Component
         if ( ! is_null($newValue)) {
             $ingredients = $ingredients->wherehas('translations', function ($query) use ($newValue) {
                 $query->where('title', 'like', '%'.$newValue.'%');
-            })/*->whereNotIn('id', $this->selectedIngredients)*/
-            ;
+            })->whereNotIn('id', $this->option->ingredients->pluck('id'))
+                                       ->get();
         } else {
             $ingredients = [];
         }
-        $this->ingredients = $ingredients->get();
+        $this->ingredients = $ingredients;
     }
 
-    public function selectIngredient($ingredient)
+    public function selectIngredient($id, $title)
     {
-        $this->selectedIngredients[] = [
-            'id' => $ingredient['id'],
-            'title' => $ingredient['title'],
-        ];
+        $this->option->ingredients()->attach($id);
+        $this->updatedSearch($this->search);
+    }
+
+    public function removeIngredient($id)
+    {
+        $this->option->ingredients()->detach($id);
+        $this->updatedSearch($this->search);
     }
 
     protected $listeners = [
