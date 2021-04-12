@@ -31,33 +31,37 @@
 
                             <div class="form-group">
                                 <h4>Is based on ingredients?</h4>
-                                <div class="row">
-                                    <div class="col-1">
-                                        <div class="form-check">
-                                            <input class="form-check-input" type="radio"
-                                                   id="is-based-on-ingredients-{{$option->id}}"
-                                                   value="1"
-                                                   wire:model="option.is_based_on_ingredients">
-                                            <label class="form-check-label"
-                                                   for="is-based-on-ingredients-{{$option->id}}">
-                                                Yes
-                                            </label>
+                                @if($option->ingredients()->count() == 0 && $option->selections()->count() == 0)
+                                    <div class="row">
+                                        <div class="col-1">
+                                            <div class="form-check">
+                                                <input class="form-check-input" type="radio"
+                                                       id="is-based-on-ingredients-{{$option->id}}"
+                                                       value="1"
+                                                       wire:model="option.is_based_on_ingredients">
+                                                <label class="form-check-label"
+                                                       for="is-based-on-ingredients-{{$option->id}}">
+                                                    Yes
+                                                </label>
+                                            </div>
+                                        </div>
+                                        <div class="col-1">
+                                            <div class="form-check">
+                                                <input class="form-check-input" type="radio"
+                                                       id="is-not-based-on-ingredients-{{$option->id}}"
+                                                       value="0"
+                                                       wire:model="option.is_based_on_ingredients"
+                                                >
+                                                <label class="form-check-label"
+                                                       for="is-not-based-on-ingredients-{{$option->id}}">
+                                                    No
+                                                </label>
+                                            </div>
                                         </div>
                                     </div>
-                                    <div class="col-1">
-                                        <div class="form-check">
-                                            <input class="form-check-input" type="radio"
-                                                   id="is-not-based-on-ingredients-{{$option->id}}"
-                                                   value="0"
-                                                   wire:model="option.is_based_on_ingredients"
-                                            >
-                                            <label class="form-check-label"
-                                                   for="is-not-based-on-ingredients-{{$option->id}}">
-                                                No
-                                            </label>
-                                        </div>
-                                    </div>
-                                </div>
+                                @else
+                                    <em>You've to delete all selections/ingredients first</em>
+                                @endif
                             </div>
 
                             <div class="form-row">
