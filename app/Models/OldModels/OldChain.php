@@ -3,6 +3,7 @@
 namespace App\Models\OldModels;
 
 
+use App\Models\Chain;
 use Astrotomic\Translatable\Translatable;
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Builder;
@@ -48,6 +49,8 @@ use Illuminate\Database\Eloquent\Model;
  * @method static Builder|OldChain whereZohoId($value)
  * @method static Builder|OldChain withTranslation()
  * @mixin \Eloquent
+ * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\OldModels\OldBranch[] $branches
+ * @property-read int|null $branches_count
  */
 class OldChain extends OldModel
 {
@@ -71,6 +74,19 @@ class OldChain extends OldModel
             'app_percentage' => 'restaurant_app_percentage',
             'created_at' => 'created_at',
             'updated_at' => 'updated_at',
+        ];
+    }
+
+    public function branches() {
+        return $this->hasMany(OldBranch::class, 'restaurant_id');
+    }
+
+    public static function statusesComparing(): array
+    {
+        return [
+            self::STATUS_ACTIVE => Chain::STATUS_ACTIVE,
+            self::STATUS_DISABLED => Chain::STATUS_DRAFT,
+            self::STATUS_SUSPENDED => Chain::STATUS_INACTIVE,
         ];
     }
 }

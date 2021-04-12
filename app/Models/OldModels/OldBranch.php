@@ -3,10 +3,9 @@
 namespace App\Models\OldModels;
 
 
+use App\Models\Branch;
 use Astrotomic\Translatable\Translatable;
-use Carbon\Carbon;
-use Illuminate\Database\Eloquent\Builder;
-use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 
 /**
  * App\Models\OldModels\OldBranch
@@ -122,6 +121,8 @@ use Illuminate\Database\Eloquent\Model;
  * @method static \Illuminate\Database\Eloquent\Builder|OldBranch whereZohoTiptopDeliveryItemId($value)
  * @method static \Illuminate\Database\Eloquent\Builder|OldBranch withTranslation()
  * @mixin \Eloquent
+ * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\OldModels\OldCategory[] $categories
+ * @property-read int|null $categories_count
  */
 class OldBranch extends OldModel
 {
@@ -129,25 +130,60 @@ class OldBranch extends OldModel
 
     protected $table = 'jo3aan_branches';
     protected $primaryKey = 'id';
-    protected $with = ['translations'];
+    protected $with = ['translations', 'categories'];
     protected $translationForeignKey = 'branch_id';
     protected array $translatedAttributes = ['title_suffex', 'description'];
 
+    public const STATUS_ACTIVE = 'ACTIVE';
+    public const STATUS_DISABLED = 'DISABLED';
+    public const STATUS_SUSPENDED = 'SUSPENDED';
 
-    public static function attributesComparing(): array
+    public function attributesComparing($type): array
     {
-        return [
+        $attributesKeys = [
             'id' => 'id',
             'app_minimun_order' => 'minimum_order',
-            'delivery_fee' => 'fixed_delivery_fee',
-            'latitude' => 'latitude',
-            'longitude' => 'longitude',
             'rating' => 'avg_rating',
             'rating_count' => 'rating_count',
             'created_at' => 'created_at',
             'updated_at' => 'updated_at',
             'contact_phone_1' => 'primary_phone_number',
             'contact_phone_2' => 'secondary_phone_number',
+        ];
+
+        if ($type === Branch::CHANNEL_GROCERY_OBJECT) {
+            $attributesKeys = array_merge($attributesKeys, ['delivery_fee' => 'fixed_delivery_fee']);
+        }
+        if ($type === Branch::CHANNEL_FOOD_OBJECT) {
+            $attributesKeys = array_merge($attributesKeys, [
+                'app_delivery_fee' => 'fixed_delivery_fee',
+                'delivery_fee' => 'restaurant_fixed_delivery_fee',
+                'delivery_time' => 'min_delivery_minutes',
+                'app_delivery_time' => 'restaurant_min_delivery_minutes',
+            ]);
+        }
+
+        if (self::validateLatLong($this->latitude, $this->longitude)) {
+            $attributesKeys = array_merge($attributesKeys, [
+                'latitude' => 'latitude',
+                'longitude' => 'longitude'
+            ]);
+        }
+
+        return $attributesKeys;
+    }
+
+    public function categories(): BelongsToMany
+    {
+        return $this->belongsToMany(OldCategory::class, 'jo3aan_branches_categories', 'branch_id', 'category_id');
+    }
+
+    public static function statusesComparing(): array
+    {
+        return [
+            self::STATUS_ACTIVE => Branch::STATUS_ACTIVE,
+            self::STATUS_DISABLED => Branch::STATUS_DRAFT,
+            self::STATUS_SUSPENDED => Branch::STATUS_INACTIVE,
         ];
     }
 }

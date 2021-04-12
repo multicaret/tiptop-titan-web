@@ -14,3 +14,8 @@ Content-Type: application/json
 GET {{host}}/{{locale}}/api/v1/search/products?q=Cappy Puply
 Accept: application/json
 Content-Type: application/json
+
+### search restaurants
+GET {{host}}/{{locale}}/api/v1/search/restaurants?q=Taco
+Accept: application/json
+Content-Type: application/json

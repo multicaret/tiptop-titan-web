@@ -51,6 +51,8 @@ class DatabaseSeeder extends Seeder
             echo Artisan::output();
             Artisan::call('datum:importer Product');
             echo Artisan::output();
+            Artisan::call('datum:importer Chain-Food');
+            echo Artisan::output();
             $this->lastTaxonomyId = Taxonomy::latest()->first()->id;
             $this->lastBranchId = Branch::latest()->first()->id;
         }
@@ -80,8 +82,8 @@ class DatabaseSeeder extends Seeder
         $this->slides($super);
         $this->taxonomies($super);
         $this->chains($super);
-        $this->branches($super);
-        $this->products($super);
+//        $this->branches($super);
+//        $this->products($super);
         $this->paymentMethods($super);
         $this->ingredientsCategories($super);
 

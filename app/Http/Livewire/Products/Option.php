@@ -1,31 +1,29 @@
 <?php
 
-namespace App\Http\Livewire;
+namespace App\Http\Livewire\Products;
 
+use App\Models\ProductOption as ProductOptionModel;
 use App\Models\ProductOptionSelection as ProductOptionSelectionModel;
 use App\Models\Taxonomy;
 use Livewire\Component;
 
-class ProductOption extends Component
+class Option extends Component
 {
     public $option;
     public $titleEn;
     public $titleKu;
     public $titleAr;
     public bool $markedAsDeleted = false;
-    public $ingredientCategories;
-
-    public $selectedIngredients =[];
 
     public function mount()
     {
-        $this->ingredientCategories = Taxonomy::ingredientCategories()->get();
         $this->titleEn = optional($this->option->translate('en'))->title;
         $this->titleKu = optional($this->option->translate('ku'))->title;
         $this->titleAr = optional($this->option->translate('ar'))->title;
     }
 
     protected $rules = [
+        'option.is_based_on_ingredients' => 'required|numeric',
         'option.type' => 'required|numeric',
         'option.selection_type' => 'required|numeric',
         'option.min_number_of_selection' => 'nullable|numeric',
@@ -35,6 +33,22 @@ class ProductOption extends Component
         'titleAr' => 'string',
     ];
 
+
+    public function updatedIsBasedOnIngredients($newValue)
+    {
+//        $this->validate();
+        $this->option->is_based_on_ingredients = $newValue;
+        if ($this->option->is_based_on_ingredients) {
+            $this->option->type = ProductOptionModel::TYPE_INCLUDING;
+            $this->updatedSearch('');
+        }
+        $this->option->save();
+
+        $this->emit('showToast', [
+            'icon' => 'success',
+            'message' => '"Is based on ingredients" has been changed',
+        ]);
+    }
 
     public function updatedOptionType($newValue)
     {
@@ -121,18 +135,6 @@ class ProductOption extends Component
         ]);
     }
 
-    public function updatedSelectedIngredients($newValue)
-    {
-//        $this->validate();
-        $this->option->translateOrNew('ku')->title = $newValue;
-        $this->option->save();
-
-        $this->emit('showToast', [
-            'icon' => 'success',
-            'message' => 'Kurdish title has been changed',
-        ]);
-    }
-
 
     public function render()
     {
@@ -151,6 +153,37 @@ class ProductOption extends Component
         $this->emitUp('optionDeleted', ['optionId' => optional($this->option)->id]);
     }
 
+
+    public $ingredients;
+
+    public $search;
+
+    // Working on Ingredients
+    public function updatedSearch($newValue)
+    {
+        $ingredients = Taxonomy::ingredients();
+        if ( ! is_null($newValue)) {
+            $ingredients = $ingredients->wherehas('translations', function ($query) use ($newValue) {
+                $query->where('title', 'like', '%'.$newValue.'%');
+            })->whereNotIn('id', $this->option->ingredients->pluck('id'))
+                                       ->get();
+        } else {
+            $ingredients = [];
+        }
+        $this->ingredients = $ingredients;
+    }
+
+    public function selectIngredient($id, $title)
+    {
+        $this->option->ingredients()->attach($id);
+        $this->updatedSearch($this->search);
+    }
+
+    public function removeIngredient($id)
+    {
+        $this->option->ingredients()->detach($id);
+        $this->updatedSearch($this->search);
+    }
 
     protected $listeners = [
 //        'optionCloned' => 'cloneOption'
@@ -181,4 +214,5 @@ class ProductOption extends Component
 
         $this->option->load('selections');
     }
+
 }
