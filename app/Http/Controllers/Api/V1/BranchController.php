@@ -114,7 +114,7 @@ class BranchController extends BaseApiController
             $longitude = $selectedAddress->longitude;
         }
 
-        $branches->selectRaw('branches.id, DISTANCE_BETWEEN(latitude,longitude,?,?) as distance',
+        $branches->selectRaw('branches.*, DISTANCE_BETWEEN(latitude,longitude,?,?) as distance',
             [$latitude, $longitude])
                  ->orderBy('distance');
 

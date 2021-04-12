@@ -5,6 +5,7 @@ namespace App\Models;
 use Astrotomic\Translatable\Translatable;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 
 /**
@@ -81,6 +82,15 @@ class ProductOption extends Model
     public function selections(): HasMany
     {
         return $this->hasMany(ProductOptionSelection::class);
+    }
+
+    /**
+     * @return BelongsToMany
+     */
+    public function ingredients(): BelongsToMany
+    {
+        return $this->belongsToMany(Taxonomy::class, 'product_option_ingredient', 'product_option_id', 'ingredient_id')
+            ->withTimestamps();
     }
 
 }

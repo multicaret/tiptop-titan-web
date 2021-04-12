@@ -207,6 +207,9 @@ class OrderController extends BaseApiController
 
         if ( ! is_null($couponRedeemCode = $request->input('coupon_redeem_code'))) {
             $coupon = Coupon::where('redeem_code', $couponRedeemCode)->first();
+            if (is_null($coupon)) {
+                return $this->respondWithMessage("There is no such coupon code($couponRedeemCode)");
+            }
 
             [
                 $isExpirationDateAndUsageValid, $validationExpirationAndUsageMessage

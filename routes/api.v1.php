@@ -17,7 +17,7 @@ Route::middleware('throttle:15')
 
          // Food related
          Route::get('restaurants/filter', 'BranchController@filterCreate')->name('branches.filter');
-         Route::get('restaurants', 'BranchController@index')->name('branches.index');
+         Route::post('restaurants', 'BranchController@index')->name('branches.index');
          Route::get('restaurants/{restaurant}', 'BranchController@show')->name('branches.show');
 
 
