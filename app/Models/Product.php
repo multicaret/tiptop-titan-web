@@ -277,7 +277,6 @@ class Product extends Model implements HasMedia
                     ->withTimestamps();
     }
 
-    /*Todo: to @Ghaith This shouldn't be a M2M relations, right? */
     public function options(): HasMany
     {
         return $this->hasMany(ProductOption::class);
