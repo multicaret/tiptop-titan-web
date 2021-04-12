@@ -17,28 +17,35 @@ class SearchController extends BaseApiController
     public function index(Request $request)
     {
         $validationRules = [
-            'chain_id' => 'required',
-            'branch_id' => 'required',
+            'channel' => 'required',
         ];
+        $isGroceryChannel = $request->input('channel') == config('app.app-channels.grocery');
+        if ($isGroceryChannel) {
+            $validationRules['chain_id'] = 'required';
+            $validationRules['branch_id'] = 'required';
+        }
 
         $validator = validator()->make($request->all(), $validationRules);
         if ($validator->fails()) {
             return $this->respondValidationFails($validator->errors());
         }
 
-        $chainId = $request->input('chain_id');
-        $branchId = $request->input('branch_id');
+        $search = Search::whereLocale(localization()->getCurrentLocale());
+        if ($isGroceryChannel) {
+            $search = $search->whereChainId($request->input('chain_id'))
+                             ->whereBranchId($request->input('branch_id'))
+                             ->where('type', Search::CHANNEL_GROCERY_OBJECT);
+        } else {
+            $search = $search->where('type', Search::CHANNEL_FOOD_OBJECT);
+        }
 
-        $terms = Search::whereChainId($chainId)
-                       ->whereBranchId($branchId)
-                       ->whereLocale(localization()->getCurrentLocale())
-                       ->orderByDesc('count')
-                       ->latest()
-                       ->take(5)
-                       ->get();
+        $search = $search->orderByDesc('count')
+                         ->latest()
+                         ->take(5)
+                         ->get();
 
         return $this->respond([
-            'terms' => SearchResource::collection($terms),
+            'terms' => SearchResource::collection($search),
         ]);
     }
 
