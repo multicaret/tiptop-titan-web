@@ -172,9 +172,9 @@ class ProductController extends Controller
     {
         if (is_null($product->id)) {
             if ($product->type == Product::CHANNEL_GROCERY_OBJECT) {
-                $product->chain_id = Chain::groceries()->first()->id;
+                $product->chain_id = optional(Chain::groceries()->first())->id;
             } else {
-                $product->chain_id = Chain::foods()->first()->id;
+                $product->chain_id = optional(Chain::foods()->first())->id;
             }
             if ($request->has('branch_id') && ! is_null($request->input('branch_id'))) {
                 $product->branch_id = Branch::find($request->input('branch_id'))->id;

@@ -61,6 +61,10 @@ class ProductOption extends Model
     public const SELECTION_TYPE_SINGLE_VALUE = 1;
     public const SELECTION_TYPE_MULTIPLE_VALUE = 2;
 
+    protected $casts = [
+        'is_base_don_ingredients' => 'boolean',
+    ];
+
     /**
      * @return BelongsTo
      */
