@@ -32,64 +32,98 @@
         @if(!is_null($product->id))
             {{method_field('put')}}
         @endif
-        <div class="row mb-4">
-            <div class="col-md-{{\App\Models\Product::isFood() ? '12' : '9'}}">
+        <div class="row mb-2">
+            <div class="col-md-12">
                 <div class="col-12">
-                    <ul class="nav nav-tabs border-bottom-0">
-                        @foreach(localization()->getSupportedLocales() as $key => $locale)
-                            <li class="nav-item">
-                                <a class="nav-link {{ $key == localization()->getDefaultLocale() ? 'active' : '' }}"
-                                   data-toggle="tab"
-                                   href="#title_{{$key}}">
-                                    <span class="hidden-sm-up"><i class="ti-home"></i></span>
-                                    <span class="hidden-xs-down">{{$locale->native()}}</span>
-                                </a>
-                            </li>
-                        @endforeach
-                    </ul>
-                    <div class="tab-content card card-outline-inverse">
+                    <div class="row">
                         @foreach(localization()->getSupportedLocales() as $langKey => $locale)
-                            <div
-                                class="tab-pane {{ $langKey == localization()->getDefaultLocale() ? 'active' : '' }}"
-                                id="title_{{$langKey}}">
-                                <div class="card-body pb-0">
-                                    <div class="row p-t-20 pt-2">
-                                        @foreach($translatedInputs as $input => $type)
-                                            @if($type === 'editor')
-                                                <div class="col-md-6">
-                                                    <x-admin.textarea :id="$langKey.'-'. $input"
-                                                                      :name="$langKey.'['.$input.']'"
-                                                                      :label="$input"
-                                                                      :content="optional($product->translate($langKey))->$input"/>
-                                                </div>
-                                            @else
-                                                <div class="col-md-{{$input === 'title' ? '12' : '6'}}">
-                                                    @component('admin.components.form-group', ['name' => $langKey .'['.$input.']', 'type' => $type])
-                                                        @slot('label', trans('strings.'. $input))
-                                                        @if(! is_null($product->id))
-                                                            @slot('value', optional($product->translate($langKey))->$input)
-                                                        @endif
-                                                    @endcomponent
-                                                </div>
-                                            @endif
-                                        @endforeach
+                            <div class="col-md-4 mt-4">
+                                <div class="card card-outline-inverse">
+                                    <h4 class="card-header">{{Str::upper($langKey)}}</h4>
+                                    <div class="card-body row">
+                                        <div class="col-md-12">
+                                            @component('admin.components.form-group', ['name' => $langKey .'[title]', 'type' => 'text'])
+                                                @slot('label', trans('strings.title'))
+                                                @if(! is_null($product->id))
+                                                    @slot('value', optional($product->translate($langKey))->title)
+                                                @endif
+                                            @endcomponent
+                                        </div>
+                                        <div class="col-md-12">
+                                            @component('admin.components.form-group', ['name' => $langKey .'[description]', 'type' => 'textarea'])
+                                                @slot('label', 'Description')
+                                                @slot('attributes', [
+                                                        'rows' => 2,
+                                                        ])
+                                                @if(! is_null($product->id))
+                                                    @slot('value', optional($product->translate($langKey))->description)
+                                                @endif
+                                            @endcomponent
+                                        </div>
+                                        <div class="col-md-12">
+                                            @component('admin.components.form-group', ['name' => $langKey .'[notes]', 'type' => 'textarea'])
+                                                @slot('label', 'Notes')
+                                                @slot('attributes', [
+                                                        'rows' => 2,
+                                                        ])
+                                                @if(! is_null($product->id))
+                                                    @slot('value', optional($product->translate($langKey))->notes)
+                                                @endif
+                                            @endcomponent
+                                        </div>
+                                        <div class="col-md-12">
+                                            @component('admin.components.form-group', ['name' => $langKey .'[custom_banner_text]', 'type' => 'text'])
+                                                @slot('label', trans('strings.custom_banner_text'))
+                                                @if(! is_null($product->id))
+                                                    @slot('value', optional($product->translate($langKey))->custom_banner_text)
+                                                @endif
+                                            @endcomponent
+                                        </div>
                                     </div>
                                 </div>
                             </div>
                         @endforeach
                     </div>
                 </div>
+
+                {{--<div class="col-md-12 mt-2">
+                    <div class="card card-outline-inverse">
+                        <h4 class="card-header">Style</h4>
+                        <div class="card-body">
+                            <div class="row">
+                                <div class="col-md-6">
+                                    @component('admin.components.form-group', ['name' => 'primary_color', 'type' => 'color'])
+                                        @slot('label', 'Primary color')
+                                        @slot('value', is_null($product->primary_color)? '#FEC63D' : $product->primary_color)
+                                    @endcomponent
+                                </div>
+                                <div class="col-md-6">
+                                    @component('admin.components.form-group', ['name' => 'secondary_color', 'type' => 'color'])
+                                        @slot('label', 'Secondary color')
+                                        @slot('value', is_null($product->secondary_color)? '#4E5155' : $product->secondary_color)
+                                    @endcomponent
+                                </div>
+                                <div class="col-md-6">
+                                    @component('admin.components.form-group', ['name' => 'number_of_items_on_mobile_grid_view', 'type' => 'number'])
+                                        @slot('label', 'Number of items on mobile grid view')
+                                        @slot('value', $product->number_of_items_on_mobile_grid_view)
+                                    @endcomponent
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>--}}
                 <div class="col-md-12 mt-2">
 
                     <div class="card card-outline-inverse">
-                        <h4 class="card-header">Selectors</h4>
+                        <h4 class="card-header">Details</h4>
                         <div class="card-body">
                             <div class="row">
                                 @if(!request()->has('branch_id'))
                                     <div class="col-6">
                                         <div class="form-group">
                                             <label class="control-label">
-                                                @lang('strings.chain')
+                                                @lang('strings.chain') <b class="text-danger">*</b>
                                             </label>
                                             <multiselect
                                                 :options="chains"
@@ -105,13 +139,14 @@
                                                 @input="getBranches"
                                                 @select="selectChain"
                                                 autocomplete="false"
+                                                required
                                             ></multiselect>
                                         </div>
                                     </div>
                                     <div class="col-6">
                                         <div class="form-group">
                                             <label class="control-label">
-                                                @lang('strings.branch')
+                                                @lang('strings.branch') <b class="text-danger">*</b>
                                             </label>
                                             <multiselect
                                                 :options="branches"
@@ -127,46 +162,47 @@
                                                 :preselect-first="true"
                                                 placeholder=""
                                                 autocomplete="false"
+                                                required
                                             ></multiselect>
                                         </div>
                                     </div>
                                 @endif
-                                @isset($allInputs['category_id'])
-                                    <div class="col-6">
-                                        <div class="form-group">
-                                            <label class="control-label">
-                                                @lang('strings.menu-categories')&nbsp;<b class="text-danger">*</b>
-                                            </label>
-                                            <multiselect
-                                                :options="categories"
-                                                v-model="product.categories"
-                                                track-by="id"
-                                                label="title"
-                                                name="categories"
-                                                :searchable="true"
-                                                :allow-empty="true"
-                                                select-label=""
-                                                selected-label=""
-                                                deselect-label=""
-                                                placeholder=""
-                                                autocomplete="false"
-                                                required
-                                            ></multiselect>
-                                        </div>
+                                <div
+                                    class="col-{{$product->type == \App\Models\Product::CHANNEL_GROCERY_OBJECT ? "6" : "12"}}">
+                                    <div class="form-group">
+                                        <label class="control-label">
+                                            @lang('strings.menu-category')&nbsp;<b class="text-danger">*</b>
+                                        </label>
+                                        <multiselect
+                                            :options="categories"
+                                            v-model="product.categories"
+                                            track-by="id"
+                                            label="title"
+                                            name="categories"
+                                            :multiple="isGrocery"
+                                            :searchable="true"
+                                            :allow-empty="true"
+                                            select-label=""
+                                            selected-label=""
+                                            deselect-label=""
+                                            placeholder=""
+                                            autocomplete="false"
+                                            required
+                                        ></multiselect>
                                     </div>
-                                @endisset
-                                @isset($allInputs['unit_id'])
+                                </div>
+                                @if($product->type == \App\Models\Product::CHANNEL_GROCERY_OBJECT)
                                     <div class="col-6">
                                         <div class="form-group">
                                             <label class="control-label">
-                                                @lang('strings.units')
+                                                @lang('strings.units') <b class="text-danger">*</b>
                                             </label>
                                             <multiselect
                                                 :options="units"
-                                                v-model="selectedUnit"
+                                                v-model="product.unit"
                                                 track-by="id"
                                                 label="title"
-                                                name="unit_id"
+                                                name="unit"
                                                 :searchable="true"
                                                 :allow-empty="true"
                                                 select-label=""
@@ -178,7 +214,79 @@
                                             ></multiselect>
                                         </div>
                                     </div>
-                                @endisset
+                                @endif
+                                <div class="col-3">
+                                    @component('admin.components.form-group', ['name' =>'price_discount_began_at', 'type' => 'datetime-local'])
+                                        @slot('label', trans('strings.discount_begins_at'))
+                                        @slot('value', \Carbon\Carbon::parse($product->price_discount_began_at))
+                                        @slot('attributes',[])
+                                    @endcomponent
+                                </div>
+                                <div class="col-3">
+                                    @component('admin.components.form-group', ['name' =>'price_discount_finished_at', 'type' => 'datetime-local'])
+                                        @slot('label', trans('strings.discount_ends_at'))
+                                        @slot('value', \Carbon\Carbon::parse($product->price_discount_finished_at))
+                                        @slot('attributes',[])
+                                    @endcomponent
+                                </div>
+                                <div class="col-3">
+                                    @component('admin.components.form-group', ['name' =>'custom_banner_began_at', 'type' => 'datetime-local'])
+                                        @slot('label', trans('strings.banner_begins_at'))
+                                        @slot('value', \Carbon\Carbon::parse($product->custom_banner_began_at))
+                                        @slot('attributes',[])
+                                    @endcomponent
+                                </div>
+                                <div class="col-3">
+                                    @component('admin.components.form-group', ['name' =>'custom_banner_ended_at', 'type' => 'datetime-local'])
+                                        @slot('label', trans('strings.banner_ends_at'))
+                                        @slot('value', \Carbon\Carbon::parse($product->custom_banner_ended_at))
+                                        @slot('attributes',[])
+                                    @endcomponent
+                                </div>
+                                <div class="col-md-3">
+                                    @component('admin.components.form-group', ['name' => 'available_quantity', 'type' => 'number'])
+                                        @slot('label', trans('strings.available_quantity'))
+                                        @slot('attributes', ['placeholder' => '24'])
+                                        @if(! is_null($product->id))
+                                            @slot('value', $product->available_quantity)
+                                        @endif
+                                    @endcomponent
+                                </div>
+                                <div class="col-md-3">
+                                    @component('admin.components.form-group', ['name' => 'maximum_orderable_quantity', 'type' => 'number'])
+                                        @slot('label', trans('strings.maximum_orderable_quantity'))
+                                        @slot('attributes', ['placeholder' => '5'])
+                                        @if(! is_null($product->id))
+                                            @slot('value', $product->maximum_orderable_quantity)
+                                        @endif
+                                    @endcomponent
+                                </div>
+                                <div class="col-md-3">
+                                    @component('admin.components.form-group', ['name' => 'price', 'type' => 'number'])
+                                        @slot('label', trans('strings.price'))
+                                        @slot('attributes', ['required', 'placeholder' => '5000'])
+                                        @if(! is_null($product->id))
+                                            @slot('value', $product->price)
+                                        @endif
+                                    @endcomponent
+                                </div>
+                                <div class="col-md-3">
+                                    @component('admin.components.form-group', ['name' => 'price_discount_amount', 'type' => 'number'])
+                                        @slot('label', trans('strings.discount_amount'))
+                                        @slot('attributes', ['required', 'placeholder' => '5000'])
+                                        @if(! is_null($product->id))
+                                            @slot('value', $product->price_discount_amount)
+                                        @endif
+                                    @endcomponent
+                                </div>
+                                <div class="col-md-3 offset-md-9">
+                                    @component('admin.components.form-group', ['name' => 'price_discount_by_percentage', 'type' => 'checkbox'])
+                                        @slot('label', trans('strings.discount_by_percentage'))
+                                        @if(! is_null($product->id))
+                                            @slot('checked', $product->price_discount_by_percentage)
+                                        @endif
+                                    @endcomponent
+                                </div>
                                 <div class="col-6">
                                     @component('admin.components.form-group', ['name' => 'status', 'type' => 'select'])
                                         @slot('label', trans('strings.status'))
@@ -187,91 +295,72 @@
                                         @slot('selected', $product->status)
                                     @endcomponent
                                 </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="col-md-12 mt-2">
-
-                    <div class="card card-outline-inverse">
-                        <h4 class="card-header">Details</h4>
-                        <div class="card-body">
-                            <div class="row">
-                                @foreach($allInputs as $input => $type)
-                                    @if($type !== 'select')
-                                        <div
-                                            class="{{$input == 'available_quantity' || $input == 'minimum_orderable_quantity' || $input == 'maximum_orderable_quantity'? 'col-6' : 'col-6'}}">
-                                            @component('admin.components.form-group', ['name' => $input, 'type' => $type])
-                                                @slot('label', trans('strings.'. $input))
-                                                @if(! is_null($product->id) && $type === config('defaults.db_column_types.boolean'))
-                                                    @slot('attributes',$product->$input ? ['checked']: [''])
-                                                @endif
-                                                @if(! is_null($product->id))
-                                                    @slot('value',$type === config('defaults.db_column_types.datetime') ? Carbon\Carbon::parse($product->$input)  : $product->$input)
-                                                @endif
-                                            @endcomponent
-                                        </div>
-                                    @endif
-                                @endforeach
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            @if(\App\Models\Product::isGrocery())
-                <div class="col-md-3" style="margin-top: 2.2rem !important;">
-                    <div class="row">
-                        <div class="col-md-12 mt-2">
-                            <div class="card card-outline-inverse">
-                                <h4 class="card-header">Cover</h4>
-                                <div class="card-body">
-                                    <div class="row">
-                                        <div class="col-12">
-                                            {{--                                        <h5>Cover</h5>--}}
-                                            @component('admin.components.form-group', ['name' => 'cover', 'type' => 'file'])
-                                                @slot('attributes', [
-                                                    'class' => 'cover-uploader',
-                                                    'accept' => '.jpg, .jpeg, .png, .bmp',
-                                                    'dropzone' => 'media-list',
-                                                    'data-fileuploader-listInput' => 'media-list',
-                                                    'data-fileuploader-extensions' => 'jpg, jpeg, png, bmp',
-                                                    'data-fileuploader-files' => json_encode($product->getMediaForUploader('cover'), JSON_UNESCAPED_UNICODE),
-                                                ])
-                                            @endcomponent
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            @endif
-            <div class="col-md-12 mt-2">
-                <div class="card card-outline-inverse">
-                    <h4 class="card-header">Gallery</h4>
-                    <div class="card-body">
-                        <div class="row">
-                            <div class="col-12">
-                                {{--                                        <h5>Gallery</h5>--}}
-                                @component('admin.components.form-group', ['name' => 'gallery', 'type' => 'file'])
-                                    @slot('attributes', [
-                                        'label'=> 'Gallery',
-                                        'class' => 'images-uploader',
-                                        'accept' => '.jpg, .jpeg, .png, .bmp',
-                                        'dropzone' => 'media-list',
-                                        'data-fileuploader-listInput' => 'media-list',
-                                        'data-fileuploader-extensions' => 'jpg, jpeg, png, bmp',
-                                        'data-fileuploader-files' => !is_null($product->id) && !is_null($gallery = $product->getMediaForUploader('gallery'))? json_encode($gallery, JSON_UNESCAPED_UNICODE) : null,
-                                    ])
-                                @endcomponent
+                                <span class="input-group-text">
+                                    Is Storage Tracking Enabled
+                                    <label class="switcher switcher-primary m-3">
+                                        <input type="checkbox" class="switcher-input"
+                                               name="is_storage_tracking_enabled" {{$product->is_storage_tracking_enabled ? 'checked' : ''}}>
+                                        <span class="switcher-indicator">
+                                            <span class="switcher-yes">
+                                                <span class="ion ion-md-checkmark"></span>
+                                            </span>
+                                            <span class="switcher-no">
+                                                <span class="ion ion-md-close"></span>
+                                            </span>
+                                        </span>
+                                    </label>
+                                    <input type="hidden" name="is_storage_tracking_enabled" value="1">
+                                </span>
                             </div>
                         </div>
                     </div>
                 </div>
             </div>
         </div>
-
+        <div class="col-md-6">
+            <div class="row mb-4">
+                <div class="col-md-12">
+                    <div class="card card-outline-inverse">
+                        <h4 class="card-header">Photos</h4>
+                        <div class="card-body">
+                            <div class="row">
+                                @if($product->type == \App\Models\Product::CHANNEL_FOOD_OBJECT)
+                                    <div class="col-6">
+                                        <h5>Cover</h5>
+                                        @component('admin.components.form-group', ['name' => 'cover', 'type' => 'file'])
+                                            @slot('attributes', [
+                                                'class' => 'cover-uploader',
+                                                'accept' => '.jpg, .jpeg, .png, .bmp',
+                                                'dropzone' => 'media-list',
+                                                'data-fileuploader-listInput' => 'media-list',
+                                                'data-fileuploader-extensions' => 'jpg, jpeg, png, bmp',
+                                                'data-fileuploader-files' => json_encode($product->getMediaForUploader('cover'), JSON_UNESCAPED_UNICODE),
+                                            ])
+                                        @endcomponent
+                                    </div>
+                                @endif
+                                @if($product->type == \App\Models\Product::CHANNEL_GROCERY_OBJECT)
+                                    <div class="col-12">
+                                        <h5>Gallery</h5>
+                                        @component('admin.components.form-group', ['name' => 'gallery', 'type' => 'file'])
+                                            @slot('attributes', [
+                                                'label'=> 'Gallery',
+                                                'class' => 'images-uploader',
+                                                'accept' => '.jpg, .jpeg, .png, .bmp',
+                                                'dropzone' => 'media-list',
+                                                'data-fileuploader-listInput' => 'media-list',
+                                                'data-fileuploader-extensions' => 'jpg, jpeg, png, bmp',
+                                                'data-fileuploader-files' => !is_null($product->id) && !is_null($gallery = $product->getMediaForUploader('gallery'))? json_encode($gallery, JSON_UNESCAPED_UNICODE) : null,
+                                            ])
+                                        @endcomponent
+                                    </div>
+                                @endif
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
         <div class="col-md-12">
             @if(request()->has('branch_id'))
                 <input type="hidden" name="chain_id" value="{{request()->chain_id}}">
@@ -281,7 +370,7 @@
                 <input type="hidden" name="branch" :value="JSON.stringify(product.branch)">
             @endif
             <input type="hidden" name="categories" :value="JSON.stringify(product.categories)">
-            <input type="hidden" name="unit_id" :value="JSON.stringify(selectedUnit)">
+            <input type="hidden" name="unit_id" :value="JSON.stringify(product.unit)">
             <input type="hidden" name="unattached-media" class="deleted-file" value="">
             <button class="btn btn-success" type="submit">{{trans('strings.submit')}}</button>
         </div>
@@ -292,21 +381,16 @@
 @push('scripts')
     <script src="{{ asset('/admin-assets/libs/quill/quill.js') }}"></script>
     <script src="/admin-assets/libs/select2/select2.js"></script>
-
     <script>
         new Vue({
             el: '#vue-app',
             data: {
                 product: @json($product),
                 chains: @json($chains),
-                selectedChain: null,
                 branches: @json($branches),
-                selectedBranch: null,
                 categories: @json($categories),
-                selectedCategories: null,
                 units: @json($units),
-                selectedUnit: @json(!is_null($product->unit) ? $product->unit : null),
-                allInputs: @json($allInputs)
+                isGrocery: @json($product->type == \App\Models\Product::CHANNEL_GROCERY_OBJECT),
             },
             beforeMount() {
             },
@@ -360,5 +444,4 @@
             },
         })
     </script>
-
 @endpush

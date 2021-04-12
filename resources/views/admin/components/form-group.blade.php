@@ -63,7 +63,7 @@
                         array_merge(['class' => 'form-check-input', 'id' => $name], $attributes ?? [])
                     ); !!}
                     <div class="form-check-label">
-                        {{ Form::label($name, isset($label) ? $label .' &nbsp;' . $labelPostfix : ' ' . $labelPostfix, ['class' => '']) }}
+                        {{ Form::label($name, $label .' &nbsp;'. $labelPostfix, ['class' => 'control-label form-control-label'],false) }}
                     </div>
                 </div>
 

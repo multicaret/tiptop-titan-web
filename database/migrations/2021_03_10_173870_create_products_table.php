@@ -20,7 +20,7 @@ class CreateProductsTable extends Migration
             $table->unsignedBigInteger('creator_id');
             $table->unsignedBigInteger('editor_id')->index();
             $table->unsignedBigInteger('chain_id')->index();
-            $table->unsignedBigInteger('branch_id')->index()->nullalbe();
+            $table->unsignedBigInteger('branch_id')->index()->nullable();
             $table->unsignedBigInteger('category_id')->index();
             $table->unsignedBigInteger('unit_id')->nullable();
             $table->double('price')->nullable();

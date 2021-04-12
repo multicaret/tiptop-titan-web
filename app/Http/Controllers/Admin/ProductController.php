@@ -71,6 +71,7 @@ class ProductController extends Controller
         $product = new Product();
         $product->type = Product::getCorrectChannel($request->type);
         $data = $this->essentialData($request, $product);
+        info(json_encode('tfoooooo'));
 
         return view('admin.products.form', $data);
     }
@@ -92,7 +93,7 @@ class ProductController extends Controller
 
         if ($request->has('branch_id')) {
             return redirect()
-                ->route('admin.products.edit', ['type' => $request->type, $product->uuid])
+                ->route('admin.products.index', ['type' => $request->type])
                 ->with('message', [
                     'type' => 'Success',
                     'text' => 'Stored successfully',
@@ -110,9 +111,11 @@ class ProductController extends Controller
 
     public function edit(Request $request, Product $product)
     {
+        $product->load(['masterCategory']);
         $data = $this->essentialData($request, $product);
         $data['product'] = $product;
         $product->load(['unit']);
+
 
         return view('admin.products.form', $data);
     }
@@ -133,7 +136,7 @@ class ProductController extends Controller
         }
         if ($request->has('branch_id')) {
             return redirect()
-                ->route('admin.products.edit', ['type' => $request->type, $product->uuid])
+                ->route('admin.products', ['type' => $request->type])
                 ->with('message', [
                     'type' => 'Success',
                     'text' => 'Updated successfully',
@@ -196,6 +199,7 @@ class ProductController extends Controller
             $data['chains'] = Chain::groceries()->get()->map($getIdTitle)->all();
             $data['branches'] = Branch::groceries()->get()->map($getIdTitle)->all();
         } else {
+            $product->categories->add($product->masterCategory);
             $chains = Chain::foods()->get();
             $branches = Branch::whereChainId($chains->first()->id)->foods()->get();
             $data['chains'] = $chains->map($getIdTitle)->all();
@@ -208,11 +212,12 @@ class ProductController extends Controller
         if (Product::isGrocery()) {
             $data['categories'] = Taxonomy::groceryCategories()->whereNotNull('parent_id')->get()->map($getIdTitle)->all();
         } else {
-            $data['categories'] = Taxonomy::menuCategories()
+            /*$data['categories'] = Taxonomy::menuCategories()
                                           ->where('branch_id', optional($product->branch)->id)
                                           ->get()
                                           ->map($getIdTitle)
-                                          ->all();
+                                          ->all();*/
+            $data['categories'] = Taxonomy::menuCategories()->get();
         }
 
         return $data;
@@ -227,7 +232,7 @@ class ProductController extends Controller
 //            'chain_id' => 'required',
 //            'branch_id' => 'required',
             'categories' => 'required',
-            'unit_id' => 'required',
+//            'unit_id' => 'required',
             'price' => 'required',
             'type' => 'required',
         ];
@@ -236,19 +241,20 @@ class ProductController extends Controller
     private function storeSaveLogic(Request $request, Product $product): void
     {
         DB::beginTransaction();
-        $ids = Arr::pluck(json_decode($request->input('categories'), true), 'id');
+
         $product->creator_id = $product->editor_id = auth()->id();
-        $product->category_id = count($ids) > 0 ? $ids[0] : null;
         if ($request->has('chain_id') && ! is_null($request->input('chain_id'))) {
             $product->chain_id = $request->input('chain_id');
         } else {
             $product->chain_id = optional(json_decode($request->input('chain')))->id;
         }
+
         if ($request->has('branch_id') && ! is_null($request->input('branch_id'))) {
             $product->branch_id = $request->input('branch_id');
         } else {
             $product->branch_id = optional(json_decode($request->input('branch')))->id;
         }
+
         $product->unit_id = optional(json_decode($request->input('unit_id')))->id;
         $product->price = $request->input('price');
         $product->price_discount_amount = $request->input('price_discount_amount');
@@ -263,9 +269,17 @@ class ProductController extends Controller
         $product->price_discount_by_percentage = $request->input('price_discount_by_percentage') === 'on';
         $product->status = $request->input('status');
         $product->type = Product::getCorrectChannel($request->input('type'));
+        $isGrocery = $product->type == Product::CHANNEL_GROCERY_OBJECT;
+        if ($isGrocery) {
+            $ids = Arr::pluck(json_decode($request->input('categories'), true), 'id');
+            $product->category_id = $ids[0];
+        } else {
+            $product->category_id = json_decode($request->input('categories'))->id;
+        }
         $product->save();
 
-        $product->categories()->sync($ids);
+
+        $isGrocery ? $product->categories()->sync($ids) : null;
 
         foreach (localization()->getSupportedLocales() as $key => $value) {
             if ($request->input($key.'.title')) {
