@@ -96,7 +96,6 @@
                                                 v-model="product.chain"
                                                 track-by="id"
                                                 label="title"
-                                                name="chain_id"
                                                 :searchable="true"
                                                 :allow-empty="true"
                                                 select-label=""
@@ -119,7 +118,6 @@
                                                 v-model="product.branch"
                                                 track-by="id"
                                                 label="title"
-                                                name="branch_id"
                                                 :searchable="true"
                                                 :allow-empty="true"
                                                 select-label=""
@@ -137,7 +135,7 @@
                                     <div class="col-6">
                                         <div class="form-group">
                                             <label class="control-label">
-                                                @lang('strings.categories')&nbsp;<b class="text-danger">*</b>
+                                                @lang('strings.menu-categories')&nbsp;<b class="text-danger">*</b>
                                             </label>
                                             <multiselect
                                                 :options="categories"
@@ -146,7 +144,6 @@
                                                 label="title"
                                                 name="categories"
                                                 :searchable="true"
-                                                :multiple="true"
                                                 :allow-empty="true"
                                                 select-label=""
                                                 selected-label=""
@@ -177,6 +174,7 @@
                                                 deselect-label=""
                                                 placeholder=""
                                                 autocomplete="false"
+                                                required
                                             ></multiselect>
                                         </div>
                                     </div>
@@ -336,7 +334,29 @@
                             }
                         });
                     }
-                }
+                },
+                getCategories: function () {
+                    const branches = !!this.branches ? JSON.parse(JSON.stringify(this.branches)) : null;
+                    let hasError = true;
+                    let url = true ? @json(localization()->localizeURL(route('ajax.branch-by-chain', ['chain_id' => 'XMLSD']))) : '';
+                    if (!!this.product.chain && !!this.product.chain.id) {
+                        const chain_id = this.product.chain.id;
+
+
+                        url = url.replaceAll('XMLSD', chain_id);
+                        axios.get(url).then((res) => {
+                            this.branches = res.data.branches;
+                            if (this.branches.length > 0) {
+                                this.product.branch = this.branches[0];
+                            }
+                            hasError = false;
+                        }).catch(console.error).finally(() => {
+                            if (hasError) {
+                                this.branches = branches;
+                            }
+                        });
+                    }
+                },
             },
         })
     </script>

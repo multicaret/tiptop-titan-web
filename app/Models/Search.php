@@ -37,6 +37,8 @@ use Illuminate\Support\Str;
  * @method static Builder|Search whereTerm($value)
  * @method static Builder|Search whereUpdatedAt($value)
  * @mixin Eloquent
+ * @property int $type 1:Market, 2: Food
+ * @method static Builder|Search whereType($value)
  */
 class Search extends Model
 {

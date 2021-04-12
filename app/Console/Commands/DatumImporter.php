@@ -5,11 +5,15 @@ namespace App\Console\Commands;
 use App\Http\Controllers\Controller;
 use App\Models\Branch;
 use App\Models\BranchTranslation;
+use App\Models\Chain;
+use App\Models\ChainTranslation;
 use App\Models\Location;
 use App\Models\OldModels\OldBranch;
 use App\Models\OldModels\OldBranchTranslation;
 use App\Models\OldModels\OldCategory;
 use App\Models\OldModels\OldCategoryTranslation;
+use App\Models\OldModels\OldChain;
+use App\Models\OldModels\OldChainTranslation;
 use App\Models\OldModels\OldMedia;
 use App\Models\OldModels\OldProduct;
 use App\Models\OldModels\OldProductTranslation;
@@ -19,6 +23,7 @@ use App\Models\Taxonomy;
 use App\Models\TaxonomyTranslation;
 use Carbon\Carbon;
 use Illuminate\Console\Command;
+use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Collection as Collection;
 use Spatie\MediaLibrary\MediaCollections\Exceptions\FileCannotBeAdded;
 use Spatie\MediaLibrary\MediaCollections\Exceptions\FileDoesNotExist;
@@ -28,7 +33,7 @@ use Symfony\Component\Console\Helper\ProgressBar;
 class DatumImporter extends Command
 {
     protected $signature = 'datum:importer {model? : The name of the model}';
-    protected $description = 'Command to import branch';
+    protected $description = 'Command to import old data';
     private string $modelName;// 'Product';
     private const DEFAULT_BRANCH_ID = 473;
     public const DEFAULT_REGION = 2;
@@ -36,6 +41,7 @@ class DatumImporter extends Command
     private const CREATOR_EDITOR_ID = 1;
     private const DEFAULT_CHAIN = 1;
     private const DEFAULT_RESTAURANT_ID = 269;
+    private const CHAIN_SKIPPED_IDS = [207, 269];
     private ProgressBar $bar;
 
     public function __construct()
@@ -51,9 +57,11 @@ class DatumImporter extends Command
             $this->insertDefaultBranch();
         } elseif ($this->modelName === 'Product') {
             $this->importProducts(500);
+        } elseif ($this->modelName === 'Chain-Food') {
+            $this->importChains(500);
         } elseif ($this->modelName === 'Category') {
             $this->importGroceryCategories();
-        }elseif ($this->modelName === 'ProductImages') {
+        } elseif ($this->modelName === 'ProductImages') {
             $this->importProductsImages(500);
         }
         $this->bar->finish();
@@ -70,7 +78,7 @@ class DatumImporter extends Command
         if (empty($this->modelName)) {
             $this->modelName = $this->choice(
                 'What is model name?',
-                ['Branch', 'Product', 'Category', 'ProductImages'],
+                ['Branch', 'Product', 'Category', 'ProductImages', 'Chain-Food'],
                 1
             );
         }
@@ -264,9 +272,9 @@ class DatumImporter extends Command
     private function importProductsImages(int $count): void
     {
         $oldProductsIds = OldProduct::orderBy('created_at')
-                                 ->withCount('categories')
-                                 ->where('restaurant_id', self::DEFAULT_RESTAURANT_ID)
-                                 ->take($count)->pluck('id');
+                                    ->withCount('categories')
+                                    ->where('restaurant_id', self::DEFAULT_RESTAURANT_ID)
+                                    ->take($count)->pluck('id');
         $this->bar = $this->output->createProgressBar($oldProductsIds->count());
         $this->bar->start();
         foreach ($oldProductsIds as $oldProductId) {
@@ -291,4 +299,46 @@ class DatumImporter extends Command
             $this->bar->advance();
         }
     }
+
+    private function importChains(int $count)
+    {
+        $oldChains = OldChain::whereNotIn('id', self::CHAIN_SKIPPED_IDS)->take($count)->get();
+        $this->bar = $this->output->createProgressBar($oldChains->count());
+        $this->bar->start();
+        foreach ($oldChains as $oldChain){
+            $this->insertFoodChain($oldChain);
+            $this->bar->advance();
+        }
+    }
+
+    private function insertFoodChain(OldChain $oldChain): void
+    {
+        $tempChain = [];
+        foreach (OldChain::attributesComparing() as $oldModelKey => $newModelKey) {
+            $tempChain[$newModelKey] = $oldChain->{$oldModelKey};
+        }
+        $tempChain['uuid'] = $this->getUuidString();
+        $tempChain['creator_id'] = self::CREATOR_EDITOR_ID;
+        $tempChain['editor_id'] = self::CREATOR_EDITOR_ID;
+        $tempChain['region_id'] = config('defaults.region.id');
+        $tempChain['city_id'] = config('defaults.city.id');
+        $tempChain['currency_id'] = config('defaults.currency.id');
+        $tempChain['type'] = Chain::CHANNEL_FOOD_OBJECT;
+        $tempChain['status'] = $oldChain->status === OldChain::STATUS_ACTIVE ? Chain::STATUS_ACTIVE : Chain::STATUS_INACTIVE;
+        $isInserted = Chain::insert($tempChain);
+
+        if ($isInserted) {
+            $freshChain = Chain::find($oldChain->id);
+            foreach ($oldChain->translations as $translation) {
+                $attributesComparing = OldChainTranslation::attributesComparing();
+                $tempTranslation = [];
+                foreach ($attributesComparing as $oldAttribute => $newAttribute) {
+                    $tempTranslation[$newAttribute] = $translation->{$oldAttribute};
+                }
+                ChainTranslation::insert($tempTranslation);
+            }
+//            $this->storeLocation($oldChain, $freshChain);
+        }
+    }
+
 }

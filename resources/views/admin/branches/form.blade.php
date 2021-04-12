@@ -98,11 +98,17 @@
                     @if(is_null($branch->id))
                         @include('admin.branches.partials._inaccessible')
                     @else
+                        @php
+                            $productChannels = \App\Models\Product::getChannelsArray();
+                            $currentBranchChannel = \App\Models\Branch::getChannelsArray()[\App\Models\Branch::CHANNEL_GROCERY_OBJECT];
+                        @endphp
                         @if($branch->id)
                             <div class="d-flex justify-content-end mb-3">
                                 <a class="btn btn-primary" target="_blank"
                                    href="{{route('admin.products.create',
-                            ['type'=> request()->type,
+                            ['type'=> request()->type ==  $currentBranchChannel?
+                             $productChannels[\App\Models\Product::CHANNEL_GROCERY_OBJECT] :
+                             $productChannels[\App\Models\Product::CHANNEL_FOOD_OBJECT],
                             'branch_id' => $branch->id,
                             'chain_id' => optional($branch->chain)->id])}}">
                                     Add new product

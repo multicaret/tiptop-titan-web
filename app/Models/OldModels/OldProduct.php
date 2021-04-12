@@ -75,12 +75,10 @@ use Illuminate\Database\Eloquent\Relations\BelongsToMany;
  * @method static Builder|OldProduct withTranslation()
  * @mixin \Eloquent
  */
-class OldProduct extends Model
+class OldProduct extends OldModel
 {
     use Translatable;
 
-
-    protected $connection = 'mysql-old';
     protected $table = 'jo3aan_dishes';
     protected $primaryKey = 'id';
     protected $with = ['translations'];
@@ -90,15 +88,6 @@ class OldProduct extends Model
     public const TYPE_DISCOUNT_PERCENTAGE = 'PERCENTAGE';
     public const TYPE_DISCOUNT_CASH = 'CASH';
 
-
-
-    protected static function booted()
-    {
-        static::addGlobalScope('not-ancient', function (Builder $builder) {
-            $beginsAt = Carbon::parse('2020-12-25')->setTimeFromTimeString('00:00');
-            $builder->where('created_at', '>=', $beginsAt);
-        });
-    }
 
     public static function attributesComparing(): array
     {

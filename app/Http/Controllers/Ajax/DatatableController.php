@@ -717,7 +717,7 @@ class DatatableController extends AjaxController
 
     public function products(Request $request)
     {
-        $products = Product::whereType(Product::getCorrectChannel($request->type))->selectRaw('products.*');
+        $products = Product::whereType(Product::getCorrectChannel($request->type))->orderByDesc('id')->selectRaw('products.*');
 
         return DataTables::of($products)
                          ->editColumn('action', function ($product) {

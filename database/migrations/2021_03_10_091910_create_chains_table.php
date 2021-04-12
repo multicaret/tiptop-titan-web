@@ -29,6 +29,8 @@ class CreateChainsTable extends Migration
             $table->string('primary_color')->default(config('defaults.colors.chain_primary_color'));
             $table->string('secondary_color')->default(config('defaults.colors.chain_secondary_color'));
             $table->unsignedTinyInteger('number_of_items_on_mobile_grid_view')->default(3);
+            $table->json('tiptop_delivery_app_percentage')->nullable()->comment('On old db column name delivery_app_percentage');
+            $table->json('restaurant_app_percentage')->nullable()->comment('On old db column name app_percentage');
             $table->decimal('avg_rating', 3)->default(0);
             $table->unsignedInteger('rating_count')->default(0);
             $table->unsignedBigInteger('view_count')->default(1);

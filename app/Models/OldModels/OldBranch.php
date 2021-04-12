@@ -123,24 +123,16 @@ use Illuminate\Database\Eloquent\Model;
  * @method static \Illuminate\Database\Eloquent\Builder|OldBranch withTranslation()
  * @mixin \Eloquent
  */
-class OldBranch extends Model
+class OldBranch extends OldModel
 {
     use Translatable;
 
-    protected $connection = 'mysql-old';
     protected $table = 'jo3aan_branches';
     protected $primaryKey = 'id';
     protected $with = ['translations'];
     protected $translationForeignKey = 'branch_id';
     protected array $translatedAttributes = ['title_suffex', 'description'];
 
-    protected static function booted()
-    {
-        static::addGlobalScope('not-ancient', function (Builder $builder) {
-            $beginsAt = Carbon::parse('2020-12-25')->setTimeFromTimeString('00:00');
-            $builder->where('created_at', '>=', $beginsAt);
-        });
-    }
 
     public static function attributesComparing(): array
     {
