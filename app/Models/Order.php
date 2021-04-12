@@ -5,10 +5,8 @@ namespace App\Models;
 use App\Traits\HasAppTypes;
 use App\Traits\HasTypes;
 use Eloquent;
-use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
-use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Database\Query\Builder;
 use Illuminate\Support\Carbon;
@@ -207,6 +205,11 @@ class Order extends Model
         return $this->belongsTo(Taxonomy::class, 'rating_issue_id');
     }
 
+    public function agentNotes(): BelongsTo
+    {
+        return $this->belongsTo(OrderAgentNote::class, 'order_id')->latest();
+    }
+
     public function scopeCancelled($query)
     {
         return $query->where('status', self::STATUS_CANCELLED);
@@ -250,6 +253,30 @@ class Order extends Model
     public function getStatusName()
     {
         return trans('strings.order_status_'.$this->status);
+    }
+
+    public static function getAllStatuses($status)
+    {
+        $statusesRaw = [
+            self::STATUS_CANCELLED,
+//            self::STATUS_DRAFT,
+            self::STATUS_NEW,
+            self::STATUS_PREPARING,
+            self::STATUS_WAITING_COURIER,
+            self::STATUS_ON_THE_WAY,
+            self::STATUS_AT_THE_ADDRESS,
+            self::STATUS_DELIVERED,
+        ];
+        $statuses = [];
+        foreach ($statusesRaw as $item) {
+            $statuses[] = [
+                'id' => $item,
+                'title' => trans('strings.order_status_'.$item),
+                'isSelected' => $status === $item,
+            ];
+        }
+
+        return $statuses;
     }
 
     public function getLateCssBgClass(): ?string
