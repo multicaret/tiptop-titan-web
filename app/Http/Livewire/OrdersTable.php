@@ -100,5 +100,11 @@ class OrdersTable extends Component
         $this->showModal = true;
         $this->selectedOrder = Order::where('id', $id)->first();
     }
+
 //        $this->emit('userStore');
+
+    public function addNewNote()
+    {
+        dd('addNewNote() func is pressed');
+    }
 }
