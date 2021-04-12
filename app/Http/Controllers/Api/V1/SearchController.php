@@ -121,7 +121,7 @@ class SearchController extends BaseApiController
 
         $searchQuery = $request->input('q');
 
-        $results = Branch::whereHas('translations', function ($query) use ($searchQuery) {
+        $results = Branch::foods()->whereHas('translations', function ($query) use ($searchQuery) {
             $query->where('title', 'like', '%'.$searchQuery.'%');
         })
                          ->orWhereHas('foodCategories', function ($query) use ($searchQuery) {
