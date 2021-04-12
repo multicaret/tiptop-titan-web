@@ -45,13 +45,13 @@ class DatabaseSeeder extends Seeder
     public function run()
     {
         if ( ! is_null(env('DB_DATABASE_OLD'))) {
-            Artisan::call('datum:importer Branch');
+            Artisan::call('datum:importer grocery-default-branch');
             echo Artisan::output();
-            Artisan::call('datum:importer Category');
+            Artisan::call('datum:importer grocery-categories');
             echo Artisan::output();
-            Artisan::call('datum:importer Product');
+            Artisan::call('datum:importer grocery-products');
             echo Artisan::output();
-            Artisan::call('datum:importer Chain-Food');
+            Artisan::call('datum:importer food-chains');
             echo Artisan::output();
             $this->lastTaxonomyId = Taxonomy::latest()->first()->id;
             $this->lastBranchId = Branch::latest()->first()->id;

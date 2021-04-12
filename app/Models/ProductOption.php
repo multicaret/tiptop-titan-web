@@ -48,6 +48,8 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
  * @method static \Illuminate\Database\Eloquent\Builder|ProductOption whereUpdatedAt($value)
  * @method static \Illuminate\Database\Eloquent\Builder|ProductOption withTranslation()
  * @mixin \Eloquent
+ * @property int $is_based_on_ingredients
+ * @method static \Illuminate\Database\Eloquent\Builder|ProductOption whereIsBasedOnIngredients($value)
  */
 class ProductOption extends Model
 {

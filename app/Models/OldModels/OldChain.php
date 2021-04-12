@@ -8,6 +8,7 @@ use Astrotomic\Translatable\Translatable;
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 
 /**
  * App\Models\OldModels\OldChain
@@ -51,6 +52,8 @@ use Illuminate\Database\Eloquent\Model;
  * @mixin \Eloquent
  * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\OldModels\OldBranch[] $branches
  * @property-read int|null $branches_count
+ * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\OldModels\OldProduct[] $products
+ * @property-read int|null $products_count
  */
 class OldChain extends OldModel
 {
@@ -79,6 +82,11 @@ class OldChain extends OldModel
 
     public function branches() {
         return $this->hasMany(OldBranch::class, 'restaurant_id');
+    }
+
+    public function products(): HasMany
+    {
+        return $this->hasMany(OldProduct::class, 'restaurant_id');
     }
 
     public static function statusesComparing(): array
