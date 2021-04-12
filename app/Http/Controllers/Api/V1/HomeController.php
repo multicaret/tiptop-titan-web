@@ -124,7 +124,7 @@ class HomeController extends BaseApiController
             if ( ! is_null($branch)) {
                 if ( ! is_null($user)) {
                     $cart = Cart::retrieve($branch->chain_id, $branch->id, $user->id);
-                    $activeOrders = Order::whereUserId($user->id)
+                    $activeOrders = Order::groceries()->whereUserId($user->id)
                                          ->whereNotIn('status', [
                                              Order::STATUS_CANCELLED,
                                              Order::STATUS_DELIVERED,
@@ -156,7 +156,7 @@ class HomeController extends BaseApiController
 
             if ( ! is_null($user)) {
                 $cart = Cart::retrieve(null, null, $user->id);
-                $activeOrders = Order::whereUserId($user->id)
+                $activeOrders = Order::foods()->whereUserId($user->id)
                                      ->whereNotIn('status', [
                                          Order::STATUS_CANCELLED,
                                          Order::STATUS_DELIVERED,
