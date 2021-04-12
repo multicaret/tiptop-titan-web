@@ -12,18 +12,17 @@ Content-Type: application/json
 ### Restaurant filter create
 ### delivery_type = tiptop or restaurant
 ### sort = restaurants_rating or by_distance or (samrt_sorting as default)
-GET {{host}}/{{locale}}/api/v1/restaurants
+POST {{host}}/{{locale}}/api/v1/restaurants
 Accept: application/json
 Content-Type: application/json
 
 {
-    "delivery_type": "tiptop",
-    "min_rating": 1,
-    "minimum_order": 500,
-    "categories": [
-        3,
-        4,
-        5
-    ],
-    "sort": "restaurants_rating"
+    "delivery_type": null,
+    "minimum_order": null,
+    "min_rating": null,
+    "categories": [],
+    "sort": "by_distance",
+    "latitude": 41.10184151967425,
+    "longitude": 28.986855325376577,
+    "selected_address_id": null
 }
