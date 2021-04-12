@@ -44,14 +44,13 @@ class BranchController extends BaseApiController
 
     public function index(Request $request)
     {
-        $deliveryType = $request->input('delivery_type');
         $minimumOrder = $request->input('minimum_order');
         $categories = $request->input('categories');
         $minRating = $request->input('min_rating');
 
         $branches = Branch::getModel();
 
-        if ($request->has('delivery_type')) {
+        if ($request->has('delivery_type') && ($deliveryType = $request->has('delivery_type'))) {
             if ($deliveryType == 'tiptop') {
                 $branches->where('has_tip_top_delivery', true);
             } elseif ($deliveryType == 'restaurant') {
