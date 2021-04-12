@@ -44,24 +44,17 @@ class BranchController extends BaseApiController
 
     public function index(Request $request)
     {
-        $deliveryType = $request->input('delivery_type');
         $minimumOrder = $request->input('minimum_order');
         $categories = $request->input('categories');
         $minRating = $request->input('min_rating');
 
-        $branches = Branch::foods();
+        $branches = Branch::getModel();
 
-        if ($request->has('delivery_type')) {
+        if ($request->has('delivery_type') && ($deliveryType = $request->has('delivery_type'))) {
             if ($deliveryType == 'tiptop') {
-                $branches->where([
-                    ['has_tip_top_delivery', true],
-                    ['has_restaurant_delivery', false]
-                ]);
+                $branches->where('has_tip_top_delivery', true);
             } elseif ($deliveryType == 'restaurant') {
-                $branches->where([
-                    ['has_tip_top_delivery', false],
-                    ['has_restaurant_delivery', true]
-                ]);
+                $branches->where('has_restaurant_delivery', true);
             }
         }
 
@@ -81,13 +74,13 @@ class BranchController extends BaseApiController
 
         switch ($request->input('sort')) {
             case 'restaurants_rating':
-                $branches = $branches->orderByDesc('avg_rating');
+                $branches = $branches->foods()->orderByDesc('avg_rating');
                 break;
             case 'by_distance':
                 $branches = $this->sortBranchesByDistance($branches, $request);
                 break;
             default:
-                $branches = $branches->latest('published_at');
+                $branches = $branches->foods()->latest('published_at');
         }
 
         $branches = $branches->get();

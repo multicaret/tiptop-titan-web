@@ -14,7 +14,7 @@
                             <div class="d-flex align-items-center">
                                 <i class="fas fa-concierge-bell fa-3x text-primary"></i>
                                 <div class="media-body ml-4 text-secondary align-self-center">
-                                    <h3 class="m-0" wire:poll.1m>
+                                    <h3 class="m-0" {{--wire:poll.1m--}}>
                                         {{$foodNewOrdersCount}}
                                     </h3>
                                 </div>
@@ -39,7 +39,7 @@
                                      alt="Grocery Orders" class="d-block ui-w-50">--}}
                                 <i class="fas fa-shopping-basket fa-3x text-primary"></i>
                                 <div class="media-body ml-4 text-secondary">
-                                    <h3 class="m-0" wire:poll.1m>
+                                    <h3 class="m-0" {{--wire:poll.1m--}}>
                                         {{$groceryNewOrdersCount}}
                                     </h3>
                                 </div>
@@ -63,7 +63,7 @@
                                 <div class="media-body ml-4 text-secondary">
                                     <span>{{ now()->format(config('defaults.date.normal_format')) }}</span>
                                     &nbsp;&nbsp; - &nbsp;&nbsp;
-                                    <span wire:poll.1m>{{ now()->format(config('defaults.time.normal_format')) }}</span>
+                                    <span {{--wire:poll.1m--}}>{{ now()->format(config('defaults.time.normal_format')) }}</span>
                                 </div>
                             </div>
                         </div>

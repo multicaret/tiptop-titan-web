@@ -93,10 +93,10 @@ class AuthController extends BaseApiController
 
             return $this->respond([
                 'user' => new UserResource($user),
-                'accessToken' => $accessToken,
                 'isEmailVerified' => self::isEmailVerified($user),
                 'isApproved' => self::isApproved($user),
                 'isSuspended' => self::isSuspended($user),
+                'accessToken' => $accessToken,
             ]);
         } else {
             return $this->respondWithMessage(trans('auth.failed'));

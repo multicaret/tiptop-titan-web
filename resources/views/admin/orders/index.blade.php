@@ -3,7 +3,7 @@
 @section('title', 'Orders')
 
 @push('styles')
-{{--    @livewireStyles--}}
+    <link rel="stylesheet" href="/admin-assets/css/pages/chat.css">
 @endpush
 
 @section('content')
@@ -11,7 +11,7 @@
 @endsection
 
 @push('scripts')
-{{--    @livewireScripts--}}
+    {{--    @livewireScripts--}}
     <script src="https://unpkg.com/@lottiefiles/lottie-player@latest/dist/lottie-player.js"></script>
     <script src="https://unpkg.com/hotkeys-js/dist/hotkeys.min.js"></script>
     <script type="text/javascript">

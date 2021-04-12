@@ -197,7 +197,9 @@
         </div>
     </div>
 
-    @include('livewire.order-show')
+    @if($showModal)
+        @include('livewire.order-show')
+    @endif
 
     @push('scripts')
         <script>

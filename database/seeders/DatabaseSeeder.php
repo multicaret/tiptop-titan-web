@@ -45,13 +45,13 @@ class DatabaseSeeder extends Seeder
     public function run()
     {
         if ( ! is_null(env('DB_DATABASE_OLD'))) {
-            Artisan::call('datum:importer Branch');
+            Artisan::call('datum:importer grocery-default-branch');
             echo Artisan::output();
-            Artisan::call('datum:importer Category');
+            Artisan::call('datum:importer grocery-categories');
             echo Artisan::output();
-            Artisan::call('datum:importer Product');
+            Artisan::call('datum:importer grocery-products');
             echo Artisan::output();
-            Artisan::call('datum:importer Chain-Food');
+            Artisan::call('datum:importer food-chains');
             echo Artisan::output();
             $this->lastTaxonomyId = Taxonomy::latest()->first()->id;
             $this->lastBranchId = Branch::latest()->first()->id;
@@ -724,9 +724,9 @@ class DatabaseSeeder extends Seeder
     private function chains($super)
     {
         $this->createChain($super, 'TipTop Market', Chain::CHANNEL_GROCERY_OBJECT);
-//        $this->createChain($super, 'Taco Bell');
-//        $this->createChain($super, 'Subway');
-//        $this->createChain($super, 'StarBucks');
+        $this->createChain($super, 'Taco Bell');
+        $this->createChain($super, 'Subway');
+        $this->createChain($super, 'StarBucks');
     }
 
     private function branches($super)
@@ -737,7 +737,7 @@ class DatabaseSeeder extends Seeder
             'TipTop Market branch 3',
         ];
         foreach ($branches as $branchIndex => $branchName) {
-            $this->createBranch($super, $branchIndex, $branchName, 1);
+            $this->createBranch($super, $branchIndex, $branchName, 1, Chain::CHANNEL_GROCERY_OBJECT);
         }
 
         foreach (
@@ -898,7 +898,7 @@ class DatabaseSeeder extends Seeder
         int $branchIndex,
         string $branchName,
         int $chainId,
-        int $type = Branch::CHANNEL_GROCERY_OBJECT,
+        int $type = Branch::CHANNEL_FOOD_OBJECT,
         bool $createCategories = false
     ): void {
         $item = new Branch();
@@ -951,7 +951,7 @@ class DatabaseSeeder extends Seeder
     /**
      * @param $super
      */
-    private function createChain($super, $name, $type = Chain::CHANNEL_FOOD_OBJECT): void
+    private function createChain($super, $name, $channel = Chain::CHANNEL_FOOD_OBJECT): void
     {
         $chain = new Chain();
         $chain->creator_id = $super->id;
@@ -959,7 +959,7 @@ class DatabaseSeeder extends Seeder
         $chain->region_id = config('defaults.region.id');
         $chain->city_id = config('defaults.city.id');
         $chain->currency_id = config('defaults.currency.id');
-        $chain->type = $type;
+        $chain->type = $channel;
         $chain->primary_phone_number = '+964539551234';
         $chain->secondary_phone_number = '+964539551234';
         $chain->whatsapp_phone_number = '+964539551234';

@@ -48,6 +48,9 @@ class CouponController extends BaseApiController
         $branch = Branch::find($request->input('branch_id'));
         $activeCart = $user->activeCart($branch->id);
         $coupon = Coupon::where('redeem_code', $code)->first();
+        if (is_null($coupon)) {
+            return $this->respondWithMessage("There is no such coupon code($code)");
+        }
 
         [
             $isExpirationDateAndUsageValid, $validationExpirationAndUsageMessage
@@ -61,7 +64,7 @@ class CouponController extends BaseApiController
 
         [$isAmountValid, $totalDiscountedAmount] = $coupon->validateCouponDiscountAmount($activeCart->total);
         if ( ! $isAmountValid) {
-            return $this->setStatusCode(Response::HTTP_BAD_REQUEST)->respond(null,['Coupon is invalid']);
+            return $this->setStatusCode(Response::HTTP_BAD_REQUEST)->respond(null, ['Coupon is invalid']);
         }
         $deliveryFee = $branch->calculateDeliveryFee($activeCart->total);
         if ($coupon->has_free_delivery) {

@@ -1,9 +1,9 @@
 <div>
-    <!-- Modal -->
-    <div wire:ignore.self class="modal my-auto fade" id="orderShowModal" tabindex="-1" role="dialog"
+<!-- Modal -->
+    <div wire:ignore class="modal my-auto fade" id="orderShowModal" tabindex="-1" role="dialog"
          aria-labelledby="order-show-modal" aria-hidden="true">
         <div class="modal-dialog modal-xl" role="document">
-            @if($selectedOrder)
+            @if(!is_null($selectedOrder))
                 <div class="modal-content">
                     <div class="modal-header">
                         <h5 class="modal-title" id="order-show-modal">#
@@ -150,7 +150,7 @@
                                     </div>
 
                                     <div class="row mt-3">
-                                        <div class="col-md-12">
+                                        <div class="col-md-6">
                                             <div class="card">
                                                 <div class="card-header font-weight-bold">Prices</div>
                                                 <div class="card-body">
@@ -185,17 +185,28 @@
                                                 </div>
                                             </div>
                                         </div>
+
+                                        <div class="col-md-6">
+                                            <div class="card">
+                                                <div class="card-header font-weight-bold">Timeline</div>
+                                                <div class="card-body">
+                                                    <div class="row">
+                                                        <div class="col">
+                                                            @include('admin.orders._partials.statuses.timeline')
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
                                     </div>
 
                                 </div>
                                 <div class="tab-pane fade" id="navs-bottom-responsive-link-2">
-                                    <div class="card-body">
-                                        <p>Tab content</p>
-                                    </div>
+                                    @include('admin.orders._partials.order-agent-notes')
                                 </div>
                                 <div class="tab-pane fade" id="navs-bottom-responsive-link-3">
                                     <div class="card-body">
-                                        <p>Tab Activity Log</p>
+                                        @include('admin.orders._partials.order-activity-log')
                                     </div>
                                 </div>
                             </div>
