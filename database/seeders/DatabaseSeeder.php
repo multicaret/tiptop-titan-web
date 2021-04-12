@@ -1468,6 +1468,23 @@ class DatabaseSeeder extends Seeder
                 ]
             ],
             [
+                'type' => Taxonomy::TYPE_UNIT,
+                'translations' => [
+                    [
+                        'locale' => 'en',
+                        'title' => 'Piece',
+                    ],
+                    [
+                        'locale' => 'ar',
+                        'title' => 'قطعة',
+                    ],
+                    [
+                        'locale' => 'ku',
+                        'title' => 'قطعة',
+                    ]
+                ]
+            ],
+            [
                 'type' => Taxonomy::TYPE_GROCERY_CATEGORY,
                 'translations' => [
                     [
