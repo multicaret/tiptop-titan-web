@@ -68,7 +68,6 @@ use Spatie\MediaLibrary\MediaCollections\Models\Media;
  * @property-read \App\Models\Branch $branch
  * @property-read Collection|\App\Models\Cart[] $carts
  * @property-read int|null $carts_count
- * @property-read Collection|\App\Models\Taxonomy[] $categories
  * @property-read int|null $categories_count
  * @property-read \App\Models\Chain $chain
  * @property-read \App\Models\User $creator
@@ -262,6 +261,11 @@ class Product extends Model implements HasMedia
     {
         return $this->belongsToMany(Taxonomy::class, 'category_product', 'product_id', 'category_id')
                     ->withTimestamps();
+    }
+
+    public function category(): BelongsTo
+    {
+        return $this->belongsTo(Taxonomy::class, 'category_id');
     }
 
     public function searchTags(): BelongsToMany
