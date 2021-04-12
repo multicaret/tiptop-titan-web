@@ -51,6 +51,8 @@ class DatabaseSeeder extends Seeder
             echo Artisan::output();
             Artisan::call('datum:importer Product');
             echo Artisan::output();
+            Artisan::call('datum:importer Chain-Food');
+            echo Artisan::output();
             $this->lastTaxonomyId = Taxonomy::latest()->first()->id;
             $this->lastBranchId = Branch::latest()->first()->id;
         }
@@ -80,8 +82,8 @@ class DatabaseSeeder extends Seeder
         $this->slides($super);
         $this->taxonomies($super);
         $this->chains($super);
-        $this->branches($super);
-        $this->products($super);
+//        $this->branches($super);
+//        $this->products($super);
         $this->paymentMethods($super);
         $this->ingredientsCategories($super);
 
@@ -721,10 +723,10 @@ class DatabaseSeeder extends Seeder
 
     private function chains($super)
     {
-        $this->createChain($super, 'TipTop Market');
-        $this->createChain($super, 'Taco Bell');
-        $this->createChain($super, 'Subway');
-        $this->createChain($super, 'StarBucks');
+        $this->createChain($super, 'TipTop Market', Chain::CHANNEL_GROCERY_OBJECT);
+//        $this->createChain($super, 'Taco Bell');
+//        $this->createChain($super, 'Subway');
+//        $this->createChain($super, 'StarBucks');
     }
 
     private function branches($super)
@@ -949,7 +951,7 @@ class DatabaseSeeder extends Seeder
     /**
      * @param $super
      */
-    private function createChain($super, $name): void
+    private function createChain($super, $name, $type = Chain::CHANNEL_FOOD_OBJECT): void
     {
         $chain = new Chain();
         $chain->creator_id = $super->id;
@@ -957,7 +959,7 @@ class DatabaseSeeder extends Seeder
         $chain->region_id = config('defaults.region.id');
         $chain->city_id = config('defaults.city.id');
         $chain->currency_id = config('defaults.currency.id');
-        $chain->type = Chain::CHANNEL_FOOD_OBJECT;
+        $chain->type = $type;
         $chain->primary_phone_number = '+964539551234';
         $chain->secondary_phone_number = '+964539551234';
         $chain->whatsapp_phone_number = '+964539551234';

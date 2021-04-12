@@ -55,6 +55,7 @@ use Illuminate\Database\Eloquent\Model;
  * @method static Builder|OldCategory whereUpdatedAt($value)
  * @method static Builder|OldCategory withTranslation()
  * @mixin \Eloquent
+ * @property-read bool $has_children
  */
 class OldCategory extends Model
 {
@@ -64,6 +65,7 @@ class OldCategory extends Model
     protected $connection = 'mysql-old';
     protected $table = 'cms_categories';
     protected $primaryKey = 'id';
+    protected $appends = ['has_children'];
     protected $with = ['translations'];
     protected array $translatedAttributes = ['title', 'description', 'icon', 'image'];
     protected $translationForeignKey = 'category_id';
@@ -75,8 +77,14 @@ class OldCategory extends Model
     public const TYPE_SIDE_DISHES = 'SIDE_DISHES';
 
 
-    public function scopeGrocery($query) {
+    public function scopeGrocery($query)
+    {
         return $query->where('type', self::TYPE_DISHES)->whereNull('parent_id');
+    }
+
+    public function getHasChildrenAttribute(): bool
+    {
+        return ! is_null(OldCategory::whereParentId($this->id)->first());
     }
 
 
@@ -97,7 +105,7 @@ class OldCategory extends Model
         return [
             self::TYPE_DISHES => Taxonomy::TYPE_GROCERY_CATEGORY,
             self::TYPE_RESTAURANTS => Taxonomy::TYPE_FOOD_CATEGORY,
-//            self::TYPE_KITCHENS => Taxonomy::TYPE_MENU_CATEGORY,
+            self::TYPE_KITCHENS => Taxonomy::TYPE_FOOD_CATEGORY,
         ];
     }
 
