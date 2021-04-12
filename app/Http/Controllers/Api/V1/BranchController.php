@@ -49,7 +49,7 @@ class BranchController extends BaseApiController
         $categories = $request->input('categories');
         $minRating = $request->input('min_rating');
 
-        $branches = Branch::foods();
+        $branches = Branch::getModel();
 
         if ($request->has('delivery_type')) {
             if ($deliveryType == 'tiptop') {
@@ -75,13 +75,13 @@ class BranchController extends BaseApiController
 
         switch ($request->input('sort')) {
             case 'restaurants_rating':
-                $branches = $branches->orderByDesc('avg_rating');
+                $branches = $branches->foods()->orderByDesc('avg_rating');
                 break;
             case 'by_distance':
                 $branches = $this->sortBranchesByDistance($branches, $request);
                 break;
             default:
-                $branches = $branches->latest('published_at');
+                $branches = $branches->foods()->latest('published_at');
         }
 
         $branches = $branches->get();
