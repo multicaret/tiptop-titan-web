@@ -44,13 +44,17 @@ class BranchController extends BaseApiController
 
     public function index(Request $request)
     {
-        $minimumOrder = $request->input('minimum_order');
         $categories = $request->input('categories');
-        $minRating = $request->input('min_rating');
 
-        $branches = Branch::getModel();
+        $branches = Branch::foods();
 
-        if ($request->has('delivery_type') && ($deliveryType = $request->has('delivery_type'))) {
+        if ($request->has('minimum_order') && ! is_null($minimumOrder = $request->input('minimum_order'))) {
+            $branches->where('minimum_order', '<=', $minimumOrder);
+            $branches->Where('restaurant_minimum_order', '<=', (int) $minimumOrder, 'or');
+            $branches->foods();
+        }
+
+        if ($request->has('delivery_type') && ! empty($deliveryType = $request->input('delivery_type'))) {
             if ($deliveryType == 'tiptop') {
                 $branches->where('has_tip_top_delivery', true);
             } elseif ($deliveryType == 'restaurant') {
@@ -58,29 +62,25 @@ class BranchController extends BaseApiController
             }
         }
 
-        if ($request->has('minimum_order')) {
-            $branches->where('minimum_order', '=<', (int) $minimumOrder);
-            $branches->Where('restaurant_minimum_order', '=<', (int) $minimumOrder, 'or');
-        }
 
         if ($request->has('categories') && ($categories)) {
             $branches = $branches->whereHas('foodCategories', function ($query) use ($categories) {
                 $query->whereIn('category_id', $categories);
             });
         }
-        if ($request->has('minRating')) {
+        if ($request->has('min_rating') && ! is_null($minRating = $request->input('min_rating'))) {
             $branches->where('avg_rating', '>=', (float) $minRating);
         }
 
         switch ($request->input('sort')) {
             case 'restaurants_rating':
-                $branches = $branches->foods()->orderByDesc('avg_rating');
+                $branches = $branches->orderByDesc('avg_rating');
                 break;
             case 'by_distance':
                 $branches = $this->sortBranchesByDistance($branches, $request);
                 break;
             default:
-                $branches = $branches->foods()->latest('published_at');
+                $branches = $branches->latest('published_at');
         }
 
         $branches = $branches->get();
