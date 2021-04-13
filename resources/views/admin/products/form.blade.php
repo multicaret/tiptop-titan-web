@@ -1,3 +1,7 @@
+@php
+    $isGrocery = $product->type == \App\Models\Product::CHANNEL_GROCERY_OBJECT
+@endphp
+
 @extends('layouts.admin')
 
 @if(!is_null($product->id))
@@ -160,6 +164,8 @@
                                                 deselect-label=""
                                                 :clear-on-select="false"
                                                 :preselect-first="true"
+                                                {{--                                                @input="getCategories"--}}
+                                                {{--                                                @select="selectChain"--}}
                                                 placeholder=""
                                                 autocomplete="false"
                                                 required
@@ -168,10 +174,11 @@
                                     </div>
                                 @endif
                                 <div
-                                    class="col-{{$product->type == \App\Models\Product::CHANNEL_GROCERY_OBJECT ? "6" : "12"}}">
+                                    class="col-{{$isGrocery ? "6" : "12"}}">
                                     <div class="form-group">
                                         <label class="control-label">
-                                            @lang('strings.menu-category')&nbsp;<b class="text-danger">*</b>
+                                            {{$isGrocery ? trans('strings.categories') : trans('strings.menu-category')}}
+                                            &nbsp;<b class="text-danger">*</b>
                                         </label>
                                         <multiselect
                                             :options="categories"
@@ -191,7 +198,7 @@
                                         ></multiselect>
                                     </div>
                                 </div>
-                                @if($product->type == \App\Models\Product::CHANNEL_GROCERY_OBJECT)
+                                @if($isGrocery)
                                     <div class="col-6">
                                         <div class="form-group">
                                             <label class="control-label">
@@ -244,24 +251,6 @@
                                     @endcomponent
                                 </div>
                                 <div class="col-md-3">
-                                    @component('admin.components.form-group', ['name' => 'available_quantity', 'type' => 'number'])
-                                        @slot('label', trans('strings.available_quantity'))
-                                        @slot('attributes', ['placeholder' => '24'])
-                                        @if(! is_null($product->id))
-                                            @slot('value', $product->available_quantity)
-                                        @endif
-                                    @endcomponent
-                                </div>
-                                <div class="col-md-3">
-                                    @component('admin.components.form-group', ['name' => 'maximum_orderable_quantity', 'type' => 'number'])
-                                        @slot('label', trans('strings.maximum_orderable_quantity'))
-                                        @slot('attributes', ['placeholder' => '5'])
-                                        @if(! is_null($product->id))
-                                            @slot('value', $product->maximum_orderable_quantity)
-                                        @endif
-                                    @endcomponent
-                                </div>
-                                <div class="col-md-3">
                                     @component('admin.components.form-group', ['name' => 'price', 'type' => 'number'])
                                         @slot('label', trans('strings.price'))
                                         @slot('attributes', ['required', 'placeholder' => '5000'])
@@ -279,25 +268,44 @@
                                         @endif
                                     @endcomponent
                                 </div>
-                                <div class="col-md-3 offset-md-9">
-                                    @component('admin.components.form-group', ['name' => 'price_discount_by_percentage', 'type' => 'checkbox'])
-                                        @slot('label', trans('strings.discount_by_percentage'))
+                                <div class="col-md-3">
+                                    @component('admin.components.form-group', ['name' => 'available_quantity', 'type' => 'number'])
+                                        @slot('label', trans('strings.available_quantity'))
+                                        @slot('attributes', ['placeholder' => '24'])
                                         @if(! is_null($product->id))
-                                            @slot('checked', $product->price_discount_by_percentage)
+                                            @slot('value', $product->available_quantity)
                                         @endif
                                     @endcomponent
                                 </div>
-                                <div class="col-6">
-                                    @component('admin.components.form-group', ['name' => 'status', 'type' => 'select'])
-                                        @slot('label', trans('strings.status'))
-                                        @slot('options', \App\Models\Product::getStatusesArray())
-                                        @slot('attributes', ['required'])
-                                        @slot('selected', $product->status)
+                                <div class="col-md-3">
+                                    @component('admin.components.form-group', ['name' => 'maximum_orderable_quantity', 'type' => 'number'])
+                                        @slot('label', trans('strings.maximum_orderable_quantity'))
+                                        @slot('attributes', ['placeholder' => '5'])
+                                        @if(! is_null($product->id))
+                                            @slot('value', $product->maximum_orderable_quantity)
+                                        @endif
                                     @endcomponent
                                 </div>
-                                <span class="input-group-text">
-                                    Is Storage Tracking Enabled
-                                    <label class="switcher switcher-primary m-3">
+                                <div class="col-md-12">
+                                    <span class="">
+                                        <label class="switcher switcher-primary mr-3 my-2">
+                                            <input type="checkbox" class="switcher-input"
+                                                   name="discount_by_percentage" {{$product->discount_by_percentage ? 'checked' : ''}}>
+                                            <span class="switcher-indicator">
+                                                <span class="switcher-yes">
+                                                    <span class="ion ion-md-checkmark"></span>
+                                                </span>
+                                                <span class="switcher-no">
+                                                    <span class="ion ion-md-close"></span>
+                                                </span>
+                                            </span>
+                                        </label>
+                                        @lang('strings.discount_by_percentage')
+                                    </span>
+                                </div>
+                                <div class="col-md-12">
+                                    <span class="">
+                                    <label class="switcher switcher-primary mr-3 my-2">
                                         <input type="checkbox" class="switcher-input"
                                                name="is_storage_tracking_enabled" {{$product->is_storage_tracking_enabled ? 'checked' : ''}}>
                                         <span class="switcher-indicator">
@@ -309,8 +317,17 @@
                                             </span>
                                         </span>
                                     </label>
-                                    <input type="hidden" name="is_storage_tracking_enabled" value="1">
-                                </span>
+                                        Enable Storage Tracking
+                                    </span>
+                                </div>
+                                <div class="col-6">
+                                    @component('admin.components.form-group', ['name' => 'status', 'type' => 'select'])
+                                        @slot('label', trans('strings.status'))
+                                        @slot('options', \App\Models\Product::getStatusesArray())
+                                        @slot('attributes', ['required'])
+                                        @slot('selected', $product->status)
+                                    @endcomponent
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -324,7 +341,7 @@
                         <h4 class="card-header">Photos</h4>
                         <div class="card-body">
                             <div class="row">
-                                @if($product->type == \App\Models\Product::CHANNEL_FOOD_OBJECT)
+                                @if(!$isGrocery)
                                     <div class="col-6">
                                         <h5>Cover</h5>
                                         @component('admin.components.form-group', ['name' => 'cover', 'type' => 'file'])
@@ -339,7 +356,7 @@
                                         @endcomponent
                                     </div>
                                 @endif
-                                @if($product->type == \App\Models\Product::CHANNEL_GROCERY_OBJECT)
+                                @if($isGrocery)
                                     <div class="col-12">
                                         <h5>Gallery</h5>
                                         @component('admin.components.form-group', ['name' => 'gallery', 'type' => 'file'])
@@ -390,7 +407,7 @@
                 branches: @json($branches),
                 categories: @json($categories),
                 units: @json($units),
-                isGrocery: @json($product->type == \App\Models\Product::CHANNEL_GROCERY_OBJECT),
+                isGrocery: @json($isGrocery),
             },
             beforeMount() {
             },

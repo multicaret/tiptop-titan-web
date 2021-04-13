@@ -1,5 +1,5 @@
 <div>
-<!-- Modal -->
+    <!-- Modal -->
     <div wire:ignore class="modal my-auto fade" id="orderShowModal" tabindex="-1" role="dialog"
          aria-labelledby="order-show-modal" aria-hidden="true">
         <div class="modal-dialog modal-xl" role="document">
@@ -159,7 +159,7 @@
                                                             <b>Total:</b>
                                                             {!! \App\Models\Currency::formatHtml($selectedOrder->total) !!}
                                                         </div>
-                                                        @if($selectedOrder->coupon_discount_amount != 0)
+                                                        @if(!is_null($selectedOrder->coupon_id))
                                                             <div class="col-md-12 py-3 border-bottom">
                                                                 <b>Coupon discount amount:</b>
                                                                 {!! \App\Models\Currency::formatHtml($selectedOrder->coupon_discount_amount) !!}

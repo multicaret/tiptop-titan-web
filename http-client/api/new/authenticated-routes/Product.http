@@ -21,7 +21,7 @@ Authorization: Bearer {{token}}
 
 {
     "product_id": {{productId}},
-    "chain_id": 1,
+    "chain_id": {{chainId}},
     "branch_id": "{{branchId}}",
     "is_adding": true,
     "status": 0

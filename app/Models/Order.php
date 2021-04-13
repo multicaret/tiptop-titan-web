@@ -206,9 +206,9 @@ class Order extends Model
         return $this->belongsTo(Taxonomy::class, 'rating_issue_id');
     }
 
-    public function agentNotes(): BelongsTo
+    public function agentNotes(): \Illuminate\Database\Eloquent\Relations\HasMany
     {
-        return $this->belongsTo(OrderAgentNote::class, 'order_id')->latest();
+        return $this->hasMany(OrderAgentNote::class, 'order_id')->latest();
     }
 
     public function scopeCancelled($query)

@@ -41,22 +41,24 @@
                 <div class="flex-grow-0 py-3 px-4">
                     <form wire:submit.prevent="addNewNote">
                         <div class="input-group">
-                            <input type="text" class="form-control" placeholder="Type your message" name="note">
+                            <input type="text" class="form-control" placeholder="Type your message"
+                                   wire:model="note">
+
                             <div class="input-group-append">
-                                <button type="button" class="btn btn-primary">Send</button>
+                                <button type="submit" class="btn btn-primary">Send</button>
                             </div>
                         </div>
+                        @error('note') <span class="error">{{$message}}</span> @enderror
+
                     </form>
                 </div>
                 <hr class="border-light m-0">
                 <!-- / Chat footer -->
                 <!-- Wrap `.chat-scroll` to properly position scroll area. Remove this wtapper if you don't need scroll -->
                 <div class="flex-grow-1 position-relative">
-
                     <!-- Remove `.chat-scroll` and add `.flex-grow-1` if you don't need scroll -->
                     <div class="chat-messages chat-scroll p-4 ps">
-
-                        @forelse($selectedOrder->agentNotes as $note)
+                        @forelse($selectedOrder->agentNotes()->get() as $note)
                             <div
                                 class="{{$note->agent->id == $auth->id?'chat-message-right':'chat-message-left'}} mb-4">
                                 <div>
