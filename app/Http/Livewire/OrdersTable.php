@@ -3,12 +3,15 @@
 namespace App\Http\Livewire;
 
 use App\Models\Order;
+use App\Models\OrderAgentNote;
 use Livewire\Component;
 
 class OrdersTable extends Component
 {
     public $orders;
     public $selectedOrder;
+    public $note;
+
 
     /*use WithPagination;
 
@@ -103,8 +106,27 @@ class OrdersTable extends Component
 
 //        $this->emit('userStore');
 
+    protected $rules = [
+        'note' => 'required',
+    ];
+
+
     public function addNewNote()
     {
-        dd('addNewNote() func is pressed');
+
+        $this->validate();
+        $orderAgentNote = new OrderAgentNote();
+        $orderAgentNote->message = $this->note;
+        $orderAgentNote->order_id = $this->selectedOrder->id;
+        $orderAgentNote->agent_id = auth()->id();
+        $orderAgentNote->save();
+        $this->note = null;
+
+
+        $this->emit('showToast', [
+            'icon' => 'success',
+            'message' => 'Note saved successfully',
+        ]);
     }
+
 }

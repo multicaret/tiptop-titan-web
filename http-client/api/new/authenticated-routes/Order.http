@@ -28,7 +28,7 @@ Authorization: Bearer {{token}}
 #Required fields [chain_id, branch_id, cart_id, payment_method_id, address_id].
 
 {
-    "chain_id": 1,
+    "chain_id": {{chainId}},
     "branch_id": "{{branchId}}",
     "cart_id": "{{cartId}}",
     "payment_method_id": 1,

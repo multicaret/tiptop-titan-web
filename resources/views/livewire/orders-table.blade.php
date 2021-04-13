@@ -206,7 +206,7 @@
             document.addEventListener('DOMContentLoaded', function () {
                 $('[data-toggle="tooltip"]').tooltip();
             });
-            /*document.addEventListener('livewire:load', function () {
+           /* document.addEventListener('livewire:load', function () {
             });*/
         </script>
     @endpush
