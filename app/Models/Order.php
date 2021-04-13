@@ -117,6 +117,7 @@ use Illuminate\Support\Carbon;
  * @method static Builder|Order withTrashed()
  * @method static Builder|Order withoutTrashed()
  * @mixin Eloquent
+ * @property-read \App\Models\OrderAgentNote $agentNotes
  */
 class Order extends Model
 {
