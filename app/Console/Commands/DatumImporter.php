@@ -156,6 +156,7 @@ class DatumImporter extends Command
         $tempBranch['city_id'] = self::DEFAULT_CITY;
         $tempBranch['type'] = $type;
         $tempBranch['status'] = OldBranch::statusesComparing()[$oldBranch->status];
+        $tempBranch['has_tip_top_delivery'] = $type === Branch::CHANNEL_GROCERY_OBJECT;
         $isInserted = Branch::insert($tempBranch);
         if ($isInserted) {
             $freshBranch = Branch::find($oldBranch->id);
