@@ -964,6 +964,7 @@ class DatabaseSeeder extends Seeder
         $chain->secondary_phone_number = '+964539551234';
         $chain->whatsapp_phone_number = '+964539551234';
         $chain->status = Chain::STATUS_ACTIVE;
+        $chain->is_synced = $channel === Chain::CHANNEL_GROCERY_OBJECT;
         $chain->save();
 
         foreach (config('localization.supported-locales') as $locale) {

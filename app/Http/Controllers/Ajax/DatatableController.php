@@ -527,6 +527,7 @@ class DatatableController extends AjaxController
         return DataTables::of($chains)
                          ->editColumn('action', function ($chain) {
                              $data = [
+                                 'uuid' => $chain->uuid,
                                  'editAction' => route('admin.chains.edit', [
                                      $chain->uuid,
                                      'type' => request('type')
@@ -536,6 +537,9 @@ class DatatableController extends AjaxController
                                      'type' => request('type')
                                  ]),
                              ];
+                             if ( ! $chain->is_synced) {
+                                 $data['syncAction'] = localization()->localizeURL(route('ajax.chains.sync', $chain));
+                             }
 
                              return view('admin.components.datatables._row-actions', $data)->render();
                          })
