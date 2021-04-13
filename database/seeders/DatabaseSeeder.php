@@ -1763,7 +1763,7 @@ class DatabaseSeeder extends Seeder
                 'translations' => [
                     [
                         'locale' => 'en',
-                        'title' => 'Veges',
+                        'title' => 'Veggies',
                     ],
                     [
                         'locale' => 'ar',
