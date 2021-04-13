@@ -2,6 +2,7 @@
 
 namespace Database\Seeders;
 
+use App\Console\Commands\DatumImporter;
 use App\Models\Branch;
 use App\Models\BranchTranslation;
 use App\Models\Chain;
@@ -45,13 +46,17 @@ class DatabaseSeeder extends Seeder
     public function run()
     {
         if ( ! is_null(env('DB_DATABASE_OLD'))) {
-            Artisan::call('datum:importer grocery-default-branch');
+            $groceryDefaultBranchArgument = DatumImporter::CHOICE_GROCERY_DEFAULT_BRANCH;
+            Artisan::call('datum:importer '.$groceryDefaultBranchArgument.'');
             echo Artisan::output();
-            Artisan::call('datum:importer grocery-categories');
+            $groceryCategories = DatumImporter::CHOICE_GROCERY_CATEGORIES;
+            Artisan::call("datum:importer {$groceryCategories}");
             echo Artisan::output();
-            Artisan::call('datum:importer grocery-products');
+            $groceryProducts = DatumImporter::CHOICE_GROCERY_PRODUCTS;
+            Artisan::call("datum:importer {$groceryProducts}");
             echo Artisan::output();
-            Artisan::call('datum:importer food-chains');
+            $foodChains = DatumImporter::CHOICE_FOOD_CHAINS;
+            Artisan::call("datum:importer {$foodChains}");
             echo Artisan::output();
             $this->lastTaxonomyId = Taxonomy::latest()->first()->id;
             $this->lastBranchId = Branch::latest()->first()->id;
@@ -101,6 +106,11 @@ class DatabaseSeeder extends Seeder
         $this->apiAccessTokensSeeder($super, $admin);
         Artisan::call('translation:import');
         echo 'Done 🤤 '.PHP_EOL;
+        if ( ! is_null(env('DB_DATABASE_OLD'))) {
+            $usersArgument = DatumImporter::CHOICE_USERS;
+            Artisan::call("datum:importer $usersArgument");
+            echo Artisan::output();
+        }
         if ( ! is_null(env('IMPORT_IMAGES'))) {
             Artisan::call('datum:importer ProductImages');
             echo Artisan::output();
