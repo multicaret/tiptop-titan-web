@@ -255,7 +255,6 @@ class ProductController extends Controller
         $product->custom_banner_ended_at = $request->input('custom_banner_ended_at');
         $product->is_storage_tracking_enabled = $request->input('is_storage_tracking_enabled') === 'on';
         $product->price_discount_by_percentage = $request->input('discount_by_percentage') === 'on';
-        dd($product->is_storage_tracking_enabled);
         $product->status = $request->input('status');
         $product->type = Product::getCorrectChannel($request->input('type'));
         $isGrocery = $product->type == Product::CHANNEL_GROCERY_OBJECT;
