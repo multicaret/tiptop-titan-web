@@ -134,15 +134,6 @@ class ProductController extends Controller
                 'text' => $e->getMessage(),
             ]);
         }
-        if ($request->has('branch_id')) {
-            return redirect()
-                ->route('admin.products', ['type' => $request->type])
-                ->with('message', [
-                    'type' => 'Success',
-                    'text' => 'Updated successfully',
-                ]);
-
-        }
 
         return redirect()
             ->route('admin.products.index', ['type' => $request->type])
@@ -195,7 +186,9 @@ class ProductController extends Controller
         $getIdTitle = function ($item) {
             return ['id' => $item->id, 'title' => $item->title];
         };
-        if ($product->type == Product::CHANNEL_GROCERY_OBJECT) {
+        $data['units'] = Taxonomy::unitCategories()->get()->map($getIdTitle)->all();
+        if (Product::isGrocery()) {
+            $data['categories'] = Taxonomy::groceryCategories()->whereNotNull('parent_id')->get()->map($getIdTitle)->all();
             $data['chains'] = Chain::groceries()->get()->map($getIdTitle)->all();
             $data['branches'] = Branch::groceries()->get()->map($getIdTitle)->all();
         } else {
@@ -207,11 +200,6 @@ class ProductController extends Controller
                 $product->branch = $branches->first();
             }
             $data['branches'] = $branches->map($getIdTitle)->all();
-        }
-        $data['units'] = Taxonomy::unitCategories()->get()->map($getIdTitle)->all();
-        if (Product::isGrocery()) {
-            $data['categories'] = Taxonomy::groceryCategories()->whereNotNull('parent_id')->get()->map($getIdTitle)->all();
-        } else {
             /*$data['categories'] = Taxonomy::menuCategories()
                                           ->where('branch_id', optional($product->branch)->id)
                                           ->get()
@@ -266,7 +254,8 @@ class ProductController extends Controller
         $product->custom_banner_began_at = $request->input('custom_banner_began_at');
         $product->custom_banner_ended_at = $request->input('custom_banner_ended_at');
         $product->is_storage_tracking_enabled = $request->input('is_storage_tracking_enabled') === 'on';
-        $product->price_discount_by_percentage = $request->input('price_discount_by_percentage') === 'on';
+        $product->price_discount_by_percentage = $request->input('discount_by_percentage') === 'on';
+        dd($product->is_storage_tracking_enabled);
         $product->status = $request->input('status');
         $product->type = Product::getCorrectChannel($request->input('type'));
         $isGrocery = $product->type == Product::CHANNEL_GROCERY_OBJECT;
