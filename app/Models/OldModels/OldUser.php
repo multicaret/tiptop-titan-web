@@ -96,6 +96,7 @@ use Illuminate\Database\Eloquent\Relations\BelongsToMany;
  * @mixin \Eloquent
  * @property-read string|null $tel_number
  * @property-read string|null $tel_code_number
+ * @property-read string $updated_username
  */
 class OldUser extends OldModel
 {
@@ -195,7 +196,7 @@ class OldUser extends OldModel
             return null;
         }
         $phoneNumber = str_replace($countyCode, '', $phoneNumber);
-        $phoneNumber = str_replace(['+', ' ', '(', ')'], '', $phoneNumber);
+        $phoneNumber = str_replace(['+', ',',  ' ', '(', ')'], '', $phoneNumber);
         if (strlen($phoneNumber) < 4) {
             return null;
         }
