@@ -150,7 +150,7 @@
                                     </div>
 
                                     <div class="row mt-3">
-                                        <div class="col-md-6">
+                                        <div class="col-md-12">
                                             <div class="card">
                                                 <div class="card-header font-weight-bold">Prices</div>
                                                 <div class="card-body">
@@ -186,7 +186,7 @@
                                             </div>
                                         </div>
 
-                                        <div class="col-md-6">
+                                        <div class="col-md-12 mt-1">
                                             <div class="card">
                                                 <div class="card-header font-weight-bold">Timeline</div>
                                                 <div class="card-body">
