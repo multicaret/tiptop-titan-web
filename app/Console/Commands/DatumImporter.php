@@ -14,6 +14,7 @@ use App\Models\OldModels\OldCategory;
 use App\Models\OldModels\OldCategoryTranslation;
 use App\Models\OldModels\OldChain;
 use App\Models\OldModels\OldChainTranslation;
+use App\Models\OldModels\OldLocation;
 use App\Models\OldModels\OldMedia;
 use App\Models\OldModels\OldProduct;
 use App\Models\OldModels\OldProductTranslation;
@@ -52,7 +53,8 @@ class DatumImporter extends Command
     public const CHOICE_GROCERY_CATEGORIES = 'grocery-categories';
     public const CHOICE_PRODUCT_IMAGES = 'product-images';
     public const CHOICE_FOOD_CHAINS = 'food-chains';
-    public const CHOICE_USERS = 'USERS';
+    public const CHOICE_USERS = 'users';
+    public const CHOICE_ADDRESSES = 'addresses';
     private ProgressBar $bar;
     private Collection $foodCategories;
     private array $importerChoices;
@@ -74,6 +76,7 @@ class DatumImporter extends Command
             self::CHOICE_PRODUCT_IMAGES,
             self::CHOICE_FOOD_CHAINS,
             self::CHOICE_USERS,
+            self::CHOICE_ADDRESSES,
         ];
     }
 
@@ -102,6 +105,8 @@ class DatumImporter extends Command
             $this->importProductsImages(500);
         } elseif ($this->modelName === self::CHOICE_USERS) {
             $this->importUsers();
+        } elseif ($this->modelName === self::CHOICE_ADDRESSES) {
+            $this->importAddresses();
         }
         $this->bar->finish();
         \DB::statement('SET FOREIGN_KEY_CHECKS=1;');
@@ -309,8 +314,6 @@ class DatumImporter extends Command
 
     private function importGroceryProducts(int $count): void
     {
-//        Product::truncate();
-//        ProductTranslation::truncate();
         $oldProducts = OldProduct::orderBy('created_at')
                                  ->withCount('categories')
                                  ->where('restaurant_id', self::DEFAULT_RESTAURANT_ID)
@@ -339,8 +342,6 @@ class DatumImporter extends Command
 
     private function importGroceryCategories(): void
     {
-//        Taxonomy::truncate();
-//        TaxonomyTranslation::truncate();
         $parentIds = [31, 441, 508, 509, 510, 511, 512, 554, 557, 597, 654, 666];
         $groceryCategories = OldCategory::whereIn('id', $parentIds)->get();
         foreach ($parentIds as $parentId) {
@@ -416,8 +417,6 @@ class DatumImporter extends Command
 
     public function insertGroceryDefaultBranch(): void
     {
-//        Branch::truncate();
-//        BranchTranslation::truncate();
         $this->bar = $this->output->createProgressBar(1);
         $this->bar->start();
         $oldBranch = OldBranch::find(self::DEFAULT_BRANCH_ID);
@@ -499,6 +498,34 @@ class DatumImporter extends Command
             dd($e->getMessage(), PHP_EOL, $tempUser);
         }
 
+    }
+
+    private function importAddresses()
+    {
+        $oldLocations = OldLocation::all();
+        $this->newLine();
+        $this->bar = $this->output->createProgressBar($oldLocations->count());
+        $this->bar->start();
+        foreach ($oldLocations as $oldLocation) {
+            $tempLocation = [];
+            if (filter_var($oldLocation->email, FILTER_VALIDATE_EMAIL)) {
+                $tempLocation['emails'] = json_encode([$oldLocation->email]);
+            }
+            foreach ($oldLocation->attributesComparing() as $oldModelKey => $newModelKey) {
+                $tempLocation[$newModelKey] = $oldLocation->{$oldModelKey};
+            }
+            $tempLocation['creator_id'] = self::CREATOR_EDITOR_ID;
+            $tempLocation['editor_id'] = self::CREATOR_EDITOR_ID;
+            $tempLocation['phones'] = json_encode([$oldLocation->phones]);
+            $tempLocation['is_default'] = $oldLocation->defualt === OldLocation::IS_DEFAULT ? 1 : 0;
+            $tempLocation['status'] = $oldLocation->status === OldLocation::STATUS_ACTIVE ? Location::STATUS_ACTIVE : Location::STATUS_INACTIVE;
+            try {
+                $isInserted = Location::insert($tempLocation);
+            } catch (\Exception $e) {
+                dd($e->getMessage(), PHP_EOL, $tempLocation);
+            }
+            $this->bar->advance();
+        }
     }
 
 }
