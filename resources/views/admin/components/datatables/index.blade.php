@@ -2,10 +2,11 @@
     <link rel="stylesheet" href="/admin-assets/libs/datatables/datatables.css">
     <link rel="stylesheet" href="https://cdn.datatables.net/rowreorder/1.2.7/css/rowReorder.dataTables.min.css">
     <style>
-        .large-icon > [class^="ion-"]::before, .large-icon >  [class*=" ion-"]::before {
+        .large-icon > [class^="ion-"]::before, .large-icon > [class*=" ion-"]::before {
             font-size: 2em;
         }
-        .medium-icon > [class^="ion-"]::before, .medium-icon >  [class*=" ion-"]::before {
+
+        .medium-icon > [class^="ion-"]::before, .medium-icon > [class*=" ion-"]::before {
             font-size: 1.5em;
         }
     </style>
@@ -184,6 +185,18 @@
                         {{--    $(`#btn-status-${modelId}-1`).removeClass('d-none');--}}
                         {{--}--}}
                     }
+                }, () => {
+                    showToast('error', 'Server Error, try later!');
+                });
+        }
+
+        function syncChain(syncUrl) {
+            axios.get(syncUrl)
+                .then((response) => {
+                    if (response.data.isSuccess) {
+                        $(`#${response.data.uuid}`).hide();
+                    }
+                    showToast(response.data.isSuccess ? 'success' : 'error', response.data.message);
                 }, () => {
                     showToast('error', 'Server Error, try later!');
                 });

@@ -17,10 +17,12 @@ use App\Models\OldModels\OldChainTranslation;
 use App\Models\OldModels\OldMedia;
 use App\Models\OldModels\OldProduct;
 use App\Models\OldModels\OldProductTranslation;
+use App\Models\OldModels\OldUser;
 use App\Models\Product;
 use App\Models\ProductTranslation;
 use App\Models\Taxonomy;
 use App\Models\TaxonomyTranslation;
+use App\Models\User;
 use Carbon\Carbon;
 use Illuminate\Console\Command;
 use Illuminate\Database\Eloquent\Model;
@@ -44,12 +46,13 @@ class DatumImporter extends Command
     private const DEFAULT_CHAIN = 1;
     private const DEFAULT_RESTAURANT_ID = 269;
     private const CHAIN_SKIPPED_IDS = [207, 269];
-    private const CHOICE_GROCERY_DEFAULT_BRANCH = 'grocery-default-branch';
-    private const CHOICE_GROCERY_PRODUCTS = 'grocery-products';
-    private const CHOICE_FOOD_PRODUCTS = 'food-products';
-    private const CHOICE_GROCERY_CATEGORIES = 'grocery-categories';
-    private const CHOICE_PRODUCT_IMAGES = 'product-images';
-    private const CHOICE_FOOD_CHAINS = 'food-chains';
+    public const CHOICE_GROCERY_DEFAULT_BRANCH = 'grocery-default-branch';
+    public const CHOICE_GROCERY_PRODUCTS = 'grocery-products';
+    public const CHOICE_FOOD_PRODUCTS = 'food-products';
+    public const CHOICE_GROCERY_CATEGORIES = 'grocery-categories';
+    public const CHOICE_PRODUCT_IMAGES = 'product-images';
+    public const CHOICE_FOOD_CHAINS = 'food-chains';
+    public const CHOICE_USERS = 'USERS';
     private ProgressBar $bar;
     private Collection $foodCategories;
     private array $importerChoices;
@@ -70,6 +73,7 @@ class DatumImporter extends Command
             self::CHOICE_GROCERY_CATEGORIES,
             self::CHOICE_PRODUCT_IMAGES,
             self::CHOICE_FOOD_CHAINS,
+            self::CHOICE_USERS,
         ];
     }
 
@@ -96,6 +100,8 @@ class DatumImporter extends Command
             $this->importGroceryCategories();
         } elseif ($this->modelName === self::CHOICE_PRODUCT_IMAGES) {
             $this->importProductsImages(500);
+        } elseif ($this->modelName === self::CHOICE_USERS) {
+            $this->importUsers();
         }
         $this->bar->finish();
         \DB::statement('SET FOREIGN_KEY_CHECKS=1;');
@@ -156,6 +162,7 @@ class DatumImporter extends Command
         $tempBranch['city_id'] = self::DEFAULT_CITY;
         $tempBranch['type'] = $type;
         $tempBranch['status'] = OldBranch::statusesComparing()[$oldBranch->status];
+        $tempBranch['has_tip_top_delivery'] = $type === Branch::CHANNEL_GROCERY_OBJECT;
         $isInserted = Branch::insert($tempBranch);
         if ($isInserted) {
             $freshBranch = Branch::find($oldBranch->id);
@@ -195,7 +202,7 @@ class DatumImporter extends Command
             $categories = $oldProduct->categories;
         }
         $mainCategory = optional($categories->first())->id;
-        if (is_null($mainCategory) ) {
+        if (is_null($mainCategory)) {
             dd($oldProduct->toArray());
         }
         foreach (OldProduct::attributesComparing() as $oldModelKey => $newModelKey) {
@@ -462,6 +469,36 @@ class DatumImporter extends Command
             }
             $this->bar->finish();
         }
+    }
+
+    private function importUsers()
+    {
+        $oldUsers = OldUser::all();
+        $this->newLine();
+        $this->bar = $this->output->createProgressBar($oldUsers->count());
+        $this->bar->start();
+        foreach ($oldUsers as $oldUser) {
+            if ($oldUser->email) {
+                $this->insertUser($oldUser);
+            }
+            $this->bar->advance();
+        }
+    }
+
+    private function insertUser(OldUser $oldUser)
+    {
+        $tempUser = [];
+        foreach ($oldUser->attributesComparing() as $oldModelKey => $newModelKey) {
+            $tempUser[$newModelKey] = $oldUser->{$oldModelKey};
+        }
+        $tempUser['settings'] = json_encode([]);
+        $tempUser['status'] = $oldUser->status === OldUser::STATUS_ACTIVE ? User::STATUS_ACTIVE : User::STATUS_INACTIVE;
+        try {
+            $isInserted = User::insert($tempUser);
+        } catch (\Exception $e) {
+            dd($e->getMessage(), PHP_EOL, $tempUser);
+        }
+
     }
 
 }

@@ -41,3 +41,10 @@
         :copyButtonLabel="trans('strings.link')">
     </x-admin.add-copy-buttons>
 @endisset
+@isset($syncAction)
+    <button class="btn btn-link" id="{{$uuid}}" onclick="syncChain('{{$syncAction}}')"
+       data-toggle="tooltip"
+       title="@lang('strings.sync_chain')">
+        &nbsp;<i class="fas fa-exchange-alt"></i>&nbsp;
+    </button>
+@endisset

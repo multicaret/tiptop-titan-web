@@ -36,6 +36,7 @@ class CreateChainsTable extends Migration
             $table->unsignedBigInteger('view_count')->default(1);
             $table->unsignedBigInteger('order_column')->nullable();
             $table->unsignedTinyInteger('status')->default(Chain::STATUS_DRAFT)->nullable();
+            $table->boolean('is_synced')->default(false)->comment('True when sync chain products with chain branches');
             $table->timestamps();
             $table->softDeletes();
 
