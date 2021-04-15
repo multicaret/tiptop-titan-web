@@ -167,7 +167,8 @@ class DatumImporter extends Command
         $tempBranch['city_id'] = self::DEFAULT_CITY;
         $tempBranch['type'] = $type;
         $tempBranch['status'] = OldBranch::statusesComparing()[$oldBranch->status];
-        $tempBranch['has_tip_top_delivery'] = $type === Branch::CHANNEL_GROCERY_OBJECT;
+        $tempBranch['has_tip_top_delivery'] = $oldBranch->app_delivery_service === 1;
+        $tempBranch['has_restaurant_delivery'] = $oldBranch->delivery_service === 1;
         $isInserted = Branch::insert($tempBranch);
         if ($isInserted) {
             $freshBranch = Branch::find($oldBranch->id);
@@ -179,7 +180,11 @@ class DatumImporter extends Command
                 $attributesComparing = OldBranchTranslation::attributesComparing();
                 $tempTranslation = [];
                 foreach ($attributesComparing as $oldAttribute => $newAttribute) {
-                    $tempTranslation[$newAttribute] = $translation->{$oldAttribute};
+                    if ($oldAttribute === 'title_suffex' && strlen($translation->{$oldAttribute}) < 3) {
+                        $tempTranslation[$newAttribute] = 'Branch '.$translation->{$oldAttribute};
+                    } else {
+                        $tempTranslation[$newAttribute] = $translation->{$oldAttribute};
+                    }
                 }
                 BranchTranslation::insert($tempTranslation);
             }
@@ -229,14 +234,21 @@ class DatumImporter extends Command
             $freshProduct = Product::find($oldProduct->id);
             $groceryCategoriesIds = $categories->pluck('id');
             $freshProduct->categories()->sync($groceryCategoriesIds);
+            $localesKeys = array_flip(localization()->getSupportedLocalesKeys());
             foreach ($oldProduct->translations as $translation) {
                 $attributesComparing = OldProductTranslation::attributesComparing();
                 $tempTranslation = [];
+                unset($localesKeys[$translation['locale']]);
                 foreach ($attributesComparing as $oldAttribute => $newAttribute) {
                     $tempTranslation[$newAttribute] = $translation->{$oldAttribute};
                 }
                 ProductTranslation::insert($tempTranslation);
             }
+            foreach ($localesKeys as $localeKey => $index) {
+                $freshProduct->translateOrNew($localeKey)->fill(\Arr::first($freshProduct->getTranslationsArray()));
+            }
+            $freshProduct->status = Product::STATUS_TRANSLATION_NOT_COMPLETED;
+            $freshProduct->save();
 //            $this->addSingleImage($freshProduct, 'Dish');
         }
     }
