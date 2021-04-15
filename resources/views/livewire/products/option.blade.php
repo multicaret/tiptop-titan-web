@@ -29,18 +29,53 @@
                                 @endforeach
                             </div>
 
-                            <div class="form-group">
-                                <h4>Is based on ingredients?</h4>
-                                @if($option->ingredients()->count() == 0 && $option->selections()->count() == 0)
+                            <div class="form-row">
+                                <div class="form-group col-md-4">
+                                    <h4>Is based on ingredients?</h4>
+                                    @if($option->ingredients()->count() == 0 && $option->selections()->count() == 0)
+                                        <div class="row">
+                                            <div class="col-1">
+                                                <div class="form-check">
+                                                    <input class="form-check-input" type="radio"
+                                                           id="is-based-on-ingredients-{{$option->id}}"
+                                                           value="1"
+                                                           wire:model="option.is_based_on_ingredients">
+                                                    <label class="form-check-label"
+                                                           for="is-based-on-ingredients-{{$option->id}}">
+                                                        Yes
+                                                    </label>
+                                                </div>
+                                            </div>
+                                            <div class="col-1">
+                                                <div class="form-check">
+                                                    <input class="form-check-input" type="radio"
+                                                           id="is-not-based-on-ingredients-{{$option->id}}"
+                                                           value="0"
+                                                           wire:model="option.is_based_on_ingredients"
+                                                    >
+                                                    <label class="form-check-label"
+                                                           for="is-not-based-on-ingredients-{{$option->id}}">
+                                                        No
+                                                    </label>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    @else
+                                        <em>You have to delete all selections/ingredients first</em>
+                                    @endif
+                                </div>
+
+                                <div class="form-group col-md-4">
+                                    <h4>Is Required?</h4>
                                     <div class="row">
                                         <div class="col-1">
                                             <div class="form-check">
                                                 <input class="form-check-input" type="radio"
-                                                       id="is-based-on-ingredients-{{$option->id}}"
+                                                       id="is-required-{{$option->id}}"
                                                        value="1"
-                                                       wire:model="option.is_based_on_ingredients">
+                                                       wire:model="option.is_required">
                                                 <label class="form-check-label"
-                                                       for="is-based-on-ingredients-{{$option->id}}">
+                                                       for="is-required-{{$option->id}}">
                                                     Yes
                                                 </label>
                                             </div>
@@ -48,22 +83,41 @@
                                         <div class="col-1">
                                             <div class="form-check">
                                                 <input class="form-check-input" type="radio"
-                                                       id="is-not-based-on-ingredients-{{$option->id}}"
+                                                       id="is-not-required-{{$option->id}}"
                                                        value="0"
-                                                       wire:model="option.is_based_on_ingredients"
+                                                       wire:model="option.is_required"
                                                 >
                                                 <label class="form-check-label"
-                                                       for="is-not-based-on-ingredients-{{$option->id}}">
+                                                       for="is-not-required-{{$option->id}}">
                                                     No
                                                 </label>
                                             </div>
                                         </div>
                                     </div>
-                                @else
-                                    <em>You have to delete all selections/ingredients first</em>
-                                @endif
-                            </div>
+                                </div>
 
+                                <div class="form-group col-md-4">
+                                    <label class="form-label">Input Type</label>
+                                    <select class="form-control" wire:model="option.input_type">
+                                        @if($option->input_type == \App\Models\ProductOption::SELECTION_TYPE_SINGLE_VALUE)
+                                            <option value="{{\App\Models\ProductOption::INPUT_TYPE_PILL}}">
+                                                Pills
+                                            </option>
+                                            <option value="{{\App\Models\ProductOption::INPUT_TYPE_RADIO}}">
+                                                Radio
+                                            </option>
+                                        @endif
+                                        @if($option->input_type == \App\Models\ProductOption::SELECTION_TYPE_MULTIPLE_VALUE)
+                                            <option value="{{\App\Models\ProductOption::INPUT_TYPE_PILL}}">
+                                                Pills
+                                            </option>
+                                            <option value="{{\App\Models\ProductOption::INPUT_TYPE_RADIO}}">
+                                                Radio
+                                            </option>
+                                        @endif
+                                    </select>
+                                </div>
+                            </div>
                             <div class="form-row">
                                 @if($option->is_based_on_ingredients)
                                     <div class="form-group col-md-6">

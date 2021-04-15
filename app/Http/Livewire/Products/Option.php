@@ -24,6 +24,8 @@ class Option extends Component
 
     protected $rules = [
         'option.is_based_on_ingredients' => 'required|numeric',
+        'option.is_required' => 'required|boolean',
+        'option.input_type' => 'required|numeric',
         'option.type' => 'required|numeric',
         'option.selection_type' => 'required|numeric',
         'option.min_number_of_selection' => 'nullable|numeric',
@@ -34,7 +36,7 @@ class Option extends Component
     ];
 
 
-    public function updatedIsBasedOnIngredients($newValue)
+    public function updatedOptionsBasedOnIngredients($newValue)
     {
 //        $this->validate();
         $this->option->is_based_on_ingredients = $newValue;
@@ -50,7 +52,31 @@ class Option extends Component
         ]);
     }
 
+    public function updatedOptionIsRequired($newValue)
+    {
+//        $this->validate();
+        $this->option->is_required = $newValue;
+        $this->option->save();
+
+        $this->emit('showToast', [
+            'icon' => 'success',
+            'message' => '"Is Required" has been changed',
+        ]);
+    }
+
     public function updatedOptionType($newValue)
+    {
+//        $this->validate();
+        $this->option->type = $newValue;
+        $this->option->save();
+
+        $this->emit('showToast', [
+            'icon' => 'success',
+            'message' => 'Type has been changed',
+        ]);
+    }
+
+    public function updatedOptionInputType($newValue)
     {
 //        $this->validate();
         $this->option->type = $newValue;
