@@ -234,14 +234,21 @@ class DatumImporter extends Command
             $freshProduct = Product::find($oldProduct->id);
             $groceryCategoriesIds = $categories->pluck('id');
             $freshProduct->categories()->sync($groceryCategoriesIds);
+            $localesKeys = array_flip(localization()->getSupportedLocalesKeys());
             foreach ($oldProduct->translations as $translation) {
                 $attributesComparing = OldProductTranslation::attributesComparing();
                 $tempTranslation = [];
+                unset($localesKeys[$translation['locale']]);
                 foreach ($attributesComparing as $oldAttribute => $newAttribute) {
                     $tempTranslation[$newAttribute] = $translation->{$oldAttribute};
                 }
                 ProductTranslation::insert($tempTranslation);
             }
+            foreach ($localesKeys as $localeKey => $index) {
+                $freshProduct->translateOrNew($localeKey)->fill(\Arr::first($freshProduct->getTranslationsArray()));
+            }
+            $freshProduct->status = Product::STATUS_TRANSLATION_NOT_COMPLETED;
+            $freshProduct->save();
 //            $this->addSingleImage($freshProduct, 'Dish');
         }
     }
