@@ -185,7 +185,8 @@ class Product extends Model implements HasMedia
         'chain',
         'branch',
         'translations',
-        'categories'
+        'categories',
+        'category'
     ];
 
     protected $fillable = ['order_column'];
