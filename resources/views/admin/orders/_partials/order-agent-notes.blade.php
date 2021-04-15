@@ -56,7 +56,6 @@
                 <!-- / Chat footer -->
                 <!-- Wrap `.chat-scroll` to properly position scroll area. Remove this wtapper if you don't need scroll -->
                 <div class="flex-grow-1 position-relative">
-                    `
                     <!-- Remove `.chat-scroll` and add `.flex-grow-1` if you don't need scroll -->
                     <div class="chat-messages chat-scroll p-4 ps">
                         @forelse($selectedOrder->agentNotes()->get() as $note)

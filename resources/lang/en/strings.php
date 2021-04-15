@@ -265,7 +265,6 @@ return [
     'location' => 'Location',
     'maximum_orderable_quantity' => 'Maximum orderable quantity',
     'super' => 'Super',
-    'admin' => 'Admin',
     'supervisor' => 'Supervisor',
     'agent' => 'Agent',
     'content-editor' => 'Content Editor',
@@ -275,9 +274,9 @@ return [
     'translator' => 'Translator',
     'restaurant-driver' => 'Restaurant Driver',
     'tiptop-driver' => 'Tiptop Driver',
-    'user' => 'User',
     'employment' => 'Employment',
     'employee' => 'Employee',
     'freelancer' => 'Freelancer',
     'orders-cancellation-reasons' => 'Orders cancellation reasons',
+    'sync_chain' => 'Sync Chain'
 ];

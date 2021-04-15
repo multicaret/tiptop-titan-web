@@ -79,7 +79,7 @@ class ProductController extends Controller
     public function store(Request $request): RedirectResponse
     {
         $this->prepareForValidation($request);
-        $request->validate($this->validationRules());
+        $request->validate($this->validationRules($request));
         $product = new Product();
 
 //        try {
@@ -124,7 +124,7 @@ class ProductController extends Controller
     {
         $this->prepareForValidation($request);
 
-        $request->validate($this->validationRules());
+        $request->validate($this->validationRules($request));
 
         try {
             $this->storeSaveLogic($request, $product);
@@ -211,19 +211,29 @@ class ProductController extends Controller
         return $data;
     }
 
-    private function validationRules(): array
+    private function validationRules($request): array
     {
         $defaultLocale = localization()->getDefaultLocale();
+        $toValidateInGrocery = [];
+        if ($request->type == Product::getCorrectChannelName(Product::CHANNEL_GROCERY_OBJECT, 0)) {
+            $toValidateInGrocery = [
+                'categories' => 'required',
+            ];
+        }
+        $toValidateInFood = [];
+        if ($request->type == Product::getCorrectChannelName(Product::CHANNEL_FOOD_OBJECT, 0)) {
+            $toValidateInFood = [
+                'category' => 'required',
+            ];
+        }
 
-        return [
+        $generalValidateItems = [
             "{$defaultLocale}.title" => 'required',
-//            'chain_id' => 'required',
-//            'branch_id' => 'required',
-            'categories' => 'required',
-//            'unit_id' => 'required',
             'price' => 'required',
             'type' => 'required',
         ];
+
+        return array_merge($toValidateInGrocery, $generalValidateItems, $toValidateInFood);
     }
 
     private function storeSaveLogic(Request $request, Product $product): void
@@ -262,7 +272,7 @@ class ProductController extends Controller
             $ids = Arr::pluck(json_decode($request->input('categories'), true), 'id');
             $product->category_id = $ids[0];
         } else {
-            $product->category_id = json_decode($request->input('categories'))->id;
+            $product->category_id = json_decode($request->input('category'))->id;
         }
         $product->save();
 

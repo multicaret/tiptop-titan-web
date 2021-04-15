@@ -9,6 +9,7 @@ use Exception;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Pagination\LengthAwarePaginator;
+use Illuminate\Support\Facades\Artisan;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Schema;
 use Response;
@@ -116,6 +117,7 @@ class AjaxController extends Controller
 
         $objectName->channel = $request->channel;
         $objectName->save();
+
         return $this->respond([
             'isSuccess' => true,
             'message' => 'Successfully updated',
@@ -197,4 +199,37 @@ class AjaxController extends Controller
 
         return $this->respond(['branches' => $allBranches]);
     }
+
+
+    public function syncChain(Chain $chain, Request $request): JsonResponse
+    {
+        $chainsIds = [$chain->id];
+        if ($request->has('extra_ids')) {
+            $extraIds = $request->input('extra_ids');
+            if (is_string($extraIds)) {
+                array_push($chainsIds, explode(',', $extraIds));
+            } else {
+                array_push($chainsIds, $extraIds);
+            }
+        }
+
+        Artisan::call('datum:sync-chains', [
+            '--id' => $chainsIds
+        ]);
+
+        try {
+            $outputMessage = (string) Artisan::output();
+        } catch (Exception $e) {
+            $outputMessage = $e->getMessage();
+        }
+
+        $chain->is_synced = true;
+        $chain->save();
+        return $this->respond([
+            'uuid' => $chain->uuid,
+            'isSuccess' => true,
+            'message' => $outputMessage
+        ]);
+    }
+
 }

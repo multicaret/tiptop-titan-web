@@ -175,28 +175,53 @@
                                 @endif
                                 <div
                                     class="col-{{$isGrocery ? "6" : "12"}}">
-                                    <div class="form-group">
-                                        <label class="control-label">
-                                            {{$isGrocery ? trans('strings.categories') : trans('strings.menu-category')}}
-                                            &nbsp;<b class="text-danger">*</b>
-                                        </label>
-                                        <multiselect
-                                            :options="categories"
-                                            v-model="product.categories"
-                                            track-by="id"
-                                            label="title"
-                                            name="categories"
-                                            :multiple="isGrocery"
-                                            :searchable="true"
-                                            :allow-empty="true"
-                                            select-label=""
-                                            selected-label=""
-                                            deselect-label=""
-                                            placeholder=""
-                                            autocomplete="false"
-                                            required
-                                        ></multiselect>
-                                    </div>
+                                    @if($isGrocery)
+                                        <div class="form-group">
+                                            <label class="control-label">
+                                                {{ trans('strings.categories') }}
+                                                &nbsp;<b class="text-danger">*</b>
+                                            </label>
+                                            <multiselect
+                                                :options="categories"
+                                                v-model="product.categories"
+                                                track-by="id"
+                                                label="title"
+                                                name="categories"
+                                                :multiple="isGrocery"
+                                                :searchable="true"
+                                                :allow-empty="true"
+                                                select-label=""
+                                                selected-label=""
+                                                deselect-label=""
+                                                placeholder=""
+                                                autocomplete="false"
+                                                required
+                                            ></multiselect>
+                                        </div>
+                                    @else
+                                        <div class="form-group">
+                                            <label class="control-label">
+                                                {{ trans('strings.menu-category') }}
+                                                &nbsp;<b class="text-danger">*</b>
+                                            </label>
+                                            <multiselect
+                                                :options="categories"
+                                                v-model="product.category"
+                                                track-by="id"
+                                                label="title"
+                                                name="category"
+                                                :multiple="isGrocery"
+                                                :searchable="true"
+                                                :allow-empty="true"
+                                                select-label=""
+                                                selected-label=""
+                                                deselect-label=""
+                                                placeholder=""
+                                                autocomplete="false"
+                                                required
+                                            ></multiselect>
+                                        </div>
+                                    @endif
                                 </div>
                                 @if($isGrocery)
                                     <div class="col-6">
@@ -386,7 +411,11 @@
                 <input type="hidden" name="chain" :value="JSON.stringify(product.chain)">
                 <input type="hidden" name="branch" :value="JSON.stringify(product.branch)">
             @endif
-            <input type="hidden" name="categories" :value="JSON.stringify(product.categories)">
+            @if($isGrocery)
+                <input type="hidden" name="categories" :value="JSON.stringify(product.categories)">
+            @else
+                <input type="hidden" name="category" :value="JSON.stringify(product.category)">
+            @endif
             <input type="hidden" name="unit_id" :value="JSON.stringify(product.unit)">
             <input type="hidden" name="unattached-media" class="deleted-file" value="">
             <button class="btn btn-success" type="submit">{{trans('strings.submit')}}</button>

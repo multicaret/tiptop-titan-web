@@ -157,6 +157,8 @@ use Spatie\MediaLibrary\MediaCollections\Models\Media;
  * @method static \Illuminate\Database\Query\Builder|Product withTrashed()
  * @method static \Illuminate\Database\Query\Builder|Product withoutTrashed()
  * @mixin Eloquent
+ * @property-read Collection|\App\Models\Taxonomy[] $categories
+ * @property-read \App\Models\Taxonomy $category
  */
 class Product extends Model implements HasMedia
 {
@@ -183,7 +185,8 @@ class Product extends Model implements HasMedia
         'chain',
         'branch',
         'translations',
-        'categories'
+        'categories',
+        'category'
     ];
 
     protected $fillable = ['order_column'];

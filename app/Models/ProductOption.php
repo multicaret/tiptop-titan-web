@@ -51,6 +51,8 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
  * @mixin \Eloquent
  * @property int $is_based_on_ingredients
  * @method static \Illuminate\Database\Eloquent\Builder|ProductOption whereIsBasedOnIngredients($value)
+ * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\Taxonomy[] $ingredients
+ * @property-read int|null $ingredients_count
  */
 class ProductOption extends Model
 {
