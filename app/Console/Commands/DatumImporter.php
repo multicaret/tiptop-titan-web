@@ -245,7 +245,7 @@ class DatumImporter extends Command
                 ProductTranslation::insert($tempTranslation);
             }
             foreach ($localesKeys as $localeKey => $index) {
-                $freshProduct->translateOrNew($localeKey)->fill(\Arr::first($freshProduct->getTranslationsArray()));
+                $freshProduct->translateOrNew($localeKey)->fill(\Arr::first($oldProduct->getTranslationsArray()));
             }
             $freshProduct->status = Product::STATUS_TRANSLATION_NOT_COMPLETED;
             $freshProduct->save();
