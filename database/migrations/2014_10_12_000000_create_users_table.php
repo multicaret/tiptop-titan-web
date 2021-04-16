@@ -34,7 +34,8 @@ class CreateUsersTable extends Migration
             $table->unsignedBigInteger('country_id')->nullable()->default(config('defaults.country.id'));
             $table->unsignedBigInteger('region_id')->nullable()->default(config('defaults.region.id'));
             $table->unsignedBigInteger('city_id')->nullable()->default(config('defaults.city.id'));
-            $table->unsignedBigInteger('branch_id')->index()->nullable(); //Restaurant Drivers Only
+            $table->unsignedBigInteger('branch_id')->nullable(); //Restaurant Drivers Only
+            $table->unsignedBigInteger('team_id')->nullable(); //TipTop Drivers Only
             $table->unsignedBigInteger('selected_address_id')->nullable();
             $table->decimal('latitude', 11, 8)->nullable();
             $table->decimal('longitude', 11, 8)->nullable();
@@ -52,10 +53,8 @@ class CreateUsersTable extends Migration
             $table->timestamp('email_verified_at')->nullable();
             $table->timestamp('last_logged_in_at')->nullable();
             $table->timestamp('last_logged_out_at')->nullable();
-            $table->unsignedTinyInteger('employment')->default(User::EMPLOYMENT_EMPLOYEE)->comment('1:employee, 2:freelancer');
+            $table->unsignedTinyInteger('employment')->nullable()->default(User::EMPLOYMENT_EMPLOYEE)->comment('1:employee, 2:freelancer');
             $table->string('shift')->nullable(); //Restaurant Drivers Only
-            $table->string('tokan_team')->nullable(); //TipTop Drivers Only
-            $table->unsignedBigInteger('tokan_id')->nullable(); //TipTop Drivers Only
             $table->rememberToken();
             $table->timestamps();
 

@@ -7,6 +7,7 @@ use App\Models\Branch;
 use App\Models\City;
 use App\Models\Country;
 use App\Models\Region;
+use App\Models\TokanTeam;
 use App\Models\User;
 use DB;
 use Illuminate\Http\RedirectResponse;
@@ -155,9 +156,8 @@ class UserController extends Controller
         $user->region_id = $request->region_id;
         $user->city_id = $request->city_id;
         $user->employment = $request->employment;
+        $user->team_id = $request->team_id;
         $user->branch_id = $request->branch_id;
-        $user->tokan_team = $request->tokan_team;
-        $user->tokan_id = $request->tokan_id;
         $user->order_column = $order;
 
         $user->save();
@@ -253,9 +253,8 @@ class UserController extends Controller
         $user->region_id = $request->region_id;
         $user->city_id = $request->city_id;
         $user->employment = $request->employment;
+        $user->team_id = $request->team_id;
         $user->branch_id = $request->branch_id;
-        $user->tokan_team = $request->tokan_team;
-        $user->tokan_id = $request->tokan_id;
         $user->save();
 
         if ( ! empty($request->password)) {
@@ -332,6 +331,10 @@ class UserController extends Controller
             ],
             'countries' => Country::all(),
             'regions' => Region::where('country_id', config('defaults.country.id'))->get(),
+            'teams' => TokanTeam::all()
+                                ->mapWithKeys(function ($item) {
+                                    return [$item['id'] => $item['name']];
+                                }),
             'cities' => City::where('region_id', config('defaults.region.id'))->get(),
             'branches' => Branch::whereType(Branch::CHANNEL_FOOD_OBJECT)
                                 ->active()

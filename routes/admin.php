@@ -39,6 +39,7 @@ Route::resource('posts', 'PostController')->except(['show']);
 Route::resource('cities', 'CityController')->except(['show']);
 Route::resource('regions', 'RegionController')->except(['show']);
 
+Route::resource('teams', 'TeamController')->except(['show']);
 Route::resource('slides', 'SlideController')->except(['show']);
 Route::resource('chains', 'ChainController')->except(['show']);
 Route::post('branches/{branch}/workingHours', 'BranchController@storeWorkingHours')->name('branch.working-hours');
@@ -50,6 +51,7 @@ Route::get('orders/ratings', 'OrderController@ratings')->name('orders.ratings');
 Route::get('orders', 'OrderController@index')->name('orders.index');
 Route::get('orders/{order}', 'OrderController@show')->name('orders.show');
 Route::resource('coupons', 'CouponController')->except(['show']);
+Route::resource('payment-methods', 'PaymentMethodController')->only('index');
 
 Route::get('preferences/adjust-trackers', 'PreferenceController@adjustTrackers')->name('preferences.adjust-trackers');
 Route::get('preferences/{section}/edit', 'PreferenceController@edit')->name('preferences.edit');

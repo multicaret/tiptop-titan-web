@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Ajax;
 
 use App\Http\Controllers\Controller;
+use App\Models\Branch;
 use App\Models\Chain;
 use App\Models\Preference;
 use Exception;
@@ -225,11 +226,29 @@ class AjaxController extends Controller
 
         $chain->is_synced = true;
         $chain->save();
+
         return $this->respond([
             'uuid' => $chain->uuid,
             'isSuccess' => true,
             'message' => $outputMessage
         ]);
+    }
+
+
+    public function loadBranchCategories(Request $request): JsonResponse
+    {
+        $branchId = $request->input('branch_id');
+        $branch = Branch::find($branchId);
+        $getIdTitle = function ($item) {
+            return ['id' => $item->id, 'title' => $item->title];
+        };
+        $allCategories = [];
+//        dd($branch->groceryCategories);
+        if ( ! is_null($branch->groceryCategories)) {
+            $allCategories = $branch->select(['id', 'title'])->groceryCategories->all();
+        }
+
+        return $this->respond(['categories' => $allCategories]);
     }
 
 }

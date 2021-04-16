@@ -127,30 +127,20 @@
                                 @slot('selected', $user->employment)
                             @endcomponent
                         </div>
-                        <div class="col-md-3">
-                            @component('admin.components.form-group', ['name' => 'tokan_team', 'type' => 'text'])
-                                @slot('label', 'Tokan Team')
-                                @slot('value', $user->tokan_team)
-                            @endcomponent
-                        </div>
-                        <div class="col-md-3">
-                            @component('admin.components.form-group', ['name' => 'tokan_id', 'type' => 'number'])
-                                @slot('label', 'Tokan ID')
-                                @slot('value', $user->tokan_id)
+                    @endif
+                    @if($role == \App\Models\User::ROLE_TIPTOP_DRIVER)
+                        <div class="col-6">
+                            @component('admin.components.form-group', ['name' => 'team_id', 'type' => 'select'])
+                                @slot('label', trans('strings.captain_teams'))
+                                @slot('options', $teams)
+                                @slot('attributes', [
+                                    'class' => 'select-2-captain_team w-100',
+                                    'required',
+                                ])
+                                @slot('selected', $user->team_id)
                             @endcomponent
                         </div>
                     @endif
-                    {{--<div class="col-md-6">
-                        @component('admin.components.form-group', ['name' => 'language_id', 'type' => 'select'])
-                            @slot('label', 'Languages')
-                            @slot('options', $globalLanguages->pluck('name','id')->all())
-                        @endcomponent
-                    </div>--}}
-                    {{--<div class="col-md-12">
-                        @component('admin.components.form-group', ['name' => 'bio', 'type' => 'textarea'])
-                            @slot('label', 'Bio')
-                        @endcomponent
-                    </div>--}}
                 </div>
                 <div class="col-12 col-lg-2">
                     <h5>Avatar</h5>
@@ -635,6 +625,9 @@
             });
             $('.select-2-employment').select2({
                 placeholder: 'Select Employment Type',
+            });
+            $('.select-2-captain_team').select2({
+                placeholder: 'Select Team',
             });
             $('.select-2-status').select2({
                 placeholder: 'Select Status',

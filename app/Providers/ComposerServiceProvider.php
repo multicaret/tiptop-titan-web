@@ -303,6 +303,11 @@ class ComposerServiceProvider extends ServiceProvider
                                 'icon' => 'fas fa-city',
                                 'routeName' => 'admin.cities.index',
                             ],
+                            [
+                                'title' => 'Captain Teams',
+                                'icon' => 'fas fa-users',
+                                'routeName' => 'admin.teams.index',
+                            ],
                         ]
                     ]
                 ]
@@ -416,6 +421,11 @@ class ComposerServiceProvider extends ServiceProvider
                                 'title' => 'Translations',
                                 'icon' => 'fas fa-language',
                                 'routeName' => 'admin.translations.index',
+                            ],
+                            [
+                                'title' => trans('strings.payment_methods'),
+                                'icon' => 'fas fa-donate',
+                                'routeName' => 'admin.payment-methods.index',
                             ],
                             [
                                 'title' => 'Tags',

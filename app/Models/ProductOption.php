@@ -63,11 +63,17 @@ class ProductOption extends Model
     public const TYPE_INCLUDING = 1;
     public const TYPE_EXCLUDING = 2;
 
+    public const INPUT_TYPE_PILL = 1;
+    public const INPUT_TYPE_RADIO = 2;
+    public const INPUT_TYPE_CHECKBOX = 6;
+    public const INPUT_TYPE_SELECT = 7;
+
     public const SELECTION_TYPE_SINGLE_VALUE = 1;
     public const SELECTION_TYPE_MULTIPLE_VALUE = 2;
 
     protected $casts = [
         'is_base_don_ingredients' => 'boolean',
+        'is_required' => 'boolean',
     ];
 
     /**
@@ -92,7 +98,7 @@ class ProductOption extends Model
     public function ingredients(): BelongsToMany
     {
         return $this->belongsToMany(Taxonomy::class, 'product_option_ingredient', 'product_option_id', 'ingredient_id')
-            ->withTimestamps();
+                    ->withTimestamps();
     }
 
 }

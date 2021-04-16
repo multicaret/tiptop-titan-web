@@ -63,6 +63,7 @@ return [
     'neighborhood' => 'Neighborhood',
     'all_preferences' => 'All Preferences',
     'add_new_role' => 'Add New Role',
+    'add_new_captain_teams' => 'Add New Captain Team',
     'publish_all_translations' => 'Publish all translations',
     'email_address' => 'Email Address',
     'password' => 'Password',
@@ -282,4 +283,5 @@ return [
     'not_delivered' => 'Not Delivered',
     'declined' => 'Declined',
     'canceled' => 'Canceled',
+    'captain_teams' => 'Captain Teams',
 ];

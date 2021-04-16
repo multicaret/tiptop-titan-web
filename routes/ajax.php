@@ -30,6 +30,7 @@ Route::prefix('datatables')->name('datatables.')->group(function () {
     Route::post('reorder', 'DatatableController@reorder')->name('reorder');
     Route::get('cities', 'DatatableController@cities')->name('cities');
     Route::get('regions', 'DatatableController@regions')->name('regions');
+    Route::get('teams', 'DatatableController@teams')->name('teams');
     Route::get('slides', 'DatatableController@slides')->name('slides');
     Route::get('translations', 'DatatableController@translationList')->name('translations');
     Route::get('chains', 'DatatableController@chains')->name('chains');
@@ -37,6 +38,7 @@ Route::prefix('datatables')->name('datatables.')->group(function () {
     Route::get('products', 'DatatableController@products')->name('products');
     Route::get('orders/ratings', 'DatatableController@orderRatings')->name('orders.ratings');
     Route::get('coupons', 'DatatableController@coupons')->name('coupons');
+    Route::get('payment-methods', 'DatatableController@paymentMethods')->name('payment-methods');
 });
 
 Route::post('change-status', 'AjaxController@statusChange')->name('statuses.change');
@@ -55,4 +57,5 @@ Route::put('translations', 'TranslationController@translationUpdate')->name('tra
 Route::get('translations/load', 'TranslationController@updateTranslationsData')->name('translation.load');
 Route::resource('media', 'MediaController')->only(['store']);
 Route::get('branch-by-chain', 'AjaxController@loadChainBranches')->name('branch-by-chain');
+Route::get('category-by-branch', 'AjaxController@loadBranchCategories')->name('category-by-branch');
 Route::get('chains/{chain}/sync', 'AjaxController@syncChain')->name('chains.sync');

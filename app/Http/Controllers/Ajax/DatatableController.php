@@ -8,11 +8,13 @@ use App\Models\Chain;
 use App\Models\City;
 use App\Models\Coupon;
 use App\Models\Order;
+use App\Models\PaymentMethod;
 use App\Models\Post;
 use App\Models\Product;
 use App\Models\Region;
 use App\Models\Slide;
 use App\Models\Taxonomy;
+use App\Models\TokanTeam;
 use App\Models\Translation;
 use App\Models\User;
 use Carbon\Carbon;
@@ -370,6 +372,46 @@ class DatatableController extends AjaxController
                          ])
                          ->make(true);
     }
+
+    public function teams(Request $request)
+    {
+        $teams = TokanTeam::selectRaw('tokan_teams.*')->latest();
+
+        return DataTables::of($teams)
+                         ->editColumn('action', function ($team) {
+                             $data = [
+                                 'editAction' => route('admin.teams.edit', $team),
+                                 'deleteAction' => route('admin.teams.destroy', [
+                                     $team->id,
+                                 ]),
+                             ];
+
+                             return view('admin.components.datatables._row-actions', $data)->render();
+                         })
+                         ->editColumn('status', function ($coupon) {
+                             return view('admin.components.datatables._status', [
+                                 'status' => $coupon->status
+                             ])->render();
+                         })
+                         ->editColumn('created_at', function ($item) {
+                             return view('admin.components.datatables._date', [
+                                 'date' => $item->created_at
+                             ])->render();
+                         })
+                         ->rawColumns([
+                             'action',
+                             'name',
+                             'created_at',
+                             'status',
+                         ])
+                         ->setRowAttr([
+                             'row-id' => function ($team) {
+                                 return $team->id;
+                             }
+                         ])
+                         ->make(true);
+    }
+
 
     public function slides(Request $request)
     {
@@ -829,6 +871,60 @@ class DatatableController extends AjaxController
                          ->setRowAttr([
                              'row-id' => function ($branch) {
                                  return $branch->id;
+                             }
+                         ])
+                         ->make(true);
+    }
+    public function paymentMethods(Request $request)
+    {
+        $paymentMethods = PaymentMethod::selectRaw('payment_methods.*');
+
+        return DataTables::of($paymentMethods)
+                         /*->editColumn('status', function ($paymentMethod) {
+                             $currentStatus = PaymentMethod::getAllStatusesRich()[$paymentMethod->status];
+                             $data = [
+                                 'item' => $paymentMethod,
+                                 'currentStatus' => $currentStatus,
+                             ];
+
+                             return view('admin.components.datatables._row-actions-status', $data)
+                                 ->render();
+                         })*/
+                         ->editColumn('action', function ($paymentMethod) {
+                             $data = [
+                                 'modelId' => $paymentMethod->id,
+//                                 'status' => $paymentMethod->status,
+                                 /*'editAction' => route('admin.payment-methods.edit', [
+                                     $paymentMethod->id,
+                                 ]),
+                                 'deleteAction' => route('admin.payment-methods.destroy', [
+                                     $paymentMethod->id,
+                                 ]),*/
+                                 'permissionModel' => 'payment_method',
+                             ];
+
+                             return view('admin.components.datatables._row-actions', $data)->render();
+                         })
+                         ->editColumn('created_at', function ($item) {
+                             return view('admin.components.datatables._date', [
+                                 'date' => $item->created_at
+                             ])->render();
+                         })
+                         ->editColumn('updated_at', function ($item) {
+                             return view('admin.components.datatables._date', [
+                                 'date' => $item->updated_at
+                             ])->render();
+                         })
+                         ->rawColumns([
+                             'action',
+                             'description',
+                             'created_at',
+                             'updated_at',
+                             'status'
+                         ])
+                         ->setRowAttr([
+                             'row-id' => function ($paymentMethod) {
+                                 return $paymentMethod->id;
                              }
                          ])
                          ->make(true);

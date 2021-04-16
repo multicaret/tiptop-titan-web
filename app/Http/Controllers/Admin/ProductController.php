@@ -71,7 +71,6 @@ class ProductController extends Controller
         $product = new Product();
         $product->type = Product::getCorrectChannel($request->type);
         $data = $this->essentialData($request, $product);
-        info(json_encode('tfoooooo'));
 
         return view('admin.products.form', $data);
     }
@@ -188,9 +187,16 @@ class ProductController extends Controller
         };
         $data['units'] = Taxonomy::unitCategories()->get()->map($getIdTitle)->all();
         if (Product::isGrocery()) {
-            $data['categories'] = Taxonomy::groceryCategories()->whereNotNull('parent_id')->get()->map($getIdTitle)->all();
             $data['chains'] = Chain::groceries()->get()->map($getIdTitle)->all();
-            $data['branches'] = Branch::groceries()->get()->map($getIdTitle)->all();
+            $groceryBranches = Branch::groceries();
+            $data['branches'] = $groceryBranches->get()->map($getIdTitle)->all();
+            if($groceryBranches->count()) {
+                $data['categories'] = Taxonomy::groceryCategories()->where('branch_id',
+                    optional($groceryBranches->first())->id)->whereNotNull('parent_id')->get()->map($getIdTitle)->all();
+            }
+            else{
+                $data['categories'] = [];
+            }
         } else {
             $product->categories->add($product->masterCategory);
             $chains = Chain::foods()->get();
