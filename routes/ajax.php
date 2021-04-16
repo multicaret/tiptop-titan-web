@@ -56,4 +56,5 @@ Route::put('translations', 'TranslationController@translationUpdate')->name('tra
 Route::get('translations/load', 'TranslationController@updateTranslationsData')->name('translation.load');
 Route::resource('media', 'MediaController')->only(['store']);
 Route::get('branch-by-chain', 'AjaxController@loadChainBranches')->name('branch-by-chain');
+Route::get('category-by-branch', 'AjaxController@loadBranchCategories')->name('category-by-branch');
 Route::get('chains/{chain}/sync', 'AjaxController@syncChain')->name('chains.sync');

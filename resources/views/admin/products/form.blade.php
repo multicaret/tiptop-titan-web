@@ -164,8 +164,8 @@
                                                 deselect-label=""
                                                 :clear-on-select="false"
                                                 :preselect-first="true"
-                                                {{--                                                @input="getCategories"--}}
-                                                {{--                                                @select="selectChain"--}}
+                                                @input="getCategories"
+                                                @select="selectBranch"
                                                 placeholder=""
                                                 autocomplete="false"
                                                 required
@@ -411,11 +411,7 @@
                 <input type="hidden" name="chain" :value="JSON.stringify(product.chain)">
                 <input type="hidden" name="branch" :value="JSON.stringify(product.branch)">
             @endif
-            @if($isGrocery)
-                <input type="hidden" name="categories" :value="JSON.stringify(product.categories)">
-            @else
-                <input type="hidden" name="category" :value="JSON.stringify(product.category)">
-            @endif
+            <input type="hidden" name="categories" :value="JSON.stringify(product.categories)">
             <input type="hidden" name="unit_id" :value="JSON.stringify(product.unit)">
             <input type="hidden" name="unattached-media" class="deleted-file" value="">
             <button class="btn btn-success" type="submit">{{trans('strings.submit')}}</button>
@@ -445,6 +441,10 @@
                     this.branches = [];
                     this.product.branch = null;
                 },
+                selectBranch: function () {
+                    this.categories = [];
+                    this.product.category = null;
+                },
                 getBranches: function () {
                     const branches = !!this.branches ? JSON.parse(JSON.stringify(this.branches)) : null;
                     let hasError = true;
@@ -466,23 +466,23 @@
                     }
                 },
                 getCategories: function () {
-                    const branches = !!this.branches ? JSON.parse(JSON.stringify(this.branches)) : null;
+                    const categories = !!this.categories ? JSON.parse(JSON.stringify(this.categories)) : null;
                     let hasError = true;
-                    let url = true ? @json(localization()->localizeURL(route('ajax.branch-by-chain', ['chain_id' => 'XMLSD']))) : '';
-                    if (!!this.product.chain && !!this.product.chain.id) {
-                        const chain_id = this.product.chain.id;
+                    let url = true ? @json(localization()->localizeURL(route('ajax.category-by-branch', ['branch_id' => 'XMLKE']))) : '';
+                    if (!!this.product.branch && !!this.product.branch.id) {
+                        const branch_id = this.product.branch.id;
 
 
-                        url = url.replaceAll('XMLSD', chain_id);
+                        url = url.replaceAll('XMLKE', branch_id);
                         axios.get(url).then((res) => {
-                            this.branches = res.data.branches;
-                            if (this.branches.length > 0) {
-                                this.product.branch = this.branches[0];
+                            this.categories = res.data.categories;
+                            if (this.categories.length > 0) {
+                                this.product.branch = this.categories[0];
                             }
                             hasError = false;
                         }).catch(console.error).finally(() => {
                             if (hasError) {
-                                this.branches = branches;
+                                this.categories = categories;
                             }
                         });
                     }
