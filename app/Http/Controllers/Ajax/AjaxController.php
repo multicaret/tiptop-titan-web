@@ -226,6 +226,7 @@ class AjaxController extends Controller
 
         $chain->is_synced = true;
         $chain->save();
+
         return $this->respond([
             'uuid' => $chain->uuid,
             'isSuccess' => true,

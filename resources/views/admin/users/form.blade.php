@@ -128,7 +128,7 @@
                             @endcomponent
                         </div>
                     @endif
-                    @if(in_array($role, [\App\Models\User::ROLE_TIPTOP_DRIVER, \App\Models\User::ROLE_RESTAURANT_DRIVER]))
+                    @if($role == \App\Models\User::ROLE_TIPTOP_DRIVER)
                         <div class="col-6">
                             @component('admin.components.form-group', ['name' => 'team_id', 'type' => 'select'])
                                 @slot('label', trans('strings.captain_teams'))

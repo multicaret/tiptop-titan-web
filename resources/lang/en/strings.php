@@ -280,5 +280,8 @@ return [
     'freelancer' => 'Freelancer',
     'orders-cancellation-reasons' => 'Orders cancellation reasons',
     'sync_chain' => 'Sync Chain',
+    'not_delivered' => 'Not Delivered',
+    'declined' => 'Declined',
+    'canceled' => 'Canceled',
     'captain_teams' => 'Captain Teams',
 ];

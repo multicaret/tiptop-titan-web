@@ -119,6 +119,26 @@ use Illuminate\Support\Carbon;
  * @mixin Eloquent
  * @property-read \App\Models\OrderAgentNote $agentNotes
  * @property-read int|null $agent_notes_count
+ * @property int|null $cancellation_reason_id
+ * @property int|null $delivery_time
+ * @property float $tiptop_share_result
+ * @property float $tiptop_share_percentage is tiptop_share_percentage, which is taken directly from commission column in Branch
+ * @property float $restaurant_share_result
+ * @property int|null $driver_id
+ * @property string|null $private_notes take discount_method_id and store it
+ * @property string|null $agent_device
+ * @property string|null $agent_os
+ * @property string|null $restaurant_notes
+ * @method static \Illuminate\Database\Eloquent\Builder|Order whereAgentDevice($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Order whereAgentOs($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Order whereCancellationReasonId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Order whereDeliveryTime($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Order whereDriverId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Order wherePrivateNotes($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Order whereRestaurantNotes($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Order whereRestaurantShareResult($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Order whereTiptopSharePercentage($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Order whereTiptopShareResult($value)
  */
 class Order extends Model
 {

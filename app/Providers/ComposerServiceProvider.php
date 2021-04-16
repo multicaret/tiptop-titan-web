@@ -423,6 +423,11 @@ class ComposerServiceProvider extends ServiceProvider
                                 'routeName' => 'admin.translations.index',
                             ],
                             [
+                                'title' => trans('strings.payment_methods'),
+                                'icon' => 'fas fa-donate',
+                                'routeName' => 'admin.payment-methods.index',
+                            ],
+                            [
                                 'title' => 'Tags',
                                 'icon' => 'fas fa-tag',
                                 'params' => [
