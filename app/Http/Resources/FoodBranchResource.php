@@ -28,17 +28,20 @@ class FoodBranchResource extends JsonResource
 
         $isFavorited = auth('sanctum')->check() ? $this->isFavoritedBy(auth('sanctum')->user()) : false;
 
+        $searchProducts = false;
         $searchQuery = request()->input('q');
 
-        $searchProducts = $this->products()
-                               ->whereHas('translations', function ($productTranslationQuery) use (
-                                   $searchQuery
-                               ) {
-                                   $productTranslationQuery->where('title', 'like', '%'.$searchQuery.'%');
-                                   $productTranslationQuery->orderByRaw('FIELD(title, "'.$searchQuery.'")');
-                               })
-                               ->take(3)
-                               ->get();
+        if ($searchQuery) {
+            $searchProducts = $this->products()
+                                   ->whereHas('translations', function ($productTranslationQuery) use (
+                                       $searchQuery
+                                   ) {
+                                       $productTranslationQuery->where('title', 'like', '%'.$searchQuery.'%');
+                                       $productTranslationQuery->orderByRaw('FIELD(title, "'.$searchQuery.'")');
+                                   })
+                                   ->take(3)
+                                   ->get();
+        }
 
         return [
             'id' => (int) $this->id,
