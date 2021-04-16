@@ -2,6 +2,7 @@
 
 namespace App\Models\OldModels;
 
+use App\Http\Controllers\Controller;
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
@@ -21,5 +22,10 @@ abstract class OldModel extends Model
     {
         $regex = '/^[-]?(([0-8]?[0-9])\.(\d+))|(90(\.0+)?),[-]?((((1[0-7][0-9])|([0-9]?[0-9]))\.(\d+))|180(\.0+)?)$/';
         return preg_match($regex, $lat.','.$long);
+    }
+
+    public function getUuidString($min = 10, $max = 99): string
+    {
+        return Controller::uuid().mt_rand($min, $max);
     }
 }

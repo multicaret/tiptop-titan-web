@@ -278,5 +278,8 @@ return [
     'employee' => 'Employee',
     'freelancer' => 'Freelancer',
     'orders-cancellation-reasons' => 'Orders cancellation reasons',
-    'sync_chain' => 'Sync Chain'
+    'sync_chain' => 'Sync Chain',
+    'not_delivered' => 'Not Delivered',
+    'declined' => 'Declined',
+    'canceled' => 'Canceled',
 ];

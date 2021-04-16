@@ -16,9 +16,11 @@ use App\Models\OldModels\OldChain;
 use App\Models\OldModels\OldChainTranslation;
 use App\Models\OldModels\OldLocation;
 use App\Models\OldModels\OldMedia;
+use App\Models\OldModels\OldOrder;
 use App\Models\OldModels\OldProduct;
 use App\Models\OldModels\OldProductTranslation;
 use App\Models\OldModels\OldUser;
+use App\Models\Order;
 use App\Models\Product;
 use App\Models\ProductTranslation;
 use App\Models\Taxonomy;
@@ -55,6 +57,7 @@ class DatumImporter extends Command
     public const CHOICE_FOOD_CHAINS = 'food-chains';
     public const CHOICE_USERS = 'users';
     public const CHOICE_ADDRESSES = 'addresses';
+    public const CHOICE_ORDERS = 'orders';
     private ProgressBar $bar;
     private Collection $foodCategories;
     private array $importerChoices;
@@ -77,6 +80,7 @@ class DatumImporter extends Command
             self::CHOICE_FOOD_CHAINS,
             self::CHOICE_USERS,
             self::CHOICE_ADDRESSES,
+            self::CHOICE_ORDERS,
         ];
     }
 
@@ -107,6 +111,8 @@ class DatumImporter extends Command
             $this->importUsers();
         } elseif ($this->modelName === self::CHOICE_ADDRESSES) {
             $this->importAddresses();
+        } elseif ($this->modelName === self::CHOICE_ORDERS) {
+            $this->importOrders();
         }
         $this->bar->finish();
         \DB::statement('SET FOREIGN_KEY_CHECKS=1;');
@@ -484,12 +490,24 @@ class DatumImporter extends Command
 
     private function importUsers()
     {
-        $oldUsers = OldUser::all();
+        $oldUsers = OldUser::where('id', '>', 2)->withoutGlobalScopes()->get();
         $this->newLine();
         $this->bar = $this->output->createProgressBar($oldUsers->count());
         $this->bar->start();
         foreach ($oldUsers as $oldUser) {
-            if ($oldUser->email) {
+            if (is_null($oldUser->email)) {
+                if ( ! is_null($oldUser->tel_number)) {
+                    $generatedUniqueString = $oldUser->tel_number.'_'.$this->getUuidString(2, 3);
+                    $telNumber = $generatedUniqueString;
+                } else {
+                    $telNumber = $this->getUuidString();
+                }
+                $oldUser->email = $telNumber.'_old_user@'.parse_url(env('APP_URL'), PHP_URL_HOST);
+            }
+            if (User::where([
+                    ['phone_country_code', $oldUser->tel_code_number],
+                    ['phone_number', $oldUser->tel_number]
+                ])->count() === 0) {
                 $this->insertUser($oldUser);
             }
             $this->bar->advance();
@@ -538,6 +556,78 @@ class DatumImporter extends Command
             }
             $this->bar->advance();
         }
+    }
+
+    private function importOrders()
+    {
+        $branchId = (Branch::first())->id;
+        $oldOrders = OldOrder::with('branch')->where('branch_id', '>=', $branchId)->get();
+        $idsComparing = $this->loadOldCancellationReasons();
+        $this->newLine();
+        $this->bar = $this->output->createProgressBar($oldOrders->count());
+        $this->bar->start();
+        foreach ($oldOrders as $oldOrder) {
+            $tempOrder = [];
+            foreach ($oldOrder->attributesComparing() as $oldModelKey => $newModelKey) {
+                $tempOrder[$newModelKey] = $oldOrder->{$oldModelKey};
+            }
+            $tempOrder['completed_at'] = ! is_null($oldOrder->due_date) ? $oldOrder->due_date : now();
+            $tempOrder['status'] = OldOrder::typeComparing()[$oldOrder->status];
+            if ($oldOrder->cancellation_reason_id) {
+                $tempOrder['cancellation_reason_id'] = $idsComparing[$oldOrder->cancellation_reason_id];
+            }
+            try {
+                $isInserted = Order::insert($tempOrder);
+            } catch (\Exception $e) {
+                dd($e->getMessage(), PHP_EOL, $tempOrder);
+            }
+            $this->bar->advance();
+        }
+    }
+
+    private function loadOldCancellationReasons(): array
+    {
+        $idsComparing = [];
+        $taxonomyItemBuilder = function ($value, $key) {
+            $tempItem = [];
+            $tempItem['creator_id'] = 1;
+            $tempItem['editor_id'] = 1;
+            $tempItem['type'] = Taxonomy::TYPE_ORDERS_CANCELLATION_REASONS;
+            $tempItem['translations'] = [];
+            foreach ($value as $item) {
+                $tempItem['cancellation_reason_id'] = $item->cancellation_reason_id;
+                $tempItem['translations'][] = [
+                    'title' => $item->reason,
+                    'locale' => $item->locale,
+                ];
+            }
+
+            return [$key => $tempItem];
+        };
+        $oldReasons = \DB::connection('mysql-old')
+                         ->table('cancellation_reasons_translations')
+                         ->get()
+                         ->groupBy('cancellation_reason_id')
+                         ->mapWithKeys($taxonomyItemBuilder)
+                         ->all();
+        foreach ($oldReasons as $oldReason) {
+            $cancellationReasonId = $oldReason['cancellation_reason_id'];
+            unset($oldReason['cancellation_reason_id']);
+            $taxonomy = Taxonomy::create($oldReason);
+            $taxonomy->status = Taxonomy::STATUS_ACTIVE;
+            $idsComparing[$cancellationReasonId] = $taxonomy->id;
+            $taxonomy->save();
+            foreach ($oldReason['translations'] as $translation) {
+                $taxonomyTranslation = new TaxonomyTranslation();
+                $taxonomyTranslation->taxonomy_id = $taxonomy->id;
+                foreach ($translation as $column => $value) {
+                    $taxonomyTranslation->$column = $value;
+                }
+                $taxonomyTranslation->save();
+            }
+        }
+
+        return $idsComparing;
     }
 
 }

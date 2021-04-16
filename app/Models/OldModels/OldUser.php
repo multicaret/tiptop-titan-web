@@ -3,9 +3,7 @@
 namespace App\Models\OldModels;
 
 
-use App\Models\Branch;
-use Astrotomic\Translatable\Translatable;
-use Illuminate\Database\Eloquent\Relations\BelongsToMany;
+use App\Models\User;
 
 /**
  * App\Models\OldModels\OldUser
@@ -147,6 +145,10 @@ class OldUser extends OldModel
                 $tempString = strstr($this->email, '@', 1);
             }
 
+            if (User::whereUsername($tempString)->count()) {
+                $tempString = $this->getUuidString(15);
+            }
+
             return $tempString;
         }
     }
@@ -196,7 +198,7 @@ class OldUser extends OldModel
             return null;
         }
         $phoneNumber = str_replace($countyCode, '', $phoneNumber);
-        $phoneNumber = str_replace(['+', ',',  ' ', '(', ')'], '', $phoneNumber);
+        $phoneNumber = str_replace(['+', ',', ' ', '(', ')'], '', $phoneNumber);
         if (strlen($phoneNumber) < 4) {
             return null;
         }
