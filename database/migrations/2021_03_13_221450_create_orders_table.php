@@ -20,12 +20,13 @@ class CreateOrdersTable extends Migration
             $table->unsignedBigInteger('user_id')->index();
             $table->unsignedBigInteger('chain_id')->index();
             $table->unsignedBigInteger('branch_id')->index();
-            $table->unsignedBigInteger('cart_id')->index();
+            $table->unsignedBigInteger('cart_id')->nullable()->index();
             $table->unsignedBigInteger('payment_method_id')->index();
             $table->unsignedBigInteger('address_id')->index();
             $table->unsignedBigInteger('coupon_id')->nullable();
             $table->unsignedBigInteger('city_id');
             $table->unsignedBigInteger('previous_order_id')->nullable();
+            $table->unsignedBigInteger('cancellation_reason_id')->nullable();
             $table->unsignedTinyInteger('type')->comment('1:Market, 2: Food');
             $table->unsignedDouble('total')->default(0);
             $table->unsignedDouble('coupon_discount_amount')->default(0);
@@ -49,6 +50,18 @@ class CreateOrdersTable extends Migration
 
             // Rating Related - For Grocery Only
             $table->unsignedBigInteger('rating_issue_id')->nullable();
+
+
+            // Todo: MK check it please. Used it to store old data
+            $table->unsignedBigInteger('delivery_time')->nullable()->default(0);
+            $table->unsignedDouble('tiptop_share_result')->default(0);
+            $table->unsignedDouble('tiptop_share_percentage')->default(0)->comment('is tiptop_share_percentage, which is taken directly from commission column in Branch');
+            $table->unsignedDouble('restaurant_share_result')->default(0);
+            $table->unsignedBigInteger('driver_id')->nullable();
+            $table->text('private_notes')->nullable()->comment('take discount_method_id and store it');
+            $table->string('agent_device')->nullable();
+            $table->string('agent_os')->nullable();
+            $table->text('restaurant_notes')->nullable();
 
             $table->timestamp('completed_at')->nullable();
             $table->text('notes')->nullable();
