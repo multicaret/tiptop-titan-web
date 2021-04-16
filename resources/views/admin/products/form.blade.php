@@ -348,7 +348,7 @@
                                 <div class="col-6">
                                     @component('admin.components.form-group', ['name' => 'status', 'type' => 'select'])
                                         @slot('label', trans('strings.status'))
-                                        @slot('options', \App\Models\Product::getStatusesArray())
+                                        @slot('options', collect(\App\Models\Product::getAllStatusesRich())->pluck('title', 'id'))
                                         @slot('attributes', ['required'])
                                         @slot('selected', $product->status)
                                     @endcomponent

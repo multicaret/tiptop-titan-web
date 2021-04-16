@@ -18,6 +18,7 @@ class CreateProductOptionsTable extends Migration
             $table->id();
             $table->unsignedBigInteger('product_id')->index();
             $table->boolean('is_based_on_ingredients')->default(false);
+            $table->boolean('is_required')->default(false);
             // is_based_on_ingredients == true =>
             // 1.  Including hard coded.
             // 2.
@@ -28,6 +29,7 @@ class CreateProductOptionsTable extends Migration
                   ');
             $table->unsignedInteger('max_number_of_selection')->nullable();
             $table->unsignedInteger('min_number_of_selection')->nullable();
+            $table->unsignedTinyInteger('input_type')->default(ProductOption::INPUT_TYPE_PILL);
             $table->unsignedTinyInteger('selection_type')->default(ProductOption::SELECTION_TYPE_SINGLE_VALUE);
             $table->timestamps();
 

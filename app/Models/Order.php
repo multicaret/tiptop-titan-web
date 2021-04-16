@@ -137,6 +137,8 @@ class Order extends Model
     public const STATUS_ON_THE_WAY = 16;
     public const STATUS_AT_THE_ADDRESS = 18;
     public const STATUS_DELIVERED = 20;
+    public const STATUS_DECLINED = 22; // Added for old data only not to use it
+    public const STATUS_NOT_DELIVERED = 24; // Added for old data only not to use it
 
     protected $casts = [
         'total' => 'double',
@@ -268,6 +270,8 @@ class Order extends Model
             self::STATUS_ON_THE_WAY,
             self::STATUS_AT_THE_ADDRESS,
             self::STATUS_DELIVERED,
+            self::STATUS_DECLINED,
+            self::STATUS_NOT_DELIVERED,
         ];
         $statuses = [];
         foreach ($statusesRaw as $item) {
