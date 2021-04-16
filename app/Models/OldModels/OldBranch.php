@@ -5,6 +5,7 @@ namespace App\Models\OldModels;
 
 use App\Models\Branch;
 use Astrotomic\Translatable\Translatable;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 
 /**
@@ -185,5 +186,10 @@ class OldBranch extends OldModel
             self::STATUS_DISABLED => Branch::STATUS_DRAFT,
             self::STATUS_SUSPENDED => Branch::STATUS_INACTIVE,
         ];
+    }
+
+    public function oldChain(): BelongsTo
+    {
+        return $this->belongsTo(OldChain::class, 'restaurant_id');
     }
 }

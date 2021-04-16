@@ -187,7 +187,8 @@ class DatumImporter extends Command
                 $tempTranslation = [];
                 foreach ($attributesComparing as $oldAttribute => $newAttribute) {
                     if ($oldAttribute === 'title_suffex' && strlen($translation->{$oldAttribute}) < 3) {
-                        $tempTranslation[$newAttribute] = 'Branch '.$translation->{$oldAttribute};
+                        $chainTitle = ! is_null($oldBranch->oldChain) ? $oldBranch->oldChain->title : 'Branch';
+                        $tempTranslation[$newAttribute] = $chainTitle.' '.$translation->{$oldAttribute};
                     } else {
                         $tempTranslation[$newAttribute] = $translation->{$oldAttribute};
                     }
