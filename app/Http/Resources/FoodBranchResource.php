@@ -28,7 +28,7 @@ class FoodBranchResource extends JsonResource
 
         $isFavorited = auth('sanctum')->check() ? $this->isFavoritedBy(auth('sanctum')->user()) : false;
 
-        $searchProducts = false;
+        $searchProducts = [];
         $searchQuery = request()->input('q');
 
         if ($searchQuery) {
@@ -107,7 +107,7 @@ class FoodBranchResource extends JsonResource
             'chain' => new ChainResource($this->chain),
             'isFavorited' => $isFavorited,
             'categories' => CategoryMiniResource::collection($this->menuCategories()->orderByDesc('order_column')->get()),
-            'searchProducts' => $this->when($searchQuery, ProductMiniResource::collection($searchProducts)),
+            'searchProducts' => $this->when((bool) $searchQuery, ProductMiniResource::collection($searchProducts)),
         ];
     }
 }
