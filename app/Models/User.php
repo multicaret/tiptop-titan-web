@@ -81,8 +81,6 @@ use Spatie\Permission\Traits\HasRoles;
  * @property Carbon|null $last_logged_out_at
  * @property int $employment 1:employee, 2:freelancer
  * @property string|null $shift
- * @property string|null $tokan_team
- * @property int|null $tokan_id
  * @property string|null $remember_token
  * @property Carbon|null $created_at
  * @property Carbon|null $updated_at
@@ -176,8 +174,6 @@ use Spatie\Permission\Traits\HasRoles;
  * @method static Builder|User whereSocialNetworks($value)
  * @method static Builder|User whereStatus($value)
  * @method static Builder|User whereSuspendedAt($value)
- * @method static Builder|User whereTokanId($value)
- * @method static Builder|User whereTokanTeam($value)
  * @method static Builder|User whereTotalNumberOfOrders($value)
  * @method static Builder|User whereUpdatedAt($value)
  * @method static Builder|User whereUsername($value)
@@ -498,6 +494,11 @@ class User extends Authenticatable implements HasMedia, MustVerifyEmail
     public function branch(): BelongsTo
     {
         return $this->belongsTo(Branch::class);
+    }
+
+    public function team(): BelongsTo
+    {
+        return $this->belongsTo(TokanTeam::class);
     }
 
     public function language(): BelongsTo

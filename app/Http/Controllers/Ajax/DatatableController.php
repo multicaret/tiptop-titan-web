@@ -13,6 +13,7 @@ use App\Models\Product;
 use App\Models\Region;
 use App\Models\Slide;
 use App\Models\Taxonomy;
+use App\Models\TokanTeam;
 use App\Models\Translation;
 use App\Models\User;
 use Carbon\Carbon;
@@ -370,6 +371,46 @@ class DatatableController extends AjaxController
                          ])
                          ->make(true);
     }
+
+    public function teams(Request $request)
+    {
+        $teams = TokanTeam::selectRaw('tokan_teams.*')->latest();
+
+        return DataTables::of($teams)
+                         ->editColumn('action', function ($team) {
+                             $data = [
+                                 'editAction' => route('admin.teams.edit', $team),
+                                 'deleteAction' => route('admin.teams.destroy', [
+                                     $team->id,
+                                 ]),
+                             ];
+
+                             return view('admin.components.datatables._row-actions', $data)->render();
+                         })
+                         ->editColumn('status', function ($coupon) {
+                             return view('admin.components.datatables._status', [
+                                 'status' => $coupon->status
+                             ])->render();
+                         })
+                         ->editColumn('created_at', function ($item) {
+                             return view('admin.components.datatables._date', [
+                                 'date' => $item->created_at
+                             ])->render();
+                         })
+                         ->rawColumns([
+                             'action',
+                             'name',
+                             'created_at',
+                             'status',
+                         ])
+                         ->setRowAttr([
+                             'row-id' => function ($team) {
+                                 return $team->id;
+                             }
+                         ])
+                         ->make(true);
+    }
+
 
     public function slides(Request $request)
     {

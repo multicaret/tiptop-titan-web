@@ -30,6 +30,7 @@ Route::prefix('datatables')->name('datatables.')->group(function () {
     Route::post('reorder', 'DatatableController@reorder')->name('reorder');
     Route::get('cities', 'DatatableController@cities')->name('cities');
     Route::get('regions', 'DatatableController@regions')->name('regions');
+    Route::get('teams', 'DatatableController@teams')->name('teams');
     Route::get('slides', 'DatatableController@slides')->name('slides');
     Route::get('translations', 'DatatableController@translationList')->name('translations');
     Route::get('chains', 'DatatableController@chains')->name('chains');

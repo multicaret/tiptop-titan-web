@@ -303,6 +303,11 @@ class ComposerServiceProvider extends ServiceProvider
                                 'icon' => 'fas fa-city',
                                 'routeName' => 'admin.cities.index',
                             ],
+                            [
+                                'title' => 'Captain Teams',
+                                'icon' => 'fas fa-users',
+                                'routeName' => 'admin.teams.index',
+                            ],
                         ]
                     ]
                 ]
