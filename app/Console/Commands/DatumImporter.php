@@ -58,6 +58,7 @@ class DatumImporter extends Command
     public const CHOICE_USERS = 'users';
     public const CHOICE_ADDRESSES = 'addresses';
     public const CHOICE_ORDERS = 'orders';
+    public const CHOICE_FOR_SERVER = 'for-server';
     private ProgressBar $bar;
     private Collection $foodCategories;
     private array $importerChoices;
@@ -81,6 +82,7 @@ class DatumImporter extends Command
             self::CHOICE_USERS,
             self::CHOICE_ADDRESSES,
             self::CHOICE_ORDERS,
+            self::CHOICE_FOR_SERVER,
         ];
     }
 
@@ -98,27 +100,37 @@ class DatumImporter extends Command
         if ($this->modelName === self::CHOICE_GROCERY_DEFAULT_BRANCH) {
             $this->insertGroceryDefaultBranch();
         } elseif ($this->modelName === self::CHOICE_GROCERY_PRODUCTS) {
-            $this->importGroceryProducts(500);
+            $this->importGroceryProducts(500000);
         } elseif ($this->modelName === self::CHOICE_FOOD_PRODUCTS) {
             $this->importFoodProducts();
         } elseif ($this->modelName === self::CHOICE_FOOD_CHAINS) {
-            $this->importFoodChains(500);
+            $this->importFoodChains(500000);
         } elseif ($this->modelName === self::CHOICE_GROCERY_CATEGORIES) {
             $this->importGroceryCategories();
         } elseif ($this->modelName === self::CHOICE_PRODUCT_IMAGES) {
-            $this->importProductsImages(500);
+            $this->importProductsImages(500000);
         } elseif ($this->modelName === self::CHOICE_USERS) {
             $this->importUsers();
         } elseif ($this->modelName === self::CHOICE_ADDRESSES) {
             $this->importAddresses();
         } elseif ($this->modelName === self::CHOICE_ORDERS) {
             $this->importOrders();
+        } elseif ($this->modelName === self::CHOICE_FOR_SERVER) {
+            $this->runServerCommands();
         }
         $this->bar->finish();
         \DB::statement('SET FOREIGN_KEY_CHECKS=1;');
         $this->newLine(2);
         $this->info('Import '.$this->modelName.' is finished 🤪.');
         $this->newLine(2);
+    }
+
+    private function runServerCommands()
+    {
+        $this->modelName = self::CHOICE_FOOD_CHAINS;
+        $this->handle();
+        $this->modelName = self::CHOICE_USERS;
+        $this->handle();
     }
 
     private function showChoice(): void
@@ -251,10 +263,12 @@ class DatumImporter extends Command
                 }
                 ProductTranslation::insert($tempTranslation);
             }
+            if (count($localesKeys)) {
+                $freshProduct->status = Product::STATUS_TRANSLATION_NOT_COMPLETED;
+            }
             foreach ($localesKeys as $localeKey => $index) {
                 $freshProduct->translateOrNew($localeKey)->fill(\Arr::first($oldProduct->getTranslationsArray()));
             }
-            $freshProduct->status = Product::STATUS_TRANSLATION_NOT_COMPLETED;
             $freshProduct->save();
 //            $this->addSingleImage($freshProduct, 'Dish');
         }
