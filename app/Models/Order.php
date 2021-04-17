@@ -165,12 +165,13 @@ class Order extends Model
         'coupon_discount_amount' => 'double',
         'delivery_fee' => 'double',
         'grand_total' => 'double',
+        'agent_grand_total' => 'double',
         'private_payment_method_commission' => 'double',
         'private_total' => 'double',
         'private_delivery_fee' => 'double',
         'private_grand_total' => 'double',
-        'completed_at' => 'datetime',
         'is_delivery_by_tiptop' => 'boolean',
+        'completed_at' => 'datetime',
         'rated_at' => 'datetime',
     ];
 
