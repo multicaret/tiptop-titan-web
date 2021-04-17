@@ -139,6 +139,10 @@ class DatumImporter extends Command
         $this->handle();
         $this->modelName = self::CHOICE_ORDERS;
         $this->handle();
+        $firstFoodChain = Chain::query()->where('id', 206)->first();
+        if ( ! is_null($firstFoodChain)) {
+            $this->call('datum:sync-chains', ['--id' => $firstFoodChain->id]);
+        }
     }
 
     private function showChoice(): void
@@ -518,9 +522,9 @@ class DatumImporter extends Command
             Role::create(['name' => $userSideRoleName]);
         }
         $oldUsers = OldUser::query()->withoutGlobalScopes()
-                                    ->whereNotIn('status', [OldUser::STATUS_PENDING])
-                                    ->where('id', '>', 2)
-                                    ->get();
+                           ->whereNotIn('status', [OldUser::STATUS_PENDING])
+                           ->where('id', '>', 2)
+                           ->get();
         $this->newLine();
         $this->bar = $this->output->createProgressBar($oldUsers->count());
         $this->bar->start();
