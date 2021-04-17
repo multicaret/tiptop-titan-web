@@ -97,7 +97,7 @@ class BranchController extends Controller
         $typeName = Branch::getCorrectChannelName($request->type, false);
         $type = Branch::getCorrectChannel($request->type);
         $contacts = [];
-
+        $searchTags = Branch::isFood() ? Taxonomy::searchTags()->get() : [];
         $branch = new Branch();
         $regions = Region::whereCountryId(config('defaults.country.id'))->get();
         $chains = Chain::whereType($type)->get();
@@ -106,7 +106,15 @@ class BranchController extends Controller
         $workingHours = $branch->getWorkingHours();
 
         return view('admin.branches.form',
-            compact('branch', 'regions', 'chains', 'typeName', 'type', 'contacts', 'foodCategories', 'workingHours'));
+            compact('branch',
+                'regions',
+                'chains',
+                'typeName',
+                'type',
+                'contacts',
+                'searchTags',
+                'foodCategories',
+                'workingHours'));
     }
 
     /**
@@ -145,15 +153,14 @@ class BranchController extends Controller
     {
         $typeName = Branch::getCorrectChannelName($request->type, false);
         $type = Branch::getCorrectChannel($request->type);
-        $contacts = $branch->locations()->get()->map(function ($item) {
-            return [
-                'id' => $item->id,
-                'name' => $item->name,
-                'position' => $item->position,
-                'email' => $item->emails,
-                'phone' => $item->phones
-            ];
-        });
+        $contacts = $branch->locations()->get()->map(fn($item) => [
+            'id' => $item->id,
+            'name' => $item->name,
+            'position' => $item->position,
+            'email' => $item->emails,
+            'phone' => $item->phones
+        ]);
+        $searchTags = Branch::isFood() ? Taxonomy::searchTags()->get() : [];
         $regions = Region::whereCountryId(config('defaults.country.id'))->get();
         $branch->load(['region', 'city', 'chain']);
         $chains = Chain::whereType($type)->get();
@@ -161,7 +168,15 @@ class BranchController extends Controller
         $workingHours = $branch->getWorkingHours();
 
         return view('admin.branches.form',
-            compact('branch', 'regions', 'typeName', 'type', 'chains', 'contacts', 'foodCategories', 'workingHours'));
+            compact('branch',
+                'regions',
+                'typeName',
+                'type',
+                'chains',
+                'contacts',
+                'searchTags',
+                'foodCategories',
+                'workingHours'));
     }
 
     /**
@@ -283,6 +298,7 @@ class BranchController extends Controller
                 $branch->translateOrNew($key)->description = $request->input($key.'.description');
             }
         }
+        $branch->searchTags()->sync($request->input('search_tags'));
         $branch->foodCategories()->sync($request->input('food_categories'));
         $requestContactDetails = json_decode($request->contactDetails);
         $contactToDelete = $branch->locations()->get()->pluck('id')->toArray();
