@@ -88,6 +88,15 @@ class ComposerServiceProvider extends ServiceProvider
             [
                 'children' => [
                     [
+                        'title' => 'Orders',
+                        'icon' => 'fas fa-box-open',
+                        'routeName' => 'admin.orders.index',
+                    ],
+                ]
+            ],
+            [
+                'children' => [
+                    [
                         'title' => 'Market',
                         'icon' => 'fas fa-shopping-basket',
                         'routeName' => 'admin.index',
@@ -442,7 +451,8 @@ class ComposerServiceProvider extends ServiceProvider
                                 'icon' => 'fas fa-tag',
                                 'params' => [
                                     'type' =>
-                                        Taxonomy::getCorrectTypeName(Taxonomy::TYPE_SEARCH_TAGS, //todo: make it search tags
+                                        Taxonomy::getCorrectTypeName(Taxonomy::TYPE_SEARCH_TAGS,
+                                            //todo: make it search tags
                                             false),
                                 ],
                                 'routeName' => 'admin.taxonomies.index',
