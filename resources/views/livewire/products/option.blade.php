@@ -30,11 +30,43 @@
                             </div>
 
                             <div class="form-row">
+
+                                <div class="form-group col-md-4">
+                                    <h4>Is Required?</h4>
+                                    <div class="row">
+                                        <div class="col-3">
+                                            <div class="form-check">
+                                                <input class="form-check-input" type="radio"
+                                                       id="is-required-{{$option->id}}"
+                                                       value="1"
+                                                       wire:model="option.is_required">
+                                                <label class="form-check-label"
+                                                       for="is-required-{{$option->id}}">
+                                                    Yes
+                                                </label>
+                                            </div>
+                                        </div>
+                                        <div class="col-3">
+                                            <div class="form-check">
+                                                <input class="form-check-input" type="radio"
+                                                       id="is-not-required-{{$option->id}}"
+                                                       value="0"
+                                                       wire:model="option.is_required"
+                                                >
+                                                <label class="form-check-label"
+                                                       for="is-not-required-{{$option->id}}">
+                                                    No
+                                                </label>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
                                 <div class="form-group col-md-4">
                                     <h4>Is based on ingredients?</h4>
                                     @if($option->ingredients()->count() == 0 && $option->selections()->count() == 0)
                                         <div class="row">
-                                            <div class="col-1">
+                                            <div class="col-3">
                                                 <div class="form-check">
                                                     <input class="form-check-input" type="radio"
                                                            id="is-based-on-ingredients-{{$option->id}}"
@@ -46,7 +78,7 @@
                                                     </label>
                                                 </div>
                                             </div>
-                                            <div class="col-1">
+                                            <div class="col-3">
                                                 <div class="form-check">
                                                     <input class="form-check-input" type="radio"
                                                            id="is-not-based-on-ingredients-{{$option->id}}"
@@ -65,36 +97,6 @@
                                     @endif
                                 </div>
 
-                                <div class="form-group col-md-4">
-                                    <h4>Is Required?</h4>
-                                    <div class="row">
-                                        <div class="col-1">
-                                            <div class="form-check">
-                                                <input class="form-check-input" type="radio"
-                                                       id="is-required-{{$option->id}}"
-                                                       value="1"
-                                                       wire:model="option.is_required">
-                                                <label class="form-check-label"
-                                                       for="is-required-{{$option->id}}">
-                                                    Yes
-                                                </label>
-                                            </div>
-                                        </div>
-                                        <div class="col-1">
-                                            <div class="form-check">
-                                                <input class="form-check-input" type="radio"
-                                                       id="is-not-required-{{$option->id}}"
-                                                       value="0"
-                                                       wire:model="option.is_required"
-                                                >
-                                                <label class="form-check-label"
-                                                       for="is-not-required-{{$option->id}}">
-                                                    No
-                                                </label>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
 
                                 <div class="form-group col-md-4">
                                     <label class="form-label">Input Type</label>
@@ -146,22 +148,24 @@
                                 </div>
                             </div>
 
-                            <div class="form-row">
-                                <div class="form-group col-md-6">
-                                    <label class="form-label">Min number of selection</label>
-                                    <input class="form-control" type="number" min="0"
-                                           wire:model.lazy="option.min_number_of_selection"
-                                           placeholder="Min number of selection">
-                                </div>
-                                @if($option->type != \App\Models\ProductOption::TYPE_EXCLUDING)
+                            @if($option->input_type == \App\Models\ProductOption::SELECTION_TYPE_MULTIPLE_VALUE)
+                                <div class="form-row">
                                     <div class="form-group col-md-6">
-                                        <label class="form-label">Max number of selection</label>
+                                        <label class="form-label">Min number of selection</label>
                                         <input class="form-control" type="number" min="0"
-                                               wire:model.lazy="option.max_number_of_selection"
-                                               placeholder="Max number of selection">
+                                               wire:model.lazy="option.min_number_of_selection"
+                                               placeholder="Min number of selection">
                                     </div>
-                                @endif
-                            </div>
+                                    @if($option->type != \App\Models\ProductOption::TYPE_EXCLUDING)
+                                        <div class="form-group col-md-6">
+                                            <label class="form-label">Max number of selection</label>
+                                            <input class="form-control" type="number" min="0"
+                                                   wire:model.lazy="option.max_number_of_selection"
+                                                   placeholder="Max number of selection">
+                                        </div>
+                                    @endif
+                                </div>
+                            @endif
                         </form>
 
                         <hr>

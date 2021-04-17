@@ -19,20 +19,13 @@ class ProductRowEdit extends Component
         $this->titleAr = optional($this->product->translate('ar'))->title;
     }
 
-    protected $rules = [
-        'product.price' => 'required|numeric',
-        'product.order_column' => 'required|numeric',
-        'product.price_discount_amount' => 'numeric',
-        'product.price_discount_by_percentage' => 'boolean',
-        'titleEn' => 'string',
-        'titleKu' => 'string',
-        'titleAr' => 'string',
-    ];
-
+//    protected $rules = [];
 
     public function updatedTitleEn($newValue)
     {
-        $this->validate();
+        $this->validate([
+            'titleEn' => 'string',
+        ]);
         $this->product->translateOrNew('en')->title = $newValue;
         $this->product->save();
 
@@ -44,7 +37,9 @@ class ProductRowEdit extends Component
 
     public function updatedTitleAr($newValue)
     {
-        $this->validate();
+        $this->validate([
+            'titleAr' => 'string',
+        ]);
         $this->product->translateOrNew('ar')->title = $newValue;
         $this->product->save();
 
@@ -56,7 +51,9 @@ class ProductRowEdit extends Component
 
     public function updatedTitleKu($newValue)
     {
-        $this->validate();
+        $this->validate([
+            'titleKu' => 'string',
+        ]);
         $this->product->translateOrNew('ku')->title = $newValue;
         $this->product->save();
 
@@ -68,7 +65,9 @@ class ProductRowEdit extends Component
 
     public function updatedProductPrice($newValue)
     {
-        $this->validate();
+        $this->validate([
+            'product.price' => 'required|numeric',
+        ]);
         $this->product->price = Controller::convertNumbersToArabic($newValue);
         $this->product->save();
 
@@ -80,7 +79,9 @@ class ProductRowEdit extends Component
 
     public function updatedProductOrderColumn($newValue)
     {
-        $this->validate();
+        $this->validate([
+            'product.order_column' => 'required|numeric',
+        ]);
         $this->product->order_column = Controller::convertNumbersToArabic($newValue);
         $this->product->save();
 
@@ -92,7 +93,9 @@ class ProductRowEdit extends Component
 
     public function updatedProductPriceDiscountAmount($newValue)
     {
-        $this->validate();
+        $this->validate([
+            'product.price_discount_amount' => 'numeric',
+        ]);
         $this->product->price_discount_amount = Controller::convertNumbersToArabic($newValue);
         $this->product->save();
 
@@ -101,7 +104,9 @@ class ProductRowEdit extends Component
 
     public function updatedProductPriceDiscountByPercentage($newValue)
     {
-        $this->validate();
+        $this->validate([
+            'product.price_discount_by_percentage' => 'boolean',
+        ]);
         $this->product->price_discount_by_percentage = $newValue;
         $this->product->save();
 
