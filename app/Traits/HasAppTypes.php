@@ -15,6 +15,16 @@ trait HasAppTypes
     {
         return request()->type === self::getChannelsArray()[self::CHANNEL_GROCERY_OBJECT];
     }
+    
+    public static function getIsFoodAttribute(): bool
+    {
+        return request()->type === self::getChannelsArray()[self::CHANNEL_FOOD_OBJECT];
+    }
+
+    public static function getIsGroceryAttribute(): bool
+    {
+        return request()->type === self::getChannelsArray()[self::CHANNEL_GROCERY_OBJECT];
+    }
 
     /**
      * @param $query
