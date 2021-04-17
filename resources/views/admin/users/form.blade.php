@@ -132,7 +132,7 @@
                     @endif
                     <div class="col-md-2">
                         @component('admin.components.form-group', ['name' => 'tokan_id', 'type' => 'number'])
-                            @slot('label', 'Tokan ID')
+                            @slot('label', 'Captain ID')
                             @slot('value', $user->tokan_id)
                         @endcomponent
                     </div>
