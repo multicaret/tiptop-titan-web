@@ -28,17 +28,20 @@ class FoodBranchResource extends JsonResource
 
         $isFavorited = auth('sanctum')->check() ? $this->isFavoritedBy(auth('sanctum')->user()) : false;
 
+        $searchProducts = [];
         $searchQuery = request()->input('q');
 
-        $searchProducts = $this->products()
-                               ->whereHas('translations', function ($productTranslationQuery) use (
-                                   $searchQuery
-                               ) {
-                                   $productTranslationQuery->where('title', 'like', '%'.$searchQuery.'%');
-                                   $productTranslationQuery->orderByRaw('FIELD(title, "'.$searchQuery.'")');
-                               })
-                               ->take(3)
-                               ->get();
+        if ($searchQuery) {
+            $searchProducts = $this->products()
+                                   ->whereHas('translations', function ($productTranslationQuery) use (
+                                       $searchQuery
+                                   ) {
+                                       $productTranslationQuery->where('title', 'like', '%'.$searchQuery.'%');
+                                       $productTranslationQuery->orderByRaw('FIELD(title, "'.$searchQuery.'")');
+                                   })
+                                   ->take(3)
+                                   ->get();
+        }
 
         return [
             'id' => (int) $this->id,
@@ -104,7 +107,7 @@ class FoodBranchResource extends JsonResource
             'chain' => new ChainResource($this->chain),
             'isFavorited' => $isFavorited,
             'categories' => CategoryMiniResource::collection($this->menuCategories()->orderByDesc('order_column')->get()),
-            'searchProducts' => $this->when($searchQuery, ProductMiniResource::collection($searchProducts)),
+            'searchProducts' => $this->when((bool) $searchQuery, ProductMiniResource::collection($searchProducts)),
         ];
     }
 }

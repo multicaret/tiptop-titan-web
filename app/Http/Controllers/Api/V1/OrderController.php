@@ -183,12 +183,11 @@ class OrderController extends BaseApiController
         $newOrder->save();
 
         // Todo: work on payment method & do it.
-        $cart = Cart::find($newOrder->cart_id);
-        $cart->status = Cart::STATUS_COMPLETED;
-        $cart->save();
+        $userCart->status = Cart::STATUS_COMPLETED;
+        $userCart->save();
 
         // Deduct the purchased quantity from the available quantity of each product.
-        foreach ($cart->products as $product) {
+        foreach ($userCart->products as $product) {
             if ($product->is_storage_tracking_enabled) {
                 if ($product->available_quantity > 0) {
                     $newAvailableQuantity = $product->available_quantity - $product->pivot->quantity;
@@ -232,7 +231,7 @@ class OrderController extends BaseApiController
                 $newOrder->private_grand_total = $newOrder->grand_total;
                 $newOrder->save();
 
-                CouponUsage::storeCouponUsage($totalDiscountedAmount, $coupon, $cart->id, $user->id, $newOrder->id);
+                CouponUsage::storeCouponUsage($totalDiscountedAmount, $coupon, $userCart->id, $user->id, $newOrder->id);
             }
         }
 
