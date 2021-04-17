@@ -26,13 +26,12 @@ use App\Models\ProductTranslation;
 use App\Models\Taxonomy;
 use App\Models\TaxonomyTranslation;
 use App\Models\User;
-use Carbon\Carbon;
 use Illuminate\Console\Command;
-use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Collection as Collection;
 use Spatie\MediaLibrary\MediaCollections\Exceptions\FileCannotBeAdded;
 use Spatie\MediaLibrary\MediaCollections\Exceptions\FileDoesNotExist;
 use Spatie\MediaLibrary\MediaCollections\Exceptions\FileIsTooBig;
+use Spatie\Permission\Models\Role;
 use Symfony\Component\Console\Helper\ProgressBar;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
@@ -58,9 +57,11 @@ class DatumImporter extends Command
     public const CHOICE_USERS = 'users';
     public const CHOICE_ADDRESSES = 'addresses';
     public const CHOICE_ORDERS = 'orders';
+    public const CHOICE_FOR_SERVER = 'for-server';
     private ProgressBar $bar;
     private Collection $foodCategories;
     private array $importerChoices;
+    private int $queryLimit = 500000;
 
     public function __construct()
     {
@@ -81,6 +82,7 @@ class DatumImporter extends Command
             self::CHOICE_USERS,
             self::CHOICE_ADDRESSES,
             self::CHOICE_ORDERS,
+            self::CHOICE_FOR_SERVER,
         ];
     }
 
@@ -98,27 +100,52 @@ class DatumImporter extends Command
         if ($this->modelName === self::CHOICE_GROCERY_DEFAULT_BRANCH) {
             $this->insertGroceryDefaultBranch();
         } elseif ($this->modelName === self::CHOICE_GROCERY_PRODUCTS) {
-            $this->importGroceryProducts(500);
+            $this->importGroceryProducts($this->queryLimit);
         } elseif ($this->modelName === self::CHOICE_FOOD_PRODUCTS) {
             $this->importFoodProducts();
         } elseif ($this->modelName === self::CHOICE_FOOD_CHAINS) {
-            $this->importFoodChains(500);
+            $this->importFoodChains($this->queryLimit);
         } elseif ($this->modelName === self::CHOICE_GROCERY_CATEGORIES) {
             $this->importGroceryCategories();
         } elseif ($this->modelName === self::CHOICE_PRODUCT_IMAGES) {
-            $this->importProductsImages(500);
+            $this->importProductsImages($this->queryLimit);
         } elseif ($this->modelName === self::CHOICE_USERS) {
             $this->importUsers();
         } elseif ($this->modelName === self::CHOICE_ADDRESSES) {
             $this->importAddresses();
         } elseif ($this->modelName === self::CHOICE_ORDERS) {
             $this->importOrders();
+        } elseif ($this->modelName === self::CHOICE_FOR_SERVER) {
+            $this->runServerCommands();
         }
         $this->bar->finish();
         \DB::statement('SET FOREIGN_KEY_CHECKS=1;');
         $this->newLine(2);
         $this->info('Import '.$this->modelName.' is finished 🤪.');
         $this->newLine(2);
+    }
+
+    private function runServerCommands()
+    {
+        $this->queryLimit = 50000000;
+        $this->modelName = self::CHOICE_FOOD_CHAINS;
+        $this->handle();
+        $this->foodCategories = Taxonomy::on()->pluck('id', 'id');
+        $this->modelName = self::CHOICE_FOOD_PRODUCTS;
+        $this->handle();
+        $this->modelName = self::CHOICE_USERS;
+        $this->handle();
+        $this->modelName = self::CHOICE_ADDRESSES;
+        $this->handle();
+        $this->modelName = self::CHOICE_ORDERS;
+        $this->handle();
+        $chainsIds = Chain::query()->where('type', Chain::CHANNEL_FOOD_OBJECT)
+                          ->orderBy('created_at')
+                          ->take(5)
+                          ->pluck('id')->all();
+        if ( ! is_null($chainsIds)) {
+            $this->call('datum:sync-chains', ['--id' => $chainsIds]);
+        }
     }
 
     private function showChoice(): void
@@ -187,7 +214,8 @@ class DatumImporter extends Command
                 $tempTranslation = [];
                 foreach ($attributesComparing as $oldAttribute => $newAttribute) {
                     if ($oldAttribute === 'title_suffex' && strlen($translation->{$oldAttribute}) < 3) {
-                        $tempTranslation[$newAttribute] = 'Branch '.$translation->{$oldAttribute};
+                        $chainTitle = ! is_null($oldBranch->oldChain) ? $oldBranch->oldChain->title : 'Branch';
+                        $tempTranslation[$newAttribute] = $chainTitle.' '.$translation->{$oldAttribute};
                     } else {
                         $tempTranslation[$newAttribute] = $translation->{$oldAttribute};
                     }
@@ -238,8 +266,8 @@ class DatumImporter extends Command
         $isInserted = Product::insert($tempProduct);
         if ($isInserted) {
             $freshProduct = Product::find($oldProduct->id);
-            $groceryCategoriesIds = $categories->pluck('id');
-            $freshProduct->categories()->sync($groceryCategoriesIds);
+            $categoriesIds = $categories->pluck('id');
+            $freshProduct->categories()->sync($categoriesIds);
             $localesKeys = array_flip(localization()->getSupportedLocalesKeys());
             foreach ($oldProduct->translations as $translation) {
                 $attributesComparing = OldProductTranslation::attributesComparing();
@@ -250,10 +278,12 @@ class DatumImporter extends Command
                 }
                 ProductTranslation::insert($tempTranslation);
             }
+            if (count($localesKeys)) {
+                $freshProduct->status = Product::STATUS_TRANSLATION_NOT_COMPLETED;
+            }
             foreach ($localesKeys as $localeKey => $index) {
                 $freshProduct->translateOrNew($localeKey)->fill(\Arr::first($oldProduct->getTranslationsArray()));
             }
-            $freshProduct->status = Product::STATUS_TRANSLATION_NOT_COMPLETED;
             $freshProduct->save();
 //            $this->addSingleImage($freshProduct, 'Dish');
         }
@@ -326,7 +356,6 @@ class DatumImporter extends Command
                 }
                 TaxonomyTranslation::insert($tempTranslation);
             }
-//            $this->addSingleImage($freshCategory, 'Dish');
         }
     }
 
@@ -490,7 +519,15 @@ class DatumImporter extends Command
 
     private function importUsers()
     {
-        $oldUsers = OldUser::where('id', '>', 2)->withoutGlobalScopes()->get();
+        $userSideRoleName = \Str::title(str_replace('-', ' ', User::ROLE_USER_SIDE));
+        $userSideRole = Role::query()->where('name', $userSideRoleName)->first();
+        if (is_null($userSideRole)) {
+            Role::create(['name' => $userSideRoleName]);
+        }
+        $oldUsers = OldUser::query()->withoutGlobalScopes()
+                           ->whereNotIn('status', [OldUser::STATUS_PENDING])
+                           ->where('id', '>', 2)
+                           ->get();
         $this->newLine();
         $this->bar = $this->output->createProgressBar($oldUsers->count());
         $this->bar->start();
@@ -504,10 +541,14 @@ class DatumImporter extends Command
                 }
                 $oldUser->email = $telNumber.'_old_user@'.parse_url(env('APP_URL'), PHP_URL_HOST);
             }
-            if (User::where([
-                    ['phone_country_code', $oldUser->tel_code_number],
-                    ['phone_number', $oldUser->tel_number]
-                ])->count() === 0) {
+            $canAddThisUser = true;
+//            if ( ! is_null($oldUser->tel_number) || ! is_null($oldUser->tel_code_number)) {
+//                $phoneValidateCount = User::where('phone_number', $oldUser->tel_number)
+//                                          ->where('phone_country_code', $oldUser->tel_code_number)
+//                                          ->count();
+//                $canAddThisUser = $phoneValidateCount === 0;
+//            }
+            if ($canAddThisUser) {
                 $this->insertUser($oldUser);
             }
             $this->bar->advance();
@@ -524,8 +565,12 @@ class DatumImporter extends Command
         $tempUser['status'] = $oldUser->status === OldUser::STATUS_ACTIVE ? User::STATUS_ACTIVE : User::STATUS_INACTIVE;
         try {
             $isInserted = User::insert($tempUser);
+            if ($isInserted) {
+                $freshUser = User::whereId($oldUser->id)->first();
+                $freshUser->assignRole($oldUser->role_name);
+            }
         } catch (\Exception $e) {
-            dd($e->getMessage(), PHP_EOL, $tempUser);
+            info($e->getMessage().'___id:' . $tempUser['id'].PHP_EOL);
         }
 
     }

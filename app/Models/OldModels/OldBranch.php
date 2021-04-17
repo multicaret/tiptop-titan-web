@@ -5,6 +5,7 @@ namespace App\Models\OldModels;
 
 use App\Models\Branch;
 use Astrotomic\Translatable\Translatable;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 
 /**
@@ -123,6 +124,7 @@ use Illuminate\Database\Eloquent\Relations\BelongsToMany;
  * @mixin \Eloquent
  * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\OldModels\OldCategory[] $categories
  * @property-read int|null $categories_count
+ * @property-read \App\Models\OldModels\OldChain $oldChain
  */
 class OldBranch extends OldModel
 {
@@ -185,5 +187,10 @@ class OldBranch extends OldModel
             self::STATUS_DISABLED => Branch::STATUS_DRAFT,
             self::STATUS_SUSPENDED => Branch::STATUS_INACTIVE,
         ];
+    }
+
+    public function oldChain(): BelongsTo
+    {
+        return $this->belongsTo(OldChain::class, 'restaurant_id');
     }
 }

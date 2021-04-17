@@ -95,6 +95,7 @@ use App\Models\User;
  * @property-read string|null $tel_number
  * @property-read string|null $tel_code_number
  * @property-read string $updated_username
+ * @property-read mixed $role_name
  */
 class OldUser extends OldModel
 {
@@ -103,7 +104,7 @@ class OldUser extends OldModel
 
 
     public const STATUS_ACTIVE = 'ACTIVE';
-    public const STATUS_DISABLED = 'DISABLED';
+    public const STATUS_PENDING = 'PENDING';
     public const STATUS_SUSPENDED = 'SUSPENDED';
 
     public function attributesComparing(): array
@@ -132,6 +133,29 @@ class OldUser extends OldModel
         }
 
         return $attributesKeys;
+    }
+
+    public static function roleComparing(): array
+    {
+        return [
+            'ROOT' => User::ROLE_SUPER,
+            'SUPERADMIN' => User::ROLE_ADMIN,
+            'ADMIN' => User::ROLE_AGENT,
+            'MARKETER' => User::ROLE_MARKETER,
+            'RESTAURANT_SUPERADMIN' => User::ROLE_BRANCH_OWNER,
+            'RESTAURANT_ADMIN' => User::ROLE_BRANCH_MANAGER,
+            'RESTAURANT_REPRESENTATIVE' => User::ROLE_BRANCH_MANAGER,
+            'RESTAURANT_DRIVER' => User::ROLE_RESTAURANT_DRIVER,
+            'APP_DRIVER' => User::ROLE_TIPTOP_DRIVER,
+            // Todo: ask MK
+            'DRIVER' => User::ROLE_TIPTOP_DRIVER,
+            'CUSTOMER' => User::ROLE_USER,
+            '' => User::ROLE_USER_SIDE,
+            null => User::ROLE_USER_SIDE,
+//            '' => User::ROLE_SUPERVISOR,
+//            '' => User::ROLE_CONTENT_EDITOR,
+//            '' => User::ROLE_TRANSLATOR,
+        ];
     }
 
     public function getUpdatedUsernameAttribute(): string
@@ -210,5 +234,12 @@ class OldUser extends OldModel
         }
 
         return $phoneNumber;
+    }
+
+    public function getRoleNameAttribute()
+    {
+        $roleNameSnakeCase = self::roleComparing()[$this->type];
+
+        return \Str::title(str_replace('-', ' ', $roleNameSnakeCase));
     }
 }
