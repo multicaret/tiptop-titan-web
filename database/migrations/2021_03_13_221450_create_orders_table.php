@@ -32,6 +32,7 @@ class CreateOrdersTable extends Migration
             $table->unsignedDouble('coupon_discount_amount')->default(0);
             $table->unsignedDouble('delivery_fee')->default(0);
             $table->unsignedDouble('grand_total')->default(0);
+            $table->unsignedDouble('agent_grand_total')->default(0);
             $table->unsignedDouble('private_payment_method_commission')->default(0);
             $table->unsignedDouble('private_total')->default(0);
             $table->unsignedDouble('private_delivery_fee')->default(0);

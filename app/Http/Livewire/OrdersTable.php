@@ -3,15 +3,12 @@
 namespace App\Http\Livewire;
 
 use App\Models\Order;
-use App\Models\OrderAgentNote;
 use Livewire\Component;
 
 class OrdersTable extends Component
 {
     public $orders;
     public $selectedOrder;
-    public $note;
-
 
     /*use WithPagination;
 
@@ -96,37 +93,16 @@ class OrdersTable extends Component
         $this->filterByDate = now()->format(config('defaults.date.short_format'));
     }
 
-    public $showModal = false;
+//    public $showModal = false;
 
-    public function show($id)
+    public function selectOrder($id)
     {
-        $this->showModal = true;
-        $this->selectedOrder = Order::where('id', $id)->first();
-    }
-
-//        $this->emit('userStore');
-
-    protected $rules = [
-        'note' => 'required',
-    ];
-
-
-    public function addNewNote()
-    {
-
-        $this->validate();
-        $orderAgentNote = new OrderAgentNote();
-        $orderAgentNote->message = $this->note;
-        $orderAgentNote->order_id = $this->selectedOrder->id;
-        $orderAgentNote->agent_id = auth()->id();
-        $orderAgentNote->save();
-        $this->note = null;
-
-
-        $this->emit('showToast', [
-            'icon' => 'success',
-            'message' => 'Note saved successfully',
+//        dd("selectOrder");
+//        $this->showModal = true;
+//        $this->selectedOrder = Order::where('id', $id)->first();
+        // emit to order show to show modal
+        $this->emitTo('orders.order-show', 'orderSelected', [
+            'id' => $id
         ]);
     }
-
 }
