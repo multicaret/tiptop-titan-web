@@ -724,7 +724,11 @@ class DatatableController extends AjaxController
     public function translationList(Request $request)
     {
         $group = $request->input('group_by');
-        $transitions = is_null($group) ? Translation::on() : Translation::on()->group($group);
+        if (is_null($group)) {
+            $transitions = Translation::query()->where('group', '!=', Translation::IGNORE_FILENAME);
+        } else {
+            $transitions = Translation::query()->where('group', $group);
+        }
         $of = DataTables::of($transitions);
         $rawColumns = [
             'action',
@@ -747,7 +751,7 @@ class DatatableController extends AjaxController
                     return $builderData->notTranslatedIn($key);
                 }
 
-                return $builderData->whereTranslationLike('value', " % $search", $key);
+                return $builderData->whereTranslationLike('value', "%$search%", $key);
             });
         }
 
@@ -875,6 +879,7 @@ class DatatableController extends AjaxController
                          ])
                          ->make(true);
     }
+
     public function paymentMethods(Request $request)
     {
         $paymentMethods = PaymentMethod::selectRaw('payment_methods.*');

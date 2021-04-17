@@ -63,6 +63,7 @@ class Translation extends Model
     public const STATUS_DRAFT = 1;
     public const STATUS_ACTIVE = 2;
     public const STATUS_INACTIVE = 3;
+    public const IGNORE_FILENAME = 'ignore';
 
     protected $fillable = ['key', 'group', 'value'];
     protected $with = ['translations'];
@@ -81,8 +82,10 @@ class Translation extends Model
         if ($directoryIsExists) {
             $allFiles = File::files(app()['path.lang']."/{$defaultLocale}/");
             $allGroupsFiles = collect($allFiles)->map(function ($file) {
-                return pathinfo($file, PATHINFO_FILENAME);
-            })->toArray();
+                if(pathinfo($file, PATHINFO_FILENAME) !== self::IGNORE_FILENAME) {
+                    return pathinfo($file, PATHINFO_FILENAME);
+                }
+            })->filter(fn($filename) => !is_null($filename))->toArray();
         }
 
         return $allGroupsFiles;
