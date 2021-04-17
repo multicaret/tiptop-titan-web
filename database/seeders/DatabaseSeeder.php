@@ -55,9 +55,6 @@ class DatabaseSeeder extends Seeder
             $groceryProducts = DatumImporter::CHOICE_GROCERY_PRODUCTS;
             Artisan::call("datum:importer {$groceryProducts}");
             echo Artisan::output();
-            $foodChains = DatumImporter::CHOICE_FOOD_CHAINS;
-            Artisan::call("datum:importer {$foodChains}");
-            echo Artisan::output();
             $this->lastTaxonomyId = Taxonomy::latest()->first()->id;
             $this->lastBranchId = Branch::latest()->first()->id;
         }
@@ -106,18 +103,18 @@ class DatabaseSeeder extends Seeder
         $this->apiAccessTokensSeeder($super, $admin);
         Artisan::call('translation:import');
         echo 'Done 🤤 '.PHP_EOL;
-        if ( ! is_null(env('DB_DATABASE_OLD'))) {
-            $usersArgument = DatumImporter::CHOICE_USERS;
-            Artisan::call("datum:importer $usersArgument");
-            echo Artisan::output();
-        }
         if ( ! is_null(env('IMPORT_IMAGES'))) {
             Artisan::call('datum:importer ProductImages');
             echo Artisan::output();
         } else {
             echo PHP_EOL;
-            echo 'Run `php artisan datum:importer ProductImages` if you want to import products images'.PHP_EOL;
+            $productImagesArgument = DatumImporter::CHOICE_PRODUCT_IMAGES;
+            $this->command->info('Run `php artisan datum:importer '.$productImagesArgument.'` if you want to import products images');
         }
+        $this->command->newLine();
+        $forMoreDataArgument = DatumImporter::CHOICE_FOR_SERVER;
+        $this->command->warn('Run `php artisan datum:importer '.$forMoreDataArgument.'` if you want more data');
+        $this->command->newLine(2);
     }
 
     private function createPreferenceItem($key, $data): void

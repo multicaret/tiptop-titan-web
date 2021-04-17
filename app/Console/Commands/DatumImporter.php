@@ -62,6 +62,7 @@ class DatumImporter extends Command
     private ProgressBar $bar;
     private Collection $foodCategories;
     private array $importerChoices;
+    private int $queryLimit = 500000;
 
     public function __construct()
     {
@@ -100,15 +101,15 @@ class DatumImporter extends Command
         if ($this->modelName === self::CHOICE_GROCERY_DEFAULT_BRANCH) {
             $this->insertGroceryDefaultBranch();
         } elseif ($this->modelName === self::CHOICE_GROCERY_PRODUCTS) {
-            $this->importGroceryProducts(500000);
+            $this->importGroceryProducts($this->queryLimit);
         } elseif ($this->modelName === self::CHOICE_FOOD_PRODUCTS) {
             $this->importFoodProducts();
         } elseif ($this->modelName === self::CHOICE_FOOD_CHAINS) {
-            $this->importFoodChains(500000);
+            $this->importFoodChains($this->queryLimit);
         } elseif ($this->modelName === self::CHOICE_GROCERY_CATEGORIES) {
             $this->importGroceryCategories();
         } elseif ($this->modelName === self::CHOICE_PRODUCT_IMAGES) {
-            $this->importProductsImages(500000);
+            $this->importProductsImages($this->queryLimit);
         } elseif ($this->modelName === self::CHOICE_USERS) {
             $this->importUsers();
         } elseif ($this->modelName === self::CHOICE_ADDRESSES) {
@@ -127,9 +128,17 @@ class DatumImporter extends Command
 
     private function runServerCommands()
     {
+        $this->queryLimit = 50000000;
         $this->modelName = self::CHOICE_FOOD_CHAINS;
         $this->handle();
+        $this->foodCategories = Taxonomy::on()->pluck('id', 'id');
+        $this->modelName = self::CHOICE_FOOD_PRODUCTS;
+        $this->handle();
         $this->modelName = self::CHOICE_USERS;
+        $this->handle();
+        $this->modelName = self::CHOICE_ADDRESSES;
+        $this->handle();
+        $this->modelName = self::CHOICE_ORDERS;
         $this->handle();
     }
 
@@ -251,8 +260,8 @@ class DatumImporter extends Command
         $isInserted = Product::insert($tempProduct);
         if ($isInserted) {
             $freshProduct = Product::find($oldProduct->id);
-            $groceryCategoriesIds = $categories->pluck('id');
-            $freshProduct->categories()->sync($groceryCategoriesIds);
+            $categoriesIds = $categories->pluck('id');
+            $freshProduct->categories()->sync($categoriesIds);
             $localesKeys = array_flip(localization()->getSupportedLocalesKeys());
             foreach ($oldProduct->translations as $translation) {
                 $attributesComparing = OldProductTranslation::attributesComparing();
@@ -341,7 +350,6 @@ class DatumImporter extends Command
                 }
                 TaxonomyTranslation::insert($tempTranslation);
             }
-//            $this->addSingleImage($freshCategory, 'Dish');
         }
     }
 
