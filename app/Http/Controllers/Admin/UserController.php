@@ -157,6 +157,7 @@ class UserController extends Controller
         $user->city_id = $request->city_id;
         $user->employment = $request->employment;
         $user->team_id = $request->team_id;
+        $user->tokan_id = $request->tokan_id;
         $user->branch_id = $request->branch_id;
         $user->order_column = $order;
 
@@ -254,6 +255,7 @@ class UserController extends Controller
         $user->city_id = $request->city_id;
         $user->employment = $request->employment;
         $user->team_id = $request->team_id;
+        $user->tokan_id = $request->tokan_id;
         $user->branch_id = $request->branch_id;
         $user->save();
 

@@ -91,17 +91,6 @@
                             @slot('selected', $user->gender)
                         @endcomponent
                     </div>
-
-                    <div class="col-md-6">
-                        @component('admin.components.form-group', ['name' => 'status', 'type' => 'select'])
-                            @slot('label', 'Status')
-                            @slot('options', [
-                                App\Models\User::STATUS_INACTIVE => 'Inactive',
-                                App\Models\User::STATUS_ACTIVE => 'Active',
-                            ])
-                            @slot('selected', $user->status)
-                        @endcomponent
-                    </div>
                     @if(in_array($role, \App\Models\User::rolesHaving('branch')))
                         <div class="col-6">
                             @component('admin.components.form-group', ['name' => 'branch_id', 'type' => 'select'])
@@ -129,7 +118,7 @@
                         </div>
                     @endif
                     @if($role == \App\Models\User::ROLE_TIPTOP_DRIVER)
-                        <div class="col-6">
+                        <div class="col-4">
                             @component('admin.components.form-group', ['name' => 'team_id', 'type' => 'select'])
                                 @slot('label', trans('strings.captain_teams'))
                                 @slot('options', $teams)
@@ -141,6 +130,22 @@
                             @endcomponent
                         </div>
                     @endif
+                    <div class="col-md-2">
+                        @component('admin.components.form-group', ['name' => 'tokan_id', 'type' => 'number'])
+                            @slot('label', 'Tokan ID')
+                            @slot('value', $user->tokan_id)
+                        @endcomponent
+                    </div>
+                    <div class="col-md-6">
+                        @component('admin.components.form-group', ['name' => 'status', 'type' => 'select'])
+                            @slot('label', 'Status')
+                            @slot('options', [
+                                App\Models\User::STATUS_INACTIVE => 'Inactive',
+                                App\Models\User::STATUS_ACTIVE => 'Active',
+                            ])
+                            @slot('selected', $user->status)
+                        @endcomponent
+                    </div>
                 </div>
                 <div class="col-12 col-lg-2">
                     <h5>Avatar</h5>
