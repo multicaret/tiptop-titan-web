@@ -12,8 +12,19 @@ class OrderShow extends Component
     public $note;
 
     protected $rules = [
+        'order.status' => 'required|numeric',
         'note' => 'required|min:3|max:255',
     ];
+
+    public function updatedOrderStatus($newValue)
+    {
+        $this->order->status = $newValue;
+        $this->order->save();
+        $this->emit('showToast', [
+            'icon' => 'success',
+            'message' => 'Status updated successfully',
+        ]);
+    }
 
     public function render()
     {
@@ -23,10 +34,12 @@ class OrderShow extends Component
     public function addNewNote()
     {
         $this->validate();
-        if (OrderAgentNote::whereAgentId(auth()->id())
-                          ->whereOrderId($this->order->id)
-                          ->whereMessage($this->note)->exists()
-        ) {
+        $previousNote = OrderAgentNote::whereAgentId(auth()->id())
+                                      ->whereOrderId($this->order->id)
+                                      ->latest()
+                                      ->first();
+        $hasBeenSentBefore = ! is_null($previousNote) && ($previousNote->message == $this->note);
+        if ($hasBeenSentBefore) {
             $this->emit('showToast', [
                 'icon' => 'error',
                 'message' => 'This message has been sent before',

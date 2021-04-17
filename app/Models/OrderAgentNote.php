@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Http\Controllers\Controller;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
@@ -37,5 +38,13 @@ class OrderAgentNote extends Model
     public function order(): BelongsTo
     {
         return $this->belongsTo(Order::class);
+    }
+
+    public function isMessageEmojies()
+    {
+        return
+            strlen(iconv('utf-8', 'utf-16le', $this->message)) / 2 <= 6
+            &&
+            Controller::hasEmojis($this->message);
     }
 }

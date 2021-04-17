@@ -1,7 +1,7 @@
 <div class="chat-wrapper">
 
     <!-- Make card full height of `.chat-wrapper` -->
-    <div class="card2 flex-grow-1 position-relative overflow-hidden">
+    <div class="flex-grow-1 position-relative overflow-hidden">
 
         <!-- Make row full height of `.card` -->
         <div class="row no-gutters h-100">
@@ -56,7 +56,7 @@
                 <!-- Wrap `.chat-scroll` to properly position scroll area. Remove this wtapper if you don't need scroll -->
                 <div class="flex-grow-1 position-relative">
                     <!-- Remove `.chat-scroll` and add `.flex-grow-1` if you don't need scroll -->
-                    <div class="chat-messages chat-scroll p-4 ps">
+                    <div class="chat-messages chat-scroll p-4 ps" wire:poll.1s>
                         @forelse($order->agentNotes()->get() as $note)
                             <div
                                 class="{{$note->agent->id == $auth->id?'chat-message-right':'chat-message-left'}} mb-4">
@@ -76,7 +76,9 @@
                                         @endif
 
                                     </div>
-                                    {{ $note->message }}
+                                    <p class="{{$note->isMessageEmojies() ?'h2':''}}">
+                                        {{ $note->message }}
+                                    </p>
                                 </div>
                             </div>
                         @empty

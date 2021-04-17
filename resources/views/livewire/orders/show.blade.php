@@ -1,26 +1,32 @@
 <div>
     <div class="card mb-4 shadow-lg">
-        <h4 class="card-header font-weight-bold">
-            #{{$order->reference_code}}
-            <small class="d-inline-block ml-5">
-                    <span data-toggle="tooltip" data-placement="top"
-                          title="{{$order->getStatusName()}}">
+        <h4 class="card-header font-weight-bold d-flex justify-content-between">
+            <small class="d-flex align-items-center">
+                {{$order->getStatusName()}} &nbsp;
+                <span class="d-inline-block">
                     @include('admin.orders._partials.statuses.'.$order->status)
                 </span>
             </small>
-            {{--            <div class="pull-right">--}}
-            {{--            </div>--}}
+            <div class="pull-right">
+                #{{$order->reference_code}}
+            </div>
         </h4>
         <div class="card-body  bg-light">
 
-            {{--<div class="form-group">
-                <label for="reference-code">Status</label>
-                <select type="text" inputmode="numeric" --}}{{--wire:model.debounce.300ms="referenceCode"--}}{{--
-                class="form-control" id="reference-code">
-                    <option>Preparing</option>
-                    <option>Cancelled</option>
-                </select>
-            </div>--}}
+            <div class="form-group">
+                <label for="order-status-top">Status</label>
+                @if($order->getPermittedStatus())
+                    <select type="text" wire:model="order.status" class="form-control"
+                            id="order-status-top">
+                        <option selected>Please Select</option>
+                        @foreach($order->getPermittedStatus() as $status)
+                            <option value="{{$status['id']}}">{{$status['title']}}</option>
+                        @endforeach
+                    </select>
+                @else
+                    Status Cannot be changed!
+                @endif
+            </div>
             <div class="row mb-3 opacity-50">
                 <div class="col-md-12">
                     <div class="card">
@@ -187,22 +193,26 @@
         </div>
     </div>
 
-    <div class="card mb-4 shadow-lg">
-        <h4 class="card-header">
-            <i class="far fa-clipboard"></i>
-            &nbsp;Notes ({{$order->agentNotes()->count()}})
-        </h4>
-        <div class="card-body">
-            @include('admin.orders._partials.order-agent-notes')
+    <div class="row">
+        <div class="col-6">
+            <div class="card mb-4 shadow-lg">
+                <h4 class="card-header">
+                    <i class="far fa-clipboard"></i>
+                    &nbsp;Notes ({{$order->agentNotes()->count()}})
+                </h4>
+                @include('admin.orders._partials.order-agent-notes')
+            </div>
         </div>
-    </div>
-    <div class="card mb-4 shadow-lg">
-        <h4 class="card-header">
-            <i class="far fa-chart-bar"></i>
-            &nbsp;Activity Log
-        </h4>
-        <div class="card-body">
-            @include('admin.orders._partials.order-activity-log')
+        <div class="col-6">
+            <div class="card mb-4 shadow-lg">
+                <h4 class="card-header">
+                    <i class="far fa-chart-bar"></i>
+                    &nbsp;Activity Log
+                </h4>
+                <div class="card-body">
+                    @include('admin.orders._partials.order-activity-log')
+                </div>
+            </div>
         </div>
     </div>
 </div>
