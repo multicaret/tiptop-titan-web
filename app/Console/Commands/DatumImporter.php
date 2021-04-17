@@ -497,7 +497,7 @@ class DatumImporter extends Command
         $this->bar->finish();
 
 
-        $this->line('End import Food Categories');
+        $this->line(PHP_EOL.'End import Food Categories');
 
         $this->line('Start import Food Products');
 
