@@ -244,6 +244,8 @@ return [
     'order_status_16' => 'On the way',
     'order_status_18' => 'At the address',
     'order_status_20' => 'Delivered',
+    'order_status_22' => 'Declined',
+    'order_status_24' => 'Not delivered',
     'grocery_and_food' => 'Grocery And Food',
     'both' => 'Both',
     'grocery' => 'Grocery',
