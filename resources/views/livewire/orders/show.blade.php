@@ -1,6 +1,6 @@
 <div>
     <div class="card mb-4 shadow-lg">
-        <h4 class="card-header font-weight-bold d-flex justify-content-between">
+        {{--<h4 class="card-header font-weight-bold d-flex justify-content-between">
             <small class="d-flex align-items-center">
                 {{$order->getStatusName()}} &nbsp;
                 <span class="d-inline-block">
@@ -8,29 +8,33 @@
                 </span>
             </small>
             <div class="pull-right">
-                #{{$order->reference_code}}
-            </div>
-        </h4>
-        <div class="card-body  bg-light">
 
-            <div class="form-group">
-                <label for="order-status-top">Status</label>
-                @if($order->getPermittedStatus())
-                    <select type="text" wire:model="order.status" class="form-control"
-                            id="order-status-top">
-                        <option selected>Please Select</option>
-                        @foreach($order->getPermittedStatus() as $status)
-                            <option value="{{$status['id']}}">{{$status['title']}}</option>
-                        @endforeach
-                    </select>
-                @else
-                    Status Cannot be changed!
-                @endif
             </div>
-            <div class="row mb-3 opacity-50">
+        </h4>--}}
+        <div class="card-body  bg-light">
+            <div class="row mb-3">
                 <div class="col-md-12">
                     <div class="card">
-                        <h5 class="card-header font-weight-bold">Timeline</h5>
+                        <h5 class="card-header font-weight-bold">
+                            #{{$order->reference_code}}
+                            |
+                            <span class="text-muted">
+                                Timeline
+                            </span>
+                            <div class="d-inline-block">
+                                @if($order->getPermittedStatus())
+                                    <select type="text" wire:model="order.status" class="form-control"
+                                            id="order-status-top">
+                                        <option selected>Please Select</option>
+                                        @foreach($order->getPermittedStatus() as $status)
+                                            <option value="{{$status['id']}}">{{$status['title']}}</option>
+                                        @endforeach
+                                    </select>
+                                @else
+                                    Status Cannot be changed!
+                                @endif
+                            </div>
+                        </h5>
                         <div class="card-body">
                             <div class="row">
                                 <div class="col">
@@ -42,11 +46,13 @@
                 </div>
             </div>
 
+
             <div class="row">
                 <div class="col-md-6">
                     <div class="card">
                         <h5 class="card-header font-weight-bold">
-                            User info
+                            <i class="fas fa-user"></i>&nbsp;
+                                                       User info
                         </h5>
                         <div class="card-body">
                             <div class="row">
@@ -82,7 +88,10 @@
 
                 <div class="col-md-6">
                     <div class="card">
-                        <h5 class="card-header font-weight-bold">Brunch details</h5>
+                        <h5 class="card-header font-weight-bold">
+                            <i class="fas fa-code-branch"></i>&nbsp;
+                                                              Branch details
+                        </h5>
                         <div class="card-body">
                             <div class="row">
                                 <div class="col-12 pb-3 border-bottom">
@@ -114,7 +123,14 @@
             <div class="row mt-3">
                 <div class="col-8">
                     <div class="card">
-                        <h5 class="card-header font-weight-bold">Products</h5>
+                        <h5 class="card-header font-weight-bold">
+                            @if($order->is_grocery)
+                                <i class="fas fa-carrot"></i>&nbsp;
+                            @else
+                                <i class="fas fa-pizza-slice"></i>&nbsp;
+                            @endif
+                                                             Products
+                        </h5>
                         <table class="table card-table">
                             <thead class="thead-light">
                             <tr>
@@ -155,34 +171,83 @@
                 </div>
                 <div class="col-4">
                     <div class="card">
-                        <h5 class="card-header font-weight-bold">Prices</h5>
-                        <div class="card-body">
+                        <h5 class="card-header font-weight-bold">
+                            <i class="fas fa-coins"></i>&nbsp;
+                                                        Prices
+                        </h5>
+                        <div class="card-body pb-1">
                             <div class="row">
                                 <div class="col-md-12 pb-3 border-bottom">
-                                    <b>Total:</b>
-                                    {!! \App\Models\Currency::formatHtml($order->total) !!}
+                                    <b>Total</b>
+                                    <div class="pull-right">
+                                        {!! \App\Models\Currency::formatHtml($order->total) !!}
+                                    </div>
                                 </div>
                                 @if(!is_null($order->coupon_id))
                                     <div class="col-md-12 py-3 border-bottom">
-                                        <b>Coupon discount amount:</b>
-                                        {!! \App\Models\Currency::formatHtml($order->coupon_discount_amount) !!}
+                                        <b>Coupon discount amount</b>
+                                        <div class="pull-right">
+                                            {!! \App\Models\Currency::formatHtml($order->coupon_discount_amount) !!}
+                                        </div>
                                     </div>
                                     <div class="col-md-12 py-3 border-bottom">
-                                        <b>Coupon Code:</b>
-                                        {{$order->coupon->redeem_code}}
+                                        <b>Coupon Code</b>
+                                        <div class="pull-right">
+                                            {{$order->coupon->redeem_code}}
+                                        </div>
                                     </div>
                                 @endif
                                 <div class="col-md-12 py-3 border-bottom">
-                                    <b>Delivery fee:</b>
-                                    {!! \App\Models\Currency::formatHtml($order->delivery_fee) !!}
+                                    <b>Delivery fee</b>
+                                    <div class="pull-right">
+                                        {!! \App\Models\Currency::formatHtml($order->delivery_fee) !!}
+                                    </div>
                                 </div>
-                                <div class="col-md-12 py-3 border-bottom">
-                                    <b>Grand total:</b>
-                                    {!! \App\Models\Currency::formatHtml($order->grand_total) !!}
+                                <div class="col-md-12 py-3 border-bottom border-light border bg-primary">
+                                    <button class="btn icon-btn btn-outline-secondary btn-sm"
+                                            wire:click="toggleGrandTotalForm">
+                                        <i class="fas fa-pen"></i>
+                                    </button>
+                                    <b>Grand total</b>
+                                    <div class="pull-right">
+                                        {!! \App\Models\Currency::formatHtml($order->grand_total) !!}
+                                    </div>
                                 </div>
-                                <div class="col-md-12 py-3 border-bottom">
+                                @if($isGrantTotalFormShown)
+                                    <div class="col-md-12 py-3 border-bottom">
+                                        <form wire:submit.prevent="addNewGrandTotal">
+                                            <div class="form-group">
+                                                <label class="control-label" for="new-grand-total">
+                                                    New Grand Total (optional)
+                                                </label>
+                                                <input type="number" min="1" step="any" id="new-grand-total"
+                                                       class="form-control"
+                                                       placeholder="{{$order->grand_total}}"
+                                                       wire:model.lazy="newGrandTotal">
+                                                @error('newGrandTotal')
+                                                <span class="text-danger">{{$message}}</span>
+                                                @enderror
+                                            </div>
+                                            <div class="input-group">
+                                                <input type="text" class="form-control" placeholder="Type your message"
+                                                       wire:model="newGrandTotalNote">
+
+                                                <div class="input-group-append">
+                                                    <button type="submit" class="btn btn-primary">Send</button>
+                                                </div>
+                                            </div>
+                                            @error('newGrandTotalNote')
+                                            <span class="text-danger">{{$message}}</span>
+                                            @enderror
+                                        </form>
+                                    </div>
+                                @endif
+                                <div class="col-md-12 py-3">
                                     <b>Payment method</b>
-                                    : {{$order->paymentMethod->title}}
+                                    <div class="pull-right"><img src="{{$order->paymentMethod->logo}}" width="20px"
+                                                                 alt="{{$order->paymentMethod->title}}">
+                                        {{$order->paymentMethod->title}}
+                                    </div>
                                 </div>
                             </div>
                         </div>

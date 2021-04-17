@@ -10,6 +10,9 @@ class OrderShow extends Component
 {
     public Order $order;
     public $note;
+    public $newGrandTotal;
+    public $newGrandTotalNote;
+    public $isGrantTotalFormShown = false;
 
     protected $rules = [
         'order.status' => 'required|numeric',
@@ -45,11 +48,7 @@ class OrderShow extends Component
                 'message' => 'This message has been sent before',
             ]);
         } else {
-            $orderAgentNote = new OrderAgentNote();
-            $orderAgentNote->message = $this->note;
-            $orderAgentNote->order_id = $this->order->id;
-            $orderAgentNote->agent_id = auth()->id();
-            $orderAgentNote->save();
+            $this->createNote($this->note);
 
             $this->note = null;
             $this->emit('showToast', [
@@ -58,5 +57,44 @@ class OrderShow extends Component
             ]);
         }
 
+    }
+
+    public function addNewGrandTotal()
+    {
+        $this->validate([
+            'newGrandTotal' => 'required_with:newGrandTotalNote|numeric',
+            'newGrandTotalNote' => 'required_with:newGrandTotal|string',
+        ]);
+        \DB::beginTransaction();
+        $this->order->grand_total_before_agent_manipulation = $this->order->grand_total;
+        $this->order->grand_total = $this->newGrandTotal;
+        $this->order->save();
+        $this->createNote($this->newGrandTotalNote);
+        \DB::commit();
+
+        $this->isGrantTotalFormShown = false;
+        $this->newGrandTotal = null;
+        $this->newGrandTotalNote = null;
+
+        $this->emit('showToast', [
+            'icon' => 'success',
+            'message' => 'Grand total updated successfully',
+        ]);
+
+    }
+
+
+    public function toggleGrandTotalForm()
+    {
+        $this->isGrantTotalFormShown = ! $this->isGrantTotalFormShown;
+    }
+
+    private function createNote($message): void
+    {
+        $orderAgentNote = new OrderAgentNote();
+        $orderAgentNote->message = $message;
+        $orderAgentNote->order_id = $this->order->id;
+        $orderAgentNote->agent_id = auth()->id();
+        $orderAgentNote->save();
     }
 }
