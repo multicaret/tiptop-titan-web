@@ -13,6 +13,7 @@ class ProductsIndex extends Component
     protected $paginationTheme = 'bootstrap';
 
     public $branchId;
+    public $searchByCategory;
 
     public function render()
     {
@@ -22,4 +23,23 @@ class ProductsIndex extends Component
 
         return view('livewire.products-index', ['products' => $products]);
     }
+
+
+    public function updatedSearchByCategory()
+    {
+        if ( ! is_null($this->searchByCategory) && $this->searchByCategory != 'all') {
+            $products = Product::whereBranchId($this->branchId)
+                               ->where('category_id', $this->searchByCategory)
+                               ->latest()
+                               ->get();
+        } else {
+            $products = Product::whereBranchId($this->branchId)
+                               ->latest()
+                               ->get();
+        }
+
+        return view('livewire.products-index', ['products' => $products]);
+    }
+
+
 }

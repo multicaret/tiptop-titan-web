@@ -15,7 +15,11 @@
         @endforeach
     </td>
     <td>
-        {{ implode(',',$product->categories->pluck('title')->toArray()) }}
+        @if($product->type == \App\Models\Product::CHANNEL_FOOD_OBJECT)
+            {{optional($product->category)->title}}
+        @else
+            {{ implode(',',$product->categories->pluck('title')->toArray()) }}
+        @endif
     </td>
     <td>
         <div class="form-group">
