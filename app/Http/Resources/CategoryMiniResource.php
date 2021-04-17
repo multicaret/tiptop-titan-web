@@ -20,7 +20,8 @@ class CategoryMiniResource extends JsonResource
     {
 
         $products = null;
-        if ($this->type == Taxonomy::TYPE_MENU_CATEGORY) {
+        $isMenuCategory = $this->type == Taxonomy::TYPE_MENU_CATEGORY;
+        if ($isMenuCategory) {
             $products = ProductMiniResource::collection($this->menuProducts()->orderByDesc('order_column')->get());
         }
 
@@ -36,7 +37,7 @@ class CategoryMiniResource extends JsonResource
             'hasChildren' => $this->hasChildren(),
             'cover' => $this->cover,
             'thumbnail' => $this->cover_small,
-            'products' => $this->when($this->type == Taxonomy::TYPE_MENU_CATEGORY, $products),
+            'products' => $this->when($isMenuCategory, $products),
         ];
     }
 }
