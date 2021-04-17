@@ -40,7 +40,7 @@
 
         </div>
         <a href="{{ route('admin.taxonomies.create', ['type' => request()->type ]) }}">
-            <button type="button" class="btn btn-primary d-block">
+            <button type="button" class="btn btn-primary d-block rounded-pill">
                 <span class="ion ion-md-add"></span>&nbsp;
                 @lang('strings.add')
             </button>

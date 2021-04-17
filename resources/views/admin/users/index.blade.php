@@ -12,7 +12,7 @@
     <h4 class="d-flex justify-content-between align-items-center w-100 font-weight-bold py-3 mb-4">
         <div>{{ $title }}</div>
         <a href="{{ route('admin.users.create', ['role' => $role ]) }}">
-            <button type="button" class="btn btn-primary d-block">
+            <button type="button" class="btn btn-primary d-block rounded-pill">
                 <span class="ion ion-md-add"></span>&nbsp;
                 @lang('strings.add')
             </button>
