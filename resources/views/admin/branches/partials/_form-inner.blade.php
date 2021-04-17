@@ -177,7 +177,7 @@
                             </div>
                             @if($type == \App\Models\Branch::CHANNEL_FOOD_OBJECT)
                                 <div class="col-6">
-                                    @component('admin.components.form-group', ['name' => 'food_categories', 'type' => 'select'])
+                                    @component('admin.components.form-group', ['name' => 'food_categories[]', 'type' => 'select'])
                                         @slot('label', 'Food categories')
                                         @slot('attributes', [
                                            'class' => 'select2-categories w-100',
@@ -187,10 +187,21 @@
                                         @slot('selected', $branch->foodCategories)
                                     @endcomponent
                                 </div>
-                                <div class="col-12">
+                                <div class="col-6">
                                     @component('admin.components.form-group', ['name' => 'featured_at', 'type' => 'datetime-local'])
                                         @slot('label', 'Featured at')
                                         @slot('value', $branch->featured_at)
+                                    @endcomponent
+                                </div>
+                                <div class="col-6">
+                                    @component('admin.components.form-group', ['name' => 'search_tags[]', 'type' => 'select'])
+                                        @slot('label', 'Search Tags')
+                                        @slot('attributes', [
+                                           'class' => 'select2-search-tags w-100',
+                                           'multiple'
+                                       ])
+                                        @slot('options', $searchTags->pluck('title','id')->prepend('',''))
+                                        @slot('selected', $branch->searchTags)
                                     @endcomponent
                                 </div>
                             @endif

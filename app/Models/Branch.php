@@ -17,6 +17,8 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo as BelongsTo;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Database\Eloquent\Relations\MorphMany;
+use Illuminate\Database\Eloquent\Relations\MorphToMany;
 use Illuminate\Support\Carbon;
 use Multicaret\Acquaintances\Models\InteractionRelation;
 use Multicaret\Acquaintances\Traits\CanBeFavorited;
@@ -68,7 +70,7 @@ use Spatie\MediaLibrary\MediaCollections\Models\Collections\MediaCollection;
  * @property Carbon|null $created_at
  * @property Carbon|null $updated_at
  * @property string|null $deleted_at
- * @property-read \App\Models\Chain $chain
+ * @property \App\Models\Chain $chain
  * @property-read \App\Models\City|null $city
  * @property-read Collection|\App\Models\User[] $favoriters
  * @property-read int|null $favoriters_count
@@ -173,6 +175,12 @@ use Spatie\MediaLibrary\MediaCollections\Models\Collections\MediaCollection;
  * @mixin Eloquent
  * @property-read Collection|\App\Models\Taxonomy[] $groceryCategories
  * @property-read int|null $grocery_categories_count
+ * @property-read bool $is_food
+ * @property-read bool $is_grocery
+ * @property-read Collection|\App\Models\SearchTaggable[] $searchTaggable
+ * @property-read int|null $search_taggable_count
+ * @property-read Collection|\App\Models\SearchTaggable[] $searchTags
+ * @property-read int|null $search_tags_count
  */
 class Branch extends Model implements HasMedia
 {
@@ -305,6 +313,12 @@ class Branch extends Model implements HasMedia
     public function products()
     {
         return $this->hasMany(Product::class);
+    }
+
+    public function searchTags(): MorphToMany
+    {
+        return $this->morphToMany(Taxonomy::class, 'search_taggable')
+                    ->withTimestamps();
     }
 
     public static function getClosestAvailableBranch($latitude, $longitude): array
