@@ -36,13 +36,15 @@ class TranslationController extends Controller
         ];
 
         $sortBy = 3;
+        $columnsLocales = [];
         foreach (localization()->getSupportedLocales() as $key => $locale) {
             $columnsLocales[] = [
                 'sortBy' => $sortBy,
                 'data' => $key.'_value',
                 'name' => $key.'_value',
                 'title' => $locale->name(),
-                'searchable' => true
+                'searchable' => true,
+                'orderable' => false,
             ];
             $sortBy++;
         }
