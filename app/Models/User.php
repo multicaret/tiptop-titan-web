@@ -184,6 +184,10 @@ use Spatie\Permission\Traits\HasRoles;
  * @property int|null $team_id
  * @property-read \App\Models\TokanTeam|null $team
  * @method static Builder|User whereTeamId($value)
+ * @property int|null $tookan_id
+ * @property-read bool $is_food
+ * @property-read bool $is_grocery
+ * @method static Builder|User whereTookanId($value)
  */
 class User extends Authenticatable implements HasMedia, MustVerifyEmail
 {

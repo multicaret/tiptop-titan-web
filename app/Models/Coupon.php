@@ -74,6 +74,8 @@ use Illuminate\Support\Carbon;
  * @method static Builder|Coupon whereType($value)
  * @method static Builder|Coupon whereUpdatedAt($value)
  * @mixin Eloquent
+ * @property-read bool $is_food
+ * @property-read bool $is_grocery
  */
 class Coupon extends Model
 {

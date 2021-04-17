@@ -159,6 +159,8 @@ use Spatie\MediaLibrary\MediaCollections\Models\Media;
  * @mixin Eloquent
  * @property-read Collection|\App\Models\Taxonomy[] $categories
  * @property-read \App\Models\Taxonomy $category
+ * @property-read bool $is_food
+ * @property-read bool $is_grocery
  */
 class Product extends Model implements HasMedia
 {

@@ -139,6 +139,10 @@ use Illuminate\Support\Carbon;
  * @method static \Illuminate\Database\Eloquent\Builder|Order whereRestaurantShareResult($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Order whereTiptopSharePercentage($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Order whereTiptopShareResult($value)
+ * @property float $agent_grand_total
+ * @property-read bool $is_food
+ * @property-read bool $is_grocery
+ * @method static \Illuminate\Database\Eloquent\Builder|Order whereAgentGrandTotal($value)
  */
 class Order extends Model
 {

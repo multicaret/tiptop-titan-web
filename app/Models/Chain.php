@@ -110,6 +110,8 @@ use Spatie\MediaLibrary\MediaCollections\Models\Media;
  * @method static Builder|Chain whereTiptopDeliveryAppPercentage($value)
  * @property mixed|null $is_synced
  * @method static Builder|Chain whereIsSynced($value)
+ * @property-read bool $is_food
+ * @property-read bool $is_grocery
  */
 class Chain extends Model implements HasMedia
 {

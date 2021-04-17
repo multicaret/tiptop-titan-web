@@ -39,6 +39,8 @@ use Illuminate\Support\Str;
  * @mixin Eloquent
  * @property int $type 1:Market, 2: Food
  * @method static Builder|Search whereType($value)
+ * @property-read bool $is_food
+ * @property-read bool $is_grocery
  */
 class Search extends Model
 {

@@ -88,6 +88,8 @@ use Illuminate\Support\Carbon;
  * @method static Builder|Slide withTrashed()
  * @method static Builder|Slide withoutTrashed()
  * @mixin Eloquent
+ * @property-read bool $is_food
+ * @property-read bool $is_grocery
  */
 class Slide extends Model
 {
