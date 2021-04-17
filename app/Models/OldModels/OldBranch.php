@@ -124,6 +124,7 @@ use Illuminate\Database\Eloquent\Relations\BelongsToMany;
  * @mixin \Eloquent
  * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\OldModels\OldCategory[] $categories
  * @property-read int|null $categories_count
+ * @property-read \App\Models\OldModels\OldChain $oldChain
  */
 class OldBranch extends OldModel
 {

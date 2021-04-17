@@ -181,6 +181,9 @@ use Spatie\Permission\Traits\HasRoles;
  * @method static Builder|User whereWalletFreeTotal($value)
  * @method static Builder|User whereWalletReservedTotal($value)
  * @mixin Eloquent
+ * @property int|null $team_id
+ * @property-read \App\Models\TokanTeam|null $team
+ * @method static Builder|User whereTeamId($value)
  */
 class User extends Authenticatable implements HasMedia, MustVerifyEmail
 {
@@ -201,6 +204,7 @@ class User extends Authenticatable implements HasMedia, MustVerifyEmail
     public const ROLE_ADMIN = 'admin';
     public const ROLE_SUPERVISOR = 'supervisor';
     public const ROLE_AGENT = 'agent';
+    public const ROLE_EDITOR = 'editor';
     public const ROLE_CONTENT_EDITOR = 'content-editor';
     public const ROLE_MARKETER = 'marketer';
     public const ROLE_BRANCH_OWNER = 'branch-owner';
@@ -209,6 +213,7 @@ class User extends Authenticatable implements HasMedia, MustVerifyEmail
     public const ROLE_RESTAURANT_DRIVER = 'restaurant-driver';
     public const ROLE_TIPTOP_DRIVER = 'tiptop-driver';
     public const ROLE_USER = 'user';
+    public const ROLE_USER_SIDE = 'user-side';
 
     public const EMPLOYMENT_EMPLOYEE = 1;
     public const EMPLOYMENT_FREELANCER = 2;
@@ -639,6 +644,7 @@ class User extends Authenticatable implements HasMedia, MustVerifyEmail
             'restaurant_driver' => self::ROLE_RESTAURANT_DRIVER,
             'tiptop_driver' => self::ROLE_TIPTOP_DRIVER,
             'user' => self::ROLE_USER,
+            'user_side' => self::ROLE_USER_SIDE,
         ];
     }
 

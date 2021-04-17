@@ -116,6 +116,7 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
  * @property-read mixed $city_id
  * @property-read mixed $is_grocery_food
  * @property-read mixed $private_notes
+ * @property-read mixed $restaurant_share_result
  */
 class OldOrder extends OldModel
 {

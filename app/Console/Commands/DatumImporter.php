@@ -26,13 +26,12 @@ use App\Models\ProductTranslation;
 use App\Models\Taxonomy;
 use App\Models\TaxonomyTranslation;
 use App\Models\User;
-use Carbon\Carbon;
 use Illuminate\Console\Command;
-use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Collection as Collection;
 use Spatie\MediaLibrary\MediaCollections\Exceptions\FileCannotBeAdded;
 use Spatie\MediaLibrary\MediaCollections\Exceptions\FileDoesNotExist;
 use Spatie\MediaLibrary\MediaCollections\Exceptions\FileIsTooBig;
+use Spatie\Permission\Models\Role;
 use Symfony\Component\Console\Helper\ProgressBar;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
@@ -513,7 +512,15 @@ class DatumImporter extends Command
 
     private function importUsers()
     {
-        $oldUsers = OldUser::where('id', '>', 2)->withoutGlobalScopes()->get();
+        $userSideRoleName = \Str::title(str_replace('-', ' ', User::ROLE_USER_SIDE));
+        $userSideRole = Role::query()->where('name', $userSideRoleName)->first();
+        if (is_null($userSideRole)) {
+            Role::create(['name' => $userSideRoleName]);
+        }
+        $oldUsers = OldUser::query()->withoutGlobalScopes()
+                                    ->whereNotIn('status', [OldUser::STATUS_PENDING])
+                                    ->where('id', '>', 2)
+                                    ->get();
         $this->newLine();
         $this->bar = $this->output->createProgressBar($oldUsers->count());
         $this->bar->start();
@@ -527,10 +534,10 @@ class DatumImporter extends Command
                 }
                 $oldUser->email = $telNumber.'_old_user@'.parse_url(env('APP_URL'), PHP_URL_HOST);
             }
-            if (User::where([
-                    ['phone_country_code', $oldUser->tel_code_number],
-                    ['phone_number', $oldUser->tel_number]
-                ])->count() === 0) {
+            $phoneValidateCount = User::where('phone_number', $oldUser->tel_number)
+                                      ->where('phone_country_code', $oldUser->tel_code_number)
+                                      ->count();
+            if ($phoneValidateCount === 0) {
                 $this->insertUser($oldUser);
             }
             $this->bar->advance();
@@ -547,6 +554,10 @@ class DatumImporter extends Command
         $tempUser['status'] = $oldUser->status === OldUser::STATUS_ACTIVE ? User::STATUS_ACTIVE : User::STATUS_INACTIVE;
         try {
             $isInserted = User::insert($tempUser);
+            if ($isInserted) {
+                $freshUser = User::whereId($oldUser->id)->first();
+                $freshUser->assignRole($oldUser->role_name);
+            }
         } catch (\Exception $e) {
             dd($e->getMessage(), PHP_EOL, $tempUser);
         }

@@ -53,6 +53,10 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
  * @method static \Illuminate\Database\Eloquent\Builder|ProductOption whereIsBasedOnIngredients($value)
  * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\Taxonomy[] $ingredients
  * @property-read int|null $ingredients_count
+ * @property bool $is_required
+ * @property int $input_type
+ * @method static \Illuminate\Database\Eloquent\Builder|ProductOption whereInputType($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|ProductOption whereIsRequired($value)
  */
 class ProductOption extends Model
 {
