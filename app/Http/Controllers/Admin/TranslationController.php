@@ -40,8 +40,9 @@ class TranslationController extends Controller
             $columnsLocales[] = [
                 'sortBy' => $sortBy,
                 'data' => $key.'_value',
-                'name' => $locale->regional(),
+                'name' => $key.'_value',
                 'title' => $locale->name(),
+                'searchable' => true
             ];
             $sortBy++;
         }
