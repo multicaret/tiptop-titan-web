@@ -62,6 +62,7 @@ class SyncChains extends Command
                                             ->whereNull('branch_id')->get();
                     try {
                         $this->cloneChainProducts($chainProducts, $chainBranchId);
+                        $this->updateChainSyncStatus($chainId);
                     } catch (\Exception $e) {
                         $this->error($e->getMessage());
                     }
@@ -81,6 +82,15 @@ class SyncChains extends Command
             $newProduct->push();
             // Todo: check barcode relation.
             $newProduct->categories()->sync($originalProduct->categories->pluck('id'));
+        }
+    }
+
+    private function updateChainSyncStatus($chainId)
+    {
+        $chain = Chain::query()->whereId($chainId)->first();
+        if ( ! $chain->is_synced) {
+            $chain->is_synced = 1;
+            $chain->save();
         }
     }
 }
