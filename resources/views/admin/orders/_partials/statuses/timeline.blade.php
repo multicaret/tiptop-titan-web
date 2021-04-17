@@ -1,4 +1,3 @@
-<div>Current Status: {{$order->status}}</div>
 <ul class="order-timeline">
     @foreach(\App\Models\Order::getAllStatuses($order->status) as $status)
         <li class="{{$status['isSelected']? 'text-primary':''}}">

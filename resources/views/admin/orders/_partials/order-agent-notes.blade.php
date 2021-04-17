@@ -48,8 +48,7 @@
                                 <button type="submit" class="btn btn-primary">Send</button>
                             </div>
                         </div>
-                        @error('note') <span class="error">{{$message}}</span> @enderror
-
+                        @error('note') <span class="text-danger">{{$message}}</span> @enderror
                     </form>
                 </div>
                 <hr class="border-light m-0">
@@ -58,7 +57,7 @@
                 <div class="flex-grow-1 position-relative">
                     <!-- Remove `.chat-scroll` and add `.flex-grow-1` if you don't need scroll -->
                     <div class="chat-messages chat-scroll p-4 ps">
-                        @forelse($selectedOrder->agentNotes()->get() as $note)
+                        @forelse($order->agentNotes()->get() as $note)
                             <div
                                 class="{{$note->agent->id == $auth->id?'chat-message-right':'chat-message-left'}} mb-4">
                                 <div>

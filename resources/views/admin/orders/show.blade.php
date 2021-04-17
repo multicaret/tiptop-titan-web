@@ -1,7 +1,13 @@
 @extends('layouts.admin')
+
 @section('title', 'Orders')
+
+@push('styles')
+    <link rel="stylesheet" href="/admin-assets/css/pages/chat.css">
+@endpush
+
 @section('content')
-    <livewire:orders-index/>
+    <livewire:orders.order-show :order="$order"/>
 @endsection
 
 @push('scripts')

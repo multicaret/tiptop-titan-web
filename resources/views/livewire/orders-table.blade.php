@@ -98,9 +98,7 @@
                 <tbody wire:poll.1s>
                 @if($orders)
                     @forelse($orders as $order)
-                        <tr class="cursor-pointer {{ $order->getLateCssBgClass()}}"
-                            data-toggle="modal" data-target="#orderShowModal"
-                            wire:click="show({{ $order->id }})">
+                        <tr class="cursor-pointer {{ $order->getLateCssBgClass()}}" onclick="openOrder({{$order->id}})">
                             <td style="width:10px">
                                 {{$order->reference_code}}
                             </td>
@@ -135,10 +133,12 @@
                             </td>
                             <td>
                                 @if($order->is_delivery_by_tiptop)
-                                    <i class="fas fa-motorcycle text-primary" data-toggle="tooltip" data-placement="top"
+                                    <i class="fas fa-motorcycle text-primary" data-toggle="tooltip"
+                                       data-placement="top"
                                        title="TipTop"></i>
                                 @else
-                                    <i class="fas fa-utensils text-success" data-toggle="tooltip" data-placement="top"
+                                    <i class="fas fa-utensils text-success" data-toggle="tooltip"
+                                       data-placement="top"
                                        title="Restaurant"></i>
                                 @endif
                                 {{--<lottie-player
@@ -197,17 +197,20 @@
         </div>
     </div>
 
-    @if($showModal)
-        @include('livewire.order-show')
-    @endif
-
     @push('scripts')
         <script>
             document.addEventListener('DOMContentLoaded', function () {
                 $('[data-toggle="tooltip"]').tooltip();
             });
-           /* document.addEventListener('livewire:load', function () {
-            });*/
+
+            /* document.addEventListener('livewire:load', function () {
+             });*/
+            function openOrder(id) {
+                window.open(
+                    "{{route('admin.orders.show','xxxx')}}".replace("xxxx", id),
+                    "_blank"
+                );
+            }
         </script>
     @endpush
 </div>

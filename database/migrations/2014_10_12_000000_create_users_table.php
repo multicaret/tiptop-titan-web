@@ -36,7 +36,7 @@ class CreateUsersTable extends Migration
             $table->unsignedBigInteger('city_id')->nullable()->default(config('defaults.city.id'));
             $table->unsignedBigInteger('branch_id')->nullable(); //Restaurant Drivers Only
             $table->unsignedBigInteger('team_id')->nullable(); //TipTop Drivers Only
-            $table->unsignedBigInteger('tokan_id')->nullable(); //TipTop Drivers Only (not foreign key)
+            $table->unsignedBigInteger('tookan_id')->nullable(); //TipTop Drivers Only (not foreign key)
             $table->unsignedBigInteger('selected_address_id')->nullable();
             $table->decimal('latitude', 11, 8)->nullable();
             $table->decimal('longitude', 11, 8)->nullable();
