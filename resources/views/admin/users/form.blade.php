@@ -131,6 +131,9 @@
                         </div>
                     @endif
                     <div class="col-md-2">
+                        @component('admin.components.form-group', ['name' => 'tokan_id', 'type' => 'number'])
+                            @slot('label', 'Captain ID')
+                            @slot('value', $user->tokan_id)
                         @component('admin.components.form-group', ['name' => 'tookan_id', 'type' => 'number'])
                             @slot('label', 'Captain ID')
                             @slot('value', $user->tookan_id)
