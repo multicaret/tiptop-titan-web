@@ -331,7 +331,7 @@ class UserController extends Controller
             ],
             'countries' => Country::all(),
             'regions' => Region::where('country_id', config('defaults.country.id'))->get(),
-            'teams' => TokanTeam::all()
+            'teams' => TokanTeam::active()->get()
                                 ->mapWithKeys(function ($item) {
                                     return [$item['id'] => $item['name']];
                                 }),
