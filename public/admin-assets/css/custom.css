@@ -43,7 +43,11 @@
     padding-left: 0 !important;
     position: relative;
     display: flex;
-    justify-content: space-around;
+    justify-content: space-between;
+    flex-direction: row;
+    flex-wrap: nowrap;
+    align-content: center;
+    align-items: center;
 }
 
 .order-timeline:before {
@@ -52,19 +56,20 @@
     border: 1px solid #FEC63D;
     width: 100%;
     bottom: auto;
-    top: 14px;
+    top: 7px;
 }
 
 .order-timeline li {
     justify-content: center;
     display: flex !important;
     flex-direction: column;
+    align-items: center;
 }
 
 
 .timeline-circle {
-    width: 30px;
-    height: 30px;
+    width: 15px;
+    height: 15px;
     border: solid 1px #FEC63D;
     background-color: #ffffff;
     border-radius: 100%;
@@ -72,6 +77,6 @@
     z-index: 9999;
 }
 
-.timeline-circle {
+.timeline-circle.active {
     background-color: #FEC63D;
 }
