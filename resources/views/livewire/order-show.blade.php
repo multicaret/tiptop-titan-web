@@ -76,7 +76,7 @@
                                                         <div class="col-12 py-3 border-bottom">
                                                             <b>Address:</b>
                                                             <a target="_blank" class="text-primary"
-                                                               href="https://maps.google.com/?ll={{$selectedOrder->address->latitude}},{{$selectedOrder->address->longitude}}">
+                                                               href="https://maps.google.com/?ll={{optional($selectedOrder->address)->latitude}},{{optional($selectedOrder->address)->longitude}}">
                                                                 {{optional($selectedOrder->address)->address1}}
                                                             </a>
                                                         </div>
@@ -132,25 +132,35 @@
                                                 <th>Total Price</th>
                                             </tr>
                                             </thead>
-                                            <tbody>
-                                            @foreach($selectedOrder->cart->cartProducts as $orderProduct)
+                                            @if($selectedOrder->cart)
+                                                <tbody>
+                                                @foreach($selectedOrder->cart->cartProducts as $orderProduct)
+                                                    <tr>
+                                                        <td>
+                                                            <img src="{{$orderProduct->product_object['cover']}}"
+                                                                 alt="Product cover" width="50">
+                                                        </td>
+                                                        <td>{{$orderProduct->product_object['title']}}</td>
+                                                        <td>{{$orderProduct->product_object['price']}}</td>
+                                                        <td>{{$orderProduct->quantity}}</td>
+                                                        <td>{{($orderProduct->product_object['price'] * $orderProduct->quantity)}}</td>
+                                                    </tr>
+                                                @endforeach
+                                                </tbody>
+                                            @else
+                                                <tbody>
                                                 <tr>
-                                                    <td>
-                                                        <img src="{{$orderProduct->product_object['cover']}}"
-                                                             alt="Product cover" width="50">
+                                                    <td colspan="5">
+                                                        <b>This is an old order without a cart</b>
                                                     </td>
-                                                    <td>{{$orderProduct->product_object['title']}}</td>
-                                                    <td>{{$orderProduct->product_object['price']}}</td>
-                                                    <td>{{$orderProduct->quantity}}</td>
-                                                    <td>{{($orderProduct->product_object['price'] * $orderProduct->quantity)}}</td>
                                                 </tr>
-                                            @endforeach
-                                            </tbody>
+                                                </tbody>
+                                            @endif
                                         </table>
                                     </div>
 
                                     <div class="row mt-3">
-                                        <div class="col-md-12">
+                                        <div class="col-md-3">
                                             <div class="card">
                                                 <div class="card-header font-weight-bold">Prices</div>
                                                 <div class="card-body">
@@ -186,7 +196,7 @@
                                             </div>
                                         </div>
 
-                                        <div class="col-md-12 mt-1">
+                                        <div class="col-md-9 mt-1">
                                             <div class="card">
                                                 <div class="card-header font-weight-bold">Timeline</div>
                                                 <div class="card-body">
