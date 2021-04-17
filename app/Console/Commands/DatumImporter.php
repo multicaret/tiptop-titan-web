@@ -143,7 +143,7 @@ class DatumImporter extends Command
                           ->orderBy('created_at')
                           ->take(5)
                           ->pluck('id')->all();
-        if (! is_null($chainsIds)) {
+        if ( ! is_null($chainsIds)) {
             $this->call('datum:sync-chains', ['--id' => $chainsIds]);
         }
     }
@@ -525,9 +525,9 @@ class DatumImporter extends Command
             Role::create(['name' => $userSideRoleName]);
         }
         $oldUsers = OldUser::query()->withoutGlobalScopes()
-                                    ->whereNotIn('status', [OldUser::STATUS_PENDING])
-                                    ->where('id', '>', 2)
-                                    ->get();
+                           ->whereNotIn('status', [OldUser::STATUS_PENDING])
+                           ->where('id', '>', 2)
+                           ->get();
         $this->newLine();
         $this->bar = $this->output->createProgressBar($oldUsers->count());
         $this->bar->start();
@@ -541,10 +541,14 @@ class DatumImporter extends Command
                 }
                 $oldUser->email = $telNumber.'_old_user@'.parse_url(env('APP_URL'), PHP_URL_HOST);
             }
-            $phoneValidateCount = User::where('phone_number', $oldUser->tel_number)
-                                      ->where('phone_country_code', $oldUser->tel_code_number)
-                                      ->count();
-            if ($phoneValidateCount === 0) {
+            $canAddThisUser = true;
+//            if ( ! is_null($oldUser->tel_number) || ! is_null($oldUser->tel_code_number)) {
+//                $phoneValidateCount = User::where('phone_number', $oldUser->tel_number)
+//                                          ->where('phone_country_code', $oldUser->tel_code_number)
+//                                          ->count();
+//                $canAddThisUser = $phoneValidateCount === 0;
+//            }
+            if ($canAddThisUser) {
                 $this->insertUser($oldUser);
             }
             $this->bar->advance();
@@ -566,7 +570,7 @@ class DatumImporter extends Command
                 $freshUser->assignRole($oldUser->role_name);
             }
         } catch (\Exception $e) {
-            dd($e->getMessage(), PHP_EOL, $tempUser);
+            info($e->getMessage().'___id:' . $tempUser['id'].PHP_EOL);
         }
 
     }
