@@ -43,13 +43,13 @@ class ChainController extends Controller
             [
                 'data' => 'title',
                 'name' => 'translations.title',
-                'title' => trans('strings.title'),
+                'title' => trans('strings.chain'),
                 'width' => '40',
             ],
             [
                 'data' => 'region',
                 'name' => 'region',
-                'title' => 'Region',
+                'title' => trans('strings.city'),
                 'searchable' => false,
                 'bSortable' => false,
                 'width' => '10',
@@ -57,7 +57,7 @@ class ChainController extends Controller
             [
                 'data' => 'city',
                 'name' => 'city',
-                'title' => 'City',
+                'title' => trans('strings.neighborhood'),
                 'searchable' => false,
                 'bSortable' => false,
                 'width' => '10',

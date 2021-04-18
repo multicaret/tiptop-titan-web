@@ -26,7 +26,6 @@ class CreateOrdersTable extends Migration
             $table->unsignedBigInteger('coupon_id')->nullable();
             $table->unsignedBigInteger('city_id');
             $table->unsignedBigInteger('previous_order_id')->nullable();
-            $table->unsignedBigInteger('cancellation_reason_id')->nullable();
             $table->unsignedTinyInteger('type')->comment('1:Market, 2: Food');
             $table->unsignedDouble('total')->default(0);
             $table->unsignedDouble('coupon_discount_amount')->default(0);
