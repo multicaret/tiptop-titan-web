@@ -18,12 +18,12 @@ trait HasAppTypes
 
     public function getIsFoodAttribute(): bool
     {
-        return $this->type === self::getChannelsArray()[self::CHANNEL_FOOD_OBJECT];
+        return $this->type === self::CHANNEL_FOOD_OBJECT;
     }
 
     public function getIsGroceryAttribute(): bool
     {
-        return $this->type === self::getChannelsArray()[self::CHANNEL_GROCERY_OBJECT];
+        return $this->type === self::CHANNEL_GROCERY_OBJECT;
     }
 
     /**
