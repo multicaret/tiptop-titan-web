@@ -412,7 +412,7 @@ class ComposerServiceProvider extends ServiceProvider
                                 'routeName' => 'admin.taxonomies.index',
                             ],*/
                             [
-                                'title' => 'Orders cancellation reasons',
+                                'title' => 'Cancellation reasons',
                                 'icon' => 'fas fa-bell-slash',
                                 'params' => [
                                     'type' =>
