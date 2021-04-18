@@ -129,13 +129,13 @@
                                 @slot('selected', $user->team_id)
                             @endcomponent
                         </div>
+                        <div class="col-md-2">
+                            @component('admin.components.form-group', ['name' => 'tookan_id', 'type' => 'number'])
+                                @slot('label', 'Captain ID')
+                                @slot('value', $user->tookan_id)
+                            @endcomponent
+                        </div>
                     @endif
-                    <div class="col-md-2">
-                        @component('admin.components.form-group', ['name' => 'tookan_id', 'type' => 'number'])
-                            @slot('label', 'Captain ID')
-                            @slot('value', $user->tookan_id)
-                        @endcomponent
-                    </div>
                     <div class="col-md-6">
                         @component('admin.components.form-group', ['name' => 'status', 'type' => 'select'])
                             @slot('label', 'Status')
