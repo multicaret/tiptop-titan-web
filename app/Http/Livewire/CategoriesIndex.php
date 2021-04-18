@@ -12,12 +12,13 @@ class CategoriesIndex extends Component
 
     public function render()
     {
-        $this->retrieveProducts();
+        $this->retrieveCategories();
+
         return view('livewire.categories-index');
     }
 
 
-    public function retrieveProducts()
+    public function retrieveCategories()
     {
         $categories = Taxonomy::menuCategories()->whereBranchId($this->branchId);
 
