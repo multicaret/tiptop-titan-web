@@ -32,7 +32,7 @@ class CreateOrdersTable extends Migration
             $table->unsignedDouble('coupon_discount_amount')->default(0);
             $table->unsignedDouble('delivery_fee')->default(0);
             $table->unsignedDouble('grand_total')->default(0);
-            $table->unsignedDouble('agent_grand_total')->default(0);
+            $table->unsignedDouble('grand_total_before_agent_manipulation')->default(0);
             $table->unsignedDouble('private_payment_method_commission')->default(0);
             $table->unsignedDouble('private_total')->default(0);
             $table->unsignedDouble('private_delivery_fee')->default(0);
@@ -49,6 +49,8 @@ class CreateOrdersTable extends Migration
             $table->boolean('has_good_packaging_quality_rating')->nullable();
             $table->boolean('has_good_order_accuracy_rating')->nullable();
 
+            $table->unsignedBigInteger('cancellation_reason_id')->nullable();
+            $table->string('cancellation_reason_note')->nullable();
             // Rating Related - For Grocery Only
             $table->unsignedBigInteger('rating_issue_id')->nullable();
 
@@ -86,6 +88,7 @@ class CreateOrdersTable extends Migration
             $table->foreign('payment_method_id')->references('id')->on('payment_methods');
             $table->foreign('previous_order_id')->references('id')->on('orders');
             $table->foreign('rating_issue_id')->references('id')->on('taxonomies')->onDelete('set null');
+            $table->foreign('cancellation_reason_id')->references('id')->on('taxonomies')->onDelete('set null');
         });
     }
 

@@ -162,15 +162,16 @@ class Order extends Model
     public const STATUS_AT_THE_ADDRESS = 18;
     public const STATUS_DELIVERED = 20;
     public const STATUS_SCHEDULED = 25;
-    public const STATUS_DECLINED = 22; // Added for old data only not to use it
-    public const STATUS_NOT_DELIVERED = 24; // Added for old data only not to use it
+
+
+    public const OTHER_CANCELLATION_REASON_ID = 0;
 
     protected $casts = [
         'total' => 'double',
         'coupon_discount_amount' => 'double',
         'delivery_fee' => 'double',
         'grand_total' => 'double',
-        'agent_grand_total' => 'double',
+        'grand_total_before_agent_manipulation' => 'double',
         'private_payment_method_commission' => 'double',
         'private_total' => 'double',
         'private_delivery_fee' => 'double',
@@ -186,6 +187,10 @@ class Order extends Model
 
         static::creating(function ($query) {
             $query->reference_code = time();
+        });
+
+        static::updating(function ($query) {
+//             dd($query->status);
         });
     }
 
@@ -233,6 +238,12 @@ class Order extends Model
     public function ratingIssue(): BelongsTo
     {
         return $this->belongsTo(Taxonomy::class, 'rating_issue_id');
+    }
+
+
+    public function cancellationReason(): BelongsTo
+    {
+        return $this->belongsTo(Taxonomy::class, 'cancellation_reason_id');
     }
 
     public function agentNotes(): \Illuminate\Database\Eloquent\Relations\HasMany
@@ -285,11 +296,10 @@ class Order extends Model
         return trans('strings.order_status_'.$this->status);
     }
 
-    public static function getAllStatuses($status, $statusesToSelectFrom = null)
+    public function getAllStatuses($statusesToSelectFrom = null)
     {
         if (is_null($statusesToSelectFrom)) {
             $statusesToSelectFrom = [
-                self::STATUS_CANCELLED,
 //            self::STATUS_DRAFT,
                 self::STATUS_NEW,
                 self::STATUS_PREPARING,
@@ -297,8 +307,7 @@ class Order extends Model
                 self::STATUS_ON_THE_WAY,
                 self::STATUS_AT_THE_ADDRESS,
                 self::STATUS_DELIVERED,
-//                self::STATUS_DECLINED,
-//                self::STATUS_NOT_DELIVERED,
+                self::STATUS_CANCELLED,
             ];
         }
         $statuses = [];
@@ -306,7 +315,7 @@ class Order extends Model
             $statuses[] = [
                 'id' => $item,
                 'title' => trans('strings.order_status_'.$item),
-                'isSelected' => $status === $item,
+                'isSelected' => $this->status === $item,
             ];
         }
 
@@ -317,35 +326,48 @@ class Order extends Model
     {
         switch ($this->status) {
             case self::STATUS_NEW:
-                return self::getAllStatuses($this->status, [
+                return $this->getAllStatuses([
                     self::STATUS_PREPARING,
                     self::STATUS_CANCELLED,
                 ]);
             case self::STATUS_PREPARING:
-                return self::getAllStatuses($this->status, [
+                return $this->getAllStatuses([
                     self::STATUS_WAITING_COURIER,
                     self::STATUS_ON_THE_WAY,
                     self::STATUS_CANCELLED,
                 ]);
             case self::STATUS_WAITING_COURIER:
-                return self::getAllStatuses($this->status, [
+                return $this->getAllStatuses([
                     self::STATUS_ON_THE_WAY,
                     self::STATUS_DELIVERED,
                     self::STATUS_CANCELLED,
                 ]);
             case self::STATUS_ON_THE_WAY:
-                return self::getAllStatuses($this->status, [
+                return $this->getAllStatuses([
                     self::STATUS_AT_THE_ADDRESS,
                     self::STATUS_DELIVERED,
                     self::STATUS_CANCELLED,
                 ]);
             case self::STATUS_AT_THE_ADDRESS:
-                return self::getAllStatuses($this->status, [
+                return $this->getAllStatuses([
                     self::STATUS_DELIVERED,
                     self::STATUS_CANCELLED,
                 ]);
             case self::STATUS_DELIVERED:
+                return $this->getAllStatuses([
+                    self::STATUS_CANCELLED,
+                ]);
             case self::STATUS_CANCELLED:
+                /*if ($this->status != self::STATUS_CANCELLED) {
+                    return $this->getAllStatuses([
+                        $this->status,
+                        self::STATUS_CANCELLED,
+                    ]);
+                } else {*/
+                return $this->getAllStatuses([
+                    self::STATUS_CANCELLED,
+                ]);
+//                }
             default;
                 return [];
         }

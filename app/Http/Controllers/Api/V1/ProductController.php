@@ -13,7 +13,7 @@ class ProductController extends BaseApiController
 
     public function show($id)
     {
-        $product = Product::find($id);
+        $product = Product::with('options.selections','options.ingredients')->find($id);
         if ( ! is_null($product)) {
             return $this->respond(new ProductResource($product));
         }

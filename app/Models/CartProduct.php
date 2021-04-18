@@ -4,6 +4,8 @@ namespace App\Models;
 
 use Eloquent;
 use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\MorphToMany;
 use Illuminate\Database\Eloquent\Relations\Pivot;
 use Illuminate\Support\Carbon;
 
@@ -37,12 +39,12 @@ class CartProduct extends Pivot
         'product_object' => 'json',
     ];
 
-    public function product()
+    public function product(): BelongsTo
     {
         return $this->belongsTo(Product::class, 'product_id');
     }
 
-    public function cart()
+    public function cart(): BelongsTo
     {
         return $this->belongsTo(Cart::class, 'cart_id');
     }

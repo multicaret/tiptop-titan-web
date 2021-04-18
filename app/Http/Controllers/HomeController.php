@@ -3,6 +3,8 @@
 namespace App\Http\Controllers;
 
 
+use App\Http\Resources\ProductResource;
+use App\Models\Product;
 use App\Models\User;
 
 class HomeController extends Controller
@@ -37,8 +39,8 @@ class HomeController extends Controller
 
     public function foo()
     {
-        $super = User::first();
-        dd($super->name);
+        $object = Product::find(42725);
+        return new ProductResource($object);
 
     }
 }

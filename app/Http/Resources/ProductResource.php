@@ -13,7 +13,7 @@ class ProductResource extends JsonResource
      * @param  Request  $request
      * @return array
      */
-    public function toArray($request)
+    public function toArray($request): array
     {
 
         $isFavorited = auth('sanctum')->check() ? $this->isFavoritedBy(auth('sanctum')->user()) : false;
@@ -63,6 +63,7 @@ class ProductResource extends JsonResource
             'weight' => $this->weight,
             'isFavorited' => $isFavorited,
 
+            'options' => ProductOptionResource::collection($this->options),
             'unit' => new UnitResource($this->unit),
         ];
     }

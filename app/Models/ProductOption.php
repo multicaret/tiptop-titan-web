@@ -76,7 +76,7 @@ class ProductOption extends Model
     public const SELECTION_TYPE_MULTIPLE_VALUE = 2;
 
     protected $casts = [
-        'is_base_don_ingredients' => 'boolean',
+        'is_based_on_ingredients' => 'boolean',
         'is_required' => 'boolean',
     ];
 
@@ -103,6 +103,16 @@ class ProductOption extends Model
     {
         return $this->belongsToMany(Taxonomy::class, 'product_option_ingredient', 'product_option_id', 'ingredient_id')
                     ->withTimestamps();
+    }
+
+    public static function inputTypesArray(): array
+    {
+        return [
+            self::INPUT_TYPE_PILL => 'pill',
+            self::INPUT_TYPE_RADIO => 'radio',
+            self::INPUT_TYPE_CHECKBOX => 'checkbox',
+            self::INPUT_TYPE_SELECT => 'select',
+        ];
     }
 
 }

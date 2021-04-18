@@ -1,6 +1,6 @@
 @extends('layouts.admin')
 
-@section('title', 'Orders')
+@section('title', 'Order #'.$order->reference_code)
 
 @push('styles')
     <link rel="stylesheet" href="/admin-assets/css/pages/chat.css">

@@ -22,7 +22,7 @@ use Symfony\Component\HttpFoundation\Response;
 class OrderController extends BaseApiController
 {
 
-    public function index(Request $request)
+    public function indexGrocery(Request $request)
     {
         $validationRules = [
             'chain_id' => 'required',
@@ -36,8 +36,33 @@ class OrderController extends BaseApiController
         $user = auth()->user();
         $chainId = $request->input('chain_id');
 
-        $previousOrders = Order::whereUserId($user->id)
+        $previousOrders = Order::groceries()
+                               ->whereUserId($user->id)
                                ->whereChainId($chainId)
+                               ->whereNotNull('completed_at')
+                               ->latest()
+                               ->get();
+        if ( ! is_null($previousOrders)) {
+            return $this->respond(OrderResource::collection($previousOrders));
+        }
+
+        return $this->respondNotFound();
+    }
+
+
+    public function indexFood(Request $request)
+    {
+        /*$validationRules = [
+        ];
+
+        $validator = validator()->make($request->all(), $validationRules);
+        if ($validator->fails()) {
+            return $this->respondValidationFails($validator->errors());
+        }*/
+
+        $user = auth()->user();
+        $previousOrders = Order::foods()
+                               ->whereUserId($user->id)
                                ->whereNotNull('completed_at')
                                ->latest()
                                ->get();

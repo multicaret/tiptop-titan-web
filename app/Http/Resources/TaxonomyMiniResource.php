@@ -2,12 +2,12 @@
 
 namespace App\Http\Resources;
 
-use App\Models\CartProduct;
+use App\Models\Taxonomy;
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
 
-/** @mixin CartProduct */
-class CartProductResource extends JsonResource
+/** @mixin Taxonomy */
+class TaxonomyMiniResource extends JsonResource
 {
     /**
      * @param  Request  $request
@@ -16,9 +16,8 @@ class CartProductResource extends JsonResource
     public function toArray($request): array
     {
         return [
-            'productIdInCart' => $this->id,
-            'product' => new ProductResource($this->product),
-            'quantity' => $this->quantity,
+            'id' => $this->id,
+            'title' => $this->title,
         ];
     }
 }
