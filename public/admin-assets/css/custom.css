@@ -50,6 +50,10 @@
     align-items: center;
 }
 
+.order-timeline.horizontal {
+    flex-direction: column;
+}
+
 .order-timeline:before {
     content: '';
     position: absolute;
@@ -59,11 +63,24 @@
     top: 7px;
 }
 
+.order-timeline.horizontal:before {
+    width: auto !important;
+    height: 380px !important;
+    left: 10px;
+    top: 0;
+}
+
 .order-timeline li {
     justify-content: center;
     display: flex !important;
     flex-direction: column;
     align-items: center;
+}
+
+.order-timeline.horizontal li {
+    justify-content: start;
+    width: 100%;
+    align-items: start;
 }
 
 
