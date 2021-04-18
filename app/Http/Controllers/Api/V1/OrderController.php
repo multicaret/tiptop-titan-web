@@ -296,6 +296,10 @@ class OrderController extends BaseApiController
 
     public function storeRate(Order $order, Request $request): JsonResponse
     {
+        if ($order->status != Order::STATUS_DELIVERED) {
+            return $this->respondWithMessage(trans('strings.Can not rate a not delivered order'));
+        }
+
         $branchRatingValue = $request->input('branch_rating_value');
         if ($order->type === Chain::CHANNEL_GROCERY_OBJECT) {
             $order->rating_issue_id = $request->input('grocery_issue_id');
