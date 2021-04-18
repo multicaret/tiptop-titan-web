@@ -6,7 +6,7 @@ use App\Models\Product;
 use Livewire\Component;
 use Livewire\WithPagination;
 
-class ProductsIndex extends Component
+class ProductsTable extends Component
 {
     use WithPagination;
 
@@ -21,7 +21,7 @@ class ProductsIndex extends Component
     {
         $products = $this->retrieveProducts();
 
-        return view('livewire.products.products-index', compact('products'));
+        return view('livewire.products.table', compact('products'));
     }
 
 

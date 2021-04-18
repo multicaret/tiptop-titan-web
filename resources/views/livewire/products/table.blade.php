@@ -21,20 +21,20 @@
                 <thead class="thead-dark">
                 <tr>
                     <th style="width:10px">#</th>
-                    <th>Thumbnail</th>
+                    <th class="width-85">Cover</th>
                     <th>Title</th>
-                    <th>Category</th>
-                    <th>Price</th>
-                    <th>Price Discount</th>
-                    <th style="width: 85px;">Order</th>
-                    <th>Status</th>
-                    <th>Actions</th>
+                    <th class="width-85">Category</th>
+                    <th class="width-85">Price</th>
+                    <th class="width-85">Price Discount</th>
+                    <th class="width-85">Order</th>
+                    <th class="width-85">Status</th>
+                    <th class="width-85">Actions</th>
                 </tr>
                 </thead>
                 <tbody {{--wire:poll.1s--}}>
                 @if($products)
-                    @forelse($products as  $product)
-                        <livewire:product-row-edit :product="$product" :key="time().$product->id">
+                    @forelse($products as $product)
+                        <livewire:products.product-row-edit :product="$product" :key="'product-row-edit-'.$product->id">
                             @empty
                                 <tr>
                                     <td colspan="9" class="text-center">

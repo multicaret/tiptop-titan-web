@@ -83,8 +83,7 @@
                                                     <input class="form-check-input" type="radio"
                                                            id="is-not-based-on-ingredients-{{$option->id}}"
                                                            value="0"
-                                                           wire:model="option.is_based_on_ingredients"
-                                                    >
+                                                           wire:model="option.is_based_on_ingredients">
                                                     <label class="form-check-label"
                                                            for="is-not-based-on-ingredients-{{$option->id}}">
                                                         No
@@ -245,7 +244,7 @@
                             <h5>Selections</h5>
                             <div>
                                 @forelse($option->selections as $optionSelection)
-                                    <livewire:product-option-selection :selection="$optionSelection"
+                                    <livewire:products.product-option-selection :selection="$optionSelection"
                                                                        :key="'product-option-selection-'.$optionSelection->id"/>
                                 @empty
                                     Got no selections babe!

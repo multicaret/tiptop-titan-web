@@ -7,7 +7,7 @@ use App\Models\ProductOptionSelection as ProductOptionSelectionModel;
 use App\Models\Taxonomy;
 use Livewire\Component;
 
-class Option extends Component
+class ProductOption extends Component
 {
     public $option;
     public $titleEn;
@@ -188,7 +188,7 @@ class Option extends Component
 
     public function render()
     {
-        return view('livewire.products.option');
+        return view('livewire.products.single-option');
     }
 
     /*public function clone()
