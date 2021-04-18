@@ -59,6 +59,7 @@ class OrderResource extends JsonResource
                     'title' => optional($this->ratingIssue)->title,
                 ],
             ],
+            'status' => $this->status,
             'cart' => new CartResource($this->cart),
             'paymentMethod' => new PaymentMethodResource($this->paymentMethod),
         ];
