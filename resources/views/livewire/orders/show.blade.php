@@ -347,7 +347,7 @@
                     <i class="far fa-chart-bar"></i>
                     &nbsp;Activity Log
                 </h4>
-                <div class="card-body">
+                <div class="card-body pb-0">
                     @include('admin.orders._partials.order-activity-log')
                 </div>
             </div>

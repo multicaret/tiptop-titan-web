@@ -44,7 +44,18 @@ class Activity extends Model
      */
     protected $guarded = [];
 
-    protected $fillable = ['user_id', 'subject_id', 'subject_type', 'type', 'is_private'];
+    protected $fillable = [
+        'user_id',
+        'subject_id',
+        'subject_type',
+        'type',
+        'differences',
+        'is_private'
+    ];
+
+    protected $casts = [
+        'differences' => 'object'
+    ];
 
     /**
      * Fetch the associated subject for the activity.
@@ -88,5 +99,21 @@ class Activity extends Model
     public function user()
     {
         return $this->belongsTo(User::class);
+    }
+
+    public function getCssClassesBasedOnType()
+    {
+        if (str_contains($this->type, 'updated')) {
+            return 'secondary';
+        }
+        if (str_contains($this->type, 'created')) {
+            return 'success';
+        }
+        if (str_contains($this->type, 'deleting')) {
+            return 'warning';
+        }
+        if (str_contains($this->type, 'deleted')) {
+            return 'danger';
+        }
     }
 }

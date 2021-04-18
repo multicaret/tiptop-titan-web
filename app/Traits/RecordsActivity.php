@@ -57,7 +57,7 @@ trait RecordsActivity
      *
      * @throws ReflectionException
      */
-    protected function recordActivity($event)
+    public function recordActivity(string $event, $differences = null)
     {
         /*$this->activity()->where([
             'user_id' => auth()->id(),
@@ -65,7 +65,8 @@ trait RecordsActivity
         ])->delete();*/
         $this->activity()->firstOrCreate([
             'user_id' => auth()->id(),
-            'type' => $this->getActivityType($event)
+            'type' => $this->getActivityType($event),
+            'differences' => $differences ?? $this->getDirty()
         ]);
     }
 
