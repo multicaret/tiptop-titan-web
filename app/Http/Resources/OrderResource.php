@@ -24,7 +24,7 @@ class OrderResource extends JsonResource
             'id' => (int) $this->id,
             'address' => new LocationResource(Location::withTrashed()->where('id', $this->address_id)->first()),
             'completedAt' => [
-                'formatted' => $this->completed_at->format(config('defaults.date.short_format')).' '.$this->completed_at->format(config('defaults.time.normal_format')),
+                'formatted' => $this->completed_at->format(config('defaults.date.normal_format')).' '.$this->completed_at->format(config('defaults.time.normal_format')),
                 'diffForHumans' => $this->completed_at->diffForHumans(),
                 'timestamp' => $this->completed_at->timestamp,
             ],
