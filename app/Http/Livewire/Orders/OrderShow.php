@@ -4,6 +4,7 @@ namespace App\Http\Livewire\Orders;
 
 use App\Models\Order;
 use App\Models\OrderAgentNote;
+use App\Models\Taxonomy;
 use Livewire\Component;
 
 class OrderShow extends Component
@@ -17,6 +18,8 @@ class OrderShow extends Component
 
     protected $rules = [
         'order.status' => 'required|numeric',
+        'order.cancellation_reason_id' => 'nullable|numeric',
+        'order.cancellation_reason_note' => 'nullable|string',
         'note' => 'required|min:3|max:255',
         'agentNotes' => 'nullable|string',
     ];
@@ -36,6 +39,26 @@ class OrderShow extends Component
         ]);
     }
 
+    public function storeCancellationReason()
+    {
+        $this->validate([
+            'order.cancellation_reason_id' => 'nullable|numeric',
+            'order.cancellation_reason_note' => 'required_if:order.cancellation_reason_id,0|nullable|string',
+        ]);
+        if ($this->order->cancellation_reason_id != Order::OTHER_CANCELLATION_REASON_ID) {
+            $this->order->cancellation_reason_note = null;
+        } else {
+            $this->order->cancellation_reason_id = null;
+        }
+        $this->order->status = Order::STATUS_CANCELLED;
+        $this->order->save();
+
+        $this->emit('showToast', [
+            'icon' => 'success',
+            'message' => 'Cancellation reason updated successfully',
+        ]);
+    }
+
     public function updatedAgentNotes($newValue)
     {
         $this->order->user->agent_notes = $newValue;
@@ -49,7 +72,9 @@ class OrderShow extends Component
 
     public function render()
     {
-        return view('livewire.orders.show');
+        $cancellationReasons = Taxonomy::active()->ordersCancellationReasons()->get();
+
+        return view('livewire.orders.show', compact('cancellationReasons'));
     }
 
     public function addNewNote()

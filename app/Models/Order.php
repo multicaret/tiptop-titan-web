@@ -165,6 +165,9 @@ class Order extends Model
     public const STATUS_DECLINED = 22; // Added for old data only not to use it
     public const STATUS_NOT_DELIVERED = 24; // Added for old data only not to use it
 
+
+    public const OTHER_CANCELLATION_REASON_ID = 0;
+
     protected $casts = [
         'total' => 'double',
         'coupon_discount_amount' => 'double',
@@ -233,6 +236,12 @@ class Order extends Model
     public function ratingIssue(): BelongsTo
     {
         return $this->belongsTo(Taxonomy::class, 'rating_issue_id');
+    }
+
+
+    public function cancellationReason(): BelongsTo
+    {
+        return $this->belongsTo(Taxonomy::class, 'cancellation_reason_id');
     }
 
     public function agentNotes(): \Illuminate\Database\Eloquent\Relations\HasMany
@@ -319,34 +328,28 @@ class Order extends Model
             case self::STATUS_NEW:
                 return $this->getAllStatuses([
                     self::STATUS_PREPARING,
-                    self::STATUS_CANCELLED,
                 ]);
             case self::STATUS_PREPARING:
                 return $this->getAllStatuses([
                     self::STATUS_WAITING_COURIER,
                     self::STATUS_ON_THE_WAY,
-                    self::STATUS_CANCELLED,
                 ]);
             case self::STATUS_WAITING_COURIER:
                 return $this->getAllStatuses([
                     self::STATUS_ON_THE_WAY,
                     self::STATUS_DELIVERED,
-                    self::STATUS_CANCELLED,
                 ]);
             case self::STATUS_ON_THE_WAY:
                 return $this->getAllStatuses([
                     self::STATUS_AT_THE_ADDRESS,
                     self::STATUS_DELIVERED,
-                    self::STATUS_CANCELLED,
                 ]);
             case self::STATUS_AT_THE_ADDRESS:
                 return $this->getAllStatuses([
                     self::STATUS_DELIVERED,
-                    self::STATUS_CANCELLED,
                 ]);
             case self::STATUS_DELIVERED:
                 return $this->getAllStatuses([
-                    self::STATUS_CANCELLED,
                 ]);
             case self::STATUS_CANCELLED:
             default;

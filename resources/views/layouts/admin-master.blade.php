@@ -11,7 +11,7 @@
     <meta name="csrf-token" content="{{ csrf_token() }}">
     <link rel="icon" type="image/png" href="{{url('favicon.png')}}">
 
-    <title>{{__('Dashboard')}} - @yield('title', null)</title>
+    <title>@yield('title', null) | TipTop {{__('Dashboard')}}</title>
 
     <!-- Main font -->
     <link href="https://fonts.googleapis.com/css?family=Roboto:300,300i,400,400i,500,500i,700,700i,900"
