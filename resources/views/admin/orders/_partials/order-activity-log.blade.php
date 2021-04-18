@@ -1,3 +1,112 @@
+{{--<ul class="vertical-timeline" style="height:360px;overflow-y: scroll">
+    <li class="rings delete">
+        <span></span>
+        <div class="content">
+            <div class="title text-danger"><i class="fas fa-trash-alt"></i> Deleted</div>
+            <div class="info">
+                <span>Status: </span>
+                <span>Delivered</span>
+            </div>
+            <div class="info">
+                <span>Updated_at: </span>
+                <span>2021</span>
+            </div>
+            <div class="edit-by">
+                <span>By: </span>
+                <div class="person">
+                    <img src="{{$auth->avatar}}"/>
+                </div>
+            </div>
+            <div class="managers">Super Admin</div>
+        </div>
+        <div class="date-and-time">
+            <span class="time">10:00</span>
+            <div class="date-and-time">
+            <span class="time">10:00</span>
+            <span class="date">18-04-2021</span>
+        </div>
+        </div>
+    </li>
+
+    <li class="rings update">
+        <div class="content">
+            <span></span>
+            <div class="title text-warning"><i class="fas fa-pen"></i> Updated</div>
+            <div class="info">
+                <span>Status: </span>
+                <span>Delivered</span>
+            </div>
+            <div class="info">
+                <span>Updated_at: </span>
+                <span>2021</span>
+            </div>
+            <div class="edit-by">
+                <span>By: </span>
+                <div class="person">
+                    <img src="{{$auth->avatar}}"/>
+                </div>
+            </div>
+            <div class="managers">Super Admin</div>
+        </div>
+        <div class="date-and-time">
+            <span class="time">10:00</span>
+            <span class="date">18-04-2021</span>
+        </div>
+    </li>
+
+    <li class="rings create">
+        <div class="content">
+            <span></span>
+            <div class="title text-success"><i class="fas fa-check"></i> Created</div>
+            <div class="info">
+                <span>Status: </span>
+                <span>Delivered</span>
+            </div>
+            <div class="info">
+                <span>Updated_at: </span>
+                <span>2021</span>
+            </div>
+            <div class="edit-by">
+                <span>By: </span>
+                <div class="person">
+                    <img src="{{$auth->avatar}}"/>
+                </div>
+            </div>
+            <div class="managers">Super Admin</div>
+        </div>
+        <div class="date-and-time">
+            <span class="time">10:00</span>
+            <span class="date">18-04-2021</span>
+        </div>
+    </li>
+
+    <li class="rings note">
+        <div class="content">
+            <span></span>
+            <div class="title text-primary"><i class="fas fa-flag"></i> Note</div>
+            <div class="info">
+                <span>Status: </span>
+                <span>Delivered</span>
+            </div>
+            <div class="info">
+                <span>Updated_at: </span>
+                <span>2021</span>
+            </div>
+            <div class="edit-by">
+                <span>By: </span>
+                <div class="person">
+                    <img src="{{$auth->avatar}}"/>
+                </div>
+            </div>
+            <div class="managers">Super Admin</div>
+        </div>
+        <div class="date-and-time">
+            <span class="time">10:00</span>
+            <span class="date">18-04-2021</span>
+        </div>
+    </li>
+</ul>--}}
+
 <ul class="order-timeline horizontal" style="height:360px;overflow-y: scroll">
     @foreach($order->activity()->latest()->get() as $activity)
         <li class="text-{{$activity->getCssClassesBasedOnType()}} border-bottom">
