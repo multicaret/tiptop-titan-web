@@ -18,6 +18,7 @@ class CreateActivitiesTable extends Migration
             $table->unsignedBigInteger('user_id')->index();
             $table->morphs('subject');
             $table->string('type', 50);
+            $table->json('differences')->nullable();
             $table->boolean('is_private')->default(0);
             $table->timestamps();
 

@@ -44,7 +44,18 @@ class Activity extends Model
      */
     protected $guarded = [];
 
-    protected $fillable = ['user_id', 'subject_id', 'subject_type', 'type', 'is_private'];
+    protected $fillable = [
+        'user_id',
+        'subject_id',
+        'subject_type',
+        'type',
+        'differences',
+        'is_private'
+    ];
+
+    protected $casts = [
+        'differences' => 'object'
+    ];
 
     /**
      * Fetch the associated subject for the activity.

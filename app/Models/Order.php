@@ -4,6 +4,7 @@ namespace App\Models;
 
 use App\Traits\HasAppTypes;
 use App\Traits\HasTypes;
+use App\Traits\RecordsActivity;
 use Eloquent;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
@@ -149,6 +150,18 @@ class Order extends Model
     use HasAppTypes;
     use HasTypes;
     use SoftDeletes;
+    use RecordsActivity;
+
+    public static function getActivitiesToRecord()
+    {
+        return [
+            'creating',
+            'created',
+            'updated',
+            'deleting',
+            'deleted',
+        ];
+    }
 
     public const CHANNEL_GROCERY_OBJECT = 1;
     public const CHANNEL_FOOD_OBJECT = 2;
