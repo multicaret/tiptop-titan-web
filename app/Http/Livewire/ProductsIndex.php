@@ -12,33 +12,32 @@ class ProductsIndex extends Component
 
     protected $paginationTheme = 'bootstrap';
 
+    public $products;
+    public $branch;
     public $branchId;
     public $searchByCategory;
 
     public function render()
     {
-        $products = Product::whereBranchId($this->branchId)
-                           ->latest()
-                           ->paginate(10);
+        $this->retrieveProducts();
 
-        return view('livewire.products-index', ['products' => $products]);
+        return view('livewire.products-index');
     }
 
 
-    public function updatedSearchByCategory()
+    public function retrieveProducts()
     {
+        $products = Product::whereBranchId($this->branchId);
         if ( ! is_null($this->searchByCategory) && $this->searchByCategory != 'all') {
-            $products = Product::whereBranchId($this->branchId)
-                               ->where('category_id', $this->searchByCategory)
-                               ->latest()
-                               ->get();
-        } else {
-            $products = Product::whereBranchId($this->branchId)
-                               ->latest()
-                               ->get();
+            $products = $products->where('category_id', $this->searchByCategory);
         }
 
-        return view('livewire.products-index', ['products' => $products]);
+        $this->products = $products->latest()->get();
+    }
+
+    public function updatedSearchByCategory()
+    {
+        $this->retrieveProducts();
     }
 
 

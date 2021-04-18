@@ -105,17 +105,18 @@
                         @if($branch->id)
                             <div class="d-flex justify-content-end mb-3">
                                 <a class="btn btn-primary" target="_blank"
-                                   href="{{route('admin.products.create',
-                            ['type'=> request()->type ==  $currentBranchChannel?
-                             $productChannels[\App\Models\Product::CHANNEL_GROCERY_OBJECT] :
-                             $productChannels[\App\Models\Product::CHANNEL_FOOD_OBJECT],
-                            'branch_id' => $branch->id,
-                            'chain_id' => optional($branch->chain)->id])}}">
+                                   href="{{route('admin.products.create', [
+                                        'type'=> request()->type ==  $currentBranchChannel?
+                                            $productChannels[\App\Models\Product::CHANNEL_GROCERY_OBJECT] :
+                                            $productChannels[\App\Models\Product::CHANNEL_FOOD_OBJECT],
+                                        'branch_id' => $branch->id,
+                                        'chain_id' => optional($branch->chain)->id
+                                   ])}}">
                                     Add new product
                                 </a>
                             </div>
                         @endif
-                        <livewire:products-index :branch-id="$branch->id"/>
+                        <livewire:products-index :branch="$branch" :branch-id="$branch->id"/>
                     @endif
                 </div>
             </div>
