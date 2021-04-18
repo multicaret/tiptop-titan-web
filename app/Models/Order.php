@@ -162,8 +162,6 @@ class Order extends Model
     public const STATUS_AT_THE_ADDRESS = 18;
     public const STATUS_DELIVERED = 20;
     public const STATUS_SCHEDULED = 25;
-    public const STATUS_DECLINED = 22; // Added for old data only not to use it
-    public const STATUS_NOT_DELIVERED = 24; // Added for old data only not to use it
 
 
     public const OTHER_CANCELLATION_REASON_ID = 0;
@@ -306,8 +304,6 @@ class Order extends Model
                 self::STATUS_AT_THE_ADDRESS,
                 self::STATUS_DELIVERED,
                 self::STATUS_CANCELLED,
-//                self::STATUS_DECLINED,
-//                self::STATUS_NOT_DELIVERED,
             ];
         }
         $statuses = [];
@@ -328,30 +324,46 @@ class Order extends Model
             case self::STATUS_NEW:
                 return $this->getAllStatuses([
                     self::STATUS_PREPARING,
+                    self::STATUS_CANCELLED,
                 ]);
             case self::STATUS_PREPARING:
                 return $this->getAllStatuses([
                     self::STATUS_WAITING_COURIER,
                     self::STATUS_ON_THE_WAY,
+                    self::STATUS_CANCELLED,
                 ]);
             case self::STATUS_WAITING_COURIER:
                 return $this->getAllStatuses([
                     self::STATUS_ON_THE_WAY,
                     self::STATUS_DELIVERED,
+                    self::STATUS_CANCELLED,
                 ]);
             case self::STATUS_ON_THE_WAY:
                 return $this->getAllStatuses([
                     self::STATUS_AT_THE_ADDRESS,
                     self::STATUS_DELIVERED,
+                    self::STATUS_CANCELLED,
                 ]);
             case self::STATUS_AT_THE_ADDRESS:
                 return $this->getAllStatuses([
                     self::STATUS_DELIVERED,
+                    self::STATUS_CANCELLED,
                 ]);
             case self::STATUS_DELIVERED:
                 return $this->getAllStatuses([
+                    self::STATUS_CANCELLED,
                 ]);
             case self::STATUS_CANCELLED:
+                /*if ($this->status != self::STATUS_CANCELLED) {
+                    return $this->getAllStatuses([
+                        $this->status,
+                        self::STATUS_CANCELLED,
+                    ]);
+                } else {*/
+                return $this->getAllStatuses([
+                    self::STATUS_CANCELLED,
+                ]);
+//                }
             default;
                 return [];
         }
