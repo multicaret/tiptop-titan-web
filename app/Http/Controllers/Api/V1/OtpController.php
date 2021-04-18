@@ -6,14 +6,12 @@ namespace App\Http\Controllers\Api\V1;
 use App\Http\Controllers\Api\BaseApiController;
 use App\Http\Controllers\Controller;
 use App\Http\Resources\UserResource;
-use App\Mail\Welcome;
 use App\Models\Country;
 use App\Models\User;
 use Exception;
 use Illuminate\Auth\Events\Registered;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Mail;
 use Symfony\Component\HttpFoundation\Response;
 use VerifyKit\Exception\CountryCodeEmptyException;
 use VerifyKit\Exception\CurlException;
@@ -330,7 +328,7 @@ class OtpController extends BaseApiController
             $user->phone_country_code = $phoneCountryCode;
             $user->phone_number = $phoneNumber;
 //            $user->email = $phoneNumber.'@otp';
-            $user->username = $phoneNumber;
+            $user->username = $phoneNumber.'-auto';
             $user->approved_at = now();
             $user->phone_verified_at = now();
             $newUser = true;
@@ -340,6 +338,7 @@ class OtpController extends BaseApiController
 
         $accessToken = $user->createToken($deviceName, $mobileAppData)->plainTextToken;
         event(new Registered($user));
+
 //        Mail::to($user)->send(new Welcome($user));
 
         return [$user, $newUser, $accessToken];

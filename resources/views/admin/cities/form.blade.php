@@ -50,7 +50,7 @@
                     @foreach(localization()->getSupportedLocales() as $langKey => $locale)
                         <div
                             class="tab-pane {{ $langKey == localization()->getDefaultLocale() ? 'active' : '' }}"
-                            id="name_{{$langKey}}">
+                            id="title_{{$langKey}}">
                             <div class="card-body pb-0">
                                 <div class="row p-t-20">
                                     <div class="col-md-12">

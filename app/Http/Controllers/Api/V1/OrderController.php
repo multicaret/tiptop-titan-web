@@ -22,7 +22,7 @@ use Symfony\Component\HttpFoundation\Response;
 class OrderController extends BaseApiController
 {
 
-    public function index(Request $request)
+    public function indexGrocery(Request $request)
     {
         $validationRules = [
             'chain_id' => 'required',
@@ -36,8 +36,33 @@ class OrderController extends BaseApiController
         $user = auth()->user();
         $chainId = $request->input('chain_id');
 
-        $previousOrders = Order::whereUserId($user->id)
+        $previousOrders = Order::groceries()
+                               ->whereUserId($user->id)
                                ->whereChainId($chainId)
+                               ->whereNotNull('completed_at')
+                               ->latest()
+                               ->get();
+        if ( ! is_null($previousOrders)) {
+            return $this->respond(OrderResource::collection($previousOrders));
+        }
+
+        return $this->respondNotFound();
+    }
+
+
+    public function indexFood(Request $request)
+    {
+        /*$validationRules = [
+        ];
+
+        $validator = validator()->make($request->all(), $validationRules);
+        if ($validator->fails()) {
+            return $this->respondValidationFails($validator->errors());
+        }*/
+
+        $user = auth()->user();
+        $previousOrders = Order::foods()
+                               ->whereUserId($user->id)
                                ->whereNotNull('completed_at')
                                ->latest()
                                ->get();
@@ -271,6 +296,10 @@ class OrderController extends BaseApiController
 
     public function storeRate(Order $order, Request $request): JsonResponse
     {
+        if ($order->status != Order::STATUS_DELIVERED) {
+            return $this->respondWithMessage(trans('strings.Can not rate a not delivered order'));
+        }
+
         $branchRatingValue = $request->input('branch_rating_value');
         if ($order->type === Chain::CHANNEL_GROCERY_OBJECT) {
             $order->rating_issue_id = $request->input('grocery_issue_id');

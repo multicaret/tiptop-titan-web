@@ -77,7 +77,7 @@
 
                                     </div>
                                     <p class="{{$note->isMessageEmojies() ?'h2':''}}">
-                                        {{ $note->message }}
+                                        {!! $note->message !!}
                                     </p>
                                 </div>
                             </div>

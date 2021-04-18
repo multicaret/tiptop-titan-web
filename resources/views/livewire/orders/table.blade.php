@@ -1,36 +1,15 @@
 <div>
     <style>
-        .tableFixHead {
+        .table-fixed-head {
             overflow-y: auto;
             height: {{ ($orders->count() != 0? $orders->count() * 59 :100)+59 }}px;
         }
 
-        .tableFixHead thead th {
+        .table-fixed-head thead th {
             position: sticky;
             top: 0;
         }
 
-        table {
-            border-collapse: collapse;
-            width: 100%;
-        }
-
-        thead {
-            z-index: 999999;
-        }
-
-        th, td {
-            vertical-align: middle !important;
-            text-align: center !important;
-            z-index: 1 !important;
-        }
-
-        #order-show-modal {
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            column-gap: 10px;
-        }
     </style>
     <div class="card">
         <div class="card-body">
@@ -80,7 +59,7 @@
         </div>
     </div>
     <div class="card">
-        <div class="tableFixHead">
+        <div class="table-fixed-head">
             <table class="table card-table table-striped">
                 <thead class="thead-dark">
                 <tr>

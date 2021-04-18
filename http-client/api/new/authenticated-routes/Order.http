@@ -10,8 +10,8 @@ Authorization: Bearer {{token}}
     "branch_id": "1"
 }
 
-### Previous orders index
-GET {{host}}/{{locale}}/api/v1/orders
+### Grocery previous orders index
+GET {{host}}/{{locale}}/api/v1/orders/grocery
 Accept: application/json
 Content-Type: application/json
 Authorization: Bearer {{token}}
@@ -19,6 +19,13 @@ Authorization: Bearer {{token}}
 {
     "chain_id": "1"
 }
+
+### Food previous orders index
+GET {{host}}/{{locale}}/api/v1/orders/food
+Accept: application/json
+Content-Type: application/json
+Authorization: Bearer {{token}}
+
 
 ### Store checkout data.
 POST {{host}}/{{locale}}/api/v1/orders

@@ -4,6 +4,7 @@ namespace App\Models;
 
 use App\Traits\HasAppTypes;
 use App\Traits\HasTypes;
+use App\Traits\RecordsActivity;
 use Eloquent;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
@@ -149,6 +150,18 @@ class Order extends Model
     use HasAppTypes;
     use HasTypes;
     use SoftDeletes;
+    use RecordsActivity;
+
+    public static function getActivitiesToRecord()
+    {
+        return [
+            'creating',
+            'created',
+            'updated',
+            'deleting',
+            'deleted',
+        ];
+    }
 
     public const CHANNEL_GROCERY_OBJECT = 1;
     public const CHANNEL_FOOD_OBJECT = 2;
@@ -162,8 +175,9 @@ class Order extends Model
     public const STATUS_AT_THE_ADDRESS = 18;
     public const STATUS_DELIVERED = 20;
     public const STATUS_SCHEDULED = 25;
-    public const STATUS_DECLINED = 22; // Added for old data only not to use it
-    public const STATUS_NOT_DELIVERED = 24; // Added for old data only not to use it
+
+
+    public const OTHER_CANCELLATION_REASON_ID = 0;
 
     protected $casts = [
         'total' => 'double',
@@ -186,6 +200,10 @@ class Order extends Model
 
         static::creating(function ($query) {
             $query->reference_code = time();
+        });
+
+        static::updating(function ($query) {
+//             dd($query->status);
         });
     }
 
@@ -233,6 +251,12 @@ class Order extends Model
     public function ratingIssue(): BelongsTo
     {
         return $this->belongsTo(Taxonomy::class, 'rating_issue_id');
+    }
+
+
+    public function cancellationReason(): BelongsTo
+    {
+        return $this->belongsTo(Taxonomy::class, 'cancellation_reason_id');
     }
 
     public function agentNotes(): \Illuminate\Database\Eloquent\Relations\HasMany
@@ -297,8 +321,6 @@ class Order extends Model
                 self::STATUS_AT_THE_ADDRESS,
                 self::STATUS_DELIVERED,
                 self::STATUS_CANCELLED,
-//                self::STATUS_DECLINED,
-//                self::STATUS_NOT_DELIVERED,
             ];
         }
         $statuses = [];
@@ -349,6 +371,16 @@ class Order extends Model
                     self::STATUS_CANCELLED,
                 ]);
             case self::STATUS_CANCELLED:
+                /*if ($this->status != self::STATUS_CANCELLED) {
+                    return $this->getAllStatuses([
+                        $this->status,
+                        self::STATUS_CANCELLED,
+                    ]);
+                } else {*/
+                return $this->getAllStatuses([
+                    self::STATUS_CANCELLED,
+                ]);
+//                }
             default;
                 return [];
         }

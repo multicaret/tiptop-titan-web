@@ -50,6 +50,10 @@
     align-items: center;
 }
 
+.order-timeline.horizontal {
+    flex-direction: column;
+}
+
 .order-timeline:before {
     content: '';
     position: absolute;
@@ -59,11 +63,24 @@
     top: 7px;
 }
 
+.order-timeline.horizontal:before {
+    width: auto !important;
+    height: 380px !important;
+    left: 10px;
+    top: 0;
+}
+
 .order-timeline li {
     justify-content: center;
     display: flex !important;
     flex-direction: column;
     align-items: center;
+}
+
+.order-timeline.horizontal li {
+    justify-content: start;
+    width: 100%;
+    align-items: start;
 }
 
 
@@ -79,4 +96,205 @@
 
 .timeline-circle.active {
     background-color: #FEC63D;
+}
+
+
+/* Karim's work */
+.vertical-timeline {
+    list-style: none;
+    overflow-x: hidden;
+    padding-left: 80px;
+    color: #333;
+    font-size: 13px;
+}
+
+/* .vertical-timeline:before {
+  content: '';
+  width: 1px;
+  height: 95%;
+  position: absolute;
+  border-left: 2px dashed #999;
+} */
+
+.vertical-timeline li {
+    position: relative;
+    margin-left: 30px;
+    background-color: rgba(255, 255, 255, 0.2);
+    padding: 14px;
+    border-radius: 6px;
+    width: calc(100% - 50px);
+    box-shadow: 0 0 4px rgba(0, 0, 0, .12), 0 2px 2px rgba(0, 0, 0, .08)
+}
+
+.vertical-timeline li {
+    margin-bottom: 60px;
+}
+
+.vertical-timeline li > span {
+    width: 2px;
+    height: 150%;
+    background: #999;
+    left: -30px;
+    top: 0;
+    position: absolute;
+}
+
+.vertical-timeline li span:after {
+    top: 100%;
+}
+
+.vertical-timeline li > div {
+    margin-left: 10px;
+}
+
+.timeline-content .title, .container div .managers {
+    font-weight: 600;
+    font-size: 12px;
+}
+
+.timeline-content .info {
+    font-weight: 300;
+}
+
+.timeline-content > div {
+    margin-top: 5px;
+}
+
+.date-and-time {
+    height: 100%;
+}
+
+.date-and-time span.time,
+.date-and-time span.date {
+    position: absolute;
+    font-size: 12px;
+    font-weight: bold;
+}
+
+.time {
+    left: -50px;
+}
+
+.date {
+    left: -76px;
+    top: 20px;
+}
+
+/* .date-and-time span{
+  top: -5 !important;
+} */
+.rings {
+    transition: all 1s;
+}
+
+.rings:hover {
+    box-shadow: 0 1rem 3rem rgba(24, 28, 33, .18) !important;
+}
+
+.rings > span:before {
+    content: '';
+    width: 15px;
+    height: 15px;
+    border-radius: 50%;
+    position: absolute;
+    background: #fff;
+    left: -7px;
+    top: 0;
+}
+
+
+.rings.border-primary > span:before {
+    border: 2px solid #FEC63D;
+}
+
+.rings.border-secondary > span:before {
+    border: 2px solid #293452;
+}
+
+.rings.border-danger > span:before {
+    border: 2px solid #dc3545;
+}
+
+.rings.border-info > span:before {
+    border: 2px solid #007bff;
+}
+
+.rings.border-warning > span:before {
+    border: 2px solid #ff7207;
+}
+
+.rings.border-success > span:before {
+    border: 2px solid #28a745;
+}
+
+/* Texts */
+.rings .text-primary {
+    color: #FEC63D !important;
+}
+
+.rings .text-secondary {
+    color: #293452 !important;
+}
+
+.rings .text-danger {
+    color: #dc3545 !important;
+}
+
+.rings .text-info {
+    color: #007bff !important;
+}
+
+.rings .text-warning {
+    color: #ff7207 !important;
+}
+
+.rings .text-success {
+    color: #28a745 !important;
+}
+
+.edit-by {
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+
+}
+
+.person {
+    position: relative;
+    width: 20px;
+    height: 20px;
+    overflow: hidden;
+    border-radius: 50%;
+    margin: 0 !important;
+    margin-left: 10px !important;
+    margin-right: 10px !important;
+}
+
+.person img {
+    position: absolute;
+    top: 0;
+    left: 0;
+    object-fit: cover;
+    width: 100%;
+    height: 100%;
+}
+
+.width-85 {
+    width: 85px;
+}
+
+.width-100 {
+    width: 100px;
+}
+
+
+table {
+    border-collapse: collapse;
+    width: 100%;
+}
+
+th, td {
+    vertical-align: middle !important;
+    text-align: left !important;
+    z-index: 1 !important;
 }

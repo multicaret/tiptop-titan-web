@@ -24,7 +24,7 @@ class OrderResource extends JsonResource
             'id' => (int) $this->id,
             'address' => new LocationResource(Location::withTrashed()->where('id', $this->address_id)->first()),
             'completedAt' => [
-                'formatted' => $this->completed_at->format(config('defaults.date.short_format')),
+                'formatted' => $this->completed_at->format(config('defaults.date.normal_format')).' '.$this->completed_at->format(config('defaults.time.normal_format')),
                 'diffForHumans' => $this->completed_at->diffForHumans(),
                 'timestamp' => $this->completed_at->timestamp,
             ],
@@ -59,6 +59,7 @@ class OrderResource extends JsonResource
                     'title' => optional($this->ratingIssue)->title,
                 ],
             ],
+            'status' => $this->status,
             'cart' => new CartResource($this->cart),
             'paymentMethod' => new PaymentMethodResource($this->paymentMethod),
         ];

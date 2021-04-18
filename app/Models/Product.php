@@ -349,12 +349,34 @@ class Product extends Model implements HasMedia
 
     public function getCoverFullAttribute()
     {
-        return $this->getFirstMediaUrl('cover', '1K');
+        $image = config('defaults.images.product_cover');
+
+        if ( ! is_null($media = $this->getFirstMedia('gallery'))) {
+            $image = $media->getUrl('1K');
+        }
+
+        if ( ! is_null($media = $this->getFirstMedia('cover'))) {
+            //$media->responsive_images
+            $image = $media->getUrl('1K');
+        }
+
+        return url($image);
     }
 
     public function getCoverThumbnailAttribute()
     {
-        return $this->getFirstMediaUrl('cover', 'SD');
+        $image = config('defaults.images.product_cover');
+
+        if ( ! is_null($media = $this->getFirstMedia('gallery'))) {
+            $image = $media->getUrl('SD');
+        }
+
+        if ( ! is_null($media = $this->getFirstMedia('cover'))) {
+            //$media->responsive_images
+            $image = $media->getUrl('SD');
+        }
+
+        return url($image);
     }
 
     public function getGalleryAttribute()

@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Livewire;
+namespace App\Http\Livewire\Products;
 
 use App\Http\Controllers\Controller;
 use Livewire\Component;
@@ -19,7 +19,12 @@ class ProductRowEdit extends Component
         $this->titleAr = optional($this->product->translate('ar'))->title;
     }
 
-//    protected $rules = [];
+    protected $rules = [
+        'product.price' => 'required|numeric',
+        'product.order_column' => 'required|numeric',
+        'product.price_discount_amount' => 'numeric',
+        'product.price_discount_by_percentage' => 'boolean',
+    ];
 
     public function updatedTitleEn($newValue)
     {
@@ -116,7 +121,7 @@ class ProductRowEdit extends Component
 
     public function render()
     {
-        return view('livewire.product-row-edit');
+        return view('livewire.products.row-edit');
     }
 
     private function validateDiscount(): void

@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Livewire;
+namespace App\Http\Livewire\Orders;
 
 use App\Models\Order;
 use Livewire\Component;
@@ -15,6 +15,6 @@ class OrdersIndex extends Component
         $this->foodNewOrdersCount = Order::foods()->new()->count();
         $this->groceryNewOrdersCount = Order::groceries()->new()->count();
 
-        return view('livewire.orders-index');
+        return view('livewire.orders.index');
     }
 }

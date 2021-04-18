@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Livewire;
+namespace App\Http\Livewire\Orders;
 
 use App\Models\Order;
 use Livewire\Component;
@@ -41,7 +41,7 @@ class OrdersTable extends Component
     {
         $this->retrieveOrders();
 
-        return view('livewire.orders-table');
+        return view('livewire.orders.table');
     }
 
     private function retrieveOrders()
