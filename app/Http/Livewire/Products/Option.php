@@ -28,6 +28,8 @@ class Option extends Component
         'option.input_type' => 'required|numeric',
         'option.type' => 'required|numeric',
         'option.selection_type' => 'required|numeric',
+        'option.min_number_of_selection' => 'nullable|numeric',
+        'option.max_number_of_selection' => 'nullable|numeric',
     ];
 
 

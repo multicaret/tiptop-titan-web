@@ -25,7 +25,9 @@ class ProductOptionSelection extends Component
         $this->titleAr = optional($this->selection->translate('ar'))->title;
     }
 
-//    protected $rules = [];
+    protected $rules = [
+        'selection.price' => 'numeric',
+    ];
 
     public function updatedSelectionPrice($newValue)
     {

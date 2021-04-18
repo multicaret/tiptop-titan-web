@@ -152,7 +152,7 @@
                                 <div class="form-row">
                                     <div class="form-group col-md-6">
                                         <label class="form-label">Min number of selection</label>
-                                        <input class="form-control" type="number" min="0"
+                                        <input class="form-control" type="number" min="1"
                                                wire:model.lazy="option.min_number_of_selection"
                                                placeholder="Min number of selection">
                                     </div>
@@ -193,6 +193,7 @@
                                         display: block;
                                         border-bottom: 1px solid silver;
                                         padding: 5px 10px;
+                                        cursor: pointer;
                                     }
 
                                     .search-result-item:last-child {
@@ -216,12 +217,13 @@
                                 <div class="position-relative w-100">
                                     <div class="select-content">
                                         @foreach($this->option->ingredients()->orderBy('pivot_created_at')->get() as $selectedIngredient)
-                                            <span class="badge badge-pill badge-primary p-2">
+                                            <span class="badge badge-pill badge-primary p-2 px-3 text-secondary">
                                             {{$selectedIngredient->title}}
-                                                <span class="remove py-1 cursor-pointer"
-                                                      wire:click="removeIngredient({{$selectedIngredient->id}})">
+                                                &nbsp;&nbsp;
+                                            <span class="remove py-1 cursor-pointer"
+                                                  wire:click="removeIngredient({{$selectedIngredient->id}})">
                                                     <i class="fas fa-times"></i>
-                                                </span>
+                                            </span>
                                         </span>
                                         @endforeach
                                         <input type="text" wire:model.debounce.200ms="search"/>
