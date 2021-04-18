@@ -23,22 +23,21 @@ class Option extends Component
     }
 
     protected $rules = [
-        'option.is_based_on_ingredients' => 'required|numeric',
         'option.is_required' => 'required|boolean',
+        'option.is_based_on_ingredients' => 'required|numeric',
         'option.input_type' => 'required|numeric',
         'option.type' => 'required|numeric',
         'option.selection_type' => 'required|numeric',
         'option.min_number_of_selection' => 'nullable|numeric',
         'option.max_number_of_selection' => 'nullable|numeric',
-        'titleEn' => 'string',
-        'titleKu' => 'string',
-        'titleAr' => 'string',
     ];
 
 
     public function updatedOptionsBasedOnIngredients($newValue)
     {
-//        $this->validate();
+        $this->validate([
+            'option.is_based_on_ingredients' => 'required|numeric',
+        ]);
         $this->option->is_based_on_ingredients = $newValue;
         if ($this->option->is_based_on_ingredients) {
             $this->option->type = ProductOptionModel::TYPE_INCLUDING;
@@ -54,7 +53,9 @@ class Option extends Component
 
     public function updatedOptionIsRequired($newValue)
     {
-//        $this->validate();
+        $this->validate([
+            'option.is_required' => 'required|boolean',
+        ]);
         $this->option->is_required = $newValue;
         $this->option->save();
 
@@ -66,8 +67,13 @@ class Option extends Component
 
     public function updatedOptionType($newValue)
     {
-//        $this->validate();
+        $this->validate([
+            'option.type' => 'required|numeric',
+        ]);
         $this->option->type = $newValue;
+        if ($this->option->type == ProductOptionModel::TYPE_EXCLUDING) {
+            $this->option->max_number_of_selection = 0;
+        }
         $this->option->save();
 
         $this->emit('showToast', [
@@ -78,8 +84,14 @@ class Option extends Component
 
     public function updatedOptionInputType($newValue)
     {
-//        $this->validate();
+        $this->validate([
+            'option.input_type' => 'required|numeric',
+        ]);
         $this->option->type = $newValue;
+        if ($this->option->type == ProductOptionModel::SELECTION_TYPE_SINGLE_VALUE) {
+            $this->option->min_number_of_selection = 1;
+            $this->option->max_number_of_selection = 1;
+        }
         $this->option->save();
 
         $this->emit('showToast', [
@@ -90,7 +102,9 @@ class Option extends Component
 
     public function updatedOptionSelectionType($newValue)
     {
-//        $this->validate();
+        $this->validate([
+            'option.selection_type' => 'required|numeric',
+        ]);
         $this->option->selection_type = $newValue;
         $this->option->save();
 
@@ -102,7 +116,9 @@ class Option extends Component
 
     public function updatedOptionMinNumberOfSelection($newValue)
     {
-//        $this->validate();
+        $this->validate([
+            'option.min_number_of_selection' => 'nullable|numeric',
+        ]);
         $this->option->min_number_of_selection = $newValue;
         $this->option->save();
 
@@ -114,7 +130,9 @@ class Option extends Component
 
     public function updatedOptionMaxNumberOfSelection($newValue)
     {
-//        $this->validate();
+        $this->validate([
+            'option.max_number_of_selection' => 'nullable|numeric',
+        ]);
         $this->option->max_number_of_selection = $newValue;
         $this->option->save();
 
@@ -127,7 +145,9 @@ class Option extends Component
 
     public function updatedTitleEn($newValue)
     {
-//        $this->validate();
+        $this->validate([
+            'titleEn' => 'string',
+        ]);
         $this->option->translateOrNew('en')->title = $newValue;
         $this->option->save();
 
@@ -139,7 +159,9 @@ class Option extends Component
 
     public function updatedTitleAr($newValue)
     {
-//        $this->validate();
+        $this->validate([
+            'titleAr' => 'string',
+        ]);
         $this->option->translateOrNew('ar')->title = $newValue;
         $this->option->save();
 
@@ -151,7 +173,9 @@ class Option extends Component
 
     public function updatedTitleKu($newValue)
     {
-//        $this->validate();
+        $this->validate([
+            'titleKu' => 'string',
+        ]);
         $this->option->translateOrNew('ku')->title = $newValue;
         $this->option->save();
 

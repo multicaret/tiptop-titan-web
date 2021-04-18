@@ -27,14 +27,13 @@ class ProductOptionSelection extends Component
 
     protected $rules = [
         'selection.price' => 'numeric',
-        'titleEn' => 'string',
-        'titleKu' => 'string',
-        'titleAr' => 'string',
     ];
 
     public function updatedSelectionPrice($newValue)
     {
-//        $this->validate();
+        $this->validate([
+            'selection.price' => 'numeric',
+        ]);
         $newValue = Controller::convertNumbersToArabic($newValue);
         if ($newValue < 0) {
             $newValue = 0;
@@ -51,7 +50,9 @@ class ProductOptionSelection extends Component
 
     public function updatedTitleEn($newValue)
     {
-//        $this->validate();
+        $this->validate([
+            'titleEn' => 'string',
+        ]);
         $this->selection->translateOrNew('en')->title = $newValue;
         $this->selection->save();
 
@@ -63,7 +64,9 @@ class ProductOptionSelection extends Component
 
     public function updatedTitleAr($newValue)
     {
-//        $this->validate();
+        $this->validate([
+            'titleAr' => 'string',
+        ]);
         $this->selection->translateOrNew('ar')->title = $newValue;
         $this->selection->save();
 
@@ -75,7 +78,9 @@ class ProductOptionSelection extends Component
 
     public function updatedTitleKu($newValue)
     {
-//        $this->validate();
+        $this->validate([
+            'titleKu' => 'string',
+        ]);
         $this->selection->translateOrNew('ku')->title = $newValue;
         $this->selection->save();
 

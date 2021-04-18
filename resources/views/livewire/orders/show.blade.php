@@ -57,8 +57,11 @@
                         <div class="card-body">
                             <div class="row">
                                 <div class="col-12 pb-3 border-bottom">
-                                    <b>Name:</b> <a target="_blank" class="text-primary"
-                                                    href="{{route('admin.users.edit',$order->user->id)}}">{{$order->user->name}}</a>
+                                    <b>Name:</b>
+                                    <a target="_blank" class="text-primary"
+                                       href="{{route('admin.users.edit', $order->user->id)}}">
+                                        {{$order->user->name}}
+                                    </a>
                                 </div>
                                 <div class="col-12 py-3 border-bottom">
                                     <b>Email:</b>
@@ -80,6 +83,14 @@
                                 <div class="col-12 py-3 border-bottom"
                                      style="height: 110px;overflow:scroll">
                                     <b>Notes:</b> {{$order->notes}}
+                                </div>
+                                <div class="col-12 py-3 border-bottom"
+                                     style="height: 110px;overflow:scroll">
+                                    <b>Attached to Customer notes:</b>
+                                    <div class="form-group">
+                                        <textarea class="form-control"
+                                                  wire:model.lazy="agentNotes"></textarea>
+                                    </div>
                                 </div>
                             </div>
                         </div>
