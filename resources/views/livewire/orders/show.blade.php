@@ -25,29 +25,26 @@
             <div class="card">
                 <h5 class="card-header font-weight-bold">
                     <div class="row">
-                        <div class="col-6 d-flex align-items-center justify-content-start">
+                        <div class="col-12 d-flex align-items-center justify-content-start">
                             <span class="text-muted">Timeline of Order</span>
                             <span>#{{$order->reference_code}}</span>
                             &nbsp;&nbsp;&nbsp;&nbsp;
-                            Status
+                            Status&nbsp;
                             <div class="d-inline-block">
-                                @if($order->getPermittedStatus())
-                                    <select type="text" wire:model="order.status" class="form-control"
-                                            id="order-status-top">
-                                        <option selected>Please Select</option>
-                                        @foreach($order->getPermittedStatus() as $status)
-                                            <option value="{{$status['id']}}">{{$status['title']}}</option>
-                                        @endforeach
-                                    </select>
-                                @else
-                                    Cannot be changed!
-                                @endif
+                                <select type="text" wire:model="order.status" class="form-control"
+                                        id="order-status-top">
+                                    <option selected disabled>Please Select</option>
+                                    <option hidden>Please Select</option>
+                                    @foreach($order->getPermittedStatus() as $status)
+                                        <option value="{{$status['id']}}">{{$status['title']}}</option>
+                                    @endforeach
+                                </select>
                             </div>
                         </div>
-                        <div class="col-6">
-                            <form class="d-flex align-items-center justify-content-end"
-                                  wire:submit.prevent="storeCancellationReason">
-                                @if($order->status != \App\Models\Order::STATUS_CANCELLED)
+                        @if($isCancellationFormShown)
+                            <div class="col-12 mt-2">
+                                <form class="d-flex align-items-center justify-content-space"
+                                      wire:submit.prevent="storeCancellationReason">
                                     <div class="text-danger mr-2">Cancellation</div>
                                     <div class="mr-2">
                                         <select type="text" wire:model="order.cancellation_reason_id"
@@ -65,32 +62,19 @@
                                         </small>
                                         @enderror
                                     </div>
-                                    @if($order->cancellation_reason_id === (string)\App\Models\Order::OTHER_CANCELLATION_REASON_ID)
-                                        <div class="mr-2">
-                                            <input class="form-control" wire:model="order.cancellation_reason_note"
-                                                   placeholder="Cancelling note">
-                                            @error('order.cancellation_reason_note')
-                                            <small class="form-text text-danger">
-                                                {{$message}}
-                                            </small>
-                                            @enderror
-                                        </div>
-                                    @endif
+                                    <input class="form-control mr-2 w-75" wire:model="order.cancellation_reason_note"
+                                           placeholder="Cancelling note">
+                                    @error('order.cancellation_reason_note')
+                                    <small class="form-text text-danger">
+                                        {{$message}}
+                                    </small>
+                                    @enderror
                                     <button class="btn btn-outline-success btn-2sm" type="submit">
                                         <i class="fas fa-save"></i>
                                     </button>
-                                @else
-                                    @if($order->cancellation_reason_id)
-                                        {{$order->cancellationReason->title}}
-                                    @endif
-                                    @if($order->cancellation_reason_note)
-                                        <i class="ml-2 text-muted font-weight-light">
-                                            {{$order->cancellation_reason_note}}
-                                        </i>
-                                    @endif
-                                @endif
-                            </form>
-                        </div>
+                                </form>
+                            </div>
+                        @endif
                     </div>
                 </h5>
                 <div class="card-body">

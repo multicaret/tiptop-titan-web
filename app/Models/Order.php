@@ -188,6 +188,10 @@ class Order extends Model
         static::creating(function ($query) {
             $query->reference_code = time();
         });
+
+        static::updating(function ($query) {
+//             dd($query->status);
+        });
     }
 
     public function user(): BelongsTo

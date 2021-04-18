@@ -14,6 +14,7 @@ class OrderShow extends Component
     public $newGrandTotal;
     public $newGrandTotalNote;
     public $isGrantTotalFormShown = false;
+    public $isCancellationFormShown = false;
     public $agentNotes;
 
     protected $rules = [
@@ -31,27 +32,34 @@ class OrderShow extends Component
 
     public function updatedOrderStatus($newValue)
     {
-        $this->order->status = $newValue;
-        $this->order->save();
-        $this->emit('showToast', [
-            'icon' => 'success',
-            'message' => 'Status updated successfully',
-        ]);
+        if ($newValue == Order::STATUS_CANCELLED) {
+            $this->isCancellationFormShown = true;
+        } else {
+            $this->order->status = $newValue;
+            $this->order->save();
+            $this->emit('showToast', [
+                'icon' => 'success',
+                'message' => 'Status updated successfully',
+            ]);
+        }
     }
 
     public function storeCancellationReason()
     {
         $this->validate([
-            'order.cancellation_reason_id' => 'nullable|numeric',
-            'order.cancellation_reason_note' => 'required_if:order.cancellation_reason_id,0|nullable|string',
+            'order.cancellation_reason_id' => 'required|numeric',
+            'order.cancellation_reason_note' => 'required|string',
         ]);
-        if ($this->order->cancellation_reason_id != Order::OTHER_CANCELLATION_REASON_ID) {
-            $this->order->cancellation_reason_note = null;
-        } else {
-            $this->order->cancellation_reason_id = null;
-        }
         $this->order->status = Order::STATUS_CANCELLED;
         $this->order->save();
+
+        $this->isCancellationFormShown = false;
+        $this->createNote(
+            "<i>Cancelled Reason</i><br>".
+            "({$this->order->cancellationReason->title})<br>".
+            "<i>Cancelled Custom Note</i><br>".
+            "{$this->order->cancellation_reason_note}"
+        );
 
         $this->emit('showToast', [
             'icon' => 'success',
