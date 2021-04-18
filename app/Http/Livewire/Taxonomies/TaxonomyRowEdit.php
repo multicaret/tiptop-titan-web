@@ -19,7 +19,9 @@ class TaxonomyRowEdit extends Component
         $this->titleAr = optional($this->taxonomy->translate('ar'))->title;
     }
 
-//    protected $rules = [];
+    protected $rules = [
+        'taxonomy.order_column' => 'required|numeric',
+    ];
 
     public function updatedTitleEn($newValue)
     {
