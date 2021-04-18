@@ -128,11 +128,13 @@ class DatumImporter extends Command
     private function runServerCommands()
     {
         $this->queryLimit = 50000000;
+        $this->foodCategories = Taxonomy::on()->pluck('id', 'id');
         $this->modelName = self::CHOICE_FOOD_CHAINS;
         $this->handle();
         $this->foodCategories = Taxonomy::on()->pluck('id', 'id');
         $this->modelName = self::CHOICE_FOOD_PRODUCTS;
         $this->handle();
+        $this->foodCategories = collect([]);
         $this->modelName = self::CHOICE_USERS;
         $this->handle();
         $this->modelName = self::CHOICE_ADDRESSES;
