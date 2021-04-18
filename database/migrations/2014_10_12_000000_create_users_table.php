@@ -55,6 +55,7 @@ class CreateUsersTable extends Migration
             $table->timestamp('last_logged_in_at')->nullable();
             $table->timestamp('last_logged_out_at')->nullable();
             $table->unsignedTinyInteger('employment')->nullable()->default(User::EMPLOYMENT_EMPLOYEE)->comment('1:employee, 2:freelancer');
+            $table->text('agent_notes')->nullable()->comment('Added by the agent as a note for the user next order as a kind of a reminder');
             $table->string('shift')->nullable(); //Restaurant Drivers Only
             $table->rememberToken();
             $table->timestamps();

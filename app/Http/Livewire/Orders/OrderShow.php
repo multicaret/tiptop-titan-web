@@ -13,11 +13,18 @@ class OrderShow extends Component
     public $newGrandTotal;
     public $newGrandTotalNote;
     public $isGrantTotalFormShown = false;
+    public $agentNotes;
 
     protected $rules = [
         'order.status' => 'required|numeric',
         'note' => 'required|min:3|max:255',
+        'agentNotes' => 'nullable|string',
     ];
+
+    public function mount()
+    {
+        $this->agentNotes = $this->order->user->agent_notes;
+    }
 
     public function updatedOrderStatus($newValue)
     {
@@ -26,6 +33,17 @@ class OrderShow extends Component
         $this->emit('showToast', [
             'icon' => 'success',
             'message' => 'Status updated successfully',
+        ]);
+    }
+
+    public function updatedAgentNotes($newValue)
+    {
+        $this->order->user->agent_notes = $newValue;
+        $this->order->user->save();
+
+        $this->emit('showToast', [
+            'icon' => 'success',
+            'message' => 'User Attached note updated successfully',
         ]);
     }
 
