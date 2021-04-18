@@ -101,7 +101,7 @@
                                 <div class="form-group col-md-4">
                                     <label class="form-label">Input Type</label>
                                     <select class="form-control" wire:model="option.input_type">
-                                        @if($option->input_type == \App\Models\ProductOption::SELECTION_TYPE_SINGLE_VALUE)
+                                        @if($option->selection_type == \App\Models\ProductOption::SELECTION_TYPE_SINGLE_VALUE)
                                             <option value="{{\App\Models\ProductOption::INPUT_TYPE_PILL}}">
                                                 Pills
                                             </option>
@@ -109,7 +109,7 @@
                                                 Radio
                                             </option>
                                         @endif
-                                        @if($option->input_type == \App\Models\ProductOption::SELECTION_TYPE_MULTIPLE_VALUE)
+                                        @if($option->selection_type == \App\Models\ProductOption::SELECTION_TYPE_MULTIPLE_VALUE)
                                             <option value="{{\App\Models\ProductOption::INPUT_TYPE_PILL}}">
                                                 Pills
                                             </option>
@@ -148,7 +148,7 @@
                                 </div>
                             </div>
 
-                            @if($option->input_type == \App\Models\ProductOption::SELECTION_TYPE_MULTIPLE_VALUE)
+                            @if($option->selection_type == \App\Models\ProductOption::SELECTION_TYPE_MULTIPLE_VALUE)
                                 <div class="form-row">
                                     <div class="form-group col-md-6">
                                         <label class="form-label">Min number of selection</label>

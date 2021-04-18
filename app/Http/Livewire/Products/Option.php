@@ -22,7 +22,13 @@ class Option extends Component
         $this->titleAr = optional($this->option->translate('ar'))->title;
     }
 
-//    protected $rules = [];
+    protected $rules = [
+        'option.is_required' => 'required|boolean',
+        'option.is_based_on_ingredients' => 'required|numeric',
+        'option.input_type' => 'required|numeric',
+        'option.type' => 'required|numeric',
+        'option.selection_type' => 'required|numeric',
+    ];
 
 
     public function updatedOptionsBasedOnIngredients($newValue)
@@ -63,6 +69,9 @@ class Option extends Component
             'option.type' => 'required|numeric',
         ]);
         $this->option->type = $newValue;
+        if ($this->option->type == ProductOptionModel::TYPE_EXCLUDING) {
+            $this->option->max_number_of_selection = 0;
+        }
         $this->option->save();
 
         $this->emit('showToast', [
