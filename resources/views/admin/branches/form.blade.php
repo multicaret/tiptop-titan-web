@@ -125,7 +125,7 @@
                     @if(is_null($branch->id))
                         @include('admin.branches.partials._inaccessible')
                     @else
-                        <p>Tab content</p>
+                        <livewire:categories-index {{--:branch="$branch"--}} :branch-id="$branch->id"/>
                     @endif
                 </div>
             </div>
