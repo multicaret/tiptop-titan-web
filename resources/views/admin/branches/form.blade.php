@@ -116,7 +116,8 @@
                                 </a>
                             </div>
                         @endif
-                        <livewire:products-index :branch="$branch" :branch-id="$branch->id"/>
+
+                        <livewire:products.products-index :branch="$branch" :branch-id="$branch->id"/>
                     @endif
                 </div>
             </div>

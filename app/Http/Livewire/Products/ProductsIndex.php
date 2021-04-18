@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Livewire;
+namespace App\Http\Livewire\Products;
 
 use App\Models\Product;
 use Livewire\Component;
@@ -12,7 +12,6 @@ class ProductsIndex extends Component
 
     protected $paginationTheme = 'bootstrap';
 
-    public $products;
     public $branch;
     public $branchId;
     public $searchByCategoryForFood;
@@ -20,9 +19,9 @@ class ProductsIndex extends Component
 
     public function render()
     {
-        $this->retrieveProducts();
+        $products = $this->retrieveProducts();
 
-        return view('livewire.products-index');
+        return view('livewire.products.products-index', compact('products'));
     }
 
 
@@ -37,14 +36,10 @@ class ProductsIndex extends Component
                 $query->where('category_id', $searchByCategoryForGrocery);
             });
         }
+        $products = $products->latest()
+                             ->paginate(10);
 
-        $this->products = $products->latest()->get();
+        return $products;
     }
-
-    public function updatedSearchByCategory()
-    {
-        $this->retrieveProducts();
-    }
-
 
 }

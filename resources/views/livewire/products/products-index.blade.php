@@ -26,7 +26,7 @@
                     <th>Category</th>
                     <th>Price</th>
                     <th>Price Discount</th>
-                    <th>Order</th>
+                    <th style="width: 85px;">Order</th>
                     <th>Status</th>
                     <th>Actions</th>
                 </tr>
@@ -41,13 +41,13 @@
                                         <h4>
                                             No items found!
                                         </h4>
-                                        <p>
+                                        {{--<p>
                                             <button
-                                                class="btn btn-link btn-outline-primary" {{--wire:click="resetFilters"--}}>
+                                                class="btn btn-link btn-outline-primary" --}}{{--wire:click="resetFilters"--}}{{-->
                                                 Reset
                                                 filters?
                                             </button>
-                                        </p>
+                                        </p>--}}
                                     </td>
                                 </tr>
                     @endforelse
@@ -57,7 +57,7 @@
             <div class="row">
                 @if($products)
                     <div class="col-12 text-center">
-                        {{--                        {{$products->links()}}--}}
+                        {{$products->links()}}
                     </div>
                 @endif
             </div>
