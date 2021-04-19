@@ -155,7 +155,6 @@ class Order extends Model
     public static function getActivitiesToRecord()
     {
         return [
-            'creating',
             'created',
             'updated',
             'deleting',
