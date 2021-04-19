@@ -31,7 +31,7 @@ class ProductMiniResource extends JsonResource
                 'raw' => (double) $this->price,
                 'formatted' => $this->price_formatted,
             ],
-            'discountedPrice' => $this->discounted_price === 0 ? null : [
+            'discountedPrice' => $this->price_discount_amount === 0 ? null : [
                 'raw' => (double) $this->discounted_price,
                 'formatted' => $this->discounted_price_formatted,
             ],
