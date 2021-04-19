@@ -13,6 +13,10 @@ class ProductOptionSelection extends Component
     public $titleAr;
     public bool $markedAsDeleted = false;
 
+    protected $listeners = [
+        'deleteSelection',
+    ];
+
     public function render()
     {
         return view('livewire.products.option-selection');
@@ -90,9 +94,21 @@ class ProductOptionSelection extends Component
         ]);
     }
 
-    public function delete()
+    public function deleteSelection()
     {
         $this->markedAsDeleted = true;
         $this->emitUp('selectionDeleted', ['selectionId' => optional($this->selection)->id]);
+    }
+
+    public function triggerConfirmDeleting()
+    {
+        $this->confirm('Are you sure?', [
+            'toast' => false,
+            'position' => 'center',
+            'showConfirmButton' => true,
+            'cancelButtonText' => 'Nope',
+            'onConfirmed' => 'deleteSelection',
+//            'onCancelled' => 'cancelled'
+        ]);
     }
 }

@@ -191,18 +191,6 @@ class ProductOption extends Component
         return view('livewire.products.single-option');
     }
 
-    /*public function clone()
-    {
-        $this->emitUp('optionCloned', ['optionId' => optional($this->option)->id]);
-    }*/
-
-
-    public function delete()
-    {
-        $this->markedAsDeleted = true;
-        $this->emitUp('optionDeleted', ['optionId' => optional($this->option)->id]);
-    }
-
 
     public $ingredients;
 
@@ -238,6 +226,7 @@ class ProductOption extends Component
     protected $listeners = [
 //        'optionCloned' => 'cloneOption'
         'selectionDeleted' => 'reloadSelections',
+        'deleteOption',
     ];
 
 
@@ -265,4 +254,21 @@ class ProductOption extends Component
         $this->option->load('selections');
     }
 
+    public function deleteOption()
+    {
+        $this->markedAsDeleted = true;
+        $this->emitUp('optionDeleted', ['optionId' => optional($this->option)->id]);
+    }
+
+    public function triggerConfirmDeleting()
+    {
+        $this->confirm('Are you sure?', [
+            'toast' => false,
+            'position' => 'center',
+            'showConfirmButton' => true,
+            'cancelButtonText' => 'Nope',
+            'onConfirmed' => 'deleteOption',
+//            'onCancelled' => 'cancelled'
+        ]);
+    }
 }
