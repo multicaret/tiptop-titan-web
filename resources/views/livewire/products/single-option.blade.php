@@ -209,6 +209,10 @@
                                         border: 1px solid #e8e8e8;
                                         border-radius: 4px;
                                         padding: 5px 10px;
+                                        display: flex;
+                                        flex-wrap: wrap;
+                                        flex-direction: row;
+                                        justify-content: flex-start;
                                     }
 
                                     .select-content input {
@@ -218,20 +222,35 @@
                                     .select-content input:focus {
                                         outline: none;
                                     }
+
+                                    .select-content .badge {
+                                        margin-bottom: 5px;
+                                        margin-right: 5px;
+                                    }
+
+                                    .select-content .badge input.price {
+                                        width: 50px;
+                                        margin-right: 5px;
+                                        border-radius: 2px;
+                                        height: 25px;
+                                    }
                                 </style>
                                 <div class="position-relative w-100">
                                     <div class="select-content">
                                         @foreach($this->option->ingredients()->orderBy('pivot_created_at')->get() as $selectedIngredient)
-                                            <span class="badge badge-pill badge-primary p-2 px-3 text-secondary">
-                                            {{$selectedIngredient->title}}
-                                                &nbsp;&nbsp;
-                                            <span class="remove py-1 cursor-pointer"
-                                                  wire:click="removeIngredient({{$selectedIngredient->id}})">
-                                                    <i class="fas fa-times"></i>
-                                            </span>
-                                        </span>
+                                            @if($option->type == \App\Models\ProductOption::TYPE_EXCLUDING)
+                                                <livewire:ingredient-pill :ingredient="$selectedIngredient"
+                                                                          :pivot-id="$selectedIngredient->pivot->id"
+                                                                          :is-price-shown="true"
+                                                                          :key="'ingredient-pill-'.$selectedIngredient->id"/>
+                                            @else
+                                                <livewire:ingredient-pill :ingredient="$selectedIngredient"
+                                                                          :pivot-id="$selectedIngredient->pivot->id"
+                                                                          :is-price-shown="false"
+                                                                          :key="'ingredient-not-price-pill-'.$selectedIngredient->id"/>
+                                            @endif
                                         @endforeach
-                                        <input type="text" wire:model.debounce.200ms="search"/>
+                                        <input type="text" wire:model.debounce.200ms="search" class="search"/>
                                     </div>
                                     @if(!empty($search) && !empty($ingredients))
                                         <div class="ingredients-dropdown-search">
