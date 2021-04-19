@@ -1,6 +1,6 @@
 @extends('layouts.admin')
 
-@section('title', $user->id? trans('strings.edit'. ' '. trans("strings.$role")) : trans(trans('strings.add') . ' ' . trans("strings.$role")))
+@section('title', $user->id? trans('strings.editing') .' - ' . trans("strings.$role") : trans(trans('strings.add') . ' - ' . trans("strings.$role")))
 
 @section('breadcrumb')
     <li class="breadcrumb-item"><a
@@ -12,9 +12,9 @@
 @section('content')
     <div class="mb-4">
         @if(!is_null($user->id))
-            <h5>{{trans('strings.edit'. ' '. trans("strings.$role"))}}</h5>
+            <h5>{{trans('strings.editing'). ' - '. trans("strings.$role")}}</h5>
         @else
-            <h5>{{trans('strings.add') . ' ' . trans("strings.$role")}}</h5>
+            <h5>{{trans('strings.add') . ' - ' . trans("strings.$role")}}</h5>
         @endif
     </div>
     <form method="POST" enctype="multipart/form-data"
