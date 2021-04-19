@@ -1,6 +1,4 @@
 <div>
-    {{-- Be like water. --}}
-
     <div class="demo-navbar-notifications nav-item dropdown mr-lg-3">
         <a class="nav-link dropdown-toggle hide-arrow" href="#" data-toggle="dropdown" aria-expanded="false">
             <i class="ion ion-md-notifications-outline navbar-icon align-middle"></i>
@@ -9,7 +7,7 @@
         </a>
         <div class="dropdown-menu dropdown-menu-right">
             <div class="bg-primary text-center text-white font-weight-bold p-3">
-                4 New Notifications
+                {{$unreadNotificationsCount}} New Notifications
             </div>
             <div class="list-group list-group-flush">
                 @foreach($userNotifications as $notification)
@@ -53,8 +51,9 @@
                 </a>--}}
             </div>
 
-            <a href="javascript:void(0)" class="d-block text-center text-light small p-2 my-1">Show all
-                                                                                               notifications</a>
+            <a href="javascript:void(0)" class="d-block text-center text-light small p-2 my-1">
+                Show all notifications
+            </a>
         </div>
     </div>
 

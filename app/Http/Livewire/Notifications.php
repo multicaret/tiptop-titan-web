@@ -6,10 +6,14 @@ use Livewire\Component;
 
 class Notifications extends Component
 {
-    public $userNotifications;
+    public $unreadNotificationsCount;
 
     public function render()
     {
-        return view('livewire.notifications');
+        $user = auth()->user();
+        $this->unreadNotificationsCount = $user->unreadNotifications()->count();
+        $userNotifications = $user->notifications()->get();
+
+        return view('livewire.notifications', compact('userNotifications'));
     }
 }
