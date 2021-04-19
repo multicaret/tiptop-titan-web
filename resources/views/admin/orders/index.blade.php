@@ -1,7 +1,7 @@
 @extends('layouts.admin')
 @section('title', 'Orders')
 @section('content')
-    <livewire:orders-index/>
+    <livewire:orders.orders-index/>
 @endsection
 
 @push('scripts')

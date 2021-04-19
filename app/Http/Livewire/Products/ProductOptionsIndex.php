@@ -1,8 +1,7 @@
 <?php
 
-namespace App\Http\Livewire;
+namespace App\Http\Livewire\Products;
 
-use App\Http\Controllers\Controller;
 use App\Models\Product;
 use App\Models\ProductOption as ProductOptionModel;
 use Livewire\Component;
@@ -13,7 +12,7 @@ class ProductOptionsIndex extends Component
 
     public function render()
     {
-        return view('livewire.product-options-index');
+        return view('livewire.products.options-index');
     }
 
     public function addNewOption()
@@ -31,18 +30,18 @@ class ProductOptionsIndex extends Component
         'optionDeleted' => 'reloadOptions',
     ];
 
-  /*  public function cloneOption($params)
-    {
-        $oldModel = $this->product->options()->where('id', $params['optionId'])->first();
-        $newModel = new \App\Models\ProductOption();
-        $newModel->product_id = $oldModel->product_id;
-        $oldModel->save();
-        $this->product->load('options');
-        $this->emit('showToast', [
-            'icon' => 'success',
-            'message' => 'Option has been cloned successfully',
-        ]);
-    }*/
+    /*  public function cloneOption($params)
+      {
+          $oldModel = $this->product->options()->where('id', $params['optionId'])->first();
+          $newModel = new \App\Models\ProductOption();
+          $newModel->product_id = $oldModel->product_id;
+          $oldModel->save();
+          $this->product->load('options');
+          $this->emit('showToast', [
+              'icon' => 'success',
+              'message' => 'Option has been cloned successfully',
+          ]);
+      }*/
 
     public function reloadOptions($params)
     {

@@ -6,7 +6,6 @@ namespace App\Http\Controllers\Api\V1;
 use App\Http\Controllers\Api\BaseApiController;
 use App\Http\Resources\BranchResource;
 use App\Http\Resources\CityResource;
-use App\Http\Resources\FoodBranchResource;
 use App\Http\Resources\ProductResource;
 use App\Http\Resources\RegionResource;
 use App\Http\Resources\UserResource;
@@ -17,6 +16,7 @@ use App\Models\Region;
 use App\Models\User;
 use DB;
 use Illuminate\Http\Request;
+use Illuminate\Support\Str;
 
 class UserController extends BaseApiController
 {
@@ -65,7 +65,7 @@ class UserController extends BaseApiController
         [$user->first, $user->last] = User::extractFirstAndLastNames($request->full_name);
         if ($request->email) {
             $user->email = $request->email;
-            $user->username = strstr($request->email, '@', 1);
+            $user->username = strstr($request->email, '@', 1).'-'.strtolower(Str::random(4));
         }
         $user->region_id = $request->region_id;
         $user->city_id = $request->city_id;

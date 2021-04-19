@@ -3,9 +3,10 @@
 namespace App\Providers;
 
 use Barryvdh\LaravelIdeHelper\IdeHelperServiceProvider;
+use Carbon\Carbon;
+use Illuminate\Pagination\Paginator;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\ServiceProvider;
-use Illuminate\Pagination\Paginator;
 use Laravel\Sanctum\Sanctum;
 
 
@@ -29,6 +30,7 @@ class AppServiceProvider extends ServiceProvider
      */
     public function register()
     {
+        Carbon::setLocale($this->app->getLocale());
         Sanctum::ignoreMigrations();
         if ($this->app->environment() !== 'production') {
             $this->app->register(IdeHelperServiceProvider::class);

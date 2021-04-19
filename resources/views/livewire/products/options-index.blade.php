@@ -1,6 +1,6 @@
 <div>
     @foreach($product->options as $option)
-        <livewire:products.option :option="$option" :key="'product-option-'.$option->id"/>
+        <livewire:products.product-option :option="$option" :key="'product-option-'.$option->id"/>
     @endforeach
     <div class="row">
         <div class="col-12">

@@ -104,16 +104,21 @@ class Activity extends Model
     public function getCssClassesBasedOnType()
     {
         if (str_contains($this->type, 'updated')) {
-            return 'secondary';
+            return 'info';
         }
         if (str_contains($this->type, 'created')) {
             return 'success';
         }
-        if (str_contains($this->type, 'deleting')) {
-            return 'warning';
-        }
         if (str_contains($this->type, 'deleted')) {
             return 'danger';
+        }
+
+        /* Ings*/
+        if (str_contains($this->type, 'updating')) {
+            return 'warning';
+        }
+        if (str_contains($this->type, 'deleting')) {
+            return 'warning';
         }
     }
 }

@@ -3,16 +3,18 @@
         {{$product->id}}
     </td>
     <td>
-        <img src="{{$product->cover}}" width="100px" class="img-fluid-fit-cover">
+        <img src="{{$product->cover}}" width="75px" class="img-fluid-fit-cover">
     </td>
     <td>
-        @foreach(localization()->getSupportedLocales() as $key => $locale)
-            <div class="form-group">
-                <label>Title {{$locale->native()}}</label>
-                <input type="text" title="price" class="form-control" placeholder="{{$locale->native()}}"
-                       wire:model.lazy="title{{ucfirst($key)}}">
-            </div>
-        @endforeach
+        <div class="row">
+            @foreach(localization()->getSupportedLocales() as $key => $locale)
+                <div class="form-group col-4 p-0">
+                    <label>Title {{$locale->native()}}</label>
+                    <input type="text" title="price" class="form-control" placeholder="{{$locale->native()}}"
+                           wire:model.lazy="title{{ucfirst($key)}}">
+                </div>
+            @endforeach
+        </div>
     </td>
     <td>
         @if($product->type == \App\Models\Product::CHANNEL_FOOD_OBJECT)
@@ -30,22 +32,20 @@
             @enderror
         </div>
 
-        <hr>
-        <span class="text-muted">Price Before:</span><br>
-        <del>{{ $product->price_formatted }}</del>
-        <br>
-        <span class="text-muted">Price After:</span><br>
-        @if($product->discounted_price != 0)
-            <b>{{ $product->discounted_price_formatted }}</b>
-        @else
-            <b class="text-primary">FREE</b>
+        @if($product->price_discount_amount)
+            <hr>
+            <span class="text-muted">Price Before:</span><br>
+            <del>{{ $product->price_formatted }}</del>
+            <br>
+            <span class="text-muted">Price After:</span><br>
+            @if($product->discounted_price != 0)
+                <b>{{ $product->discounted_price_formatted }}</b>
+            @else
+                <b class="text-primary">FREE</b>
+            @endif
         @endif
     </td>
     <td>
-        <div class="form-group">
-            <input type="text" title="price" class="form-control" placeholder="Discount amount"
-                   wire:model.lazy="product.price_discount_amount">
-        </div>
         <div class="form-group">
             <div class="form-check">
                 <input class="form-check-input" type="radio" id="discount-fixed"
@@ -61,7 +61,7 @@
                        wire:model="product.price_discount_by_percentage"
                 >
                 <label class="form-check-label" for="discount-percentage">
-                    Percentage %
+                    %
                 </label>
             </div>
             {{--<select class="form-control" wire:model="product.price_discount_by_percentage">
@@ -73,11 +73,18 @@
                 </option>
             </select>--}}
         </div>
-        <span class="text-muted">
+        <div class="form-group">
+            <input type="text" title="price" class="form-control" placeholder="Discount amount"
+                   wire:model.lazy="product.price_discount_amount">
+        </div>
+
+        @if($product->price_discount_amount)
+            <span class="text-muted">
             Discount Amount:
         </span>
-        <br>
-        {{ $product->discount_amount_calculated_formatted }}
+            <br>
+            {{ $product->discount_amount_calculated_formatted }}
+        @endif
     </td>
     <td>
         <div class="form-group">
@@ -87,15 +94,15 @@
     </td>
     <td>{{$product->status_name}}</td>
     <td>
-        <a target="_blank" class="btn btn-outline-success btn-sm d-inline-block mb-1" href="{{route('admin.products.edit',
+        <a target="_blank" class="btn btn-outline-success btn-sm d-block mb-1" href="{{route('admin.products.edit',
                             ['type'=> request()->type,
                             'branch_id' => $product->branch_id,
                             'chain_id' => $product->chain_id,
                             $product->uuid])}}">
-            <i class="far fa-edit"></i>
+            <i class="far fa-edit"></i> Edit
         </a>
         @if($product->type == \App\Models\Product::CHANNEL_FOOD_OBJECT)
-            <a class="btn btn-outline-info btn-sm d-inline-block mb-1"
+            <a class="btn btn-outline-info btn-sm d-block mb-1"
                href="{{route('admin.products.options',$product)}}" target="_blank">
                 <i class="fas fa-cog"></i> Options
             </a>

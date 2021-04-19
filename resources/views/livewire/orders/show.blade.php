@@ -225,9 +225,9 @@
                                          alt="Product cover" width="50">
                                 </td>
                                 <td>{{$orderProduct->product_object['title']}}</td>
-                                <td>{{$orderProduct->product_object['price']}}</td>
+                                <td>{{\App\Models\Currency::formatHtml($orderProduct->product_object['price'])}}</td>
                                 <td>{{$orderProduct->quantity}}</td>
-                                <td>{{($orderProduct->product_object['price'] * $orderProduct->quantity)}}</td>
+                                <td>{{\App\Models\Currency::formatHtml($orderProduct->product_object['price'] * $orderProduct->quantity)}}</td>
                             </tr>
                         @endforeach
                         </tbody>
@@ -347,7 +347,7 @@
                     <i class="far fa-chart-bar"></i>
                     &nbsp;Activity Log
                 </h4>
-                <div class="card-body pb-0">
+                <div class="card-body p-0 pl-2">
                     @include('admin.orders._partials.order-activity-log')
                 </div>
             </div>

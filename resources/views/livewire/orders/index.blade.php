@@ -89,6 +89,6 @@
                 </div>
             </div>
         </div>
-        <livewire:orders-table/>
+        <livewire:orders.orders-table/>
     </div>
 </div>
