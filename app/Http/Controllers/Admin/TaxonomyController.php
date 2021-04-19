@@ -138,16 +138,13 @@ class TaxonomyController extends Controller
      */
     public function create(Request $request)
     {
-        [
-            $typeName, $correctType, $roots, $fontAwesomeIcons, $branches, $ingredientCategories
-        ] = $this->loadData($request);
-
+        $data = $this->essentialData($request);
         $taxonomy = new Taxonomy();
-        $taxonomy->type = $correctType;
+        $taxonomy->type = $data['correctType'];
+        $data['taxonomy'] = $taxonomy;
 
         return view('admin.taxonomies.form',
-            compact('taxonomy', 'roots', 'correctType', 'typeName', 'fontAwesomeIcons', 'branches',
-                'ingredientCategories'));
+            $data);
     }
 
     /**
@@ -237,7 +234,7 @@ class TaxonomyController extends Controller
     {
         [
             $typeName, $correctType, $roots, $fontAwesomeIcons, $branches, $ingredientCategories
-        ] = $this->loadData($request);
+        ] = $this->essentialData($request);
 
         return view('admin.taxonomies.form',
             compact('taxonomy', 'roots', 'correctType', 'typeName', 'fontAwesomeIcons', 'branches',
@@ -372,10 +369,20 @@ class TaxonomyController extends Controller
      * @param  Request  $request
      * @return array
      */
-    private function loadData(Request $request): array
+    private function essentialData(Request $request): array
     {
         $typeName = Taxonomy::getCorrectTypeName($request->type, false);
         $correctType = Taxonomy::getCorrectType($request->type);
+
+        $menuCategoryData['hasBranch'] = request()->has('branch_id');
+        $branchExists = ! is_null(\App\Models\Branch::foods()->find(request()->input('branch_id')));
+        if ($menuCategoryData['hasBranch']) {
+            if ($branchExists) {
+                $menuCategoryData['branchId'] = request()->input('branch_id');
+            } else {
+                abort(404);
+            }
+        }
 
         $roots = collect([]);
         $hasParent = in_array($correctType, Taxonomy::typesHaving('parent'));
@@ -392,13 +399,14 @@ class TaxonomyController extends Controller
 
         $fontAwesomeIcons = $this->getFontAwesomeIcons();
         $branches = Branch::whereType(Branch::CHANNEL_FOOD_OBJECT)
-                            ->active()
-                            ->get()
-                            ->mapWithKeys(function ($item) {
-                                return [$item['id'] => $item['chain']['title'].' - '.$item['title'].' ('.$item['region']['english_name'].', '.$item['city']['english_name'].')'];
-                            });
+                          ->active()
+                          ->get()
+                          ->mapWithKeys(function ($item) {
+                              return [$item['id'] => $item['chain']['title'].' - '.$item['title'].' ('.$item['region']['english_name'].', '.$item['city']['english_name'].')'];
+                          });
         $ingredientCategories = Taxonomy::ingredientCategories()->active()->get();
 
-        return [$typeName, $correctType, $roots, $fontAwesomeIcons, $branches, $ingredientCategories];
+        return compact('typeName', 'correctType', 'roots', 'fontAwesomeIcons', 'branches', 'ingredientCategories',
+            'menuCategoryData');
     }
 }
