@@ -109,11 +109,11 @@
                                             </option>
                                         @endif
                                         @if($option->selection_type == \App\Models\ProductOption::SELECTION_TYPE_MULTIPLE_VALUE)
-                                            <option value="{{\App\Models\ProductOption::INPUT_TYPE_PILL}}">
-                                                Pills
+                                            <option value="{{\App\Models\ProductOption::INPUT_TYPE_CHECKBOX}}">
+                                                Checkbox
                                             </option>
-                                            <option value="{{\App\Models\ProductOption::INPUT_TYPE_RADIO}}">
-                                                Radio
+                                            <option value="{{\App\Models\ProductOption::INPUT_TYPE_SELECT}}">
+                                                Select
                                             </option>
                                         @endif
                                     </select>
@@ -245,7 +245,7 @@
                             <div>
                                 @forelse($option->selections as $optionSelection)
                                     <livewire:products.product-option-selection :selection="$optionSelection"
-                                                                       :key="'product-option-selection-'.$optionSelection->id"/>
+                                                                                :key="'product-option-selection-'.$optionSelection->id"/>
                                 @empty
                                     Got no selections babe!
                                 @endforelse
