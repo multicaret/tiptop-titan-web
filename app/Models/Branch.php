@@ -287,7 +287,6 @@ class Branch extends Model implements HasMedia
     public function drivers(): BelongsToMany
     {
         return $this->belongsToMany(User::class, 'branch_driver', 'driver_id', 'branch_id')
-                    ->withPivot('is_primary')
                     ->withTimestamps();
     }
 

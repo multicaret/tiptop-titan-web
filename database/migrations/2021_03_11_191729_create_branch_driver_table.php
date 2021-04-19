@@ -17,7 +17,6 @@ class CreateBranchDriverTable extends Migration
             $table->id();
             $table->unsignedBigInteger('branch_id')->index();
             $table->unsignedBigInteger('driver_id')->index();
-            $table->boolean('is_primary')->default(false);
             $table->timestamps();
 
             $table->foreign('branch_id')->references('id')->on('branches')->onDelete('cascade');
