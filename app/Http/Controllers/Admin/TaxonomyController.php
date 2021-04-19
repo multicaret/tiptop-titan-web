@@ -89,7 +89,7 @@ class TaxonomyController extends Controller
                 ]
             ]);
         }
-        if ($correctType === Taxonomy::TYPE_GROCERY_CATEGORY) {
+        /*if ($correctType === Taxonomy::TYPE_GROCERY_CATEGORY) {
             $columns = array_merge($columns, [
                 [
                     'data' => 'branches',
@@ -99,7 +99,7 @@ class TaxonomyController extends Controller
                     'searchable' => false
                 ]
             ]);
-        }
+        }*/
 
         if (in_array($correctType,
             [Taxonomy::TYPE_GROCERY_CATEGORY])) {

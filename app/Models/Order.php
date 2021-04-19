@@ -152,17 +152,6 @@ class Order extends Model
     use SoftDeletes;
     use RecordsActivity;
 
-    public static function getActivitiesToRecord()
-    {
-        return [
-            'creating',
-            'created',
-            'updated',
-            'deleting',
-            'deleted',
-        ];
-    }
-
     public const CHANNEL_GROCERY_OBJECT = 1;
     public const CHANNEL_FOOD_OBJECT = 2;
 
@@ -193,19 +182,6 @@ class Order extends Model
         'completed_at' => 'datetime',
         'rated_at' => 'datetime',
     ];
-
-    protected static function boot()
-    {
-        parent::boot();
-
-        static::creating(function ($query) {
-            $query->reference_code = time();
-        });
-
-        static::updating(function ($query) {
-//             dd($query->status);
-        });
-    }
 
     public function user(): BelongsTo
     {
@@ -403,5 +379,15 @@ class Order extends Model
         }
 
         return null;
+    }
+
+    public static function getActivitiesToRecord()
+    {
+        return [
+            'created',
+            'updated',
+            'deleting',
+            'deleted',
+        ];
     }
 }

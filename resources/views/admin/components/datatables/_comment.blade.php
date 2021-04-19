@@ -34,7 +34,7 @@
                             </span>
                             <span class="font-weight-bold mb-2 float-right" title="{{$order->rated_at}}">
                                 Date:
-                                {{$order->rated_at->format(config('defaults.date.normal_format'))}}
+                                {{optional($order->rated_at)->format(config('defaults.date.normal_format'))}}
                             </span>
                         </div>
 
