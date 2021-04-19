@@ -82,12 +82,11 @@ class DatabaseSeeder extends Seeder
         $this->preferences($appHost);
         $this->posts($super);
         $this->slides($super);
-        $this->taxonomies($super);
+//        $this->taxonomies($super);
         $this->chains($super);
 //        $this->branches($super);
 //        $this->products($super);
         $this->paymentMethods($super);
-        $this->ingredientsCategories($super);
 
         /*
             Todo: This line needs root user privileges,
@@ -731,9 +730,9 @@ class DatabaseSeeder extends Seeder
     private function chains($super)
     {
         $this->createChain($super, 'TipTop Market', Chain::CHANNEL_GROCERY_OBJECT);
-        $this->createChain($super, 'Taco Bell');
-        $this->createChain($super, 'Subway');
-        $this->createChain($super, 'StarBucks');
+//        $this->createChain($super, 'Taco Bell');
+//        $this->createChain($super, 'Subway');
+//        $this->createChain($super, 'StarBucks');
     }
 
     private function branches($super)
@@ -2105,58 +2104,6 @@ class DatabaseSeeder extends Seeder
         }
 
         return $categories;
-    }
-
-    // Don't ask just do.
-    private function removeBOM($data)
-    {
-        if (0 === strpos(bin2hex($data), 'efbbbf')) {
-            return substr($data, 3);
-        }
-
-        return $data;
-    }
-
-    private function generateIngredientsRawData(Collection $collection, int $type): array
-    {
-        $localesKeys = localization()->getSupportedLocalesKeys();
-        $generateCollection = function ($item) use ($type, $localesKeys) {
-            $generateSingleItem = fn($key) => [
-                'locale' => $key,
-                'title' => $item[$key],
-                'category' => $item['category'] ?? null,
-            ];
-            $translations = collect($localesKeys)->map($generateSingleItem)->all();
-
-            return [
-                'type' => $type,
-                'translations' => $translations
-            ];
-        };
-
-        return $collection->map($generateCollection)->all();
-    }
-
-
-    private function ingredientsCategories($super)
-    {
-        $ingredientsRawData = file_get_contents(storage_path('seeders/extras/ingredients.json'));
-        $checkJsonFile = $this->removeBOM($ingredientsRawData);
-        $checkJsonFile = json_decode($checkJsonFile, true);
-
-        if ( ! is_null($checkJsonFile)) {
-            $ingredientsCategoriesCollection = collect($checkJsonFile['categories']);
-            $ingredientsCategories = $this->generateIngredientsRawData($ingredientsCategoriesCollection,
-                Taxonomy::TYPE_INGREDIENT_CATEGORY);
-            foreach ($ingredientsCategories as $ingredientsCategory) {
-                $this->createTaxonomy($ingredientsCategory, $super);
-            }
-            $ingredientsCollection = collect($checkJsonFile['ingredients']);
-            $ingredients = $this->generateIngredientsRawData($ingredientsCollection, Taxonomy::TYPE_INGREDIENT);
-            foreach ($ingredients as $ingredient) {
-                $this->createTaxonomy($ingredient, $super, $ingredient['translations'][0]['category']);
-            }
-        }
     }
 
 }
