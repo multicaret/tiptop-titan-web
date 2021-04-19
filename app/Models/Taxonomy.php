@@ -174,7 +174,7 @@ class Taxonomy extends Node implements HasMedia, ShouldHaveTypes, TranslatableCo
     public const TYPE_UNIT = 15;
     public const TYPE_ORDERS_CANCELLATION_REASONS = 16;
 
-    protected $fillable = ['creator_id', 'editor_id','title', 'description', 'parent_id', 'type', 'order_column'];
+    protected $fillable = ['creator_id', 'editor_id', 'title', 'description', 'parent_id', 'type', 'order_column'];
     protected $translatedAttributes = ['title', 'description'];
     protected $with = ['translations', 'chain', 'branches'];
 
@@ -362,6 +362,16 @@ class Taxonomy extends Node implements HasMedia, ShouldHaveTypes, TranslatableCo
     public function crossSellsProducts(): BelongsToMany
     {
         return $this->belongsToMany(Product::class, 'category_product_cross_sell', 'category_id', 'product_id')
+                    ->withTimestamps();
+    }
+
+    /**
+     * @return BelongsToMany
+     */
+    public function ingredientsInProductOptions(): BelongsToMany
+    {
+        return $this->belongsToMany(Taxonomy::class, 'product_option_ingredient', 'ingredient_id', 'product_option_id')
+                    ->withPivot('price')
                     ->withTimestamps();
     }
 
