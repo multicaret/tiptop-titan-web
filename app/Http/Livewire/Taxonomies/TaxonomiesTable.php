@@ -11,7 +11,7 @@ class TaxonomiesTable extends Component
 
     public function render()
     {
-        $categories = Taxonomy::menuCategories()->whereBranchId($this->branchId)->get();
+        $categories = Taxonomy::menuCategories()->whereBranchId($this->branchId)->orderBy('order_column')->get();
 
         return view('livewire.taxonomies.table', compact('categories'));
     }
