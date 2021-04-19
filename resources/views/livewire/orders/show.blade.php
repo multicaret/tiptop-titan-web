@@ -225,9 +225,9 @@
                                          alt="Product cover" width="50">
                                 </td>
                                 <td>{{$orderProduct->product_object['title']}}</td>
-                                <td>{{$orderProduct->product_object['price']}}</td>
+                                <td>{{\App\Models\Currency::formatHtml($orderProduct->product_object['price'])}}</td>
                                 <td>{{$orderProduct->quantity}}</td>
-                                <td>{{($orderProduct->product_object['price'] * $orderProduct->quantity)}}</td>
+                                <td>{{\App\Models\Currency::formatHtml($orderProduct->product_object['price'] * $orderProduct->quantity)}}</td>
                             </tr>
                         @endforeach
                         </tbody>
