@@ -164,8 +164,10 @@
                                                 deselect-label=""
                                                 :clear-on-select="false"
                                                 :preselect-first="true"
-                                                @input="getCategories"
-                                                @select="selectBranch"
+                                                @if(!$isGrocery)
+                                                    @input="getCategories"
+                                                    @select="selectBranch"
+                                                @endif
                                                 placeholder=""
                                                 autocomplete="false"
                                                 required
@@ -199,6 +201,7 @@
                                             ></multiselect>
                                         </div>
                                     @else
+{{--                                        @{{product}}--}}
                                         <div class="form-group">
                                             <label class="control-label">
                                                 {{ trans('strings.menu-category') }}
@@ -206,10 +209,10 @@
                                             </label>
                                             <multiselect
                                                 :options="categories"
-                                                v-model="product.category"
+                                                v-model="product.master_category"
                                                 track-by="id"
                                                 label="title"
-                                                name="category"
+                                                name="master_category"
                                                 :multiple="isGrocery"
                                                 :searchable="true"
                                                 :allow-empty="true"
@@ -412,6 +415,7 @@
                 <input type="hidden" name="branch" :value="JSON.stringify(product.branch)">
             @endif
             <input type="hidden" name="categories" :value="JSON.stringify(product.categories)">
+            <input type="hidden" name="master_category" :value="JSON.stringify(product.master_category)">
             <input type="hidden" name="unit_id" :value="JSON.stringify(product.unit)">
             <input type="hidden" name="unattached-media" class="deleted-file" value="">
             <button class="btn btn-success" type="submit">{{trans('strings.submit')}}</button>
@@ -443,7 +447,7 @@
                 },
                 selectBranch: function () {
                     this.categories = [];
-                    this.product.category = null;
+                    this.product.master_category = null;
                 },
                 getBranches: function () {
                     const branches = !!this.branches ? JSON.parse(JSON.stringify(this.branches)) : null;
@@ -477,7 +481,7 @@
                         axios.get(url).then((res) => {
                             this.categories = res.data.categories;
                             if (this.categories.length > 0) {
-                                this.product.branch = this.categories[0];
+                                this.product.master_category = this.categories[0];
                             }
                             hasError = false;
                         }).catch(console.error).finally(() => {

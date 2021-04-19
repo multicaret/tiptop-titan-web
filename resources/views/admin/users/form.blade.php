@@ -118,23 +118,29 @@
                         </div>
                     @endif
                     @if($role == \App\Models\User::ROLE_TIPTOP_DRIVER)
-                        <div class="col-4">
+                        <div class="col-{{$user->id ? '4' : '6'}}">
                             @component('admin.components.form-group', ['name' => 'team_id', 'type' => 'select'])
                                 @slot('label', trans('strings.captain_teams'))
-                                @slot('options', $teams)
+                                @slot('options', $teams->prepend('',''))
                                 @slot('attributes', [
                                     'class' => 'select-2-captain_team w-100',
+                                    'allowClear' => true,
                                     'required',
                                 ])
                                 @slot('selected', $user->team_id)
                             @endcomponent
                         </div>
-                        <div class="col-md-2">
-                            @component('admin.components.form-group', ['name' => 'tookan_id', 'type' => 'number'])
-                                @slot('label', 'Captain ID')
-                                @slot('value', $user->tookan_id)
-                            @endcomponent
-                        </div>
+                        @if($user->id)
+                            <div class="col-md-2">
+                                @component('admin.components.form-group', ['name' => 'tookan_id', 'type' => 'number'])
+                                    @slot('label', 'Captain ID')
+                                    @slot('value', $user->tookan_id)
+                                    @slot('attributes', [
+                                    'disabled'
+                                ])
+                                @endcomponent
+                            </div>
+                        @endif
                     @endif
                     <div class="col-md-6">
                         @component('admin.components.form-group', ['name' => 'status', 'type' => 'select'])
