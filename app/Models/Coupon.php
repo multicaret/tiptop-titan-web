@@ -87,8 +87,9 @@ class Coupon extends Model
     public const STATUS_ACTIVE = 2;
     public const STATUS_INACTIVE = 3;
 
-    public const CHANNEL_GROCERY_OBJECT = 1;
-    public const CHANNEL_FOOD_OBJECT = 2;
+    public const TYPE_FOOD_AND_GROCERY_OBJECT = 1;
+    public const CHANNEL_GROCERY_OBJECT = 2;
+    public const CHANNEL_FOOD_OBJECT = 3;
 
     protected $casts = [
         'discount_amount' => 'double',
@@ -98,6 +99,37 @@ class Coupon extends Model
         'has_free_delivery' => 'boolean',
         'expired_at' => 'datetime',
     ];
+
+    public static function getCouponChannelsArray(): array
+    {
+        return [
+            self::TYPE_FOOD_AND_GROCERY_OBJECT => trans('strings.grocery_and_food'),
+            self::CHANNEL_GROCERY_OBJECT => trans('strings.grocery'),
+            self::CHANNEL_FOOD_OBJECT => trans('strings.food'),
+        ];
+    }
+
+    public static function getAllChannelsRich(): array
+    {
+        return [
+            self::CHANNEL_GROCERY_OBJECT => [
+                'id' => self::CHANNEL_GROCERY_OBJECT,
+                'title' => trans('strings.grocery'),
+                'class' => 'success',
+            ],
+            self::CHANNEL_FOOD_OBJECT => [
+                'id' => self::CHANNEL_FOOD_OBJECT,
+                'title' => trans('strings.food'),
+                'class' => 'dark',
+            ],
+            self::TYPE_FOOD_AND_GROCERY_OBJECT => [
+                'id' => self::TYPE_FOOD_AND_GROCERY_OBJECT,
+                'title' => trans('strings.both'),
+                'class' => 'info',
+            ],
+        ];
+    }
+
 
     public function couponUsages(): HasMany
     {

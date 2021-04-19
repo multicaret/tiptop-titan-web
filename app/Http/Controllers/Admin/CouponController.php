@@ -205,7 +205,7 @@ class CouponController extends Controller
         $coupon->max_allowed_discount_amount = $request->input('max_allowed_discount_amount');
         $coupon->expired_at = Carbon::parse($request->input('expired_at'));
         $coupon->status = $request->input('status');
-        $coupon->type = $request->input('type');
+        $coupon->channel = $request->input('channel');
         $coupon->save();
     }
 }
