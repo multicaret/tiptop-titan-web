@@ -239,15 +239,9 @@ class AjaxController extends Controller
     {
         $branchId = $request->input('branch_id');
         $branch = Branch::find($branchId);
-        $getIdTitle = function ($item) {
-            return ['id' => $item->id, 'title' => $item->title];
-        };
         $allCategories = [];
-//        dd($branch->foodCategories);
-        if ( ! is_null($branch->foodCategories)) {
-            $allCategories = $branch->foodCategories->map(function ($item) use($getIdTitle) {
-                return $item->get()->map($getIdTitle);
-            })->all();
+        if ( count($branch->menuCategories)) {
+            $allCategories = $branch->menuCategories;
         }
 
         return $this->respond(['categories' => $allCategories]);

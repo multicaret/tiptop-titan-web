@@ -223,13 +223,13 @@ class ProductController extends Controller
         $toValidateInGrocery = [];
         if ($request->type == Product::getCorrectChannelName(Product::CHANNEL_GROCERY_OBJECT, 0)) {
             $toValidateInGrocery = [
-                'categories' => 'required',
+//                'categories' => 'required',
             ];
         }
         $toValidateInFood = [];
         if ($request->type == Product::getCorrectChannelName(Product::CHANNEL_FOOD_OBJECT, 0)) {
             $toValidateInFood = [
-                'category' => 'required',
+//                'category' => 'required',
             ];
         }
 
@@ -258,6 +258,7 @@ class ProductController extends Controller
         } else {
             $product->branch_id = optional(json_decode($request->input('branch')))->id;
         }
+//        dd($product->branch_id);
 
         $product->unit_id = optional(json_decode($request->input('unit_id')))->id;
         $product->price = $request->input('price');
@@ -278,7 +279,7 @@ class ProductController extends Controller
             $ids = Arr::pluck(json_decode($request->input('categories'), true), 'id');
             $product->category_id = $ids[0];
         } else {
-            $product->category_id = json_decode($request->input('category'))->id;
+            $product->category_id = json_decode($request->input('master_category'))->id;
         }
         $product->save();
 
