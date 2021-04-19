@@ -165,8 +165,8 @@
                                                 :clear-on-select="false"
                                                 :preselect-first="true"
                                                 @if(!$isGrocery)
-{{--                                                    @input="getCategories"--}}
-{{--                                                    @select="selectBranch"--}}
+                                                    @input="getCategories"
+                                                    @select="selectBranch"
                                                 @endif
                                                 placeholder=""
                                                 autocomplete="false"
@@ -447,7 +447,7 @@
                 },
                 selectBranch: function () {
                     this.categories = [];
-                    this.product.category = null;
+                    this.product.master_category = null;
                 },
                 getBranches: function () {
                     const branches = !!this.branches ? JSON.parse(JSON.stringify(this.branches)) : null;
@@ -481,7 +481,7 @@
                         axios.get(url).then((res) => {
                             this.categories = res.data.categories;
                             if (this.categories.length > 0) {
-                                this.product.branch = this.categories[0];
+                                this.product.master_category = this.categories[0];
                             }
                             hasError = false;
                         }).catch(console.error).finally(() => {
