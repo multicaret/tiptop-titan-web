@@ -21,8 +21,6 @@
         @endif
     </div>
 
-
-
     <div class="nav-tabs-top nav-responsive-xl">
         <ul class="nav nav-tabs nav-justified">
             <li class="nav-item">
@@ -150,9 +148,26 @@
                     @if(is_null($branch->id))
                         @include('admin.branches.partials._inaccessible')
                     @else
-                        <p>Tab content</p>
+                        @foreach([
+                                    \App\Models\User::ROLE_BRANCH_OWNER => $branch->owners,
+                                    \App\Models\User::ROLE_BRANCH_MANAGER => $branch->managers,
+                                    \App\Models\User::ROLE_RESTAURANT_DRIVER => $branch->drivers,
+                                ] as $role => $users)
+                            @if($branch->id)
+                                <div class="d-flex justify-content-end mb-3">
+                                    <a class="btn btn-primary" target="_blank"
+                                       href="{{route('admin.users.create', [
+                                        'role'=> $role,
+                                        'branch_id' => $branch->id,
+                                        'chain_id' => optional($branch->chain)->id
+                                   ])}}">
+                                        Add new {{str_replace('-', ' ', Str::title($role))}}
+                                    </a>
+                                </div>
+                            @endif
+                            @include('admin.branches.partials._users_table', ['users' => $users])
+                        @endforeach
                     @endif
-                </div>
             </div>
         </div>
     </div>

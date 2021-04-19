@@ -55,10 +55,10 @@ class OrderShow extends Component
 
         $this->isCancellationFormShown = false;
         $this->createNote(
-            "<i>Cancelled Reason</i><br>".
-            "({$this->order->cancellationReason->title})<br>".
-            "<i>Cancelled Custom Note</i><br>".
-            "{$this->order->cancellation_reason_note}"
+            '<i>Cancelled Reason</i><br>'.
+            is_null($this->order->cancellationReason) ? '(Other)' : "({$this->order->cancellationReason->title})".'<br>'.
+                '<i>Cancelled Custom Note</i><br>'.
+                "{$this->order->cancellation_reason_note}"
         );
 
         $this->emit('showToast', [

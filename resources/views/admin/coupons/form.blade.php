@@ -165,13 +165,10 @@
                     <div class="card-body">
                         <div class="row">
                             <div class="col-6">
-                                @component('admin.components.form-group', ['name' => 'type', 'type' => 'select'])
-                                    @slot('label', 'Type')
-                                    @slot('options', [
-                                        App\Models\Coupon::CHANNEL_GROCERY_OBJECT => 'Market',
-                                        App\Models\Coupon::CHANNEL_FOOD_OBJECT => 'Food'
-                                        ])
-                                    @slot('selected', $coupon->type)
+                                @component('admin.components.form-group', ['name' => 'channel', 'type' => 'select'])
+                                    @slot('label', trans('strings.channel'))
+                                    @slot('options', \App\Models\Coupon::getCouponChannelsArray())
+                                    @slot('selected', $coupon->channel)
                                 @endcomponent
                             </div>
                             <div class="col-6">

@@ -3,8 +3,8 @@
 namespace App\Http\Controllers;
 
 
-use App\Http\Resources\ProductResource;
-use App\Models\Product;
+use App\Http\Resources\ProductOptionResource;
+use App\Models\ProductOption;
 
 class HomeController extends Controller
 {
@@ -50,9 +50,9 @@ class HomeController extends Controller
 
     public function foo()
     {
-        $object = Product::find(42725);
+        $object = ProductOption::first();
 
-        return new ProductResource($object);
+        return new ProductOptionResource($object);
 
     }
 }
