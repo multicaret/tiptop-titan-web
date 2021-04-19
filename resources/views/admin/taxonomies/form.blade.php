@@ -134,8 +134,9 @@
                             @slot('attributes', [
                                 'class' => 'select2-branch w-100',
                                 'required',
+                                $menuCategoryData['hasBranch'] ? 'disabled' : '',
                             ])
-                            @slot('selected', $taxonomy->branch_id)
+                            @slot('selected', $menuCategoryData['hasBranch'] ?  $menuCategoryData['branchId'] : $taxonomy->branch_id)
                         @endcomponent
                     </div>
                 @endif

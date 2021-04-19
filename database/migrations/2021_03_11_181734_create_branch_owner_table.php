@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreateBranchSupervisorTable extends Migration
+class CreateBranchOwnerTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,15 +13,15 @@ class CreateBranchSupervisorTable extends Migration
      */
     public function up()
     {
-        Schema::create('branch_supervisor', function (Blueprint $table) {
+        Schema::create('branch_owner', function (Blueprint $table) {
             $table->id();
             $table->unsignedBigInteger('branch_id')->index();
-            $table->unsignedBigInteger('supervisor_id')->index();
+            $table->unsignedBigInteger('owner_id')->index();
             $table->boolean('is_primary')->default(false);
             $table->timestamps();
 
             $table->foreign('branch_id')->references('id')->on('branches')->onDelete('cascade');
-            $table->foreign('supervisor_id')->references('id')->on('users')->onDelete('cascade');
+            $table->foreign('owner_id')->references('id')->on('users')->onDelete('cascade');
         });
     }
 
@@ -32,6 +32,6 @@ class CreateBranchSupervisorTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('branch_supervisor');
+        Schema::dropIfExists('branch_owner');
     }
 }

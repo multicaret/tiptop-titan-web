@@ -102,8 +102,6 @@ use Spatie\MediaLibrary\MediaCollections\Models\Collections\MediaCollection;
  * @property-read Collection|InteractionRelation[] $ratingsPure
  * @property-read int|null $ratings_pure_count
  * @property-read \App\Models\Region|null $region
- * @property-read Collection|\App\Models\User[] $supervisors
- * @property-read int|null $supervisors_count
  * @property-read \App\Models\BranchTranslation|null $translation
  * @property-read Collection|\App\Models\BranchTranslation[] $translations
  * @property-read int|null $translations_count
@@ -253,16 +251,16 @@ class Branch extends Model implements HasMedia
         return $this->managers()->wherePivot('is_primary', true)->first();
     }
 
-    public function supervisors(): BelongsToMany
+    public function owners(): BelongsToMany
     {
-        return $this->belongsToMany(User::class, 'branch_supervisor', 'supervisor_id', 'branch_id')
+        return $this->belongsToMany(User::class, 'branch_owner', 'owner_id', 'branch_id')
                     ->withPivot('is_primary')
                     ->withTimestamps();
     }
 
-    public function primarySupervisor()
+    public function primaryOwner()
     {
-        return $this->supervisors()->wherePivot('is_primary', true)->first();
+        return $this->owners()->wherePivot('is_primary', true)->first();
     }
 
     public function workingHours()
@@ -284,6 +282,13 @@ class Branch extends Model implements HasMedia
     public function locations(): HasMany
     {
         return $this->hasMany(Location::class, 'contactable_id');
+    }
+
+    public function drivers(): BelongsToMany
+    {
+        return $this->belongsToMany(User::class, 'branch_driver', 'driver_id', 'branch_id')
+                    ->withPivot('is_primary')
+                    ->withTimestamps();
     }
 
     public function users(): BelongsToMany
