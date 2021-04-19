@@ -100,21 +100,27 @@
                                 <div class="form-group col-md-4">
                                     <label class="form-label">Input Type</label>
                                     <select class="form-control" wire:model="option.input_type">
-                                        @if($option->selection_type == \App\Models\ProductOption::SELECTION_TYPE_SINGLE_VALUE)
+                                        @if($option->is_based_on_ingredients)
                                             <option value="{{\App\Models\ProductOption::INPUT_TYPE_PILL}}">
                                                 Pills
                                             </option>
-                                            <option value="{{\App\Models\ProductOption::INPUT_TYPE_RADIO}}">
-                                                Radio
-                                            </option>
-                                        @endif
-                                        @if($option->selection_type == \App\Models\ProductOption::SELECTION_TYPE_MULTIPLE_VALUE)
-                                            <option value="{{\App\Models\ProductOption::INPUT_TYPE_CHECKBOX}}">
-                                                Checkbox
-                                            </option>
-                                            <option value="{{\App\Models\ProductOption::INPUT_TYPE_SELECT}}">
-                                                Select
-                                            </option>
+                                        @else
+                                            @if($option->selection_type == \App\Models\ProductOption::SELECTION_TYPE_SINGLE_VALUE)
+                                                <option value="{{\App\Models\ProductOption::INPUT_TYPE_PILL}}">
+                                                    Pills
+                                                </option>
+                                                <option value="{{\App\Models\ProductOption::INPUT_TYPE_RADIO}}">
+                                                    Radio
+                                                </option>
+                                            @endif
+                                            @if($option->selection_type == \App\Models\ProductOption::SELECTION_TYPE_MULTIPLE_VALUE)
+                                                <option value="{{\App\Models\ProductOption::INPUT_TYPE_CHECKBOX}}">
+                                                    Checkbox
+                                                </option>
+                                                <option value="{{\App\Models\ProductOption::INPUT_TYPE_SELECT}}">
+                                                    Select
+                                                </option>
+                                            @endif
                                         @endif
                                     </select>
                                 </div>
