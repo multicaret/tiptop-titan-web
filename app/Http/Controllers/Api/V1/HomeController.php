@@ -7,6 +7,7 @@ use App\Http\Controllers\Api\BaseApiController;
 use App\Http\Resources\BootResource;
 use App\Http\Resources\BranchResource;
 use App\Http\Resources\CartResource;
+use App\Http\Resources\CurrencyResource;
 use App\Http\Resources\FoodCategoryResource;
 use App\Http\Resources\GroceryCategoryParentResource;
 use App\Http\Resources\OrderResource;
@@ -14,6 +15,7 @@ use App\Http\Resources\SlideResource;
 use App\Models\Boot;
 use App\Models\Branch;
 use App\Models\Cart;
+use App\Models\Currency;
 use App\Models\Location;
 use App\Models\Order;
 use App\Models\Slide;
@@ -185,6 +187,7 @@ class HomeController extends BaseApiController
             'distance' => $distance,
             // Food Related
             'restaurants' => is_null($foodBranches) ? null : BranchResource::collection($foodBranches),
+            'currentCurrency' => new CurrencyResource(Currency::find(config('defaults.currency.id'))),
         ]);
     }
 
