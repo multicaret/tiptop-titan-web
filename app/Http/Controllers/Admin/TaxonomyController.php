@@ -117,8 +117,8 @@ class TaxonomyController extends Controller
         if ($correctType == Taxonomy::TYPE_MENU_CATEGORY) {
             $columns = array_merge($columns, [
                 [
-                    'data' => 'branch.title',
-                    'name' => 'branch.title',
+                    'data' => 'branch_title',
+                    'name' => 'branch_title',
                     'title' => trans('strings.branch'),
                     'orderable' => false,
                     'searchable' => false

@@ -164,6 +164,9 @@ class DatatableController extends AjaxController
                          ->editColumn('chain', function ($item) {
                              return $item->chain ? $item->chain->title : null;
                          })
+                         ->editColumn('branch_title', function ($item) {
+                             return $item->branch ? $item->branch->title : '';
+                         })
                          ->editColumn('branches', function ($item) use ($correctType) {
                              $branches = $item->branches->pluck('title')->toArray();
                              $isFoodCategory = $correctType === Taxonomy::TYPE_FOOD_CATEGORY;
@@ -194,6 +197,7 @@ class DatatableController extends AjaxController
 //                             'chain',
                              'step',
                              'branches',
+                             'branch_title',
                              'action',
                              'order_column',
                              'created_at',

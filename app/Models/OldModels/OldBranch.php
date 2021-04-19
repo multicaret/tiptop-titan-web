@@ -146,7 +146,6 @@ class OldBranch extends OldModel
             'id' => 'id',
             'app_minimun_order' => 'minimum_order',
             'rating' => 'avg_rating',
-            'rating_count' => 'rating_count',
             'created_at' => 'created_at',
             'updated_at' => 'updated_at',
             'contact_phone_1' => 'primary_phone_number',
@@ -177,7 +176,8 @@ class OldBranch extends OldModel
 
     public function categories(): BelongsToMany
     {
-        return $this->belongsToMany(OldCategory::class, 'jo3aan_branches_categories', 'branch_id', 'category_id');
+        return $this->belongsToMany(OldCategory::class, 'jo3aan_branches_categories', 'branch_id', 'category_id')
+                    ->where('type','!=', OldCategory::TYPE_KITCHENS);
     }
 
     public static function statusesComparing(): array

@@ -286,5 +286,6 @@ return [
     'declined' => 'Declined',
     'canceled' => 'Canceled',
     'captain_teams' => 'Captain Teams',
+    'menu-categories' => 'Menu Categories',
     'Can not rate a not delivered order' => 'Can not rate a not delivered order',
 ];
