@@ -17,6 +17,7 @@ class CreateProductOptionIngredientTable extends Migration
             $table->id();
             $table->unsignedBigInteger('product_option_id')->index();
             $table->unsignedBigInteger('ingredient_id')->index();
+            $table->unsignedDouble('price')->default(0);
             $table->timestamps();
 
             $table->foreign('product_option_id')->references('id')->on('product_options')->onDelete('cascade');

@@ -102,6 +102,7 @@ class ProductOption extends Model
     public function ingredients(): BelongsToMany
     {
         return $this->belongsToMany(Taxonomy::class, 'product_option_ingredient', 'product_option_id', 'ingredient_id')
+                    ->withPivot('price')
                     ->withTimestamps();
     }
 
