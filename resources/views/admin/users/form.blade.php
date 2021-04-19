@@ -121,9 +121,10 @@
                         <div class="col-4">
                             @component('admin.components.form-group', ['name' => 'team_id', 'type' => 'select'])
                                 @slot('label', trans('strings.captain_teams'))
-                                @slot('options', $teams)
+                                @slot('options', $teams->prepend('',''))
                                 @slot('attributes', [
                                     'class' => 'select-2-captain_team w-100',
+                                    'allowClear' => true,
                                     'required',
                                 ])
                                 @slot('selected', $user->team_id)
