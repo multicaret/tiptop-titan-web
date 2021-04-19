@@ -2,6 +2,7 @@
 
 namespace App\Http\Resources;
 
+use App\Models\Currency;
 use Illuminate\Http\Resources\Json\JsonResource;
 
 /** @mixin \App\Models\ProductOptionSelection */
@@ -16,7 +17,10 @@ class ProductOptionSelectionResource extends JsonResource
         return [
             'id' => $this->id,
             'title' => $this->title,
-            'price' => $this->price,
+            'price' => [
+                'raw' => (double) $this->price,
+                'formatted' => Currency::format($this->price),
+            ],
         ];
     }
 }
