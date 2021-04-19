@@ -243,9 +243,11 @@ class AjaxController extends Controller
             return ['id' => $item->id, 'title' => $item->title];
         };
         $allCategories = [];
-//        dd($branch->groceryCategories);
-        if ( ! is_null($branch->groceryCategories)) {
-            $allCategories = $branch->select(['id', 'title'])->groceryCategories->all();
+//        dd($branch->foodCategories);
+        if ( ! is_null($branch->foodCategories)) {
+            $allCategories = $branch->foodCategories->map(function ($item) use($getIdTitle) {
+                return $item->get()->map($getIdTitle);
+            })->all();
         }
 
         return $this->respond(['categories' => $allCategories]);

@@ -164,8 +164,10 @@
                                                 deselect-label=""
                                                 :clear-on-select="false"
                                                 :preselect-first="true"
-                                                @input="getCategories"
-                                                @select="selectBranch"
+                                                @if(!$isGrocery)
+                                                    @input="getCategories"
+                                                    @select="selectBranch"
+                                                @endif
                                                 placeholder=""
                                                 autocomplete="false"
                                                 required
