@@ -4,6 +4,7 @@
 namespace App\Traits;
 
 
+use Illuminate\Support\Arr;
 use Spatie\MediaLibrary\InteractsWithMedia;
 
 trait HasMediaTrait
@@ -29,7 +30,7 @@ trait HasMediaTrait
                         'type' => $media->mime_type,
                         'size' => $media->size,
                         'file' => $media->getFullUrl($mainFileConversion),
-                        'thumbnail' => $media->getFullUrl('HD'),
+                        'thumbnail' => Arr::has($media->getGeneratedConversions()->keys(), 'HD')? $media->getFullUrl('HD'): '',
                         'data' => [
                             'extension' => explode('/', $media->mime_type)[1],
                             'listProps' => [
