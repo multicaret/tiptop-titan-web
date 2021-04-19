@@ -151,13 +151,6 @@ class DatumImporter extends Command
         $this->modelName = self::CHOICE_INGREDIENTS_CATEGORIES;
         $this->handle();
         $this->modelName = '';
-        $chainsIds = Chain::query()->where('type', Chain::CHANNEL_FOOD_OBJECT)
-                          ->orderBy('created_at')
-                          ->take(5)
-                          ->pluck('id')->all();
-        if ( ! is_null($chainsIds)) {
-            $this->call('datum:sync-chains', ['--id' => $chainsIds]);
-        }
     }
 
     private function showChoice(): void
