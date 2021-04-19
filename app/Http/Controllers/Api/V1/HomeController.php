@@ -182,12 +182,12 @@ class HomeController extends BaseApiController
             'categories' => $categories,
             'activeOrders' => $activeOrders,
             'totalActiveOrders' => $totalActiveOrders,
+            'currentCurrency' => new CurrencyResource(Currency::find(config('defaults.currency.id'))),
             // Grocery Related
             'branch' => is_null($branch) ? null : new BranchResource($branch),
             'distance' => $distance,
             // Food Related
             'restaurants' => is_null($foodBranches) ? null : BranchResource::collection($foodBranches),
-            'currentCurrency' => new CurrencyResource(Currency::find(config('defaults.currency.id'))),
         ]);
     }
 
