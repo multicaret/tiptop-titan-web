@@ -80,6 +80,7 @@ class HomeController extends BaseApiController
 
         $eta = '30-45';
         $etaUnit = 'min';
+        $noAvailabilityMessage = '';
 
         $selectedAddress = null;
         $cityId = null;
@@ -137,10 +138,11 @@ class HomeController extends BaseApiController
                     $activeOrders = OrderResource::collection($activeOrders->take(4)->get());
                     $totalActiveOrders = $activeOrdersCount;
                 }
-//            } else {
+            } else {
                 // It's too late no branch is open for now, so sorry
                 // No Branch
                 // No Cart
+                $noAvailabilityMessage = 'No Branch is not available, please check back again at 08:00 am';
             }
 
             // Always in grocery the EA is 20-30, for dynamic values use "->distance" attribute from above.
@@ -169,7 +171,9 @@ class HomeController extends BaseApiController
                 $activeOrders = OrderResource::collection($activeOrders->take(4)->get());
                 $totalActiveOrders = $activeOrdersCount;
             }
-
+            if (is_null($foodBranches)) {
+                $noAvailabilityMessage = 'No Restaurants is are now open, please check back again at 08:00 am';
+            }
         }
 
         return $this->respond([
@@ -183,6 +187,7 @@ class HomeController extends BaseApiController
             'activeOrders' => $activeOrders,
             'totalActiveOrders' => $totalActiveOrders,
             'currentCurrency' => new CurrencyResource(Currency::find(config('defaults.currency.id'))),
+            'noAvailabilityMessage' => $noAvailabilityMessage,
             // Grocery Related
             'branch' => is_null($branch) ? null : new BranchResource($branch),
             'distance' => $distance,
