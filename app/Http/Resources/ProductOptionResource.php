@@ -19,14 +19,14 @@ class ProductOptionResource extends JsonResource
             'id' => $this->id,
             'isBasedOnIngredients' => $this->is_based_on_ingredients,
             'isRequired' => $this->is_required,
-            'type' => $this->type == 1 ? 'including' : 'excluding',
+            'type' => $this->type == ProductOption::TYPE_INCLUDING ? 'including' : 'excluding',
             'title' => $this->title,
             'maxNumberOfSelection' => $this->max_number_of_selection ?: 0,
             'minNumberOfSelection' => $this->min_number_of_selection ?: 0,
             'inputType' => ProductOption::inputTypesArray()[$this->input_type],
             'selectionType' => $this->selection_type == ProductOption::SELECTION_TYPE_SINGLE_VALUE ? 'single' : 'multiple',
             'selections' => ProductOptionSelectionResource::collection($this->selections),
-            'ingredients' => TaxonomyMiniResource::collection($this->ingredients),
+            'ingredients' => ProductOptionIngredientResource::collection($this->ingredients),
         ];
     }
 }
