@@ -49,6 +49,8 @@ return [
         'english_name' => 'Italian Village',
     ],
     'images' => [
+        'brand_icon' => '/favicon.png',
+        'brand_logo' => '/images/logo.jpeg',
         'region_cover' => '/images/region-cover.png',
         'chain_cover' => '/images/region-cover.png',
         'user_avatar' => '/images/user-avatar.png',

@@ -452,6 +452,11 @@ class User extends Authenticatable implements HasMedia, MustVerifyEmail
         return $this->roles()->first();
     }
 
+    public function getRoleNameAttribute()
+    {
+        return \Str::kebab($this->role->name);
+    }
+
     public function getIsUserAttribute()
     {
         return $this->hasRole(self::ROLE_USER);
