@@ -66,13 +66,23 @@ Authorization: Bearer {{token}}
 {
     "branch_rating_value": 3.2,
     "grocery_issue_id": 28,
-    "driver_rating_value": 3.2,
     "food_rating_factors": {
         "has_good_food_quality_rating": true,
         "has_good_packaging_quality_rating": false,
         "has_good_order_accuracy_rating": null
     },
     "comment": "This is not what I ordered!"
+}
+
+### Driver store rate.
+POST {{host}}/{{locale}}/api/v1/orders/1/drivers/1/rate
+Accept: application/json
+Content-Type: application/json
+Authorization: Bearer {{token}}
+
+{
+    "driver_rating_value": 3.2,
+    "comment": "The driver came super late!"
 }
 
 ### coupon

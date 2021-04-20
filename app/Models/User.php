@@ -30,6 +30,7 @@ use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Str;
 use Laravel\Sanctum\HasApiTokens;
 use Laravel\Sanctum\NewAccessToken;
+use Multicaret\Acquaintances\Traits\CanBeRated;
 use Multicaret\Acquaintances\Traits\CanFavorite;
 use Multicaret\Acquaintances\Traits\CanRate;
 use Spatie\Image\Manipulations;
@@ -196,6 +197,7 @@ class User extends Authenticatable implements HasMedia, MustVerifyEmail
 {
     use CanFavorite;
     use CanRate;
+    use CanBeRated;
     use CanResetPassword;
     use HasApiTokens;
     use HasFactory;
