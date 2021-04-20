@@ -316,8 +316,10 @@ class User extends Authenticatable implements HasMedia, MustVerifyEmail
     public static function rolesHaving($index): array
     {
         $roleVariations = [
-            'branch' => [
+            'branches' => [
                 User::ROLE_RESTAURANT_DRIVER,
+                User::ROLE_BRANCH_OWNER,
+                User::ROLE_BRANCH_MANAGER,
             ],
             'employment' => [
                 User::ROLE_TIPTOP_DRIVER,
@@ -503,6 +505,27 @@ class User extends Authenticatable implements HasMedia, MustVerifyEmail
     public function branch(): BelongsTo
     {
         return $this->belongsTo(Branch::class);
+    }
+
+    public function branches($role = null)
+    {
+        switch (is_null($role) ? Str::kebab($this->role->name) : $role) {
+            case self::ROLE_RESTAURANT_DRIVER:
+                $table = 'branch_driver';
+                break;
+            case self::ROLE_BRANCH_OWNER:
+                $table = 'branch_owner';
+                break;
+            case self::ROLE_BRANCH_MANAGER:
+                $table = 'branch_manager';
+                break;
+        }
+        $foreignPivotKey = 'user_id';
+        $relatedPivotKey = 'branch_id';
+
+        return $this->belongsToMany(User::class, $table, $foreignPivotKey, $relatedPivotKey)
+//                    ->withPivot([$withPivot])
+                    ->withTimestamps();
     }
 
     public function team(): BelongsTo

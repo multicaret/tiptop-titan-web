@@ -15,7 +15,7 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
  * @property string $code
  * @property int|null $customer_id
  * @property int $branch_id
- * @property int|null $driver_id
+ * @property int|null $user_id
  * @property int $basket_id
  * @property int|null $address_id
  * @property string|null $type
@@ -34,7 +34,7 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
  * @property string|null $delivery_type RESTAURANT | APP
  * @property int|null $driver_approved
  * @property string|null $drivers_notified
- * @property int|null $currently_notified_driver_id
+ * @property int|null $currently_notified_user_id
  * @property string|null $notify_date
  * @property int|null $number_of_notified
  * @property string|null $discount
@@ -139,7 +139,7 @@ class OldOrder extends OldModel
             'chain_id' => 'chain_id',
             'branch_id' => 'branch_id',
             'city_id' => 'city_id',
-            'driver_id' => 'driver_id',
+            'driver_id' => 'user_id',
 //            'basket_id' => 'cart_id',
             'address_id' => 'address_id',
 //            'status' => '', // typeComparing()

@@ -56,8 +56,8 @@ class UserController extends Controller
         if ($role == User::ROLE_RESTAURANT_DRIVER) {
             $columns = array_merge($columns, [
                 [
-                    'data' => 'branch.title',
-                    'name' => 'branch.title',
+                    'data' => 'branch',
+                    'name' => 'branch',
                     'title' => trans('strings.branch'),
                     'orderable' => false,
                     'searchable' => false
@@ -177,6 +177,10 @@ class UserController extends Controller
         $address->phones = $request->phones;
         $address->save();*/
 
+        if(in_array($role, User::rolesHaving('branches'))){
+            $user->branches($role)->sync($request->input('branches'));
+        }
+
         if ($request->send_notification) {
             $this->sendEmail($user, 'Welcome', [$user]);
         }
@@ -285,6 +289,10 @@ class UserController extends Controller
         $this->handleSubmittedSingleMedia('avatar', $request, $user);
         DB::commit();
 
+        if($role == User::ROLE_RESTAURANT_DRIVER){
+            $user->branches($role)->sync($request->input('branches'));
+        }
+
         $user->assignRole($roleName);
         if (auth()->user()->hasRole([User::ROLE_SUPER, User::ROLE_ADMIN])) {
             $permissions = array_keys($request->input('permissions', []));
@@ -323,6 +331,15 @@ class UserController extends Controller
 
     private function essentialData()
     {
+        $menuCategoryData['hasBranch'] = request()->has('branch_id');
+        $branchExists = ! is_null(\App\Models\Branch::foods()->find(request()->input('branch_id')));
+        if ($menuCategoryData['hasBranch']) {
+            if ($branchExists) {
+                $menuCategoryData['branchId'] = request()->input('branch_id');
+            } else {
+                abort(404);
+            }
+        }
         return [
             'roles' => [
 //                User::ROLE_SUPER => trans('strings.' . User::ROLE_SUPER),
@@ -336,6 +353,7 @@ class UserController extends Controller
                                     return [$item['id'] => $item['name']];
                                 }),
             'cities' => City::where('region_id', config('defaults.region.id'))->get(),
+            'menuCategoryData' => $menuCategoryData,
             'branches' => Branch::whereType(Branch::CHANNEL_FOOD_OBJECT)
                                 ->active()
                                 ->get()

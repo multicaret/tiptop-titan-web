@@ -59,7 +59,7 @@ class CreateOrdersTable extends Migration
             $table->unsignedDouble('tiptop_share_result')->default(0);
             $table->unsignedDouble('tiptop_share_percentage')->default(0)->comment('is tiptop_share_percentage, which is taken directly from commission column in Branch');
             $table->unsignedDouble('restaurant_share_result')->default(0);
-            $table->unsignedBigInteger('driver_id')->nullable();
+            $table->unsignedBigInteger('user_id')->nullable();
             $table->text('private_notes')->nullable()->comment('take discount_method_id and store it');
             $table->string('agent_device')->nullable();
             $table->string('agent_os')->nullable();

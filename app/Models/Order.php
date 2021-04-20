@@ -125,7 +125,7 @@ use Illuminate\Support\Carbon;
  * @property float $tiptop_share_result
  * @property float $tiptop_share_percentage is tiptop_share_percentage, which is taken directly from commission column in Branch
  * @property float $restaurant_share_result
- * @property int|null $driver_id
+ * @property int|null $user_id
  * @property string|null $private_notes take discount_method_id and store it
  * @property string|null $agent_device
  * @property string|null $agent_os

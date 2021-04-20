@@ -70,6 +70,10 @@ class DatatableController extends AjaxController
                              return view('admin.components.datatables._row-actions-status', $data)
                                  ->render();
                          })
+                         ->editColumn('branch', function ($item) {
+
+                             return view('admin.components.datatables._row-reorder')->render();
+                         })
                          ->editColumn('order_column', function ($item) {
                              return view('admin.components.datatables._row-reorder')->render();
                          })
