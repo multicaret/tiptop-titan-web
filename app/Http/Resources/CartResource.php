@@ -35,6 +35,7 @@ class CartResource extends JsonResource
             'chainId' => $this->chain_id,
             'branchId' => $this->branch_id,
             'products' => CartProductResource::collection($this->cartProducts),
+            'restaurant' => $this->when($this->branch->is_food, new FoodBranchResource($this->branch)),
         ];
     }
 }
