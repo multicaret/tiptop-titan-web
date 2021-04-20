@@ -3,12 +3,9 @@
 namespace App\Notifications;
 
 use App\Models\Order;
+use App\Models\User;
 use Illuminate\Bus\Queueable;
-use Illuminate\Notifications\Messages\MailMessage;
-use Illuminate\Notifications\Notification;
 use NotificationChannels\OneSignal\OneSignalChannel;
-use NotificationChannels\OneSignal\OneSignalMessage;
-use NotificationChannels\OneSignal\OneSignalWebButton;
 
 class OrderStatusUpdated extends Notification
 {
@@ -25,52 +22,44 @@ class OrderStatusUpdated extends Notification
     public function __construct(Order $order)
     {
         $this->order = $order;
+        $this->body = "🚚 Your order now is {$this->order->getStatusName()}!";
     }
 
     /**
      * Get the notification's delivery channels.
      *
      * @param  mixed  $notifiable
+     *
      * @return array
      */
     public function via($notifiable)
     {
-        // Todo: send the notification based on the user preference
-        // $notifiable->settings
-        return [
+        $shouldBeSend = $this->sendToRoleIfStatus($notifiable->role_name, $this->order->status);
+        if ( ! $shouldBeSend) {
+            return [];
+        }
+
+        $via = [
             OneSignalChannel::class,
             'database',
+//            'mail',
         ];
+
+        return $via;
     }
-
-
-    public function toOneSignal($notifiable)
-    {
-        return OneSignalMessage::create()
-                               ->setSubject('🚚 Your order has been send!')
-                               ->setBody('Click here to see details.')
-                               ->setUrl('http://onesignal.com')
-                               ->setWebButton(
-                                   OneSignalWebButton::create('link-1')
-                                                     ->text('Click here')
-                                                     ->icon('https://upload.wikimedia.org/wikipedia/commons/4/4f/Laravel_logo.png')
-                                                     ->url('http://laravel.com')
-                               );
-    }
-
     /**
      * Get the mail representation of the notification.
      *
      * @param  mixed  $notifiable
      * @return \Illuminate\Notifications\Messages\MailMessage
      */
-    public function toMail($notifiable)
+    /*public function toMail($notifiable)
     {
         return (new MailMessage)
             ->line('The introduction to the notification.')
             ->action('Notification Action', url('/'))
             ->line('Thank you for using our application!');
-    }
+    }*/
 
     /**
      * Get the array representation of the notification.
@@ -81,8 +70,81 @@ class OrderStatusUpdated extends Notification
     public function toArray($notifiable)
     {
         return [
+            /* View Related */
+//            'title' => $this->title,
+            'body' => $this->body,
             'subject_id' => $notifiable->id,
+            'subject_title' => $notifiable->name,
             'object_id' => $this->order->id,
+            'object_title' => $this->order->reference_code,
+            'icon' => $this->order->is_food ? 'fa-concierge-bell' : 'fa-shopping-basket',
+            'image' => null,
+            /* Navigation Related */
+            'route' => [
+                'name' => 'admin.orders.show',
+                'variables' => [$this->order->id],
+                'params' => [],
+            ],
+            /* Extra Payload */
         ];
+    }
+
+    public function sendToRoleIfStatus($role, $status): bool
+    {
+        /*$arr = [
+            Order::STATUS_NEW => [
+                User::ROLE_ADMIN,
+                User::ROLE_BRANCH_OWNER,
+                User::ROLE_BRANCH_MANAGER,
+            ],
+            Order::STATUS_PREPARING => [],
+            Order::STATUS_WAITING_COURIER => [
+                User::ROLE_ADMIN,
+            ],
+            Order::STATUS_ON_THE_WAY => [
+                User::ROLE_USER,
+            ],
+            Order::STATUS_AT_THE_ADDRESS => [
+                User::ROLE_USER,
+            ],
+            Order::STATUS_DELIVERED => [
+                User::ROLE_USER,
+            ],
+            Order::STATUS_CANCELLED => [
+                User::ROLE_ADMIN,
+                User::ROLE_BRANCH_OWNER,
+                User::ROLE_BRANCH_MANAGER,
+                User::ROLE_USER,
+            ],
+        ];*/
+
+        $arr = [
+            User::ROLE_SUPER => [
+                Order::STATUS_NEW,
+                Order::STATUS_WAITING_COURIER,
+                Order::STATUS_CANCELLED,
+            ],
+            User::ROLE_ADMIN => [
+                Order::STATUS_NEW,
+                Order::STATUS_WAITING_COURIER,
+                Order::STATUS_CANCELLED,
+            ],
+            User::ROLE_BRANCH_OWNER => [
+                Order::STATUS_NEW,
+                Order::STATUS_CANCELLED,
+            ],
+            User::ROLE_BRANCH_MANAGER => [
+                Order::STATUS_NEW,
+                Order::STATUS_CANCELLED,
+            ],
+            User::ROLE_USER => [
+                Order::STATUS_ON_THE_WAY,
+                Order::STATUS_AT_THE_ADDRESS,
+                Order::STATUS_DELIVERED,
+                Order::STATUS_CANCELLED,
+            ],
+        ];
+
+        return in_array($status, $arr[$role]);
     }
 }

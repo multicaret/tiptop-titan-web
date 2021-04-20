@@ -39,7 +39,6 @@ class OrderObserver
     public function updated(Order $order)
     {
         if ($order->wasChanged('status')) {
-            // Todo: based on the type send the notification
             foreach (User::active()->managers()->get() as $admin) {
                 $admin->notify(new OrderStatusUpdated($order));
             }
