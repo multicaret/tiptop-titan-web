@@ -6,6 +6,9 @@ use App\Models\Order;
 use Illuminate\Bus\Queueable;
 use Illuminate\Notifications\Messages\MailMessage;
 use Illuminate\Notifications\Notification;
+use NotificationChannels\OneSignal\OneSignalChannel;
+use NotificationChannels\OneSignal\OneSignalMessage;
+use NotificationChannels\OneSignal\OneSignalWebButton;
 
 class OrderStatusUpdated extends Notification
 {
@@ -32,7 +35,27 @@ class OrderStatusUpdated extends Notification
      */
     public function via($notifiable)
     {
-        return ['database'];
+        // Todo: send the notification based on the user preference
+        // $notifiable->settings
+        return [
+            OneSignalChannel::class,
+            'database',
+        ];
+    }
+
+
+    public function toOneSignal($notifiable)
+    {
+        return OneSignalMessage::create()
+                               ->setSubject('🚚 Your order has been send!')
+                               ->setBody('Click here to see details.')
+                               ->setUrl('http://onesignal.com')
+                               ->setWebButton(
+                                   OneSignalWebButton::create('link-1')
+                                                     ->text('Click here')
+                                                     ->icon('https://upload.wikimedia.org/wikipedia/commons/4/4f/Laravel_logo.png')
+                                                     ->url('http://laravel.com')
+                               );
     }
 
     /**
