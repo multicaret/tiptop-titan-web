@@ -31,7 +31,7 @@
 
                             <div class="form-row">
 
-                                <div class="form-group col-md-4">
+                                {{--<div class="form-group col-md-4">
                                     <h4>Is Required?</h4>
                                     <div class="row">
                                         <div class="col-3">
@@ -52,6 +52,9 @@
                                                        id="is-not-required-{{$option->id}}"
                                                        value="0"
                                                        wire:model="option.is_required"
+                                                       @if($option->min_number_of_selection >= 1)
+                                                       disabled
+                                                    @endif
                                                 >
                                                 <label class="form-check-label"
                                                        for="is-not-required-{{$option->id}}">
@@ -60,12 +63,12 @@
                                             </div>
                                         </div>
                                     </div>
-                                </div>
+                                </div>--}}
 
                                 <div class="form-group col-md-4">
                                     <h4>Is based on ingredients?</h4>
                                     @if($option->ingredients()->count() == 0 && $option->selections()->count() == 0)
-                                        <div class="row">
+                                        <div class="row col-12">
                                             <div class="col-3">
                                                 <div class="form-check">
                                                     <input class="form-check-input" type="radio"
@@ -96,38 +99,8 @@
                                     @endif
                                 </div>
 
-
-                                <div class="form-group col-md-4">
-                                    <label class="form-label">Input Type</label>
-                                    <select class="form-control" wire:model="option.input_type">
-                                        @if($option->is_based_on_ingredients)
-                                            <option value="{{\App\Models\ProductOption::INPUT_TYPE_PILL}}">
-                                                Pills
-                                            </option>
-                                        @else
-                                            @if($option->selection_type == \App\Models\ProductOption::SELECTION_TYPE_SINGLE_VALUE)
-                                                <option value="{{\App\Models\ProductOption::INPUT_TYPE_PILL}}">
-                                                    Pills
-                                                </option>
-                                                <option value="{{\App\Models\ProductOption::INPUT_TYPE_RADIO}}">
-                                                    Radio
-                                                </option>
-                                            @endif
-                                            @if($option->selection_type == \App\Models\ProductOption::SELECTION_TYPE_MULTIPLE_VALUE)
-                                                <option value="{{\App\Models\ProductOption::INPUT_TYPE_CHECKBOX}}">
-                                                    Checkbox
-                                                </option>
-                                                <option value="{{\App\Models\ProductOption::INPUT_TYPE_SELECT}}">
-                                                    Select
-                                                </option>
-                                            @endif
-                                        @endif
-                                    </select>
-                                </div>
-                            </div>
-                            <div class="form-row">
                                 @if($option->is_based_on_ingredients)
-                                    <div class="form-group col-md-6">
+                                    <div class="form-group col-md-4">
                                         <label class="form-label">Type</label>
                                         <select class="form-control" wire:model="option.type">
                                             <option value="{{\App\Models\ProductOption::TYPE_INCLUDING}}">
@@ -139,7 +112,7 @@
                                         </select>
                                     </div>
                                 @endif
-                                <div class="form-group col-md-6">
+                                {{--<div class="form-group col-md-6">
                                     <label class="form-label">Selection</label>
                                     <select class="form-control" wire:model="option.selection_type">
                                         <option value="{{\App\Models\ProductOption::SELECTION_TYPE_SINGLE_VALUE}}">
@@ -150,27 +123,54 @@
                                             Multiple
                                         </option>
                                     </select>
+                                </div>--}}
+
+                                <div class="form-group col-md-4">
+                                    <label class="form-label">Input Type</label>
+                                    <select class="form-control" wire:model="option.input_type">
+                                        @if($option->is_based_on_ingredients)
+                                            <option value="{{\App\Models\ProductOption::INPUT_TYPE_PILL}}">
+                                                Pills
+                                            </option>
+                                        @else
+                                            @if($option->max_number_of_selection == 1)
+                                                <option value="{{\App\Models\ProductOption::INPUT_TYPE_RADIO}}">
+                                                    Radio
+                                                </option>
+                                                <option value="{{\App\Models\ProductOption::INPUT_TYPE_SELECT}}">
+                                                    Select
+                                                </option>
+                                            @endif
+                                            @if($option->max_number_of_selection > 1)
+                                                <option value="{{\App\Models\ProductOption::INPUT_TYPE_PILL}}">
+                                                    Pills
+                                                </option>
+                                                <option value="{{\App\Models\ProductOption::INPUT_TYPE_CHECKBOX}}">
+                                                    Checkbox
+                                                </option>
+                                            @endif
+                                        @endif
+                                    </select>
                                 </div>
+
                             </div>
 
-                            @if($option->selection_type == \App\Models\ProductOption::SELECTION_TYPE_MULTIPLE_VALUE)
-                                <div class="form-row">
-                                    <div class="form-group col-md-6">
-                                        <label class="form-label">Min number of selection</label>
-                                        <input class="form-control" type="number" min="1"
-                                               wire:model.lazy="option.min_number_of_selection"
-                                               placeholder="Min number of selection">
-                                    </div>
-                                    @if($option->type != \App\Models\ProductOption::TYPE_EXCLUDING)
-                                        <div class="form-group col-md-6">
-                                            <label class="form-label">Max number of selection</label>
-                                            <input class="form-control" type="number" min="0"
-                                                   wire:model.lazy="option.max_number_of_selection"
-                                                   placeholder="Max number of selection">
-                                        </div>
-                                    @endif
+                            <div class="form-row">
+                                <div class="form-group col-md-6">
+                                    <label class="form-label">Min number of selection</label>
+                                    <input class="form-control" type="number" min="1"
+                                           wire:model.lazy="option.min_number_of_selection"
+                                           placeholder="Min number of selection">
                                 </div>
-                            @endif
+                                @if($option->type != \App\Models\ProductOption::TYPE_EXCLUDING)
+                                    <div class="form-group col-md-6">
+                                        <label class="form-label">Max number of selection</label>
+                                        <input class="form-control" type="number" min="0"
+                                               wire:model.lazy="option.max_number_of_selection"
+                                               placeholder="Max number of selection">
+                                    </div>
+                                @endif
+                            </div>
                         </form>
 
                         <hr>
@@ -209,6 +209,10 @@
                                         border: 1px solid #e8e8e8;
                                         border-radius: 4px;
                                         padding: 5px 10px;
+                                        display: flex;
+                                        flex-wrap: wrap;
+                                        flex-direction: row;
+                                        justify-content: flex-start;
                                     }
 
                                     .select-content input {
@@ -218,20 +222,37 @@
                                     .select-content input:focus {
                                         outline: none;
                                     }
+
+                                    .select-content .badge {
+                                        margin-bottom: 5px;
+                                        margin-right: 5px;
+                                    }
+
+                                    .select-content .badge input.price {
+                                        width: 50px;
+                                        margin-right: 5px;
+                                        border-radius: 2px;
+                                        height: 25px;
+                                    }
                                 </style>
                                 <div class="position-relative w-100">
                                     <div class="select-content">
                                         @foreach($this->option->ingredients()->orderBy('pivot_created_at')->get() as $selectedIngredient)
-                                            <span class="badge badge-pill badge-primary p-2 px-3 text-secondary">
-                                            {{$selectedIngredient->title}}
-                                                &nbsp;&nbsp;
-                                            <span class="remove py-1 cursor-pointer"
-                                                  wire:click="removeIngredient({{$selectedIngredient->id}})">
-                                                    <i class="fas fa-times"></i>
-                                            </span>
-                                        </span>
+                                            @if($option->type == \App\Models\ProductOption::TYPE_INCLUDING)
+                                                <livewire:ingredient-pill :ingredient="$selectedIngredient"
+                                                                          :pivot-id="$selectedIngredient->pivot->id"
+                                                                          :price="$selectedIngredient->pivot->price"
+                                                                          :is-price-shown="true"
+                                                                          :key="'ingredient-pill-'.$selectedIngredient->id"/>
+                                            @else
+                                                <livewire:ingredient-pill :ingredient="$selectedIngredient"
+                                                                          :pivot-id="$selectedIngredient->pivot->id"
+                                                                          :price="$selectedIngredient->pivot->price"
+                                                                          :is-price-shown="false"
+                                                                          :key="'ingredient-not-price-pill-'.$selectedIngredient->id"/>
+                                            @endif
                                         @endforeach
-                                        <input type="text" wire:model.debounce.200ms="search"/>
+                                        <input type="text" wire:model.debounce.200ms="search" class="search"/>
                                     </div>
                                     @if(!empty($search) && !empty($ingredients))
                                         <div class="ingredients-dropdown-search">

@@ -225,17 +225,7 @@ class HomeController extends BaseApiController
         if ( ! is_null($cityId)) {
             $slides = $slides->where('city_id', $cityId);
         }
-        // Temp: appending map image
-        $slides = $slides->get();
-        $tempSlide = new \stdClass();
-        $tempSlide->id = 0;
-        $tempSlide->title = 'temp slide';
-        $tempSlide->description = null;
-        $tempSlide->link_value = null;
-        $tempSlide->link_type = null;
-        $tempSlide->image = url('map.png');
-        $slides->push($tempSlide);
 
-        return SlideResource::collection($slides);
+        return SlideResource::collection($slides->get());
     }
 }

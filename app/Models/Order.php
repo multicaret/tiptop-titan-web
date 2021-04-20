@@ -6,8 +6,10 @@ use App\Traits\HasAppTypes;
 use App\Traits\HasTypes;
 use App\Traits\RecordsActivity;
 use Eloquent;
+use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Database\Query\Builder;
 use Illuminate\Support\Carbon;
@@ -20,17 +22,20 @@ use Illuminate\Support\Carbon;
  * @property int $user_id
  * @property int $chain_id
  * @property int $branch_id
- * @property int $cart_id
+ * @property int|null $cart_id
  * @property int $payment_method_id
  * @property int $address_id
  * @property int|null $coupon_id
  * @property int $city_id
  * @property int|null $previous_order_id
+ * @property int|null $cancellation_reason_id
  * @property int $type 1:Market, 2: Food
  * @property float $total
  * @property float $coupon_discount_amount
  * @property float $delivery_fee
+ * @property float $grand_total_before_agent_manipulation
  * @property float $grand_total
+ * @property float $agent_grand_total
  * @property float $private_payment_method_commission
  * @property float $private_total
  * @property float $private_delivery_fee
@@ -44,6 +49,16 @@ use Illuminate\Support\Carbon;
  * @property int|null $has_good_packaging_quality_rating
  * @property int|null $has_good_order_accuracy_rating
  * @property int|null $rating_issue_id
+ * @property int|null $delivery_time
+ * @property float $tiptop_share_result
+ * @property float $tiptop_share_percentage is tiptop_share_percentage, which is taken directly from commission column in Branch
+ * @property float $restaurant_share_result
+ * @property int|null $driver_id
+ * @property string|null $private_notes take discount_method_id and store it
+ * @property string|null $agent_device
+ * @property string|null $cancellation_reason_note
+ * @property string|null $agent_os
+ * @property string|null $restaurant_notes
  * @property Carbon|null $completed_at
  * @property string|null $notes
  * @property int $status
@@ -57,15 +72,22 @@ use Illuminate\Support\Carbon;
  * @property Carbon|null $created_at
  * @property Carbon|null $updated_at
  * @property Carbon|null $deleted_at
- * @property-read \App\Models\Location $address
- * @property-read \App\Models\Branch $branch
- * @property-read \App\Models\Cart $cart
- * @property-read \App\Models\Chain $chain
- * @property-read \App\Models\Coupon|null $coupon
- * @property-read \App\Models\PaymentMethod $paymentMethod
+ * @property-read Collection|Activity[] $activity
+ * @property-read int|null $activity_count
+ * @property-read Location $address
+ * @property-read Collection|OrderAgentNote[] $agentNotes
+ * @property-read int|null $agent_notes_count
+ * @property-read Branch $branch
+ * @property-read Taxonomy|null $cancellationReason
+ * @property-read Cart|null $cart
+ * @property-read Chain $chain
+ * @property-read Coupon|null $coupon
+ * @property-read bool $is_food
+ * @property-read bool $is_grocery
+ * @property-read PaymentMethod $paymentMethod
  * @property-read Order|null $previousOrder
- * @property-read \App\Models\Taxonomy|null $ratingIssue
- * @property-read \App\Models\User $user
+ * @property-read Taxonomy|null $ratingIssue
+ * @property-read User $user
  * @method static \Illuminate\Database\Eloquent\Builder|Order atTheAddress()
  * @method static \Illuminate\Database\Eloquent\Builder|Order cancelled()
  * @method static \Illuminate\Database\Eloquent\Builder|Order delivered()
@@ -81,8 +103,13 @@ use Illuminate\Support\Carbon;
  * @method static \Illuminate\Database\Eloquent\Builder|Order query()
  * @method static \Illuminate\Database\Eloquent\Builder|Order waitingCourier()
  * @method static \Illuminate\Database\Eloquent\Builder|Order whereAddressId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Order whereAgentDevice($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Order whereAgentGrandTotal($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Order whereAgentOs($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Order whereBranchId($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Order whereBranchRatingValue($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Order whereCancellationReasonId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Order whereCancellationReasonNote($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Order whereCartId($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Order whereChainId($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Order whereCityId($value)
@@ -92,8 +119,11 @@ use Illuminate\Support\Carbon;
  * @method static \Illuminate\Database\Eloquent\Builder|Order whereCreatedAt($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Order whereDeletedAt($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Order whereDeliveryFee($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Order whereDeliveryTime($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Order whereDriverId($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Order whereDriverRatingValue($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Order whereGrandTotal($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Order whereGrandTotalBeforeAgentManipulation($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Order whereHasGoodFoodQualityRating($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Order whereHasGoodOrderAccuracyRating($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Order whereHasGoodPackagingQualityRating($value)
@@ -104,13 +134,18 @@ use Illuminate\Support\Carbon;
  * @method static \Illuminate\Database\Eloquent\Builder|Order wherePreviousOrderId($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Order wherePrivateDeliveryFee($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Order wherePrivateGrandTotal($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Order wherePrivateNotes($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Order wherePrivatePaymentMethodCommission($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Order wherePrivateTotal($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Order whereRatedAt($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Order whereRatingComment($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Order whereRatingIssueId($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Order whereReferenceCode($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Order whereRestaurantNotes($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Order whereRestaurantShareResult($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Order whereStatus($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Order whereTiptopSharePercentage($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Order whereTiptopShareResult($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Order whereTotal($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Order whereType($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Order whereUpdatedAt($value)
@@ -118,32 +153,6 @@ use Illuminate\Support\Carbon;
  * @method static Builder|Order withTrashed()
  * @method static Builder|Order withoutTrashed()
  * @mixin Eloquent
- * @property-read \App\Models\OrderAgentNote $agentNotes
- * @property-read int|null $agent_notes_count
- * @property int|null $cancellation_reason_id
- * @property int|null $delivery_time
- * @property float $tiptop_share_result
- * @property float $tiptop_share_percentage is tiptop_share_percentage, which is taken directly from commission column in Branch
- * @property float $restaurant_share_result
- * @property int|null $user_id
- * @property string|null $private_notes take discount_method_id and store it
- * @property string|null $agent_device
- * @property string|null $agent_os
- * @property string|null $restaurant_notes
- * @method static \Illuminate\Database\Eloquent\Builder|Order whereAgentDevice($value)
- * @method static \Illuminate\Database\Eloquent\Builder|Order whereAgentOs($value)
- * @method static \Illuminate\Database\Eloquent\Builder|Order whereCancellationReasonId($value)
- * @method static \Illuminate\Database\Eloquent\Builder|Order whereDeliveryTime($value)
- * @method static \Illuminate\Database\Eloquent\Builder|Order whereDriverId($value)
- * @method static \Illuminate\Database\Eloquent\Builder|Order wherePrivateNotes($value)
- * @method static \Illuminate\Database\Eloquent\Builder|Order whereRestaurantNotes($value)
- * @method static \Illuminate\Database\Eloquent\Builder|Order whereRestaurantShareResult($value)
- * @method static \Illuminate\Database\Eloquent\Builder|Order whereTiptopSharePercentage($value)
- * @method static \Illuminate\Database\Eloquent\Builder|Order whereTiptopShareResult($value)
- * @property float $agent_grand_total
- * @property-read bool $is_food
- * @property-read bool $is_grocery
- * @method static \Illuminate\Database\Eloquent\Builder|Order whereAgentGrandTotal($value)
  */
 class Order extends Model
 {
@@ -235,7 +244,7 @@ class Order extends Model
         return $this->belongsTo(Taxonomy::class, 'cancellation_reason_id');
     }
 
-    public function agentNotes(): \Illuminate\Database\Eloquent\Relations\HasMany
+    public function agentNotes(): HasMany
     {
         return $this->hasMany(OrderAgentNote::class, 'order_id')->latest();
     }

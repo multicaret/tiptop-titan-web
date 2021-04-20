@@ -2,7 +2,10 @@
 
 namespace App\Models;
 
+use Eloquent;
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Relations\Pivot;
+use Illuminate\Support\Carbon;
 
 /**
  * App\Models\ProductOptionIngredient
@@ -10,17 +13,19 @@ use Illuminate\Database\Eloquent\Relations\Pivot;
  * @property int $id
  * @property int $product_option_id
  * @property int $ingredient_id
- * @property \Illuminate\Support\Carbon|null $created_at
- * @property \Illuminate\Support\Carbon|null $updated_at
- * @method static \Illuminate\Database\Eloquent\Builder|ProductOptionIngredient newModelQuery()
- * @method static \Illuminate\Database\Eloquent\Builder|ProductOptionIngredient newQuery()
- * @method static \Illuminate\Database\Eloquent\Builder|ProductOptionIngredient query()
- * @method static \Illuminate\Database\Eloquent\Builder|ProductOptionIngredient whereCreatedAt($value)
- * @method static \Illuminate\Database\Eloquent\Builder|ProductOptionIngredient whereId($value)
- * @method static \Illuminate\Database\Eloquent\Builder|ProductOptionIngredient whereIngredientId($value)
- * @method static \Illuminate\Database\Eloquent\Builder|ProductOptionIngredient whereProductOptionId($value)
- * @method static \Illuminate\Database\Eloquent\Builder|ProductOptionIngredient whereUpdatedAt($value)
- * @mixin \Eloquent
+ * @property Carbon|null $created_at
+ * @property Carbon|null $updated_at
+ * @property float|null $price
+ * @method static Builder|ProductOptionIngredient newModelQuery()
+ * @method static Builder|ProductOptionIngredient newQuery()
+ * @method static Builder|ProductOptionIngredient query()
+ * @method static Builder|ProductOptionIngredient whereCreatedAt($value)
+ * @method static Builder|ProductOptionIngredient whereId($value)
+ * @method static Builder|ProductOptionIngredient whereIngredientId($value)
+ * @method static Builder|ProductOptionIngredient wherePrice($value)
+ * @method static Builder|ProductOptionIngredient whereProductOptionId($value)
+ * @method static Builder|ProductOptionIngredient whereUpdatedAt($value)
+ * @mixin Eloquent
  */
 class ProductOptionIngredient extends Pivot
 {

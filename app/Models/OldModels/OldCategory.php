@@ -5,9 +5,11 @@ namespace App\Models\OldModels;
 
 use App\Models\Taxonomy;
 use Astrotomic\Translatable\Translatable;
-use Carbon\Carbon;
+use Eloquent;
 use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Carbon;
 
 
 /**
@@ -23,10 +25,11 @@ use Illuminate\Database\Eloquent\Model;
  * @property string $published_at
  * @property string|null $disabled_at Is Entity Disabled
  * @property string|null $deleted_at
- * @property \Illuminate\Support\Carbon|null $created_at
- * @property \Illuminate\Support\Carbon|null $updated_at
- * @property-read \App\Models\OldModels\OldCategoryTranslation|null $translation
- * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\OldModels\OldCategoryTranslation[] $translations
+ * @property Carbon|null $created_at
+ * @property Carbon|null $updated_at
+ * @property-read bool $has_children
+ * @property-read OldCategoryTranslation|null $translation
+ * @property-read Collection|OldCategoryTranslation[] $translations
  * @property-read int|null $translations_count
  * @method static Builder|OldCategory grocery()
  * @method static Builder|OldCategory listsTranslations(string $translationField)
@@ -54,8 +57,7 @@ use Illuminate\Database\Eloquent\Model;
  * @method static Builder|OldCategory whereType($value)
  * @method static Builder|OldCategory whereUpdatedAt($value)
  * @method static Builder|OldCategory withTranslation()
- * @mixin \Eloquent
- * @property-read bool $has_children
+ * @mixin Eloquent
  */
 class OldCategory extends Model
 {

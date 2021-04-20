@@ -5,8 +5,12 @@ namespace App\Models\OldModels;
 
 use App\Models\Branch;
 use Astrotomic\Translatable\Translatable;
+use Eloquent;
+use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
+use Illuminate\Support\Carbon;
 
 /**
  * App\Models\OldModels\OldBranch
@@ -51,80 +55,80 @@ use Illuminate\Database\Eloquent\Relations\BelongsToMany;
  * @property string|null $contact_email
  * @property string|null $conclusion
  * @property string|null $deleted_at
- * @property \Illuminate\Support\Carbon|null $created_at
- * @property \Illuminate\Support\Carbon|null $updated_at
+ * @property Carbon|null $created_at
+ * @property Carbon|null $updated_at
  * @property string|null $workiom_id
  * @property string|null $zoho_id
  * @property string|null $zoho_books_id
  * @property string|null $zoho_delivery_item_id
  * @property string|null $zoho_tiptop_delivery_item_id
- * @property-read \App\Models\OldModels\OldBranchTranslation|null $translation
- * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\OldModels\OldBranchTranslation[] $translations
- * @property-read int|null $translations_count
- * @method static \Illuminate\Database\Eloquent\Builder|OldBranch listsTranslations(string $translationField)
- * @method static \Illuminate\Database\Eloquent\Builder|OldBranch newModelQuery()
- * @method static \Illuminate\Database\Eloquent\Builder|OldBranch newQuery()
- * @method static \Illuminate\Database\Eloquent\Builder|OldBranch notTranslatedIn(?string $locale = null)
- * @method static \Illuminate\Database\Eloquent\Builder|OldBranch orWhereTranslation(string $translationField, $value, ?string $locale = null)
- * @method static \Illuminate\Database\Eloquent\Builder|OldBranch orWhereTranslationLike(string $translationField, $value, ?string $locale = null)
- * @method static \Illuminate\Database\Eloquent\Builder|OldBranch orderByTranslation(string $translationField, string $sortMethod = 'asc')
- * @method static \Illuminate\Database\Eloquent\Builder|OldBranch query()
- * @method static \Illuminate\Database\Eloquent\Builder|OldBranch translated()
- * @method static \Illuminate\Database\Eloquent\Builder|OldBranch translatedIn(?string $locale = null)
- * @method static \Illuminate\Database\Eloquent\Builder|OldBranch whereAcceptBankcard($value)
- * @method static \Illuminate\Database\Eloquent\Builder|OldBranch whereAddedBy($value)
- * @method static \Illuminate\Database\Eloquent\Builder|OldBranch whereAddress($value)
- * @method static \Illuminate\Database\Eloquent\Builder|OldBranch whereAirConditioning($value)
- * @method static \Illuminate\Database\Eloquent\Builder|OldBranch whereAppDeliveryCustomerAppearing($value)
- * @method static \Illuminate\Database\Eloquent\Builder|OldBranch whereAppDeliveryFee($value)
- * @method static \Illuminate\Database\Eloquent\Builder|OldBranch whereAppDeliveryService($value)
- * @method static \Illuminate\Database\Eloquent\Builder|OldBranch whereAppDeliveryTime($value)
- * @method static \Illuminate\Database\Eloquent\Builder|OldBranch whereAppMinimunOrder($value)
- * @method static \Illuminate\Database\Eloquent\Builder|OldBranch whereCityId($value)
- * @method static \Illuminate\Database\Eloquent\Builder|OldBranch whereConclusion($value)
- * @method static \Illuminate\Database\Eloquent\Builder|OldBranch whereContactEmail($value)
- * @method static \Illuminate\Database\Eloquent\Builder|OldBranch whereContactName($value)
- * @method static \Illuminate\Database\Eloquent\Builder|OldBranch whereContactPhone1($value)
- * @method static \Illuminate\Database\Eloquent\Builder|OldBranch whereContactPhone2($value)
- * @method static \Illuminate\Database\Eloquent\Builder|OldBranch whereCountryId($value)
- * @method static \Illuminate\Database\Eloquent\Builder|OldBranch whereCoveredAreaDiameter($value)
- * @method static \Illuminate\Database\Eloquent\Builder|OldBranch whereCreatedAt($value)
- * @method static \Illuminate\Database\Eloquent\Builder|OldBranch whereDeletedAt($value)
- * @method static \Illuminate\Database\Eloquent\Builder|OldBranch whereDeliveryFee($value)
- * @method static \Illuminate\Database\Eloquent\Builder|OldBranch whereDeliveryService($value)
- * @method static \Illuminate\Database\Eloquent\Builder|OldBranch whereDeliveryTime($value)
- * @method static \Illuminate\Database\Eloquent\Builder|OldBranch whereId($value)
- * @method static \Illuminate\Database\Eloquent\Builder|OldBranch whereInternetService($value)
- * @method static \Illuminate\Database\Eloquent\Builder|OldBranch whereIsGrocery($value)
- * @method static \Illuminate\Database\Eloquent\Builder|OldBranch whereLatitude($value)
- * @method static \Illuminate\Database\Eloquent\Builder|OldBranch whereLongitude($value)
- * @method static \Illuminate\Database\Eloquent\Builder|OldBranch whereMaximumOrderCapacity($value)
- * @method static \Illuminate\Database\Eloquent\Builder|OldBranch whereMinimunOrder($value)
- * @method static \Illuminate\Database\Eloquent\Builder|OldBranch whereMunicipalityId($value)
- * @method static \Illuminate\Database\Eloquent\Builder|OldBranch whereNeighborhoodId($value)
- * @method static \Illuminate\Database\Eloquent\Builder|OldBranch whereOnline($value)
- * @method static \Illuminate\Database\Eloquent\Builder|OldBranch wherePhoneNumber($value)
- * @method static \Illuminate\Database\Eloquent\Builder|OldBranch wherePricePerPersonHigh($value)
- * @method static \Illuminate\Database\Eloquent\Builder|OldBranch wherePricePerPersonLow($value)
- * @method static \Illuminate\Database\Eloquent\Builder|OldBranch whereRating($value)
- * @method static \Illuminate\Database\Eloquent\Builder|OldBranch whereRatingCount($value)
- * @method static \Illuminate\Database\Eloquent\Builder|OldBranch whereReservationService($value)
- * @method static \Illuminate\Database\Eloquent\Builder|OldBranch whereRestaurantId($value)
- * @method static \Illuminate\Database\Eloquent\Builder|OldBranch whereSmokingZone($value)
- * @method static \Illuminate\Database\Eloquent\Builder|OldBranch whereStatus($value)
- * @method static \Illuminate\Database\Eloquent\Builder|OldBranch whereTranslation(string $translationField, $value, ?string $locale = null, string $method = 'whereHas', string $operator = '=')
- * @method static \Illuminate\Database\Eloquent\Builder|OldBranch whereTranslationLike(string $translationField, $value, ?string $locale = null)
- * @method static \Illuminate\Database\Eloquent\Builder|OldBranch whereUpdatedAt($value)
- * @method static \Illuminate\Database\Eloquent\Builder|OldBranch whereWorkiomId($value)
- * @method static \Illuminate\Database\Eloquent\Builder|OldBranch whereZohoBooksId($value)
- * @method static \Illuminate\Database\Eloquent\Builder|OldBranch whereZohoDeliveryItemId($value)
- * @method static \Illuminate\Database\Eloquent\Builder|OldBranch whereZohoId($value)
- * @method static \Illuminate\Database\Eloquent\Builder|OldBranch whereZohoTiptopDeliveryItemId($value)
- * @method static \Illuminate\Database\Eloquent\Builder|OldBranch withTranslation()
- * @mixin \Eloquent
- * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\OldModels\OldCategory[] $categories
+ * @property-read Collection|OldCategory[] $categories
  * @property-read int|null $categories_count
- * @property-read \App\Models\OldModels\OldChain $oldChain
+ * @property-read OldChain $oldChain
+ * @property-read OldBranchTranslation|null $translation
+ * @property-read Collection|OldBranchTranslation[] $translations
+ * @property-read int|null $translations_count
+ * @method static Builder|OldBranch listsTranslations(string $translationField)
+ * @method static Builder|OldBranch newModelQuery()
+ * @method static Builder|OldBranch newQuery()
+ * @method static Builder|OldBranch notTranslatedIn(?string $locale = null)
+ * @method static Builder|OldBranch orWhereTranslation(string $translationField, $value, ?string $locale = null)
+ * @method static Builder|OldBranch orWhereTranslationLike(string $translationField, $value, ?string $locale = null)
+ * @method static Builder|OldBranch orderByTranslation(string $translationField, string $sortMethod = 'asc')
+ * @method static Builder|OldBranch query()
+ * @method static Builder|OldBranch translated()
+ * @method static Builder|OldBranch translatedIn(?string $locale = null)
+ * @method static Builder|OldBranch whereAcceptBankcard($value)
+ * @method static Builder|OldBranch whereAddedBy($value)
+ * @method static Builder|OldBranch whereAddress($value)
+ * @method static Builder|OldBranch whereAirConditioning($value)
+ * @method static Builder|OldBranch whereAppDeliveryCustomerAppearing($value)
+ * @method static Builder|OldBranch whereAppDeliveryFee($value)
+ * @method static Builder|OldBranch whereAppDeliveryService($value)
+ * @method static Builder|OldBranch whereAppDeliveryTime($value)
+ * @method static Builder|OldBranch whereAppMinimunOrder($value)
+ * @method static Builder|OldBranch whereCityId($value)
+ * @method static Builder|OldBranch whereConclusion($value)
+ * @method static Builder|OldBranch whereContactEmail($value)
+ * @method static Builder|OldBranch whereContactName($value)
+ * @method static Builder|OldBranch whereContactPhone1($value)
+ * @method static Builder|OldBranch whereContactPhone2($value)
+ * @method static Builder|OldBranch whereCountryId($value)
+ * @method static Builder|OldBranch whereCoveredAreaDiameter($value)
+ * @method static Builder|OldBranch whereCreatedAt($value)
+ * @method static Builder|OldBranch whereDeletedAt($value)
+ * @method static Builder|OldBranch whereDeliveryFee($value)
+ * @method static Builder|OldBranch whereDeliveryService($value)
+ * @method static Builder|OldBranch whereDeliveryTime($value)
+ * @method static Builder|OldBranch whereId($value)
+ * @method static Builder|OldBranch whereInternetService($value)
+ * @method static Builder|OldBranch whereIsGrocery($value)
+ * @method static Builder|OldBranch whereLatitude($value)
+ * @method static Builder|OldBranch whereLongitude($value)
+ * @method static Builder|OldBranch whereMaximumOrderCapacity($value)
+ * @method static Builder|OldBranch whereMinimunOrder($value)
+ * @method static Builder|OldBranch whereMunicipalityId($value)
+ * @method static Builder|OldBranch whereNeighborhoodId($value)
+ * @method static Builder|OldBranch whereOnline($value)
+ * @method static Builder|OldBranch wherePhoneNumber($value)
+ * @method static Builder|OldBranch wherePricePerPersonHigh($value)
+ * @method static Builder|OldBranch wherePricePerPersonLow($value)
+ * @method static Builder|OldBranch whereRating($value)
+ * @method static Builder|OldBranch whereRatingCount($value)
+ * @method static Builder|OldBranch whereReservationService($value)
+ * @method static Builder|OldBranch whereRestaurantId($value)
+ * @method static Builder|OldBranch whereSmokingZone($value)
+ * @method static Builder|OldBranch whereStatus($value)
+ * @method static Builder|OldBranch whereTranslation(string $translationField, $value, ?string $locale = null, string $method = 'whereHas', string $operator = '=')
+ * @method static Builder|OldBranch whereTranslationLike(string $translationField, $value, ?string $locale = null)
+ * @method static Builder|OldBranch whereUpdatedAt($value)
+ * @method static Builder|OldBranch whereWorkiomId($value)
+ * @method static Builder|OldBranch whereZohoBooksId($value)
+ * @method static Builder|OldBranch whereZohoDeliveryItemId($value)
+ * @method static Builder|OldBranch whereZohoId($value)
+ * @method static Builder|OldBranch whereZohoTiptopDeliveryItemId($value)
+ * @method static Builder|OldBranch withTranslation()
+ * @mixin Eloquent
  */
 class OldBranch extends OldModel
 {
@@ -177,7 +181,7 @@ class OldBranch extends OldModel
     public function categories(): BelongsToMany
     {
         return $this->belongsToMany(OldCategory::class, 'jo3aan_branches_categories', 'branch_id', 'category_id')
-                    ->where('type','!=', OldCategory::TYPE_KITCHENS);
+                    ->where('type', '!=', OldCategory::TYPE_KITCHENS);
     }
 
     public static function statusesComparing(): array

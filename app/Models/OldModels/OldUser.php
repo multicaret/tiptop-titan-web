@@ -4,6 +4,10 @@ namespace App\Models\OldModels;
 
 
 use App\Models\User;
+use Eloquent;
+use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Support\Carbon;
+use Str;
 
 /**
  * App\Models\OldModels\OldUser
@@ -34,8 +38,8 @@ use App\Models\User;
  * @property int|null $online
  * @property string|null $remember_token
  * @property string|null $deleted_at
- * @property \Illuminate\Support\Carbon|null $created_at
- * @property \Illuminate\Support\Carbon|null $updated_at
+ * @property Carbon|null $created_at
+ * @property Carbon|null $updated_at
  * @property int $receive_fcm_notification
  * @property string|null $notification_mode
  * @property string|null $workiom_id
@@ -49,53 +53,53 @@ use App\Models\User;
  * @property int $orders_count
  * @property-read string $first_name
  * @property-read string $last_name
- * @method static \Illuminate\Database\Eloquent\Builder|OldUser newModelQuery()
- * @method static \Illuminate\Database\Eloquent\Builder|OldUser newQuery()
- * @method static \Illuminate\Database\Eloquent\Builder|OldUser query()
- * @method static \Illuminate\Database\Eloquent\Builder|OldUser whereAgentDevice($value)
- * @method static \Illuminate\Database\Eloquent\Builder|OldUser whereAgentOs($value)
- * @method static \Illuminate\Database\Eloquent\Builder|OldUser whereBirthDate($value)
- * @method static \Illuminate\Database\Eloquent\Builder|OldUser whereBranchId($value)
- * @method static \Illuminate\Database\Eloquent\Builder|OldUser whereCityId($value)
- * @method static \Illuminate\Database\Eloquent\Builder|OldUser whereConfirmationCode($value)
- * @method static \Illuminate\Database\Eloquent\Builder|OldUser whereCountryId($value)
- * @method static \Illuminate\Database\Eloquent\Builder|OldUser whereCreatedAt($value)
- * @method static \Illuminate\Database\Eloquent\Builder|OldUser whereDeletedAt($value)
- * @method static \Illuminate\Database\Eloquent\Builder|OldUser whereEmail($value)
- * @method static \Illuminate\Database\Eloquent\Builder|OldUser whereId($value)
- * @method static \Illuminate\Database\Eloquent\Builder|OldUser whereImage($value)
- * @method static \Illuminate\Database\Eloquent\Builder|OldUser whereLatitude($value)
- * @method static \Illuminate\Database\Eloquent\Builder|OldUser whereLocale($value)
- * @method static \Illuminate\Database\Eloquent\Builder|OldUser whereLongitude($value)
- * @method static \Illuminate\Database\Eloquent\Builder|OldUser whereName($value)
- * @method static \Illuminate\Database\Eloquent\Builder|OldUser whereNotificationMode($value)
- * @method static \Illuminate\Database\Eloquent\Builder|OldUser whereOnline($value)
- * @method static \Illuminate\Database\Eloquent\Builder|OldUser whereOrdersCount($value)
- * @method static \Illuminate\Database\Eloquent\Builder|OldUser wherePassword($value)
- * @method static \Illuminate\Database\Eloquent\Builder|OldUser wherePhoneNumber($value)
- * @method static \Illuminate\Database\Eloquent\Builder|OldUser whereReceiveFcmNotification($value)
- * @method static \Illuminate\Database\Eloquent\Builder|OldUser whereRegistrationType($value)
- * @method static \Illuminate\Database\Eloquent\Builder|OldUser whereRememberToken($value)
- * @method static \Illuminate\Database\Eloquent\Builder|OldUser whereSendCodeAgainDate($value)
- * @method static \Illuminate\Database\Eloquent\Builder|OldUser whereSendCodeAttempts($value)
- * @method static \Illuminate\Database\Eloquent\Builder|OldUser whereSex($value)
- * @method static \Illuminate\Database\Eloquent\Builder|OldUser whereSocialId($value)
- * @method static \Illuminate\Database\Eloquent\Builder|OldUser whereStatus($value)
- * @method static \Illuminate\Database\Eloquent\Builder|OldUser whereSubType($value)
- * @method static \Illuminate\Database\Eloquent\Builder|OldUser whereSubmitCodeAgainDate($value)
- * @method static \Illuminate\Database\Eloquent\Builder|OldUser whereSubmitCodeAttempts($value)
- * @method static \Illuminate\Database\Eloquent\Builder|OldUser whereTokens($value)
- * @method static \Illuminate\Database\Eloquent\Builder|OldUser whereType($value)
- * @method static \Illuminate\Database\Eloquent\Builder|OldUser whereUpdatedAt($value)
- * @method static \Illuminate\Database\Eloquent\Builder|OldUser whereUsername($value)
- * @method static \Illuminate\Database\Eloquent\Builder|OldUser whereVerificationCode($value)
- * @method static \Illuminate\Database\Eloquent\Builder|OldUser whereWorkiomId($value)
- * @method static \Illuminate\Database\Eloquent\Builder|OldUser whereZohoId($value)
- * @mixin \Eloquent
- * @property-read string|null $tel_number
- * @property-read string|null $tel_code_number
- * @property-read string $updated_username
  * @property-read mixed $role_name
+ * @property-read string|null $tel_code_number
+ * @property-read string|null $tel_number
+ * @property-read string $updated_username
+ * @method static Builder|OldUser newModelQuery()
+ * @method static Builder|OldUser newQuery()
+ * @method static Builder|OldUser query()
+ * @method static Builder|OldUser whereAgentDevice($value)
+ * @method static Builder|OldUser whereAgentOs($value)
+ * @method static Builder|OldUser whereBirthDate($value)
+ * @method static Builder|OldUser whereBranchId($value)
+ * @method static Builder|OldUser whereCityId($value)
+ * @method static Builder|OldUser whereConfirmationCode($value)
+ * @method static Builder|OldUser whereCountryId($value)
+ * @method static Builder|OldUser whereCreatedAt($value)
+ * @method static Builder|OldUser whereDeletedAt($value)
+ * @method static Builder|OldUser whereEmail($value)
+ * @method static Builder|OldUser whereId($value)
+ * @method static Builder|OldUser whereImage($value)
+ * @method static Builder|OldUser whereLatitude($value)
+ * @method static Builder|OldUser whereLocale($value)
+ * @method static Builder|OldUser whereLongitude($value)
+ * @method static Builder|OldUser whereName($value)
+ * @method static Builder|OldUser whereNotificationMode($value)
+ * @method static Builder|OldUser whereOnline($value)
+ * @method static Builder|OldUser whereOrdersCount($value)
+ * @method static Builder|OldUser wherePassword($value)
+ * @method static Builder|OldUser wherePhoneNumber($value)
+ * @method static Builder|OldUser whereReceiveFcmNotification($value)
+ * @method static Builder|OldUser whereRegistrationType($value)
+ * @method static Builder|OldUser whereRememberToken($value)
+ * @method static Builder|OldUser whereSendCodeAgainDate($value)
+ * @method static Builder|OldUser whereSendCodeAttempts($value)
+ * @method static Builder|OldUser whereSex($value)
+ * @method static Builder|OldUser whereSocialId($value)
+ * @method static Builder|OldUser whereStatus($value)
+ * @method static Builder|OldUser whereSubType($value)
+ * @method static Builder|OldUser whereSubmitCodeAgainDate($value)
+ * @method static Builder|OldUser whereSubmitCodeAttempts($value)
+ * @method static Builder|OldUser whereTokens($value)
+ * @method static Builder|OldUser whereType($value)
+ * @method static Builder|OldUser whereUpdatedAt($value)
+ * @method static Builder|OldUser whereUsername($value)
+ * @method static Builder|OldUser whereVerificationCode($value)
+ * @method static Builder|OldUser whereWorkiomId($value)
+ * @method static Builder|OldUser whereZohoId($value)
+ * @mixin Eloquent
  */
 class OldUser extends OldModel
 {
@@ -163,7 +167,7 @@ class OldUser extends OldModel
         if ( ! is_null($this->username)) {
             return $this->username;
         } else {
-            $tempString = \Str::snake($this->first_name).'_'.$this->tel_number;
+            $tempString = Str::snake($this->first_name).'_'.$this->tel_number;
             $tempString = str_replace('_', '', $tempString);
             if (empty($tempString)) {
                 $tempString = strstr($this->email, '@', 1);
@@ -198,7 +202,7 @@ class OldUser extends OldModel
         $countyCodeAttempts = ['+90', '+964', '+963', '+null'];
         foreach ($countyCodeAttempts as $tempCountryCode) {
             if ((strpos($phoneNumber, $tempCountryCode) !== false)) {
-                $countyCode = \Str::substr($tempCountryCode, 1);
+                $countyCode = Str::substr($tempCountryCode, 1);
                 break;
             }
         }
@@ -213,7 +217,7 @@ class OldUser extends OldModel
         $countyCodeAttempts = ['+90', '+964', '+963', '+null'];
         foreach ($countyCodeAttempts as $tempCountryCode) {
             if ((strpos($phoneNumber, $tempCountryCode) !== false)) {
-                $countyCode = \Str::substr($tempCountryCode, 1);
+                $countyCode = Str::substr($tempCountryCode, 1);
                 break;
             }
         }
@@ -240,6 +244,6 @@ class OldUser extends OldModel
     {
         $roleNameSnakeCase = self::roleComparing()[$this->type];
 
-        return \Str::title(str_replace('-', ' ', $roleNameSnakeCase));
+        return Str::title(str_replace('-', ' ', $roleNameSnakeCase));
     }
 }

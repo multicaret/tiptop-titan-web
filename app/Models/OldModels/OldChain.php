@@ -5,10 +5,11 @@ namespace App\Models\OldModels;
 
 use App\Models\Chain;
 use Astrotomic\Translatable\Translatable;
-use Carbon\Carbon;
+use Eloquent;
 use Illuminate\Database\Eloquent\Builder;
-use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Support\Carbon;
 
 /**
  * App\Models\OldModels\OldChain
@@ -20,11 +21,15 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
  * @property string $app_percentage
  * @property string|null $delivery_app_percentage
  * @property string|null $deleted_at
- * @property \Illuminate\Support\Carbon|null $created_at
- * @property \Illuminate\Support\Carbon|null $updated_at
+ * @property Carbon|null $created_at
+ * @property Carbon|null $updated_at
  * @property string|null $zoho_id
- * @property-read \App\Models\OldModels\OldChainTranslation|null $translation
- * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\OldModels\OldChainTranslation[] $translations
+ * @property-read Collection|OldBranch[] $branches
+ * @property-read int|null $branches_count
+ * @property-read Collection|OldProduct[] $products
+ * @property-read int|null $products_count
+ * @property-read OldChainTranslation|null $translation
+ * @property-read Collection|OldChainTranslation[] $translations
  * @property-read int|null $translations_count
  * @method static Builder|OldChain listsTranslations(string $translationField)
  * @method static Builder|OldChain newModelQuery()
@@ -49,11 +54,7 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
  * @method static Builder|OldChain whereUpdatedAt($value)
  * @method static Builder|OldChain whereZohoId($value)
  * @method static Builder|OldChain withTranslation()
- * @mixin \Eloquent
- * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\OldModels\OldBranch[] $branches
- * @property-read int|null $branches_count
- * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\OldModels\OldProduct[] $products
- * @property-read int|null $products_count
+ * @mixin Eloquent
  */
 class OldChain extends OldModel
 {
@@ -80,7 +81,8 @@ class OldChain extends OldModel
         ];
     }
 
-    public function branches() {
+    public function branches()
+    {
         return $this->hasMany(OldBranch::class, 'restaurant_id');
     }
 
