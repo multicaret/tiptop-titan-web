@@ -114,6 +114,7 @@ class ProductController extends Controller
         $data = $this->essentialData($request, $product);
         $data['product'] = $product;
         $product->load(['unit']);
+        $product->load(['searchTags']);
 
 
         return view('admin.products.form', $data);
@@ -286,6 +287,8 @@ class ProductController extends Controller
 
 
         $isGrocery ? $product->categories()->sync($ids) : null;
+        $searchTagsIds = json_decode($request->input('search_tags'));
+        $product->searchTags()->sync($searchTagsIds);
 
         foreach (localization()->getSupportedLocales() as $key => $value) {
             if ($request->input($key.'.title')) {

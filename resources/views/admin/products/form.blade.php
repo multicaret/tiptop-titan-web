@@ -357,7 +357,6 @@
                                         v-model="product.status_js"
                                         track-by="id"
                                         label="title"
-                                        name="status"
                                         :searchable="true"
                                         :allow-empty="true"
                                         select-label=""
@@ -374,10 +373,9 @@
                                     </label>
                                     <multiselect
                                         :options="searchTags"
-                                        v-model="product.searchTags"
+                                        v-model="product.search_tags"
                                         track-by="id"
                                         label="title"
-                                        name="search_tags[]"
                                         :searchable="true"
                                         :multiple="true"
                                         :allow-empty="true"
@@ -385,6 +383,7 @@
                                         selected-label=""
                                         deselect-label=""
                                         placeholder=""
+                                        @input="selectSearchTags"
                                         autocomplete="false"
                                         required
                                     ></multiselect>
@@ -447,6 +446,8 @@
                 <input type="hidden" name="chain" :value="JSON.stringify(product.chain)">
                 <input type="hidden" name="branch" :value="JSON.stringify(product.branch)">
             @endif
+            <input type="hidden" name="status" :value="product.status_js.id">
+            <input type="hidden" name="search_tags">
             <input type="hidden" name="categories" :value="JSON.stringify(product.categories)">
             <input type="hidden" name="master_category" :value="JSON.stringify(product.master_category)">
             <input type="hidden" name="unit_id" :value="JSON.stringify(product.unit)">
@@ -473,9 +474,15 @@
                 statuses: @json(array_values(\App\Models\Product::getAllStatusesRich())),
                 isGrocery: @json($isGrocery),
             },
-            beforeMount() {
+            mounted() {
+                this.selectSearchTags(this.product.search_tags?? []);
             },
             methods: {
+                selectSearchTags: function (searchTags) {
+                    console.log('searchTags', searchTags);
+                    const searchTagsIds = searchTags.map(item => item.id);
+                    $(`input[name='search_tags']`).val(JSON.stringify(searchTagsIds));
+                },
                 selectChain: function () {
                     this.branches = [];
                     this.product.branch = null;
