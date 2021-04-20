@@ -2,7 +2,7 @@
     {{$ingredient->title}}
     &nbsp;&nbsp;
     @if($isPriceShown)
-        <input type="text" numeric placeholder="0" wire:model.lazy="ingredient.price" class="price">
+        <input type="text" numeric placeholder="0" wire:model.lazy="price" class="price">
     @endif
     <span class="remove py-1 cursor-pointer"
           wire:click="removeIngredient({{$ingredient->id}})">
