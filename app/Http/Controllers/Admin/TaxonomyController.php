@@ -234,7 +234,8 @@ class TaxonomyController extends Controller
     {
         $data = $this->essentialData($request);
         $taxonomy->type = $data['correctType'];
-        $data['taxonomy'] = $taxonomy;
+        $data['taxonomy'] = $taxonomy->load('searchableTags');
+        $data['searchableTags'] = $taxonomy->type === Taxonomy::TYPE_FOOD_CATEGORY ?  Taxonomy::searchTags()->get(): [];
 
         return view('admin.taxonomies.form',
             $data);
@@ -302,6 +303,7 @@ class TaxonomyController extends Controller
         }
 
         $taxonomy->branches()->sync($request->input('branches'));
+        $taxonomy->searchableTags()->sync($request->input('search_tags'));
 
         $this->handleSubmittedSingleMedia('cover', $request, $taxonomy);
 

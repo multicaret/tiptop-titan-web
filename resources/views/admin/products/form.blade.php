@@ -479,9 +479,10 @@
             },
             methods: {
                 selectSearchTags: function (searchTags) {
-                    console.log('searchTags', searchTags);
-                    const searchTagsIds = searchTags.map(item => item.id);
-                    $(`input[name='search_tags']`).val(JSON.stringify(searchTagsIds));
+                    if(!searchTags && searchTags.length > 0) {
+                        const searchTagsIds = searchTags.map(item => item.id);
+                        $(`input[name='search_tags']`).val(JSON.stringify(searchTagsIds));
+                    }
                 },
                 selectChain: function () {
                     this.branches = [];

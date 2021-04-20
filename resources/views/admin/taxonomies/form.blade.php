@@ -150,6 +150,17 @@
                     @endcomponent
                 </div>
 
+                @if($correctType == \App\Models\Taxonomy::TYPE_FOOD_CATEGORY)
+                    <div
+                        class="col-4">
+                        @component('admin.components.form-group', ['name' => 'search_tags[]', 'type' => 'select'])
+                            @slot('label', trans('strings.search_tags'))
+                            @slot('attributes', ['class'=>'select-2-search-tags w-100', 'multiple'])
+                            @slot('options', $searchableTags->pluck('title','id'))
+                            @slot('selected', $taxonomy->searchableTags)
+                        @endcomponent
+                    </div>
+                @endif
                 @if($correctType == \App\Models\Taxonomy::TYPE_UNIT)
                     <div class="col-md-12">
                         @component('admin.components.form-group', ['name' => 'step', 'type' => 'number'])
@@ -233,10 +244,11 @@
             $('.select-2-status').select2({
                 placeholder: 'Select Status',
             });
-        });
-        $(function () {
             $('.select2-chain').select2({
                 placeholder: 'Select Chain',
+            });
+            $('.select-2-search-tags').select2({
+                placeholder: 'Select search tags',
             });
         });
     </script>
