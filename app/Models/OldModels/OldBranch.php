@@ -129,6 +129,8 @@ use Illuminate\Support\Carbon;
  * @method static Builder|OldBranch whereZohoTiptopDeliveryItemId($value)
  * @method static Builder|OldBranch withTranslation()
  * @mixin Eloquent
+ * @property string|null $zoho_books_account_id
+ * @method static Builder|OldBranch whereZohoBooksAccountId($value)
  */
 class OldBranch extends OldModel
 {

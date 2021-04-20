@@ -243,7 +243,7 @@ class Branch extends Model implements HasMedia
 
     public function managers(): BelongsToMany
     {
-        return $this->belongsToMany(User::class, 'branch_manager', 'manager_id', 'branch_id')
+        return $this->belongsToMany(User::class, 'branch_manager', 'branch_id', 'user_id')
                     ->withPivot('is_primary')
                     ->withTimestamps();
     }
@@ -255,7 +255,7 @@ class Branch extends Model implements HasMedia
 
     public function owners(): BelongsToMany
     {
-        return $this->belongsToMany(User::class, 'branch_owner', 'owner_id', 'branch_id')
+        return $this->belongsToMany(User::class, 'branch_owner', 'branch_id', 'user_id')
                     ->withPivot('is_primary')
                     ->withTimestamps();
     }
@@ -288,7 +288,7 @@ class Branch extends Model implements HasMedia
 
     public function drivers(): BelongsToMany
     {
-        return $this->belongsToMany(User::class, 'branch_driver', 'driver_id', 'branch_id')
+        return $this->belongsToMany(User::class, 'branch_driver', 'branch_id', 'user_id')
                     ->withTimestamps();
     }
 

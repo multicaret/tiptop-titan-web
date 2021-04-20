@@ -18,7 +18,7 @@ use Illuminate\Support\Carbon;
  * @property string $code
  * @property int|null $customer_id
  * @property int $branch_id
- * @property int|null $driver_id
+ * @property int|null $user_id
  * @property int $basket_id
  * @property int|null $address_id
  * @property string|null $type
@@ -37,7 +37,7 @@ use Illuminate\Support\Carbon;
  * @property string|null $delivery_type RESTAURANT | APP
  * @property int|null $driver_approved
  * @property string|null $drivers_notified
- * @property int|null $currently_notified_driver_id
+ * @property int|null $currently_notified_user_id
  * @property string|null $notify_date
  * @property int|null $number_of_notified
  * @property string|null $discount
@@ -120,6 +120,8 @@ use Illuminate\Support\Carbon;
  * @method static Builder|OldOrder whereZohoBooksInvoiceId($value)
  * @method static Builder|OldOrder whereZohoId($value)
  * @mixin Eloquent
+ * @property int|null $driver_id
+ * @property int|null $currently_notified_driver_id
  */
 class OldOrder extends OldModel
 {
@@ -142,7 +144,7 @@ class OldOrder extends OldModel
             'chain_id' => 'chain_id',
             'branch_id' => 'branch_id',
             'city_id' => 'city_id',
-            'driver_id' => 'driver_id',
+            'driver_id' => 'user_id',
 //            'basket_id' => 'cart_id',
             'address_id' => 'address_id',
 //            'status' => '', // typeComparing()
@@ -187,6 +189,7 @@ class OldOrder extends OldModel
             'PREPARING' => Order::STATUS_PREPARING,
             'READY' => Order::STATUS_WAITING_COURIER,
             'ON_THE_WAY' => Order::STATUS_ON_THE_WAY,
+            'SCHEDULED' => Order::STATUS_SCHEDULED,
         ];
     }
 

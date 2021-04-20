@@ -91,16 +91,17 @@
                             @slot('selected', $user->gender)
                         @endcomponent
                     </div>
-                    @if(in_array($role, \App\Models\User::rolesHaving('branch')))
+                    @if(in_array($role, \App\Models\User::rolesHaving('branches')))
                         <div class="col-6">
-                            @component('admin.components.form-group', ['name' => 'branch_id', 'type' => 'select'])
-                                @slot('label', trans('strings.branch'))
+                            @component('admin.components.form-group', ['name' => 'branches[]', 'type' => 'select'])
+                                @slot('label', trans('strings.branches'))
                                 @slot('options', $branches)
                                 @slot('attributes', [
-                                    'class' => 'select-2-branch w-100',
+                                    'multiple',
                                     'required',
+                                    'class' => 'select2-branches w-100',
                                 ])
-                                @slot('selected', $user->branch_id)
+                                @slot('selected', $menuCategoryData['hasBranch'] ?  $menuCategoryData['branchId'] : $user->branch_id)
                             @endcomponent
                         </div>
                     @endif
@@ -631,7 +632,7 @@
     <script src="/admin-assets/libs/select2/select2.js"></script>
     <script>
         $(function () {
-            $('.select-2-branch').select2({
+            $('.select2-branches').select2({
                 placeholder: 'Select Branch',
             });
             $('.select-2-employment').select2({

@@ -43,10 +43,12 @@ class CreateOrdersTable extends Migration
             $table->timestamp('rated_at')->nullable();
             $table->text('rating_comment')->nullable();
             // Rating Related - For Food Only
-            $table->decimal('driver_rating_value', 3)->nullable();
             $table->boolean('has_good_food_quality_rating')->nullable();
             $table->boolean('has_good_packaging_quality_rating')->nullable();
             $table->boolean('has_good_order_accuracy_rating')->nullable();
+            $table->decimal('driver_rating_value', 3)->nullable();
+            $table->text('driver_rating_comment')->nullable();
+            $table->timestamp('driver_rated_at')->nullable();
 
             $table->unsignedBigInteger('cancellation_reason_id')->nullable();
             $table->string('cancellation_reason_note')->nullable();
@@ -59,7 +61,6 @@ class CreateOrdersTable extends Migration
             $table->unsignedDouble('tiptop_share_result')->default(0);
             $table->unsignedDouble('tiptop_share_percentage')->default(0)->comment('is tiptop_share_percentage, which is taken directly from commission column in Branch');
             $table->unsignedDouble('restaurant_share_result')->default(0);
-            $table->unsignedBigInteger('driver_id')->nullable();
             $table->text('private_notes')->nullable()->comment('take discount_method_id and store it');
             $table->string('agent_device')->nullable();
             $table->string('agent_os')->nullable();

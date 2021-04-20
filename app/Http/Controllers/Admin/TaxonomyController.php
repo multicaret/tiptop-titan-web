@@ -232,13 +232,12 @@ class TaxonomyController extends Controller
      */
     public function edit(Taxonomy $taxonomy, Request $request)
     {
-        [
-            $typeName, $correctType, $roots, $fontAwesomeIcons, $branches, $ingredientCategories
-        ] = $this->essentialData($request);
+        $data = $this->essentialData($request);
+        $taxonomy->type = $data['correctType'];
+        $data['taxonomy'] = $taxonomy;
 
         return view('admin.taxonomies.form',
-            compact('taxonomy', 'roots', 'correctType', 'typeName', 'fontAwesomeIcons', 'branches',
-                'ingredientCategories'));
+            $data);
     }
 
     /**

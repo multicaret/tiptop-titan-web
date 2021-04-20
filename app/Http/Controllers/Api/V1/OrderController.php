@@ -14,6 +14,7 @@ use App\Models\Location;
 use App\Models\Order;
 use App\Models\PaymentMethod;
 use App\Models\Taxonomy;
+use App\Models\User;
 use DB;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
@@ -293,32 +294,53 @@ class OrderController extends BaseApiController
         return $this->respond($response);
     }
 
+    public function storeDriverRate(Order $order, User $driver, Request $request): JsonResponse
+    {
+        if ($order->status != Order::STATUS_DELIVERED) {
+            return $this->respondWithMessage(trans('strings.Can not rate a not delivered order'));
+        }
+
+        DB::beginTransaction();
+        $driverRatingValue = $request->input('driver_rating_value');
+        $order->driver_rating_value = $driverRatingValue;
+//      Todo: Remember to increase Driver avg rating
+        $driver->avg_rating = $driver->average_rating;
+        $driver->increment('rating_count');
+        $driver->save();
+
+        $order->driver_rating_comment = $request->input('comment');
+        $order->driver_rating_value = $driverRatingValue;
+        $order->driver_rated_at = now();
+        $order->save();
+
+        auth()->user()->rate($driver, $driverRatingValue);
+
+//        todo: calculate driver's average rating properly
+//        $driver->avg_rating = $driver->average_rating;
+        $driver->increment('rating_count');
+        $driver->save();
+        DB::commit();
+
+        return $this->respondWithMessage(trans('strings.successfully_done'));
+    }
 
     public function storeRate(Order $order, Request $request): JsonResponse
     {
         if ($order->status != Order::STATUS_DELIVERED) {
             return $this->respondWithMessage(trans('strings.Can not rate a not delivered order'));
         }
+        DB::beginTransaction();
 
         $branchRatingValue = $request->input('branch_rating_value');
         if ($order->type === Chain::CHANNEL_GROCERY_OBJECT) {
             $order->rating_issue_id = $request->input('grocery_issue_id');
         }
         if ($order->type === Chain::CHANNEL_FOOD_OBJECT) {
-            $driverRatingValue = $request->input('driver_rating_value');
-            $order->driver_rating_value = $driverRatingValue;
             $order->has_good_food_quality_rating = $request->input('food_rating_factors.has_good_food_quality_rating');
             $order->has_good_packaging_quality_rating = $request->input('food_rating_factors.has_good_packaging_quality_rating');
             $order->has_good_order_accuracy_rating = $request->input('food_rating_factors.has_good_order_accuracy_rating');
-            /*
-             * Todo: Remember to increase Driver avg rating
-            $driver->avg_rating = $driver->average_rating;
-            $driver->increment('rating_count');
-            $driver->save();
-            */
         }
 
-        DB::beginTransaction();
         $order->rating_comment = $request->input('comment');
         $order->branch_rating_value = $branchRatingValue;
         $order->rated_at = now();
@@ -327,7 +349,7 @@ class OrderController extends BaseApiController
         $branch = Branch::find($order->branch_id);
         auth()->user()->rate($branch, $branchRatingValue);
 
-        $branch->avg_rating = $branch->average_rating;
+        $branch->avg_rating = $branch->average_rating; //whaaaaaaaaaa?
         $branch->increment('rating_count');
         $branch->save();
         DB::commit();
