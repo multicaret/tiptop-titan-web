@@ -33,15 +33,17 @@ class ProductOption extends Component
     ];
 
 
-    public function updatedOptionsBasedOnIngredients($newValue)
+    public function updatedOptionIsBasedOnIngredients($newValue)
     {
         $this->validate([
-            'option.is_based_on_ingredients' => 'required|numeric',
+            'option.is_based_on_ingredients' => 'required',
         ]);
         $this->option->is_based_on_ingredients = $newValue;
         if ($this->option->is_based_on_ingredients) {
-            $this->option->type = ProductOptionModel::TYPE_INCLUDING;
             $this->updatedSearch('');
+        } else {
+            $this->option->type = ProductOptionModel::TYPE_INCLUDING;
+//            dd($this->option, 'Must be including '.ProductOptionModel::TYPE_INCLUDING);
         }
         $this->option->save();
 
@@ -51,7 +53,7 @@ class ProductOption extends Component
         ]);
     }
 
-    public function updatedOptionIsRequired($newValue)
+    /*public function updatedOptionIsRequired($newValue)
     {
         $this->validate([
             'option.is_required' => 'required|boolean',
@@ -63,7 +65,7 @@ class ProductOption extends Component
             'icon' => 'success',
             'message' => '"Is Required" has been changed',
         ]);
-    }
+    }*/
 
     public function updatedOptionType($newValue)
     {
@@ -87,9 +89,9 @@ class ProductOption extends Component
         $this->validate([
             'option.input_type' => 'required|numeric',
         ]);
-        $this->option->type = $newValue;
-        if ($this->option->type == ProductOptionModel::SELECTION_TYPE_SINGLE_VALUE) {
-            $this->option->min_number_of_selection = 1;
+        $this->option->input_type = $newValue;
+        if ($this->option->selection_type == ProductOptionModel::SELECTION_TYPE_SINGLE_VALUE) {
+            $this->option->min_number_of_selection = 0;
             $this->option->max_number_of_selection = 1;
         }
         $this->option->save();
@@ -100,19 +102,23 @@ class ProductOption extends Component
         ]);
     }
 
-    public function updatedOptionSelectionType($newValue)
+    /*public function updatedOptionSelectionType($newValue)
     {
         $this->validate([
             'option.selection_type' => 'required|numeric',
         ]);
         $this->option->selection_type = $newValue;
+        if ($this->option->selection_type == ProductOptionModel::SELECTION_TYPE_SINGLE_VALUE) {
+            $this->option->min_number_of_selection = 1;
+            $this->option->max_number_of_selection = 1;
+        }
         $this->option->save();
 
         $this->emit('showToast', [
             'icon' => 'success',
             'message' => 'Selection type has been changed',
         ]);
-    }
+    }*/
 
     public function updatedOptionMinNumberOfSelection($newValue)
     {
@@ -120,6 +126,15 @@ class ProductOption extends Component
             'option.min_number_of_selection' => 'nullable|numeric',
         ]);
         $this->option->min_number_of_selection = $newValue;
+        if ($this->option->min_number_of_selection >= 1) {
+            $this->option->is_required = true;
+        } else {
+            $this->option->is_required = false;
+        }
+
+        if ($this->option->min_number_of_selection > $this->option->max_number_of_selection) {
+            $this->option->max_number_of_selection = $this->option->min_number_of_selection + 1;
+        }
         $this->option->save();
 
         $this->emit('showToast', [
@@ -133,7 +148,20 @@ class ProductOption extends Component
         $this->validate([
             'option.max_number_of_selection' => 'nullable|numeric',
         ]);
+        if ($newValue == 0) {
+            $newValue = 1;
+        }
         $this->option->max_number_of_selection = $newValue;
+        if ($this->option->max_number_of_selection == 1) {
+            $this->option->selection_type = ProductOptionModel::SELECTION_TYPE_SINGLE_VALUE;
+        } elseif ($this->option->max_number_of_selection > 1) {
+            $this->option->selection_type = ProductOptionModel::SELECTION_TYPE_MULTIPLE_VALUE;
+        }
+
+        if ($this->option->min_number_of_selection > $this->option->max_number_of_selection) {
+            $this->option->min_number_of_selection = $this->option->max_number_of_selection - 1;
+        }
+
         $this->option->save();
 
         $this->emit('showToast', [
@@ -226,9 +254,14 @@ class ProductOption extends Component
     protected $listeners = [
 //        'optionCloned' => 'cloneOption'
         'selectionDeleted' => 'reloadSelections',
+        'ingredientPillDeleted' => 'deleteIngredientPill',
         'deleteOption',
     ];
 
+    public function deleteIngredientPill($params)
+    {
+        $this->removeIngredient($params['ingredientPillId']);
+    }
 
     public function reloadSelections($params)
     {
