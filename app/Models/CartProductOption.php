@@ -22,6 +22,18 @@ use Illuminate\Database\Eloquent\Relations\Pivot;
  * @method static Builder|CartProductOption newQuery()
  * @method static Builder|CartProductOption query()
  * @mixin Eloquent
+ * @property int $id
+ * @property int $cart_product_id
+ * @property int $product_option_id
+ * @property array|null $product_option_object
+ * @property \Illuminate\Support\Carbon|null $created_at
+ * @property \Illuminate\Support\Carbon|null $updated_at
+ * @method static Builder|CartProductOption whereCartProductId($value)
+ * @method static Builder|CartProductOption whereCreatedAt($value)
+ * @method static Builder|CartProductOption whereId($value)
+ * @method static Builder|CartProductOption whereProductOptionId($value)
+ * @method static Builder|CartProductOption whereProductOptionObject($value)
+ * @method static Builder|CartProductOption whereUpdatedAt($value)
  */
 class CartProductOption extends Pivot
 {
