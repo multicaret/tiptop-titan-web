@@ -8,6 +8,9 @@ use App\Models\Country;
 use App\Models\Location;
 use App\Models\Region;
 use App\Models\User;
+use Eloquent;
+use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Support\Carbon;
 
 /**
  * App\Models\OldModels\OldLocation
@@ -34,42 +37,42 @@ use App\Models\User;
  * @property string|null $title
  * @property string $type
  * @property string|null $deleted_at
- * @property \Illuminate\Support\Carbon|null $created_at
- * @property \Illuminate\Support\Carbon|null $updated_at
- * @property-read mixed $country_id
- * @property-read array|null $phones
- * @method static \Illuminate\Database\Eloquent\Builder|OldLocation newModelQuery()
- * @method static \Illuminate\Database\Eloquent\Builder|OldLocation newQuery()
- * @method static \Illuminate\Database\Eloquent\Builder|OldLocation query()
- * @method static \Illuminate\Database\Eloquent\Builder|OldLocation whereAddress($value)
- * @method static \Illuminate\Database\Eloquent\Builder|OldLocation whereAddressDescription($value)
- * @method static \Illuminate\Database\Eloquent\Builder|OldLocation whereApartment($value)
- * @method static \Illuminate\Database\Eloquent\Builder|OldLocation whereBuilding($value)
- * @method static \Illuminate\Database\Eloquent\Builder|OldLocation whereCity($value)
- * @method static \Illuminate\Database\Eloquent\Builder|OldLocation whereCountry($value)
- * @method static \Illuminate\Database\Eloquent\Builder|OldLocation whereCreatedAt($value)
- * @method static \Illuminate\Database\Eloquent\Builder|OldLocation whereDefault($value)
- * @method static \Illuminate\Database\Eloquent\Builder|OldLocation whereDeletedAt($value)
- * @method static \Illuminate\Database\Eloquent\Builder|OldLocation whereEmail($value)
- * @method static \Illuminate\Database\Eloquent\Builder|OldLocation whereFloor($value)
- * @method static \Illuminate\Database\Eloquent\Builder|OldLocation whereId($value)
- * @method static \Illuminate\Database\Eloquent\Builder|OldLocation whereLatitude($value)
- * @method static \Illuminate\Database\Eloquent\Builder|OldLocation whereLongitude($value)
- * @method static \Illuminate\Database\Eloquent\Builder|OldLocation whereMunicipality($value)
- * @method static \Illuminate\Database\Eloquent\Builder|OldLocation whereName($value)
- * @method static \Illuminate\Database\Eloquent\Builder|OldLocation whereNeighborhood($value)
- * @method static \Illuminate\Database\Eloquent\Builder|OldLocation wherePhoneNumber($value)
- * @method static \Illuminate\Database\Eloquent\Builder|OldLocation wherePostalCode($value)
- * @method static \Illuminate\Database\Eloquent\Builder|OldLocation whereStreet($value)
- * @method static \Illuminate\Database\Eloquent\Builder|OldLocation whereTitle($value)
- * @method static \Illuminate\Database\Eloquent\Builder|OldLocation whereType($value)
- * @method static \Illuminate\Database\Eloquent\Builder|OldLocation whereUpdatedAt($value)
- * @method static \Illuminate\Database\Eloquent\Builder|OldLocation whereUserId($value)
- * @mixin \Eloquent
+ * @property Carbon|null $created_at
+ * @property Carbon|null $updated_at
  * @property-read mixed $city_id
  * @property-read string $contactable_type
+ * @property-read mixed $country_id
  * @property-read string|null $kind
+ * @property-read mixed $phones
  * @property-read mixed $region_id
+ * @method static Builder|OldLocation newModelQuery()
+ * @method static Builder|OldLocation newQuery()
+ * @method static Builder|OldLocation query()
+ * @method static Builder|OldLocation whereAddress($value)
+ * @method static Builder|OldLocation whereAddressDescription($value)
+ * @method static Builder|OldLocation whereApartment($value)
+ * @method static Builder|OldLocation whereBuilding($value)
+ * @method static Builder|OldLocation whereCity($value)
+ * @method static Builder|OldLocation whereCountry($value)
+ * @method static Builder|OldLocation whereCreatedAt($value)
+ * @method static Builder|OldLocation whereDefault($value)
+ * @method static Builder|OldLocation whereDeletedAt($value)
+ * @method static Builder|OldLocation whereEmail($value)
+ * @method static Builder|OldLocation whereFloor($value)
+ * @method static Builder|OldLocation whereId($value)
+ * @method static Builder|OldLocation whereLatitude($value)
+ * @method static Builder|OldLocation whereLongitude($value)
+ * @method static Builder|OldLocation whereMunicipality($value)
+ * @method static Builder|OldLocation whereName($value)
+ * @method static Builder|OldLocation whereNeighborhood($value)
+ * @method static Builder|OldLocation wherePhoneNumber($value)
+ * @method static Builder|OldLocation wherePostalCode($value)
+ * @method static Builder|OldLocation whereStreet($value)
+ * @method static Builder|OldLocation whereTitle($value)
+ * @method static Builder|OldLocation whereType($value)
+ * @method static Builder|OldLocation whereUpdatedAt($value)
+ * @method static Builder|OldLocation whereUserId($value)
+ * @mixin Eloquent
  */
 class OldLocation extends OldModel
 {

@@ -17,12 +17,15 @@ use Illuminate\Support\Str;
  * @property string $locale
  * @property string $term
  * @property int $count
- * @property int $chain_id
- * @property int $branch_id
+ * @property int|null $chain_id
+ * @property int|null $branch_id
+ * @property int $type 1:Market, 2: Food
  * @property Carbon|null $created_at
  * @property Carbon|null $updated_at
- * @property-read \App\Models\Branch $branch
- * @property-read \App\Models\Chain $chain
+ * @property-read Branch|null $branch
+ * @property-read Chain|null $chain
+ * @property-read bool $is_food
+ * @property-read bool $is_grocery
  * @method static Builder|Search foods()
  * @method static Builder|Search groceries()
  * @method static Builder|Search newModelQuery()
@@ -35,12 +38,9 @@ use Illuminate\Support\Str;
  * @method static Builder|Search whereId($value)
  * @method static Builder|Search whereLocale($value)
  * @method static Builder|Search whereTerm($value)
+ * @method static Builder|Search whereType($value)
  * @method static Builder|Search whereUpdatedAt($value)
  * @mixin Eloquent
- * @property int $type 1:Market, 2: Food
- * @method static Builder|Search whereType($value)
- * @property-read bool $is_food
- * @property-read bool $is_grocery
  */
 class Search extends Model
 {

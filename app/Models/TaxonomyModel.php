@@ -10,7 +10,6 @@ use App\Traits\HasUuid;
 use App\Traits\HasViewCount;
 use Astrotomic\Translatable\Contracts\Translatable as TranslatableContract;
 use Astrotomic\Translatable\Translatable;
-use Baum\Node;
 use Eloquent;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Collection;
@@ -28,7 +27,7 @@ use Spatie\MediaLibrary\MediaCollections\Models\Media;
 
 
 /**
- * App\Models\Taxonomy
+ * App\Models\TaxonomyModel
  *
  * @property int $id
  * @property string $uuid
@@ -50,16 +49,14 @@ use Spatie\MediaLibrary\MediaCollections\Models\Media;
  * @property Carbon|null $created_at
  * @property Carbon|null $updated_at
  * @property Carbon|null $deleted_at
- * @property-read \App\Models\Branch|null $branch
- * @property-read Collection|\App\Models\Branch[] $branches
+ * @property-read Branch|null $branch
+ * @property-read Collection|Branch[] $branches
  * @property-read int|null $branches_count
- * @property-read \App\Models\Chain|null $chain
- * @property-read Collection|Taxonomy[] $children
- * @property-read int|null $children_count
- * @property-read \App\Models\User $creator
- * @property-read Collection|\App\Models\Product[] $crossSellsProducts
+ * @property-read Chain|null $chain
+ * @property-read User $creator
+ * @property-read Collection|Product[] $crossSellsProducts
  * @property-read int|null $cross_sells_products_count
- * @property-read \App\Models\User $editor
+ * @property-read User $editor
  * @property-read mixed $cover
  * @property-read mixed $cover_small
  * @property-read bool $is_active
@@ -67,86 +64,81 @@ use Spatie\MediaLibrary\MediaCollections\Models\Media;
  * @property-read mixed $link
  * @property-read mixed $status_name
  * @property-read Taxonomy|null $ingredientCategory
- * @property-read Collection|Taxonomy[] $ingredientsOfCategory
+ * @property-read Collection|TaxonomyModel[] $ingredientsOfCategory
  * @property-read int|null $ingredients_of_category_count
  * @property-read MediaCollection|Media[] $media
  * @property-read int|null $media_count
- * @property-read Collection|\App\Models\Product[] $menuProducts
+ * @property-read Collection|Product[] $menuProducts
  * @property-read int|null $menu_products_count
- * @property-read Taxonomy|null $parent
- * @property-read Collection|\App\Models\Post[] $posts
+ * @property-read Collection|Post[] $posts
  * @property-read int|null $posts_count
- * @property-read Collection|\App\Models\Product[] $products
+ * @property-read Collection|Product[] $products
  * @property-read int|null $products_count
- * @property-read Collection|\App\Models\Post[] $tagPosts
+ * @property-read Collection|Post[] $tagPosts
  * @property-read int|null $tag_posts_count
- * @property-read \App\Models\TaxonomyTranslation|null $translation
- * @property-read Collection|\App\Models\TaxonomyTranslation[] $translations
+ * @property-read TaxonomyTranslation|null $translation
+ * @property-read Collection|TaxonomyTranslation[] $translations
  * @property-read int|null $translations_count
- * @property-read Collection|\App\Models\Product[] $upSellsProducts
+ * @property-read Collection|Product[] $upSellsProducts
  * @property-read int|null $up_sells_products_count
- * @property-read Collection|\App\Models\User[] $usersOfCategory
+ * @property-read Collection|User[] $usersOfCategory
  * @property-read int|null $users_of_category_count
- * @property-read Collection|\App\Models\User[] $usersOfSkill
+ * @property-read Collection|User[] $usersOfSkill
  * @property-read int|null $users_of_skill_count
- * @method static Builder|Taxonomy active()
- * @method static Builder|Taxonomy draft()
- * @method static Builder|Taxonomy foodCategories()
- * @method static Builder|Taxonomy groceryCategories()
- * @method static Builder|Taxonomy inactive()
- * @method static Builder|Taxonomy ingredientCategories()
- * @method static Builder|Taxonomy ingredients()
- * @method static \Illuminate\Database\Eloquent\Builder|Node limitDepth($limit)
- * @method static Builder|Taxonomy listsTranslations(string $translationField)
- * @method static Builder|Taxonomy menuCategories()
- * @method static Builder|Taxonomy newModelQuery()
- * @method static Builder|Taxonomy newQuery()
- * @method static Builder|Taxonomy notActive()
- * @method static Builder|Taxonomy notTranslatedIn(?string $locale = null)
- * @method static \Illuminate\Database\Query\Builder|Taxonomy onlyTrashed()
- * @method static Builder|Taxonomy orWhereTranslation(string $translationField, $value, ?string $locale = null)
- * @method static Builder|Taxonomy orWhereTranslationLike(string $translationField, $value, ?string $locale = null)
- * @method static Builder|Taxonomy orderByTranslation(string $translationField, string $sortMethod = 'asc')
- * @method static Builder|Taxonomy parents()
- * @method static Builder|Taxonomy postCategories()
- * @method static Builder|Taxonomy postTags()
- * @method static Builder|Taxonomy query()
- * @method static Builder|Taxonomy ratingIssues()
- * @method static Builder|Taxonomy searchTags()
- * @method static Builder|Taxonomy tags()
- * @method static Builder|Taxonomy translated()
- * @method static Builder|Taxonomy translatedIn(?string $locale = null)
- * @method static Builder|Taxonomy unitCategories()
- * @method static Builder|Taxonomy whereBranchId($value)
- * @method static Builder|Taxonomy whereChainId($value)
- * @method static Builder|Taxonomy whereCreatedAt($value)
- * @method static Builder|Taxonomy whereCreatorId($value)
- * @method static Builder|Taxonomy whereDeletedAt($value)
- * @method static Builder|Taxonomy whereDepth($value)
- * @method static Builder|Taxonomy whereEditorId($value)
- * @method static Builder|Taxonomy whereIcon($value)
- * @method static Builder|Taxonomy whereId($value)
- * @method static Builder|Taxonomy whereIngredientCategoryId($value)
- * @method static Builder|Taxonomy whereLeft($value)
- * @method static Builder|Taxonomy whereOrderColumn($value)
- * @method static Builder|Taxonomy whereParentId($value)
- * @method static Builder|Taxonomy whereRight($value)
- * @method static Builder|Taxonomy whereStatus($value)
- * @method static Builder|Taxonomy whereStep($value)
- * @method static Builder|Taxonomy whereTranslation(string $translationField, $value, ?string $locale = null, string $method = 'whereHas', string $operator = '=')
- * @method static Builder|Taxonomy whereTranslationLike(string $translationField, $value, ?string $locale = null)
- * @method static Builder|Taxonomy whereType($value)
- * @method static Builder|Taxonomy whereUpdatedAt($value)
- * @method static Builder|Taxonomy whereUuid($value)
- * @method static Builder|Taxonomy whereViewCount($value)
- * @method static Builder|Taxonomy withTranslation()
- * @method static \Illuminate\Database\Query\Builder|Taxonomy withTrashed()
- * @method static \Illuminate\Database\Eloquent\Builder|Node withoutNode($node)
- * @method static \Illuminate\Database\Eloquent\Builder|Node withoutRoot()
- * @method static \Illuminate\Database\Eloquent\Builder|Node withoutSelf()
- * @method static \Illuminate\Database\Query\Builder|Taxonomy withoutTrashed()
+ * @method static Builder|TaxonomyModel active()
+ * @method static Builder|TaxonomyModel draft()
+ * @method static Builder|TaxonomyModel foodCategories()
+ * @method static Builder|TaxonomyModel groceryCategories()
+ * @method static Builder|TaxonomyModel inactive()
+ * @method static Builder|TaxonomyModel ingredientCategories()
+ * @method static Builder|TaxonomyModel ingredients()
+ * @method static Builder|TaxonomyModel listsTranslations(string $translationField)
+ * @method static Builder|TaxonomyModel menuCategories()
+ * @method static Builder|TaxonomyModel newModelQuery()
+ * @method static Builder|TaxonomyModel newQuery()
+ * @method static Builder|TaxonomyModel notActive()
+ * @method static Builder|TaxonomyModel notTranslatedIn(?string $locale = null)
+ * @method static \Illuminate\Database\Query\Builder|TaxonomyModel onlyTrashed()
+ * @method static Builder|TaxonomyModel orWhereTranslation(string $translationField, $value, ?string $locale = null)
+ * @method static Builder|TaxonomyModel orWhereTranslationLike(string $translationField, $value, ?string $locale = null)
+ * @method static Builder|TaxonomyModel orderByTranslation(string $translationField, string $sortMethod = 'asc')
+ * @method static Builder|TaxonomyModel ordersCancellationReasons()
+ * @method static Builder|TaxonomyModel parents()
+ * @method static Builder|TaxonomyModel postCategories()
+ * @method static Builder|TaxonomyModel postTags()
+ * @method static Builder|TaxonomyModel query()
+ * @method static Builder|TaxonomyModel ratingIssues()
+ * @method static Builder|TaxonomyModel searchTags()
+ * @method static Builder|TaxonomyModel tags()
+ * @method static Builder|TaxonomyModel translated()
+ * @method static Builder|TaxonomyModel translatedIn(?string $locale = null)
+ * @method static Builder|TaxonomyModel unitCategories()
+ * @method static Builder|TaxonomyModel whereBranchId($value)
+ * @method static Builder|TaxonomyModel whereChainId($value)
+ * @method static Builder|TaxonomyModel whereCreatedAt($value)
+ * @method static Builder|TaxonomyModel whereCreatorId($value)
+ * @method static Builder|TaxonomyModel whereDeletedAt($value)
+ * @method static Builder|TaxonomyModel whereDepth($value)
+ * @method static Builder|TaxonomyModel whereEditorId($value)
+ * @method static Builder|TaxonomyModel whereIcon($value)
+ * @method static Builder|TaxonomyModel whereId($value)
+ * @method static Builder|TaxonomyModel whereIngredientCategoryId($value)
+ * @method static Builder|TaxonomyModel whereLeft($value)
+ * @method static Builder|TaxonomyModel whereOrderColumn($value)
+ * @method static Builder|TaxonomyModel whereParentId($value)
+ * @method static Builder|TaxonomyModel whereRight($value)
+ * @method static Builder|TaxonomyModel whereStatus($value)
+ * @method static Builder|TaxonomyModel whereStep($value)
+ * @method static Builder|TaxonomyModel whereTranslation(string $translationField, $value, ?string $locale = null, string $method = 'whereHas', string $operator = '=')
+ * @method static Builder|TaxonomyModel whereTranslationLike(string $translationField, $value, ?string $locale = null)
+ * @method static Builder|TaxonomyModel whereType($value)
+ * @method static Builder|TaxonomyModel whereUpdatedAt($value)
+ * @method static Builder|TaxonomyModel whereUuid($value)
+ * @method static Builder|TaxonomyModel whereViewCount($value)
+ * @method static Builder|TaxonomyModel withTranslation()
+ * @method static \Illuminate\Database\Query\Builder|TaxonomyModel withTrashed()
+ * @method static \Illuminate\Database\Query\Builder|TaxonomyModel withoutTrashed()
  * @mixin Eloquent
- * @method static Builder|Taxonomy ordersCancellationReasons()
  */
 class TaxonomyModel extends Model implements HasMedia, ShouldHaveTypes, TranslatableContract
 {
@@ -177,7 +169,7 @@ class TaxonomyModel extends Model implements HasMedia, ShouldHaveTypes, Translat
     protected $table = 'taxonomies';
     public $translationForeignKey = 'taxonomy_id';
     public $translationModel = TaxonomyTranslation::class;
-    protected $fillable = ['creator_id', 'editor_id','title', 'description', 'parent_id', 'type', 'order_column'];
+    protected $fillable = ['creator_id', 'editor_id', 'title', 'description', 'parent_id', 'type', 'order_column'];
     protected $translatedAttributes = ['title', 'description'];
     protected $with = ['translations', 'chain', 'branches'];
 

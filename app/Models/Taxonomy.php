@@ -49,16 +49,16 @@ use Spatie\MediaLibrary\MediaCollections\Models\Media;
  * @property Carbon|null $created_at
  * @property Carbon|null $updated_at
  * @property Carbon|null $deleted_at
- * @property-read \App\Models\Branch|null $branch
- * @property-read Collection|\App\Models\Branch[] $branches
+ * @property-read Branch|null $branch
+ * @property-read Collection|Branch[] $branches
  * @property-read int|null $branches_count
- * @property-read \App\Models\Chain|null $chain
+ * @property-read Chain|null $chain
  * @property-read Collection|Taxonomy[] $children
  * @property-read int|null $children_count
- * @property-read \App\Models\User $creator
- * @property-read Collection|\App\Models\Product[] $crossSellsProducts
+ * @property-read User $creator
+ * @property-read Collection|Product[] $crossSellsProducts
  * @property-read int|null $cross_sells_products_count
- * @property-read \App\Models\User $editor
+ * @property-read User $editor
  * @property-read mixed $cover
  * @property-read mixed $cover_small
  * @property-read bool $is_active
@@ -66,27 +66,29 @@ use Spatie\MediaLibrary\MediaCollections\Models\Media;
  * @property-read mixed $link
  * @property-read mixed $status_name
  * @property-read Taxonomy|null $ingredientCategory
+ * @property-read Collection|Taxonomy[] $ingredientsInProductOptions
+ * @property-read int|null $ingredients_in_product_options_count
  * @property-read Collection|Taxonomy[] $ingredientsOfCategory
  * @property-read int|null $ingredients_of_category_count
  * @property-read MediaCollection|Media[] $media
  * @property-read int|null $media_count
- * @property-read Collection|\App\Models\Product[] $menuProducts
+ * @property-read Collection|Product[] $menuProducts
  * @property-read int|null $menu_products_count
  * @property-read Taxonomy|null $parent
- * @property-read Collection|\App\Models\Post[] $posts
+ * @property-read Collection|Post[] $posts
  * @property-read int|null $posts_count
- * @property-read Collection|\App\Models\Product[] $products
+ * @property-read Collection|Product[] $products
  * @property-read int|null $products_count
- * @property-read Collection|\App\Models\Post[] $tagPosts
+ * @property-read Collection|Post[] $tagPosts
  * @property-read int|null $tag_posts_count
- * @property-read \App\Models\TaxonomyTranslation|null $translation
- * @property-read Collection|\App\Models\TaxonomyTranslation[] $translations
+ * @property-read TaxonomyTranslation|null $translation
+ * @property-read Collection|TaxonomyTranslation[] $translations
  * @property-read int|null $translations_count
- * @property-read Collection|\App\Models\Product[] $upSellsProducts
+ * @property-read Collection|Product[] $upSellsProducts
  * @property-read int|null $up_sells_products_count
- * @property-read Collection|\App\Models\User[] $usersOfCategory
+ * @property-read Collection|User[] $usersOfCategory
  * @property-read int|null $users_of_category_count
- * @property-read Collection|\App\Models\User[] $usersOfSkill
+ * @property-read Collection|User[] $usersOfSkill
  * @property-read int|null $users_of_skill_count
  * @method static Builder|Taxonomy active()
  * @method static Builder|Taxonomy draft()
@@ -95,7 +97,7 @@ use Spatie\MediaLibrary\MediaCollections\Models\Media;
  * @method static Builder|Taxonomy inactive()
  * @method static Builder|Taxonomy ingredientCategories()
  * @method static Builder|Taxonomy ingredients()
- * @method static \Illuminate\Database\Eloquent\Builder|Node limitDepth($limit)
+ * @method static Builder|Node limitDepth($limit)
  * @method static Builder|Taxonomy listsTranslations(string $translationField)
  * @method static Builder|Taxonomy menuCategories()
  * @method static Builder|Taxonomy newModelQuery()
@@ -106,6 +108,7 @@ use Spatie\MediaLibrary\MediaCollections\Models\Media;
  * @method static Builder|Taxonomy orWhereTranslation(string $translationField, $value, ?string $locale = null)
  * @method static Builder|Taxonomy orWhereTranslationLike(string $translationField, $value, ?string $locale = null)
  * @method static Builder|Taxonomy orderByTranslation(string $translationField, string $sortMethod = 'asc')
+ * @method static Builder|Taxonomy ordersCancellationReasons()
  * @method static Builder|Taxonomy parents()
  * @method static Builder|Taxonomy postCategories()
  * @method static Builder|Taxonomy postTags()
@@ -140,12 +143,11 @@ use Spatie\MediaLibrary\MediaCollections\Models\Media;
  * @method static Builder|Taxonomy whereViewCount($value)
  * @method static Builder|Taxonomy withTranslation()
  * @method static \Illuminate\Database\Query\Builder|Taxonomy withTrashed()
- * @method static \Illuminate\Database\Eloquent\Builder|Node withoutNode($node)
- * @method static \Illuminate\Database\Eloquent\Builder|Node withoutRoot()
- * @method static \Illuminate\Database\Eloquent\Builder|Node withoutSelf()
+ * @method static Builder|Node withoutNode($node)
+ * @method static Builder|Node withoutRoot()
+ * @method static Builder|Node withoutSelf()
  * @method static \Illuminate\Database\Query\Builder|Taxonomy withoutTrashed()
  * @mixin Eloquent
- * @method static Builder|Taxonomy ordersCancellationReasons()
  */
 class Taxonomy extends Node implements HasMedia, ShouldHaveTypes, TranslatableContract
 {

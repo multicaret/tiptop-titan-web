@@ -10,6 +10,7 @@ use App\Traits\HasGender;
 use App\Traits\HasMediaTrait;
 use App\Traits\HasStatuses;
 use App\Traits\HasViewCount;
+use Database\Factories\UserFactory;
 use Eloquent;
 use Illuminate\Auth\Passwords\CanResetPassword;
 use Illuminate\Contracts\Auth\MustVerifyEmail;
@@ -50,6 +51,7 @@ use Spatie\Permission\Traits\HasRoles;
  * @property string|null $password
  * @property string|null $phone_country_code
  * @property string|null $phone_number
+ * @property string|null $agent_notes
  * @property string|null $bio
  * @property Carbon|null $dob
  * @property int|null $gender
@@ -62,6 +64,7 @@ use Spatie\Permission\Traits\HasRoles;
  * @property int|null $region_id
  * @property int|null $city_id
  * @property int|null $branch_id
+ * @property int|null $team_id
  * @property int|null $selected_address_id
  * @property string|null $latitude
  * @property string|null $longitude
@@ -76,30 +79,33 @@ use Spatie\Permission\Traits\HasRoles;
  * @property Carbon|null $approved_at
  * @property Carbon|null $phone_verified_at
  * @property Carbon|null $suspended_at
+ * @property string|null $tookan_id
  * @property Carbon|null $email_verified_at
  * @property Carbon|null $last_logged_in_at
  * @property Carbon|null $last_logged_out_at
- * @property int $employment 1:employee, 2:freelancer
+ * @property int|null $employment 1:employee, 2:freelancer
  * @property string|null $shift
  * @property string|null $remember_token
  * @property Carbon|null $created_at
  * @property Carbon|null $updated_at
- * @property-read Collection|\App\Models\Location[] $addresses
+ * @property-read Collection|Location[] $addresses
  * @property-read int|null $addresses_count
- * @property-read \App\Models\Branch|null $branch
- * @property-read Collection|\App\Models\Cart[] $carts
+ * @property-read Branch|null $branch
+ * @property-read Collection|Cart[] $carts
  * @property-read int|null $carts_count
- * @property-read \App\Models\City|null $city
- * @property-read \App\Models\Country|null $country
- * @property-read Collection|\App\Models\CouponUsage[] $couponUsages
+ * @property-read City|null $city
+ * @property-read Country|null $country
+ * @property-read Collection|CouponUsage[] $couponUsages
  * @property-read int|null $coupon_usages_count
- * @property-read \App\Models\Currency|null $currency
+ * @property-read Currency|null $currency
  * @property-read mixed $analyst
  * @property-read bool $avatar
  * @property-read bool $cover
  * @property-read mixed $international_phone
  * @property-read bool $is_active
  * @property-read mixed $is_admin
+ * @property-read bool $is_food
+ * @property-read bool $is_grocery
  * @property-read bool $is_inactive
  * @property-read bool $is_manager
  * @property-read mixed $is_owner
@@ -109,23 +115,24 @@ use Spatie\Permission\Traits\HasRoles;
  * @property-read mixed $role
  * @property-read mixed $status_name
  * @property-read mixed $translator
- * @property-read \App\Models\Language|null $language
+ * @property-read Language|null $language
  * @property-read MediaCollection|Media[] $media
  * @property-read int|null $media_count
  * @property-read DatabaseNotificationCollection|DatabaseNotification[] $notifications
  * @property-read int|null $notifications_count
- * @property-read Collection|\App\Models\Order[] $orders
+ * @property-read Collection|Order[] $orders
  * @property-read int|null $orders_count
  * @property-read Collection|Permission[] $permissions
  * @property-read int|null $permissions_count
- * @property-read \App\Models\Region|null $region
+ * @property-read Region|null $region
  * @property-read Collection|Role[] $roles
  * @property-read int|null $roles_count
- * @property-read Collection|\App\Models\PersonalAccessToken[] $tokens
+ * @property-read TokanTeam|null $team
+ * @property-read Collection|PersonalAccessToken[] $tokens
  * @property-read int|null $tokens_count
  * @method static Builder|User active()
  * @method static Builder|User draft()
- * @method static \Database\Factories\UserFactory factory(...$parameters)
+ * @method static UserFactory factory(...$parameters)
  * @method static Builder|User foods()
  * @method static Builder|User groceries()
  * @method static Builder|User inActive()
@@ -138,6 +145,7 @@ use Spatie\Permission\Traits\HasRoles;
  * @method static Builder|User permission($permissions)
  * @method static Builder|User query()
  * @method static Builder|User role($roles, $guard = null)
+ * @method static Builder|User whereAgentNotes($value)
  * @method static Builder|User whereApprovedAt($value)
  * @method static Builder|User whereAvgRating($value)
  * @method static Builder|User whereBio($value)
@@ -174,6 +182,8 @@ use Spatie\Permission\Traits\HasRoles;
  * @method static Builder|User whereSocialNetworks($value)
  * @method static Builder|User whereStatus($value)
  * @method static Builder|User whereSuspendedAt($value)
+ * @method static Builder|User whereTeamId($value)
+ * @method static Builder|User whereTookanId($value)
  * @method static Builder|User whereTotalNumberOfOrders($value)
  * @method static Builder|User whereUpdatedAt($value)
  * @method static Builder|User whereUsername($value)
@@ -181,13 +191,6 @@ use Spatie\Permission\Traits\HasRoles;
  * @method static Builder|User whereWalletFreeTotal($value)
  * @method static Builder|User whereWalletReservedTotal($value)
  * @mixin Eloquent
- * @property int|null $team_id
- * @property-read \App\Models\TokanTeam|null $team
- * @method static Builder|User whereTeamId($value)
- * @property int|null $tookan_id
- * @property-read bool $is_food
- * @property-read bool $is_grocery
- * @method static Builder|User whereTookanId($value)
  */
 class User extends Authenticatable implements HasMedia, MustVerifyEmail
 {

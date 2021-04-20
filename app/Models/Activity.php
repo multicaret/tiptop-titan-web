@@ -20,12 +20,14 @@ use Illuminate\Support\Carbon;
  * @property int $is_private
  * @property Carbon|null $created_at
  * @property Carbon|null $updated_at
- * @property-read Model|\Eloquent $subject
- * @property-read \App\Models\User $user
+ * @property object|null $differences
+ * @property-read Model|Eloquent $subject
+ * @property-read User $user
  * @method static Builder|Activity newModelQuery()
  * @method static Builder|Activity newQuery()
  * @method static Builder|Activity query()
  * @method static Builder|Activity whereCreatedAt($value)
+ * @method static Builder|Activity whereDifferences($value)
  * @method static Builder|Activity whereId($value)
  * @method static Builder|Activity whereIsPrivate($value)
  * @method static Builder|Activity whereSubjectId($value)

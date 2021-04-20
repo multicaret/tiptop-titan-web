@@ -38,29 +38,34 @@ use Spatie\MediaLibrary\MediaCollections\Models\Media;
  * @property string $primary_color
  * @property string $secondary_color
  * @property int $number_of_items_on_mobile_grid_view
+ * @property mixed|null $tiptop_delivery_app_percentage On old db column name delivery_app_percentage
+ * @property mixed|null $restaurant_app_percentage On old db column name app_percentage
  * @property string $avg_rating
  * @property int $rating_count
  * @property int $view_count
  * @property int|null $order_column
  * @property int|null $status
+ * @property int $is_synced True when sync chain products with chain branches
  * @property Carbon|null $created_at
  * @property Carbon|null $updated_at
  * @property string|null $deleted_at
- * @property-read Collection|\App\Models\Branch[] $branches
+ * @property-read Collection|Branch[] $branches
  * @property-read int|null $branches_count
- * @property-read \App\Models\City|null $city
- * @property-read \App\Models\Currency|null $currency
+ * @property-read City|null $city
+ * @property-read Currency|null $currency
  * @property-read mixed $cover
  * @property-read mixed $gallery
  * @property-read bool $is_active
+ * @property-read bool $is_food
+ * @property-read bool $is_grocery
  * @property-read bool $is_inactive
  * @property-read bool $logo
  * @property-read mixed $status_name
  * @property-read MediaCollection|Media[] $media
  * @property-read int|null $media_count
- * @property-read \App\Models\Region|null $region
- * @property-read \App\Models\ChainTranslation|null $translation
- * @property-read Collection|\App\Models\ChainTranslation[] $translations
+ * @property-read Region|null $region
+ * @property-read ChainTranslation|null $translation
+ * @property-read Collection|ChainTranslation[] $translations
  * @property-read int|null $translations_count
  * @method static Builder|Chain active()
  * @method static Builder|Chain draft()
@@ -86,15 +91,18 @@ use Spatie\MediaLibrary\MediaCollections\Models\Media;
  * @method static Builder|Chain whereDeletedAt($value)
  * @method static Builder|Chain whereEditorId($value)
  * @method static Builder|Chain whereId($value)
+ * @method static Builder|Chain whereIsSynced($value)
  * @method static Builder|Chain whereNumberOfItemsOnMobileGridView($value)
  * @method static Builder|Chain whereOrderColumn($value)
  * @method static Builder|Chain wherePrimaryColor($value)
  * @method static Builder|Chain wherePrimaryPhoneNumber($value)
  * @method static Builder|Chain whereRatingCount($value)
  * @method static Builder|Chain whereRegionId($value)
+ * @method static Builder|Chain whereRestaurantAppPercentage($value)
  * @method static Builder|Chain whereSecondaryColor($value)
  * @method static Builder|Chain whereSecondaryPhoneNumber($value)
  * @method static Builder|Chain whereStatus($value)
+ * @method static Builder|Chain whereTiptopDeliveryAppPercentage($value)
  * @method static Builder|Chain whereTranslation(string $translationField, $value, ?string $locale = null, string $method = 'whereHas', string $operator = '=')
  * @method static Builder|Chain whereTranslationLike(string $translationField, $value, ?string $locale = null)
  * @method static Builder|Chain whereType($value)
@@ -104,14 +112,6 @@ use Spatie\MediaLibrary\MediaCollections\Models\Media;
  * @method static Builder|Chain whereWhatsappPhoneNumber($value)
  * @method static Builder|Chain withTranslation()
  * @mixin Eloquent
- * @property mixed|null $restaurant_app_percentage
- * @property mixed|null $tiptop_delivery_app_percentage
- * @method static Builder|Chain whereRestaurantAppPercentage($value)
- * @method static Builder|Chain whereTiptopDeliveryAppPercentage($value)
- * @property mixed|null $is_synced
- * @method static Builder|Chain whereIsSynced($value)
- * @property-read bool $is_food
- * @property-read bool $is_grocery
  */
 class Chain extends Model implements HasMedia
 {
