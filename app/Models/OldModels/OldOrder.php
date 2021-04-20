@@ -187,6 +187,7 @@ class OldOrder extends OldModel
             'PREPARING' => Order::STATUS_PREPARING,
             'READY' => Order::STATUS_WAITING_COURIER,
             'ON_THE_WAY' => Order::STATUS_ON_THE_WAY,
+            'SCHEDULED' => Order::STATUS_SCHEDULED,
         ];
     }
 
