@@ -125,6 +125,11 @@ class ProductOption extends Component
         $this->validate([
             'option.min_number_of_selection' => 'nullable|numeric',
         ]);
+
+        if (is_null($newValue) || $newValue < 0) {
+            $newValue = 0;
+        }
+
         $this->option->min_number_of_selection = $newValue;
         if ($this->option->min_number_of_selection >= 1) {
             $this->option->is_required = true;
