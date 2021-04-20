@@ -17,6 +17,7 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Database\Eloquent\Relations\MorphToMany;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Support\Carbon;
 use Multicaret\Acquaintances\Traits\CanBeFavorited;
@@ -161,6 +162,7 @@ use Spatie\MediaLibrary\MediaCollections\Models\Media;
  * @method static \Illuminate\Database\Query\Builder|Product withTrashed()
  * @method static \Illuminate\Database\Query\Builder|Product withoutTrashed()
  * @mixin Eloquent
+ * @property-read array $status_js
  */
 class Product extends Model implements HasMedia
 {
@@ -274,9 +276,9 @@ class Product extends Model implements HasMedia
         return $this->belongsTo(Taxonomy::class, 'category_id');
     }
 
-    public function searchTags(): BelongsToMany
+    public function searchTags(): MorphToMany
     {
-        return $this->belongsToMany(Taxonomy::class, 'product_search_tag', 'product_id', 'search_tag_id')
+        return $this->morphToMany(Taxonomy::class, 'search_taggable')
                     ->withTimestamps();
     }
 

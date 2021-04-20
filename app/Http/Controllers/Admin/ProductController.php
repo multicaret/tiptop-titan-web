@@ -213,6 +213,7 @@ class ProductController extends Controller
                                           ->all();*/
             $data['categories'] = Taxonomy::menuCategories()->get();
         }
+        $data['searchTags'] = Taxonomy::searchTags()->get();
 
         return $data;
     }

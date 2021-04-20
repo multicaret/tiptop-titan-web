@@ -165,8 +165,8 @@
                                                 :clear-on-select="false"
                                                 :preselect-first="true"
                                                 @if(!$isGrocery)
-                                                    @input="getCategories"
-                                                    @select="selectBranch"
+                                                @input="getCategories"
+                                                @select="selectBranch"
                                                 @endif
                                                 placeholder=""
                                                 autocomplete="false"
@@ -201,7 +201,7 @@
                                             ></multiselect>
                                         </div>
                                     @else
-{{--                                        @{{product}}--}}
+                                        {{--                                        @{{product}}--}}
                                         <div class="form-group">
                                             <label class="control-label">
                                                 {{ trans('strings.menu-category') }}
@@ -349,12 +349,45 @@
                                     </span>
                                 </div>
                                 <div class="col-6">
-                                    @component('admin.components.form-group', ['name' => 'status', 'type' => 'select'])
-                                        @slot('label', trans('strings.status'))
-                                        @slot('options', collect(\App\Models\Product::getAllStatusesRich())->pluck('title', 'id'))
-                                        @slot('attributes', ['required'])
-                                        @slot('selected', $product->status)
-                                    @endcomponent
+                                    <label class="control-label">
+                                        @lang('strings.status') <b class="text-danger">*</b>
+                                    </label>
+                                    <multiselect
+                                        :options="statuses"
+                                        v-model="product.status_js"
+                                        track-by="id"
+                                        label="title"
+                                        name="status"
+                                        :searchable="true"
+                                        :allow-empty="true"
+                                        select-label=""
+                                        selected-label=""
+                                        deselect-label=""
+                                        placeholder="{{trans('strings.select_status')}}"
+                                        autocomplete="false"
+                                        required
+                                    ></multiselect>
+                                </div>
+                                <div class="col-6">
+                                    <label class="control-label">
+                                        @lang('strings.search_tags')
+                                    </label>
+                                    <multiselect
+                                        :options="searchTags"
+                                        v-model="product.searchTags"
+                                        track-by="id"
+                                        label="title"
+                                        name="search_tags[]"
+                                        :searchable="true"
+                                        :multiple="true"
+                                        :allow-empty="true"
+                                        select-label=""
+                                        selected-label=""
+                                        deselect-label=""
+                                        placeholder=""
+                                        autocomplete="false"
+                                        required
+                                    ></multiselect>
                                 </div>
                             </div>
                         </div>
@@ -436,6 +469,8 @@
                 branches: @json($branches),
                 categories: @json($categories),
                 units: @json($units),
+                searchTags: @json($searchTags),
+                statuses: @json(array_values(\App\Models\Product::getAllStatusesRich())),
                 isGrocery: @json($isGrocery),
             },
             beforeMount() {
