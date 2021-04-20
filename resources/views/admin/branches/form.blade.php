@@ -152,16 +152,17 @@
                                     \App\Models\User::ROLE_RESTAURANT_DRIVER => $branch->drivers,
                                 ] as $role => $users)
                             @if($branch->id)
-                                <div class="d-flex justify-content-end mb-3">
-                                    <a class="btn btn-primary" target="_blank"
-                                       href="{{route('admin.users.create', [
+                                <h4 class="d-flex justify-content-between align-items-center w-100 font-weight-bold py-3 mb-2">
+                                    {{Str::plural(str_replace('-', ' ', Str::title($role)))}}
+                                    <x-admin.add-copy-buttons
+                                        :createRoute="route('admin.users.create',[
                                         'role'=> $role,
                                         'branch_id' => $branch->id,
                                         'chain_id' => optional($branch->chain)->id
-                                   ])}}">
-                                        Add new {{str_replace('-', ' ', Str::title($role))}}
-                                    </a>
-                                </div>
+                                   ])">
+
+                                    </x-admin.add-copy-buttons>
+                                </h4>
                             @endif
                             @include('admin.branches.partials._users_table', ['users' => $users])
                         @endforeach
