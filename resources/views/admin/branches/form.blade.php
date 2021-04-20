@@ -128,9 +128,7 @@
                             <div class="d-flex justify-content-end mb-3">
                                 <a class="btn btn-primary" target="_blank"
                                    href="{{route('admin.taxonomies.create', [
-                                        'type'=> request()->type ==  $currentBranchChannel?
-                                            $productChannels[\App\Models\Product::CHANNEL_GROCERY_OBJECT] :
-                                            $productChannels[\App\Models\Product::CHANNEL_FOOD_OBJECT],
+                                        'type'=> \App\Models\Taxonomy::getTypesArray()[\App\Models\Taxonomy::TYPE_MENU_CATEGORY],
                                         'branch_id' => $branch->id,
                                         'chain_id' => optional($branch->chain)->id
                                    ])}}">
