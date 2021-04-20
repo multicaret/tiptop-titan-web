@@ -226,6 +226,6 @@ class HomeController extends BaseApiController
             $slides = $slides->where('city_id', $cityId);
         }
 
-        return SlideResource::collection($slides);
+        return SlideResource::collection($slides->get());
     }
 }
