@@ -70,6 +70,7 @@ Route::middleware('auth:sanctum')
          // Orders -- Rating
          Route::get('orders/{order}/rate', 'OrderController@createRate');
          Route::post('orders/{order}/rate', 'OrderController@storeRate');
+         Route::post('orders/{order}/drivers/{driver}/rate', 'OrderController@storeDriverRate');
 
          // Orders
          Route::get('orders/grocery', 'OrderController@indexGrocery');
