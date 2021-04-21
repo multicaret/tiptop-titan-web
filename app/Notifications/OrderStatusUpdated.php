@@ -118,33 +118,34 @@ class OrderStatusUpdated extends Notification
             ],
         ];*/
 
-        $arr = [
-            User::ROLE_SUPER => [
-                Order::STATUS_NEW,
-                Order::STATUS_WAITING_COURIER,
-                Order::STATUS_CANCELLED,
-            ],
-            User::ROLE_ADMIN => [
-                Order::STATUS_NEW,
-                Order::STATUS_WAITING_COURIER,
-                Order::STATUS_CANCELLED,
-            ],
-            User::ROLE_BRANCH_OWNER => [
-                Order::STATUS_NEW,
-                Order::STATUS_CANCELLED,
-            ],
-            User::ROLE_BRANCH_MANAGER => [
-                Order::STATUS_NEW,
-                Order::STATUS_CANCELLED,
-            ],
-            User::ROLE_USER => [
-                Order::STATUS_ON_THE_WAY,
-                Order::STATUS_AT_THE_ADDRESS,
-                Order::STATUS_DELIVERED,
-                Order::STATUS_CANCELLED,
-            ],
-        ];
+        $availableStatuses = [];
+        switch ($role) {
+            case User::ROLE_SUPER:
+            case User::ROLE_ADMIN:
+                $availableStatuses = [
+                    Order::STATUS_NEW,
+                    Order::STATUS_WAITING_COURIER,
+                    Order::STATUS_CANCELLED,
+                ];
+                break;
+            case User::ROLE_BRANCH_MANAGER:
+            case User::ROLE_BRANCH_OWNER:
+                $availableStatuses = [
+                    Order::STATUS_NEW,
+                    Order::STATUS_CANCELLED,
+                ];
+                break;
+            case User::ROLE_USER:
+                $availableStatuses = [
+                    Order::STATUS_ON_THE_WAY,
+                    Order::STATUS_AT_THE_ADDRESS,
+                    Order::STATUS_DELIVERED,
+                    Order::STATUS_CANCELLED,
+                ];
+                break;
+            default;
+        }
 
-        return in_array($status, $arr[$role]);
+        return in_array($status, $availableStatuses);
     }
 }
