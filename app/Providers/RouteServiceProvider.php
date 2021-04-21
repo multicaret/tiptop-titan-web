@@ -38,6 +38,7 @@ class RouteServiceProvider extends ServiceProvider
         $this->configureRateLimiting();
 
         $this->mapApiVersion1Routes();
+        $this->mapRestaurantApiVersion1Routes();
         $this->mapWebAdminRoutes();
         $this->mapWebDashboardRoutes();
         $this->mapAjaxRoutes();
@@ -143,6 +144,23 @@ class RouteServiceProvider extends ServiceProvider
              ->middleware(['api', 'localization-redirect'])
              ->namespace($this->namespace.'\Api\V1')
              ->group(base_path('routes/api.v1.php'));
+    }
+
+
+    /**
+     * Define the "api" routes for the application.
+     *
+     * These routes are typically stateless.
+     *
+     * @return void
+     */
+    protected function mapRestaurantApiVersion1Routes()
+    {
+        Route::prefix(localization()->setLocale().'/api/restaurants/v1')
+             ->name('api.restaurants.v1.')
+             ->middleware(['api', 'localization-redirect'])
+             ->namespace($this->namespace.'\Api\Restaurants\V1')
+             ->group(base_path('routes/api-restaurants.v1.php'));
     }
 
     /**

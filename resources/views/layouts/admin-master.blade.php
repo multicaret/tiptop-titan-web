@@ -69,6 +69,7 @@
             'locale' => localization()->getCurrentLocale(),
             'dir' => localization()->getCurrentLocaleDirection(),
             'authenticated' => auth()->check(),
+            'userId' => auth()->id(),
             'domain' => url('/'),
             'translations' => [
                 'delete_confirmation_title' => trans('strings.delete_confirmation_title'),

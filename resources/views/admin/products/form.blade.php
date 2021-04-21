@@ -54,6 +54,17 @@
                                             @endcomponent
                                         </div>
                                         <div class="col-md-12">
+                                            @component('admin.components.form-group', ['name' => $langKey .'[excerpt]', 'type' => 'textarea'])
+                                                @slot('label', 'Excerpt')
+                                                @slot('attributes', [
+                                                        'rows' => 2,
+                                                        ])
+                                                @if(! is_null($product->id))
+                                                    @slot('value', optional($product->translate($langKey))->excerpt)
+                                                @endif
+                                            @endcomponent
+                                        </div>
+                                        <div class="col-md-12">
                                             @component('admin.components.form-group', ['name' => $langKey .'[description]', 'type' => 'textarea'])
                                                 @slot('label', 'Description')
                                                 @slot('attributes', [
@@ -61,17 +72,6 @@
                                                         ])
                                                 @if(! is_null($product->id))
                                                     @slot('value', optional($product->translate($langKey))->description)
-                                                @endif
-                                            @endcomponent
-                                        </div>
-                                        <div class="col-md-12">
-                                            @component('admin.components.form-group', ['name' => $langKey .'[notes]', 'type' => 'textarea'])
-                                                @slot('label', 'Notes')
-                                                @slot('attributes', [
-                                                        'rows' => 2,
-                                                        ])
-                                                @if(! is_null($product->id))
-                                                    @slot('value', optional($product->translate($langKey))->notes)
                                                 @endif
                                             @endcomponent
                                         </div>
@@ -473,6 +473,14 @@
                 searchTags: @json($searchTags),
                 statuses: @json(array_values(\App\Models\Product::getAllStatusesRich())),
                 isGrocery: @json($isGrocery),
+            },
+            beforeMount(){
+                if(!this.product.status_js){
+                    this.product.status_js = {
+                        id: null,
+                        title: null,
+                    };
+                }
             },
             mounted() {
                 this.selectSearchTags(this.product.search_tags?? []);
