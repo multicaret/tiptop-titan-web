@@ -533,7 +533,7 @@ class User extends Authenticatable implements HasMedia, MustVerifyEmail
         $foreignPivotKey = 'user_id';
         $relatedPivotKey = 'branch_id';
 
-        return $this->belongsToMany(User::class, $table, $foreignPivotKey, $relatedPivotKey)
+        return $this->belongsToMany(Branch::class, $table, $foreignPivotKey, $relatedPivotKey)
 //                    ->withPivot([$withPivot])
                     ->withTimestamps();
     }

@@ -53,7 +53,7 @@ class UserController extends Controller
             ],*/
 
         ];
-        if ($role == User::ROLE_RESTAURANT_DRIVER) {
+        /*if ($role == User::ROLE_RESTAURANT_DRIVER) {
             $columns = array_merge($columns, [
                 [
                     'data' => 'branch',
@@ -63,7 +63,7 @@ class UserController extends Controller
                     'searchable' => false
                 ]
             ]);
-        }
+        }*/
         if ($role == User::ROLE_TIPTOP_DRIVER) {
             $columns = array_merge($columns, [
                 [
@@ -177,10 +177,6 @@ class UserController extends Controller
         $address->phones = $request->phones;
         $address->save();*/
 
-        if(in_array($role, User::rolesHaving('branches'))){
-            $user->branches($role)->sync($request->input('branches'));
-        }
-
         if ($request->send_notification) {
             $this->sendEmail($user, 'Welcome', [$user]);
         }
@@ -188,6 +184,10 @@ class UserController extends Controller
         $this->handleSubmittedSingleMedia('avatar', $request, $user);
 
         DB::commit();
+
+        if(in_array($role, User::rolesHaving('branches'))){
+            $user->branches($role)->sync($request->input('branches'));
+        }
 
         $roleName = $this->getRoleName($role);
         $user->assignRole($roleName);
@@ -290,7 +290,7 @@ class UserController extends Controller
         $this->handleSubmittedSingleMedia('avatar', $request, $user);
         DB::commit();
 
-        if($role == User::ROLE_RESTAURANT_DRIVER){
+        if(in_array($role, User::rolesHaving('branches'))){
             $user->branches($role)->sync($request->input('branches'));
         }
 
