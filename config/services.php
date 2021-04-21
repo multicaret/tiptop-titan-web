@@ -32,7 +32,8 @@ return [
 
     'onesignal' => [
         'app_id' => env('ONESIGNAL_APP_ID'),
-        'rest_api_key' => env('ONESIGNAL_REST_API_KEY')
+        'rest_api_key' => env('ONESIGNAL_REST_API_KEY'),
+        'restaurant_app_android_channel_id' => env('ONESIGNAL_RESTAURANT_APP_ANDROID_CHANNEL_ID'),
     ],
 
     'facebook' => [
