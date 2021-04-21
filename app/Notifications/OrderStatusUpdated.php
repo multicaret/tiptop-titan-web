@@ -12,6 +12,7 @@ class OrderStatusUpdated extends Notification
     use Queueable;
 
     public Order $order;
+    private $roleName;
 
     /**
      * Create a new notification instance.
@@ -19,10 +20,26 @@ class OrderStatusUpdated extends Notification
      * @param  Order  $order
      * @return void
      */
-    public function __construct(Order $order)
+    public function __construct(Order $order, $roleName)
     {
         $this->order = $order;
-        $this->body = "🚚 Your order now is {$this->order->getStatusName()}!";
+
+        if ($roleName == 'super') {
+            $roleName = 'admin';
+
+        }
+        if ($roleName == 'branch-owner') {
+            $roleName = 'branch-manager';
+        }
+        $this->roleName = $roleName;
+        $roleName = str_replace('-', '_', $roleName);
+        $this->body = trans("notifications.order_status_updated_for_user_{$roleName}_{$this->order->status}",
+            [
+                'number' => ("({$this->order->reference_code})"),
+                'branchName' => optional($this->order->branch)->title,
+            ]);
+
+//        $this->body = "🚚 Your order now is {$this->order->getStatusName()}!";
     }
 
     /**

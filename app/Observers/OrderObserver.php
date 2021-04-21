@@ -40,12 +40,12 @@ class OrderObserver
     {
         if ($order->wasChanged('status')) {
             foreach (User::active()->managers()->get() as $admin) {
-                $admin->notify(new OrderStatusUpdated($order));
+                $admin->notify(new OrderStatusUpdated($order, $admin->role_name));
             }
             foreach ($order->branch->managers()->active()->get() as $manager) {
-                $manager->notify(new OrderStatusUpdated($order));
+                $manager->notify(new OrderStatusUpdated($order, $manager->role_name));
             }
-            $order->user->notify(new OrderStatusUpdated($order));
+            $order->user->notify(new OrderStatusUpdated($order, $order->role_name));
         }
     }
 
