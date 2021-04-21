@@ -454,7 +454,7 @@ class User extends Authenticatable implements HasMedia, MustVerifyEmail
 
     public function getRoleNameAttribute()
     {
-        return \Str::kebab($this->role->name);
+        return $this->role ? \Str::kebab($this->role->name) : null;
     }
 
     public function getIsUserAttribute()
@@ -695,7 +695,7 @@ class User extends Authenticatable implements HasMedia, MustVerifyEmail
 
     public function routeNotificationForOneSignal()
     {
-        return ['include_external_user_ids' => [$this->id]];
+        return ['include_external_user_ids' => [(string) $this->id]];
     }
 
 

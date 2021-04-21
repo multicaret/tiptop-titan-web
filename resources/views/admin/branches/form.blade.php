@@ -147,13 +147,13 @@
                         @include('admin.branches.partials._inaccessible')
                     @else
                         @foreach([
-                                    \App\Models\User::ROLE_BRANCH_OWNER => $branch->owners,
-                                    \App\Models\User::ROLE_BRANCH_MANAGER => $branch->managers,
-                                    \App\Models\User::ROLE_RESTAURANT_DRIVER => $branch->drivers,
+                                    \App\Models\User::ROLE_BRANCH_OWNER => [$branch->owners, 'truck'],
+                                    \App\Models\User::ROLE_BRANCH_MANAGER => [$branch->managers, 'user-plus'],
+                                    \App\Models\User::ROLE_RESTAURANT_DRIVER => [$branch->drivers, 'users-cog'],
                                 ] as $role => $users)
                             @if($branch->id)
                                 <h4 class="d-flex justify-content-between align-items-center w-100 font-weight-bold py-3 mb-2">
-                                    {{Str::plural(str_replace('-', ' ', Str::title($role)))}}
+                                    <i class="fas fa-{{$users[1]}}" style="font-size:1.4em"> {{Str::plural(str_replace('-', ' ', Str::title($role)))}}</i>
                                     <x-admin.add-copy-buttons
                                         :createRoute="route('admin.users.create',[
                                         'role'=> $role,
@@ -164,7 +164,7 @@
                                     </x-admin.add-copy-buttons>
                                 </h4>
                             @endif
-                            @include('admin.branches.partials._users_table', ['users' => $users])
+                            @include('admin.branches.partials._users_table', ['users' => $users[0]])
                         @endforeach
                     @endif
             </div>

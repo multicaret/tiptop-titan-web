@@ -141,7 +141,8 @@ class TaxonomyController extends Controller
         $data = $this->essentialData($request);
         $taxonomy = new Taxonomy();
         $taxonomy->type = $data['correctType'];
-        $data['taxonomy'] = $taxonomy;
+        $data['taxonomy'] = $taxonomy->load('searchableTags');
+        $data['searchableTags'] = $taxonomy->type === Taxonomy::TYPE_FOOD_CATEGORY ?  Taxonomy::searchTags()->get(): [];
 
         return view('admin.taxonomies.form',
             $data);

@@ -218,6 +218,7 @@ class UserController extends Controller
         $data['role'] = $role;
         $data['roleName'] = $roleName;
         $data['permissions'] = config('defaults.all_permission.super');
+        $data['selectedBranches'] = $user->branches($role)->get();
 
         return view('admin.users.form', $data);
     }
