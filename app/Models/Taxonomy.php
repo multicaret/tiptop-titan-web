@@ -367,6 +367,14 @@ class Taxonomy extends Node implements HasMedia, ShouldHaveTypes, TranslatableCo
                     ->withTimestamps();
     }
 
+
+
+    public function searchableTags(): MorphToMany
+    {
+        return $this->morphToMany(Taxonomy::class, 'search_taggable')
+                    ->withTimestamps();
+    }
+
     /**
      * @return BelongsToMany
      */
