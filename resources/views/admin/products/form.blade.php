@@ -474,6 +474,14 @@
                 statuses: @json(array_values(\App\Models\Product::getAllStatusesRich())),
                 isGrocery: @json($isGrocery),
             },
+            beforeMount(){
+                if(!this.product.status_js){
+                    this.product.status_js = {
+                        id: null,
+                        title: null,
+                    };
+                }
+            },
             mounted() {
                 this.selectSearchTags(this.product.search_tags?? []);
             },
