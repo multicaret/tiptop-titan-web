@@ -141,16 +141,6 @@
     @endif
 
 
-    <script src="https://cdn.onesignal.com/sdks/OneSignalSDK.js" async=""></script>
-    <script>
-        window.OneSignal = window.OneSignal || [];
-        OneSignal.push(function() {
-            OneSignal.init({
-                appId: "a8feae53-9db1-4b5d-8e9c-b4a8e309bb82",
-            });
-        });
-    </script>
-
     @livewireStyles
 
     @stack('head')
@@ -262,6 +252,19 @@
         showToast(params.icon, params.message);
     });
 </script>
+
+{{--<script src="https://cdn.onesignal.com/sdks/OneSignalSDK.js" async=""></script>
+<script>
+    window.OneSignal = window.OneSignal || [];
+    OneSignal.push(function() {
+        OneSignal.init({
+            appId: "a8feae53-9db1-4b5d-8e9c-b4a8e309bb82",
+        });
+    });
+</script>--}}
+@include('admin.notifications.onesignal-init')
+
+
 @stack('scripts')
 </body>
 </html>
