@@ -104,7 +104,7 @@
         <h4 class="card-header">Details</h4>
         <div class="card-body">
             <div class="row">
-                @if(in_array($correctType, \App\Models\Taxonomy::typesHaving('parent')))
+                @if(in_array($correctType, \App\Models\Taxonomy::typesHaving('parent')) && (!$taxonomy->id || !$taxonomy->hasChildren())) {{--This makes sure taxonomies with children do not have a parent input--}}
                     <div class="col-md-4">
                         @component('admin.components.form-group', ['name' => 'parent_id', 'type' => 'select'])
                             @slot('label', 'Parent')
