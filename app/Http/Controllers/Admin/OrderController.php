@@ -22,6 +22,11 @@ class OrderController extends Controller
         return view('admin.orders.index');
     }
 
+    public function reportIndex()
+    {
+        return view('admin.orders.report-index');
+    }
+
     public function show(Order $order)
     {
         return view('admin.orders.show', compact('order'));
