@@ -31,7 +31,7 @@ Content-Type: application/json
 Authorization: Bearer {{token}}
 
 ### products adjust price
-PUT {{host}}/{{locale}}/api/restaurants/v1/restaurants/445/products/1
+PUT {{host}}/{{locale}}/api/restaurants/v1/restaurants/473/products/37462
 Accept: application/json
 Content-Type: application/json
 Authorization: Bearer {{token}}

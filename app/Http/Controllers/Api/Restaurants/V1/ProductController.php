@@ -7,6 +7,7 @@ use App\Http\Controllers\Api\BaseApiController;
 use App\Http\Resources\ProductResource;
 use App\Models\Branch;
 use App\Models\Product;
+use DB;
 use Illuminate\Http\Request;
 
 class ProductController extends BaseApiController
