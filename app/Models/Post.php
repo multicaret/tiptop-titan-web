@@ -142,6 +142,8 @@ class Post extends Model implements HasMedia, ShouldHaveTypes
     public const CONTACT_PAGE_ID = 2;
     public const PRIVACY_PAGE_ID = 3;
     public const TERMS_PAGE_ID = 4;
+//    public const RESTAURANT_ABOUT_PAGE_ID = 5;
+//    public const RESTAURANT_PRIVACY_PAGE_ID = 6;
     /**
      * The attributes that are mass assignable.
      *
