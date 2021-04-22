@@ -5,7 +5,7 @@ Accept: application/json
 Content-Type: application/json
 
 ### Restaurants update
-PUT {{host}}/{{locale}}/api/restaurants/v1/restaurants/473
+PUT {{host}}/{{locale}}/api/restaurants/v1/restaurants/445
 Accept: application/json
 Content-Type: application/json
 Authorization: Bearer {{token}}
@@ -17,4 +17,16 @@ Authorization: Bearer {{token}}
     "covered_area_diameter": 500,
     "phone_number": "7501234123"
 }
+
+### Restaurants update
+POST {{host}}/{{locale}}/api/restaurants/v1/restaurants/445/toggle-activity
+Accept: application/json
+Content-Type: application/json
+Authorization: Bearer {{token}}
+
+### Restaurants update
+GET {{host}}/{{locale}}/api/restaurants/v1/restaurants/412/categories
+Accept: application/json
+Content-Type: application/json
+
 
