@@ -72,6 +72,7 @@ use Illuminate\Support\Carbon;
  * @method static Builder|Country whereUpdatedAt($value)
  * @method static Builder|Country withTranslation()
  * @mixin Eloquent
+ * @property-read array $status_js
  */
 class Country extends Model
 {

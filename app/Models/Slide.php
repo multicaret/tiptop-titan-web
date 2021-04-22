@@ -90,6 +90,7 @@ use Illuminate\Support\Carbon;
  * @method static Builder|Slide withTrashed()
  * @method static Builder|Slide withoutTrashed()
  * @mixin Eloquent
+ * @property-read array $status_js
  */
 class Slide extends Model
 {

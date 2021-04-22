@@ -5,7 +5,7 @@ namespace App\Models;
 use Eloquent;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
-use Illuminate\Database\Eloquent\Relations\MorphToMany;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\Pivot;
 use Illuminate\Support\Carbon;
 
@@ -32,9 +32,17 @@ use Illuminate\Support\Carbon;
  * @method static Builder|CartProduct whereQuantity($value)
  * @method static Builder|CartProduct whereUpdatedAt($value)
  * @mixin Eloquent
+ * @property int $price
+ * @property int $total_price
+ * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\CartProductOption[] $cartProductOptions
+ * @property-read int|null $cart_product_options_count
+ * @property-read mixed $selected_options
+ * @method static Builder|CartProduct wherePrice($value)
+ * @method static Builder|CartProduct whereTotalPrice($value)
  */
 class CartProduct extends Pivot
 {
+    protected $appends = ['selected_options'];
     protected $casts = [
         'product_object' => 'json',
     ];
@@ -47,5 +55,27 @@ class CartProduct extends Pivot
     public function cart(): BelongsTo
     {
         return $this->belongsTo(Cart::class, 'cart_id');
+    }
+
+    public function cartProductOptions(): HasMany
+    {
+        return $this->hasMany(CartProductOption::class, 'cart_product_id');
+    }
+
+    public function getSelectedOptionsAttribute()
+    {
+        $callback = function (CartProductOption $item) {
+            if ($item->productOption->is_based_on_ingredients) {
+                $selectionIds = $item->ingredients()->pluck('id')->all();
+            } else {
+                $selectionIds = $item->selections()->pluck('id')->all();
+            }
+            return [
+                'id' => $item->id,
+                'selection_ids' => $selectionIds
+            ];
+        };
+
+        return $this->cartProductOptions->transform($callback);
     }
 }

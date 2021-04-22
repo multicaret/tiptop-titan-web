@@ -139,6 +139,7 @@ use Spatie\MediaLibrary\MediaCollections\Models\Media;
  * @method static \Illuminate\Database\Query\Builder|TaxonomyModel withTrashed()
  * @method static \Illuminate\Database\Query\Builder|TaxonomyModel withoutTrashed()
  * @mixin Eloquent
+ * @property-read array $status_js
  */
 class TaxonomyModel extends Model implements HasMedia, ShouldHaveTypes, TranslatableContract
 {

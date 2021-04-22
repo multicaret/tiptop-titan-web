@@ -47,6 +47,7 @@ use Spatie\MediaLibrary\MediaCollections\Models\Media;
  * @method static Builder|Manufacturer whereRegionId($value)
  * @method static Builder|Manufacturer whereUpdatedAt($value)
  * @mixin Eloquent
+ * @property-read array $status_js
  */
 class Manufacturer extends Model implements HasMedia
 {

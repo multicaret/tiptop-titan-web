@@ -25,7 +25,17 @@ Authorization: Bearer {{token}}
     "chain_id": {{chainId}},
     "branch_id": "{{branchId}}",
     "is_adding": true,
-    "status": 0
+    "status": 0,
+    "selected_options": [
+        {
+            "id": 12,
+            "selection_ids": [952, 1013, 1023]
+        },
+        {
+            "id": 16,
+            "selection_ids": [20,21]
+        }
+    ]
 }
 
 ###  clear cart
@@ -34,3 +44,7 @@ Accept: application/json
 Content-Type: application/json
 Authorization: Bearer {{token}}
 
+{
+    "chain_id": {{chainId}},
+    "branch_id": {{branchId}}
+}

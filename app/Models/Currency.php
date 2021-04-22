@@ -48,6 +48,7 @@ use Illuminate\Support\Carbon;
  * @method static Builder|Currency whereThousandsSeparator($value)
  * @method static Builder|Currency whereUpdatedAt($value)
  * @mixin Eloquent
+ * @property-read array $status_js
  */
 class Currency extends Model
 {

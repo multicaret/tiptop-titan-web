@@ -67,6 +67,7 @@ use Spatie\MediaLibrary\MediaCollections\Models\Media;
  * @method static Builder|PaymentMethod withTrashed()
  * @method static Builder|PaymentMethod withoutTrashed()
  * @mixin Eloquent
+ * @property-read array $status_js
  */
 class PaymentMethod extends Model implements HasMedia
 {

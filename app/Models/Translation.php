@@ -53,6 +53,7 @@ use Illuminate\Support\Carbon;
  * @method static Builder|Translation whereUpdatedAt($value)
  * @method static Builder|Translation withTranslation()
  * @mixin Eloquent
+ * @property-read array $status_js
  */
 class Translation extends Model
 {

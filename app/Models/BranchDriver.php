@@ -24,6 +24,10 @@ use Illuminate\Support\Carbon;
  * @method static Builder|BranchDriver whereId($value)
  * @method static Builder|BranchDriver whereUpdatedAt($value)
  * @mixin Eloquent
+ * @property int $user_id
+ * @property int $is_primary
+ * @method static Builder|BranchDriver whereIsPrimary($value)
+ * @method static Builder|BranchDriver whereUserId($value)
  */
 class BranchDriver extends Pivot
 {

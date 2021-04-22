@@ -112,6 +112,7 @@ use Spatie\MediaLibrary\MediaCollections\Models\Media;
  * @method static Builder|Chain whereWhatsappPhoneNumber($value)
  * @method static Builder|Chain withTranslation()
  * @mixin Eloquent
+ * @property-read array $status_js
  */
 class Chain extends Model implements HasMedia
 {

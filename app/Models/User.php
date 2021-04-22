@@ -192,6 +192,20 @@ use Spatie\Permission\Traits\HasRoles;
  * @method static Builder|User whereWalletFreeTotal($value)
  * @method static Builder|User whereWalletReservedTotal($value)
  * @mixin Eloquent
+ * @property-read mixed $average_rating_all_types
+ * @property-read mixed $average_rating
+ * @property-read mixed $role_name
+ * @property-read array $status_js
+ * @property-read mixed $sum_rating_all_types
+ * @property-read mixed $sum_rating
+ * @property-read mixed $user_average_rating_all_types
+ * @property-read mixed $user_average_rating
+ * @property-read mixed $user_sum_rating_all_types
+ * @property-read mixed $user_sum_rating
+ * @property-read Collection|\Multicaret\Acquaintances\Models\InteractionRelation[] $ratings
+ * @property-read int|null $ratings_count
+ * @property-read Collection|\Multicaret\Acquaintances\Models\InteractionRelation[] $ratingsPure
+ * @property-read int|null $ratings_pure_count
  */
 class User extends Authenticatable implements HasMedia, MustVerifyEmail
 {

@@ -148,6 +148,9 @@ use Spatie\MediaLibrary\MediaCollections\Models\Media;
  * @method static Builder|Node withoutSelf()
  * @method static \Illuminate\Database\Query\Builder|Taxonomy withoutTrashed()
  * @mixin Eloquent
+ * @property-read array $status_js
+ * @property-read Collection|Taxonomy[] $searchableTags
+ * @property-read int|null $searchable_tags_count
  */
 class Taxonomy extends Node implements HasMedia, ShouldHaveTypes, TranslatableContract
 {

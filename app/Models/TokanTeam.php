@@ -39,6 +39,7 @@ use Illuminate\Database\Eloquent\SoftDeletes;
  * @method static \Illuminate\Database\Eloquent\Builder|TokanTeam whereStatus($value)
  * @method static \Illuminate\Database\Eloquent\Builder|TokanTeam whereUpdatedAt($value)
  * @mixin \Eloquent
+ * @property-read array $status_js
  */
 class TokanTeam extends Model
 {

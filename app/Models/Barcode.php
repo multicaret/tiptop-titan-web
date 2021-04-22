@@ -43,6 +43,7 @@ use Spatie\MediaLibrary\MediaCollections\Models\Collections\MediaCollection;
  * @method static Builder|Barcode whereId($value)
  * @method static Builder|Barcode whereUpdatedAt($value)
  * @mixin Eloquent
+ * @property-read array $status_js
  */
 class Barcode extends Model implements HasMedia
 {

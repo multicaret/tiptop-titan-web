@@ -107,6 +107,7 @@ use Spatie\MediaLibrary\MediaCollections\Models\Media;
  * @method static \Illuminate\Database\Query\Builder|Post withTrashed()
  * @method static \Illuminate\Database\Query\Builder|Post withoutTrashed()
  * @mixin Eloquent
+ * @property-read array $status_js
  */
 class Post extends Model implements HasMedia, ShouldHaveTypes
 {

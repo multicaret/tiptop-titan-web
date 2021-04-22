@@ -38,9 +38,20 @@ use Illuminate\Database\Eloquent\Relations\Pivot;
  */
 class CartProductOptionSelection extends Pivot
 {
+
+    protected $table = 'cart_product_option_selection';
+
     protected $casts = [
         'product_option_object' => 'json',
     ];
+
+    public static function boot()
+    {
+        static::creating(function ($model) {
+            $model->selectable_object = $model->selectable_type::find($model->selectable_id);
+        });
+        parent::boot();
+    }
 
     public function cartProduct(): BelongsTo
     {
