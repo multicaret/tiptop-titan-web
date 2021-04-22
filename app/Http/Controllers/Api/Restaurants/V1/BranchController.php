@@ -69,4 +69,21 @@ class BranchController extends BaseApiController
             'restaurant' => new FoodBranchResource($restaurant)
         ]);
     }
+
+    public function toggleActivity($restaurant)
+    {
+        $restaurant = Branch::find($restaurant);
+        if (is_null($restaurant)) {
+            return $this->respondNotFound();
+        }
+        $restaurant->is_open_now = ! $restaurant->is_open_now;
+        $restaurant->save();
+
+        return $this->respond(
+            [
+                'is_open_now' => $restaurant->is_open_now
+            ],
+        );
+    }
+
 }

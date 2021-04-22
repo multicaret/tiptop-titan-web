@@ -18,3 +18,10 @@ Authorization: Bearer {{token}}
     "phone_number": "7501234123"
 }
 
+### Restaurants update
+POST {{host}}/{{locale}}/api/restaurants/v1/restaurants/473/toggle-activity
+Accept: application/json
+Content-Type: application/json
+Authorization: Bearer {{token}}
+
+

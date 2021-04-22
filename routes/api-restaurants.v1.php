@@ -12,9 +12,10 @@ Route::middleware('throttle:15')
          Route::get('/boot', 'HomeController@boot');
          Route::get('/', 'HomeController@root');
 
-        /*restaurant related*/
+         /*restaurant related*/
          Route::get('restaurants/{restaurant}/edit', 'BranchController@edit');
          Route::put('restaurants/{restaurant}', 'BranchController@update');
+         Route::post('restaurants/{restaurant}/toggle-activity', 'BranchController@toggleActivity');
 
          Route::get('categories/{groceryCategory}/products', 'CategoryController@products');
          Route::get('products/{id}', 'ProductController@show');
