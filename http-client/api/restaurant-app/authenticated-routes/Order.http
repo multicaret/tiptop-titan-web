@@ -15,9 +15,3 @@ Authorization: Bearer {{token}}
 {
     "status": "1"
 }
-
-### Order delete
-POST {{host}}/{{locale}}/api/restaurants/v1/orders/1/delete
-Accept: application/json
-Content-Type: application/json
-Authorization: Bearer {{token}}
