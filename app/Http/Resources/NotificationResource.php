@@ -20,15 +20,14 @@ class NotificationResource extends JsonResource
     {
 
         return [
-            'id' => (int) $this->id,
+            'id' => $this->id,
             'type' => $this->type(),
-//            'user' => new UserResource($this->user),
-            //'data' => $this->data,
-            'subjectID' => $this->data['subject_id'] ?? null,
-            'objectID' => $this->data['object_id'] ?? null,
-            'avatar' => $this->data['avatar'] ?? null,
-            'userName' => $this->data['userName'] ?? null,
-            'isUnread' => $this->unread(),
+            //'user' => new UserResource($this->user),
+            'body' => $this->data['body'],
+            'orderCode' => $this->data['object_title'],
+            'image' => $this->data['image'] ?? null,
+//            'subjectID' => $this->data['subject_id'] ?? null,
+//            'objectID' => $this->data['object_id'] ?? null,
             'createdAt' => [
                 'formatted' => $this->created_at->format(config('defaults.date.short_format')),
                 'diffForHumans' => $this->created_at->diffForHumans(),
