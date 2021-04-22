@@ -22,7 +22,6 @@ Route::middleware('throttle:15')
 
 
          /* auth related */
-         Route::post('login', 'Auth\AuthController@login');
 //         Route::post('auth/{provider}', 'Auth\SocialiteController@handleProvider');
          Route::get('otp/methods', 'OtpController@methods')->name('otp.methods');
          Route::get('otp/init-validation', 'OtpController@init')->name('otp.init');

@@ -1,0 +1,22 @@
+################## Misc ##################
+
+### boot
+GET {{host}}/{{locale}}/api/restaurants/v1/boot
+Accept: application/json
+Content-Type: application/json
+Authorization: Bearer {{token}}
+
+{
+    "platform": "iOS",
+    "build_number": 251
+}
+
+### log
+POST {{host}}/{{locale}}/api/restaurants/v1/logs/create
+Accept: application/json
+Content-Type: application/json
+Authorization: Bearer {{token}}
+
+{
+    "data": "idk"
+}

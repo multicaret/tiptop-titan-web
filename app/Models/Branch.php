@@ -69,7 +69,7 @@ use Spatie\MediaLibrary\MediaCollections\Models\Collections\MediaCollection;
  * @property Carbon|null $created_at
  * @property Carbon|null $updated_at
  * @property string|null $deleted_at
- * @property-read Chain $chain
+ * @property Chain $chain
  * @property-read City|null $city
  * @property-read Collection|User[] $drivers
  * @property-read int|null $drivers_count

@@ -1,0 +1,15 @@
+################## AUTH ##################
+POST {{host}}/{{locale}}/api/restaurants/v1/login
+Accept: application/json
+Content-Type: application/json
+
+{
+    "email": "demo@trytiptop.app",
+    "password": "secret"
+}
+
+### log out
+POST {{host}}/{{locale}}/api/restaurants/v1/logout
+Accept: application/json
+Content-Type: application/json
+Authorization: Bearer {{token}}

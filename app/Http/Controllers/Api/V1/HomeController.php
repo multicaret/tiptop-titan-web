@@ -50,7 +50,7 @@ class HomeController extends BaseApiController
             return $this->respond(new BootResource($bootConfigurations));
         }
 
-        return $this->respondWithMessage('Things are fine, pass you twat!');
+        return $this->respondWithMessage('Things are fine, you may pass!');
     }
 
     public function root()
