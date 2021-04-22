@@ -32,6 +32,13 @@ use Illuminate\Support\Carbon;
  * @method static Builder|CartProduct whereQuantity($value)
  * @method static Builder|CartProduct whereUpdatedAt($value)
  * @mixin Eloquent
+ * @property int $price
+ * @property int $total_price
+ * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\CartProductOption[] $cartProductOptions
+ * @property-read int|null $cart_product_options_count
+ * @property-read mixed $selected_options
+ * @method static Builder|CartProduct wherePrice($value)
+ * @method static Builder|CartProduct whereTotalPrice($value)
  */
 class CartProduct extends Pivot
 {

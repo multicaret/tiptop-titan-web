@@ -66,6 +66,7 @@ use Spatie\MediaLibrary\MediaCollections\Models\Media;
  * @method static Builder|Region whereUpdatedAt($value)
  * @method static Builder|Region withTranslation()
  * @mixin Eloquent
+ * @property-read array $status_js
  */
 class Region extends Model implements HasMedia
 {

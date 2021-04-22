@@ -118,6 +118,6 @@ trait HasStatuses
 
     public function getStatusJsAttribute(): array
     {
-        return self::getAllStatusesRich()[$this->status];
+        return self::getAllStatusesRich()[$this->status] ?? [];
     }
 }

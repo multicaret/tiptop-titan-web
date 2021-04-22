@@ -105,6 +105,7 @@ use Illuminate\Support\Str;
  * @method static Builder|Location withTrashed()
  * @method static Builder|Location withoutTrashed()
  * @mixin Eloquent
+ * @property-read array $status_js
  */
 class Location extends Model
 {

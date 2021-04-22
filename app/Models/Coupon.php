@@ -78,6 +78,7 @@ use Illuminate\Support\Carbon;
  * @mixin Eloquent
  * @property int $channel 1:food and grocery, 2:grocery, 3:food
  * @method static Builder|Coupon whereChannel($value)
+ * @property-read array $status_js
  */
 class Coupon extends Model
 {

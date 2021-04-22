@@ -180,6 +180,7 @@ use Spatie\MediaLibrary\MediaCollections\Models\Collections\MediaCollection;
  * @method static Builder|Branch whereWhatsappPhoneNumber($value)
  * @method static Builder|Branch withTranslation()
  * @mixin Eloquent
+ * @property-read array $status_js
  */
 class Branch extends Model implements HasMedia
 {

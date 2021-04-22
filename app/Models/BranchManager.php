@@ -26,6 +26,8 @@ use Illuminate\Support\Carbon;
  * @method static Builder|BranchManager whereManagerId($value)
  * @method static Builder|BranchManager whereUpdatedAt($value)
  * @mixin Eloquent
+ * @property int $user_id
+ * @method static Builder|BranchManager whereUserId($value)
  */
 class BranchManager extends Pivot
 {
