@@ -16,6 +16,7 @@ Route::middleware('throttle:15')
          Route::get('restaurants/{restaurant}/edit', 'BranchController@edit');
          Route::put('restaurants/{restaurant}', 'BranchController@update');
          Route::post('restaurants/{restaurant}/toggle-activity', 'BranchController@toggleActivity');
+         Route::get('restaurants/{restaurant}/categories', 'BranchController@categories');
 
          Route::get('categories/{groceryCategory}/products', 'CategoryController@products');
          Route::get('products/{id}', 'ProductController@show');

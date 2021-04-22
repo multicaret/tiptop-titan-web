@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Api\Restaurants\V1;
 
 use App\Http\Controllers\Api\BaseApiController;
 use App\Http\Resources\BranchResource;
+use App\Http\Resources\CategoryMiniResource;
 use App\Http\Resources\FoodBranchResource;
 use App\Http\Resources\FoodCategoryResource;
 use App\Models\Branch;
@@ -67,6 +68,19 @@ class BranchController extends BaseApiController
 
         return $this->respond([
             'restaurant' => new FoodBranchResource($restaurant)
+        ]);
+    }
+
+    public function categories($restaurant)
+    {
+        $restaurant = Branch::find($restaurant);
+
+        if (is_null($restaurant)) {
+            return $this->respondNotFound();
+        }
+
+        return $this->respond([
+            'categories' => CategoryMiniResource::collection($restaurant->menuCategories()->orderByDesc('order_column')->get())
         ]);
     }
 
