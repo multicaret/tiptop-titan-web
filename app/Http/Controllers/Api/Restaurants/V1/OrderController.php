@@ -62,7 +62,7 @@ class OrderController extends BaseApiController
         $restaurant = Branch::find($restaurant);
         $order = Order::find($order);
 
-        if ((is_null($restaurant) || is_null($order)) && $order->branch_id == $restaurant->id) {
+        if (is_null($restaurant) || is_null($order) || $order->branch_id != $restaurant->id) {
             return $this->respondNotFound();
         }
 

@@ -29,4 +29,12 @@ GET {{host}}/{{locale}}/api/restaurants/v1/restaurants/412/categories
 Accept: application/json
 Content-Type: application/json
 
+### products adjust price
+PUT {{host}}/{{locale}}/api/restaurants/v1/restaurants/445/products/1
+Accept: application/json
+Content-Type: application/json
+Authorization: Bearer {{token}}
 
+{
+    "price": 37
+}
