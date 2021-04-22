@@ -40,7 +40,6 @@ class BranchController extends BaseApiController
 //            'phone_number' => 'required',
         ];
 
-
         $validator = validator()->make($request->all(), $rules);
         if ($validator->fails()) {
             return $this->respondValidationFails($validator->errors());
@@ -66,7 +65,12 @@ class BranchController extends BaseApiController
         DB::commit();
 
         return $this->respond([
-            'restaurant' => new FoodBranchResource($restaurant)
+            'success' => true,
+            'message' => 'Successfully Updated',
         ]);
+
+        /*return $this->respond([
+            'restaurant' => new FoodBranchResource($restaurant)
+        ]);*/
     }
 }
