@@ -3,22 +3,11 @@
 namespace App\Http\Controllers\Api\Restaurants\V1;
 
 use App\Http\Controllers\Api\BaseApiController;
-use App\Http\Resources\OrderResource;
+use App\Http\Resources\OrderRestaurantResource;
 use App\Models\Branch;
-use App\Models\Cart;
-use App\Models\Chain;
-use App\Models\Coupon;
-use App\Models\CouponUsage;
-use App\Models\Currency;
-use App\Models\Location;
 use App\Models\Order;
-use App\Models\PaymentMethod;
-use App\Models\Taxonomy;
-use App\Models\User;
 use DB;
-use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
-use Symfony\Component\HttpFoundation\Response;
 
 class OrderController extends BaseApiController
 {
@@ -45,7 +34,18 @@ class OrderController extends BaseApiController
                        ->latest()
                        ->get();
 
-        return $this->respond(OrderResource::collection($orders));
+        return $this->respond(OrderRestaurantResource::collection($orders));
+    }
+
+
+    public function show($restaurant, Order $order)
+    {
+
+        if (is_null($restaurant) || is_null($order)) {
+            return $this->respondNotFound();
+        }
+
+        return $this->respond(new OrderRestaurantResource($order));
     }
 
     public function update(Request $request, $restaurant, $order)
