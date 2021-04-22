@@ -7,7 +7,12 @@ use App\Http\Controllers\Api\BaseApiController;
 use App\Http\Resources\CartResource;
 use App\Models\Cart;
 use App\Models\CartProduct;
+use App\Models\CartProductOption;
+use App\Models\CartProductOptionSelection;
 use App\Models\Product;
+use App\Models\ProductOptionIngredient;
+use App\Models\ProductOptionSelection;
+use App\Models\Taxonomy;
 use Exception;
 use Illuminate\Http\Request;
 
@@ -26,66 +31,69 @@ class CartController extends BaseApiController
             return $this->respondValidationFails($validator->errors());
         }
 
+        $productIdInCart = $request->input('product_id_in_cart');
+        $selectedOptions = $request->input('selected_options');
         $chainId = $request->input('chain_id');
         $branchId = $request->input('branch_id');
         $productId = $request->input('product_id');
         $isAddingMethod = $request->input('is_adding');
         $cart = Cart::retrieve($chainId, $branchId);
 
-        if ( ! is_null($cartProduct = CartProduct::where('cart_id', $cart->id)
-                                                 ->where('product_id', $productId)
-                                                 ->first())) {
-            if ($isAddingMethod == true) {
-                if ($cartProduct->product->is_storage_tracking_enabled) {
-                    if ($cartProduct->product->available_quantity > $cartProduct->quantity) {
-                        $cartProduct->increment('quantity');
-                    } else {
-                        return $this->respondValidationFails(
-                            'The requested product is currently unavailable',
-                            [
-                                'availableQuantity' => $cartProduct->product->available_quantity
-                            ],
-                        );
+        $cartProduct = $this->getProductCart($cart, $productId, $productIdInCart);
+
+        if ($isAddingMethod) {
+            if ($cartProduct->product->is_storage_tracking_enabled) {
+                if ($cartProduct->product->available_quantity <= $cartProduct->quantity) {
+                    $errorData = ['availableQuantity' => $cartProduct->product->available_quantity];
+                    $errorsMessage = 'The requested product is currently unavailable';
+
+                    return $this->respondValidationFails($errorsMessage, $errorData);
+                }
+            }
+            $cartProduct->increment('quantity');
+            if ( ! is_null($selectedOptions)) {
+                // Todo: 2 update options if have one
+                $cartProduct->price = 0;
+                foreach ($selectedOptions as $selectedOption) {
+                    $cartProductOption = CartProductOption::query()->firstOrCreate([
+                        'cart_product_id' => $cartProduct->id,
+                        'product_option_id' => $selectedOption['id']
+                    ]);
+
+                    $onIngredients = $cartProductOption->productOption->is_based_on_ingredients;
+                    foreach ($selectedOption['selection_ids'] as $selectionId) {
+                        $selectableType = $onIngredients ? Taxonomy::class : ProductOptionSelection::class;
+                        CartProductOptionSelection::query()->firstOrCreate([
+                            'cart_product_id' => $cartProduct->id,
+                            'product_option_id' => $selectedOption['id'],
+                            'selectable_type' => $selectableType,
+                            'selectable_id' => $selectionId,
+                        ]);
+                        $optionPrice = $this->getOptionPrice($selectableType, $selectionId,
+                            $selectedOption['id']);
+                        $cartProduct->price += $optionPrice;
                     }
-                } else {
-                    $cartProduct->increment('quantity');
                 }
-
-            } else {
-                if ($cartProduct->quantity == 1) {
-                    $productRemovedFromCart = $cartProduct->delete();
-                } else {
-                    $cartProduct->decrement('quantity');
-                }
+                $cartProduct->total_price = $cartProduct->price * $cartProduct->quantity;
+                $this->updateCartPrices($cartProduct, $cart, 'increment');
             }
-        } elseif ($isAddingMethod == true) {
-            $cartProduct = new CartProduct();
-            $cartProduct->cart_id = $cart->id;
-            $cartProduct->product_id = $productId;
-            $cartProduct->product_object = Product::find($productId);
-            $cartProduct->quantity = 1;
-            $cartProduct->save();
-        }
-        if ( ! is_null($cartProduct)) {
-            $quantity = isset($productRemovedFromCart) && ! ! $productRemovedFromCart ? 0 : $cartProduct->quantity;
-            if ($isAddingMethod == true) {
-                $cart->total += $cartProduct->product->discounted_price;
-                $cart->without_discount_total += $cartProduct->product->price;
-            } else {
-                $cart->total -= $cartProduct->product->discounted_price;
-                $cart->without_discount_total -= $cartProduct->product->price;
+        } else {
+            $cartProduct->decrement('quantity');
+            $cartProduct->total_price = $cartProduct->price * $cartProduct->quantity;
+            $this->updateCartPrices($cartProduct, $cart, 'decrement');
+            if ( ! $cartProduct->quantity) {
+                $cartProduct->delete();
+
+                return $this->respondNotFound([]);
             }
         }
-
+        $cartProduct->save();
         $cart->save();
 
-        if (isset($quantity)) {
-            return $this->respond([
-                'cart' => new CartResource($cart),
-            ]);
-        }
 
-        return $this->respondNotFound([]);
+        return $this->respond([
+            'cart' => new CartResource($cart),
+        ]);
     }
 
     public function destroy(Request $request)
@@ -110,5 +118,58 @@ class CartController extends BaseApiController
 
         return $this->respondValidationFails('There isn\'t a cart to delete');
 
+    }
+
+    public function getProductCart(Cart $cart, $productId, $productIdInCart): CartProduct
+    {
+//        $cartProduct = CartProduct::query()->where('cart_id', $cart->id)
+//                                  ->where('product_id', $productId)
+//                                  ->first();
+        if ( is_null($cartProduct = CartProduct::query()->find($productIdInCart))) {
+            $productIdInCart = CartProduct::query()->insertGetId([
+                'cart_id' => $cart->id,
+                'product_id' => $productId,
+                'product_object' => Product::find($productId),
+                'total_price' => 0,
+                'price' => 0,
+                'quantity' => 0,
+            ]);
+            $cartProduct = CartProduct::query()->find($productIdInCart);
+        }
+        return $cartProduct;
+    }
+
+    private function getOptionPrice(string $selectableModel, $selectionId, $id): int
+    {
+        $price = 0;
+        try {
+            if ($selectableModel === Taxonomy::class) {
+                $price = ProductOptionIngredient::query()
+                                                ->where('product_option_id', $id)
+                                                ->where('ingredient_id', $selectionId)
+                                                ->first()->price;
+            } elseif ($selectableModel === ProductOptionSelection::class) {
+                $price = ProductOptionSelection::query()->find($selectionId)->price;
+            }
+        } catch (Exception $exception) {
+            info($exception->getMessage());
+        }
+
+        return $price;
+    }
+
+    public function updateCartPrices(CartProduct $cartProduct, Cart $cart, string $action): void
+    {
+        if ($action === 'decrement') {
+            $cart->total -= $cartProduct->product->discounted_price;
+            $cart->without_discount_total -= $cartProduct->product->price;
+            $cart->total -= $cartProduct->total_price;
+            $cart->without_discount_total -= $cartProduct->total_price;
+        } elseif ($action === 'increment') {
+            $cart->total += $cartProduct->product->discounted_price;
+            $cart->without_discount_total += $cartProduct->product->price;
+            $cart->total += $cartProduct->total_price;
+            $cart->without_discount_total += $cartProduct->total_price;
+        }
     }
 }
