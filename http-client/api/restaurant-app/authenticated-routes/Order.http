@@ -21,3 +21,9 @@ GET {{host}}/{{locale}}/api/restaurants/v1/restaurants/445/orders/1
 Accept: application/json
 Content-Type: application/json
 Authorization: Bearer {{token}}
+
+### Restaurant notifications
+GET {{host}}/{{locale}}/api/restaurants/v1/restaurants/445/notifications
+Accept: application/json
+Content-Type: application/json
+Authorization: Bearer {{token}}

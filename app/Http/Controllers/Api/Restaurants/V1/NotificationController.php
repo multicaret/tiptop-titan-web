@@ -15,17 +15,18 @@ class NotificationController extends BaseApiController
      */
     public function index()
     {
-        $user = auth()->user();
+        $user = auth('sanctum')->user();
         $notifications = $user->notifications()
-                              ->whereNull('read_at')
+//                              ->whereNull('read_at')
                               ->latest()
                               ->get();
 
-        return NotificationResource::collection($notifications)->additional([
-            'meta' => [
-                'unreadNotificationsCount' => $user->unreadNotifications->count()
-            ]
-        ]);
+        return NotificationResource::collection($notifications);
+//           ->additional([
+//            'meta' => [
+//                'unreadNotificationsCount' => $user->unreadNotifications->count()
+//            ]
+//        ]);
     }
 
     /**
