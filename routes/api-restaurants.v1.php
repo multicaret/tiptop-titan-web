@@ -34,6 +34,7 @@ Route::middleware('auth:sanctum')
 
          // Orders
          Route::get('restaurants/{restaurant}/orders', 'OrderController@index');
+         Route::get('restaurants/{restaurant}/orders/{order}', 'OrderController@show');
          Route::post('restaurants/{restaurant}/orders', 'OrderController@store');
          Route::post('restaurants/{restaurant}/orders/{order}/delete', 'OrderController@destroy');
      });

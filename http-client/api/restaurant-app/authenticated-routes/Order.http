@@ -16,6 +16,13 @@ Authorization: Bearer {{token}}
     "status": "1"
 }
 
+### Restaurant orders show
+GET {{host}}/{{locale}}/api/restaurants/v1/restaurants/445/orders/1
+Accept: application/json
+Content-Type: application/json
+Authorization: Bearer {{token}}
+
+
 ### Order delete
 POST {{host}}/{{locale}}/api/restaurants/v1/orders/1/delete
 Accept: application/json
