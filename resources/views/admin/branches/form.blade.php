@@ -44,11 +44,13 @@
                     @endif
                 </a>
             </li>
-            <li class="nav-item">
-                <a class="nav-link" data-toggle="tab" href="#navs-bottom-responsive-link-4">
-                    <i class="fas fa-shapes"></i>&nbsp;Categories
-                </a>
-            </li>
+            @if($branch->isFood())
+                <li class="nav-item">
+                    <a class="nav-link" data-toggle="tab" href="#navs-bottom-responsive-link-4">
+                        <i class="fas fa-shapes"></i>&nbsp;Categories
+                    </a>
+                </li>
+            @endif
             <li class="nav-item">
                 <a class="nav-link" data-toggle="tab" href="#navs-bottom-responsive-link-5">
                     <i class="fas fa-user-tie"></i>&nbsp;Users
@@ -119,27 +121,29 @@
                     @endif
                 </div>
             </div>
-            <div class="tab-pane fade" id="navs-bottom-responsive-link-4">
-                <div class="card-body">
-                    @if(is_null($branch->id))
-                        @include('admin.branches.partials._inaccessible')
-                    @else
-                        @if($branch->id)
-                            <div class="d-flex justify-content-end mb-3">
-                                <a class="btn btn-primary" target="_blank"
-                                   href="{{route('admin.taxonomies.create', [
+            @if($branch->isFood())
+                <div class="tab-pane fade" id="navs-bottom-responsive-link-4">
+                    <div class="card-body">
+                        @if(is_null($branch->id))
+                            @include('admin.branches.partials._inaccessible')
+                        @else
+                            @if($branch->id)
+                                <div class="d-flex justify-content-end mb-3">
+                                    <a class="btn btn-primary" target="_blank"
+                                       href="{{route('admin.taxonomies.create', [
                                         'type'=> \App\Models\Taxonomy::getTypesArray()[\App\Models\Taxonomy::TYPE_MENU_CATEGORY],
                                         'branch_id' => $branch->id,
                                         'chain_id' => optional($branch->chain)->id
                                    ])}}">
-                                    Add new category
-                                </a>
-                            </div>
+                                        Add new category
+                                    </a>
+                                </div>
+                            @endif
+                            <livewire:taxonomies.taxonomies-table {{--:branch="$branch"--}} :branch-id="$branch->id"/>
                         @endif
-                        <livewire:taxonomies.taxonomies-table {{--:branch="$branch"--}} :branch-id="$branch->id"/>
-                    @endif
+                    </div>
                 </div>
-            </div>
+            @endif
 
             <div class="tab-pane fade" id="navs-bottom-responsive-link-5">
                 <div class="card-body">
@@ -153,7 +157,8 @@
                                 ] as $role => $users)
                             @if($branch->id)
                                 <h4 class="d-flex justify-content-between align-items-center w-100 font-weight-bold py-3 mb-2">
-                                    <i class="fas fa-{{$users[1]}}" style="font-size:1.4em"> {{Str::plural(str_replace('-', ' ', Str::title($role)))}}</i>
+                                    <i class="fas fa-{{$users[1]}}"
+                                       style="font-size:1.4em"> {{Str::plural(str_replace('-', ' ', Str::title($role)))}}</i>
                                     <x-admin.add-copy-buttons
                                         :createRoute="route('admin.users.create',[
                                         'role'=> $role,
@@ -167,14 +172,14 @@
                             @include('admin.branches.partials._users_table', ['users' => $users[0]])
                         @endforeach
                     @endif
+                </div>
             </div>
         </div>
-    </div>
 
-@endsection
+        @endsection
 
-@push('scripts')
-    <script src="{{ asset('/admin-assets/libs/quill/quill.js') }}"></script>
+        @push('scripts')
+            <script src="{{ asset('/admin-assets/libs/quill/quill.js') }}"></script>
     {{--    <script src="/js/charts_gmaps.js"></script>--}}
     @include('admin.branches.partials._branch-js')
-@endpush
+    @endpush
