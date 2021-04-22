@@ -31,9 +31,9 @@ Route::middleware('auth:sanctum')
          Route::post('logout', 'Auth\AuthController@logout');
 
          // Orders
-         Route::get('orders/food', 'OrderController@indexFood');
-         Route::post('orders', 'OrderController@store');
-         Route::post('orders/{order}/delete', 'OrderController@destroy');
+         Route::get('restaurants/{restaurant}/orders', 'OrderController@index');
+         Route::post('restaurants/{restaurant}/orders', 'OrderController@store');
+         Route::post('restaurants/{restaurant}/orders/{order}/delete', 'OrderController@destroy');
      });
 
 
