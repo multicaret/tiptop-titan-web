@@ -1,0 +1,23 @@
+################## Pages ##################
+
+### support
+GET {{host}}/{{locale}}/api/restaurants/v1/support
+Accept: application/json
+Content-Type: application/json
+
+### about - index
+GET {{host}}/{{locale}}/api/restaurants/v1/about-us
+Accept: application/json
+Content-Type: application/json
+
+### privacy - index
+GET {{host}}/{{locale}}/api/restaurants/v1/privacy-policy
+Accept: application/json
+Content-Type: application/json
+
+################## PRIVACY ##################
+### privacy show
+GET {{host}}/{{locale}}/api/restaurants/v1/privacy
+Accept: application/json
+Content-Type: application/json
+Authorization: Bearer {{token}}

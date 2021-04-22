@@ -1,0 +1,43 @@
+#
+####
+#POST https://onesignal.com/api/restaurants/v1/notifications
+#Accept: application/json
+#Content-Type: application/json
+#Authorization: Basic N2E1YWU5NWMtMWZmZS00M2E4LTg1ZmMtNjhjM2JjMWE4Nzlk
+#
+#{
+#    "contents": {
+#        "en": ""
+#    },
+#    "data": {
+#        "title": {
+#            "en": "TEST TEST",
+#            "ar": "TEST TEST",
+#            "ku": "TEST TEST"
+#        },
+#        "body": {
+#            "en": "TEST TEST",
+#            "ar": "TEST TEST",
+#            "ku": "TEST TEST"
+#        },
+#        "sub_type": "NEW_ORDER_CREATED",
+#        "status": "PENDING",
+#        "entity_id": 5314,
+#        "entity_type": "ORDER"
+#    },
+#    "existing_android_channel_id": "TipTop Notification Channel",
+#    "huawei_existing_channel_id": "TipTop Notification Channel",
+#    "large_icon": "https:\/\/admin.trytiptop.app\/logos\/main_logo_en.png",
+#    "ios_sound": "new_notify.wav",
+#    "android_sound": "new_notify",
+#    "content_available": 1,
+#    "chrome_web_icon": "app_icon",
+#    "chrome_icon": "app_icon",
+#    "adm_small_icon": "app_icon",
+#    "small_icon": "app_icon",
+#    "include_external_user_ids": ["8993"],
+#    "app_id": "081954e6-8c7c-4a10-9588-686f259402bf",
+#    "included_segments": [
+#        "all"
+#    ]
+#}

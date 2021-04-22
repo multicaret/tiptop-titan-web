@@ -1,0 +1,97 @@
+################## Order/Checkout ##################
+### Get checkout data
+GET {{host}}/{{locale}}/api/restaurants/v1/orders/create
+Accept: application/json
+Content-Type: application/json
+Authorization: Bearer {{token}}
+
+{
+    "chain_id": "1",
+    "branch_id": "1"
+}
+
+### Grocery previous orders index
+GET {{host}}/{{locale}}/api/restaurants/v1/orders/grocery
+Accept: application/json
+Content-Type: application/json
+Authorization: Bearer {{token}}
+
+{
+    "chain_id": "1"
+}
+
+### Food previous orders index
+GET {{host}}/{{locale}}/api/restaurants/v1/orders/food
+Accept: application/json
+Content-Type: application/json
+Authorization: Bearer {{token}}
+
+
+### Store checkout data.
+POST {{host}}/{{locale}}/api/restaurants/v1/orders
+Accept: application/json
+Content-Type: application/json
+Authorization: Bearer {{token}}
+#Required fields [chain_id, branch_id, cart_id, payment_method_id, address_id].
+
+{
+    "chain_id": {{chainId}},
+    "branch_id": "{{branchId}}",
+    "cart_id": "{{cartId}}",
+    "payment_method_id": 1,
+    "address_id": "{{addressId}}",
+    "notes": null,
+    "coupon_redeem_code": "{{couponCode}}"
+}
+
+### Order delete
+POST {{host}}/{{locale}}/api/restaurants/v1/orders/1/delete
+Accept: application/json
+Content-Type: application/json
+Authorization: Bearer {{token}}
+
+### Order create rate.
+GET {{host}}/{{locale}}/api/restaurants/v1/orders/1/rate
+Accept: application/json
+Content-Type: application/json
+Authorization: Bearer {{token}}
+
+### Order store rate.
+POST {{host}}/{{locale}}/api/restaurants/v1/orders/1/rate
+Accept: application/json
+Content-Type: application/json
+Authorization: Bearer {{token}}
+
+
+{
+    "branch_rating_value": 3.2,
+    "grocery_issue_id": 28,
+    "food_rating_factors": {
+        "has_good_food_quality_rating": true,
+        "has_good_packaging_quality_rating": false,
+        "has_good_order_accuracy_rating": null
+    },
+    "comment": "This is not what I ordered!"
+}
+
+### Driver store rate.
+POST {{host}}/{{locale}}/api/restaurants/v1/orders/1/drivers/1/rate
+Accept: application/json
+Content-Type: application/json
+Authorization: Bearer {{token}}
+
+{
+    "driver_rating_value": 3.2,
+    "comment": "The driver came super late!"
+}
+
+### coupon
+GET {{host}}/{{locale}}/api/restaurants/v1/coupons/{{couponCode}}/validate
+Accept: application/json
+Content-Type: application/json
+Authorization: Bearer {{token}}
+
+{
+    "branch_id": "{{branchId}}",
+    "cart_id": "{{cartId}}"
+}
