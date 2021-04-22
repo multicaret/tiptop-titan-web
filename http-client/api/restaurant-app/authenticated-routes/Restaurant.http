@@ -1,0 +1,20 @@
+################## Restaurant ##################
+### Restaurants edit
+GET {{host}}/{{locale}}/api/restaurants/v1/restaurants/473/edit
+Accept: application/json
+Content-Type: application/json
+
+### Restaurants update
+PUT {{host}}/{{locale}}/api/restaurants/v1/restaurants/473
+Accept: application/json
+Content-Type: application/json
+Authorization: Bearer {{token}}
+
+{
+    "delivery_time": "6-7",
+    "minimum_order": 21,
+    "delivery_fee": 4,
+    "covered_area_diameter": 500,
+    "phone_number": "7501234123"
+}
+

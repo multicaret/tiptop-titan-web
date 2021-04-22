@@ -11,12 +11,6 @@ Authorization: Bearer {{token}}
     "build_number": 251
 }
 
-### privacy
-GET {{host}}/{{locale}}/api/restaurants/v1/privacy
-Accept: application/json
-Content-Type: application/json
-Authorization: Bearer {{token}}
-
 ### log
 POST {{host}}/{{locale}}/api/restaurants/v1/logs/create
 Accept: application/json
