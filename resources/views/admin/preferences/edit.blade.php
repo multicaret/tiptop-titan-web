@@ -1,4 +1,6 @@
 @extends('layouts.admin')
+@push('styles')
+@endpush
 @section('title', __('Preferences.index'))
 @section('content')
     <h4 class="font-weight-bold py-3 mb-4">
@@ -53,29 +55,53 @@
                                              class="tab-pane {{ $langKey == localization()->getDefaultLocale() ? 'active' : '' }}">
 
                                             @foreach($children as $preference)
-                                                @component('admin.components.form-group', ['name' => $langKey .'['. $preference->key .']', 'type' => $preference->type])
-                                                    @slot('attributes', [
-                                                        'dir' => $locale->direction() == 'rtl' && in_array($preference->type,['url','tel','email'])? 'ltr' : $locale->direction()
-                                                    ])
-                                                    @slot('label', trans('preferences.'.$preference->key))
-                                                    @slot('value', optional($preference->translate($langKey))->value)
-                                                    @if($preference->type == 'file')
-                                                        @php($file = $preference->getValue())
-                                                        <img src="{{ $file }}" width="200" alt="{{$file}}"
-                                                             class="img-thumbnail d-block mb-3">
-                                                        <a class="btn btn-outline-info btn-sm"
-                                                           target="_blank" href="{{ $file }}">
-                                                            View
-                                                        </a>
-                                                        <a class="btn btn-outline-success btn-sm"
-                                                           target="_blank" href="{{ $file }}" download>
-                                                            Download
-                                                        </a>
-                                                    @endif
-                                                    @if($preference->notes)
-                                                        @lang('preferences.'. $preference->notes )
-                                                    @endif
-                                                @endcomponent
+                                                @if($preference->type != 'section' && $preference->type == 'selected_channel')
+                                                    <div class="mb-3">
+                                                        <fieldset>
+                                                            <label class="custom-control custom-radio d-inline mr-4">
+                                                                <input name="{{$langKey .'['. $preference->key .']'}}"
+                                                                       type="radio"
+                                                                       class="custom-control-input"
+                                                                       value="food"
+                                                                    {{$preference->value == 'food' ? 'checked' : ''}}>
+                                                                <span class="custom-control-label">Food</span>
+                                                            </label>
+                                                            <label class="custom-control custom-radio d-inline">
+                                                                <input name="{{$langKey .'['. $preference->key .']'}}"
+                                                                       type="radio"
+                                                                       class="custom-control-input"
+                                                                       value="market"
+                                                                    {{$preference->value == 'market' ? 'checked' : ''}}>
+                                                                <span class="custom-control-label">Market</span>
+                                                            </label>
+                                                        </fieldset>
+                                                    </div>
+                                                @endif
+                                                @if($preference->type != 'selected_channel')
+                                                    @component('admin.components.form-group', ['name' => $langKey .'['. $preference->key .']', 'type' => $preference->type])
+                                                        @slot('attributes', [
+                                                            'dir' => $locale->direction() == 'rtl' && in_array($preference->type,['url','tel','email'])? 'ltr' : $locale->direction()
+                                                        ])
+                                                        @slot('label', trans('preferences.'.$preference->key))
+                                                        @slot('value', optional($preference->translate($langKey))->value)
+                                                        @if($preference->type == 'file')
+                                                            @php($file = $preference->getValue())
+                                                            <img src="{{ $file }}" width="200" alt="{{$file}}"
+                                                                 class="img-thumbnail d-block mb-3">
+                                                            <a class="btn btn-outline-info btn-sm"
+                                                               target="_blank" href="{{ $file }}">
+                                                                View
+                                                            </a>
+                                                            <a class="btn btn-outline-success btn-sm"
+                                                               target="_blank" href="{{ $file }}" download>
+                                                                Download
+                                                            </a>
+                                                        @endif
+                                                        @if($preference->notes)
+                                                            @lang('preferences.'. $preference->notes )
+                                                        @endif
+                                                    @endcomponent
+                                                @endif
                                             @endforeach
 
                                             <div class="form-group">

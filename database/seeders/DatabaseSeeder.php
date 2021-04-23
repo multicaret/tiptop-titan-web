@@ -448,6 +448,11 @@ class DatabaseSeeder extends Seeder
                         'value' => '',
                         'notes' => 'This field affects the SEO'
                     ],
+                    'default_channel' => [
+                        'type' => 'selected_channel',
+                        'value' => 'food',
+                        'notes' => ''
+                    ],
                 ]
             ],
             /*'Appearance Settings' => [
