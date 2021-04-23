@@ -1,10 +1,6 @@
 @extends('layouts.admin')
 @section('title', "{$product->title} Options")
 
-@push('styles')
-    {{--    @livewireStyles--}}
-@endpush
-
 @section('content')
     <h2>
         {{$product->title}} Options
@@ -12,3 +8,8 @@
 
     <livewire:products.product-options-index :product="$product"/>
 @endsection
+
+@push('post-live-wire-scripts')
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@10">
+    </script>
+@endpush

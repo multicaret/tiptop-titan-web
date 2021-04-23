@@ -161,8 +161,8 @@ return [
         'weekends' => [6, 0],
     ],
     'colors' => [
-        'chain_primary_color' => '#d82518',
-        'chain_secondary_color' => '#F9CB39',
+        'chain_primary_color' => '#ffb200',
+        'chain_secondary_color' => '#293351',
         'qr_code_forecolor' => '#000000',
         'qr_code_backcolor' => '#FFFFFF',
     ],

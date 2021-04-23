@@ -106,7 +106,6 @@ class ProductOptionSelection extends Component
             'toast' => false,
             'position' => 'center',
             'showConfirmButton' => true,
-            'cancelButtonText' => 'Nope',
             'onConfirmed' => 'deleteSelection',
 //            'onCancelled' => 'cancelled'
         ]);

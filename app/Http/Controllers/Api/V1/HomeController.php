@@ -18,6 +18,7 @@ use App\Models\Cart;
 use App\Models\Currency;
 use App\Models\Location;
 use App\Models\Order;
+use App\Models\Preference;
 use App\Models\Slide;
 use App\Models\Taxonomy;
 use Illuminate\Http\JsonResponse;
@@ -193,6 +194,7 @@ class HomeController extends BaseApiController
             'distance' => $distance,
             // Food Related
             'restaurants' => is_null($foodBranches) ? null : BranchResource::collection($foodBranches),
+            'defaultChannel' => Preference::retrieveValue('default_channel'),
         ]);
     }
 
