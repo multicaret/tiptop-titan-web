@@ -14,11 +14,66 @@ use App\Models\ProductOptionIngredient;
 use App\Models\ProductOptionSelection;
 use App\Models\Taxonomy;
 use Exception;
+use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 
 class CartController extends BaseApiController
 {
-    public function adjustQuantity(Request $request)
+
+
+    public function groceryAdjustQuantity(Request $request): JsonResponse
+    {
+        $validationRules = [
+            'chain_id' => 'required',
+            'branch_id' => 'required',
+            'product_id' => 'required',
+            'is_adding' => 'required',
+        ];
+        $validator = validator()->make($request->all(), $validationRules);
+        if ($validator->fails()) {
+            return $this->respondValidationFails($validator->errors());
+        }
+
+        $chainId = $request->input('chain_id');
+        $branchId = $request->input('branch_id');
+        $productId = $request->input('product_id');
+        $isAddingMethod = $request->input('is_adding');
+        $cart = Cart::retrieve($chainId, $branchId);
+        $cartProduct = $this->getProductCart($cart, $productId, Product::CHANNEL_GROCERY_OBJECT);
+        if ($isAddingMethod) {
+            if ($cartProduct->product->is_storage_tracking_enabled) {
+                if ($cartProduct->product->available_quantity <= $cartProduct->quantity) {
+                    $errorData = ['availableQuantity' => $cartProduct->product->available_quantity];
+                    $errorsMessage = 'The requested product is currently unavailable';
+
+                    return $this->respondValidationFails($errorsMessage, $errorData);
+                }
+            }
+            $cartProduct->increment('quantity');
+            $this->updateCartPrices($cartProduct, $cart, 'increment');
+        } elseif ($cartProduct->quantity > 0) {
+            $cartProduct->decrement('quantity');
+            $cartProduct->total_price = $cartProduct->price * $cartProduct->quantity;
+            $this->updateCartPrices($cartProduct, $cart, 'decrement');
+            if ($cartProduct->quantity === 0) {
+                $cartProduct->delete();
+
+                return $this->respondNotFound([]);
+            }
+        }
+
+
+        $cart->save();
+
+        return $this->respond([
+            'cart' => new CartResource($cart),
+        ]);
+
+
+    }
+
+
+    public function foodAdjustCartData(Request $request)
     {
         $validationRules = [
             'chain_id' => 'required',
@@ -77,11 +132,11 @@ class CartController extends BaseApiController
                 $cartProduct->total_price = $cartProduct->price * $cartProduct->quantity;
                 $this->updateCartPrices($cartProduct, $cart, 'increment');
             }
-        } else {
+        } elseif ($cartProduct->quantity > 0) {
             $cartProduct->decrement('quantity');
             $cartProduct->total_price = $cartProduct->price * $cartProduct->quantity;
             $this->updateCartPrices($cartProduct, $cart, 'decrement');
-            if ( ! $cartProduct->quantity) {
+            if ($cartProduct->quantity === 0) {
                 $cartProduct->delete();
 
                 return $this->respondNotFound([]);
@@ -120,22 +175,29 @@ class CartController extends BaseApiController
 
     }
 
-    public function getProductCart(Cart $cart, $productId, $productIdInCart): CartProduct
+    public function getProductCart(Cart $cart, $productId, $type, $productIdInCart = null): CartProduct
     {
-//        $cartProduct = CartProduct::query()->where('cart_id', $cart->id)
-//                                  ->where('product_id', $productId)
-//                                  ->first();
-        if ( is_null($cartProduct = CartProduct::query()->find($productIdInCart))) {
+        $cartProduct = null;
+        if ($type === Product::CHANNEL_GROCERY_OBJECT) {
+            $cartProduct = CartProduct::query()->where('cart_id', $cart->id)
+                                      ->where('product_id', $productId)
+                                      ->first();
+        } elseif ($type === Product::CHANNEL_FOOD_OBJECT && $productIdInCart !== null) {
+            $cartProduct = CartProduct::query()->find($productIdInCart);
+        }
+
+        if (is_null($cartProduct)) {
             $productIdInCart = CartProduct::query()->insertGetId([
                 'cart_id' => $cart->id,
                 'product_id' => $productId,
                 'product_object' => Product::find($productId),
                 'total_price' => 0,
                 'price' => 0,
-                'quantity' => 0,
+                'quantity' => 0, // Todo: check value
             ]);
             $cartProduct = CartProduct::query()->find($productIdInCart);
         }
+
         return $cartProduct;
     }
 
@@ -165,11 +227,17 @@ class CartController extends BaseApiController
             $cart->without_discount_total -= $cartProduct->product->price;
             $cart->total -= $cartProduct->total_price;
             $cart->without_discount_total -= $cartProduct->total_price;
+            if ($cartProduct->product->is_storage_tracking_enabled) {
+                $cartProduct->product->increment('available_quantity');
+            }
         } elseif ($action === 'increment') {
             $cart->total += $cartProduct->product->discounted_price;
             $cart->without_discount_total += $cartProduct->product->price;
             $cart->total += $cartProduct->total_price;
             $cart->without_discount_total += $cartProduct->total_price;
+            if ($cartProduct->product->is_storage_tracking_enabled) {
+                $cartProduct->product->decrement('available_quantity');
+            }
         }
     }
 }
