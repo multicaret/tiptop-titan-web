@@ -99,19 +99,6 @@
                                     @endif
                                 </div>
 
-                                @if($option->is_based_on_ingredients)
-                                    <div class="form-group col-md-4">
-                                        <label class="form-label">Type</label>
-                                        <select class="form-control" wire:model="option.type">
-                                            <option value="{{\App\Models\ProductOption::TYPE_INCLUDING}}">
-                                                Including
-                                            </option>
-                                            <option value="{{\App\Models\ProductOption::TYPE_EXCLUDING}}">
-                                                Excluding
-                                            </option>
-                                        </select>
-                                    </div>
-                                @endif
                                 {{--<div class="form-group col-md-6">
                                     <label class="form-label">Selection</label>
                                     <select class="form-control" wire:model="option.selection_type">
@@ -124,35 +111,6 @@
                                         </option>
                                     </select>
                                 </div>--}}
-
-                                <div class="form-group col-md-4">
-                                    <label class="form-label">Input Type</label>
-                                    <select class="form-control" wire:model="option.input_type">
-                                        @if($option->is_based_on_ingredients)
-                                            <option value="{{\App\Models\ProductOption::INPUT_TYPE_PILL}}">
-                                                Pills
-                                            </option>
-                                        @else
-                                            @if($option->max_number_of_selection == 1)
-                                                <option value="{{\App\Models\ProductOption::INPUT_TYPE_RADIO}}">
-                                                    Radio
-                                                </option>
-                                                <option value="{{\App\Models\ProductOption::INPUT_TYPE_SELECT}}">
-                                                    Select
-                                                </option>
-                                            @endif
-                                            @if($option->max_number_of_selection > 1)
-                                                <option value="{{\App\Models\ProductOption::INPUT_TYPE_PILL}}">
-                                                    Pills
-                                                </option>
-                                                <option value="{{\App\Models\ProductOption::INPUT_TYPE_CHECKBOX}}">
-                                                    Checkbox
-                                                </option>
-                                            @endif
-                                        @endif
-                                    </select>
-                                </div>
-
                             </div>
 
                             <div class="form-row">
@@ -170,6 +128,48 @@
                                                placeholder="Max number of selection">
                                     </div>
                                 @endif
+                            </div>
+
+
+                            <div class="form-row">
+                                @if($option->is_based_on_ingredients)
+                                    <div class="form-group col-md-4 flash-bg">
+                                        <label class="form-label">Type</label>
+                                        <select class="form-control" wire:model="option.type">
+                                            <option value="{{\App\Models\ProductOption::TYPE_INCLUDING}}">
+                                                Including
+                                            </option>
+                                            <option value="{{\App\Models\ProductOption::TYPE_EXCLUDING}}">
+                                                Excluding
+                                            </option>
+                                        </select>
+                                    </div>
+                                @endif
+
+                                <div class="form-group col-md-4">
+                                    <label class="form-label">Input Type</label>
+                                    <select class="form-control" wire:model="option.input_type">
+                                        @if($option->is_based_on_ingredients)
+                                            <option value="{{\App\Models\ProductOption::INPUT_TYPE_PILL}}">
+                                                Pills
+                                            </option>
+                                        @else
+                                            @if($option->max_number_of_selection == 1)
+                                                <option value="{{\App\Models\ProductOption::INPUT_TYPE_SELECT}}">
+                                                    Select
+                                                </option>
+                                                <option value="{{\App\Models\ProductOption::INPUT_TYPE_RADIO}}">
+                                                    Radio
+                                                </option>
+                                            @endif
+                                            @if($option->max_number_of_selection > 1)
+                                                <option value="{{\App\Models\ProductOption::INPUT_TYPE_CHECKBOX}}">
+                                                    Checkbox
+                                                </option>
+                                            @endif
+                                        @endif
+                                    </select>
+                                </div>
                             </div>
                         </form>
 
@@ -233,6 +233,18 @@
                                         margin-right: 5px;
                                         border-radius: 2px;
                                         height: 25px;
+                                    }
+
+                                    .flash-bg {
+                                        animation: flashBg 500ms ease-in; /* IE 10+, Fx 29+ */
+                                        border-radius: 2px;
+                                        opacity: 1;
+                                    }
+
+                                    @-webkit-keyframes flashBg {
+                                        0% {
+                                            background-color: #ef7777;
+                                        }
                                     }
                                 </style>
                                 <div class="position-relative w-100">
