@@ -232,7 +232,7 @@ class ProductOption extends Component
     // Working on Ingredients
     public function updatedSearch($newValue)
     {
-        $ingredients = Taxonomy::ingredients();
+        $ingredients = Taxonomy::ingredients()->active();
         if ( ! is_null($newValue)) {
             $ingredients = $ingredients->wherehas('translations', function ($query) use ($newValue) {
                 $query->where('title', 'like', '%'.$newValue.'%');
