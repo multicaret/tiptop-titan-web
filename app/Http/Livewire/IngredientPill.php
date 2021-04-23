@@ -18,7 +18,7 @@ class IngredientPill extends Component
         'price' => 'required|numeric',
     ];
 
-    public function updatedIngredientPrice($newValue)
+    public function updatedPrice($newValue)
     {
         $model = ProductOptionIngredient::find($this->pivotId);
         $model->price = Controller::convertNumbersToArabic($newValue);
