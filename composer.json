@@ -26,6 +26,8 @@
         "laravel/tinker": "^2.5",
         "laravel/ui": "^3.2",
         "laravelcollective/html": "^6.2",
+        "league/flysystem": "1.1.3",
+        "league/flysystem-aws-s3-v3": "^1.0",
         "livewire/livewire": "^2.4",
         "multicaret/laravel-acquaintances": "^3.4",
         "predis/predis": "^1.1",

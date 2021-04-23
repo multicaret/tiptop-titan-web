@@ -52,6 +52,16 @@ return [
             'endpoint' => env('AWS_ENDPOINT'),
         ],
 
+        'old_s3' => [
+            'driver' => 's3',
+            'key' => env('OLD_AWS_ACCESS_KEY_ID'),
+            'secret' => env('OLD_AWS_SECRET_ACCESS_KEY'),
+            'region' => env('OLD_AWS_DEFAULT_REGION'),
+            'bucket' => env('OLD_AWS_BUCKET'),
+            'url' => env('OLD_AWS_URL'),
+            'endpoint' => env('OLD_AWS_ENDPOINT'),
+        ],
+
     ],
 
     /*

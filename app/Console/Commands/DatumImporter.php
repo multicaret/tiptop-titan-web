@@ -53,6 +53,7 @@ class DatumImporter extends Command
     public const CHOICE_GROCERY_PRODUCTS = 'grocery-products';
     public const CHOICE_FOOD_PRODUCTS = 'food-products';
     public const CHOICE_GROCERY_CATEGORIES = 'grocery-categories';
+    public const CHOICE_CATEGORY_IMAGES = 'category-images';
     public const CHOICE_PRODUCT_IMAGES = 'product-images';
     public const CHOICE_FOOD_CHAINS = 'food-chains';
     public const CHOICE_USERS = 'users';
@@ -63,7 +64,7 @@ class DatumImporter extends Command
     private ProgressBar $bar;
     private Collection $foodCategories;
     private array $importerChoices;
-    private int $queryLimit = 500000;
+    private int $queryLimit = 50000;
 
     public function __construct()
     {
@@ -84,6 +85,7 @@ class DatumImporter extends Command
             self::CHOICE_ADDRESSES,
             self::CHOICE_ORDERS,
             self::CHOICE_INGREDIENTS_CATEGORIES,
+            self::CHOICE_CATEGORY_IMAGES,
             self::CHOICE_PRODUCT_IMAGES,
             self::CHOICE_FOR_SERVER,
         ];
@@ -110,6 +112,8 @@ class DatumImporter extends Command
             $this->importFoodChains();
         } elseif ($this->modelName === self::CHOICE_GROCERY_CATEGORIES) {
             $this->importGroceryCategories();
+        } elseif ($this->modelName === self::CHOICE_CATEGORY_IMAGES) {
+            $this->importCategoriesImages();
         } elseif ($this->modelName === self::CHOICE_PRODUCT_IMAGES) {
             $this->importProductsImages();
         } elseif ($this->modelName === self::CHOICE_USERS) {
@@ -299,13 +303,6 @@ class DatumImporter extends Command
         }
     }
 
-
-    private function insertProductImage(int $oldProductId)
-    {
-        $freshProduct = Product::find($oldProductId);
-        $this->addSingleImage($freshProduct, 'Dish');
-    }
-
     private function storeLocation($oldBranch, $freshBranch)
     {
         $location = new Location();
@@ -384,20 +381,6 @@ class DatumImporter extends Command
         $this->bar->start();
         foreach ($oldProducts as $oldProduct) {
             $this->insertProducts($oldProduct);
-            $this->bar->advance();
-        }
-    }
-
-    private function importProductsImages(): void
-    {
-        $oldProductsIds = OldProduct::orderBy('created_at')
-                                    ->withCount('categories')
-                                    ->where('restaurant_id', self::DEFAULT_RESTAURANT_ID)
-                                    ->take($this->queryLimit)->pluck('id');
-        $this->bar = $this->output->createProgressBar($oldProductsIds->count());
-        $this->bar->start();
-        foreach ($oldProductsIds as $oldProductId) {
-            $this->insertProductImage($oldProductId);
             $this->bar->advance();
         }
     }
@@ -808,4 +791,54 @@ class DatumImporter extends Command
 //        echo "Category ({$taxonomy->title}) created with ID: ".$taxonomy->id.PHP_EOL;
 //        return $taxonomy;
     }
+
+    private function importCategoriesImages()
+    {
+        $allTaxonomiesIds = Taxonomy::query()
+                                    ->take($this->queryLimit)->get();
+        $this->bar = $this->output->createProgressBar($allTaxonomiesIds->count());
+        $this->bar->start();
+        foreach ($allTaxonomiesIds as $taxonomy) {
+            $this->assignImageToModel($taxonomy, OldMedia::TYPE_CATEGORY);
+            $this->bar->advance();
+        }
+    }
+
+    private function importProductsImages(): void
+    {
+        $products = Product::query()->where('type', Product::CHANNEL_GROCERY_OBJECT)->get();
+        $this->bar = $this->output->createProgressBar($products->count());
+        $this->bar->start();
+        foreach ($products as $product) {
+            $this->assignImageToModel($product, OldMedia::TYPE_DISH);
+            $this->bar->advance();
+        }
+    }
+
+    private function assignImageToModel($newModel, string $modelType, $collection = OldMedia::COLLECTION_COVER): void
+    {
+        $query = [['model_type', $modelType], ['model_id', $newModel->id], ['collection_name', $collection]];
+        $oldMediaFiles = OldMedia::query()
+                                 ->where($query)
+                                 ->get();
+        foreach ($oldMediaFiles as $oldMediaData) {
+            $errorMessage = null;
+            try {
+                $uuid = self::getUuidString(25);
+                $newModel->addMediaFromDisk($oldMediaData->disk_path, 'old_s3')
+                         ->setFileName("{$newModel->id}-{$uuid}.{$oldMediaData->getExtensionAttribute()}")
+                         ->toMediaCollection($collection);
+            } catch (FileDoesNotExist $e) {
+                $errorMessage = 'Failed to load image because file does not exist: '.$e->getMessage();
+            } catch (FileIsTooBig $e) {
+                $errorMessage = 'Failed to load image because file is too big: '.$e->getMessage();
+            } catch (FileCannotBeAdded $e) {
+                $errorMessage = 'Failed to load image because file cannot be added: '.$e->getMessage();
+            }
+            if ( ! is_null($errorMessage)) {
+                \Log::error($modelType.' - '.$errorMessage);
+            }
+        }
+    }
+
 }

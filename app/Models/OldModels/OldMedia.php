@@ -62,6 +62,19 @@ class OldMedia extends MediaAlias
     protected $connection = 'mysql-old';
     protected $table = 'media';
     protected $primaryKey = 'id';
+    public const TYPE_USER = 'App\\User';
+    public const TYPE_CATEGORY = 'Modules\\Cms\\Entities\\CategoryTranslation';
+    public const TYPE_CONTENT = 'Modules\\Cms\\Entities\\ContentTranslation';
+    public const TYPE_DISH = 'Modules\\Jo3aan\\Entities\\Dish';
+    public const TYPE_RESTAURANT = 'Modules\\Jo3aan\\Entities\\Restaurant';
+    public const COLLECTION_LOGO = 'logo';
+    public const COLLECTION_COVER = 'cover';
+
+    public function __construct(array $attributes = [])
+    {
+        $attributes['disk'] = 'old_s3';
+        parent::__construct($attributes);
+    }
 
 
     public function getProductS3Url($id, $fileName): string
@@ -69,6 +82,29 @@ class OldMedia extends MediaAlias
         $urlScheme = 'https://tiptop-backend-production.s3.eu-central-1.amazonaws.com/media/dishes/%d/%s';
 
         return sprintf($urlScheme, $id, $fileName);
+    }
+
+
+    public function getDiskPathAttribute(): string
+    {
+        $urlScheme = 'media/%s/%d/%s';
+
+        return sprintf($urlScheme,self::getModelTypes()[$this->model_type], $this->id, $this->file_name);
+    }
+    public function getDiskAttribute(): string
+    {
+        return 'old_s3';
+    }
+
+    public static function getModelTypes(): array
+    {
+        return [
+            self::TYPE_USER => 'users',
+            self::TYPE_CATEGORY => 'categoryTranslations',
+            self::TYPE_CONTENT => 'contentTranslations',
+            self::TYPE_DISH => 'dishes',
+            self::TYPE_RESTAURANT => 'restaurants',
+        ];
     }
 
 }
