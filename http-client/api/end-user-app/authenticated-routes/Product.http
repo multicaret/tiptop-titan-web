@@ -42,11 +42,11 @@ Authorization: Bearer {{token}}
     "selected_options": [
         {
             "id": 12,
-            "selection_ids": [952, 1013, 1023]
+            "selected_ids": [952, 1013, 1023]
         },
         {
             "id": 16,
-            "selection_ids": [20,21]
+            "selected_ids": [20,21]
         }
     ]
 }
