@@ -20,7 +20,6 @@ Content-Type: application/json
 Authorization: Bearer {{token}}
 
 {
-    "product_id_in_cart": {{productIdInCart}},
     "product_id": {{productId}},
     "chain_id": {{chainId}},
     "branch_id": "{{branchId}}",
@@ -29,7 +28,7 @@ Authorization: Bearer {{token}}
 
 
 ###  submit food product
-POST {{host}}/{{locale}}/api/v1/carts/{{cartId}}/products/food/submit-quantity
+POST {{host}}/{{locale}}/api/v1/carts/{{cartId}}/products/food/adjust-cart-data
 Accept: application/json
 Content-Type: application/json
 Authorization: Bearer {{token}}
