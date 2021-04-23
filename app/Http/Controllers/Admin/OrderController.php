@@ -4,6 +4,8 @@ namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
 use App\Models\Order;
+use App\Models\Product;
+use App\Models\Taxonomy;
 use Illuminate\Contracts\Foundation\Application;
 use Illuminate\Contracts\View\Factory;
 use Illuminate\Http\Request;
@@ -24,7 +26,9 @@ class OrderController extends Controller
 
     public function reportIndex()
     {
-        return view('admin.orders.report-index');
+        $orders = Taxonomy::all();
+
+        return view('admin.orders.report-index', compact('orders'));
     }
 
     public function show(Order $order)
