@@ -13,8 +13,8 @@ Authorization: Bearer {{token}}
 
 
 
-###  remove or add product
-POST {{host}}/{{locale}}/api/v1/carts/{{cartId}}/products/adjust-quantity
+###  remove or add grocery product
+POST {{host}}/{{locale}}/api/v1/carts/{{cartId}}/products/grocery/adjust-quantity
 Accept: application/json
 Content-Type: application/json
 Authorization: Bearer {{token}}
@@ -24,8 +24,22 @@ Authorization: Bearer {{token}}
     "product_id": {{productId}},
     "chain_id": {{chainId}},
     "branch_id": "{{branchId}}",
-    "is_adding": true,
-    "status": 0,
+    "is_adding": true
+}
+
+
+###  submit food product
+POST {{host}}/{{locale}}/api/v1/carts/{{cartId}}/products/food/submit-quantity
+Accept: application/json
+Content-Type: application/json
+Authorization: Bearer {{token}}
+
+{
+    "product_id_in_cart": {{productIdInCart}},
+    "product_id": {{productId}},
+    "chain_id": {{chainId}},
+    "branch_id": "{{branchId}}",
+    "quantity": 2,
     "selected_options": [
         {
             "id": 12,
