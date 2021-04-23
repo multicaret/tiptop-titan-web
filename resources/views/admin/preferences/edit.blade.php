@@ -57,6 +57,7 @@
                                             @foreach($children as $preference)
                                                 @if($preference->type != 'section' && $preference->type == 'selected_channel')
                                                     <div class="mb-3">
+                                                        <label>Default channel</label>
                                                         <fieldset>
                                                             <label class="custom-control custom-radio d-inline mr-4">
                                                                 <input name="{{$langKey .'['. $preference->key .']'}}"
