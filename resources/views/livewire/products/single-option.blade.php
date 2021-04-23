@@ -306,7 +306,7 @@
         </div>
     </div>
     <div class="col-1 px-0 pb-2">
-        @if(!$markedAsDeleted)
+        @if(!$optionMarkedToBeDeleted)
             <button class="btn btn-sm btn-outline-danger btn-block h-100" wire:click="triggerConfirmDeleting">
                 Delete
             </button>

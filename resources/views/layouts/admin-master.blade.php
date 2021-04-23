@@ -235,8 +235,8 @@
 @endif
 
 @livewireScripts
-
-<x-livewire-alert::scripts/>
+@stack('post-live-wire-scripts')
+@include('vendor.livewire-alert.scripts')
 
 <script>
     $('[data-toggle="tooltip"]').tooltip();

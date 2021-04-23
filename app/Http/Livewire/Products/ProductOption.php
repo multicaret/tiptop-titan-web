@@ -13,7 +13,7 @@ class ProductOption extends Component
     public $titleEn;
     public $titleKu;
     public $titleAr;
-    public bool $markedAsDeleted = false;
+    public $optionMarkedToBeDeleted;
 
     public function mount()
     {
@@ -260,7 +260,7 @@ class ProductOption extends Component
 //        'optionCloned' => 'cloneOption'
         'selectionDeleted' => 'reloadSelections',
         'ingredientPillDeleted' => 'deleteIngredientPill',
-        'deleteOption',
+        'foo' => 'deleteOption',
     ];
 
     public function deleteIngredientPill($params)
@@ -294,18 +294,20 @@ class ProductOption extends Component
 
     public function deleteOption()
     {
-        $this->markedAsDeleted = true;
-        $this->emitUp('optionDeleted', ['optionId' => optional($this->option)->id]);
+        if ($this->optionMarkedToBeDeleted != $this->option->id) {
+            info('trying to delete product option', ['optionId' => $this->option->id]);
+            $this->emitUp('optionDeleted', ['optionId' => $this->option->id]);
+        }
     }
 
     public function triggerConfirmDeleting()
     {
+        $this->optionMarkedToBeDeleted = $this->option->id;
         $this->confirm('Are you sure?', [
             'toast' => false,
             'position' => 'center',
             'showConfirmButton' => true,
-            'cancelButtonText' => 'Nope',
-            'onConfirmed' => 'deleteOption',
+            'onConfirmed' => 'foo',
 //            'onCancelled' => 'cancelled'
         ]);
     }
