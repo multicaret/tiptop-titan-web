@@ -62,6 +62,11 @@ class CartProduct extends Pivot
         return $this->hasMany(CartProductOption::class, 'cart_product_id');
     }
 
+    public function cartProductOptionsSelections(): HasMany
+    {
+        return $this->hasMany(CartProductOptionSelection::class, 'cart_product_id');
+    }
+
     public function getSelectedOptionsAttribute()
     {
         $callback = function (CartProductOption $item) {
