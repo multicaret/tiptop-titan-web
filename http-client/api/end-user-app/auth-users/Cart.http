@@ -26,11 +26,11 @@ Authorization: Bearer {{token}}
     "quantity": 2,
     "selected_options": [
         {
-            "id": 12,
+            "product_option_id": 12,
             "selected_ids": [952, 1013, 1023]
         },
         {
-            "id": 16,
+            "product_option_id": 16,
             "selected_ids": [20,21]
         }
     ]

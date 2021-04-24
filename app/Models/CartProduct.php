@@ -80,11 +80,11 @@ class CartProduct extends Pivot
             }
 
             return [
-                'id' => $item->id,
-                'selection_ids' => $selectionIds
+                'product_option_id' => $item->id,
+                'selected_ids' => $selectionIds
             ];
         };
 
-        return $this->cartProductOptions->transform($callback);
+        return $this->cartProductOptions->map($callback);
     }
 }
