@@ -3,13 +3,9 @@
 namespace App\Http\Controllers\Api\Restaurants\V1;
 
 use App\Http\Controllers\Api\BaseApiController;
-use App\Http\Resources\BranchResource;
 use App\Http\Resources\CategoryMiniResource;
 use App\Http\Resources\FoodBranchResource;
-use App\Http\Resources\FoodCategoryResource;
 use App\Models\Branch;
-use App\Models\Location;
-use App\Models\Taxonomy;
 use DB;
 use Illuminate\Http\Request;
 
