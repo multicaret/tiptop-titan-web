@@ -175,11 +175,11 @@
                 </div>
             </div>
         </div>
+    </div>
 
-        @endsection
+@endsection
 
-        @push('scripts')
-            <script src="{{ asset('/admin-assets/libs/quill/quill.js') }}"></script>
-    {{--    <script src="/js/charts_gmaps.js"></script>--}}
+@push('scripts')
+    <script src="{{ asset('/admin-assets/libs/quill/quill.js') }}"></script>
     @include('admin.branches.partials._branch-js')
-    @endpush
+@endpush
