@@ -371,7 +371,6 @@ class Taxonomy extends Node implements HasMedia, ShouldHaveTypes, TranslatableCo
     }
 
 
-
     public function searchableTags(): MorphToMany
     {
         return $this->morphToMany(Taxonomy::class, 'search_taggable')
@@ -407,6 +406,12 @@ class Taxonomy extends Node implements HasMedia, ShouldHaveTypes, TranslatableCo
             ],
             'content' => [
                 Taxonomy::TYPE_POST_CATEGORY,
+            ],
+            'branch' => [
+                Taxonomy::TYPE_MENU_CATEGORY,
+            ],
+            'chain' => [
+                Taxonomy::TYPE_GROCERY_CATEGORY,
             ],
         ];
 
