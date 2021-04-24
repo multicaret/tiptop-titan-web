@@ -735,9 +735,9 @@ class DatatableController extends AjaxController
     {
         $group = $request->input('group_by');
         if (is_null($group)) {
-            $transitions = Translationwhere('group', '!=', Translation::IGNORE_FILENAME);
+            $transitions = Translation::where('group', '!=', Translation::IGNORE_FILENAME);
         } else {
-            $transitions = Translationwhere('group', $group);
+            $transitions = Translation::where('group', $group);
         }
         $of = DataTables::of($transitions);
         $rawColumns = [

@@ -44,7 +44,7 @@ class CartProductOption extends Pivot
     public static function boot()
     {
         static::creating(function ($model) {
-            $model->product_option_object = ProductOptionfind($model->product_option_id);
+            $model->product_option_object = ProductOption::find($model->product_option_id);
         });
         parent::boot();
     }
