@@ -509,7 +509,7 @@ class DatumImporter extends Command
         $this->newLine();
         foreach ($oldChains as $oldChain) {
             $this->callSilently('datum:sync-chains', ['--id' => [$oldChain->id]]);
-            $chainMenuCategories = TaxonomyModel::query()->where('chain_id', $oldChain->id)
+            $chainMenuCategories = TaxonomyModelwhere('chain_id', $oldChain->id)
                                                 ->where('type', Taxonomy::TYPE_MENU_CATEGORY)->get();
             if ($chainMenuCategories->count() > 0) {
                 foreach ($oldChain->branches as $branch) {
@@ -544,11 +544,11 @@ class DatumImporter extends Command
     private function importUsers()
     {
         $userSideRoleName = \Str::title(str_replace('-', ' ', User::ROLE_USER_SIDE));
-        $userSideRole = Role::query()->where('name', $userSideRoleName)->first();
+        $userSideRole = Rolewhere('name', $userSideRoleName)->first();
         if (is_null($userSideRole)) {
             Role::create(['name' => $userSideRoleName]);
         }
-        $oldUsers = OldUser::query()->withoutGlobalScopes()
+        $oldUsers = OldUserwithoutGlobalScopes()
                            ->whereNotIn('status', [OldUser::STATUS_PENDING])
                            ->where('id', '>', 2)
                            ->get();
