@@ -290,4 +290,5 @@ return [
     'Can not rate a not delivered order' => 'Can not rate a not delivered order',
     'search_tags' => 'Search Tags',
     'select_status' => 'Select status',
+    'team' => 'Team',
 ];
