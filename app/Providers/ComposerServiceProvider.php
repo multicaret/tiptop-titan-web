@@ -155,6 +155,11 @@ class ComposerServiceProvider extends ServiceProvider
                                 ],
                                 'routeName' => 'admin.orders.ratings',
                             ],
+                            [
+                                'title' => 'Daily Report',
+                                'icon' => 'fas fa-chart-line',
+                                'routeName' => 'admin.orders.report-index',
+                            ],
                         ]
                     ]
                 ]
