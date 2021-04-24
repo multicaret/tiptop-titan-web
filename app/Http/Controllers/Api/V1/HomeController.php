@@ -108,7 +108,6 @@ class HomeController extends BaseApiController
             $user->save();
         }
 
-        // Todo: fill the Region & City after we finishing the GeoFencing from Jadid.
         if ( ! is_null($selectedAddress)) {
             $cityId = $selectedAddress->city->id;
             $regionId = $selectedAddress->region->id;

@@ -88,7 +88,7 @@ class SyncChains extends Command
 
     private function updateChainSyncStatus($chainId)
     {
-        $chain = ChainwhereId($chainId)->first();
+        $chain = Chain::whereId($chainId)->first();
         if ( ! $chain->is_synced) {
             $chain->is_synced = 1;
             $chain->save();

@@ -144,7 +144,7 @@ class OldOrder extends OldModel
             'chain_id' => 'chain_id',
             'branch_id' => 'branch_id',
             'city_id' => 'city_id',
-            'driver_id' => 'user_id',
+            'driver_id' => 'driver_id',
 //            'basket_id' => 'cart_id',
             'address_id' => 'address_id',
 //            'status' => '', // typeComparing()
