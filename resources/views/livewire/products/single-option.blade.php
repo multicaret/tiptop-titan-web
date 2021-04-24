@@ -3,7 +3,7 @@
         <div id="accordionOption{{$option->id}}">
             <div class="card mb-2">
                 <div class="card-header shadow-sm">
-                    <a class="d-flex justify-content-between text-body" data-toggle="collapse" aria-expanded="false"
+                    <a class="d-flex justify-content-between text-body" data-toggle="collapse" aria-expanded="true"
                        href="#accordionOption{{$option->id}}-1">
                     <span>
                         <span class="text-muted">
@@ -11,11 +11,10 @@
                         </span>
                         {{ $option->title }}
                     </span>
-                        <div class="collapse-icon"></div>
                     </a>
                 </div>
 
-                <div id="accordionOption{{$option->id}}-1" class="collapse"
+                <div id="accordionOption{{$option->id}}-1" class="collapse show"
                      data-parent="#accordionOption{{$option->id}}">
                     <div class="card-body">
                         <form>
