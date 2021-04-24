@@ -155,11 +155,6 @@ class ComposerServiceProvider extends ServiceProvider
                                 ],
                                 'routeName' => 'admin.orders.ratings',
                             ],
-                            [
-                                'title' => 'Daily Report',
-                                'icon' => 'fas fa-chart-line',
-                                'routeName' => 'admin.orders.report-index',
-                            ],
                         ]
                     ]
                 ]
@@ -479,6 +474,24 @@ class ComposerServiceProvider extends ServiceProvider
                                 'title' => 'Coupons',
                                 'icon' => 'fas fa-ticket-alt',
                                 'routeName' => 'admin.coupons.index',
+                            ],
+
+                        ]
+                    ]
+                ]
+            ],
+            [
+                'children' => [
+                    [
+                        'title' => 'Reports',
+                        'icon' => 'fas fa-chart-bar',
+                        'routeName' => 'admin.index',
+                        'params' => ['type' => 'collapse'],
+                        'subChildren' => [
+                            [
+                                'title' => 'Daily Report',
+                                'icon' => 'fas fa-calendar-alt',
+                                'routeName' => 'admin.orders.report-index',
                             ],
 
                         ]
