@@ -7,7 +7,7 @@
                        href="#accordion{{$option->id}}-1">
                     <span>
                         <span class="text-muted">
-                        Option:
+                        ({{ $option->id }}) Option:
                         </span>
                         {{ $option->title }}
                     </span>
@@ -301,15 +301,13 @@
                          </button>--}}
                     </div>
                 </div>
-
             </div>
         </div>
     </div>
     <div class="col-1 px-0 pb-2">
-        @if(!$optionMarkedToBeDeleted)
-            <button class="btn btn-sm btn-outline-danger btn-block h-100" wire:click="triggerConfirmDeleting">
-                Delete
-            </button>
-        @endif
+        <button class="btn btn-sm btn-outline-danger btn-block h-100"
+                wire:click="triggerConfirmDeleting({{$option->id}})">
+            Delete
+        </button>
     </div>
 </div>
