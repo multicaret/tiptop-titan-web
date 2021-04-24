@@ -225,13 +225,13 @@ class ProductController extends Controller
         $toValidateInGrocery = [];
         if ($request->type == Product::getCorrectChannelName(Product::CHANNEL_GROCERY_OBJECT, 0)) {
             $toValidateInGrocery = [
-//                'categories' => 'required',
+                'categories' => 'required',
             ];
         }
         $toValidateInFood = [];
         if ($request->type == Product::getCorrectChannelName(Product::CHANNEL_FOOD_OBJECT, 0)) {
             $toValidateInFood = [
-//                'category' => 'required',
+                'category' => 'required',
             ];
         }
 
