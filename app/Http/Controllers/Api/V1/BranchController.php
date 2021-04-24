@@ -74,7 +74,8 @@ class BranchController extends BaseApiController
 
         switch ($request->input('sort')) {
             case 'restaurants_rating':
-                $branches = $branches->orderByDesc('avg_rating');
+                $branches = $branches->orderByDesc('rating_count')
+                                     ->orderByDesc('avg_rating');
                 break;
             case 'by_distance':
                 $branches = $this->sortBranchesByDistance($branches, $request);
