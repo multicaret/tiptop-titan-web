@@ -31,6 +31,7 @@ class CreateProductOptionsTable extends Migration
             $table->unsignedInteger('min_number_of_selection')->nullable();
             $table->unsignedTinyInteger('input_type')->default(ProductOption::INPUT_TYPE_PILL);
             $table->unsignedTinyInteger('selection_type')->default(ProductOption::SELECTION_TYPE_SINGLE_VALUE);
+            $table->unsignedInteger('order_column')->nullable();
             $table->timestamps();
 
             $table->foreign('product_id')->references('id')->on('products')->onDelete('cascade');
