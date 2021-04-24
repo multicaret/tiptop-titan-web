@@ -12,17 +12,6 @@ Route::middleware('throttle:15')
          Route::get('/boot', 'HomeController@boot');
          Route::get('/', 'HomeController@root');
 
-         /*restaurant related*/
-         Route::get('restaurants/{restaurant}/edit', 'BranchController@edit');
-         Route::put('restaurants/{restaurant}', 'BranchController@update');
-         Route::post('restaurants/{restaurant}/toggle-activity', 'BranchController@toggleActivity');
-         Route::get('restaurants/{restaurant}/categories', 'BranchController@categories');
-         Route::put('restaurants/{restaurant}/products/{product}', 'ProductController@update');
-         Route::get('restaurants/{restaurant}/notifications', 'NotificationController@index');
-
-         Route::get('categories/{groceryCategory}/products', 'CategoryController@products');
-         Route::get('products/{id}', 'ProductController@show');
-
          /* generals */
          Route::get('privacy-policy', 'PostController@privacy');
          Route::get('about-us', 'PostController@aboutUs');;
@@ -33,6 +22,18 @@ Route::middleware('throttle:15')
 Route::middleware('auth:sanctum')
      ->group(function () {
          Route::post('logout', 'Auth\AuthController@logout');
+
+
+         /*restaurant related*/
+         Route::get('restaurants/{restaurant}/edit', 'BranchController@edit');
+         Route::put('restaurants/{restaurant}', 'BranchController@update');
+         Route::post('restaurants/{restaurant}/toggle-activity', 'BranchController@toggleActivity');
+         Route::get('restaurants/{restaurant}/categories', 'BranchController@categories');
+         Route::put('restaurants/{restaurant}/products/{product}', 'ProductController@update');
+         Route::get('restaurants/{restaurant}/notifications', 'NotificationController@index');
+
+         Route::get('categories/{groceryCategory}/products', 'CategoryController@products');
+         Route::get('products/{id}', 'ProductController@show');
 
          // Orders
          Route::get('restaurants/{restaurant}/orders', 'OrderController@index');
