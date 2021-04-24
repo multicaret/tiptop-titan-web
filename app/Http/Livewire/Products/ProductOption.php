@@ -30,6 +30,7 @@ class ProductOption extends Component
         'option.selection_type' => 'required|numeric',
         'option.min_number_of_selection' => 'nullable|numeric',
         'option.max_number_of_selection' => 'nullable|numeric',
+        'option.order_column' => 'nullable|numeric',
     ];
 
 
@@ -215,6 +216,20 @@ class ProductOption extends Component
         $this->emit('showToast', [
             'icon' => 'success',
             'message' => 'Kurdish title has been changed',
+        ]);
+    }
+
+    public function updatedOptionOrderColumn($newValue)
+    {
+        if (empty($newValue)) {
+            $newValue = null;
+        }
+        $this->option->order_column = $newValue;
+        $this->option->save();
+
+        $this->emit('showToast', [
+            'icon' => 'success',
+            'message' => 'Order column has been changed',
         ]);
     }
 
