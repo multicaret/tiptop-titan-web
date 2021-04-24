@@ -158,6 +158,12 @@
                                             @slot('value', $branch->longitude)
                                         @endcomponent
                                     </div>
+                                    <div class="col-12">
+                                        <a href="https://maps.google.com/?q={{$branch->latitude}},{{$branch->longitude}}"
+                                           target="_blank">
+                                            Open In Google Maps <i class="fas fa-external-link-alt"></i>
+                                        </a>
+                                    </div>
                                 </div>
                             </div>
                             <div class="col-6" style="height: 250px;">
