@@ -177,7 +177,7 @@
             <div class="card mt-3">
                 <h5 class="card-header font-weight-bold">
                     <i class="fas fa-sticky-note"></i>&nbsp;
-                                                      Customer Notes
+                                                      Order Customer Notes
                 </h5>
                 <div class="card-body">
                     <div class="row">
