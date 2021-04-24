@@ -71,9 +71,9 @@ class CartProduct extends Pivot
     {
         $callback = function (CartProductOption $item) {
             if ($item->productOption->is_based_on_ingredients) {
-                $selectionIds = $item->ingredients()->pluck('id')->all();
+                $selectionIds = $item->ingredients()->pluck('selectable_id')->all();
             } else {
-                $selectionIds = $item->selections()->pluck('id')->all();
+                $selectionIds = $item->selections()->pluck('selectable_id')->all();
             }
             return [
                 'id' => $item->id,
