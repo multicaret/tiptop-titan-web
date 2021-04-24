@@ -79,6 +79,7 @@ class SyncChains extends Command
         foreach ($chainProducts as $originalProduct) {
             $newProduct = $originalProduct->replicateWithTranslations();
             $newProduct->branch_id = $branchId;
+            $newProduct->cloned_from_product_id = $originalProduct->id;
             $newProduct->push();
             // Todo: check barcode relation.
             $newProduct->categories()->sync($originalProduct->categories->pluck('id'));
@@ -87,7 +88,7 @@ class SyncChains extends Command
 
     private function updateChainSyncStatus($chainId)
     {
-        $chain = Chain::query()->whereId($chainId)->first();
+        $chain = ChainwhereId($chainId)->first();
         if ( ! $chain->is_synced) {
             $chain->is_synced = 1;
             $chain->save();

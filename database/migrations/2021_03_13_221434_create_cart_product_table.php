@@ -18,8 +18,8 @@ class CreateCartProductTable extends Migration
             $table->unsignedBigInteger('cart_id')->index();
             $table->unsignedBigInteger('product_id')->index();
             $table->unsignedSmallInteger('quantity')->default(1);
-            $table->double('price')->default(0);
-            $table->double('total_price')->default(0);
+            $table->double('price')->default(0)->comment('for Food products only, for their options');
+            $table->double('total_price')->default(0)->comment('for Food products only, for their options');
             $table->json('product_object')->nullable();
             $table->timestamps();
 

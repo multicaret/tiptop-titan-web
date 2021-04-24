@@ -56,6 +56,7 @@ use Spatie\MediaLibrary\MediaCollections\Models\Media as MediaAlias;
  * @method static \Illuminate\Database\Eloquent\Builder|OldMedia whereUpdatedAt($value)
  * @method static \Illuminate\Database\Eloquent\Builder|OldMedia whereUuid($value)
  * @mixin \Eloquent
+ * @property-read string $disk_path
  */
 class OldMedia extends MediaAlias
 {
@@ -69,6 +70,7 @@ class OldMedia extends MediaAlias
     public const TYPE_RESTAURANT = 'Modules\\Jo3aan\\Entities\\Restaurant';
     public const COLLECTION_LOGO = 'logo';
     public const COLLECTION_COVER = 'cover';
+    public const COLLECTION_GALLERY = 'gallery';
 
     public function __construct(array $attributes = [])
     {

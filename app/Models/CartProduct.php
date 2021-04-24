@@ -39,6 +39,8 @@ use Illuminate\Support\Carbon;
  * @property-read mixed $selected_options
  * @method static Builder|CartProduct wherePrice($value)
  * @method static Builder|CartProduct whereTotalPrice($value)
+ * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\CartProductOptionSelection[] $cartProductOptionsSelections
+ * @property-read int|null $cart_product_options_selections_count
  */
 class CartProduct extends Pivot
 {
@@ -71,9 +73,9 @@ class CartProduct extends Pivot
     {
         $callback = function (CartProductOption $item) {
             if ($item->productOption->is_based_on_ingredients) {
-                $selectionIds = $item->ingredients()->pluck('id')->all();
+                $selectionIds = $item->ingredients()->pluck('selectable_id')->all();
             } else {
-                $selectionIds = $item->selections()->pluck('id')->all();
+                $selectionIds = $item->selections()->pluck('selectable_id')->all();
             }
             return [
                 'id' => $item->id,
