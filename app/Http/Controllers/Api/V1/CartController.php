@@ -88,14 +88,25 @@ class CartController extends BaseApiController
         $branchId = $request->input('branch_id');
         $productId = $request->input('product_id');
         $requestQuantity = $request->input('quantity');
+
+        \DB::beginTransaction();
         $cart = Cart::retrieve($chainId, $branchId);
 
         $cartProduct = $this->getOrCreateProductCart($cart, $productId, Product::CHANNEL_FOOD_OBJECT,
             is_null($productIdInCart),
             $productIdInCart);
 
+        if (is_null($cartProduct)) {
+            info('$cartProduct is null', [
+                'method' => 'CartController@foodAdjustCartData',
+                'cartId' => $cart->id,
+                'productId' => $productId,
+                'productIdInCart' => $productIdInCart,
+            ]);
+        }
+
         if ($requestQuantity > 0) { // 1 -> 3
-            if ($productIdInCart !== null) {
+            if ( ! is_null($productIdInCart)) {
                 $this->updateCartPrices($cartProduct, $cart, 'decrement', $cartProduct->quantity);
             }
             $cartProduct->quantity = $requestQuantity;
@@ -116,19 +127,19 @@ class CartController extends BaseApiController
                 foreach ($selectedOptions as $selectedOption) {
                     $cartProductOption = CartProductOption::firstOrCreate([
                         'cart_product_id' => $cartProduct->id,
-                        'product_option_id' => $selectedOption['id']
+                        'product_option_id' => $selectedOption['product_option_id']
                     ]);
                     $onIngredients = $cartProductOption->productOption->is_based_on_ingredients;
                     foreach ($selectedOption['selected_ids'] as $selectionId) {
                         $selectableType = $onIngredients ? Taxonomy::class : ProductOptionSelection::class;
                         CartProductOptionSelection::firstOrCreate([
                             'cart_product_id' => $cartProduct->id,
-                            'product_option_id' => $selectedOption['id'],
+                            'product_option_id' => $selectedOption['product_option_id'],
                             'selectable_type' => $selectableType,
                             'selectable_id' => $selectionId,
                         ]);
                         $optionPrice = $this->getOptionPrice($selectableType, $selectionId,
-                            $selectedOption['id']);
+                            $selectedOption['product_option_id']);
                         $cartProduct->price += $optionPrice;
                     }
                 }
@@ -142,7 +153,7 @@ class CartController extends BaseApiController
 
         $cartProduct->save();
         $cart->save();
-
+        \DB::commit();
 
         return $this->respond([
             'cart' => new CartResource($cart),
@@ -185,7 +196,7 @@ class CartController extends BaseApiController
             $cartProduct = CartProduct::where('cart_id', $cart->id)
                                       ->where('product_id', $productId)
                                       ->first();
-        } elseif ($type === Product::CHANNEL_FOOD_OBJECT && $cartProductId !== null) {
+        } elseif ($type === Product::CHANNEL_FOOD_OBJECT && ! is_null($cartProductId)) {
             $cartProduct = CartProduct::find($cartProductId);
         }
 
