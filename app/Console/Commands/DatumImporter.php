@@ -498,7 +498,9 @@ class DatumImporter extends Command
             $this->bar->advance();
         }
         $this->bar->finish();
+        $this->newLine();
         $this->line('End import Food Products & Categories');
+        $this->newLine(2);
 
         $this->line('Start Sync Food Chains');
         $this->bar = $this->output->createProgressBar($oldChains->count());
@@ -523,7 +525,9 @@ class DatumImporter extends Command
                             $product->category_id = $newCategory->id;
                             $product->save();
                         } else {
-                            \Log::warning('chain branch ids is: '.json_encode(['chain_id'=> $oldChain->id, 'branch_id'=> $branch->id]));
+                            \Log::warning('chain branch ids is: '.json_encode([
+                                    'chain_id' => $oldChain->id, 'branch_id' => $branch->id
+                                ]));
                             \Log::warning('$newCategory is: '.json_encode($newCategory));
                             \Log::error(json_encode('product not found'));
                             $this->error('product not found see log.');
@@ -534,6 +538,7 @@ class DatumImporter extends Command
             $this->bar->advance();
         }
         $this->line('End Sync Chains with Branches|Products');
+        $this->newLine(2);
     }
 
     private function importUsers()
@@ -813,22 +818,29 @@ class DatumImporter extends Command
 
     private function importProductsImages(): void
     {
-        $products = Product::query()->where('type', Product::CHANNEL_GROCERY_OBJECT)->get();
+        $products = Product::all();
         $this->bar = $this->output->createProgressBar($products->count());
         $this->bar->start();
         foreach ($products as $product) {
-            $this->assignImageToModel($product, $product->cloned_from_product_id, OldMedia::TYPE_DISH);
+            if ($product->type === Product::CHANNEL_GROCERY_OBJECT) {
+                $productId = $product->id;
+            } elseif (is_null($product->cloned_from_product_id)) {
+                continue;
+            } else {
+                $productId = $product->cloned_from_product_id;
+            }
+            $collections = ['from' => OldMedia::COLLECTION_COVER, 'to' => OldMedia::COLLECTION_GALLERY];
+            $this->assignImageToModel($product, $productId, OldMedia::TYPE_DISH, $collections);
             $this->bar->advance();
         }
     }
 
-    private function assignImageToModel(
-        $newModel,
-        int $modelId,
-        string $modelType,
-        $collection = OldMedia::COLLECTION_COVER
-    ): void {
-        $query = [['model_type', $modelType], ['model_id', $modelId], ['collection_name', $collection]];
+    private function assignImageToModel($newModel, int $modelId, string $modelType, $collections = null): void
+    {
+        if (is_null($collections)) {
+            $collections = ['from' => OldMedia::COLLECTION_COVER, 'to' => OldMedia::COLLECTION_COVER];
+        }
+        $query = [['model_type', $modelType], ['model_id', $modelId], ['collection_name', $collections['from']]];
         $oldMediaFiles = OldMedia::query()
                                  ->where($query)
                                  ->get();
@@ -836,11 +848,12 @@ class DatumImporter extends Command
             $errorMessage = null;
             try {
                 $uuid = self::getUuidString(25);
-                $modelName = \Str::of($newModel->getQueueableClass())->afterLast('\\')->kebab()->jsonSerialize();
-                $fileName = "{$modelName}-{$collection}-{$newModel->id}-{$uuid}.{$oldMediaData->getExtensionAttribute()}";
+                $modelName = \Str::of($newModel->getMorphClass())->afterLast('\\')->kebab()->jsonSerialize();
+                $toCollection = $collections['to'];
+                $fileName = "{$modelName}-{$toCollection}-{$newModel->id}-{$uuid}.{$oldMediaData->getExtensionAttribute()}";
                 $newModel->addMediaFromDisk($oldMediaData->disk_path, 'old_s3')
                          ->setFileName($fileName)
-                         ->toMediaCollection($collection);
+                         ->toMediaCollection($toCollection);
             } catch (FileDoesNotExist $e) {
                 $errorMessage = 'Failed to load image because file does not exist: '.$e->getMessage();
             } catch (FileIsTooBig $e) {

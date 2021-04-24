@@ -70,6 +70,7 @@ class OldMedia extends MediaAlias
     public const TYPE_RESTAURANT = 'Modules\\Jo3aan\\Entities\\Restaurant';
     public const COLLECTION_LOGO = 'logo';
     public const COLLECTION_COVER = 'cover';
+    public const COLLECTION_GALLERY = 'gallery';
 
     public function __construct(array $attributes = [])
     {
