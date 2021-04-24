@@ -25,6 +25,7 @@ class CreateOrdersTable extends Migration
             $table->unsignedBigInteger('address_id')->index();
             $table->unsignedBigInteger('coupon_id')->nullable();
             $table->unsignedBigInteger('city_id');
+            $table->unsignedBigInteger('driver_id')->nullable();
             $table->unsignedBigInteger('previous_order_id')->nullable();
             $table->unsignedTinyInteger('type')->comment('1:Market, 2: Food');
             $table->unsignedDouble('total')->default(0);
@@ -86,6 +87,10 @@ class CreateOrdersTable extends Migration
             $table->foreign('branch_id')->references('id')->on('branches')->onDelete('cascade');
             $table->foreign('cart_id')->references('id')->on('carts')->onDelete('cascade');
             $table->foreign('payment_method_id')->references('id')->on('payment_methods');
+            $table->foreign('address_id')->references('id')->on('locations');
+            $table->foreign('coupon_id')->references('id')->on('coupons');
+            $table->foreign('city_id')->references('id')->on('cities');
+            $table->foreign('driver_id')->references('id')->on('users');
             $table->foreign('previous_order_id')->references('id')->on('orders');
             $table->foreign('rating_issue_id')->references('id')->on('taxonomies')->onDelete('set null');
             $table->foreign('cancellation_reason_id')->references('id')->on('taxonomies')->onDelete('set null');
