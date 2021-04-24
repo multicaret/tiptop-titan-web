@@ -163,6 +163,8 @@ use Spatie\MediaLibrary\MediaCollections\Models\Media;
  * @method static \Illuminate\Database\Query\Builder|Product withoutTrashed()
  * @mixin Eloquent
  * @property-read array $status_js
+ * @property int|null $cloned_from_product_id
+ * @method static Builder|Product whereClonedFromProductId($value)
  */
 class Product extends Model implements HasMedia
 {

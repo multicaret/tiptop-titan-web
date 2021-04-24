@@ -39,6 +39,8 @@ use Illuminate\Support\Carbon;
  * @property-read mixed $selected_options
  * @method static Builder|CartProduct wherePrice($value)
  * @method static Builder|CartProduct whereTotalPrice($value)
+ * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\CartProductOptionSelection[] $cartProductOptionsSelections
+ * @property-read int|null $cart_product_options_selections_count
  */
 class CartProduct extends Pivot
 {
