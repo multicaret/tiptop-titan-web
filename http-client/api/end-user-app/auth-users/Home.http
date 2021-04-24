@@ -1,0 +1,24 @@
+################## Misc ##################
+### boot
+GET {{host}}/{{locale}}/api/v1/boot
+Accept: application/json
+Content-Type: application/json
+Authorization: Bearer {{token}}
+
+{
+    "platform": "iOS",
+    "build_number": 251
+}
+
+### home
+GET {{host}}/{{locale}}/api/v1/home
+Accept: application/json
+Content-Type: application/json
+Authorization: Bearer {{token}}
+
+{
+    "latitude": 36.20339842006327,
+    "longitude": 44.00734072932359,
+    "channel": "grocery",
+    "selected_address_id": "{{addressId}}"
+}

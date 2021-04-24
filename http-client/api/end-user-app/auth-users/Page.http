@@ -41,3 +41,22 @@ Content-Type: application/json
 GET {{host}}/{{locale}}/api/v1/terms-and-conditions
 Accept: application/json
 Content-Type: application/json
+
+
+### faqs
+GET {{host}}/{{locale}}/api/v1/faqs
+Accept: application/json
+Content-Type: application/json
+Authorization: Bearer {{token}}
+
+### faq
+GET {{host}}/{{locale}}/api/v1/faqs/1
+Accept: application/json
+Content-Type: application/json
+Authorization: Bearer {{token}}
+
+### privacy
+GET {{host}}/{{locale}}/api/v1/privacy
+Accept: application/json
+Content-Type: application/json
+Authorization: Bearer {{token}}
