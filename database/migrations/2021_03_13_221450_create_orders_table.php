@@ -88,7 +88,6 @@ class CreateOrdersTable extends Migration
             $table->foreign('cart_id')->references('id')->on('carts')->onDelete('cascade');
             $table->foreign('payment_method_id')->references('id')->on('payment_methods');
             $table->foreign('address_id')->references('id')->on('locations');
-            $table->foreign('coupon_id')->references('id')->on('coupons');
             $table->foreign('city_id')->references('id')->on('cities');
             $table->foreign('driver_id')->references('id')->on('users');
             $table->foreign('previous_order_id')->references('id')->on('orders');
