@@ -259,9 +259,10 @@ class DatumImporter extends Command
         if ($oldProduct->categories->count() > 0) {
             $categories = $oldProduct->categories;
         }
-        $mainCategory = optional($categories->first())->id;
-        if (is_null($mainCategory)) {
-            dd($oldProduct->toArray());
+        $mainCategoryId = optional($categories->first())->id;
+        if (is_null($mainCategoryId)) {
+            $this->warn('See log.');
+            \Log::error("Product id:{$oldProduct->id}  doesn't has category");
         }
         foreach (OldProduct::attributesComparing() as $oldModelKey => $newModelKey) {
             $tempProduct[$newModelKey] = $oldProduct->{$oldModelKey};
@@ -271,7 +272,7 @@ class DatumImporter extends Command
         $tempProduct['branch_id'] = $branchId;
         $tempProduct['creator_id'] = self::CREATOR_EDITOR_ID;
         $tempProduct['editor_id'] = self::CREATOR_EDITOR_ID;
-        $tempProduct['category_id'] = $mainCategory;
+        $tempProduct['category_id'] = $mainCategoryId;
         $tempProduct['status'] = Product::STATUS_ACTIVE;
         $tempProduct['type'] = $type;
         $tempProduct['available_quantity'] = 100;
@@ -518,8 +519,15 @@ class DatumImporter extends Command
                                           ->where('branch_id', $branch->id)
                                           ->where('category_id', $chainMenuCategory->id)
                                           ->first();
-                        $product->category_id = $newCategory->id;
-                        $product->save();
+                        if ( ! is_null($product)) {
+                            $product->category_id = $newCategory->id;
+                            $product->save();
+                        } else {
+                            \Log::warning('chain branch ids is: '.json_encode(['chain_id'=> $oldChain->id, 'branch_id'=> $branch->id]));
+                            \Log::warning('$newCategory is: '.json_encode($newCategory));
+                            \Log::error(json_encode('product not found'));
+                            $this->error('product not found see log.');
+                        }
                     }
                 }
             }
@@ -798,7 +806,7 @@ class DatumImporter extends Command
         $this->bar = $this->output->createProgressBar($allTaxonomiesIds->count());
         $this->bar->start();
         foreach ($allTaxonomiesIds as $taxonomy) {
-            $this->assignImageToModel($taxonomy,$taxonomy->id, OldMedia::TYPE_CATEGORY);
+            $this->assignImageToModel($taxonomy, $taxonomy->id, OldMedia::TYPE_CATEGORY);
             $this->bar->advance();
         }
     }
@@ -809,13 +817,17 @@ class DatumImporter extends Command
         $this->bar = $this->output->createProgressBar($products->count());
         $this->bar->start();
         foreach ($products as $product) {
-            $this->assignImageToModel($product,$product->cloned_from_product_id, OldMedia::TYPE_DISH);
+            $this->assignImageToModel($product, $product->cloned_from_product_id, OldMedia::TYPE_DISH);
             $this->bar->advance();
         }
     }
 
-    private function assignImageToModel($newModel, int $modelId, string $modelType, $collection = OldMedia::COLLECTION_COVER): void
-    {
+    private function assignImageToModel(
+        $newModel,
+        int $modelId,
+        string $modelType,
+        $collection = OldMedia::COLLECTION_COVER
+    ): void {
         $query = [['model_type', $modelType], ['model_id', $modelId], ['collection_name', $collection]];
         $oldMediaFiles = OldMedia::query()
                                  ->where($query)
