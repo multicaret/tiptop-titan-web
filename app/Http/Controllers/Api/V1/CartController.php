@@ -53,7 +53,7 @@ class CartController extends BaseApiController
             $this->updateCartPrices($cartProduct, $cart, 'increment');
         } elseif ($cartProduct->quantity > 0) {
             $cartProduct->decrement('quantity');
-            $cartProduct->total_price = $cartProduct->price * $cartProduct->quantity;
+//            $cartProduct->total_price = $cartProduct->price * $cartProduct->quantity;
             $this->updateCartPrices($cartProduct, $cart, 'decrement');
             if ($cartProduct->quantity === 0) {
                 $cartProduct->delete();
@@ -62,14 +62,11 @@ class CartController extends BaseApiController
             }
         }
 
-
         $cart->save();
 
         return $this->respond([
             'cart' => new CartResource($cart),
         ]);
-
-
     }
 
 
@@ -121,14 +118,14 @@ class CartController extends BaseApiController
         if ( ! is_null($selectedOptions)) {
             // Todo: update delete method with delete by ids
             foreach ($selectedOptions as $selectedOption) {
-                $cartProductOption = CartProductOption::query()->firstOrCreate([
+                $cartProductOption = CartProductOption::firstOrCreate([
                     'cart_product_id' => $cartProduct->id,
                     'product_option_id' => $selectedOption['id']
                 ]);
                 $onIngredients = $cartProductOption->productOption->is_based_on_ingredients;
                 foreach ($selectedOption['selected_ids'] as $selectionId) {
                     $selectableType = $onIngredients ? Taxonomy::class : ProductOptionSelection::class;
-                    CartProductOptionSelection::query()->firstOrCreate([
+                    CartProductOptionSelection::firstOrCreate([
                         'cart_product_id' => $cartProduct->id,
                         'product_option_id' => $selectedOption['id'],
                         'selectable_type' => $selectableType,
@@ -179,15 +176,15 @@ class CartController extends BaseApiController
     {
         $cartProduct = null;
         if ($type === Product::CHANNEL_GROCERY_OBJECT) {
-            $cartProduct = CartProduct::query()->where('cart_id', $cart->id)
+            $cartProduct = CartProduct::where('cart_id', $cart->id)
                                       ->where('product_id', $productId)
                                       ->first();
         } elseif ($type === Product::CHANNEL_FOOD_OBJECT && $cartProductId !== null) {
-            $cartProduct = CartProduct::query()->find($cartProductId);
+            $cartProduct = CartProduct::find($cartProductId);
         }
 
         if (is_null($cartProduct)) {
-            $cartProductId = CartProduct::query()->insertGetId([
+            $cartProductId = CartProduct::insertGetId([
                 'cart_id' => $cart->id,
                 'product_id' => $productId,
                 'product_object' => Product::find($productId),
@@ -195,7 +192,7 @@ class CartController extends BaseApiController
                 'price' => 0,
                 'quantity' => 0, // Todo: check value
             ]);
-            $cartProduct = CartProduct::query()->find($cartProductId);
+            $cartProduct = CartProduct::find($cartProductId);
         }
 
         return $cartProduct;
@@ -211,7 +208,7 @@ class CartController extends BaseApiController
                                                 ->where('ingredient_id', $selectionId)
                                                 ->first()->price;
             } elseif ($selectableModel === ProductOptionSelection::class) {
-                $price = ProductOptionSelection::query()->find($selectionId)->price;
+                $price = ProductOptionSelection::find($selectionId)->price;
             }
         } catch (Exception $exception) {
             info($exception->getMessage());

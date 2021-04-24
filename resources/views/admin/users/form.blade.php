@@ -125,7 +125,6 @@
                                 @slot('options', $teams->prepend('',''))
                                 @slot('attributes', [
                                     'class' => 'select-2-captain_team w-100',
-                                    'allowClear' => true,
                                     'required',
                                 ])
                                 @slot('selected', $user->team_id)

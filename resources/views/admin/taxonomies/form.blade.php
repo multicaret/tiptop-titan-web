@@ -130,7 +130,7 @@
                     <div class="col-4">
                         @component('admin.components.form-group', ['name' => 'branch_id', 'type' => 'select'])
                             @slot('label', trans('strings.branch'))
-                            @slot('options', $branches)
+                            @slot('options', $branches->prepend('',''))
                             @slot('attributes', [
                                 'class' => 'select2-branch w-100',
                                 'required',

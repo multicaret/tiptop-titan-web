@@ -21,7 +21,7 @@ Authorization: Bearer {{token}}
     "latitude": 36.20339842006327,
     "longitude": 44.00734072932359,
     "channel": "grocery",
-    "selected_address_id": 1
+    "selected_address_id": "{{addressId}}"
 }
 
 ### products

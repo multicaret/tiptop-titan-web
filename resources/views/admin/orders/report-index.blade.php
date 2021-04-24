@@ -1,43 +1,14 @@
 @extends('layouts.admin')
 @section('title', 'Orders')
-@push('styles')
-    <style>
-        .tableFixHeadX {
-            overflow: auto;
-            /*height: 500px;*/
-            max-height: 80vh;
-        }
-
-        .tableFixHeadX thead th {
-            position: sticky;
-            top: 0;
-            z-index: 1;
-        }
-
-        /* Just common table stuff. Really. */
-        table {
-            border-collapse: collapse;
-            width: 100%;
-        }
-
-        th, td {
-            padding: 8px 16px;
-        }
-
-        th {
-            background: #eee;
-        }
-    </style>
-@endpush
 @section('content')
 
-    <div class="mb-5">
+    <div>
         <div class="card border-light">
             <div class="tableFixHeadX">
                 <table class="table table-sm card-table table-bordered table-hover">
                     <thead class="thead-dark">
                     <tr>
-                        <th class="width-100">Date</th>
+                        <th class="width-120">Date</th>
                         <th class="width-65">T-Orders</th>
                         <th class="width-65">Delivered</th>
                         <th class="width-65">AVG D.T</th>
@@ -91,6 +62,38 @@
                         @endforelse
                     @endif
                     </tbody>
+                    <tfoot class="thead-white">
+                    <tr>
+                        <th>Total Orders</th>
+                        @for ($i = 0; $i < 17; $i++)
+                            <th>Data</th>
+                        @endfor
+                    </tr>
+                    <tr>
+                        <th>AVG Last 7 Days:</th>
+                        @for ($i = 0; $i < 17; $i++)
+                            <th>Data</th>
+                        @endfor
+                    </tr>
+                    <tr>
+                        <th>AVG Last 31 Day:</th>
+                        @for ($i = 0; $i < 17; $i++)
+                            <th>Data</th>
+                        @endfor
+                    </tr>
+                    <tr>
+                        <th>Weekdays' AVG:</th>
+                        @for ($i = 0; $i < 17; $i++)
+                            <th>Data</th>
+                        @endfor
+                    </tr>
+                    <tr>
+                        <th>Weekend AVG</th>
+                        @for ($i = 0; $i < 17; $i++)
+                            <th>Data</th>
+                        @endfor
+                    </tr>
+                    </tfoot>
                 </table>
             </div>
         </div>
