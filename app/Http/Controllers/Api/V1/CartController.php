@@ -94,8 +94,17 @@ class CartController extends BaseApiController
             is_null($productIdInCart),
             $productIdInCart);
 
+        if (is_null($cartProduct)) {
+            info('$cartProduct is null', [
+                'method' => 'CartController@foodAdjustCartData',
+                'cartId' => $cart->id,
+                'productId' => $productId,
+                'productIdInCart' => $productIdInCart,
+            ]);
+        }
+
         if ($requestQuantity > 0) { // 1 -> 3
-            if ($productIdInCart !== null) {
+            if ( ! is_null($productIdInCart)) {
                 $this->updateCartPrices($cartProduct, $cart, 'decrement', $cartProduct->quantity);
             }
             $cartProduct->quantity = $requestQuantity;
@@ -185,7 +194,7 @@ class CartController extends BaseApiController
             $cartProduct = CartProduct::where('cart_id', $cart->id)
                                       ->where('product_id', $productId)
                                       ->first();
-        } elseif ($type === Product::CHANNEL_FOOD_OBJECT && $cartProductId !== null) {
+        } elseif ($type === Product::CHANNEL_FOOD_OBJECT && ! is_null($cartProductId)) {
             $cartProduct = CartProduct::find($cartProductId);
         }
 
