@@ -48,7 +48,10 @@ class HomeController extends BaseApiController
 
 //dd($bootConfigurations->data_translated);
         if ( ! is_null($bootConfigurations)) {
-            return $this->respond(new BootResource($bootConfigurations));
+            return $this->respond([
+                'bootConfigs' => new BootResource($bootConfigurations),
+                'defaultChannel' => Preference::retrieveValue('default_channel'),
+            ]);
         }
 
         return $this->respondWithMessage('Things are fine, you may pass!');
@@ -193,7 +196,6 @@ class HomeController extends BaseApiController
             'distance' => $distance,
             // Food Related
             'restaurants' => is_null($foodBranches) ? null : BranchResource::collection($foodBranches),
-            'defaultChannel' => Preference::retrieveValue('default_channel'),
         ]);
     }
 
