@@ -1,13 +1,13 @@
 <div class="row" wire:click="$set('search','')">
     <div class="col-11">
-        <div id="accordion{{$option->id}}">
+        <div id="accordionOption{{$option->id}}">
             <div class="card mb-2">
                 <div class="card-header shadow-sm">
-                    <a class="d-flex justify-content-between text-body" data-toggle="collapse" aria-expanded="true"
-                       href="#accordion{{$option->id}}-1">
+                    <a class="d-flex justify-content-between text-body" data-toggle="collapse" aria-expanded="false"
+                       href="#accordionOption{{$option->id}}-1">
                     <span>
                         <span class="text-muted">
-                        ({{ $option->id }}) Option:
+                        Option (ID {{ $option->id }}):
                         </span>
                         {{ $option->title }}
                     </span>
@@ -15,7 +15,8 @@
                     </a>
                 </div>
 
-                <div id="accordion{{$option->id}}-1" class="collapse show" data-parent="#accordion{{$option->id}}">
+                <div id="accordionOption{{$option->id}}-1" class="collapse"
+                     data-parent="#accordionOption{{$option->id}}">
                     <div class="card-body">
                         <form>
                             <div class="form-row">

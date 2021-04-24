@@ -7,7 +7,7 @@
                        href="#accordionSelection{{$selection->id}}-1">
                     <span>
                         <span class="text-muted">
-                        Selection
+                        Selection (ID {{$selection->id}}):
                         </span>
                         {{ $selection->title }}
                     </span>
