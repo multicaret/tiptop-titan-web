@@ -4,8 +4,10 @@ namespace App\Http\Controllers;
 
 use App\Models\Media;
 use App\Models\Preference;
+use App\Scopes\ActiveScope;
 use Arr;
 use DB;
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Model as ModelAlias;
 use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
@@ -24,6 +26,8 @@ class Controller extends BaseController
     use AuthorizesRequests;
     use DispatchesJobs;
     use ValidatesRequests;
+
+    public $modelName = null;
 
     public static function distanceBetween($point1latitude, $point1longitude, $point2latitude, $point2longitude)
     {
@@ -513,6 +517,16 @@ class Controller extends BaseController
 
         return ! empty($matches_emo[0]);
 
+    }
+
+    public function getIndex(): Builder
+    {
+        return $this->modelName::withoutGlobalScope(ActiveScope::class);
+    }
+
+    public function getModelById($id)
+    {
+        return $this->getIndex()->where('id', $id);
     }
 }
 
