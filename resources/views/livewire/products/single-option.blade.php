@@ -170,6 +170,11 @@
                                         @endif
                                     </select>
                                 </div>
+                                <div class="form-group col-md-4">
+                                    <label class="form-label">Order column</label>
+                                    <input class="form-control" type="number"
+                                           wire:model="option.order_column">
+                                </div>
                             </div>
                         </form>
 
