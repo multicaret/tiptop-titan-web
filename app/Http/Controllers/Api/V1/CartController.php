@@ -53,7 +53,7 @@ class CartController extends BaseApiController
             $this->updateCartPrices($cartProduct, $cart, 'increment');
         } elseif ($cartProduct->quantity > 0) {
             $cartProduct->decrement('quantity');
-            $cartProduct->total_price = $cartProduct->price * $cartProduct->quantity;
+//            $cartProduct->total_price = $cartProduct->price * $cartProduct->quantity;
             $this->updateCartPrices($cartProduct, $cart, 'decrement');
             if ($cartProduct->quantity === 0) {
                 $cartProduct->delete();
@@ -62,14 +62,11 @@ class CartController extends BaseApiController
             }
         }
 
-
         $cart->save();
 
         return $this->respond([
             'cart' => new CartResource($cart),
         ]);
-
-
     }
 
 
