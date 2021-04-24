@@ -80,7 +80,7 @@ class CartProduct extends Pivot
             }
 
             return [
-                'product_option_id' => $item->id,
+                'product_option_id' => $item->product_option_id,
                 'selected_ids' => $selectionIds
             ];
         };
