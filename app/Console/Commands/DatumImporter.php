@@ -223,12 +223,12 @@ class DatumImporter extends Command
                 $groceryCategoriesIds = $oldBranch->categories->pluck('id');
                 $freshBranch->foodCategories()->sync($groceryCategoriesIds);
             }
-            foreach ($oldBranch->translations as $translation) {
+            foreach ($oldBranch->translations as $index => $translation) {
                 $attributesComparing = OldBranchTranslation::attributesComparing();
                 $tempTranslation = [];
                 foreach ($attributesComparing as $oldAttribute => $newAttribute) {
                     if ($oldAttribute === 'title_suffex' && strlen($translation->{$oldAttribute}) < 3) {
-                        $chainTitle = ! is_null($oldBranch->oldChain) ? $oldBranch->oldChain->title : 'Branch';
+                        $chainTitle = ! is_null($oldBranch->oldChain) ? optional($oldBranch->oldChain->translations->get($index))->title : 'Branch';
                         $tempTranslation[$newAttribute] = $chainTitle.' '.$translation->{$oldAttribute};
                     } else {
                         $tempTranslation[$newAttribute] = $translation->{$oldAttribute};
