@@ -293,7 +293,7 @@ class Product extends Model implements HasMedia
 
     public function options(): HasMany
     {
-        return $this->hasMany(ProductOption::class);
+        return $this->hasMany(ProductOption::class)->orderBy('order_column');
     }
 
 

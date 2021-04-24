@@ -185,7 +185,7 @@ class RegionController extends Controller
                         'relatedModel' => trans('strings.areas')
                     ]);
             } else {
-//                $region->delete();
+                $region->delete();
                 $messageType = 'Success';
                 $textMessage = 'Successfully Deleted';
             }
