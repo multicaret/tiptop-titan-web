@@ -179,6 +179,11 @@ class HomeController extends BaseApiController
             }
         }
 
+        $currencyResource = new CurrencyResource(Currency::find(config('defaults.currency.id')));
+        if (localization()->getCurrentLocale() == 'ar') {
+            $currencyResource->symbol = 'د.ع';
+        }
+
         return $this->respond([
             'estimated_arrival_time' => [
                 'value' => $eta,
@@ -189,7 +194,7 @@ class HomeController extends BaseApiController
             'categories' => $categories,
             'activeOrders' => $activeOrders,
             'totalActiveOrders' => $totalActiveOrders,
-            'currentCurrency' => new CurrencyResource(Currency::find(config('defaults.currency.id'))),
+            'currentCurrency' => $currencyResource,
             'noAvailabilityMessage' => $noAvailabilityMessage,
             // Grocery Related
             'branch' => is_null($branch) ? null : new BranchResource($branch),
