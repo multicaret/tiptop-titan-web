@@ -13,7 +13,7 @@ class ProductOption extends Component
     public $titleEn;
     public $titleKu;
     public $titleAr;
-    public $optionMarkedToBeDeleted;
+    public $optionIdToBeDeleted;
 
     public function mount()
     {
@@ -270,15 +270,17 @@ class ProductOption extends Component
 
     public function reloadSelections($params)
     {
-        $selection = $this->option->selections()->where('id', $params['selectionId']);
-        if ( ! is_null($selection)) {
-            $selection->delete();
+        if ( ! is_null($params['selectionId'])) {
+            $selection = $this->option->selections()->where('id', $params['selectionId']);
+            if ( ! is_null($selection)) {
+                $selection->delete();
+            }
+            $this->option->load('selections');
+            $this->emit('showToast', [
+                'icon' => 'success',
+                'message' => 'Selection has been deleted',
+            ]);
         }
-        $this->option->load('selections');
-        $this->emit('showToast', [
-            'icon' => 'success',
-            'message' => 'Selection has been deleted',
-        ]);
     }
 
 
@@ -294,12 +296,12 @@ class ProductOption extends Component
 
     public function deleteOption()
     {
-        $this->emitUp('optionDeleted', ['optionId' => $this->optionMarkedToBeDeleted]);
+        $this->emitUp('optionDeleted', ['optionId' => $this->optionIdToBeDeleted]);
     }
 
     public function triggerConfirmDeleting($id)
     {
-        $this->optionMarkedToBeDeleted = $id;
+        $this->optionIdToBeDeleted = $id;
         $this->confirm('Are you sure?', [
             'toast' => false,
             'position' => 'center',

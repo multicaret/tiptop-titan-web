@@ -11,7 +11,7 @@ class ProductOptionSelection extends Component
     public $titleEn;
     public $titleKu;
     public $titleAr;
-    public bool $markedAsDeleted = false;
+    public $selectionIdToBeDeleted;
 
     protected $listeners = [
         'deleteSelection',
@@ -96,12 +96,12 @@ class ProductOptionSelection extends Component
 
     public function deleteSelection()
     {
-        $this->markedAsDeleted = true;
-        $this->emitUp('selectionDeleted', ['selectionId' => optional($this->selection)->id]);
+        $this->emitUp('selectionDeleted', ['selectionId' => $this->selectionIdToBeDeleted]);
     }
 
-    public function triggerConfirmDeleting()
+    public function triggerConfirmDeleting($id)
     {
+        $this->selectionIdToBeDeleted = $id;
         $this->confirm('Are you sure?', [
             'toast' => false,
             'position' => 'center',
