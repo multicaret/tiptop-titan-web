@@ -45,27 +45,25 @@ Authorization: Bearer {{token}}
 }
 
 ### Order delete
-POST {{host}}/{{locale}}/api/v1/orders/1/delete
+POST {{host}}/{{locale}}/api/v1/orders/{{orderId}}/delete
 Accept: application/json
 Content-Type: application/json
 Authorization: Bearer {{token}}
 
 ### Order create rate.
-GET {{host}}/{{locale}}/api/v1/orders/1/rate
+GET {{host}}/{{locale}}/api/v1/orders/{{orderId}}/rate
 Accept: application/json
 Content-Type: application/json
 Authorization: Bearer {{token}}
 
 ### Order store rate.
-POST {{host}}/{{locale}}/api/v1/orders/1/rate
+POST {{host}}/{{locale}}/api/v1/orders/{{orderId}}/rate
 Accept: application/json
 Content-Type: application/json
 Authorization: Bearer {{token}}
 
-
 {
     "branch_rating_value": 3.2,
-    "grocery_issue_id": 28,
     "food_rating_factors": {
         "has_good_food_quality_rating": true,
         "has_good_packaging_quality_rating": false,
@@ -75,7 +73,7 @@ Authorization: Bearer {{token}}
 }
 
 ### Driver store rate.
-POST {{host}}/{{locale}}/api/v1/orders/1/drivers/1/rate
+POST {{host}}/{{locale}}/api/v1/orders/{{orderId}}/drivers/1/rate
 Accept: application/json
 Content-Type: application/json
 Authorization: Bearer {{token}}
