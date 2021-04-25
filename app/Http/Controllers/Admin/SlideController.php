@@ -14,7 +14,6 @@ use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\View\View;
 use Str;
-use function PHPUnit\Framework\isEmpty;
 
 class SlideController extends Controller
 {
