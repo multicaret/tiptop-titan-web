@@ -77,6 +77,7 @@ class SearchController extends BaseApiController
                                   $query->where('title', 'like', '%'.$searchQuery.'%');
                               });
                           })
+                          ->groceries()
                           ->get();
 
         if ($results->count() == 0) {
