@@ -49,7 +49,7 @@ class OrdersTable extends Component
         if (is_null($this->filterByDate)) {
             $this->filterByDate = now()->format(config('defaults.date.short_format'));
         }
-        $orders = Order::orderBy('created_at', 'desc')
+        $orders = Order::whereBranchId(request()->get('branch-id'))->orderBy('created_at', 'desc')
                        ->orderBy('status');
 
         if ( ! empty($this->referenceCode)) {
