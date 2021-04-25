@@ -505,7 +505,6 @@ class ComposerServiceProvider extends ServiceProvider
                                 'countPrimary' => Coupon::active()->count(),
                                 'countDanger' => Coupon::inactive()->count(),
                             ],
-
                         ]
                     ]
                 ]
