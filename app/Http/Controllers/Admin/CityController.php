@@ -101,6 +101,7 @@ class CityController extends Controller
         $city->english_name = $request->input('en.name');
         $city->region_id = $request->region_id;
         $city->country_id = config('defaults.country.id');
+        $city->status = $request->input('status');
 
         // Filling translations
         foreach (localization()->getSupportedLocales() as $key => $value) {
@@ -159,6 +160,7 @@ class CityController extends Controller
         $city->english_name = $request->input('en.name');
         $city->region_id = $request->region_id;
         $city->country_id = config('defaults.country.id');
+        $city->status = $request->input('status');
 
         // Filling translations
         foreach (localization()->getSupportedLocales() as $key => $value) {
