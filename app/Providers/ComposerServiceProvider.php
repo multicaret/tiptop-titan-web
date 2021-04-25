@@ -520,7 +520,7 @@ class ComposerServiceProvider extends ServiceProvider
                             [
                                 'title' => 'Daily Report',
                                 'icon' => 'fas fa-calendar-alt',
-                                'routeName' => 'admin.orders.report-index',
+                                'routeName' => 'admin.orders.reports.index',
                             ],
 
                         ]
@@ -648,7 +648,7 @@ class ComposerServiceProvider extends ServiceProvider
         try {
             $sideNavItem['route'] = route($sideNavItem['routeName'], $params);
         } catch (Exception $e) {
-            dd($sideNavItem);
+            dd('There was an error generating this route: ',$sideNavItem);
         }
     }
 
