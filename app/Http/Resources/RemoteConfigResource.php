@@ -2,12 +2,12 @@
 
 namespace App\Http\Resources;
 
-use App\Models\Boot;
+use App\Models\RemoteConfig;
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
 
-/** @mixin Boot */
-class BootResource extends JsonResource
+/** @mixin RemoteConfig */
+class RemoteConfigResource extends JsonResource
 {
     /**
      * Transform the resource into an array.
