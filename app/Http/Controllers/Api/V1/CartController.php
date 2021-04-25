@@ -82,7 +82,7 @@ class CartController extends BaseApiController
             return $this->respondValidationFails($validator->errors());
         }
 
-        $productIdInCart = $request->input('product_id_in_cart');
+        $cartProductId = $request->input('cart_product_id');
         $selectedOptions = $request->input('selected_options');
         $chainId = $request->input('chain_id');
         $branchId = $request->input('branch_id');
@@ -93,20 +93,20 @@ class CartController extends BaseApiController
         $cart = Cart::retrieve($chainId, $branchId);
 
         $cartProduct = $this->getOrCreateProductCart($cart, $productId, Product::CHANNEL_FOOD_OBJECT,
-            is_null($productIdInCart),
-            $productIdInCart);
+            is_null($cartProductId),
+            $cartProductId);
 
         if (is_null($cartProduct)) {
             info('$cartProduct is null', [
                 'method' => 'CartController@foodAdjustCartData',
                 'cartId' => $cart->id,
                 'productId' => $productId,
-                'productIdInCart' => $productIdInCart,
+                'cartProductId' => $cartProductId,
             ]);
         }
 
         if ($requestQuantity > 0) { // 1 -> 3
-            if ( ! is_null($productIdInCart)) {
+            if ( ! is_null($cartProductId)) {
                 $this->updateCartPrices($cartProduct, $cart, 'decrement', $cartProduct->quantity);
             }
             $cartProduct->quantity = $requestQuantity;
