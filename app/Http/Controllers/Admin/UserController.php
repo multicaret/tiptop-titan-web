@@ -82,17 +82,25 @@ class UserController extends Controller
                 'name' => 'status',
                 'title' => 'Status',
             ],
-            [
-                'data' => 'created_at',
-                'name' => 'created_at',
-                'title' => trans('strings.create_date')
-            ],
-            [
-                'data' => 'last_logged_in_at',
-                'name' => 'last_logged_in_at',
-                'title' => __('Last logged In')
-            ],
         ]);
+        if ( $role != User::ROLE_TIPTOP_DRIVER) {
+            $columns = array_merge($columns, [
+                [
+                    'data' => 'created_at',
+                    'name' => 'created_at',
+                    'title' => trans('strings.create_date')
+                ],
+            ]);
+        }
+        else{
+            $columns = array_merge($columns, [
+                [
+                    'data' => 'team.name',
+                    'name' => 'team.name',
+                    'title' => trans('strings.team')
+                ],
+            ]);
+        }
 
         return view('admin.users.index', compact('columns', 'role'));
     }
@@ -108,7 +116,7 @@ class UserController extends Controller
     public function create($role, Request $request)
     {
         $this->roleValidation($role);
-        $data = $this->essentialData();
+        $data = $this->essentialData($role);
         $roleName = $this->getRoleName($role);
         $user = new User();
         $user->status = User::STATUS_ACTIVE;
@@ -185,7 +193,7 @@ class UserController extends Controller
 
         DB::commit();
 
-        if(in_array($role, User::rolesHaving('branches'))){
+        if (in_array($role, User::rolesHaving('branches'))) {
             $user->branches($role)->sync($request->input('branches'));
         }
 
@@ -212,13 +220,15 @@ class UserController extends Controller
     {
         $roleName = $user->role->name;
         $role = Str::kebab($roleName);
-        $data = $this->essentialData();
+        $data = $this->essentialData($role);
         $user->load(['country', 'region', 'city']);
         $data['user'] = $user;
         $data['role'] = $role;
         $data['roleName'] = $roleName;
         $data['permissions'] = config('defaults.all_permission.super');
-        $data['selectedBranches'] = $user->branches($role)->get();
+        if (in_array($role, User::rolesHaving('branches'))) {
+            $data['selectedBranches'] = $user->branches($role)->get();
+        }
 
         return view('admin.users.form', $data);
     }
@@ -290,7 +300,7 @@ class UserController extends Controller
         $this->handleSubmittedSingleMedia('avatar', $request, $user);
         DB::commit();
 
-        if(in_array($role, User::rolesHaving('branches'))){
+        if (in_array($role, User::rolesHaving('branches'))) {
             $user->branches($role)->sync($request->input('branches'));
         }
 
@@ -330,17 +340,27 @@ class UserController extends Controller
         ]);
     }
 
-    private function essentialData()
+    private function essentialData($role)
     {
         $menuCategoryData['hasBranch'] = request()->has('branch_id');
         $branchExists = ! is_null(\App\Models\Branch::foods()->find(request()->input('branch_id')));
+        $branches = [];
         if ($menuCategoryData['hasBranch']) {
             if ($branchExists) {
                 $menuCategoryData['branchId'] = request()->input('branch_id');
             } else {
                 abort(404);
-            }
+            };
         }
+        if (in_array($role, User::rolesHaving('branches'))) {
+            $branches = Branch::whereType(Branch::CHANNEL_FOOD_OBJECT)
+                              ->active()
+                              ->get()
+                              ->mapWithKeys(function ($item) {
+                                  return [$item['id'] => $item['chain']['title'].' - '.$item['title'].' ('.$item['region']['english_name'].', '.$item['city']['english_name'].')'];
+                              });
+        }
+
         return [
             'roles' => [
 //                User::ROLE_SUPER => trans('strings.' . User::ROLE_SUPER),
@@ -355,12 +375,7 @@ class UserController extends Controller
                                 }),
             'cities' => City::where('region_id', config('defaults.region.id'))->get(),
             'menuCategoryData' => $menuCategoryData,
-            'branches' => Branch::whereType(Branch::CHANNEL_FOOD_OBJECT)
-                                ->active()
-                                ->get()
-                                ->mapWithKeys(function ($item) {
-                                    return [$item['id'] => $item['chain']['title'].' - '.$item['title'].' ('.$item['region']['english_name'].', '.$item['city']['english_name'].')'];
-                                }),
+            'branches' => $branches,
         ];
     }
 

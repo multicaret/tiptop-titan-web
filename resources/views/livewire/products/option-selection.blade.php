@@ -7,7 +7,7 @@
                        href="#accordionSelection{{$selection->id}}-1">
                     <span>
                         <span class="text-muted">
-                        Selection
+                        Selection (ID {{$selection->id}}):
                         </span>
                         {{ $selection->title }}
                     </span>
@@ -43,10 +43,9 @@
     </div>
 
     <div class="col-1 px-0 pb-2">
-        @if(!$markedAsDeleted)
-            <button class="btn btn-sm btn-outline-danger btn-block h-100" wire:click="triggerConfirmDeleting">
-                Delete
-            </button>
-        @endif
+        <button class="btn btn-sm btn-outline-danger btn-block h-100"
+                wire:click="triggerConfirmDeleting({{$selection->id}})">
+            Delete
+        </button>
     </div>
 </div>

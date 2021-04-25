@@ -10,11 +10,10 @@ Route::middleware('throttle:15')
 
          /* boot related */
          Route::get('/boot', 'HomeController@boot');
-         Route::get('/', 'HomeController@root');
 
          /* generals */
          Route::get('privacy-policy', 'PostController@privacy');
-         Route::get('about-us', 'PostController@aboutUs');;
+         Route::get('about-us', 'PostController@aboutUs');
          Route::get('support', 'SettingController@support');
      });
 
@@ -23,23 +22,22 @@ Route::middleware('auth:sanctum')
      ->group(function () {
          Route::post('logout', 'Auth\AuthController@logout');
 
+         Route::get('/', 'HomeController@root');
+         Route::get('notifications', 'NotificationController@index');
 
-         /*restaurant related*/
-         Route::get('restaurants/{restaurant}/edit', 'BranchController@edit');
-         Route::put('restaurants/{restaurant}', 'BranchController@update');
-         Route::post('restaurants/{restaurant}/toggle-activity', 'BranchController@toggleActivity');
-         Route::get('restaurants/{restaurant}/categories', 'BranchController@categories');
-         Route::put('restaurants/{restaurant}/products/{product}', 'ProductController@update');
-         Route::get('restaurants/{restaurant}/notifications', 'NotificationController@index');
+         Route::group(['prefix' => 'restaurants/{restaurant}'], function () {
+             Route::get('edit', 'BranchController@edit');
+             Route::post('/', 'BranchController@update');
+             Route::post('toggle-activity', 'BranchController@toggleActivity');
+             Route::get('categories', 'BranchController@categories');
+             Route::post('products/{product}', 'ProductController@update');
 
-         Route::get('categories/{groceryCategory}/products', 'CategoryController@products');
-         Route::get('products/{id}', 'ProductController@show');
-
-         // Orders
-         Route::get('restaurants/{restaurant}/orders', 'OrderController@index');
-         Route::get('restaurants/{restaurant}/orders/{order}', 'OrderController@show');
-         Route::post('restaurants/{restaurant}/orders', 'OrderController@store');
-         Route::post('restaurants/{restaurant}/orders/{order}/delete', 'OrderController@destroy');
+             // Orders
+             Route::get('orders', 'OrderController@index');
+             Route::get('orders/{order}', 'OrderController@show');
+             Route::post('orders', 'OrderController@update');
+             Route::post('orders/{order}/delete', 'OrderController@destroy');
+         });
      });
 
 

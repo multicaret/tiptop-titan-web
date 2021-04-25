@@ -15,7 +15,7 @@ class NotificationController extends BaseApiController
      */
     public function index()
     {
-        $user = auth('sanctum')->user();
+        $user = auth()->user();
         $notifications = $user->notifications()
 //                              ->whereNull('read_at')
                               ->latest()

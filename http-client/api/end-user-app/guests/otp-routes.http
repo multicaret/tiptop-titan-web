@@ -38,3 +38,9 @@ Content-Type: application/json
     "code": "964291",
     "reference": "{{otpReference}}"
 }
+
+### countries with flags
+GET {{host}}/{{locale}}/api/v1/countries?all=true
+Accept: application/json
+Content-Type: application/json
+Authorization: Bearer {{token}}

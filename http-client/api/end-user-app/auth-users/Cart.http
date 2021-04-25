@@ -1,18 +1,3 @@
-################## PRODUCT ##################
-### products index
-GET {{host}}/{{locale}}/api/v1/categories/2/products
-Accept: application/json
-Content-Type: application/json
-Authorization: Bearer {{token}}
-
-### product show
-GET {{host}}/{{locale}}/api/v1/products/1
-Accept: application/json
-Content-Type: application/json
-Authorization: Bearer {{token}}
-
-
-
 ###  remove or add grocery product
 POST {{host}}/{{locale}}/api/v1/carts/{{cartId}}/products/grocery/adjust-quantity
 Accept: application/json
@@ -23,7 +8,7 @@ Authorization: Bearer {{token}}
     "product_id": {{productId}},
     "chain_id": {{chainId}},
     "branch_id": {{branchId}},
-    "is_adding": true
+    "is_adding": false
 }
 
 
@@ -41,11 +26,11 @@ Authorization: Bearer {{token}}
     "quantity": 2,
     "selected_options": [
         {
-            "id": 12,
+            "product_option_id": 12,
             "selected_ids": [952, 1013, 1023]
         },
         {
-            "id": 16,
+            "product_option_id": 16,
             "selected_ids": [20,21]
         }
     ]

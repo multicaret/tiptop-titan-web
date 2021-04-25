@@ -108,28 +108,28 @@
                             <div class="col-md-6">
                                 @component('admin.components.form-group', ['name' => 'max_allowed_discount_amount', 'type' => 'number'])
                                     @slot('label', 'Max allowed discount amount')
-                                    @slot('attributes',['min' => 1])
+                                    @slot('attributes',['required', 'min' => 1])
                                     @slot('value', $coupon->max_allowed_discount_amount)
                                 @endcomponent
                             </div>
                             <div class="col-md-6">
                                 @component('admin.components.form-group', ['name' => 'max_usable_count_by_user', 'type' => 'number'])
                                     @slot('label', 'Usage count by same user')
-                                    @slot('attributes',['min' => 1])
+                                    @slot('attributes',['required', 'min' => 1])
                                     @slot('value', $coupon->max_usable_count_by_user)
                                 @endcomponent
                             </div>
                             <div class="col-md-6">
                                 @component('admin.components.form-group', ['name' => 'min_cart_value_allowed', 'type' => 'number'])
                                     @slot('label', 'Min cart value allowed')
-                                    @slot('attributes',['min' => 1])
+                                    @slot('attributes',['required', 'min' => 1])
                                     @slot('value', $coupon->min_cart_value_allowed)
                                 @endcomponent
                             </div>
                             <div class="col-md-6">
                                 @component('admin.components.form-group', ['name' => 'max_usable_count', 'type' => 'number'])
                                     @slot('label', 'Max usage count')
-                                    @slot('attributes',['min' => 1])
+                                    @slot('attributes',['required', 'min' => 1])
                                     @slot('value', $coupon->max_usable_count)
                                 @endcomponent
                             </div>

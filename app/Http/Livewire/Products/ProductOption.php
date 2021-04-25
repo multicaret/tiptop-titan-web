@@ -13,7 +13,7 @@ class ProductOption extends Component
     public $titleEn;
     public $titleKu;
     public $titleAr;
-    public $optionMarkedToBeDeleted;
+    public $optionIdToBeDeleted;
 
     public function mount()
     {
@@ -30,6 +30,7 @@ class ProductOption extends Component
         'option.selection_type' => 'required|numeric',
         'option.min_number_of_selection' => 'nullable|numeric',
         'option.max_number_of_selection' => 'nullable|numeric',
+        'option.order_column' => 'nullable|numeric',
     ];
 
 
@@ -218,6 +219,20 @@ class ProductOption extends Component
         ]);
     }
 
+    public function updatedOptionOrderColumn($newValue)
+    {
+        if (empty($newValue)) {
+            $newValue = null;
+        }
+        $this->option->order_column = $newValue;
+        $this->option->save();
+
+        $this->emit('showToast', [
+            'icon' => 'success',
+            'message' => 'Order column has been changed',
+        ]);
+    }
+
 
     public function render()
     {
@@ -260,7 +275,7 @@ class ProductOption extends Component
 //        'optionCloned' => 'cloneOption'
         'selectionDeleted' => 'reloadSelections',
         'ingredientPillDeleted' => 'deleteIngredientPill',
-        'foo' => 'deleteOption',
+        'deleteOption',
     ];
 
     public function deleteIngredientPill($params)
@@ -270,15 +285,17 @@ class ProductOption extends Component
 
     public function reloadSelections($params)
     {
-        $selection = $this->option->selections()->where('id', $params['selectionId']);
-        if ( ! is_null($selection)) {
-            $selection->delete();
+        if ( ! is_null($params['selectionId'])) {
+            $selection = $this->option->selections()->where('id', $params['selectionId']);
+            if ( ! is_null($selection)) {
+                $selection->delete();
+            }
+            $this->option->load('selections');
+            $this->emit('showToast', [
+                'icon' => 'success',
+                'message' => 'Selection has been deleted',
+            ]);
         }
-        $this->option->load('selections');
-        $this->emit('showToast', [
-            'icon' => 'success',
-            'message' => 'Selection has been deleted',
-        ]);
     }
 
 
@@ -294,20 +311,17 @@ class ProductOption extends Component
 
     public function deleteOption()
     {
-        if ($this->optionMarkedToBeDeleted != $this->option->id) {
-            info('trying to delete product option', ['optionId' => $this->option->id]);
-            $this->emitUp('optionDeleted', ['optionId' => $this->option->id]);
-        }
+        $this->emitUp('optionDeleted', ['optionId' => $this->optionIdToBeDeleted]);
     }
 
-    public function triggerConfirmDeleting()
+    public function triggerConfirmDeleting($id)
     {
-        $this->optionMarkedToBeDeleted = $this->option->id;
+        $this->optionIdToBeDeleted = $id;
         $this->confirm('Are you sure?', [
             'toast' => false,
             'position' => 'center',
             'showConfirmButton' => true,
-            'onConfirmed' => 'foo',
+            'onConfirmed' => 'deleteOption',
 //            'onCancelled' => 'cancelled'
         ]);
     }

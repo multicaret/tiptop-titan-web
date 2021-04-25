@@ -453,6 +453,12 @@
             <input type="hidden" name="unit_id" :value="JSON.stringify(product.unit)">
             <input type="hidden" name="unattached-media" class="deleted-file" value="">
             <button class="btn btn-success" type="submit">{{trans('strings.submit')}}</button>
+            @if($product->is_food)
+                <a class="btn btn-outline-primary" type="submit" href="{{route('admin.products.options',$product)}}"
+                   target="_blank">
+                    Options
+                </a>
+            @endif
         </div>
     </form>
 
@@ -474,8 +480,8 @@
                 statuses: @json(array_values(\App\Models\Product::getAllStatusesRich())),
                 isGrocery: @json($isGrocery),
             },
-            beforeMount(){
-                if(!this.product.status_js){
+            beforeMount() {
+                if (!this.product.status_js) {
                     this.product.status_js = {
                         id: null,
                         title: null,
@@ -483,11 +489,11 @@
                 }
             },
             mounted() {
-                this.selectSearchTags(this.product.search_tags?? []);
+                this.selectSearchTags(this.product.search_tags ?? []);
             },
             methods: {
                 selectSearchTags: function (searchTags) {
-                    if(!searchTags && searchTags.length > 0) {
+                    if (!searchTags && searchTags.length > 0) {
                         const searchTagsIds = searchTags.map(item => item.id);
                         $(`input[name='search_tags']`).val(JSON.stringify(searchTagsIds));
                     }

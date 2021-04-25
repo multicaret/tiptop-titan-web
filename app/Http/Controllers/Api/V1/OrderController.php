@@ -332,6 +332,11 @@ class OrderController extends BaseApiController
         DB::beginTransaction();
 
         $branchRatingValue = $request->input('branch_rating_value');
+        if (is_null($branchRatingValue)) {
+            return $this->respondValidationFails([
+                'rating_value' => 'Rating value must not be null'
+            ]);
+        }
         if ($order->type === Chain::CHANNEL_GROCERY_OBJECT) {
             $order->rating_issue_id = $request->input('grocery_issue_id');
         }
@@ -349,7 +354,7 @@ class OrderController extends BaseApiController
         $branch = Branch::find($order->branch_id);
         auth()->user()->rate($branch, $branchRatingValue);
 
-        $branch->avg_rating = $branch->average_rating; //whaaaaaaaaaa?
+        $branch->avg_rating = $branch->average_rating;
         $branch->increment('rating_count');
         $branch->save();
         DB::commit();

@@ -1,21 +1,21 @@
 <div class="row" wire:click="$set('search','')">
     <div class="col-11">
-        <div id="accordion{{$option->id}}">
+        <div id="accordionOption{{$option->id}}">
             <div class="card mb-2">
                 <div class="card-header shadow-sm">
                     <a class="d-flex justify-content-between text-body" data-toggle="collapse" aria-expanded="true"
-                       href="#accordion{{$option->id}}-1">
+                       href="#accordionOption{{$option->id}}-1">
                     <span>
                         <span class="text-muted">
-                        Option:
+                        Option (ID {{ $option->id }}):
                         </span>
                         {{ $option->title }}
                     </span>
-                        <div class="collapse-icon"></div>
                     </a>
                 </div>
 
-                <div id="accordion{{$option->id}}-1" class="collapse show" data-parent="#accordion{{$option->id}}">
+                <div id="accordionOption{{$option->id}}-1" class="collapse show"
+                     data-parent="#accordionOption{{$option->id}}">
                     <div class="card-body">
                         <form>
                             <div class="form-row">
@@ -170,6 +170,11 @@
                                         @endif
                                     </select>
                                 </div>
+                                <div class="form-group col-md-4">
+                                    <label class="form-label">Order column</label>
+                                    <input class="form-control" type="number"
+                                           wire:model="option.order_column">
+                                </div>
                             </div>
                         </form>
 
@@ -301,15 +306,13 @@
                          </button>--}}
                     </div>
                 </div>
-
             </div>
         </div>
     </div>
     <div class="col-1 px-0 pb-2">
-        @if(!$optionMarkedToBeDeleted)
-            <button class="btn btn-sm btn-outline-danger btn-block h-100" wire:click="triggerConfirmDeleting">
-                Delete
-            </button>
-        @endif
+        <button class="btn btn-sm btn-outline-danger btn-block h-100"
+                wire:click="triggerConfirmDeleting({{$option->id}})">
+            Delete
+        </button>
     </div>
 </div>

@@ -1,0 +1,11 @@
+
+### log
+POST {{host}}/{{locale}}/api/v1/logs/create
+Accept: application/json
+Content-Type: application/json
+Authorization: Bearer {{token}}
+
+{
+    "data": "idk"
+}
+

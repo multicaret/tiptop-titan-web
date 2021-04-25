@@ -46,15 +46,16 @@ class ProductOptionsIndex extends Component
     public function reloadOptions($params)
     {
 
-        ProductOptionModel::find($params['optionId'])->delete();
-        info('deleted product option', ['optionId' => $params['optionId']]);
-        /*if ( ! is_null($option)) {
-            $option;
-        }*/
-        $this->product->load('options');
-        $this->emit('showToast', [
-            'icon' => 'success',
-            'message' => 'Option has been deleted',
-        ]);
+        if ( ! is_null($params['optionId'])) {
+            ProductOptionModel::find($params['optionId'])->delete();
+            /*if ( ! is_null($option)) {
+                $option;
+            }*/
+            $this->product->load('options');
+            $this->emit('showToast', [
+                'icon' => 'success',
+                'message' => 'Option has been deleted',
+            ]);
+        }
     }
 }

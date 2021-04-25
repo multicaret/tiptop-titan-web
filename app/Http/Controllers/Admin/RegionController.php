@@ -175,11 +175,27 @@ class RegionController extends Controller
      */
     public function destroy(Region $region)
     {
-        $region->delete();
+        $messageType = 'Error';
+        try {
+            if ($region->cities()->count()) {
+                $translatedErrorMessageKey = 'Related neighborhoods must be deleted first!';
+                $textMessage = trans($translatedErrorMessageKey,
+                    [
+                        'modelName' => trans('strings.city'),
+                        'relatedModel' => trans('strings.areas')
+                    ]);
+            } else {
+                $region->delete();
+                $messageType = 'Success';
+                $textMessage = 'Successfully Deleted';
+            }
+        } catch (\Exception $e) {
+            $textMessage = $e->getMessage();
+        }
 
         return back()->with('message', [
-            'type' => 'Success',
-            'text' => 'Successfully Deleted',
+            'type' => $messageType,
+            'text' => $textMessage,
         ]);
     }
 }

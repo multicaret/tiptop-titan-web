@@ -39,7 +39,8 @@ class CartController extends BaseApiController
         $productId = $request->input('product_id');
         $isAddingMethod = $request->input('is_adding');
         $cart = Cart::retrieve($chainId, $branchId);
-        $cartProduct = $this->getProductCart($cart, $productId, Product::CHANNEL_GROCERY_OBJECT);
+        $cartProduct = $this->getOrCreateProductCart($cart, $productId, Product::CHANNEL_GROCERY_OBJECT,
+            $isAddingMethod);
         if ($isAddingMethod) {
             if ($cartProduct->product->is_storage_tracking_enabled) {
                 if ($cartProduct->product->available_quantity <= $cartProduct->quantity) {
@@ -51,14 +52,11 @@ class CartController extends BaseApiController
             }
             $cartProduct->increment('quantity');
             $this->updateCartPrices($cartProduct, $cart, 'increment');
-        } elseif ($cartProduct->quantity > 0) {
-            $cartProduct->decrement('quantity');
-//            $cartProduct->total_price = $cartProduct->price * $cartProduct->quantity;
+        } elseif ( ! is_null($cartProduct) && $cartProduct->quantity > 0) {
             $this->updateCartPrices($cartProduct, $cart, 'decrement');
+            $cartProduct->decrement('quantity');
             if ($cartProduct->quantity === 0) {
                 $cartProduct->delete();
-
-                return $this->respondNotFound([]); // Todo: work on delete response
             }
         }
 
@@ -90,58 +88,75 @@ class CartController extends BaseApiController
         $branchId = $request->input('branch_id');
         $productId = $request->input('product_id');
         $requestQuantity = $request->input('quantity');
+
+        \DB::beginTransaction();
         $cart = Cart::retrieve($chainId, $branchId);
 
-        $cartProduct = $this->getProductCart($cart, $productId, Product::CHANNEL_FOOD_OBJECT, $productIdInCart);
+        $cartProduct = $this->getOrCreateProductCart($cart, $productId, Product::CHANNEL_FOOD_OBJECT,
+            is_null($productIdInCart),
+            $productIdInCart);
+
+        if (is_null($cartProduct)) {
+            info('$cartProduct is null', [
+                'method' => 'CartController@foodAdjustCartData',
+                'cartId' => $cart->id,
+                'productId' => $productId,
+                'productIdInCart' => $productIdInCart,
+            ]);
+        }
 
         if ($requestQuantity > 0) { // 1 -> 3
-            if ($productIdInCart !== null) {
+            if ( ! is_null($productIdInCart)) {
                 $this->updateCartPrices($cartProduct, $cart, 'decrement', $cartProduct->quantity);
             }
             $cartProduct->quantity = $requestQuantity;
             $cartProduct->save();
+            // Checking available quantity
+            if ($cartProduct->product->is_storage_tracking_enabled) {
+                if ($cartProduct->product->available_quantity <= $cartProduct->quantity) {
+                    $errorData = ['availableQuantity' => $cartProduct->product->available_quantity];
+                    $errorsMessage = 'The requested product is currently unavailable';
+
+                    return $this->respondValidationFails($errorsMessage, $errorData);
+                }
+            }
+
+            $this->resetCartProductOptions($cartProduct);
+            if ( ! is_null($selectedOptions)) {
+                // Todo: update delete method with delete by ids
+                foreach ($selectedOptions as $selectedOption) {
+                    $cartProductOption = CartProductOption::firstOrCreate([
+                        'cart_product_id' => $cartProduct->id,
+                        'product_option_id' => $selectedOption['product_option_id']
+                    ]);
+                    $onIngredients = $cartProductOption->productOption->is_based_on_ingredients;
+                    foreach ($selectedOption['selected_ids'] as $selectionId) {
+                        $selectableType = $onIngredients ? Taxonomy::class : ProductOptionSelection::class;
+                        CartProductOptionSelection::firstOrCreate([
+                            'cart_product_id' => $cartProduct->id,
+                            'product_option_id' => $selectedOption['product_option_id'],
+                            'selectable_type' => $selectableType,
+                            'selectable_id' => $selectionId,
+                        ]);
+                        $optionPrice = $this->getOptionPrice($selectableType, $selectionId,
+                            $selectedOption['product_option_id']);
+                        $cartProduct->price += $optionPrice;
+                    }
+                }
+                // Add Product price to calculated total product option prices
+                $cartProduct->price += $cartProduct->product->discounted_price;
+                // Add total product option prices * quantity
+                $cartProduct->total_price = $cartProduct->price * $cartProduct->quantity;
+                $this->updateCartPrices($cartProduct, $cart, 'increment', $cartProduct->quantity);
+            }
         } else {
             $this->updateCartPrices($cartProduct, $cart, 'decrement', $cartProduct->quantity);
             $cartProduct->delete();
+        }
 
-            return $this->respondNotFound([]); // Todo: work on delete response
-        }
-        if ($cartProduct->product->is_storage_tracking_enabled) {
-            if ($cartProduct->product->available_quantity <= $cartProduct->quantity) {
-                $errorData = ['availableQuantity' => $cartProduct->product->available_quantity];
-                $errorsMessage = 'The requested product is currently unavailable';
-
-                return $this->respondValidationFails($errorsMessage, $errorData);
-            }
-        }
-        $this->resetCartProductOptions($cartProduct);
-        if ( ! is_null($selectedOptions)) {
-            // Todo: update delete method with delete by ids
-            foreach ($selectedOptions as $selectedOption) {
-                $cartProductOption = CartProductOption::firstOrCreate([
-                    'cart_product_id' => $cartProduct->id,
-                    'product_option_id' => $selectedOption['id']
-                ]);
-                $onIngredients = $cartProductOption->productOption->is_based_on_ingredients;
-                foreach ($selectedOption['selected_ids'] as $selectionId) {
-                    $selectableType = $onIngredients ? Taxonomy::class : ProductOptionSelection::class;
-                    CartProductOptionSelection::firstOrCreate([
-                        'cart_product_id' => $cartProduct->id,
-                        'product_option_id' => $selectedOption['id'],
-                        'selectable_type' => $selectableType,
-                        'selectable_id' => $selectionId,
-                    ]);
-                    $optionPrice = $this->getOptionPrice($selectableType, $selectionId,
-                        $selectedOption['id']);
-                    $cartProduct->price += $optionPrice;
-                }
-            }
-            $cartProduct->total_price = $cartProduct->price * $cartProduct->quantity;
-            $this->updateCartPrices($cartProduct, $cart, 'increment', $cartProduct->quantity);
-        }
         $cartProduct->save();
         $cart->save();
-
+        \DB::commit();
 
         return $this->respond([
             'cart' => new CartResource($cart),
@@ -172,18 +187,23 @@ class CartController extends BaseApiController
 
     }
 
-    public function getProductCart(Cart $cart, $productId, $type, $cartProductId = null): CartProduct
-    {
+    public function getOrCreateProductCart(
+        Cart $cart,
+        $productId,
+        $type,
+        $isAdding,
+        $cartProductId = null
+    ): ?CartProduct {
         $cartProduct = null;
         if ($type === Product::CHANNEL_GROCERY_OBJECT) {
             $cartProduct = CartProduct::where('cart_id', $cart->id)
                                       ->where('product_id', $productId)
                                       ->first();
-        } elseif ($type === Product::CHANNEL_FOOD_OBJECT && $cartProductId !== null) {
+        } elseif ($type === Product::CHANNEL_FOOD_OBJECT && ! is_null($cartProductId)) {
             $cartProduct = CartProduct::find($cartProductId);
         }
 
-        if (is_null($cartProduct)) {
+        if (is_null($cartProduct) && $isAdding) {
             $cartProductId = CartProduct::insertGetId([
                 'cart_id' => $cart->id,
                 'product_id' => $productId,
@@ -191,6 +211,8 @@ class CartController extends BaseApiController
                 'total_price' => 0,
                 'price' => 0,
                 'quantity' => 0, // Todo: check value
+                'created_at' => now(),
+                'updated_at' => now(),
             ]);
             $cartProduct = CartProduct::find($cartProductId);
         }
@@ -243,5 +265,35 @@ class CartController extends BaseApiController
         $cartProduct->price = 0;
         $cartProduct->cartProductOptions()->delete();
         $cartProduct->cartProductOptionsSelections()->delete();
+    }
+
+    public function destroyGroceryProduct(Cart $cart, $productId): JsonResponse
+    {
+        \DB::beginTransaction();
+        $cartProduct = CartProduct::whereCartId($cart->id)->where('product_id', $productId);
+        $cart->total -= $cartProduct->product->discounted_price;
+        $cart->without_discount_total -= $cartProduct->product->price;
+        $cart->save();
+        $cartProduct->delete();
+        \DB::commit();
+
+        return $this->respond([
+            'cart' => new CartResource($cart),
+        ]);
+    }
+
+    public function destroyFoodProduct(Cart $cart, $cartProductId)
+    {
+        \DB::beginTransaction();
+        $cartProduct = CartProduct::find($cartProductId);
+        $cart->total -= ($cartProduct->total_price + $cartProduct->product->discounted_price);
+        $cart->without_discount_total -= ($cartProduct->total_price + $cartProduct->product->price);
+        $cart->save();
+        $cartProduct->delete();
+        \DB::commit();
+
+        return $this->respond([
+            'cart' => new CartResource($cart),
+        ]);
     }
 }

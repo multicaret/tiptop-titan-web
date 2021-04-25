@@ -140,10 +140,33 @@
                                             ></multiselect>
                                         </div>
                                     </div>
+                                    <div class="col-12">
+                                        @component('admin.components.form-group', ['name' => 'latitude', 'type' => 'text'])
+                                            @slot('label', 'Latitude')
+                                            @slot('attributes', [
+                                               'id' => 'latitude'
+                                           ])
+                                            @slot('value', $branch->latitude)
+                                        @endcomponent
+                                    </div>
+                                    <div class="col-12">
+                                        @component('admin.components.form-group', ['name' => 'longitude', 'type' => 'text'])
+                                            @slot('label', 'Longitude')
+                                            @slot('attributes', [
+                                               'id' => 'longitude'
+                                           ])
+                                            @slot('value', $branch->longitude)
+                                        @endcomponent
+                                    </div>
+                                    <div class="col-12">
+                                        <a href="https://maps.google.com/?q={{$branch->latitude}},{{$branch->longitude}}"
+                                           target="_blank">
+                                            Open In Google Maps <i class="fas fa-external-link-alt"></i>
+                                        </a>
+                                    </div>
                                 </div>
                             </div>
                             <div class="col-6" style="height: 250px;">
-                                <div id="gmaps-branch" style="height: 100%; width: 100%;"></div>
                                 <div id="gmaps-branch" style="height: 100%; width: 100%;"></div>
                             </div>
                         </div>
@@ -245,8 +268,8 @@
         <input type="hidden" name="city" :value="JSON.stringify(branch.city)">
         <input type="hidden" name="chain" :value="JSON.stringify(branch.chain)">
         <input type="hidden" name="contactDetails" :value="JSON.stringify(contactDetails)">
-        <input type="hidden" name="longitude" id="longitude">
-        <input type="hidden" name="latitude" id="latitude">
+        {{--        <input type="hidden" name="longitude" id="longitude">--}}
+        {{--        <input type="hidden" name="latitude" id="latitude">--}}
         <input type="hidden" name="unattached-media" class="deleted-file" value="">
         <div class="col-md-12" v-if="formErrorMessage">
             <p class="text-danger text-capitalize">@{{ formErrorMessage }}</p>

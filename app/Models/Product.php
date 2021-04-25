@@ -293,7 +293,7 @@ class Product extends Model implements HasMedia
 
     public function options(): HasMany
     {
-        return $this->hasMany(ProductOption::class);
+        return $this->hasMany(ProductOption::class)->orderBy('order_column');
     }
 
 
@@ -443,7 +443,6 @@ class Product extends Model implements HasMedia
     {
         return Controller::getAmountAfterApplyingDiscount($this->price, $this->price_discount_amount,
             $this->price_discount_by_percentage);
-
     }
 
     public function getDiscountedPriceFormattedAttribute(): string

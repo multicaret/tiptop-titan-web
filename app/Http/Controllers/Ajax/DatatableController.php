@@ -41,7 +41,7 @@ class DatatableController extends AjaxController
 //            $role = User::ROLE_USER;
             $role = [];
         }
-        $users = User::with(['defaultAddress'])
+        $users = User::with(['defaultAddress', 'team'])
                      ->orderBy('order_column')
                      ->role($role)
                      ->with('branch')

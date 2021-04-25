@@ -142,10 +142,9 @@ class TaxonomyController extends Controller
         $taxonomy = new Taxonomy();
         $taxonomy->type = $data['correctType'];
         $data['taxonomy'] = $taxonomy->load('searchableTags');
-        $data['searchableTags'] = $taxonomy->type === Taxonomy::TYPE_FOOD_CATEGORY ?  Taxonomy::searchTags()->get(): [];
+        $data['searchableTags'] = $taxonomy->type === Taxonomy::TYPE_FOOD_CATEGORY ? Taxonomy::searchTags()->get() : [];
 
-        return view('admin.taxonomies.form',
-            $data);
+        return view('admin.taxonomies.form', $data);
     }
 
     /**
@@ -236,7 +235,7 @@ class TaxonomyController extends Controller
         $data = $this->essentialData($request);
         $taxonomy->type = $data['correctType'];
         $data['taxonomy'] = $taxonomy->load('searchableTags');
-        $data['searchableTags'] = $taxonomy->type === Taxonomy::TYPE_FOOD_CATEGORY ?  Taxonomy::searchTags()->get(): [];
+        $data['searchableTags'] = $taxonomy->type === Taxonomy::TYPE_FOOD_CATEGORY ? Taxonomy::searchTags()->get() : [];
 
         return view('admin.taxonomies.form',
             $data);
@@ -376,8 +375,10 @@ class TaxonomyController extends Controller
         $typeName = Taxonomy::getCorrectTypeName($request->type, false);
         $correctType = Taxonomy::getCorrectType($request->type);
 
-        $menuCategoryData['hasBranch'] = request()->has('branch_id');
-        $branchExists = ! is_null(\App\Models\Branch::foods()->find(request()->input('branch_id')));
+        $hasBranch = in_array($correctType, Taxonomy::typesHaving('branch'));
+
+        $menuCategoryData['hasBranch'] = $hasBranch && request()->has('branch_id');
+        $branchExists = ! is_null(Branch::foods()->find(request()->input('branch_id')));
         if ($menuCategoryData['hasBranch']) {
             if ($branchExists) {
                 $menuCategoryData['branchId'] = request()->input('branch_id');
@@ -400,12 +401,17 @@ class TaxonomyController extends Controller
         }
 
         $fontAwesomeIcons = $this->getFontAwesomeIcons();
-        $branches = Branch::whereType(Branch::CHANNEL_FOOD_OBJECT)
-                          ->active()
-                          ->get()
-                          ->mapWithKeys(function ($item) {
-                              return [$item['id'] => $item['chain']['title'].' - '.$item['title'].' ('.$item['region']['english_name'].', '.$item['city']['english_name'].')'];
-                          });
+
+        if ($hasBranch) {
+            $branches = Branch::whereType(Branch::CHANNEL_FOOD_OBJECT)
+                              ->active()
+                              ->get()
+                              ->mapWithKeys(function ($item) {
+                                  return [$item['id'] => $item['chain']['title'].' - '.$item['title'].' ('.$item['region']['english_name'].', '.$item['city']['english_name'].')'];
+                              });
+        } else {
+            $branches = [];
+        }
         $ingredientCategories = Taxonomy::ingredientCategories()->active()->get();
 
         return compact('typeName', 'correctType', 'roots', 'fontAwesomeIcons', 'branches', 'ingredientCategories',

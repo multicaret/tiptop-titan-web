@@ -45,6 +45,7 @@ use Illuminate\Support\Carbon;
 class CartProduct extends Pivot
 {
     protected $appends = ['selected_options'];
+    protected $hidden = ['product_object'];
     protected $casts = [
         'product_object' => 'json',
     ];
@@ -77,12 +78,13 @@ class CartProduct extends Pivot
             } else {
                 $selectionIds = $item->selections()->pluck('selectable_id')->all();
             }
+
             return [
-                'id' => $item->id,
-                'selection_ids' => $selectionIds
+                'product_option_id' => $item->product_option_id,
+                'selected_ids' => $selectionIds
             ];
         };
 
-        return $this->cartProductOptions->transform($callback);
+        return $this->cartProductOptions->map($callback);
     }
 }
