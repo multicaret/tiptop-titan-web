@@ -47,6 +47,20 @@
                                         <i class="mr-2 text-secondary {{ $childItem['icon'] }} fa-fw"
                                            style="font-size:1.4em"></i>
                                         <div class="font-weight-semibold">{{$childItem['title']}}</div>
+                                        @if(array_key_exists('countPrimary',$childItem) || array_key_exists('countDanger',$childItem))
+                                            <div class="pl-1 ml-auto" style="font-size:12px;">
+                                                @if(array_key_exists('countDanger',$childItem) && $childItem['countDanger'])
+                                                    <div class="badge badge-danger opacity-50">
+                                                        {{$childItem['countDanger']}}
+                                                    </div>
+                                                @endif
+                                                @if(array_key_exists('countPrimary',$childItem) && $childItem['countPrimary'])
+                                                    <div class="badge badge-primary">
+                                                        {{$childItem['countPrimary']}}
+                                                    </div>
+                                                @endif
+                                            </div>
+                                        @endif
                                     </a>
                                 </li>
                             @endforeach

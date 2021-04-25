@@ -4,13 +4,18 @@ namespace App\Providers;
 
 use App\Models\Branch;
 use App\Models\Chain;
+use App\Models\City;
+use App\Models\Coupon;
 use App\Models\Currency;
 use App\Models\Language;
 use App\Models\Order;
 use App\Models\Post;
 use App\Models\Preference;
 use App\Models\Product;
+use App\Models\Region;
+use App\Models\Slide;
 use App\Models\Taxonomy;
+use App\Models\TokanTeam;
 use App\Models\User;
 use App\Scopes\ActiveScope;
 use Closure;
@@ -73,9 +78,6 @@ class ComposerServiceProvider extends ServiceProvider
 //                dd($sidenavLinks);
                 $view->with([
                     'sidenavLinks' => $sidenavLinks,
-                    'count' => [
-//                    'user_testimonial' => Post::usersTestimonials()->count(),
-                    ]
                 ]);
             }
         });
@@ -110,6 +112,8 @@ class ComposerServiceProvider extends ServiceProvider
                                         Chain::getCorrectChannelName(Chain::CHANNEL_GROCERY_OBJECT, false),
                                 ],
                                 'routeName' => 'admin.chains.index',
+                                'countPrimary' => Chain::active()->groceries()->count(),
+                                'countDanger' => Chain::inactive()->groceries()->count(),
                             ],
                             [
                                 'title' => 'Branches',
@@ -118,6 +122,8 @@ class ComposerServiceProvider extends ServiceProvider
                                     'type' => Branch::getCorrectChannelName(Branch::CHANNEL_GROCERY_OBJECT, false),
                                 ],
                                 'routeName' => 'admin.branches.index',
+                                'countPrimary' => Branch::active()->groceries()->count(),
+                                'countDanger' => Branch::inactive()->groceries()->count(),
                             ],
                             [
                                 'title' => 'Products',
@@ -126,6 +132,8 @@ class ComposerServiceProvider extends ServiceProvider
                                     'type' => Product::getCorrectChannelName(Product::CHANNEL_GROCERY_OBJECT, false)
                                 ],
                                 'routeName' => 'admin.products.index',
+                                'countPrimary' => Product::active()->groceries()->count(),
+                                'countDanger' => Product::inactive()->groceries()->count(),
                             ],
                             [
                                 'title' => 'Market Categories',
@@ -174,6 +182,8 @@ class ComposerServiceProvider extends ServiceProvider
                                     'type' => Chain::getCorrectChannelName(Chain::CHANNEL_FOOD_OBJECT, false),
                                 ],
                                 'routeName' => 'admin.chains.index',
+                                'countPrimary' => Chain::active()->foods()->count(),
+                                'countDanger' => Chain::inactive()->foods()->count(),
                             ],
                             [
                                 'title' => 'Branches',
@@ -182,6 +192,8 @@ class ComposerServiceProvider extends ServiceProvider
                                     'type' => Branch::getCorrectChannelName(Branch::CHANNEL_FOOD_OBJECT, false),
                                 ],
                                 'routeName' => 'admin.branches.index',
+                                'countPrimary' => Branch::active()->foods()->count(),
+                                'countDanger' => Branch::inactive()->foods()->count(),
                             ],
                             [
                                 'title' => 'Products',
@@ -190,6 +202,8 @@ class ComposerServiceProvider extends ServiceProvider
                                     'type' => Product::getCorrectChannelName(Product::CHANNEL_FOOD_OBJECT, false)
                                 ],
                                 'routeName' => 'admin.products.index',
+                                'countPrimary' => Product::active()->foods()->count(),
+                                'countDanger' => Product::inactive()->foods()->count(),
                             ],
                             [
                                 'title' => 'Food Categories',
@@ -247,12 +261,16 @@ class ComposerServiceProvider extends ServiceProvider
                                 'title' => 'Slides',
                                 'icon' => 'fas fa-images',
                                 'routeName' => 'admin.slides.index',
+                                'countPrimary' => Slide::active()->count(),
+                                'countDanger' => Slide::inactive()->count(),
                             ],
                             [
                                 'title' => 'Articles',
                                 'icon' => 'fas fa-pencil-alt',
                                 'routeName' => 'admin.posts.index',
                                 'params' => ['type' => 'article'],
+                                'countPrimary' => Post::active()->articles()->count(),
+                                'countDanger' => Post::inactive()->articles()->count(),
                             ],
                             /*[
                                 'title' => 'Portfolio',
@@ -271,12 +289,16 @@ class ComposerServiceProvider extends ServiceProvider
                                 'icon' => 'fas fa-file',
                                 'routeName' => 'admin.posts.index',
                                 'params' => ['type' => Post::getCorrectTypeName(Post::TYPE_PAGE, false)],
+                                'countPrimary' => Post::active()->pages()->count(),
+                                'countDanger' => Post::inactive()->pages()->count(),
                             ],
                             [
                                 'title' => 'FAQ',
                                 'icon' => 'fas fa-question-circle',
                                 'routeName' => 'admin.posts.index',
                                 'params' => ['type' => Post::getCorrectTypeName(Post::TYPE_FAQ, false)],
+                                'countPrimary' => Post::active()->faq()->count(),
+                                'countDanger' => Post::inactive()->faq()->count(),
                             ],
                             /*[
                                 'title' => 'Services',
@@ -306,16 +328,22 @@ class ComposerServiceProvider extends ServiceProvider
                                 'title' => 'Cities',
                                 'icon' => 'fas fa-map-signs',
                                 'routeName' => 'admin.regions.index',
+                                'countPrimary' => Region::active()->count(),
+                                'countDanger' => Region::inactive()->count(),
                             ],
                             [
                                 'title' => 'Neighborhoods',
                                 'icon' => 'fas fa-city',
                                 'routeName' => 'admin.cities.index',
+                                'countPrimary' => City::active()->count(),
+                                'countDanger' => City::inactive()->count(),
                             ],
                             [
                                 'title' => 'Captain Teams',
                                 'icon' => 'fas fa-users',
                                 'routeName' => 'admin.teams.index',
+                                'countPrimary' => TokanTeam::active()->count(),
+                                'countDanger' => TokanTeam::inactive()->count(),
                             ],
                         ]
                     ]
@@ -474,8 +502,9 @@ class ComposerServiceProvider extends ServiceProvider
                                 'title' => 'Coupons',
                                 'icon' => 'fas fa-ticket-alt',
                                 'routeName' => 'admin.coupons.index',
+                                'countPrimary' => Coupon::active()->count(),
+                                'countDanger' => Coupon::inactive()->count(),
                             ],
-
                         ]
                     ]
                 ]
@@ -491,7 +520,7 @@ class ComposerServiceProvider extends ServiceProvider
                             [
                                 'title' => 'Daily Report',
                                 'icon' => 'fas fa-calendar-alt',
-                                'routeName' => 'admin.orders.report-index',
+                                'routeName' => 'admin.orders.reports.index',
                             ],
 
                         ]
@@ -619,7 +648,7 @@ class ComposerServiceProvider extends ServiceProvider
         try {
             $sideNavItem['route'] = route($sideNavItem['routeName'], $params);
         } catch (Exception $e) {
-            dd($sideNavItem);
+            dd('There was an error generating this route: ',$sideNavItem);
         }
     }
 

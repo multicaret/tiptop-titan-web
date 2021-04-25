@@ -14,7 +14,6 @@ use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\View\View;
 use Str;
-use function PHPUnit\Framework\isEmpty;
 
 class SlideController extends Controller
 {
@@ -131,7 +130,10 @@ class SlideController extends Controller
     public function create(Request $request)
     {
         $data = $this->essentialData($request);
-        $data['slide'] = new Slide();
+        $slide = new Slide();
+        $slide->begins_at = now()->subMinutes(5);
+        $slide->expires_at = now()->addDays(30);
+        $data['slide'] = $slide;
 
         return view('admin.slides.form', $data);
     }

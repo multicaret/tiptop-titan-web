@@ -26,6 +26,13 @@ class ProductController extends Controller
                 'width' => '5',
             ],
             [
+                'data' => 'image',
+                'title' => 'Image',
+                'width' => '150',
+                'searchable' => false,
+                'bSortable' => false,
+            ],
+            [
                 'data' => 'title',
                 'name' => 'translations.title',
                 'title' => trans('strings.title'),
@@ -191,10 +198,9 @@ class ProductController extends Controller
             $data['chains'] = Chain::groceries()->get()->map($getIdTitle)->all();
             $groceryBranches = Branch::groceries();
             $data['branches'] = $groceryBranches->get()->map($getIdTitle)->all();
-            if($groceryBranches->count()) {
+            if ($groceryBranches->count()) {
                 $data['categories'] = Taxonomy::groceryCategories()->get()->map($getIdTitle)->all();
-            }
-            else{
+            } else {
                 $data['categories'] = [];
             }
         } else {

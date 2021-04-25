@@ -61,15 +61,6 @@
                         <h4 class="card-header">{{Str::upper($langKey)}}</h4>
                         <div class="card-body row">
                             <div class="col-md-12">
-                                @component('admin.components.form-group', ['name' => $langKey .'[alt_tag]', 'type' => 'text'])
-                                    @slot('label', trans('strings.alt-tag'))
-                                    @slot('attributes',['required'])
-                                    @if(! is_null($slide->id))
-                                        @slot('value', optional($slide->translate($langKey))->alt_tag)
-                                    @endif
-                                @endcomponent
-                            </div>
-                            <div class="col-md-12">
                                 <p class="">@lang('strings.cover')</p>
                                 <div>
                                     @component('admin.components.form-group', ['name' => $langKey .'[image]', 'type' => 'file'])
@@ -83,6 +74,15 @@
                                         ])
                                     @endcomponent
                                 </div>
+                            </div>
+                            <div class="col-md-12">
+                                @component('admin.components.form-group', ['name' => $langKey .'[alt_tag]', 'type' => 'text'])
+                                    @slot('label', 'Alternative text')
+                                    @slot('attributes',['required'])
+                                    @if(! is_null($slide->id))
+                                        @slot('value', optional($slide->translate($langKey))->alt_tag)
+                                    @endif
+                                @endcomponent
                             </div>
                         </div>
                     </div>
@@ -110,7 +110,7 @@
                                     select-label=""
                                     selected-label=""
                                     deselect-label=""
-                                    placeholder=""
+                                    placeholder="All"
                                     @select="retrieveCities"
                                     autocomplete="false"
                                 ></multiselect>
@@ -131,7 +131,7 @@
                                     select-label=""
                                     selected-label=""
                                     deselect-label=""
-                                    placeholder=""
+                                    placeholder="All"
                                     {{--                                        @select="retrieveNeighborhoods"--}}
                                     autocomplete="false"
                                 ></multiselect>
@@ -226,24 +226,25 @@
                 cities: [],
                 selectedRegion: null
             },
-            watch: {
-                slide: {
-                    handler: function (val) {
-                        if (!this.selectedRegion || this.selectedRegion.id != val.region.id) {
-                            this.selectedRegion = val.region;
-                            if (this.slide.city != null) {
-                                this.slide.city = null
-                            }
-                        }
-                    },
-                    deep: true,
-                }
-            },
+            /* watch: {
+                 slide: {
+                     handler: function (val) {
+                         if (!this.selectedRegion || this.selectedRegion.id != val.region.id) {
+                             this.selectedRegion = val.region;
+                             if (this.slide.city != null) {
+                                 this.slide.city = null
+                             }
+                         }
+                     },
+                     deep: true,
+                 }
+             },*/
             methods: {
                 retrieveCities: function (region) {
                     axios.post(window.App.domain + `/ajax/countries/${region.country_id}/regions/${region.id}/cities`)
                         .then((res) => {
                             this.cities = res.data;
+                            this.slide.city = this.cities[0]
                         });
                 },
             },
