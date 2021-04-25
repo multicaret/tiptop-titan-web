@@ -192,8 +192,7 @@ class ProductController extends Controller
             $groceryBranches = Branch::groceries();
             $data['branches'] = $groceryBranches->get()->map($getIdTitle)->all();
             if($groceryBranches->count()) {
-                $data['categories'] = Taxonomy::groceryCategories()->where('branch_id',
-                    optional($groceryBranches->first())->id)->whereNotNull('parent_id')->get()->map($getIdTitle)->all();
+                $data['categories'] = Taxonomy::groceryCategories()->get()->map($getIdTitle)->all();
             }
             else{
                 $data['categories'] = [];
