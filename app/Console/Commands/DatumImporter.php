@@ -854,18 +854,22 @@ class DatumImporter extends Command
         foreach ($oldMediaFiles as $oldMediaData) {
             $errorMessage = null;
             $toCollection = $collections['to'];
-            $modelTitle = \Str::slug($newModel->getTranslation('en')->$imageNameAttribute);
+            $modelTitle = $newModel->getTranslation('en')->$imageNameAttribute;
+            $modelTitleSlugged = \Str::slug($modelTitle);
             $fileName = "{$modelTitle}.{$oldMediaData->getExtensionAttribute()}";
             try {
                 $newModel->addMediaFromDisk($oldMediaData->disk_path, 'old_s3')
-                         ->setFileName($fileName)
+                         ->setFileName($modelTitleSlugged)
+                         ->setName($fileName)
                          ->toMediaCollection($toCollection);
             } catch (FileDoesNotExist $e) {
-                $errorMessage = 'Failed to load image because file does not exist: '.$e->getMessage();
+//                $errorMessage = 'Failed to load image because file does not exist: '.$e->getMessage();
             } catch (FileIsTooBig $e) {
-                $errorMessage = 'Failed to load image because file is too big: '.$e->getMessage();
+                $errorMessage = sprintf('Failed to load image because file is too big: %s - Model id: %s',
+                    $e->getMessage(), $newModel);
             } catch (FileCannotBeAdded $e) {
-                $errorMessage = 'Failed to load image because file cannot be added: '.$e->getMessage();
+                $errorMessage = sprintf('Failed to load image because file cannot be added: %s - Model id: %s',
+                    $e->getMessage(), $newModel);
             }
             if ( ! is_null($errorMessage)) {
                 \Log::error($modelType.' - '.$errorMessage);
