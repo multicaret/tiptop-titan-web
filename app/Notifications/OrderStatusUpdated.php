@@ -33,13 +33,17 @@ class OrderStatusUpdated extends Notification
         }
         $this->roleName = $roleName;
         $roleName = str_replace('-', '_', $roleName);
-        $this->body = trans("notifications.order_status_updated_for_user_{$roleName}_{$this->order->status}",
-            [
-                'number' => ("({$this->order->reference_code})"),
-                'branchName' => optional($this->order->branch)->title,
-            ]);
+        foreach (localization()->getSupportedLocalesKeys() as $key) {
+            if ($key == 'ku') {
+                $key = 'fa';
+            }
+            $this->body[$key] = '🚚 '.trans("notifications.order_status_updated_for_user_{$roleName}_{$this->order->status}",
+                    [
+                        'number' => ("({$this->order->reference_code})"),
+                        'branchName' => optional($this->order->branch)->title,
+                    ], $key);
 
-//        $this->body = "🚚 Your order now is {$this->order->getStatusName()}!";
+        }
     }
 
     /**

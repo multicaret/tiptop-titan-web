@@ -45,7 +45,7 @@ class OrderObserver
             foreach ($order->branch->managers()->active()->get() as $manager) {
                 $manager->notify(new OrderStatusUpdated($order, $manager->role_name));
             }
-            $order->user->notify(new OrderStatusUpdated($order, $order->role_name));
+            $order->user->notify(new OrderStatusUpdated($order, $order->user->role_name));
         }
     }
 

@@ -7,4 +7,5 @@ return [
     'deleting_order' => 'Deleting',
     'deleted_order' => 'Deleted',
     'note_order' => 'Noted',
+    'note_created_order' => 'Note created',
 ];
