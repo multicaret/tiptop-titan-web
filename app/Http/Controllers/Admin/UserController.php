@@ -82,17 +82,25 @@ class UserController extends Controller
                 'name' => 'status',
                 'title' => 'Status',
             ],
-            [
-                'data' => 'created_at',
-                'name' => 'created_at',
-                'title' => trans('strings.create_date')
-            ],
-            [
-                'data' => 'last_logged_in_at',
-                'name' => 'last_logged_in_at',
-                'title' => __('Last logged In')
-            ],
         ]);
+        if ( $role != User::ROLE_TIPTOP_DRIVER) {
+            $columns = array_merge($columns, [
+                [
+                    'data' => 'created_at',
+                    'name' => 'created_at',
+                    'title' => trans('strings.create_date')
+                ],
+            ]);
+        }
+        else{
+            $columns = array_merge($columns, [
+                [
+                    'data' => 'team.name',
+                    'name' => 'team.name',
+                    'title' => trans('strings.team')
+                ],
+            ]);
+        }
 
         return view('admin.users.index', compact('columns', 'role'));
     }
@@ -185,7 +193,7 @@ class UserController extends Controller
 
         DB::commit();
 
-        if(in_array($role, User::rolesHaving('branches'))){
+        if (in_array($role, User::rolesHaving('branches'))) {
             $user->branches($role)->sync($request->input('branches'));
         }
 
