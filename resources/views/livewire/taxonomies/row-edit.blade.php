@@ -25,7 +25,7 @@
     <td>{{$taxonomy->status_name}}</td>
     <td>
         <a target="_blank" class="btn btn-outline-success btn-sm d-inline-block mb-1" href="{{route('admin.taxonomies.edit',
-                            ['type'=> request()->type,
+                            ['type'=> \App\Models\Taxonomy::getTypesArray()[\App\Models\Taxonomy::TYPE_MENU_CATEGORY],
                             'branch_id' => $taxonomy->branch_id,
                             'chain_id' => $taxonomy->chain_id,
                             $taxonomy->uuid])}}">
