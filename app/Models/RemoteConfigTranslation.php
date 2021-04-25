@@ -7,24 +7,24 @@ use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
 
 /**
- * App\Models\RemoteTranslation
+ * App\Models\RemoteConfigTranslation
  *
  * @property int $id
  * @property int $boot_id
  * @property string|null $title
  * @property array|null $data_translated
  * @property string $locale
- * @method static Builder|RemoteTranslation newModelQuery()
- * @method static Builder|RemoteTranslation newQuery()
- * @method static Builder|RemoteTranslation query()
- * @method static Builder|RemoteTranslation whereBootId($value)
- * @method static Builder|RemoteTranslation whereDataTranslated($value)
- * @method static Builder|RemoteTranslation whereId($value)
- * @method static Builder|RemoteTranslation whereLocale($value)
- * @method static Builder|RemoteTranslation whereTitle($value)
+ * @method static Builder|RemoteConfigTranslation newModelQuery()
+ * @method static Builder|RemoteConfigTranslation newQuery()
+ * @method static Builder|RemoteConfigTranslation query()
+ * @method static Builder|RemoteConfigTranslation whereBootId($value)
+ * @method static Builder|RemoteConfigTranslation whereDataTranslated($value)
+ * @method static Builder|RemoteConfigTranslation whereId($value)
+ * @method static Builder|RemoteConfigTranslation whereLocale($value)
+ * @method static Builder|RemoteConfigTranslation whereTitle($value)
  * @mixin Eloquent
  */
-class RemoteTranslation extends Model
+class RemoteConfigTranslation extends Model
 {
     public $timestamps = false;
 
@@ -38,7 +38,7 @@ class RemoteTranslation extends Model
     {
         parent::boot();
 
-        static::creating(function (RemoteTranslation $bootTranslation) {
+        static::creating(function (RemoteConfigTranslation $bootTranslation) {
             $dataTranslated = [
                 'alert' => [
                     'title' => '',
