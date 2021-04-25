@@ -179,6 +179,8 @@ class ChainController extends Controller
         return [
             "{$defaultLocale}.title" => 'required',
 //            "old_price" => 'required|numeric|min:1',
+            "city" => 'required',
+            "region" => 'required',
         ];
     }
 

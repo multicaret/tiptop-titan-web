@@ -239,6 +239,8 @@ class BranchController extends Controller
             'minimum_order' => 'required',
             'under_minimum_order_delivery_fee' => 'required',
             'fixed_delivery_fee' => 'required',
+            'city' => 'required',
+            'region' => 'required',
         ];
 
 
