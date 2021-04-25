@@ -21,7 +21,7 @@ class OrderShow extends Component
         'order.status' => 'required|numeric',
         'order.cancellation_reason_id' => 'nullable|numeric',
         'order.cancellation_reason_note' => 'nullable|string',
-        'note' => 'required|min:3|max:255',
+        'note' => 'required|min:3',
         'agentNotes' => 'nullable|string',
     ];
 

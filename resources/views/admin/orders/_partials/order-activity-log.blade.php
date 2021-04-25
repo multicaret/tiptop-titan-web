@@ -1,47 +1,52 @@
 <ul class="vertical-timeline" style="height:360px;overflow-y: scroll">
-    @foreach($order->activity()->latest()->get() as $activity)
-        <li class="rings border-{{$activity->getCssClassesBasedOnType()}}">
-            <span></span>
-            <div class="timeline-content">
-                <div class="title text-{{$activity->getCssClassesBasedOnType()}}"><i class="fas fa-trash-alt"></i>
-                    {{trans('activity.'.$activity->type)}}
-                </div>
-                @if($activity->differences)
-                    <div class="{{$activity->getCssClassesBasedOnType()}}">
-                        @foreach($activity->differences as $title => $value)
-                            @if($title == 'status')
-                                <span>{{$title}}</span>&nbsp;
-                                <span>{{trans('strings.order_status_'.$value)}}</span>
-                            @else
-                                <span>
+    @php
+        $activities = $order->activity()->latest()->get()
+    @endphp
+    @if($activities->count())
+        @foreach($activities as $activity)
+            <li class="rings border-{{$activity->getCssClassesBasedOnType()}}">
+                <span></span>
+                <div class="timeline-content">
+                    <div class="title text-{{$activity->getCssClassesBasedOnType()}}"><i class="fas fa-trash-alt"></i>
+                        {{trans('activity.'.$activity->type)}}
+                    </div>
+                    @if($activity->differences)
+                        <div class="{{$activity->getCssClassesBasedOnType()}}">
+                            @foreach($activity->differences as $title => $value)
+                                @if($title == 'status')
+                                    <span>{{$title}}</span>&nbsp;
+                                    <span>{{trans('strings.order_status_'.$value)}}</span>
+                                @else
+                                    <span>
                                     <span>{{ucfirst($title)}} : </span>
                                     &nbsp
                                     <span>{{$value}}</span>
                                 </span>
-                            @endif
-                        @endforeach
-                        {{--                        <span>Status: </span>--}}
-                        {{--                        <span>Delivered</span>--}}
+                                @endif
+                            @endforeach
+                            {{--                        <span>Status: </span>--}}
+                            {{--                        <span>Delivered</span>--}}
+                        </div>
+                    @endif
+                    <div class="{{$activity->getCssClassesBasedOnType()}}">
+                        <span>Updated_at: </span>
+                        &nbsp
+                        <span>{{$activity->updated_at}}</span>
                     </div>
-                @endif
-                <div class="{{$activity->getCssClassesBasedOnType()}}">
-                    <span>Updated_at: </span>
-                    &nbsp
-                    <span>{{$activity->updated_at}}</span>
-                </div>
-                <div class="edit-by">
-                    <div class="person">
-                        <img src="{{$activity->user->avatar}}" alt="{{$activity->user->name}}"/>
+                    <div class="edit-by">
+                        <div class="person">
+                            <img src="{{$activity->user->avatar}}" alt="{{$activity->user->name}}"/>
+                        </div>
+                        {{$activity->user->name}}
                     </div>
-                    {{$activity->user->name}}
                 </div>
-            </div>
-            <span class="date-and-time">
+                <span class="date-and-time">
                 <span class="time">{{$activity->created_at->format('H:i')}}</span>
                 <span class="date">{{$activity->created_at->format('Y-m-d')}}</span>
             </span>
-        </li>
-    @endforeach
+            </li>
+        @endforeach
+    @endif
 
     {{--<li class="rings update">
         <div class="timeline-content">
