@@ -8,7 +8,7 @@ return [
 
     'order_status_updated_for_user_user_16' => 'الطلب رقم :number في طریقه الیك',
     'order_status_updated_for_user_user_18' => 'طلبك أصبح على بعد دقیقة استعد!',
-    'order_status_updated_for_user_user_20' => 'تم توصیل طلبك رقم :number، لا تنسى تقییم الطلب الان!',
+    'order_status_updated_for_user_user_20' => 'تم توصیل طلبك رقم :number ، لا تنسى تقییم الطلب الان!',
     'order_status_updated_for_user_user_0' => 'نعتذر، تم الغاء طلبك رقم :number',
 
     'order_status_updated_for_user_branch_manager_2' => 'تیب توب: لدیك طلب جدید!',
