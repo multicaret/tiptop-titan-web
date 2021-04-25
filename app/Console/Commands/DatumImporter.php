@@ -856,11 +856,11 @@ class DatumImporter extends Command
             $toCollection = $collections['to'];
             $modelTitle = $newModel->getTranslation('en')->$imageNameAttribute;
             $modelTitleSlugged = \Str::slug($modelTitle);
-            $fileName = "{$modelTitle}.{$oldMediaData->getExtensionAttribute()}";
+            $fileName = "{$modelTitleSlugged}.{$oldMediaData->getExtensionAttribute()}";
             try {
                 $newModel->addMediaFromDisk($oldMediaData->disk_path, 'old_s3')
-                         ->setFileName($modelTitleSlugged)
-                         ->setName($fileName)
+                         ->setFileName($fileName)
+                         ->setName($modelTitle)
                          ->toMediaCollection($toCollection);
             } catch (FileDoesNotExist $e) {
 //                $errorMessage = 'Failed to load image because file does not exist: '.$e->getMessage();
