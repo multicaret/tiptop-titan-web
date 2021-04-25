@@ -26,6 +26,11 @@ class ProductController extends Controller
                 'width' => '5',
             ],
             [
+                'data' => 'image',
+                'title' => 'Image',
+                'width' => '150',
+            ],
+            [
                 'data' => 'title',
                 'name' => 'translations.title',
                 'title' => trans('strings.title'),

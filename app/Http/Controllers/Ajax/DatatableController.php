@@ -21,7 +21,6 @@ use Carbon\Carbon;
 use Exception;
 use Illuminate\Http\Request;
 use Illuminate\Support\Str;
-use Spatie\Permission\Models\Role;
 use Yajra\DataTables\DataTables;
 
 class DatatableController extends AjaxController
@@ -803,6 +802,13 @@ class DatatableController extends AjaxController
 
                              return view('admin.components.datatables._row-actions', $data)->render();
                          })
+                         ->editColumn('image', function ($product) {
+                             return view('admin.components.datatables._thumbnails', [
+                                 'imageUrl' => $product->cover,
+                                 'tooltip' => $product->title,
+                                 'style' => 'height:120px',
+                             ])->render();
+                         })
                          ->editColumn('chain', function ($product) {
                              return ! is_null($product->chain) ? $product->chain->title : '';
                          })
@@ -819,6 +825,7 @@ class DatatableController extends AjaxController
                          })
                          ->rawColumns([
                              'action',
+                             'image',
                              'chain',
                              'branch',
                              'price',
