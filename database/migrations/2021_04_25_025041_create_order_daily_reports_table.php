@@ -34,12 +34,12 @@ class CreateOrderDailyReportsTable extends Migration
             $table->unsignedInteger('other_devices_count')->default(0);
             $table->unsignedInteger('total_mobile_users_count')->default(0);
             $table->unsignedInteger('total_web_users_count')->default(0);
-            $table->boolean('is_peak_of_this_month')->default('false');
-            $table->boolean('is_nadir_of_this_month')->default('false');
-            $table->boolean('is_peak_of_this_quarter')->default('false');
-            $table->boolean('is_nadir_of_this_quarter')->default('false');
-            $table->boolean('is_peak_of_this_year')->default('false');
-            $table->boolean('is_nadir_of_this_year')->default('false');
+            $table->boolean('is_peak_of_this_month')->default(false);
+            $table->boolean('is_nadir_of_this_month')->default(false);
+            $table->boolean('is_peak_of_this_quarter')->default(false);
+            $table->boolean('is_nadir_of_this_quarter')->default(false);
+            $table->boolean('is_peak_of_this_year')->default(false);
+            $table->boolean('is_nadir_of_this_year')->default(false);
             $table->timestamps();
         });
     }
