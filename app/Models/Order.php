@@ -153,6 +153,10 @@ use Illuminate\Support\Carbon;
  * @method static Builder|Order withTrashed()
  * @method static Builder|Order withoutTrashed()
  * @mixin Eloquent
+ * @property string|null $driver_rating_comment
+ * @property string|null $driver_rated_at
+ * @method static \Illuminate\Database\Eloquent\Builder|Order whereDriverRatedAt($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Order whereDriverRatingComment($value)
  */
 class Order extends Model
 {

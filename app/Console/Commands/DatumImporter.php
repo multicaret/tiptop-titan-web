@@ -514,20 +514,16 @@ class DatumImporter extends Command
             if ($chainMenuCategories->count() > 0) {
                 foreach ($oldChain->branches as $branch) {
                     foreach ($chainMenuCategories as $chainMenuCategory) {
+
                         $newCategory = $chainMenuCategory->replicateWithTranslations();
                         $newCategory->branch_id = $branch->id;
                         $newCategory->save();
-                        $product = Product::where('chain_id', $oldChain->id)
-                                          ->where('branch_id', $branch->id)
-                                          ->where('category_id', $chainMenuCategory->id)
-                                          ->first();
-                        if ( ! is_null($product)) {
-                            $product->category_id = $newCategory->id;
-                            $product->save();
-                        } else {
-                            \Log::warning('chain branch ids is: '.json_encode([
-                                    'chain_id' => $oldChain->id, 'branch_id' => $branch->id
-                                ]));
+                        try {
+                            Product::where('chain_id', $oldChain->id)
+                                   ->where('branch_id', $branch->id)
+                                   ->where('category_id', $chainMenuCategory->id)
+                                   ->update(['category_id' => $newCategory->id]);
+                        } catch (\Exception $e) {
                             \Log::warning('$newCategory is: '.json_encode($newCategory));
                             \Log::error(json_encode('product not found'));
                             $this->error('product not found see log.');
@@ -822,21 +818,28 @@ class DatumImporter extends Command
         $this->bar = $this->output->createProgressBar($products->count());
         $this->bar->start();
         foreach ($products as $product) {
+            $collectionTo = OldMedia::COLLECTION_GALLERY;
             if ($product->type === Product::CHANNEL_GROCERY_OBJECT) {
                 $productId = $product->id;
+                $collectionTo = OldMedia::COLLECTION_COVER;
             } elseif (is_null($product->cloned_from_product_id)) {
                 continue;
             } else {
                 $productId = $product->cloned_from_product_id;
             }
-            $collections = ['from' => OldMedia::COLLECTION_COVER, 'to' => OldMedia::COLLECTION_GALLERY];
+            $collections = ['from' => OldMedia::COLLECTION_COVER, 'to' => $collectionTo];
             $this->assignImageToModel($product, $productId, OldMedia::TYPE_DISH, $collections);
             $this->bar->advance();
         }
     }
 
-    private function assignImageToModel($newModel, int $modelId, string $modelType, $collections = null): void
-    {
+    private function assignImageToModel(
+        $newModel,
+        int $modelId,
+        string $modelType,
+        $collections = null,
+        $imageNameAttribute = 'title'
+    ): void {
         if (is_null($collections)) {
             $collections = ['from' => OldMedia::COLLECTION_COVER, 'to' => OldMedia::COLLECTION_COVER];
         }
@@ -846,11 +849,10 @@ class DatumImporter extends Command
                                  ->get();
         foreach ($oldMediaFiles as $oldMediaData) {
             $errorMessage = null;
+            $toCollection = $collections['to'];
+            $modelTitle = \Str::slug($newModel->getTranslation('en')->$imageNameAttribute);
+            $fileName = "{$modelTitle}.{$oldMediaData->getExtensionAttribute()}";
             try {
-                $uuid = self::getUuidString(25);
-                $modelName = \Str::of($newModel->getMorphClass())->afterLast('\\')->kebab()->jsonSerialize();
-                $toCollection = $collections['to'];
-                $fileName = "{$modelName}-{$toCollection}-{$newModel->id}-{$uuid}.{$oldMediaData->getExtensionAttribute()}";
                 $newModel->addMediaFromDisk($oldMediaData->disk_path, 'old_s3')
                          ->setFileName($fileName)
                          ->toMediaCollection($toCollection);

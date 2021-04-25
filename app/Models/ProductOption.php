@@ -61,6 +61,8 @@ use Illuminate\Support\Carbon;
  * @method static Builder|ProductOption whereUpdatedAt($value)
  * @method static Builder|ProductOption withTranslation()
  * @mixin Eloquent
+ * @property int|null $order_column
+ * @method static Builder|ProductOption whereOrderColumn($value)
  */
 class ProductOption extends Model
 {
