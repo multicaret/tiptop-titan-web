@@ -520,7 +520,7 @@ class ComposerServiceProvider extends ServiceProvider
                             [
                                 'title' => 'Daily Report',
                                 'icon' => 'fas fa-calendar-alt',
-                                'routeName' => 'admin.orders.reports.index',
+                                'routeName' => 'admin.reports.index',
                             ],
 
                         ]
