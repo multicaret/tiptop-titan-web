@@ -4,21 +4,21 @@ namespace App\Http\Controllers\Api\V1;
 
 
 use App\Http\Controllers\Api\BaseApiController;
-use App\Http\Resources\RemoteConfigResource;
 use App\Http\Resources\BranchResource;
 use App\Http\Resources\CartResource;
 use App\Http\Resources\CurrencyResource;
 use App\Http\Resources\FoodCategoryResource;
 use App\Http\Resources\GroceryCategoryParentResource;
 use App\Http\Resources\OrderResource;
+use App\Http\Resources\RemoteConfigResource;
 use App\Http\Resources\SlideResource;
-use App\Models\RemoteConfig;
 use App\Models\Branch;
 use App\Models\Cart;
 use App\Models\Currency;
 use App\Models\Location;
 use App\Models\Order;
 use App\Models\Preference;
+use App\Models\RemoteConfig;
 use App\Models\Slide;
 use App\Models\Taxonomy;
 use App\Models\User;
@@ -28,7 +28,7 @@ use Illuminate\Http\Resources\Json\AnonymousResourceCollection;
 
 class HomeController extends BaseApiController
 {
-    public function boot(Request $request): JsonResponse
+    public function remoteConfigs(Request $request): JsonResponse
     {
         /*$validationRules = [
             'build_number' => 'required|numeric',
@@ -51,12 +51,15 @@ class HomeController extends BaseApiController
 //dd($bootConfigurations->data_translated);
         if ( ! is_null($bootConfigurations)) {
             return $this->respond([
-                'bootConfigs' => new RemoteConfigResource($bootConfigurations),
+                'configs' => new RemoteConfigResource($bootConfigurations),
                 'defaultChannel' => Preference::retrieveValue('default_channel'),
             ]);
         }
 
-        return $this->respondWithMessage('Things are fine, you may pass!');
+        return $this->respond([
+            'configs' => null,
+            'defaultChannel' => Preference::retrieveValue('default_channel'),
+        ], null, 'Things are fine, you may pass!');
     }
 
     public function root()
