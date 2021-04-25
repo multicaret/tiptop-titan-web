@@ -21,8 +21,10 @@ use App\Models\Order;
 use App\Models\Preference;
 use App\Models\Slide;
 use App\Models\Taxonomy;
+use App\Models\User;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
+use Illuminate\Http\Resources\Json\AnonymousResourceCollection;
 
 class HomeController extends BaseApiController
 {
@@ -206,34 +208,51 @@ class HomeController extends BaseApiController
 
     /**
      * @param  string  $channel
-     * @param  \App\Models\User|null  $user
+     * @param  User|null  $user
      * @param  int|null  $regionId
      * @param  int|null  $cityId
-     * @return \Illuminate\Http\Resources\Json\AnonymousResourceCollection
+     * @return AnonymousResourceCollection
      */
     private function retrieveSlides(
         string $channel,
-        ?\App\Models\User $user,
+        ?User $user,
         ?int $regionId,
         ?int $cityId
-    ): \Illuminate\Http\Resources\Json\AnonymousResourceCollection {
+    ): AnonymousResourceCollection {
         $slideChannel = Slide::CHANNEL_GROCERY_OBJECT;
         if ($channel == config('app.app-channels.food')) {
             $slideChannel = Slide::CHANNEL_FOOD_OBJECT;
         }
         $hasBeenAuthenticated = ! is_null($user) ? Slide::TARGET_LOGGED_IN : Slide::TARGET_GUEST;
-        $slides = Slide::whereIn('channel', [$slideChannel, Slide::TYPE_FOOD_AND_GROCERY_OBJECT])
-                       ->whereIn('has_been_authenticated', [$hasBeenAuthenticated, Slide::TARGET_EVERYONE])
-                       ->whereDate('expires_at', '>', now())
-                       ->whereDate('begins_at', '<', now());
+        $slides = Slide::getModel();
+
+        $slides = $slides
+            ->where(function ($query) use ($slideChannel) {
+                $query->where('channel', $slideChannel)
+                      ->orWhere('channel', Slide::CHANNEL_FOOD_AND_GROCERY_OBJECT);
+            })
+            ->where(function ($query) use ($hasBeenAuthenticated) {
+                $query->where('has_been_authenticated', $hasBeenAuthenticated)
+                      ->orWhere('has_been_authenticated', Slide::TARGET_EVERYONE);
+            })
+            ->whereDate('expires_at', '>=', now())
+            ->whereDate('begins_at', '<=', now());
 
         if ( ! is_null($regionId)) {
             $slides = $slides->where('region_id', $regionId);
-        }
-        if ( ! is_null($cityId)) {
-            $slides = $slides->where('city_id', $cityId);
+        } else {
+            $slides = $slides->whereNull('region_id');
         }
 
-        return SlideResource::collection($slides->get());
+        if ( ! is_null($cityId)) {
+            $slides = $slides->where('city_id', $cityId);
+        } else {
+            $slides = $slides->whereNull('city_id');
+        }
+
+        $slides = $slides->active()
+                         ->get();
+
+        return SlideResource::collection($slides);
     }
 }

@@ -61,15 +61,6 @@
                         <h4 class="card-header">{{Str::upper($langKey)}}</h4>
                         <div class="card-body row">
                             <div class="col-md-12">
-                                @component('admin.components.form-group', ['name' => $langKey .'[alt_tag]', 'type' => 'text'])
-                                    @slot('label', trans('strings.alt-tag'))
-                                    @slot('attributes',['required'])
-                                    @if(! is_null($slide->id))
-                                        @slot('value', optional($slide->translate($langKey))->alt_tag)
-                                    @endif
-                                @endcomponent
-                            </div>
-                            <div class="col-md-12">
                                 <p class="">@lang('strings.cover')</p>
                                 <div>
                                     @component('admin.components.form-group', ['name' => $langKey .'[image]', 'type' => 'file'])
@@ -83,6 +74,15 @@
                                         ])
                                     @endcomponent
                                 </div>
+                            </div>
+                            <div class="col-md-12">
+                                @component('admin.components.form-group', ['name' => $langKey .'[alt_tag]', 'type' => 'text'])
+                                    @slot('label', 'Alternative text')
+                                    @slot('attributes',['required'])
+                                    @if(! is_null($slide->id))
+                                        @slot('value', optional($slide->translate($langKey))->alt_tag)
+                                    @endif
+                                @endcomponent
                             </div>
                         </div>
                     </div>
