@@ -5,9 +5,9 @@
 Route::middleware('throttle:15')
      ->group(function () {
          /* catalog related */
-         Route::get('/boot', 'HomeController@boot');
+         Route::get('remote-configs', 'HomeController@remoteConfigs');
          Route::get('/', 'HomeController@root');
-         Route::get('/home', 'HomeController@index');
+         Route::get('home', 'HomeController@index');
 
          Route::get('categories/{groceryCategory}/products', 'CategoryController@products');
          Route::get('products/{id}', 'ProductController@show');

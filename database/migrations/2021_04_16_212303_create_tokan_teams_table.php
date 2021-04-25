@@ -1,6 +1,5 @@
 <?php
 
-use App\Models\Boot;
 use App\Models\TokanTeam;
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;

@@ -4,7 +4,7 @@ namespace App\Http\Controllers\Api\Restaurants\V1;
 
 
 use App\Http\Controllers\Api\BaseApiController;
-use App\Http\Resources\BootResource;
+use App\Http\Resources\RemoteConfigResource;
 use App\Http\Resources\BranchResource;
 use App\Http\Resources\CartResource;
 use App\Http\Resources\CurrencyResource;
@@ -12,7 +12,7 @@ use App\Http\Resources\FoodCategoryResource;
 use App\Http\Resources\GroceryCategoryParentResource;
 use App\Http\Resources\OrderResource;
 use App\Http\Resources\SlideResource;
-use App\Models\Boot;
+use App\Models\RemoteConfig;
 use App\Models\Branch;
 use App\Models\Cart;
 use App\Models\Currency;
@@ -37,17 +37,17 @@ class HomeController extends BaseApiController
             return $this->respondValidationFails($validator->errors());
         }*/
 
-        $forceUpdateMethod = Boot::FORCE_UPDATE_METHOD_DISABLED;
+        $forceUpdateMethod = RemoteConfig::FORCE_UPDATE_METHOD_DISABLED;
         $buildNumber = $request->input('build_number');
         $platform = $request->input('platform');
 
-        $bootConfigurations = Boot::where('platform_type', strtolower($platform))
-                                  ->where('build_number', $buildNumber)
-                                  ->first();
+        $bootConfigurations = RemoteConfig::where('platform_type', strtolower($platform))
+                                          ->where('build_number', $buildNumber)
+                                          ->first();
 
 //dd($bootConfigurations->data_translated);
         if ( ! is_null($bootConfigurations)) {
-            return $this->respond(new BootResource($bootConfigurations));
+            return $this->respond(new RemoteConfigResource($bootConfigurations));
         }
 
         return $this->respondWithMessage('Things are fine, you may pass!');
