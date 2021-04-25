@@ -164,7 +164,11 @@ class HomeController extends BaseApiController
                                   ->get();
 
             if ( ! is_null($user)) {
-                $cart = Cart::retrieve(null, null, $user->id);
+                $cart = Cart::retrieve(
+                    $request->input('selected_food_chain_id'),
+                    $request->input('selected_food_branch_id'),
+                    $user->id
+                );
                 $activeOrders = Order::foods()->whereUserId($user->id)
                                      ->whereNotIn('status', [
                                          Order::STATUS_CANCELLED,
@@ -182,8 +186,8 @@ class HomeController extends BaseApiController
         }
 
         $currencyResource = new CurrencyResource(Currency::find(config('defaults.currency.id')));
-        if (localization()->getCurrentLocale() == 'ar') {
-            $currencyResource->symbol = 'د.ع';
+        if (localization()->getCurrentLocale() == 'en') {
+            $currencyResource->symbol = 'IQD';
         }
 
         return $this->respond([
