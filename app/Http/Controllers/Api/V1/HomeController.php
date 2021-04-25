@@ -239,19 +239,24 @@ class HomeController extends BaseApiController
             ->whereDate('begins_at', '<=', now());
 
         if ( ! is_null($regionId)) {
-            $slides = $slides->where('region_id', $regionId);
+            $slides = $slides->where(function ($query) use ($regionId) {
+                $query->where('region_id', $regionId)
+                      ->orWhereNull('region_id');
+            });
         } else {
             $slides = $slides->whereNull('region_id');
         }
 
         if ( ! is_null($cityId)) {
-            $slides = $slides->where('city_id', $cityId);
+            $slides = $slides->where(function ($query) use ($cityId) {
+                $query->where('city_id', $cityId)
+                      ->orWhereNull('city_id');
+            });
         } else {
             $slides = $slides->whereNull('city_id');
         }
 
-        $slides = $slides->active()
-                         ->get();
+        $slides = $slides->active()->get();
 
         return SlideResource::collection($slides);
     }
