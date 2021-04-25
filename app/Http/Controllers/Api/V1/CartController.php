@@ -143,6 +143,9 @@ class CartController extends BaseApiController
                         $cartProduct->price += $optionPrice;
                     }
                 }
+                // Add Product price to calculated total product option prices
+                $cartProduct->price += $cartProduct->product->discounted_price;
+                // Add total product option prices * quantity
                 $cartProduct->total_price = $cartProduct->price * $cartProduct->quantity;
                 $this->updateCartPrices($cartProduct, $cart, 'increment', $cartProduct->quantity);
             }
