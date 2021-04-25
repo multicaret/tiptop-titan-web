@@ -16,7 +16,11 @@ class CreateOrderDailyReportsTable extends Migration
         Schema::create('order_daily_reports', function (Blueprint $table) {
             $table->id();
             $table->date('day');
+            $table->unsignedInteger('groceries_orders_count');
+            $table->unsignedInteger('food_orders_count');
             $table->unsignedInteger('total_orders_count');
+            $table->unsignedInteger('delivered_groceries_orders_count');
+            $table->unsignedInteger('delivered_food_orders_count');
             $table->unsignedInteger('total_delivered_orders_count');
             $table->unsignedInteger('average_delivery_time');
             $table->unsignedDouble('average_orders_value');
