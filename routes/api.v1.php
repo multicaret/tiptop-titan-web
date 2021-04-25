@@ -82,6 +82,8 @@ Route::middleware('auth:sanctum')
          // Carts
          Route::post('carts/{cart}/products/grocery/adjust-quantity', 'CartController@groceryAdjustQuantity');
          Route::post('carts/{cart}/products/food/adjust-cart-data', 'CartController@foodAdjustCartData');
+         Route::post('carts/{cart}/products/grocery/{productId}/delete', 'CartController@destroyGroceryProduct');
+         Route::post('carts/{cart}/products/food/{cartProductId}/delete', 'CartController@destroyFoodProduct');
          Route::post('carts/{cart}/delete', 'CartController@destroy');
 
          Route::get('coupons/{code}/validate', 'CouponController@validateCoupon');
