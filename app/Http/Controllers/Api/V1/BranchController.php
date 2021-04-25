@@ -49,16 +49,17 @@ class BranchController extends BaseApiController
         $branches = Branch::foods();
 
         if ($request->has('minimum_order') && ! is_null($minimumOrder = $request->input('minimum_order'))) {
-            $branches->where('minimum_order', '<=', $minimumOrder);
-            $branches->Where('restaurant_minimum_order', '<=', (int) $minimumOrder, 'or');
-            $branches->foods();
+            $branches = $branches->where(function ($query) use ($minimumOrder) {
+                $query->where('minimum_order', '<=', $minimumOrder)
+                      ->orWhere('restaurant_minimum_order', '<=', (int) $minimumOrder);
+            });
         }
 
         if ($request->has('delivery_type') && ! empty($deliveryType = $request->input('delivery_type'))) {
             if ($deliveryType == 'tiptop') {
-                $branches->where('has_tip_top_delivery', true);
+                $branches = $branches->where('has_tip_top_delivery', true);
             } elseif ($deliveryType == 'restaurant') {
-                $branches->where('has_restaurant_delivery', true);
+                $branches = $branches->where('has_restaurant_delivery', true);
             }
         }
 
@@ -69,7 +70,7 @@ class BranchController extends BaseApiController
             });
         }
         if ($request->has('min_rating') && ! is_null($minRating = $request->input('min_rating'))) {
-            $branches->where('avg_rating', '>=', (float) $minRating);
+            $branches = $branches->where('avg_rating', '>=', (float) $minRating);
         }
 
         switch ($request->input('sort')) {
