@@ -105,16 +105,16 @@
         <div class="card-body">
             <div class="row">
                 @if(in_array($correctType, \App\Models\Taxonomy::typesHaving('parent')) && (!$taxonomy->id || !$taxonomy->hasChildren())) {{--This makes sure taxonomies with children do not have a parent input--}}
-                    <div class="col-md-4">
-                        @component('admin.components.form-group', ['name' => 'parent_id', 'type' => 'select'])
-                            @slot('label', 'Parent')
-                            @slot('options', $roots->push([
-                                'id' => null,
-                                'title' => '-- Parent (ROOT) --',
-                            ])->pluck('title', 'id'))
-                            @slot('selected' , $taxonomy->parent_id ?? '')
-                        @endcomponent
-                    </div>
+                <div class="col-md-4">
+                    @component('admin.components.form-group', ['name' => 'parent_id', 'type' => 'select'])
+                        @slot('label', 'Parent')
+                        @slot('options', $roots->push([
+                            'id' => null,
+                            'title' => '-- Parent (ROOT) --',
+                        ])->pluck('title', 'id'))
+                        @slot('selected' , $taxonomy->parent_id ?? '')
+                    @endcomponent
+                </div>
                 @endif
                 @if($correctType == \App\Models\Taxonomy::TYPE_INGREDIENT)
                     <div class="col-6">
@@ -138,6 +138,9 @@
                             ])
                             @slot('selected', $menuCategoryData['hasBranch'] ?  $menuCategoryData['branchId'] : $taxonomy->branch_id)
                         @endcomponent
+                        @if($menuCategoryData['hasBranch'])
+                            <input type="hidden" name="branch_id" value="{{$menuCategoryData['branchId']}}">
+                        @endif
                     </div>
                 @endif
                 <div
