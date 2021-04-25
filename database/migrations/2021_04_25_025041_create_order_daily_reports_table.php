@@ -15,6 +15,7 @@ class CreateOrderDailyReportsTable extends Migration
     {
         Schema::create('order_daily_reports', function (Blueprint $table) {
             $table->id();
+            $table->unsignedBigInteger('region_id')->index();
             $table->date('day');
             $table->unsignedInteger('groceries_orders_count');
             $table->unsignedInteger('food_orders_count');
@@ -45,6 +46,9 @@ class CreateOrderDailyReportsTable extends Migration
             $table->boolean('is_peak_of_this_year')->default(false);
             $table->boolean('is_nadir_of_this_year')->default(false);
             $table->timestamps();
+
+            $table->unique(['region_id', 'day']);
+            $table->foreign('region_id')->references('id')->on('regions');
         });
     }
 
