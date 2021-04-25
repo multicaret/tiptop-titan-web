@@ -822,10 +822,10 @@ class DatumImporter extends Command
         $this->bar = $this->output->createProgressBar($products->count());
         $this->bar->start();
         foreach ($products as $product) {
-            $collectionTo = OldMedia::COLLECTION_GALLERY;
+            $collectionTo = OldMedia::COLLECTION_COVER;
             if ($product->type === Product::CHANNEL_GROCERY_OBJECT) {
                 $productId = $product->id;
-                $collectionTo = OldMedia::COLLECTION_COVER;
+                $collectionTo = OldMedia::COLLECTION_GALLERY;
             } elseif (is_null($product->cloned_from_product_id)) {
                 continue;
             } else {
