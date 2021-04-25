@@ -263,4 +263,34 @@ class CartController extends BaseApiController
         $cartProduct->cartProductOptions()->delete();
         $cartProduct->cartProductOptionsSelections()->delete();
     }
+
+    public function destroyGroceryProduct(Cart $cart, $productId): JsonResponse
+    {
+        \DB::beginTransaction();
+        $cartProduct = CartProduct::whereCartId($cart->id)->where('product_id', $productId);
+        $cart->total -= $cartProduct->product->discounted_price;
+        $cart->without_discount_total -= $cartProduct->product->price;
+        $cart->save();
+        $cartProduct->delete();
+        \DB::commit();
+
+        return $this->respond([
+            'cart' => new CartResource($cart),
+        ]);
+    }
+
+    public function destroyFoodProduct(Cart $cart, $cartProductId)
+    {
+        \DB::beginTransaction();
+        $cartProduct = CartProduct::find($cartProductId);
+        $cart->total -= ($cartProduct->total_price + $cartProduct->product->discounted_price);
+        $cart->without_discount_total -= ($cartProduct->total_price + $cartProduct->product->price);
+        $cart->save();
+        $cartProduct->delete();
+        \DB::commit();
+
+        return $this->respond([
+            'cart' => new CartResource($cart),
+        ]);
+    }
 }
