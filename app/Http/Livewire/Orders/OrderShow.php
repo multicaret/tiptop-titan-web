@@ -50,6 +50,9 @@ class OrderShow extends Component
             'order.cancellation_reason_id' => 'required|numeric',
             'order.cancellation_reason_note' => 'required|string',
         ]);
+        if ($this->order->cancellation_reason_id == 0) {
+            $this->order->cancellation_reason_id = null;
+        }
         $this->order->status = Order::STATUS_CANCELLED;
         $this->order->save();
 

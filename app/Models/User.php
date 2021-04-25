@@ -709,7 +709,14 @@ class User extends Authenticatable implements HasMedia, MustVerifyEmail
 
     public function routeNotificationForOneSignal()
     {
-        return ['include_external_user_ids' => [(string) $this->id]];
+        return [
+            'include_external_user_ids' => [(string) $this->id],
+            /*'tags' => [
+                'key' => 'locale',
+                'relation' => '=',
+                'value' => localization()->getCurrentLocale(),
+            ]*/
+        ];
     }
 
 

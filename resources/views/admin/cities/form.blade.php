@@ -56,7 +56,9 @@
                                     <div class="col-md-12">
                                         @component('admin.components.form-group', ['name' => $langKey .'[name]', 'type' => 'text'])
                                             @slot('label', trans('strings.name'))
-
+                                            @if($langKey == localization()->getDefaultLocale())
+                                                @slot('attributes', ['required'])
+                                            @endif
                                             @if(! is_null($city->id))
                                                 @slot('value', optional($city->translate($langKey))->name)
                                             @endif
@@ -69,7 +71,7 @@
                     @endforeach
                     <div class="card-body pt-0">
                         <div class="row">
-                            <div class="col-12">
+                            <div class="col-6">
                                 @component('admin.components.form-group', ['name' => 'region_id', 'type' => 'select'])
                                     @slot('label', trans('strings.city'))
                                     @slot('options', $regions->pluck('name', 'id')->prepend('',''))
@@ -78,6 +80,13 @@
                                         'required',
                                     ])
                                     @slot('selected', $city->region_id)
+                                @endcomponent
+                            </div>
+                            <div class="col-6">
+                                @component('admin.components.form-group', ['name' => 'status', 'type' => 'select'])
+                                    @slot('label', trans('strings.status'))
+                                    @slot('options', \App\Models\TokanTeam::getStatusesArray())
+                                    @slot('selected', $city->status)
                                 @endcomponent
                             </div>
                         </div>
