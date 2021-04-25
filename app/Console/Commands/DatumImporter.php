@@ -884,7 +884,7 @@ class DatumImporter extends Command
         $this->bar->start();
         foreach ($chains as $chain) {
             $this->assignImageToModel($chain, $chain->id, OldMedia::TYPE_RESTAURANT);
-            $collections = ['from' => OldMedia::COLLECTION_COVER, 'to' => OldMedia::COLLECTION_LOGO];
+            $collections = ['from' => OldMedia::COLLECTION_LOGO, 'to' => OldMedia::COLLECTION_LOGO];
             $this->assignImageToModel($chain, $chain->id, OldMedia::TYPE_RESTAURANT, $collections);
             $this->bar->advance();
         }
