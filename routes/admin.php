@@ -50,7 +50,7 @@ Route::resource('products', 'ProductController')->except(['show']);
 Route::get('orders/ratings', 'OrderController@ratings')->name('orders.ratings');
 Route::get('orders', 'OrderController@index')->name('orders.index');
 Route::get('orders/{order}', 'OrderController@show')->name('orders.show');
-Route::get('reports/daily', 'OrderDailyReportController@index')->name('orders.reports.index');
+Route::get('reports/daily', 'OrderDailyReportController@index')->name('reports.index');
 Route::resource('coupons', 'CouponController')->except(['show']);
 Route::resource('payment-methods', 'PaymentMethodController')->only('index');
 
