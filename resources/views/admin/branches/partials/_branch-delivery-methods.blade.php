@@ -18,7 +18,6 @@
                                       </span>
                                 </span>
                     </label>
-                    <input type="hidden" name="has_tip_top_delivery" value="1">
                 @endif
             </h4>
             <div class="card-body">
@@ -80,7 +79,8 @@
                                         <span class="ion ion-md-close"></span>
                                       </span>
                                 </span>
-                    </label></h4>
+                    </label>
+                </h4>
                 <div class="card-body">
                     <div class="row">
 

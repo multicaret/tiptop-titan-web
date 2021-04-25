@@ -259,7 +259,7 @@ class BranchController extends Controller
         $branch->region_id = isset($region) ? $region->id : null;
         $branch->latitude = $request->input('latitude');
         $branch->longitude = $request->input('longitude');
-        $branch->has_tip_top_delivery = $request->input('has_tip_top_delivery') ? 1 : 0;
+        $branch->has_tip_top_delivery = $request->input('has_tip_top_delivery') == 'on' ? 1 : 0;
         $branch->minimum_order = $request->input('minimum_order');
         $branch->free_delivery_threshold = $request->input('free_delivery_threshold');
         $branch->extra_delivery_fee_per_km = $request->input('extra_delivery_fee_per_km');
@@ -278,7 +278,7 @@ class BranchController extends Controller
         if ($request->has('restaurant_extra_delivery_fee_per_km')) {
             $branch->restaurant_extra_delivery_fee_per_km = $request->input('restaurant_extra_delivery_fee_per_km');
         }
-        $branch->has_restaurant_delivery = $request->input('has_restaurant_delivery') ? 1 : 0;
+        $branch->has_restaurant_delivery = $request->input('has_restaurant_delivery') == 'on' ? 1 : 0;
         $branch->under_minimum_order_delivery_fee = $request->input('under_minimum_order_delivery_fee');
         $branch->fixed_delivery_fee = $request->input('fixed_delivery_fee');
         $branch->primary_phone_number = $request->input('primary_phone_number');
