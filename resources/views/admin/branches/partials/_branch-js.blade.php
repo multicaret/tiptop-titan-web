@@ -48,8 +48,8 @@
             validationData: [],
             formErrorMessage: null,
             selectedRegion: null,
-            isTipTopDelivery: true,
-            isRestaurantDelivery: true,
+            isTipTopDelivery: @json($branch->has_tip_top_delivery),
+            isRestaurantDelivery: @json($branch->has_restaurant_delivery),
         },
         watch: {
             branch: {
