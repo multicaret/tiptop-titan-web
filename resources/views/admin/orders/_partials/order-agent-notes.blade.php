@@ -41,8 +41,10 @@
                 <div class="flex-grow-0 py-3 px-4">
                     <form wire:submit.prevent="addNewNote">
                         <div class="input-group">
-                            <input type="text" class="form-control" placeholder="Type your message"
-                                   wire:model="note">
+                            {{--<input type="text" class="form-control"
+                                   wire:model="">--}}
+                            <textarea wire:model="note" class="form-control" rows="2"
+                                      placeholder="Type your message"></textarea>
 
                             <div class="input-group-append">
                                 <button type="submit" class="btn btn-primary">Send</button>

@@ -26,6 +26,13 @@ class ProductController extends Controller
                 'width' => '5',
             ],
             [
+                'data' => 'image',
+                'title' => 'Image',
+                'width' => '150',
+                'searchable' => false,
+                'bSortable' => false,
+            ],
+            [
                 'data' => 'title',
                 'name' => 'translations.title',
                 'title' => trans('strings.title'),
@@ -191,10 +198,9 @@ class ProductController extends Controller
             $data['chains'] = Chain::groceries()->get()->map($getIdTitle)->all();
             $groceryBranches = Branch::groceries();
             $data['branches'] = $groceryBranches->get()->map($getIdTitle)->all();
-            if($groceryBranches->count()) {
+            if ($groceryBranches->count()) {
                 $data['categories'] = Taxonomy::groceryCategories()->get()->map($getIdTitle)->all();
-            }
-            else{
+            } else {
                 $data['categories'] = [];
             }
         } else {
@@ -272,7 +278,7 @@ class ProductController extends Controller
         $product->custom_banner_began_at = $request->input('custom_banner_began_at');
         $product->custom_banner_ended_at = $request->input('custom_banner_ended_at');
         $product->is_storage_tracking_enabled = $request->input('is_storage_tracking_enabled') === 'on';
-        $product->price_discount_by_percentage = $request->input('discount_by_percentage') === 'on';
+        $product->price_discount_by_percentage = $request->input('price_discount_by_percentage') === 'on';
         $product->status = $request->input('status');
         $product->type = Product::getCorrectChannel($request->input('type'));
         $isGrocery = $product->type == Product::CHANNEL_GROCERY_OBJECT;

@@ -21,7 +21,6 @@ use Carbon\Carbon;
 use Exception;
 use Illuminate\Http\Request;
 use Illuminate\Support\Str;
-use Spatie\Permission\Models\Role;
 use Yajra\DataTables\DataTables;
 
 class DatatableController extends AjaxController
@@ -803,6 +802,13 @@ class DatatableController extends AjaxController
 
                              return view('admin.components.datatables._row-actions', $data)->render();
                          })
+                         ->editColumn('image', function ($product) {
+                             return view('admin.components.datatables._thumbnails', [
+                                 'imageUrl' => $product->cover,
+                                 'tooltip' => $product->title,
+                                 'style' => 'height:120px',
+                             ])->render();
+                         })
                          ->editColumn('chain', function ($product) {
                              return ! is_null($product->chain) ? $product->chain->title : '';
                          })
@@ -819,6 +825,7 @@ class DatatableController extends AjaxController
                          })
                          ->rawColumns([
                              'action',
+                             'image',
                              'chain',
                              'branch',
                              'price',
@@ -895,16 +902,6 @@ class DatatableController extends AjaxController
         $paymentMethods = PaymentMethod::selectRaw('payment_methods.*');
 
         return DataTables::of($paymentMethods)
-                         ->editColumn('status', function ($paymentMethod) {
-                             $currentStatus = PaymentMethod::getAllStatusesRich()[$paymentMethod->status];
-                             $data = [
-                                 'item' => $paymentMethod,
-                                 'currentStatus' => $currentStatus,
-                             ];
-
-                             return view('admin.components.datatables._row-actions-status', $data)
-                                 ->render();
-                         })
                          ->editColumn('action', function ($paymentMethod) {
                              $data = [
                                  'modelId' => $paymentMethod->id,
@@ -919,6 +916,16 @@ class DatatableController extends AjaxController
                              ];
 
                              return view('admin.components.datatables._row-actions', $data)->render();
+                         })
+                         ->editColumn('status', function ($paymentMethod) {
+                             $currentStatus = PaymentMethod::getAllStatusesRich()[$paymentMethod->status];
+                             $data = [
+                                 'item' => $paymentMethod,
+                                 'currentStatus' => $currentStatus,
+                             ];
+
+                             return view('admin.components.datatables._row-actions-status', $data)
+                                 ->render();
                          })
                          ->editColumn('created_at', function ($item) {
                              return view('admin.components.datatables._date', [

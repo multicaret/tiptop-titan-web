@@ -335,6 +335,7 @@ class OtpController extends BaseApiController
         }
         $user->last_logged_in_at = now();
         $user->save();
+        $user->assignRole('User');
 
         $accessToken = $user->createToken($deviceName, $mobileAppData)->plainTextToken;
         event(new Registered($user));

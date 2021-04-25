@@ -77,6 +77,7 @@ class SearchController extends BaseApiController
                                   $query->where('title', 'like', '%'.$searchQuery.'%');
                               });
                           })
+                          ->groceries()
                           ->get();
 
         if ($results->count() == 0) {
@@ -121,7 +122,7 @@ class SearchController extends BaseApiController
 
         $searchQuery = $request->input('q');
 
-        $results = Branch::foods()->whereHas('translations', function ($query) use ($searchQuery) {
+        $results = Branch::whereHas('translations', function ($query) use ($searchQuery) {
             $query->where('title', 'like', '%'.$searchQuery.'%');
         })
                          ->orWhereHas('foodCategories', function ($query) use ($searchQuery) {
@@ -134,6 +135,7 @@ class SearchController extends BaseApiController
                                  $translationQuery->where('title', 'like', '%'.$searchQuery.'%');
                              });
                          })
+                         ->foods()
                          ->get();
 
         if ($results->count() == 0) {

@@ -181,9 +181,7 @@ class TaxonomyController extends Controller
         if ( ! is_null($request->step)) {
             $taxonomy->step = $request->step;
         }
-        if ( ! is_null($request->branch_id)) {
-            $taxonomy->branch_id = $request->branch_id;
-        }
+        $taxonomy->branch_id = $request->branch_id;
         $taxonomy->order_column = $order;
         $taxonomy->save();
 
@@ -270,9 +268,8 @@ class TaxonomyController extends Controller
         if ( ! is_null($request->step)) {
             $taxonomy->step = $request->step;
         }
-        if ( ! is_null($request->branch_id)) {
-            $taxonomy->branch_id = $request->branch_id;
-        }
+        $taxonomy->branch_id = $request->branch_id;
+
         if ( ! is_null($request->chain_id)) {
             $taxonomy->chain_id = $request->chain_id;
         }

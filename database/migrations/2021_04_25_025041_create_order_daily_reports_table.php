@@ -15,8 +15,13 @@ class CreateOrderDailyReportsTable extends Migration
     {
         Schema::create('order_daily_reports', function (Blueprint $table) {
             $table->id();
+            $table->unsignedBigInteger('region_id')->index();
             $table->date('day');
+            $table->unsignedInteger('groceries_orders_count');
+            $table->unsignedInteger('food_orders_count');
             $table->unsignedInteger('total_orders_count');
+            $table->unsignedInteger('delivered_groceries_orders_count');
+            $table->unsignedInteger('delivered_food_orders_count');
             $table->unsignedInteger('total_delivered_orders_count');
             $table->unsignedInteger('average_delivery_time');
             $table->unsignedDouble('average_orders_value');
@@ -34,13 +39,16 @@ class CreateOrderDailyReportsTable extends Migration
             $table->unsignedInteger('other_devices_count')->default(0);
             $table->unsignedInteger('total_mobile_users_count')->default(0);
             $table->unsignedInteger('total_web_users_count')->default(0);
-            $table->boolean('is_peak_of_this_month')->default('false');
-            $table->boolean('is_nadir_of_this_month')->default('false');
-            $table->boolean('is_peak_of_this_quarter')->default('false');
-            $table->boolean('is_nadir_of_this_quarter')->default('false');
-            $table->boolean('is_peak_of_this_year')->default('false');
-            $table->boolean('is_nadir_of_this_year')->default('false');
+            $table->boolean('is_peak_of_this_month')->default(false);
+            $table->boolean('is_nadir_of_this_month')->default(false);
+            $table->boolean('is_peak_of_this_quarter')->default(false);
+            $table->boolean('is_nadir_of_this_quarter')->default(false);
+            $table->boolean('is_peak_of_this_year')->default(false);
+            $table->boolean('is_nadir_of_this_year')->default(false);
             $table->timestamps();
+
+            $table->unique(['region_id', 'day']);
+            $table->foreign('region_id')->references('id')->on('regions');
         });
     }
 

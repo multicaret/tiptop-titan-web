@@ -27,7 +27,7 @@ class OrderObserver
      */
     public function created(Order $order)
     {
-        //
+        $order->recordActivity('created');
     }
 
     /**
@@ -45,8 +45,9 @@ class OrderObserver
             foreach ($order->branch->managers()->active()->get() as $manager) {
                 $manager->notify(new OrderStatusUpdated($order, $manager->role_name));
             }
-            $order->user->notify(new OrderStatusUpdated($order, $order->role_name));
+            $order->user->notify(new OrderStatusUpdated($order, $order->user->role_name));
         }
+        $order->recordActivity('updated');
     }
 
     /**
@@ -57,7 +58,7 @@ class OrderObserver
      */
     public function deleted(Order $order)
     {
-        //
+        $order->recordActivity('deleted');
     }
 
     /**

@@ -83,7 +83,7 @@ class UserController extends Controller
                 'title' => 'Status',
             ],
         ]);
-        if ( $role != User::ROLE_TIPTOP_DRIVER) {
+        if ($role != User::ROLE_TIPTOP_DRIVER) {
             $columns = array_merge($columns, [
                 [
                     'data' => 'created_at',
@@ -91,8 +91,7 @@ class UserController extends Controller
                     'title' => trans('strings.create_date')
                 ],
             ]);
-        }
-        else{
+        } else {
             $columns = array_merge($columns, [
                 [
                     'data' => 'team.name',
@@ -218,13 +217,12 @@ class UserController extends Controller
      */
     public function edit(User $user, Request $request)
     {
-        $roleName = $user->role->name;
-        $role = Str::kebab($roleName);
+        $role = Str::kebab($user->role_name);
         $data = $this->essentialData($role);
         $user->load(['country', 'region', 'city']);
         $data['user'] = $user;
         $data['role'] = $role;
-        $data['roleName'] = $roleName;
+        $data['roleName'] = $user->role_name;
         $data['permissions'] = config('defaults.all_permission.super');
         if (in_array($role, User::rolesHaving('branches'))) {
             $data['selectedBranches'] = $user->branches($role)->get();
@@ -244,8 +242,7 @@ class UserController extends Controller
      */
     public function update(User $user, Request $request)
     {
-        $roleName = $user->role->name;
-        $role = Str::kebab($roleName);
+        $role = Str::kebab($user->role_name);
 
         $validationRules = [
             'first' => 'required|min:3|max:60',
@@ -304,7 +301,7 @@ class UserController extends Controller
             $user->branches($role)->sync($request->input('branches'));
         }
 
-        $user->assignRole($roleName);
+        $user->assignRole($user->role_name);
         if (auth()->user()->hasRole([User::ROLE_SUPER, User::ROLE_ADMIN])) {
             $permissions = array_keys($request->input('permissions', []));
             $user->syncPermissions($permissions);
