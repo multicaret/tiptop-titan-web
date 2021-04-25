@@ -895,16 +895,6 @@ class DatatableController extends AjaxController
         $paymentMethods = PaymentMethod::selectRaw('payment_methods.*');
 
         return DataTables::of($paymentMethods)
-                         ->editColumn('status', function ($paymentMethod) {
-                             $currentStatus = PaymentMethod::getAllStatusesRich()[$paymentMethod->status];
-                             $data = [
-                                 'item' => $paymentMethod,
-                                 'currentStatus' => $currentStatus,
-                             ];
-
-                             return view('admin.components.datatables._row-actions-status', $data)
-                                 ->render();
-                         })
                          ->editColumn('action', function ($paymentMethod) {
                              $data = [
                                  'modelId' => $paymentMethod->id,
@@ -919,6 +909,16 @@ class DatatableController extends AjaxController
                              ];
 
                              return view('admin.components.datatables._row-actions', $data)->render();
+                         })
+                         ->editColumn('status', function ($paymentMethod) {
+                             $currentStatus = PaymentMethod::getAllStatusesRich()[$paymentMethod->status];
+                             $data = [
+                                 'item' => $paymentMethod,
+                                 'currentStatus' => $currentStatus,
+                             ];
+
+                             return view('admin.components.datatables._row-actions-status', $data)
+                                 ->render();
                          })
                          ->editColumn('created_at', function ($item) {
                              return view('admin.components.datatables._date', [
