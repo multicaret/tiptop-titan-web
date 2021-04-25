@@ -55,6 +55,7 @@ class DatumImporter extends Command
     public const CHOICE_GROCERY_CATEGORIES = 'grocery-categories';
     public const CHOICE_CATEGORY_IMAGES = 'category-images';
     public const CHOICE_PRODUCT_IMAGES = 'product-images';
+    public const CHOICE_CHAIN_IMAGES = 'chain-images';
     public const CHOICE_FOOD_CHAINS = 'food-chains';
     public const CHOICE_USERS = 'users';
     public const CHOICE_ADDRESSES = 'addresses';
@@ -87,6 +88,7 @@ class DatumImporter extends Command
             self::CHOICE_INGREDIENTS_CATEGORIES,
             self::CHOICE_CATEGORY_IMAGES,
             self::CHOICE_PRODUCT_IMAGES,
+            self::CHOICE_CHAIN_IMAGES,
             self::CHOICE_FOR_SERVER,
         ];
     }
@@ -116,6 +118,8 @@ class DatumImporter extends Command
             $this->importCategoriesImages();
         } elseif ($this->modelName === self::CHOICE_PRODUCT_IMAGES) {
             $this->importProductsImages();
+        } elseif ($this->modelName === self::CHOICE_CHAIN_IMAGES) {
+            $this->importChainImages();
         } elseif ($this->modelName === self::CHOICE_USERS) {
             $this->importUsers();
         } elseif ($this->modelName === self::CHOICE_ADDRESSES) {
@@ -850,22 +854,39 @@ class DatumImporter extends Command
         foreach ($oldMediaFiles as $oldMediaData) {
             $errorMessage = null;
             $toCollection = $collections['to'];
-            $modelTitle = \Str::slug($newModel->getTranslation('en')->$imageNameAttribute);
-            $fileName = "{$modelTitle}.{$oldMediaData->getExtensionAttribute()}";
+            $modelTitle = $newModel->getTranslation('en')->$imageNameAttribute;
+            $modelTitleSlugged = \Str::slug($modelTitle);
+            $fileName = "{$modelTitleSlugged}.{$oldMediaData->getExtensionAttribute()}";
             try {
                 $newModel->addMediaFromDisk($oldMediaData->disk_path, 'old_s3')
                          ->setFileName($fileName)
+                         ->setName($modelTitle)
                          ->toMediaCollection($toCollection);
             } catch (FileDoesNotExist $e) {
-                $errorMessage = 'Failed to load image because file does not exist: '.$e->getMessage();
+//                $errorMessage = 'Failed to load image because file does not exist: '.$e->getMessage();
             } catch (FileIsTooBig $e) {
-                $errorMessage = 'Failed to load image because file is too big: '.$e->getMessage();
+                $errorMessage = sprintf('Failed to load image because file is too big: %s - Model id: %s',
+                    $e->getMessage(), $newModel);
             } catch (FileCannotBeAdded $e) {
-                $errorMessage = 'Failed to load image because file cannot be added: '.$e->getMessage();
+                $errorMessage = sprintf('Failed to load image because file cannot be added: %s - Model id: %s',
+                    $e->getMessage(), $newModel);
             }
             if ( ! is_null($errorMessage)) {
                 \Log::error($modelType.' - '.$errorMessage);
             }
+        }
+    }
+
+    private function importChainImages()
+    {
+        $chains = Chain::all();
+        $this->bar = $this->output->createProgressBar($chains->count());
+        $this->bar->start();
+        foreach ($chains as $chain) {
+            $this->assignImageToModel($chain, $chain->id, OldMedia::TYPE_RESTAURANT);
+            $collections = ['from' => OldMedia::COLLECTION_COVER, 'to' => OldMedia::COLLECTION_LOGO];
+            $this->assignImageToModel($chain, $chain->id, OldMedia::TYPE_RESTAURANT, $collections);
+            $this->bar->advance();
         }
     }
 
