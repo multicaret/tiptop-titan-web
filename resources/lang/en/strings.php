@@ -214,7 +214,7 @@ return [
     'grocery-categories' => 'Grocery Categories',
     'custom_banner_text' => 'Custom Banner Text',
     'unit_text' => 'Unit Text',
-    'discount_by_percentage' => 'Discount By Percentage',
+    'price_discount_by_percentage' => 'Discount By Percentage',
     'available_quantity' => 'Available Quantity',
     'is_storage_tracking_enabled' => 'Is Storage Tracking Enabled?',
     'minimum_orderable_quantity' => 'Minimum Orderable Quantity',

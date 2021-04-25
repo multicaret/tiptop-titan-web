@@ -318,7 +318,7 @@
                                     <span class="">
                                         <label class="switcher switcher-primary mr-3 my-2">
                                             <input type="checkbox" class="switcher-input"
-                                                   name="discount_by_percentage" {{$product->discount_by_percentage ? 'checked' : ''}}>
+                                                   name="price_discount_by_percentage" {{$product->price_discount_by_percentage ? 'checked' : ''}}>
                                             <span class="switcher-indicator">
                                                 <span class="switcher-yes">
                                                     <span class="ion ion-md-checkmark"></span>
@@ -328,7 +328,7 @@
                                                 </span>
                                             </span>
                                         </label>
-                                        @lang('strings.discount_by_percentage')
+                                        @lang('strings.price_discount_by_percentage')
                                     </span>
                                 </div>
                                 <div class="col-md-12">
