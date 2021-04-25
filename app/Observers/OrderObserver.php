@@ -27,7 +27,7 @@ class OrderObserver
      */
     public function created(Order $order)
     {
-        //
+        $order->recordActivity('created');
     }
 
     /**
@@ -47,6 +47,7 @@ class OrderObserver
             }
             $order->user->notify(new OrderStatusUpdated($order, $order->user->role_name));
         }
+        $order->recordActivity('updated');
     }
 
     /**
@@ -57,7 +58,7 @@ class OrderObserver
      */
     public function deleted(Order $order)
     {
-        //
+        $order->recordActivity('deleted');
     }
 
     /**
