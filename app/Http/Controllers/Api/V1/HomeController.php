@@ -91,10 +91,6 @@ class HomeController extends BaseApiController
         $etaUnit = 'min';
         $noAvailabilityMessage = '';
 
-        $selectedAddress = null;
-        $cityId = null;
-        $regionId = null;
-
         // Grocery Related Initializers
         $distance = 0;
         $branch = null;
@@ -105,10 +101,22 @@ class HomeController extends BaseApiController
         $latitude = $request->input('latitude');
         $longitude = $request->input('longitude');
 
+        // Region & City
+        $cityId = null;
+        $regionId = null;
         if ( ! is_null($user) && ! is_null($selectedAddress = $request->input('selected_address_id'))) {
             $selectedAddress = Location::find($selectedAddress);
             if (is_null($selectedAddress)) {
                 return $this->respondNotFound('Address not found!');
+            } else {
+                if (is_null($selectedAddress->region)) {
+                    return $this->respondNotFound('Address without a City!');
+                }
+                if (is_null($selectedAddress->city)) {
+                    return $this->respondNotFound('Address without a Neighborhood!');
+                }
+                $regionId = $selectedAddress->region->id;
+                $cityId = $selectedAddress->city->id;
             }
             $latitude = $selectedAddress->latitude;
             $longitude = $selectedAddress->longitude;
@@ -116,10 +124,6 @@ class HomeController extends BaseApiController
             $user->save();
         }
 
-        if ( ! is_null($selectedAddress)) {
-            $cityId = $selectedAddress->city->id;
-            $regionId = $selectedAddress->region->id;
-        }
         $slides = $this->retrieveSlides($channel, $user, $regionId, $cityId);
 
 
