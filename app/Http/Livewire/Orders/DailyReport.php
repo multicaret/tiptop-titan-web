@@ -42,8 +42,8 @@ class DailyReport extends Component
 
     public function mount()
     {
-        $this->dateFrom = now()->toDateString();
-        $this->dateTo = now()->addMonth()->toDateString();
+        $this->dateFrom = now()->subMonth()->toDateString();
+        $this->dateTo = now()->toDateString();
     }
 
     public function render()
