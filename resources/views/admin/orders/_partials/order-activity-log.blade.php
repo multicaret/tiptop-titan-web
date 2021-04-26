@@ -1,4 +1,4 @@
-<ul class="vertical-timeline" style="height:360px;overflow-y: scroll">
+<ul class="vertical-timeline" style="height:360px;overflow-y: scroll;padding-top:15px;">
     @php
         $activities = $order->activity()->latest()->get()
     @endphp
