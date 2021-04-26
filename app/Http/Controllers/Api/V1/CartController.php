@@ -140,11 +140,11 @@ class CartController extends BaseApiController
                         ]);
                         $optionPrice = $this->getOptionPrice($selectableType, $selectionId,
                             $selectedOption['product_option_id']);
-                        $cartProduct->price += $optionPrice;
+                        $cartProduct->options_price += $optionPrice;
                     }
                 }
-                // Add total product option prices(aka: $cartProduct->price) * quantity
-                $cartProduct->total_price = $cartProduct->price * $cartProduct->quantity;
+                // Add total product option prices(aka: $cartProduct->options_price) * quantity
+                $cartProduct->total_options_price = $cartProduct->options_price * $cartProduct->quantity;
                 $this->updateCartPrices($cartProduct, $cart, 'increment', $cartProduct->quantity);
             }
         } else {
@@ -206,8 +206,8 @@ class CartController extends BaseApiController
                 'cart_id' => $cart->id,
                 'product_id' => $productId,
                 'product_object' => Product::find($productId),
-                'total_price' => 0,
-                'price' => 0,
+                'total_options_price' => 0,
+                'options_price' => 0,
                 'quantity' => 0, // Todo: check value
                 'created_at' => now(),
                 'updated_at' => now(),
@@ -223,8 +223,7 @@ class CartController extends BaseApiController
         $price = 0;
         try {
             if ($selectableModel === Taxonomy::class) {
-                $price = ProductOptionIngredient::query()
-                                                ->where('product_option_id', $id)
+                $price = ProductOptionIngredient::where('product_option_id', $id)
                                                 ->where('ingredient_id', $selectionId)
                                                 ->first()->price;
             } elseif ($selectableModel === ProductOptionSelection::class) {
@@ -242,16 +241,16 @@ class CartController extends BaseApiController
         if ($action === 'decrement') {
             $cart->total -= ($quantity * $cartProduct->product->discounted_price);
             $cart->without_discount_total -= ($quantity * $cartProduct->product->price);
-            $cart->total -= $cartProduct->total_price;
-            $cart->without_discount_total -= $cartProduct->total_price;
+            $cart->total -= $cartProduct->total_options_price;
+            $cart->without_discount_total -= $cartProduct->total_options_price;
             if ($cartProduct->product->is_storage_tracking_enabled) {
                 $cartProduct->product->increment('available_quantity');
             }
         } elseif ($action === 'increment') {
             $cart->total += ($quantity * $cartProduct->product->discounted_price);
             $cart->without_discount_total += ($quantity * $cartProduct->product->price);
-            $cart->total += $cartProduct->total_price;
-            $cart->without_discount_total += $cartProduct->total_price;
+            $cart->total += $cartProduct->total_options_price;
+            $cart->without_discount_total += $cartProduct->total_options_price;
             if ($cartProduct->product->is_storage_tracking_enabled) {
                 $cartProduct->product->decrement('available_quantity');
             }
@@ -260,7 +259,7 @@ class CartController extends BaseApiController
 
     public function resetCartProductOptions(CartProduct $cartProduct): void
     {
-        $cartProduct->price = 0;
+        $cartProduct->options_price = 0;
         $cartProduct->cartProductOptions()->delete();
         $cartProduct->cartProductOptionsSelections()->delete();
     }
@@ -284,8 +283,8 @@ class CartController extends BaseApiController
     {
         \DB::beginTransaction();
         $cartProduct = CartProduct::find($cartProductId);
-        $cart->total -= ($cartProduct->total_price + $cartProduct->product->discounted_price);
-        $cart->without_discount_total -= ($cartProduct->total_price + $cartProduct->product->price);
+        $cart->total -= ($cartProduct->total_options_price + $cartProduct->product->discounted_price);
+        $cart->without_discount_total -= ($cartProduct->total_options_price + $cartProduct->product->price);
         $cart->save();
         $cartProduct->delete();
         \DB::commit();
