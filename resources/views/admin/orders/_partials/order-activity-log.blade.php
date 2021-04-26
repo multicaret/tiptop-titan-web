@@ -7,7 +7,8 @@
             <li class="rings border-{{$activity->getCssClassesBasedOnType()}}">
                 <span></span>
                 <div class="timeline-content">
-                    <div class="title text-{{$activity->getCssClassesBasedOnType()}}"><i class="fas fa-trash-alt"></i>
+                    <div class="title text-{{$activity->getCssClassesBasedOnType()}}"><i
+                            class="{{$activity->getFontAwesomeClassesBasedOnType()}}"></i>
                         {{trans('activity.'.$activity->type)}}
                     </div>
                     @if($activity->differences)
