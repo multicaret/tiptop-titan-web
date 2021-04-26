@@ -144,6 +144,10 @@ return [
             ],
         ]
     ],
+    'datetime' => [
+        'short_format' => 'Y-m-d H:i',
+        'normal_format' => 'd M Y H:i',
+    ],
     'date' => [
         'short_format' => 'Y-m-d',
         'normal_format' => 'd M Y',

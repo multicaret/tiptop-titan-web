@@ -182,8 +182,8 @@
                 <div class="card-body">
                     <div class="row">
                         <div class="col-12 py-3 border-2bottom">
-                            @if($order->notes)
-                                {{$order->notes}}
+                            @if($order->customer_notes)
+                                {{$order->customer_notes}}
                             @else
                                 <i class="text-muted">
                                     NO NOTE

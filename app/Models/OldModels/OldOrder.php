@@ -147,7 +147,7 @@ class OldOrder extends OldModel
             'address_id' => 'address_id',
 //            'status' => '', // typeComparing()
             'restaurant_notes' => 'restaurant_notes',
-            'customer_notes' => 'notes',
+            'customer_notes' => 'customer_notes',
 //            'payment_status' => '',
             'price' => 'total',
             'cost' => 'grand_total',

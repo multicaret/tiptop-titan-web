@@ -43,6 +43,8 @@ class CreateOrdersTable extends Migration
             $table->decimal('branch_rating_value', 3)->nullable();
             $table->timestamp('rated_at')->nullable();
             $table->text('rating_comment')->nullable();
+            // Rating Related - For Grocery Only
+            $table->unsignedBigInteger('rating_issue_id')->nullable();
             // Rating Related - For Food Only
             $table->boolean('has_good_food_quality_rating')->nullable();
             $table->boolean('has_good_packaging_quality_rating')->nullable();
@@ -53,22 +55,20 @@ class CreateOrdersTable extends Migration
 
             $table->unsignedBigInteger('cancellation_reason_id')->nullable();
             $table->string('cancellation_reason_note')->nullable();
-            // Rating Related - For Grocery Only
-            $table->unsignedBigInteger('rating_issue_id')->nullable();
-
 
             // Todo: MK check it please. Used it to store old data
             $table->unsignedBigInteger('delivery_time')->nullable()->default(0);
             $table->unsignedDouble('tiptop_share_result')->default(0);
             $table->unsignedDouble('tiptop_share_percentage')->default(0)->comment('is tiptop_share_percentage, which is taken directly from commission column in Branch');
             $table->unsignedDouble('restaurant_share_result')->default(0);
-            $table->text('private_notes')->nullable()->comment('take discount_method_id and store it');
             $table->string('agent_device')->nullable();
             $table->string('agent_os')->nullable();
             $table->text('restaurant_notes')->nullable();
+            $table->text('private_notes')->nullable()
+                  ->comment('This column is generic, for now it has the \'discount_method_id\' for orders with coupons from the old DB');
 
             $table->timestamp('completed_at')->nullable();
-            $table->text('notes')->nullable();
+            $table->text('customer_notes')->nullable();
             $table->unsignedTinyInteger('status')->default(Order::STATUS_DRAFT)
                   ->comment('
                     0: Cancelled,

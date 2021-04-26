@@ -146,7 +146,7 @@ class OrderShow extends Component
     private function createNote($message): void
     {
         $this->order->recordActivity('note_created', [
-            'note' => $message,
+            'agent_note' => $message,
         ]);
         $orderAgentNote = new OrderAgentNote();
         $orderAgentNote->message = $message;
