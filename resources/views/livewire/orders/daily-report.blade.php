@@ -5,13 +5,37 @@
         }
 
         .width-65 {
-            /*width: 65px !important;*/
+            width: 65px !important;
         }
 
         thead th {
             text-align: center !important;
         }
     </style>
+    <div class="card-body">
+        <div class="form-row">
+            <div class="form-group col-4">
+                <label class="form-label" for="date-from">Region</label>
+                <select wire:model="regionId" class="form-control">
+                    <option value="all">All</option>
+                    @foreach($regions as $region)
+                        <option value="{{ $region->id }}">{{ $region->name }}</option>
+                    @endforeach
+                </select>
+            </div>
+            <div class="form-group col-4">
+                <label class="form-label" for="date-from">Date from</label>
+                <input type="date" class="form-control" id="date-from"
+                       placeholder="" wire:model.lazy="dateFrom">
+            </div>
+            <div class="form-group col-4">
+                <label class="form-label" for="date-to">Date to</label>
+                <input type="date" class="form-control" id="date-to"
+                       placeholder="" wire:model.lazy="dateTo">
+            </div>
+        </div>
+    </div>
+
     <div class="tableFixHeadX">
         <table class="table table-sm card-table table-bordered table-hover">
             <colgroup>
@@ -36,71 +60,80 @@
             </colgroup>
             <thead class="thead-dark">
             <tr>
-                <th class="width-180">Day</th>
-                <th class="width-65">Orders</th>
-                <th class="width-65">Delivered</th>
+                <th class="width-180">
+                    <i class="fas fa-calendar-alt"></i>&nbsp;
+                                                       Day
+                </th>
                 <th class="width-65">
-                    Avg.
+                    <i class="fas fa-box-open"></i>
+                    <small class="d-block"><sub>Orders</sub></small>
+                </th>
+                <th class="width-65">
+                    <i class="fas fa-check-double"></i>
+                    <small class="d-block"><sub>Delivered</sub></small>
+                </th>
+                <th class="width-65">
                     <i class="fas fa-stopwatch"></i>
-{{--                    Avg. D.T--}}
+                    <small class="d-block"><sub>Avg. Delivery</sub></small>
+                    {{--                    Avg. D.T--}}
                 </th>
                 <th class="width-65">
-                    Avg.&nbsp;
                     <i class="fas fa-shopping-basket"></i>
-{{--                    AOV--}}
+                    <small class="d-block"><sub>Avg. Cart</sub></small>
+                    {{--                    AOV--}}
                 </th>
-                <th class="width-65">
+                <th class="width-65 bg-windows-darker">
                     <i class="far fa-clock"></i>
                     <small class="d-block"><sub>9-12</sub></small>
                 </th>
-                <th class="width-65">
+                <th class="width-65 bg-windows-darker">
                     <i class="far fa-clock"></i>
                     <small class="d-block"><sub>12-15</sub></small>
                 </th>
-                <th class="width-65">
+                <th class="width-65 bg-windows-darker">
                     <i class="far fa-clock"></i>
                     <small class="d-block"><sub>15-18</sub></small>
                 </th>
-                <th class="width-65">
+                <th class="width-65 bg-windows-darker">
                     <i class="far fa-clock"></i>
                     <small class="d-block"><sub>18-21</sub></small>
                 </th>
-                <th class="width-65">
+                <th class="width-65 bg-windows-darker">
                     <i class="far fa-clock"></i>
                     <small class="d-block"><sub>21-00</sub></small>
                 </th>
-                <th class="width-65">
+                <th class="width-65 bg-windows-darker">
                     <i class="far fa-clock"></i>
                     <small class="d-block"><sub>00-03</sub></small>
                 </th>
-                <th class="width-65">
+                <th class="width-65 bg-windows-darker">
                     <i class="far fa-clock"></i>
                     <small class="d-block"><sub>03-09</sub></small>
                 </th>
                 <th class="width-65">
-                    <i class="far fa-user"></i>
-{{--                    N.U--}}
+                    <i class="fas fa-users"></i>
+                    <small class="d-block"><sub>T. USERS</sub></small>
                 </th>
                 <th class="width-65">
-                    <i class="far fa-user"></i>
+                    <i class="fas fa-user-check"></i>
                     <small class="d-block"><sub>ORDERS</sub></small>
-{{--                    %N.U.O--}}
+                    {{--                    %N.U.O--}}
                 </th>
                 <th class="width-65">
                     <i class="fab fa-apple"></i>
-                    {{--                    iOS--}}
+                    <small class="d-block"><sub>iOS</sub></small>
                 </th>
                 <th class="width-65">
                     <i class="fab fa-android"></i>
-                    {{--                    Android--}}
+                    <small class="d-block"><sub>ANDROID</sub></small>
                 </th>
                 <th class="width-65">
                     <i class="fas fa-mobile-alt"></i>
-{{--                    Mobile--}}
+                    <small class="d-block"><sub>T.MOBILE</sub></small>
                 </th>
                 <th class="width-65">
                     <i class="fas fa-desktop"></i>
-{{--                    Web--}}
+                    <small class="d-block"><sub>WEB</sub></small>
                 </th>
             </tr>
             </thead>
@@ -185,9 +218,9 @@
                 </tr>
             @empty
                 <tr>
-                    <td colspan="9" class="text-center">
-                        <h4>
-                            No items found!
+                    <td colspan="18" class="text-center p-3">
+                        <h4 class="m-0">
+                            <i>No items found!</i>
                         </h4>
                     </td>
                 </tr>
