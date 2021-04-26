@@ -78,7 +78,7 @@ class AddressController extends BaseApiController
         $address = new Location();
         $address->creator_id = $userId;
         $address->editor_id = $userId;
-        $address->country_id = isset($request->country_id) ? $request->country_id : config('defaults.country.id');
+        $address->country_id = $request->country_id ?? config('defaults.country.id');
         $address->region_id = $request->input('region_id');
         $address->city_id = $request->input('city_id');
         $address->contactable_type = User::class;
