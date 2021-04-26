@@ -37,7 +37,7 @@ class OrderStatusUpdated extends Notification
             if ($key == 'ku') {
                 $key = 'fa';
             }
-            $this->body[$key] = '🚚 '.trans("notifications.order_status_updated_for_user_{$roleName}_{$this->order->status}",
+            $this->body[$key] = '🛵 '.trans("notifications.order_status_updated_for_user_{$roleName}_{$this->order->status}",
                     [
                         'number' => ("({$this->order->reference_code})"),
                         'branchName' => optional($this->order->branch)->title,
