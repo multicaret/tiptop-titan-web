@@ -4,6 +4,7 @@ namespace App\Http\Livewire\Orders;
 
 use App\Models\OrderDailyReport;
 use App\Models\Region;
+use Carbon\Carbon;
 use Livewire\Component;
 
 class DailyReport extends Component
@@ -12,6 +13,31 @@ class DailyReport extends Component
     public $dateTo;
     public $regionId;
 
+    public function updatedDateFrom($newValue)
+    {
+        $dateFrom = Carbon::parse($newValue);
+        if ($this->dateTo instanceof Carbon) {
+            $dateTo = $this->dateTo;
+        } else {
+            $dateTo = Carbon::parse($this->dateTo);
+        }
+        if ($dateFrom->gt($dateTo)) {
+            $this->dateTo = $dateFrom->addDay()->toDateString();
+        }
+    }
+
+    public function updatedDateTo($newValue)
+    {
+        $dateTo = Carbon::parse($newValue);
+        if ($this->dateFrom instanceof Carbon) {
+            $dateFrom = $this->dateFrom;
+        } else {
+            $dateFrom = Carbon::parse($this->dateFrom);
+        }
+        if ($dateTo->lt($dateFrom)) {
+            $this->dateFrom = $dateTo->subDay()->toDateString();
+        }
+    }
 
     public function mount()
     {
