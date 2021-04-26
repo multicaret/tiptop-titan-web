@@ -8,25 +8,25 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\MorphTo;
 use Illuminate\Database\Eloquent\Relations\Pivot;
+use Illuminate\Support\Carbon;
 
 /**
  * App\Models\CartProductOptionSelection
  *
- * @property-read CartProduct $cartProduct
- * @property-read ProductOption $productOption
- * @property-read Model|Eloquent $selectable
- * @method static Builder|CartProductOptionSelection newModelQuery()
- * @method static Builder|CartProductOptionSelection newQuery()
- * @method static Builder|CartProductOptionSelection query()
- * @mixin Eloquent
  * @property int $id
  * @property int $cart_product_id
  * @property int $product_option_id
  * @property string $selectable_type
  * @property int $selectable_id
  * @property mixed|null $selectable_object
- * @property \Illuminate\Support\Carbon|null $created_at
- * @property \Illuminate\Support\Carbon|null $updated_at
+ * @property Carbon|null $created_at
+ * @property Carbon|null $updated_at
+ * @property-read CartProduct $cartProduct
+ * @property-read ProductOption $productOption
+ * @property-read Model|Eloquent $selectable
+ * @method static Builder|CartProductOptionSelection newModelQuery()
+ * @method static Builder|CartProductOptionSelection newQuery()
+ * @method static Builder|CartProductOptionSelection query()
  * @method static Builder|CartProductOptionSelection whereCartProductId($value)
  * @method static Builder|CartProductOptionSelection whereCreatedAt($value)
  * @method static Builder|CartProductOptionSelection whereId($value)
@@ -35,6 +35,7 @@ use Illuminate\Database\Eloquent\Relations\Pivot;
  * @method static Builder|CartProductOptionSelection whereSelectableObject($value)
  * @method static Builder|CartProductOptionSelection whereSelectableType($value)
  * @method static Builder|CartProductOptionSelection whereUpdatedAt($value)
+ * @mixin Eloquent
  */
 class CartProductOptionSelection extends Pivot
 {

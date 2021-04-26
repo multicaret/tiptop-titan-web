@@ -5,6 +5,7 @@ namespace App\Models;
 use Eloquent;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Carbon;
 
 /**
  * App\Models\ProductTranslation
@@ -18,8 +19,8 @@ use Illuminate\Database\Eloquent\Model;
  * @property string|null $notes
  * @property string|null $custom_banner_text
  * @property string|null $unit_text
- * @property \Illuminate\Support\Carbon|null $created_at
- * @property \Illuminate\Support\Carbon|null $updated_at
+ * @property Carbon|null $created_at
+ * @property Carbon|null $updated_at
  * @method static Builder|ProductTranslation newModelQuery()
  * @method static Builder|ProductTranslation newQuery()
  * @method static Builder|ProductTranslation query()

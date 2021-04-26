@@ -2,14 +2,22 @@
 
 namespace App\Models;
 
+use Eloquent;
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Carbon;
 
 /**
  * App\Models\OrderDailyReport
  *
  * @property int $id
- * @property \Illuminate\Support\Carbon $day
+ * @property int $region_id
+ * @property Carbon $day
+ * @property int $groceries_orders_count
+ * @property int $food_orders_count
  * @property int $total_orders_count
+ * @property int $delivered_groceries_orders_count
+ * @property int $delivered_food_orders_count
  * @property int $total_delivered_orders_count
  * @property int $average_delivery_time
  * @property float $average_orders_value
@@ -33,40 +41,45 @@ use Illuminate\Database\Eloquent\Model;
  * @property int $is_nadir_of_this_quarter
  * @property int $is_peak_of_this_year
  * @property int $is_nadir_of_this_year
- * @property \Illuminate\Support\Carbon|null $created_at
- * @property \Illuminate\Support\Carbon|null $updated_at
- * @method static \Illuminate\Database\Eloquent\Builder|OrderDailyReport newModelQuery()
- * @method static \Illuminate\Database\Eloquent\Builder|OrderDailyReport newQuery()
- * @method static \Illuminate\Database\Eloquent\Builder|OrderDailyReport query()
- * @method static \Illuminate\Database\Eloquent\Builder|OrderDailyReport whereAndroidDevicesCount($value)
- * @method static \Illuminate\Database\Eloquent\Builder|OrderDailyReport whereAverageDeliveryTime($value)
- * @method static \Illuminate\Database\Eloquent\Builder|OrderDailyReport whereAverageOrdersValue($value)
- * @method static \Illuminate\Database\Eloquent\Builder|OrderDailyReport whereCreatedAt($value)
- * @method static \Illuminate\Database\Eloquent\Builder|OrderDailyReport whereDay($value)
- * @method static \Illuminate\Database\Eloquent\Builder|OrderDailyReport whereId($value)
- * @method static \Illuminate\Database\Eloquent\Builder|OrderDailyReport whereIosDevicesCount($value)
- * @method static \Illuminate\Database\Eloquent\Builder|OrderDailyReport whereIsNadirOfThisMonth($value)
- * @method static \Illuminate\Database\Eloquent\Builder|OrderDailyReport whereIsNadirOfThisQuarter($value)
- * @method static \Illuminate\Database\Eloquent\Builder|OrderDailyReport whereIsNadirOfThisYear($value)
- * @method static \Illuminate\Database\Eloquent\Builder|OrderDailyReport whereIsPeakOfThisMonth($value)
- * @method static \Illuminate\Database\Eloquent\Builder|OrderDailyReport whereIsPeakOfThisQuarter($value)
- * @method static \Illuminate\Database\Eloquent\Builder|OrderDailyReport whereIsPeakOfThisYear($value)
- * @method static \Illuminate\Database\Eloquent\Builder|OrderDailyReport whereOrderedUsersCount($value)
- * @method static \Illuminate\Database\Eloquent\Builder|OrderDailyReport whereOrdersCountBetween0003($value)
- * @method static \Illuminate\Database\Eloquent\Builder|OrderDailyReport whereOrdersCountBetween0309($value)
- * @method static \Illuminate\Database\Eloquent\Builder|OrderDailyReport whereOrdersCountBetween0912($value)
- * @method static \Illuminate\Database\Eloquent\Builder|OrderDailyReport whereOrdersCountBetween1215($value)
- * @method static \Illuminate\Database\Eloquent\Builder|OrderDailyReport whereOrdersCountBetween1518($value)
- * @method static \Illuminate\Database\Eloquent\Builder|OrderDailyReport whereOrdersCountBetween1821($value)
- * @method static \Illuminate\Database\Eloquent\Builder|OrderDailyReport whereOrdersCountBetween2100($value)
- * @method static \Illuminate\Database\Eloquent\Builder|OrderDailyReport whereOtherDevicesCount($value)
- * @method static \Illuminate\Database\Eloquent\Builder|OrderDailyReport whereRegisteredUsersCount($value)
- * @method static \Illuminate\Database\Eloquent\Builder|OrderDailyReport whereTotalDeliveredOrdersCount($value)
- * @method static \Illuminate\Database\Eloquent\Builder|OrderDailyReport whereTotalMobileUsersCount($value)
- * @method static \Illuminate\Database\Eloquent\Builder|OrderDailyReport whereTotalOrdersCount($value)
- * @method static \Illuminate\Database\Eloquent\Builder|OrderDailyReport whereTotalWebUsersCount($value)
- * @method static \Illuminate\Database\Eloquent\Builder|OrderDailyReport whereUpdatedAt($value)
- * @mixin \Eloquent
+ * @property Carbon|null $created_at
+ * @property Carbon|null $updated_at
+ * @method static Builder|OrderDailyReport newModelQuery()
+ * @method static Builder|OrderDailyReport newQuery()
+ * @method static Builder|OrderDailyReport query()
+ * @method static Builder|OrderDailyReport whereAndroidDevicesCount($value)
+ * @method static Builder|OrderDailyReport whereAverageDeliveryTime($value)
+ * @method static Builder|OrderDailyReport whereAverageOrdersValue($value)
+ * @method static Builder|OrderDailyReport whereCreatedAt($value)
+ * @method static Builder|OrderDailyReport whereDay($value)
+ * @method static Builder|OrderDailyReport whereDeliveredFoodOrdersCount($value)
+ * @method static Builder|OrderDailyReport whereDeliveredGroceriesOrdersCount($value)
+ * @method static Builder|OrderDailyReport whereFoodOrdersCount($value)
+ * @method static Builder|OrderDailyReport whereGroceriesOrdersCount($value)
+ * @method static Builder|OrderDailyReport whereId($value)
+ * @method static Builder|OrderDailyReport whereIosDevicesCount($value)
+ * @method static Builder|OrderDailyReport whereIsNadirOfThisMonth($value)
+ * @method static Builder|OrderDailyReport whereIsNadirOfThisQuarter($value)
+ * @method static Builder|OrderDailyReport whereIsNadirOfThisYear($value)
+ * @method static Builder|OrderDailyReport whereIsPeakOfThisMonth($value)
+ * @method static Builder|OrderDailyReport whereIsPeakOfThisQuarter($value)
+ * @method static Builder|OrderDailyReport whereIsPeakOfThisYear($value)
+ * @method static Builder|OrderDailyReport whereOrderedUsersCount($value)
+ * @method static Builder|OrderDailyReport whereOrdersCountBetween0003($value)
+ * @method static Builder|OrderDailyReport whereOrdersCountBetween0309($value)
+ * @method static Builder|OrderDailyReport whereOrdersCountBetween0912($value)
+ * @method static Builder|OrderDailyReport whereOrdersCountBetween1215($value)
+ * @method static Builder|OrderDailyReport whereOrdersCountBetween1518($value)
+ * @method static Builder|OrderDailyReport whereOrdersCountBetween1821($value)
+ * @method static Builder|OrderDailyReport whereOrdersCountBetween2100($value)
+ * @method static Builder|OrderDailyReport whereOtherDevicesCount($value)
+ * @method static Builder|OrderDailyReport whereRegionId($value)
+ * @method static Builder|OrderDailyReport whereRegisteredUsersCount($value)
+ * @method static Builder|OrderDailyReport whereTotalDeliveredOrdersCount($value)
+ * @method static Builder|OrderDailyReport whereTotalMobileUsersCount($value)
+ * @method static Builder|OrderDailyReport whereTotalOrdersCount($value)
+ * @method static Builder|OrderDailyReport whereTotalWebUsersCount($value)
+ * @method static Builder|OrderDailyReport whereUpdatedAt($value)
+ * @mixin Eloquent
  */
 class OrderDailyReport extends Model
 {

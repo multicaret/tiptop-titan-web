@@ -22,7 +22,7 @@ use Laravel\Sanctum\PersonalAccessToken as PersonalAccessTokenAlias;
  * @property Carbon|null $last_used_at
  * @property Carbon|null $created_at
  * @property Carbon|null $updated_at
- * @property-read Model|\Eloquent $tokenable
+ * @property-read Model|Eloquent $tokenable
  * @method static Builder|PersonalAccessToken newModelQuery()
  * @method static Builder|PersonalAccessToken newQuery()
  * @method static Builder|PersonalAccessToken query()

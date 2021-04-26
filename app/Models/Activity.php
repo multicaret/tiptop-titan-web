@@ -17,10 +17,10 @@ use Illuminate\Support\Carbon;
  * @property string $subject_type
  * @property int $subject_id
  * @property string $type
+ * @property object|null $differences
  * @property int $is_private
  * @property Carbon|null $created_at
  * @property Carbon|null $updated_at
- * @property object|null $differences
  * @property-read Model|Eloquent $subject
  * @property-read User $user
  * @method static Builder|Activity newModelQuery()

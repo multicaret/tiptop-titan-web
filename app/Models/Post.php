@@ -40,28 +40,29 @@ use Spatie\MediaLibrary\MediaCollections\Models\Media;
  * @property Carbon|null $created_at
  * @property Carbon|null $updated_at
  * @property Carbon|null $deleted_at
- * @property-read Collection|\App\Models\Activity[] $activity
+ * @property-read Collection|Activity[] $activity
  * @property-read int|null $activity_count
- * @property-read \App\Models\Taxonomy|null $category
- * @property-read Collection|\App\Models\Comment[] $comments
+ * @property-read Taxonomy|null $category
+ * @property-read Collection|Comment[] $comments
  * @property-read int|null $comments_count
- * @property-read \App\Models\User $creator
- * @property-read \App\Models\User $editor
+ * @property-read User $creator
+ * @property-read User $editor
  * @property-read mixed $cover
  * @property-read mixed $gallery
  * @property-read bool $is_active
  * @property-read bool $is_inactive
  * @property-read mixed $link
+ * @property-read array $status_js
  * @property-read mixed $status_name
  * @property-read MediaCollection|Media[] $media
  * @property-read int|null $media_count
- * @property-read \App\Models\MetaData $meta
- * @property-read Collection|\App\Models\Comment[] $ratings
+ * @property-read MetaData $meta
+ * @property-read Collection|Comment[] $ratings
  * @property-read int|null $ratings_count
- * @property-read Collection|\App\Models\Taxonomy[] $tags
+ * @property-read Collection|Taxonomy[] $tags
  * @property-read int|null $tags_count
- * @property-read \App\Models\PostTranslation|null $translation
- * @property-read Collection|\App\Models\PostTranslation[] $translations
+ * @property-read PostTranslation|null $translation
+ * @property-read Collection|PostTranslation[] $translations
  * @property-read int|null $translations_count
  * @method static Builder|Post active()
  * @method static Builder|Post articles()
@@ -107,7 +108,6 @@ use Spatie\MediaLibrary\MediaCollections\Models\Media;
  * @method static \Illuminate\Database\Query\Builder|Post withTrashed()
  * @method static \Illuminate\Database\Query\Builder|Post withoutTrashed()
  * @mixin Eloquent
- * @property-read array $status_js
  */
 class Post extends Model implements HasMedia, ShouldHaveTypes
 {

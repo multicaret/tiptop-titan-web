@@ -48,15 +48,16 @@ use Illuminate\Support\Str;
  * @property Carbon|null $created_at
  * @property Carbon|null $updated_at
  * @property Carbon|null $deleted_at
- * @property-read \App\Models\City|null $city
- * @property-read Model|\Eloquent $contactable
- * @property-read \App\Models\Country|null $country
- * @property-read \App\Models\User $creator
- * @property-read \App\Models\User $editor
+ * @property-read City|null $city
+ * @property-read Model|Eloquent $contactable
+ * @property-read Country|null $country
+ * @property-read User $creator
+ * @property-read User $editor
  * @property-read bool $is_active
  * @property-read bool $is_inactive
+ * @property-read array $status_js
  * @property-read mixed $status_name
- * @property-read \App\Models\Region|null $region
+ * @property-read Region|null $region
  * @method static \Illuminate\Database\Eloquent\Builder|Location active()
  * @method static \Illuminate\Database\Eloquent\Builder|Location addresses()
  * @method static \Illuminate\Database\Eloquent\Builder|Location contacts()
@@ -105,7 +106,6 @@ use Illuminate\Support\Str;
  * @method static Builder|Location withTrashed()
  * @method static Builder|Location withoutTrashed()
  * @mixin Eloquent
- * @property-read array $status_js
  */
 class Location extends Model
 {

@@ -3,9 +3,9 @@
 namespace App\Models\OldModels;
 
 
-use Astrotomic\Translatable\Translatable;
+use Eloquent;
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
-
 
 
 /**
@@ -16,15 +16,15 @@ use Illuminate\Database\Eloquent\Model;
  * @property string $locale
  * @property string $title_suffex
  * @property string|null $description
- * @method static \Illuminate\Database\Eloquent\Builder|OldBranchTranslation newModelQuery()
- * @method static \Illuminate\Database\Eloquent\Builder|OldBranchTranslation newQuery()
- * @method static \Illuminate\Database\Eloquent\Builder|OldBranchTranslation query()
- * @method static \Illuminate\Database\Eloquent\Builder|OldBranchTranslation whereBranchId($value)
- * @method static \Illuminate\Database\Eloquent\Builder|OldBranchTranslation whereDescription($value)
- * @method static \Illuminate\Database\Eloquent\Builder|OldBranchTranslation whereId($value)
- * @method static \Illuminate\Database\Eloquent\Builder|OldBranchTranslation whereLocale($value)
- * @method static \Illuminate\Database\Eloquent\Builder|OldBranchTranslation whereTitleSuffex($value)
- * @mixin \Eloquent
+ * @method static Builder|OldBranchTranslation newModelQuery()
+ * @method static Builder|OldBranchTranslation newQuery()
+ * @method static Builder|OldBranchTranslation query()
+ * @method static Builder|OldBranchTranslation whereBranchId($value)
+ * @method static Builder|OldBranchTranslation whereDescription($value)
+ * @method static Builder|OldBranchTranslation whereId($value)
+ * @method static Builder|OldBranchTranslation whereLocale($value)
+ * @method static Builder|OldBranchTranslation whereTitleSuffex($value)
+ * @mixin Eloquent
  */
 class OldBranchTranslation extends Model
 {

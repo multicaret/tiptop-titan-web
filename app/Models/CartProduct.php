@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Eloquent;
 use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\Pivot;
@@ -16,31 +17,31 @@ use Illuminate\Support\Carbon;
  * @property int $cart_id
  * @property int $product_id
  * @property int $quantity
+ * @property float $options_price for Food products only, for their options
+ * @property float $total_options_price for Food products only, for their options
  * @property array|null $product_object
  * @property Carbon|null $created_at
  * @property Carbon|null $updated_at
- * @property-read \App\Models\Cart $cart
- * @property-read \App\Models\Product $product
+ * @property-read Cart $cart
+ * @property-read Collection|CartProductOption[] $cartProductOptions
+ * @property-read int|null $cart_product_options_count
+ * @property-read Collection|CartProductOptionSelection[] $cartProductOptionsSelections
+ * @property-read int|null $cart_product_options_selections_count
+ * @property-read mixed $selected_options
+ * @property-read Product $product
  * @method static Builder|CartProduct newModelQuery()
  * @method static Builder|CartProduct newQuery()
  * @method static Builder|CartProduct query()
  * @method static Builder|CartProduct whereCartId($value)
  * @method static Builder|CartProduct whereCreatedAt($value)
  * @method static Builder|CartProduct whereId($value)
+ * @method static Builder|CartProduct whereOptionsPrice($value)
  * @method static Builder|CartProduct whereProductId($value)
  * @method static Builder|CartProduct whereProductObject($value)
  * @method static Builder|CartProduct whereQuantity($value)
+ * @method static Builder|CartProduct whereTotalOptionsPrice($value)
  * @method static Builder|CartProduct whereUpdatedAt($value)
  * @mixin Eloquent
- * @property int $price
- * @property int $total_price
- * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\CartProductOption[] $cartProductOptions
- * @property-read int|null $cart_product_options_count
- * @property-read mixed $selected_options
- * @method static Builder|CartProduct wherePrice($value)
- * @method static Builder|CartProduct whereTotalPrice($value)
- * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\CartProductOptionSelection[] $cartProductOptionsSelections
- * @property-read int|null $cart_product_options_selections_count
  */
 class CartProduct extends Pivot
 {

@@ -61,6 +61,7 @@ use Spatie\MediaLibrary\MediaCollections\Models\Media;
  * @property Carbon|null $custom_banner_ended_at
  * @property bool|null $is_storage_tracking_enabled
  * @property int $on_mobile_grid_tile_weight
+ * @property int|null $cloned_from_product_id
  * @property Carbon|null $created_at
  * @property Carbon|null $updated_at
  * @property Carbon|null $deleted_at
@@ -90,6 +91,7 @@ use Spatie\MediaLibrary\MediaCollections\Models\Media;
  * @property-read bool $is_grocery
  * @property-read bool $is_inactive
  * @property-read mixed $price_formatted
+ * @property-read array $status_js
  * @property-read mixed $status_name
  * @property-read Taxonomy $masterCategory
  * @property-read MediaCollection|Media[] $media
@@ -125,6 +127,7 @@ use Spatie\MediaLibrary\MediaCollections\Models\Media;
  * @method static Builder|Product whereBranchId($value)
  * @method static Builder|Product whereCategoryId($value)
  * @method static Builder|Product whereChainId($value)
+ * @method static Builder|Product whereClonedFromProductId($value)
  * @method static Builder|Product whereCreatedAt($value)
  * @method static Builder|Product whereCreatorId($value)
  * @method static Builder|Product whereCustomBannerBeganAt($value)
@@ -162,9 +165,6 @@ use Spatie\MediaLibrary\MediaCollections\Models\Media;
  * @method static \Illuminate\Database\Query\Builder|Product withTrashed()
  * @method static \Illuminate\Database\Query\Builder|Product withoutTrashed()
  * @mixin Eloquent
- * @property-read array $status_js
- * @property int|null $cloned_from_product_id
- * @method static Builder|Product whereClonedFromProductId($value)
  */
 class Product extends Model implements HasMedia
 {

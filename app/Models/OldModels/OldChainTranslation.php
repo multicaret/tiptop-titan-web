@@ -3,7 +3,8 @@
 namespace App\Models\OldModels;
 
 
-use Astrotomic\Translatable\Translatable;
+use Eloquent;
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
 
 
@@ -17,17 +18,17 @@ use Illuminate\Database\Eloquent\Model;
  * @property string|null $description
  * @property string|null $logo
  * @property string|null $cover_image
- * @method static \Illuminate\Database\Eloquent\Builder|OldChainTranslation newModelQuery()
- * @method static \Illuminate\Database\Eloquent\Builder|OldChainTranslation newQuery()
- * @method static \Illuminate\Database\Eloquent\Builder|OldChainTranslation query()
- * @method static \Illuminate\Database\Eloquent\Builder|OldChainTranslation whereCoverImage($value)
- * @method static \Illuminate\Database\Eloquent\Builder|OldChainTranslation whereDescription($value)
- * @method static \Illuminate\Database\Eloquent\Builder|OldChainTranslation whereId($value)
- * @method static \Illuminate\Database\Eloquent\Builder|OldChainTranslation whereLocale($value)
- * @method static \Illuminate\Database\Eloquent\Builder|OldChainTranslation whereLogo($value)
- * @method static \Illuminate\Database\Eloquent\Builder|OldChainTranslation whereRestaurantId($value)
- * @method static \Illuminate\Database\Eloquent\Builder|OldChainTranslation whereTitle($value)
- * @mixin \Eloquent
+ * @method static Builder|OldChainTranslation newModelQuery()
+ * @method static Builder|OldChainTranslation newQuery()
+ * @method static Builder|OldChainTranslation query()
+ * @method static Builder|OldChainTranslation whereCoverImage($value)
+ * @method static Builder|OldChainTranslation whereDescription($value)
+ * @method static Builder|OldChainTranslation whereId($value)
+ * @method static Builder|OldChainTranslation whereLocale($value)
+ * @method static Builder|OldChainTranslation whereLogo($value)
+ * @method static Builder|OldChainTranslation whereRestaurantId($value)
+ * @method static Builder|OldChainTranslation whereTitle($value)
+ * @mixin Eloquent
  */
 class OldChainTranslation extends Model
 {

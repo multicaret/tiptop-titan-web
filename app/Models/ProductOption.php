@@ -26,6 +26,7 @@ use Illuminate\Support\Carbon;
  * @property int|null $min_number_of_selection
  * @property int $input_type
  * @property int $selection_type
+ * @property int|null $order_column
  * @property Carbon|null $created_at
  * @property Carbon|null $updated_at
  * @property-read Collection|Taxonomy[] $ingredients
@@ -53,6 +54,7 @@ use Illuminate\Support\Carbon;
  * @method static Builder|ProductOption whereIsRequired($value)
  * @method static Builder|ProductOption whereMaxNumberOfSelection($value)
  * @method static Builder|ProductOption whereMinNumberOfSelection($value)
+ * @method static Builder|ProductOption whereOrderColumn($value)
  * @method static Builder|ProductOption whereProductId($value)
  * @method static Builder|ProductOption whereSelectionType($value)
  * @method static Builder|ProductOption whereTranslation(string $translationField, $value, ?string $locale = null, string $method = 'whereHas', string $operator = '=')
@@ -61,8 +63,6 @@ use Illuminate\Support\Carbon;
  * @method static Builder|ProductOption whereUpdatedAt($value)
  * @method static Builder|ProductOption withTranslation()
  * @mixin Eloquent
- * @property int|null $order_column
- * @method static Builder|ProductOption whereOrderColumn($value)
  */
 class ProductOption extends Model
 {

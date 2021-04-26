@@ -20,7 +20,7 @@ use Illuminate\Support\Carbon;
  * @property string $backcolor
  * @property Carbon|null $created_at
  * @property Carbon|null $updated_at
- * @property-read Model|\Eloquent $qrCodeable
+ * @property-read Model|Eloquent $qrCodeable
  * @method static Builder|QrCode newModelQuery()
  * @method static Builder|QrCode newQuery()
  * @method static Builder|QrCode query()

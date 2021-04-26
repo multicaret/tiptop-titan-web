@@ -4,10 +4,11 @@ namespace App\Models\OldModels;
 
 
 use Astrotomic\Translatable\Translatable;
-use Carbon\Carbon;
+use Eloquent;
 use Illuminate\Database\Eloquent\Builder;
-use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
+use Illuminate\Support\Carbon;
 
 
 /**
@@ -32,12 +33,12 @@ use Illuminate\Database\Eloquent\Relations\BelongsToMany;
  * @property int $rating_count
  * @property int|null $added_by
  * @property string|null $deleted_at
- * @property \Illuminate\Support\Carbon|null $created_at
- * @property \Illuminate\Support\Carbon|null $updated_at
- * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\OldModels\OldCategory[] $categories
+ * @property Carbon|null $created_at
+ * @property Carbon|null $updated_at
+ * @property-read Collection|OldCategory[] $categories
  * @property-read int|null $categories_count
- * @property-read \App\Models\OldModels\OldProductTranslation|null $translation
- * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\OldModels\OldProductTranslation[] $translations
+ * @property-read OldProductTranslation|null $translation
+ * @property-read Collection|OldProductTranslation[] $translations
  * @property-read int|null $translations_count
  * @method static Builder|OldProduct listsTranslations(string $translationField)
  * @method static Builder|OldProduct newModelQuery()
@@ -73,7 +74,7 @@ use Illuminate\Database\Eloquent\Relations\BelongsToMany;
  * @method static Builder|OldProduct whereType($value)
  * @method static Builder|OldProduct whereUpdatedAt($value)
  * @method static Builder|OldProduct withTranslation()
- * @mixin \Eloquent
+ * @mixin Eloquent
  */
 class OldProduct extends OldModel
 {

@@ -24,13 +24,13 @@ use Illuminate\Support\Carbon;
  * @property int $status 0:In Progress, 1: Completed
  * @property Carbon|null $created_at
  * @property Carbon|null $updated_at
- * @property-read \App\Models\Branch|null $branch
- * @property-read Collection|\App\Models\CartProduct[] $cartProducts
+ * @property-read Branch|null $branch
+ * @property-read Collection|CartProduct[] $cartProducts
  * @property-read int|null $cart_products_count
- * @property-read \App\Models\Chain|null $chain
- * @property-read Collection|\App\Models\Product[] $products
+ * @property-read Chain|null $chain
+ * @property-read Collection|Product[] $products
  * @property-read int|null $products_count
- * @property-read \App\Models\User $user
+ * @property-read User $user
  * @method static Builder|Cart newModelQuery()
  * @method static Builder|Cart newQuery()
  * @method static Builder|Cart query()

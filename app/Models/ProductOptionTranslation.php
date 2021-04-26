@@ -2,7 +2,10 @@
 
 namespace App\Models;
 
+use Eloquent;
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Carbon;
 
 /**
  * App\Models\ProductOptionTranslation
@@ -11,18 +14,18 @@ use Illuminate\Database\Eloquent\Model;
  * @property int $product_option_id
  * @property string|null $title
  * @property string $locale
- * @property \Illuminate\Support\Carbon|null $created_at
- * @property \Illuminate\Support\Carbon|null $updated_at
- * @method static \Illuminate\Database\Eloquent\Builder|ProductOptionTranslation newModelQuery()
- * @method static \Illuminate\Database\Eloquent\Builder|ProductOptionTranslation newQuery()
- * @method static \Illuminate\Database\Eloquent\Builder|ProductOptionTranslation query()
- * @method static \Illuminate\Database\Eloquent\Builder|ProductOptionTranslation whereCreatedAt($value)
- * @method static \Illuminate\Database\Eloquent\Builder|ProductOptionTranslation whereId($value)
- * @method static \Illuminate\Database\Eloquent\Builder|ProductOptionTranslation whereLocale($value)
- * @method static \Illuminate\Database\Eloquent\Builder|ProductOptionTranslation whereProductOptionId($value)
- * @method static \Illuminate\Database\Eloquent\Builder|ProductOptionTranslation whereTitle($value)
- * @method static \Illuminate\Database\Eloquent\Builder|ProductOptionTranslation whereUpdatedAt($value)
- * @mixin \Eloquent
+ * @property Carbon|null $created_at
+ * @property Carbon|null $updated_at
+ * @method static Builder|ProductOptionTranslation newModelQuery()
+ * @method static Builder|ProductOptionTranslation newQuery()
+ * @method static Builder|ProductOptionTranslation query()
+ * @method static Builder|ProductOptionTranslation whereCreatedAt($value)
+ * @method static Builder|ProductOptionTranslation whereId($value)
+ * @method static Builder|ProductOptionTranslation whereLocale($value)
+ * @method static Builder|ProductOptionTranslation whereProductOptionId($value)
+ * @method static Builder|ProductOptionTranslation whereTitle($value)
+ * @method static Builder|ProductOptionTranslation whereUpdatedAt($value)
+ * @mixin Eloquent
  */
 class ProductOptionTranslation extends Model
 {

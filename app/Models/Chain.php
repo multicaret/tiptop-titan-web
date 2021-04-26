@@ -60,6 +60,7 @@ use Spatie\MediaLibrary\MediaCollections\Models\Media;
  * @property-read bool $is_grocery
  * @property-read bool $is_inactive
  * @property-read bool $logo
+ * @property-read array $status_js
  * @property-read mixed $status_name
  * @property-read MediaCollection|Media[] $media
  * @property-read int|null $media_count
@@ -112,7 +113,6 @@ use Spatie\MediaLibrary\MediaCollections\Models\Media;
  * @method static Builder|Chain whereWhatsappPhoneNumber($value)
  * @method static Builder|Chain withTranslation()
  * @mixin Eloquent
- * @property-read array $status_js
  */
 class Chain extends Model implements HasMedia
 {

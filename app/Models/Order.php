@@ -27,15 +27,14 @@ use Illuminate\Support\Carbon;
  * @property int $address_id
  * @property int|null $coupon_id
  * @property int $city_id
+ * @property int|null $driver_id
  * @property int|null $previous_order_id
- * @property int|null $cancellation_reason_id
  * @property int $type 1:Market, 2: Food
  * @property float $total
  * @property float $coupon_discount_amount
  * @property float $delivery_fee
- * @property float $grand_total_before_agent_manipulation
  * @property float $grand_total
- * @property float $agent_grand_total
+ * @property float $grand_total_before_agent_manipulation
  * @property float $private_payment_method_commission
  * @property float $private_total
  * @property float $private_delivery_fee
@@ -44,19 +43,21 @@ use Illuminate\Support\Carbon;
  * @property string|null $branch_rating_value
  * @property Carbon|null $rated_at
  * @property string|null $rating_comment
- * @property string|null $driver_rating_value
  * @property int|null $has_good_food_quality_rating
  * @property int|null $has_good_packaging_quality_rating
  * @property int|null $has_good_order_accuracy_rating
+ * @property string|null $driver_rating_value
+ * @property string|null $driver_rating_comment
+ * @property string|null $driver_rated_at
+ * @property int|null $cancellation_reason_id
+ * @property string|null $cancellation_reason_note
  * @property int|null $rating_issue_id
  * @property int|null $delivery_time
  * @property float $tiptop_share_result
  * @property float $tiptop_share_percentage is tiptop_share_percentage, which is taken directly from commission column in Branch
  * @property float $restaurant_share_result
- * @property int|null $driver_id
  * @property string|null $private_notes take discount_method_id and store it
  * @property string|null $agent_device
- * @property string|null $cancellation_reason_note
  * @property string|null $agent_os
  * @property string|null $restaurant_notes
  * @property Carbon|null $completed_at
@@ -104,7 +105,6 @@ use Illuminate\Support\Carbon;
  * @method static \Illuminate\Database\Eloquent\Builder|Order waitingCourier()
  * @method static \Illuminate\Database\Eloquent\Builder|Order whereAddressId($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Order whereAgentDevice($value)
- * @method static \Illuminate\Database\Eloquent\Builder|Order whereAgentGrandTotal($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Order whereAgentOs($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Order whereBranchId($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Order whereBranchRatingValue($value)
@@ -121,6 +121,8 @@ use Illuminate\Support\Carbon;
  * @method static \Illuminate\Database\Eloquent\Builder|Order whereDeliveryFee($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Order whereDeliveryTime($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Order whereDriverId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Order whereDriverRatedAt($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Order whereDriverRatingComment($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Order whereDriverRatingValue($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Order whereGrandTotal($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Order whereGrandTotalBeforeAgentManipulation($value)
@@ -153,10 +155,6 @@ use Illuminate\Support\Carbon;
  * @method static Builder|Order withTrashed()
  * @method static Builder|Order withoutTrashed()
  * @mixin Eloquent
- * @property string|null $driver_rating_comment
- * @property string|null $driver_rated_at
- * @method static \Illuminate\Database\Eloquent\Builder|Order whereDriverRatedAt($value)
- * @method static \Illuminate\Database\Eloquent\Builder|Order whereDriverRatingComment($value)
  */
 class Order extends Model
 {

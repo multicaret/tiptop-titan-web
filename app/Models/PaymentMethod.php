@@ -27,16 +27,17 @@ use Spatie\MediaLibrary\MediaCollections\Models\Media;
  * @property Carbon|null $created_at
  * @property Carbon|null $updated_at
  * @property Carbon|null $deleted_at
- * @property-read \App\Models\User $creator
- * @property-read \App\Models\User $editor
+ * @property-read User $creator
+ * @property-read User $editor
  * @property-read bool $is_active
  * @property-read bool $is_inactive
  * @property-read bool $logo
+ * @property-read array $status_js
  * @property-read mixed $status_name
  * @property-read MediaCollection|Media[] $media
  * @property-read int|null $media_count
- * @property-read \App\Models\PaymentMethodTranslation|null $translation
- * @property-read Collection|\App\Models\PaymentMethodTranslation[] $translations
+ * @property-read PaymentMethodTranslation|null $translation
+ * @property-read Collection|PaymentMethodTranslation[] $translations
  * @property-read int|null $translations_count
  * @method static \Illuminate\Database\Eloquent\Builder|PaymentMethod active()
  * @method static \Illuminate\Database\Eloquent\Builder|PaymentMethod draft()
@@ -67,7 +68,6 @@ use Spatie\MediaLibrary\MediaCollections\Models\Media;
  * @method static Builder|PaymentMethod withTrashed()
  * @method static Builder|PaymentMethod withoutTrashed()
  * @mixin Eloquent
- * @property-read array $status_js
  */
 class PaymentMethod extends Model implements HasMedia
 {

@@ -64,6 +64,7 @@ use Spatie\MediaLibrary\MediaCollections\Models\Media;
  * @property-read bool $is_active
  * @property-read bool $is_inactive
  * @property-read mixed $link
+ * @property-read array $status_js
  * @property-read mixed $status_name
  * @property-read Taxonomy|null $ingredientCategory
  * @property-read Collection|Taxonomy[] $ingredientsInProductOptions
@@ -79,6 +80,8 @@ use Spatie\MediaLibrary\MediaCollections\Models\Media;
  * @property-read int|null $posts_count
  * @property-read Collection|Product[] $products
  * @property-read int|null $products_count
+ * @property-read Collection|Taxonomy[] $searchableTags
+ * @property-read int|null $searchable_tags_count
  * @property-read Collection|Post[] $tagPosts
  * @property-read int|null $tag_posts_count
  * @property-read TaxonomyTranslation|null $translation
@@ -148,9 +151,6 @@ use Spatie\MediaLibrary\MediaCollections\Models\Media;
  * @method static Builder|Node withoutSelf()
  * @method static \Illuminate\Database\Query\Builder|Taxonomy withoutTrashed()
  * @mixin Eloquent
- * @property-read array $status_js
- * @property-read Collection|Taxonomy[] $searchableTags
- * @property-read int|null $searchable_tags_count
  */
 class Taxonomy extends Node implements HasMedia, ShouldHaveTypes, TranslatableContract
 {

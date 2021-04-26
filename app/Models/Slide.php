@@ -20,8 +20,8 @@ use Illuminate\Support\Carbon;
  * @property int $id
  * @property int $creator_id
  * @property int $editor_id
- * @property int|null $city_id
  * @property int|null $region_id
+ * @property int|null $city_id
  * @property string $uuid
  * @property string $title
  * @property string|null $description
@@ -42,6 +42,7 @@ use Illuminate\Support\Carbon;
  * @property-read bool $is_food
  * @property-read bool $is_grocery
  * @property-read bool $is_inactive
+ * @property-read array $status_js
  * @property-read mixed $status_name
  * @property-read Region|null $region
  * @property-read SlideTranslation|null $translation
@@ -90,7 +91,6 @@ use Illuminate\Support\Carbon;
  * @method static Builder|Slide withTrashed()
  * @method static Builder|Slide withoutTrashed()
  * @mixin Eloquent
- * @property-read array $status_js
  */
 class Slide extends Model
 {

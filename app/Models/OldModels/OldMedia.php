@@ -3,6 +3,11 @@
 namespace App\Models\OldModels;
 
 
+use Eloquent;
+use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Carbon;
+use Spatie\MediaLibrary\MediaCollections\Models\Collections\MediaCollection;
 use Spatie\MediaLibrary\MediaCollections\Models\Media as MediaAlias;
 
 
@@ -25,38 +30,38 @@ use Spatie\MediaLibrary\MediaCollections\Models\Media as MediaAlias;
  * @property array $generated_conversions
  * @property array $responsive_images
  * @property int|null $order_column
- * @property \Illuminate\Support\Carbon|null $created_at
- * @property \Illuminate\Support\Carbon|null $updated_at
+ * @property Carbon|null $created_at
+ * @property Carbon|null $updated_at
+ * @property-read string $disk_path
  * @property-read string $extension
  * @property-read string $human_readable_size
  * @property-read string $type
- * @property-read \Illuminate\Database\Eloquent\Model|\Eloquent $model
- * @method static \Spatie\MediaLibrary\MediaCollections\Models\Collections\MediaCollection|static[] all($columns = ['*'])
- * @method static \Spatie\MediaLibrary\MediaCollections\Models\Collections\MediaCollection|static[] get($columns = ['*'])
- * @method static \Illuminate\Database\Eloquent\Builder|OldMedia newModelQuery()
- * @method static \Illuminate\Database\Eloquent\Builder|OldMedia newQuery()
+ * @property-read Model|Eloquent $model
+ * @method static MediaCollection|static[] all($columns = ['*'])
+ * @method static MediaCollection|static[] get($columns = ['*'])
+ * @method static Builder|OldMedia newModelQuery()
+ * @method static Builder|OldMedia newQuery()
  * @method static Builder|Media ordered()
- * @method static \Illuminate\Database\Eloquent\Builder|OldMedia query()
- * @method static \Illuminate\Database\Eloquent\Builder|OldMedia whereCollectionName($value)
- * @method static \Illuminate\Database\Eloquent\Builder|OldMedia whereConversionsDisk($value)
- * @method static \Illuminate\Database\Eloquent\Builder|OldMedia whereCreatedAt($value)
- * @method static \Illuminate\Database\Eloquent\Builder|OldMedia whereCustomProperties($value)
- * @method static \Illuminate\Database\Eloquent\Builder|OldMedia whereDisk($value)
- * @method static \Illuminate\Database\Eloquent\Builder|OldMedia whereFileName($value)
- * @method static \Illuminate\Database\Eloquent\Builder|OldMedia whereGeneratedConversions($value)
- * @method static \Illuminate\Database\Eloquent\Builder|OldMedia whereId($value)
- * @method static \Illuminate\Database\Eloquent\Builder|OldMedia whereManipulations($value)
- * @method static \Illuminate\Database\Eloquent\Builder|OldMedia whereMimeType($value)
- * @method static \Illuminate\Database\Eloquent\Builder|OldMedia whereModelId($value)
- * @method static \Illuminate\Database\Eloquent\Builder|OldMedia whereModelType($value)
- * @method static \Illuminate\Database\Eloquent\Builder|OldMedia whereName($value)
- * @method static \Illuminate\Database\Eloquent\Builder|OldMedia whereOrderColumn($value)
- * @method static \Illuminate\Database\Eloquent\Builder|OldMedia whereResponsiveImages($value)
- * @method static \Illuminate\Database\Eloquent\Builder|OldMedia whereSize($value)
- * @method static \Illuminate\Database\Eloquent\Builder|OldMedia whereUpdatedAt($value)
- * @method static \Illuminate\Database\Eloquent\Builder|OldMedia whereUuid($value)
- * @mixin \Eloquent
- * @property-read string $disk_path
+ * @method static Builder|OldMedia query()
+ * @method static Builder|OldMedia whereCollectionName($value)
+ * @method static Builder|OldMedia whereConversionsDisk($value)
+ * @method static Builder|OldMedia whereCreatedAt($value)
+ * @method static Builder|OldMedia whereCustomProperties($value)
+ * @method static Builder|OldMedia whereDisk($value)
+ * @method static Builder|OldMedia whereFileName($value)
+ * @method static Builder|OldMedia whereGeneratedConversions($value)
+ * @method static Builder|OldMedia whereId($value)
+ * @method static Builder|OldMedia whereManipulations($value)
+ * @method static Builder|OldMedia whereMimeType($value)
+ * @method static Builder|OldMedia whereModelId($value)
+ * @method static Builder|OldMedia whereModelType($value)
+ * @method static Builder|OldMedia whereName($value)
+ * @method static Builder|OldMedia whereOrderColumn($value)
+ * @method static Builder|OldMedia whereResponsiveImages($value)
+ * @method static Builder|OldMedia whereSize($value)
+ * @method static Builder|OldMedia whereUpdatedAt($value)
+ * @method static Builder|OldMedia whereUuid($value)
+ * @mixin Eloquent
  */
 class OldMedia extends MediaAlias
 {
@@ -91,8 +96,9 @@ class OldMedia extends MediaAlias
     {
         $urlScheme = 'media/%s/%d/%s';
 
-        return sprintf($urlScheme,self::getModelTypes()[$this->model_type], $this->id, $this->file_name);
+        return sprintf($urlScheme, self::getModelTypes()[$this->model_type], $this->id, $this->file_name);
     }
+
     public function getDiskAttribute(): string
     {
         return 'old_s3';

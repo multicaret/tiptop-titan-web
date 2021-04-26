@@ -14,7 +14,7 @@ use Illuminate\Database\Eloquent\Model;
  * @property string $name
  * @property int $utc_offset
  * @property int $dst_offset
- * @property-read Collection|\App\Models\City[] $cities
+ * @property-read Collection|City[] $cities
  * @property-read int|null $cities_count
  * @method static Builder|Timezone newModelQuery()
  * @method static Builder|Timezone newQuery()

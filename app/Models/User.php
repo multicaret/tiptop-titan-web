@@ -30,6 +30,7 @@ use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Str;
 use Laravel\Sanctum\HasApiTokens;
 use Laravel\Sanctum\NewAccessToken;
+use Multicaret\Acquaintances\Models\InteractionRelation;
 use Multicaret\Acquaintances\Traits\CanBeRated;
 use Multicaret\Acquaintances\Traits\CanFavorite;
 use Multicaret\Acquaintances\Traits\CanRate;
@@ -52,7 +53,6 @@ use Spatie\Permission\Traits\HasRoles;
  * @property string|null $password
  * @property string|null $phone_country_code
  * @property string|null $phone_number
- * @property string|null $agent_notes
  * @property string|null $bio
  * @property Carbon|null $dob
  * @property int|null $gender
@@ -66,6 +66,7 @@ use Spatie\Permission\Traits\HasRoles;
  * @property int|null $city_id
  * @property int|null $branch_id
  * @property int|null $team_id
+ * @property int|null $tookan_id
  * @property int|null $selected_address_id
  * @property string|null $latitude
  * @property string|null $longitude
@@ -80,11 +81,11 @@ use Spatie\Permission\Traits\HasRoles;
  * @property Carbon|null $approved_at
  * @property Carbon|null $phone_verified_at
  * @property Carbon|null $suspended_at
- * @property string|null $tookan_id
  * @property Carbon|null $email_verified_at
  * @property Carbon|null $last_logged_in_at
  * @property Carbon|null $last_logged_out_at
  * @property int|null $employment 1:employee, 2:freelancer
+ * @property string|null $agent_notes Added by the agent as a note for the user next order as a kind of a reminder
  * @property string|null $shift
  * @property string|null $remember_token
  * @property Carbon|null $created_at
@@ -101,6 +102,8 @@ use Spatie\Permission\Traits\HasRoles;
  * @property-read Currency|null $currency
  * @property-read mixed $analyst
  * @property-read bool $avatar
+ * @property-read mixed $average_rating_all_types
+ * @property-read mixed $average_rating
  * @property-read bool $cover
  * @property-read mixed $international_phone
  * @property-read bool $is_active
@@ -114,8 +117,16 @@ use Spatie\Permission\Traits\HasRoles;
  * @property-read mixed $is_user
  * @property-read mixed $name
  * @property-read mixed $role
+ * @property-read mixed $role_name
+ * @property-read array $status_js
  * @property-read mixed $status_name
+ * @property-read mixed $sum_rating_all_types
+ * @property-read mixed $sum_rating
  * @property-read mixed $translator
+ * @property-read mixed $user_average_rating_all_types
+ * @property-read mixed $user_average_rating
+ * @property-read mixed $user_sum_rating_all_types
+ * @property-read mixed $user_sum_rating
  * @property-read Language|null $language
  * @property-read MediaCollection|Media[] $media
  * @property-read int|null $media_count
@@ -125,6 +136,10 @@ use Spatie\Permission\Traits\HasRoles;
  * @property-read int|null $orders_count
  * @property-read Collection|Permission[] $permissions
  * @property-read int|null $permissions_count
+ * @property-read Collection|InteractionRelation[] $ratings
+ * @property-read int|null $ratings_count
+ * @property-read Collection|InteractionRelation[] $ratingsPure
+ * @property-read int|null $ratings_pure_count
  * @property-read Region|null $region
  * @property-read Collection|Role[] $roles
  * @property-read int|null $roles_count
@@ -192,20 +207,6 @@ use Spatie\Permission\Traits\HasRoles;
  * @method static Builder|User whereWalletFreeTotal($value)
  * @method static Builder|User whereWalletReservedTotal($value)
  * @mixin Eloquent
- * @property-read mixed $average_rating_all_types
- * @property-read mixed $average_rating
- * @property-read mixed $role_name
- * @property-read array $status_js
- * @property-read mixed $sum_rating_all_types
- * @property-read mixed $sum_rating
- * @property-read mixed $user_average_rating_all_types
- * @property-read mixed $user_average_rating
- * @property-read mixed $user_sum_rating_all_types
- * @property-read mixed $user_sum_rating
- * @property-read Collection|\Multicaret\Acquaintances\Models\InteractionRelation[] $ratings
- * @property-read int|null $ratings_count
- * @property-read Collection|\Multicaret\Acquaintances\Models\InteractionRelation[] $ratingsPure
- * @property-read int|null $ratings_pure_count
  */
 class User extends Authenticatable implements HasMedia, MustVerifyEmail
 {

@@ -62,6 +62,7 @@ use Illuminate\Support\Carbon;
  * @property string|null $zoho_books_id
  * @property string|null $zoho_delivery_item_id
  * @property string|null $zoho_tiptop_delivery_item_id
+ * @property string|null $zoho_books_account_id
  * @property-read Collection|OldCategory[] $categories
  * @property-read int|null $categories_count
  * @property-read OldChain $oldChain
@@ -123,14 +124,13 @@ use Illuminate\Support\Carbon;
  * @method static Builder|OldBranch whereTranslationLike(string $translationField, $value, ?string $locale = null)
  * @method static Builder|OldBranch whereUpdatedAt($value)
  * @method static Builder|OldBranch whereWorkiomId($value)
+ * @method static Builder|OldBranch whereZohoBooksAccountId($value)
  * @method static Builder|OldBranch whereZohoBooksId($value)
  * @method static Builder|OldBranch whereZohoDeliveryItemId($value)
  * @method static Builder|OldBranch whereZohoId($value)
  * @method static Builder|OldBranch whereZohoTiptopDeliveryItemId($value)
  * @method static Builder|OldBranch withTranslation()
  * @mixin Eloquent
- * @property string|null $zoho_books_account_id
- * @method static Builder|OldBranch whereZohoBooksAccountId($value)
  */
 class OldBranch extends OldModel
 {

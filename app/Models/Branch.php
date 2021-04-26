@@ -69,7 +69,7 @@ use Spatie\MediaLibrary\MediaCollections\Models\Collections\MediaCollection;
  * @property Carbon|null $created_at
  * @property Carbon|null $updated_at
  * @property string|null $deleted_at
- * @property Chain $chain
+ * @property-read Chain $chain
  * @property-read City|null $city
  * @property-read Collection|User[] $drivers
  * @property-read int|null $drivers_count
@@ -84,6 +84,7 @@ use Spatie\MediaLibrary\MediaCollections\Models\Collections\MediaCollection;
  * @property-read bool $is_food
  * @property-read bool $is_grocery
  * @property-read bool $is_inactive
+ * @property-read array $status_js
  * @property-read mixed $status_name
  * @property-read mixed $sum_rating_all_types
  * @property-read mixed $sum_rating
@@ -180,7 +181,6 @@ use Spatie\MediaLibrary\MediaCollections\Models\Collections\MediaCollection;
  * @method static Builder|Branch whereWhatsappPhoneNumber($value)
  * @method static Builder|Branch withTranslation()
  * @mixin Eloquent
- * @property-read array $status_js
  */
 class Branch extends Model implements HasMedia
 {

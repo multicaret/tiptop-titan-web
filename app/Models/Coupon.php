@@ -19,7 +19,7 @@ use Illuminate\Support\Carbon;
  * @property int $creator_id
  * @property int $editor_id
  * @property int $currency_id
- * @property int $type 1:Market, 2: Food
+ * @property int $channel 1:food and grocery, 2:grocery, 3:food
  * @property string $name
  * @property string|null $description
  * @property float|null $discount_amount
@@ -43,6 +43,7 @@ use Illuminate\Support\Carbon;
  * @property-read bool $is_food
  * @property-read bool $is_grocery
  * @property-read bool $is_inactive
+ * @property-read array $status_js
  * @property-read mixed $status_name
  * @method static Builder|Coupon active()
  * @method static Builder|Coupon draft()
@@ -53,6 +54,7 @@ use Illuminate\Support\Carbon;
  * @method static Builder|Coupon newQuery()
  * @method static Builder|Coupon notActive()
  * @method static Builder|Coupon query()
+ * @method static Builder|Coupon whereChannel($value)
  * @method static Builder|Coupon whereCreatedAt($value)
  * @method static Builder|Coupon whereCreatorId($value)
  * @method static Builder|Coupon whereCurrencyId($value)
@@ -73,12 +75,8 @@ use Illuminate\Support\Carbon;
  * @method static Builder|Coupon whereRedeemCode($value)
  * @method static Builder|Coupon whereStatus($value)
  * @method static Builder|Coupon whereTotalRedeemedCount($value)
- * @method static Builder|Coupon whereType($value)
  * @method static Builder|Coupon whereUpdatedAt($value)
  * @mixin Eloquent
- * @property int $channel 1:food and grocery, 2:grocery, 3:food
- * @method static Builder|Coupon whereChannel($value)
- * @property-read array $status_js
  */
 class Coupon extends Model
 {

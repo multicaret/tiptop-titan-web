@@ -24,10 +24,11 @@ use Illuminate\Support\Carbon;
  * @property int $status 1:draft, 2:active, 3:Inactive, 4..n:CUSTOM
  * @property Carbon|null $created_at
  * @property Carbon|null $updated_at
- * @property-read Collection|\App\Models\Country[] $countries
+ * @property-read Collection|Country[] $countries
  * @property-read int|null $countries_count
  * @property-read bool $is_active
  * @property-read bool $is_inactive
+ * @property-read array $status_js
  * @property-read mixed $status_name
  * @method static Builder|Currency active()
  * @method static Builder|Currency draft()
@@ -48,7 +49,6 @@ use Illuminate\Support\Carbon;
  * @method static Builder|Currency whereThousandsSeparator($value)
  * @method static Builder|Currency whereUpdatedAt($value)
  * @mixin Eloquent
- * @property-read array $status_js
  */
 class Currency extends Model
 {

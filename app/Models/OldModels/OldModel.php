@@ -10,6 +10,7 @@ use Illuminate\Database\Eloquent\Model;
 abstract class OldModel extends Model
 {
     protected $connection = 'mysql-old';
+
     protected static function booted()
     {
         static::addGlobalScope('not-ancient', function (Builder $builder) {
@@ -21,6 +22,7 @@ abstract class OldModel extends Model
     public function validateLatLong($lat, $long)
     {
         $regex = '/^[-]?(([0-8]?[0-9])\.(\d+))|(90(\.0+)?),[-]?((((1[0-7][0-9])|([0-9]?[0-9]))\.(\d+))|180(\.0+)?)$/';
+
         return preg_match($regex, $lat.','.$long);
     }
 

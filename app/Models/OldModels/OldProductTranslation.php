@@ -3,7 +3,8 @@
 namespace App\Models\OldModels;
 
 
-
+use Eloquent;
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
 
 /**
@@ -16,17 +17,17 @@ use Illuminate\Database\Eloquent\Model;
  * @property string|null $description
  * @property string|null $image
  * @property string|null $unit
- * @method static \Illuminate\Database\Eloquent\Builder|OldProductTranslation newModelQuery()
- * @method static \Illuminate\Database\Eloquent\Builder|OldProductTranslation newQuery()
- * @method static \Illuminate\Database\Eloquent\Builder|OldProductTranslation query()
- * @method static \Illuminate\Database\Eloquent\Builder|OldProductTranslation whereDescription($value)
- * @method static \Illuminate\Database\Eloquent\Builder|OldProductTranslation whereDishId($value)
- * @method static \Illuminate\Database\Eloquent\Builder|OldProductTranslation whereId($value)
- * @method static \Illuminate\Database\Eloquent\Builder|OldProductTranslation whereImage($value)
- * @method static \Illuminate\Database\Eloquent\Builder|OldProductTranslation whereLocale($value)
- * @method static \Illuminate\Database\Eloquent\Builder|OldProductTranslation whereTitle($value)
- * @method static \Illuminate\Database\Eloquent\Builder|OldProductTranslation whereUnit($value)
- * @mixin \Eloquent
+ * @method static Builder|OldProductTranslation newModelQuery()
+ * @method static Builder|OldProductTranslation newQuery()
+ * @method static Builder|OldProductTranslation query()
+ * @method static Builder|OldProductTranslation whereDescription($value)
+ * @method static Builder|OldProductTranslation whereDishId($value)
+ * @method static Builder|OldProductTranslation whereId($value)
+ * @method static Builder|OldProductTranslation whereImage($value)
+ * @method static Builder|OldProductTranslation whereLocale($value)
+ * @method static Builder|OldProductTranslation whereTitle($value)
+ * @method static Builder|OldProductTranslation whereUnit($value)
+ * @mixin Eloquent
  */
 class OldProductTranslation extends Model
 {

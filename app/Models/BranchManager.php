@@ -12,7 +12,7 @@ use Illuminate\Support\Carbon;
  *
  * @property int $id
  * @property int $branch_id
- * @property int $manager_id
+ * @property int $user_id
  * @property int $is_primary
  * @property Carbon|null $created_at
  * @property Carbon|null $updated_at
@@ -23,11 +23,9 @@ use Illuminate\Support\Carbon;
  * @method static Builder|BranchManager whereCreatedAt($value)
  * @method static Builder|BranchManager whereId($value)
  * @method static Builder|BranchManager whereIsPrimary($value)
- * @method static Builder|BranchManager whereManagerId($value)
  * @method static Builder|BranchManager whereUpdatedAt($value)
- * @mixin Eloquent
- * @property int $user_id
  * @method static Builder|BranchManager whereUserId($value)
+ * @mixin Eloquent
  */
 class BranchManager extends Pivot
 {

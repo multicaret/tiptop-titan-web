@@ -16,8 +16,8 @@ use Illuminate\Support\Carbon;
  * @property int $product_id
  * @property Carbon|null $created_at
  * @property Carbon|null $updated_at
- * @property-read \App\Models\Taxonomy $category
- * @property-read \App\Models\Product $product
+ * @property-read Taxonomy $category
+ * @property-read Product $product
  * @method static Builder|CategoryProductCrossSell newModelQuery()
  * @method static Builder|CategoryProductCrossSell newQuery()
  * @method static Builder|CategoryProductCrossSell query()

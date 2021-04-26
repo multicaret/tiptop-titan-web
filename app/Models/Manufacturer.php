@@ -28,6 +28,7 @@ use Spatie\MediaLibrary\MediaCollections\Models\Media;
  * @property-read bool $is_active
  * @property-read bool $is_inactive
  * @property-read bool $logo
+ * @property-read array $status_js
  * @property-read mixed $status_name
  * @property-read MediaCollection|Media[] $media
  * @property-read int|null $media_count
@@ -47,7 +48,6 @@ use Spatie\MediaLibrary\MediaCollections\Models\Media;
  * @method static Builder|Manufacturer whereRegionId($value)
  * @method static Builder|Manufacturer whereUpdatedAt($value)
  * @mixin Eloquent
- * @property-read array $status_js
  */
 class Manufacturer extends Model implements HasMedia
 {

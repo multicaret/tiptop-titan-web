@@ -23,9 +23,10 @@ use Illuminate\Support\Carbon;
  * @property Carbon|null $updated_at
  * @property-read bool $is_active
  * @property-read bool $is_inactive
+ * @property-read array $status_js
  * @property-read mixed $status_name
- * @property-read \App\Models\TranslationTranslation|null $translation
- * @property-read Collection|\App\Models\TranslationTranslation[] $translations
+ * @property-read TranslationTranslation|null $translation
+ * @property-read Collection|TranslationTranslation[] $translations
  * @property-read int|null $translations_count
  * @method static Builder|Translation active()
  * @method static Builder|Translation draft()
@@ -53,7 +54,6 @@ use Illuminate\Support\Carbon;
  * @method static Builder|Translation whereUpdatedAt($value)
  * @method static Builder|Translation withTranslation()
  * @mixin Eloquent
- * @property-read array $status_js
  */
 class Translation extends Model
 {
@@ -83,10 +83,10 @@ class Translation extends Model
         if ($directoryIsExists) {
             $allFiles = File::files(app()['path.lang']."/{$defaultLocale}/");
             $allGroupsFiles = collect($allFiles)->map(function ($file) {
-                if(pathinfo($file, PATHINFO_FILENAME) !== self::IGNORE_FILENAME) {
+                if (pathinfo($file, PATHINFO_FILENAME) !== self::IGNORE_FILENAME) {
                     return pathinfo($file, PATHINFO_FILENAME);
                 }
-            })->filter(fn($filename) => !is_null($filename))->toArray();
+            })->filter(fn($filename) => ! is_null($filename))->toArray();
         }
 
         return $allGroupsFiles;

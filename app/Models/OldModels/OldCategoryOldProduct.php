@@ -3,11 +3,9 @@
 namespace App\Models\OldModels;
 
 
-use Astrotomic\Translatable\Translatable;
-use Carbon\Carbon;
+use Eloquent;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 
 
 /**
@@ -22,7 +20,7 @@ use Illuminate\Database\Eloquent\Relations\BelongsToMany;
  * @method static Builder|OldCategoryOldProduct whereCategoryId($value)
  * @method static Builder|OldCategoryOldProduct whereDishId($value)
  * @method static Builder|OldCategoryOldProduct whereExcelColumnKey($value)
- * @mixin \Eloquent
+ * @mixin Eloquent
  */
 class OldCategoryOldProduct extends Model
 {

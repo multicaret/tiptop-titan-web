@@ -3,8 +3,10 @@
 namespace App\Models\OldModels;
 
 
-use Astrotomic\Translatable\Translatable;
+use Eloquent;
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Carbon;
 
 
 /**
@@ -17,21 +19,21 @@ use Illuminate\Database\Eloquent\Model;
  * @property string|null $description
  * @property string|null $icon
  * @property string|null $image
- * @property \Illuminate\Support\Carbon|null $created_at
- * @property \Illuminate\Support\Carbon|null $updated_at
- * @method static \Illuminate\Database\Eloquent\Builder|OldCategoryTranslation newModelQuery()
- * @method static \Illuminate\Database\Eloquent\Builder|OldCategoryTranslation newQuery()
- * @method static \Illuminate\Database\Eloquent\Builder|OldCategoryTranslation query()
- * @method static \Illuminate\Database\Eloquent\Builder|OldCategoryTranslation whereCategoryId($value)
- * @method static \Illuminate\Database\Eloquent\Builder|OldCategoryTranslation whereCreatedAt($value)
- * @method static \Illuminate\Database\Eloquent\Builder|OldCategoryTranslation whereDescription($value)
- * @method static \Illuminate\Database\Eloquent\Builder|OldCategoryTranslation whereIcon($value)
- * @method static \Illuminate\Database\Eloquent\Builder|OldCategoryTranslation whereId($value)
- * @method static \Illuminate\Database\Eloquent\Builder|OldCategoryTranslation whereImage($value)
- * @method static \Illuminate\Database\Eloquent\Builder|OldCategoryTranslation whereLocale($value)
- * @method static \Illuminate\Database\Eloquent\Builder|OldCategoryTranslation whereTitle($value)
- * @method static \Illuminate\Database\Eloquent\Builder|OldCategoryTranslation whereUpdatedAt($value)
- * @mixin \Eloquent
+ * @property Carbon|null $created_at
+ * @property Carbon|null $updated_at
+ * @method static Builder|OldCategoryTranslation newModelQuery()
+ * @method static Builder|OldCategoryTranslation newQuery()
+ * @method static Builder|OldCategoryTranslation query()
+ * @method static Builder|OldCategoryTranslation whereCategoryId($value)
+ * @method static Builder|OldCategoryTranslation whereCreatedAt($value)
+ * @method static Builder|OldCategoryTranslation whereDescription($value)
+ * @method static Builder|OldCategoryTranslation whereIcon($value)
+ * @method static Builder|OldCategoryTranslation whereId($value)
+ * @method static Builder|OldCategoryTranslation whereImage($value)
+ * @method static Builder|OldCategoryTranslation whereLocale($value)
+ * @method static Builder|OldCategoryTranslation whereTitle($value)
+ * @method static Builder|OldCategoryTranslation whereUpdatedAt($value)
+ * @mixin Eloquent
  */
 class OldCategoryTranslation extends Model
 {

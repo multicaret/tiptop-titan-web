@@ -20,7 +20,7 @@ use Illuminate\Database\Eloquent\Model;
  * @property bool $is_day_off
  * @property \Illuminate\Support\Carbon|null $created_at
  * @property \Illuminate\Support\Carbon|null $updated_at
- * @property-read Model|\Eloquent $workable
+ * @property-read Model|Eloquent $workable
  * @method static Builder|WorkingHour newModelQuery()
  * @method static Builder|WorkingHour newQuery()
  * @method static Builder|WorkingHour query()

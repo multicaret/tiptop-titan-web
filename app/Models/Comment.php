@@ -30,9 +30,9 @@ use Illuminate\Support\Carbon;
  * @property Carbon|null $deleted_at
  * @property-read Collection|Comment[] $children
  * @property-read int|null $children_count
- * @property-read \Illuminate\Database\Eloquent\Model|\Eloquent $commentable
+ * @property-read \Illuminate\Database\Eloquent\Model|Eloquent $commentable
  * @property-read Comment|null $parent
- * @property-read \App\Models\User $user
+ * @property-read User $user
  * @method static \Illuminate\Database\Eloquent\Builder|Node limitDepth($limit)
  * @method static \Illuminate\Database\Eloquent\Builder|Comment newModelQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|Comment newQuery()

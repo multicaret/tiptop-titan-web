@@ -13,9 +13,9 @@ use Illuminate\Support\Carbon;
  * @property int $id
  * @property int $product_option_id
  * @property int $ingredient_id
+ * @property float $price
  * @property Carbon|null $created_at
  * @property Carbon|null $updated_at
- * @property float|null $price
  * @method static Builder|ProductOptionIngredient newModelQuery()
  * @method static Builder|ProductOptionIngredient newQuery()
  * @method static Builder|ProductOptionIngredient query()

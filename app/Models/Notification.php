@@ -20,7 +20,7 @@ use Illuminate\Support\Carbon;
  * @property Carbon|null $read_at
  * @property Carbon|null $created_at
  * @property Carbon|null $updated_at
- * @property-read Model|\Eloquent $notifiable
+ * @property-read Model|Eloquent $notifiable
  * @method static DatabaseNotificationCollection|static[] all($columns = ['*'])
  * @method static DatabaseNotificationCollection|static[] get($columns = ['*'])
  * @method static Builder|Notification newModelQuery()

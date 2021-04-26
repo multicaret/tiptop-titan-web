@@ -3,8 +3,12 @@
 namespace App\Models;
 
 use Astrotomic\Translatable\Translatable;
+use Eloquent;
+use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Support\Carbon;
 
 /**
  * App\Models\ProductOptionSelection
@@ -13,33 +17,33 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
  * @property int $product_option_id
  * @property int $product_id this is a helper
  * @property float $price
- * @property \Illuminate\Support\Carbon|null $created_at
- * @property \Illuminate\Support\Carbon|null $updated_at
- * @property-read \App\Models\ProductOption $option
- * @property-read \App\Models\Product $product
- * @property-read \App\Models\ProductOptionSelectionTranslation|null $translation
- * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\ProductOptionSelectionTranslation[] $translations
+ * @property Carbon|null $created_at
+ * @property Carbon|null $updated_at
+ * @property-read ProductOption $option
+ * @property-read Product $product
+ * @property-read ProductOptionSelectionTranslation|null $translation
+ * @property-read Collection|ProductOptionSelectionTranslation[] $translations
  * @property-read int|null $translations_count
- * @method static \Illuminate\Database\Eloquent\Builder|ProductOptionSelection listsTranslations(string $translationField)
- * @method static \Illuminate\Database\Eloquent\Builder|ProductOptionSelection newModelQuery()
- * @method static \Illuminate\Database\Eloquent\Builder|ProductOptionSelection newQuery()
- * @method static \Illuminate\Database\Eloquent\Builder|ProductOptionSelection notTranslatedIn(?string $locale = null)
- * @method static \Illuminate\Database\Eloquent\Builder|ProductOptionSelection orWhereTranslation(string $translationField, $value, ?string $locale = null)
- * @method static \Illuminate\Database\Eloquent\Builder|ProductOptionSelection orWhereTranslationLike(string $translationField, $value, ?string $locale = null)
- * @method static \Illuminate\Database\Eloquent\Builder|ProductOptionSelection orderByTranslation(string $translationField, string $sortMethod = 'asc')
- * @method static \Illuminate\Database\Eloquent\Builder|ProductOptionSelection query()
- * @method static \Illuminate\Database\Eloquent\Builder|ProductOptionSelection translated()
- * @method static \Illuminate\Database\Eloquent\Builder|ProductOptionSelection translatedIn(?string $locale = null)
- * @method static \Illuminate\Database\Eloquent\Builder|ProductOptionSelection whereCreatedAt($value)
- * @method static \Illuminate\Database\Eloquent\Builder|ProductOptionSelection whereId($value)
- * @method static \Illuminate\Database\Eloquent\Builder|ProductOptionSelection wherePrice($value)
- * @method static \Illuminate\Database\Eloquent\Builder|ProductOptionSelection whereProductId($value)
- * @method static \Illuminate\Database\Eloquent\Builder|ProductOptionSelection whereProductOptionId($value)
- * @method static \Illuminate\Database\Eloquent\Builder|ProductOptionSelection whereTranslation(string $translationField, $value, ?string $locale = null, string $method = 'whereHas', string $operator = '=')
- * @method static \Illuminate\Database\Eloquent\Builder|ProductOptionSelection whereTranslationLike(string $translationField, $value, ?string $locale = null)
- * @method static \Illuminate\Database\Eloquent\Builder|ProductOptionSelection whereUpdatedAt($value)
- * @method static \Illuminate\Database\Eloquent\Builder|ProductOptionSelection withTranslation()
- * @mixin \Eloquent
+ * @method static Builder|ProductOptionSelection listsTranslations(string $translationField)
+ * @method static Builder|ProductOptionSelection newModelQuery()
+ * @method static Builder|ProductOptionSelection newQuery()
+ * @method static Builder|ProductOptionSelection notTranslatedIn(?string $locale = null)
+ * @method static Builder|ProductOptionSelection orWhereTranslation(string $translationField, $value, ?string $locale = null)
+ * @method static Builder|ProductOptionSelection orWhereTranslationLike(string $translationField, $value, ?string $locale = null)
+ * @method static Builder|ProductOptionSelection orderByTranslation(string $translationField, string $sortMethod = 'asc')
+ * @method static Builder|ProductOptionSelection query()
+ * @method static Builder|ProductOptionSelection translated()
+ * @method static Builder|ProductOptionSelection translatedIn(?string $locale = null)
+ * @method static Builder|ProductOptionSelection whereCreatedAt($value)
+ * @method static Builder|ProductOptionSelection whereId($value)
+ * @method static Builder|ProductOptionSelection wherePrice($value)
+ * @method static Builder|ProductOptionSelection whereProductId($value)
+ * @method static Builder|ProductOptionSelection whereProductOptionId($value)
+ * @method static Builder|ProductOptionSelection whereTranslation(string $translationField, $value, ?string $locale = null, string $method = 'whereHas', string $operator = '=')
+ * @method static Builder|ProductOptionSelection whereTranslationLike(string $translationField, $value, ?string $locale = null)
+ * @method static Builder|ProductOptionSelection whereUpdatedAt($value)
+ * @method static Builder|ProductOptionSelection withTranslation()
+ * @mixin Eloquent
  */
 class ProductOptionSelection extends Model
 {

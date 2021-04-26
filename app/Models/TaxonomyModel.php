@@ -62,6 +62,7 @@ use Spatie\MediaLibrary\MediaCollections\Models\Media;
  * @property-read bool $is_active
  * @property-read bool $is_inactive
  * @property-read mixed $link
+ * @property-read array $status_js
  * @property-read mixed $status_name
  * @property-read Taxonomy|null $ingredientCategory
  * @property-read Collection|TaxonomyModel[] $ingredientsOfCategory
@@ -139,7 +140,6 @@ use Spatie\MediaLibrary\MediaCollections\Models\Media;
  * @method static \Illuminate\Database\Query\Builder|TaxonomyModel withTrashed()
  * @method static \Illuminate\Database\Query\Builder|TaxonomyModel withoutTrashed()
  * @mixin Eloquent
- * @property-read array $status_js
  */
 class TaxonomyModel extends Model implements HasMedia, ShouldHaveTypes, TranslatableContract
 {
