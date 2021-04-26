@@ -102,6 +102,7 @@
                                         <div class="form-group">
                                             <label class="control-label">
                                                 @lang('strings.city')
+                                                <b class="text-danger">*</b>
                                             </label>
                                             <multiselect
                                                 :options="regions"
@@ -117,12 +118,18 @@
                                                 @select="retrieveCities"
                                                 autocomplete="false"
                                             ></multiselect>
+                                            @error('city')
+                                            <small class="form-text text-danger">
+                                                {{$message}}
+                                            </small>
+                                            @enderror
                                         </div>
                                     </div>
                                     <div class="col-12">
                                         <div class="form-group">
                                             <label class="control-label">
                                                 Neighborhood
+                                                <b class="text-danger">*</b>
                                             </label>
                                             <multiselect
                                                 :options="cities"
@@ -138,6 +145,11 @@
                                                 {{--                                        @select="retrieveNeighborhoods"--}}
                                                 autocomplete="false"
                                             ></multiselect>
+                                            @error('region')
+                                            <small class="form-text text-danger">
+                                                {{str_replace('region', 'neighborhood', $message)}}
+                                            </small>
+                                            @enderror
                                         </div>
                                     </div>
                                     <div class="col-12">
