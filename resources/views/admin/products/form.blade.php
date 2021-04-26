@@ -453,7 +453,7 @@
             <input type="hidden" name="unit_id" :value="JSON.stringify(product.unit)">
             <input type="hidden" name="unattached-media" class="deleted-file" value="">
             <button class="btn btn-success" type="submit">{{trans('strings.submit')}}</button>
-            @if($product->is_food)
+            @if($product->id && $product->is_food)
                 <a class="btn btn-outline-primary" type="submit" href="{{route('admin.products.options',$product)}}"
                    target="_blank">
                     Options
