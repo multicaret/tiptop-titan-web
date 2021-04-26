@@ -206,9 +206,9 @@ class CartController extends BaseApiController
                 'cart_id' => $cart->id,
                 'product_id' => $productId,
                 'product_object' => Product::find($productId),
-                'total_options_price' => 0,
+                'quantity' => 0,
                 'options_price' => 0,
-                'quantity' => 0, // Todo: check value
+                'total_options_price' => 0,
                 'created_at' => now(),
                 'updated_at' => now(),
             ]);
