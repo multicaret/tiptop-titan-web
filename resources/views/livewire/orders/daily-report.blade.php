@@ -14,7 +14,15 @@
     </style>
     <div class="card-body">
         <div class="form-row">
-            <div class="form-group col-4">
+            <div class="form-group col-3">
+                <label class="form-label" for="date-from">Channel</label>
+                <select wire:model="channel" class="form-control">
+                    <option value="both">Both</option>
+                    <option value="grocery">Grocery</option>
+                    <option value="food">Food</option>
+                </select>
+            </div>
+            <div class="form-group col-3">
                 <label class="form-label" for="date-from">Region</label>
                 <select wire:model="regionId" class="form-control">
                     <option value="all">All</option>
@@ -23,12 +31,12 @@
                     @endforeach
                 </select>
             </div>
-            <div class="form-group col-4">
+            <div class="form-group col-3">
                 <label class="form-label" for="date-from">Date from</label>
                 <input type="date" class="form-control" id="date-from"
                        placeholder="" wire:model.lazy="dateFrom">
             </div>
-            <div class="form-group col-4">
+            <div class="form-group col-3">
                 <label class="form-label" for="date-to">Date to</label>
                 <input type="date" class="form-control" id="date-to"
                        placeholder="" wire:model.lazy="dateTo">
@@ -152,6 +160,13 @@
                         {{$report->day->toDateString()}}
                     </td>
                     <td>
+                        @php
+                            if($channel == 'grocery') {
+                                $report->total_orders_count = $report->total_grocery_orders_count;
+                            }elseif($channel == 'food') {
+                                $report->total_orders_count = $report->total_food_orders_count;
+                            }
+                        @endphp
                         {{$report->total_orders_count}}
                         @if($report->is_peak_of_this_month)
                             <div class="spinner-grow spinner-grow-sm text-success" role="status">
@@ -165,6 +180,13 @@
                         @endif
                     </td>
                     <td>
+                        @php
+                            if($channel == 'grocery') {
+                                $report->total_delivered_orders_count = $report->total_delivered_grocery_orders_count;
+                            }elseif($channel == 'food') {
+                                $report->total_delivered_orders_count = $report->total_delivered_food_orders_count;
+                            }
+                        @endphp
                         <small class="text-muted">
                             ({{$report->total_delivered_orders_count}})
                         </small>

@@ -12,6 +12,7 @@ class DailyReport extends Component
     public $dateFrom;
     public $dateTo;
     public $regionId;
+    public $channel = 'both';
 
     public function updatedDateFrom($newValue)
     {

@@ -17,11 +17,11 @@ class CreateOrderDailyReportsTable extends Migration
             $table->id();
             $table->unsignedBigInteger('region_id')->index();
             $table->date('day');
-            $table->unsignedInteger('groceries_orders_count');
-            $table->unsignedInteger('food_orders_count');
+            $table->unsignedInteger('total_grocery_orders_count');
+            $table->unsignedInteger('total_food_orders_count');
             $table->unsignedInteger('total_orders_count');
-            $table->unsignedInteger('delivered_groceries_orders_count');
-            $table->unsignedInteger('delivered_food_orders_count');
+            $table->unsignedInteger('total_delivered_grocery_orders_count');
+            $table->unsignedInteger('total_delivered_food_orders_count');
             $table->unsignedInteger('total_delivered_orders_count');
             $table->unsignedInteger('average_delivery_time');
             $table->unsignedDouble('average_orders_value');

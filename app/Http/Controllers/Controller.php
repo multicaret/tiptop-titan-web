@@ -314,9 +314,9 @@ class Controller extends BaseController
         return $number - ($number * $percentage / 100);
     }
 
-    public static function percentageInRespectToTwoNumbers($number1, $number2)
+    public static function percentageInRespectToTwoNumbers($number1, $number2, $precision = 2)
     {
-        return $number1 / $number2 * 100;
+        return (double) number_format($number1 / $number2 * 100, $precision);
     }
 
     /**
