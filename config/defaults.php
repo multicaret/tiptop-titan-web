@@ -253,7 +253,7 @@ return [
         'branch_manager' => [],
         'editor' => [],
         'translator' => [],
-        'restaurant_driver' => [],
+        'branch_driver' => [],
         'tiptop_driver' => [],
     ],
     'roles' => [
@@ -280,9 +280,6 @@ return [
         ],
         'branch_manager' => [
             'name' => 'Branch Manager',
-        ],
-        'editor' => [
-            'name' => 'Editor',
         ],
         'translator' => [
             'name' => 'Translator',
