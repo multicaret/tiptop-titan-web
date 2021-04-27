@@ -207,6 +207,7 @@ use Spatie\Permission\Traits\HasRoles;
  * @method static Builder|User whereWalletFreeTotal($value)
  * @method static Builder|User whereWalletReservedTotal($value)
  * @mixin Eloquent
+ * @property-read bool $is_branch_manager
  */
 class User extends Authenticatable implements HasMedia, MustVerifyEmail
 {
@@ -498,6 +499,14 @@ class User extends Authenticatable implements HasMedia, MustVerifyEmail
     public function getIsManagerAttribute(): bool
     {
         return $this->hasAnyRole([self::ROLE_ADMIN, self::ROLE_SUPER]);
+    }
+
+    /**
+     * @return bool
+     */
+    public function getIsBranchManagerAttribute(): bool
+    {
+        return $this->hasAnyRole([self::ROLE_BRANCH_OWNER, self::ROLE_BRANCH_MANAGER]);
     }
 
     /**
