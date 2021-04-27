@@ -194,6 +194,26 @@ class Order extends Model
         'rated_at' => 'datetime',
     ];
 
+    private static function getFormattedActivityLogDifferenceItem(
+        ?array $activityLogDifferenceItem,
+        $columnName,
+        $value
+    ) {
+        switch ($activityLogDifferenceItem['type']) {
+            case 'yes-no':
+                return $value ? 'Yes' : 'No';
+            case 'trans':
+                return trans('strings.order_'.$columnName.'_'.$value);
+            case 'currency-formatted':
+                return Currency::formatHtml($value);
+            case 'datetime-normal':
+                return Carbon::parse($value)->format(config('defaults.datetime.normal_format'));
+            case null:
+            default:
+                return $value;
+        }
+    }
+
     public function user(): BelongsTo
     {
         return $this->belongsTo(User::class);
@@ -392,13 +412,126 @@ class Order extends Model
         return null;
     }
 
-    public static function getActivitiesToRecord()
+    /**
+     * @param $value
+     * @return array|null
+     */
+    private static function getVisibleColumnsInActivityLogDifference($columnName): ?array
     {
-        return [
-            'created',
-            'updated',
-            'deleting',
-            'deleted',
+        $visibleColumns = [
+            'payment_method_id' => [
+                'title' => 'Payment method id',
+                'type' => null,
+            ],
+            'address_id' => [
+                'title' => 'Address id',
+                'type' => null,
+            ],
+            'coupon_id' => [
+                'title' => 'Coupon id',
+                'type' => null,
+            ],
+            'total' => [
+                'title' => 'Total',
+                'type' => 'currency-formatted',
+            ],
+            'coupon_discount_amount' => [
+                'title' => 'Coupon discount amount',
+                'type' => 'currency-formatted',
+            ],
+            'delivery_fee' => [
+                'title' => 'Delivery fee',
+                'type' => 'currency-formatted',
+            ],
+            'grand_total' => [
+                'title' => 'Grand total',
+                'type' => 'currency-formatted',
+            ],
+            'branch_rating_value' => [
+                'title' => 'Branch rating value',
+                'type' => null,
+            ],
+            'rated_at' => [
+                'title' => 'Rated at',
+                'type' => 'datetime-normal',
+            ],
+            'rating_comment' => [
+                'title' => 'Rating comment',
+                'type' => null,
+            ],
+            'rating_issue_id' => [
+                'title' => 'Rating issue id',
+                'type' => null,
+            ],
+            'has_good_food_quality_rating' => [
+                'title' => 'Has good food quality rating',
+                'type' => 'yes-no',
+            ],
+            'has_good_packaging_quality_rating' => [
+                'title' => 'Has good packaging quality rating',
+                'type' => 'yes-no',
+            ],
+            'has_good_order_accuracy_rating' => [
+                'title' => 'Has good order accuracy rating',
+                'type' => 'yes-no',
+            ],
+            'driver_rating_value' => [
+                'title' => 'Driver rating value',
+                'type' => null,
+            ],
+            'driver_rating_comment' => [
+                'title' => 'Driver rating comment',
+                'type' => null,
+            ],
+            'driver_rated_at' => [
+                'title' => 'Driver rated at',
+                'type' => 'datetime-normal',
+            ],
+            'cancellation_reason_note' => [
+                'title' => 'Cancellation reason note',
+                'type' => null,
+            ],
+            'restaurant_notes' => [
+                'title' => 'Restaurant notes',
+                'type' => null,
+            ],
+            'agent_note' => [
+                'title' => 'Agent note',
+                'type' => null,
+            ],
+            'customer_notes' => [
+                'title' => 'Customer notes',
+                'type' => null,
+            ],
+            'status' => [
+                'title' => 'Status',
+                'type' => 'trans',
+            ],
+            'updated_at' => [
+                'title' => 'Update',
+                'type' => 'datetime-normal',
+            ],
         ];
+
+        if (array_key_exists($columnName, $visibleColumns)) {
+            return $visibleColumns[$columnName];
+        }
+
+        return null;
     }
+
+    public static function getActivityLogDifference($columnName, $value)
+    {
+        $activityLogDifferenceItem = self::getVisibleColumnsInActivityLogDifference($columnName);
+        if ( ! is_null($activityLogDifferenceItem)) {
+            $activityLogDifferenceItem['value'] = self::getFormattedActivityLogDifferenceItem($activityLogDifferenceItem,
+                $columnName, $value);
+
+            return $activityLogDifferenceItem;
+        }
+
+        return false;
+    }
+
+
 }

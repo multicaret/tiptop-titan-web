@@ -3,7 +3,6 @@
 namespace App\Http\Controllers\Api\Restaurants\V1;
 
 use App\Http\Controllers\Api\BaseApiController;
-use App\Http\Resources\CategoryMiniResource;
 use App\Http\Resources\FoodBranchResource;
 use App\Models\Branch;
 use DB;
@@ -11,6 +10,15 @@ use Illuminate\Http\Request;
 
 class BranchController extends BaseApiController
 {
+    public function show($restaurant)
+    {
+        $restaurant = Branch::find($restaurant);
+        if (is_null($restaurant)) {
+            return $this->respondNotFound('Restaurants not found');
+        }
+
+        return $this->respond(new FoodBranchResource($restaurant));
+    }
 
     public function edit(Request $request, $restaurant)
     {
@@ -69,19 +77,6 @@ class BranchController extends BaseApiController
         /*return $this->respond([
             'restaurant' => new FoodBranchResource($restaurant)
         ]);*/
-    }
-
-    public function categories($restaurant)
-    {
-        $restaurant = Branch::find($restaurant);
-
-        if (is_null($restaurant)) {
-            return $this->respondNotFound();
-        }
-
-        return $this->respond([
-            'categories' => CategoryMiniResource::collection($restaurant->menuCategories()->orderByDesc('order_column')->get())
-        ]);
     }
 
     public function toggleActivity($restaurant)

@@ -202,7 +202,7 @@ class OrderController extends BaseApiController
         $newOrder->private_delivery_fee = $newOrder->delivery_fee;
         $newOrder->private_grand_total = $newOrder->grand_total;
 //        $newOrder->private_payment_method_commission = $request->input('private_payment_method_commission');
-        $newOrder->notes = $request->input('notes');
+        $newOrder->customer_notes = $request->input('notes');
         $newOrder->status = Order::STATUS_NEW;
         $newOrder->completed_at = now();
         $newOrder->type = $branch->type;

@@ -1,18 +1,19 @@
 <script src="https://cdn.onesignal.com/sdks/OneSignalSDK.js" async=""></script>
 
-<script type="text/javascript">
+{{--<script type="text/javascript">
     if (window.App.authenticated) {
 
     }
-</script>
+</script>--}}
 <script>
-    let OneSignal = window.OneSignal || [];
+    window.OneSignal = window.OneSignal || [];
     OneSignal.push(function () {
         OneSignal.init({
             appId: "{{config('services.onesignal.app_id')}}",
             notifyButton: {
                 enable: true,
             },
+            subdomainName: "titan-tiptop",
             persistNotification: true,
             welcomeNotification: {
                 "title": "Welcome 😇",
@@ -60,7 +61,7 @@
         });
     }
 
-    
+
     OneSignal.push(function () {
         // If we're on an unsupported browser, do nothing
         if (!OneSignal.isPushNotificationsSupported()) {

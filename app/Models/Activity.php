@@ -123,4 +123,25 @@ class Activity extends Model
             return 'warning';
         }
     }
+
+    public function getFontAwesomeClassesBasedOnType()
+    {
+        if (str_contains($this->type, 'updated')) {
+            return 'fas fa-edit';
+        }
+        if (str_contains($this->type, 'created')) {
+            return 'fas fa-plus-circle';
+        }
+        if (str_contains($this->type, 'deleted')) {
+            return 'fas fa-trash-alt';
+        }
+
+        /* Ings*/
+        if (str_contains($this->type, 'updating')) {
+            return 'fas fa-edit';
+        }
+        if (str_contains($this->type, 'deleting')) {
+            return 'fas fa-trash-alt';
+        }
+    }
 }

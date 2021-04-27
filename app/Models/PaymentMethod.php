@@ -146,8 +146,4 @@ class PaymentMethod extends Model implements HasMedia
         return $logo;
     }
 
-    public function getFontAwesomeIcon()
-    {
-
-    }
 }

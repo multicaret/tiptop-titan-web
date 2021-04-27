@@ -144,6 +144,10 @@ return [
             ],
         ]
     ],
+    'datetime' => [
+        'short_format' => 'Y-m-d H:i',
+        'normal_format' => 'd M Y H:i',
+    ],
     'date' => [
         'short_format' => 'Y-m-d',
         'normal_format' => 'd M Y',
@@ -249,7 +253,7 @@ return [
         'branch_manager' => [],
         'editor' => [],
         'translator' => [],
-        'restaurant_driver' => [],
+        'branch_driver' => [],
         'tiptop_driver' => [],
     ],
     'roles' => [
@@ -276,9 +280,6 @@ return [
         ],
         'branch_manager' => [
             'name' => 'Branch Manager',
-        ],
-        'editor' => [
-            'name' => 'Editor',
         ],
         'translator' => [
             'name' => 'Translator',

@@ -229,7 +229,6 @@ class User extends Authenticatable implements HasMedia, MustVerifyEmail
     public const ROLE_ADMIN = 'admin';
     public const ROLE_SUPERVISOR = 'supervisor';
     public const ROLE_AGENT = 'agent';
-    public const ROLE_EDITOR = 'editor';
     public const ROLE_CONTENT_EDITOR = 'content-editor';
     public const ROLE_MARKETER = 'marketer';
     public const ROLE_BRANCH_OWNER = 'branch-owner';

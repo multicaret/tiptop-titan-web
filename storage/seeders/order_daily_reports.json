@@ -1,5 +1,6 @@
 [
     {
+        "region_id": 2,
         "day": "2021-04-24",
         "total_orders_count": 36,
         "total_grocery_orders_count": 4,
@@ -27,6 +28,7 @@
         "is_nadir_of_this_month": 0
     },
     {
+        "region_id": 2,
         "day": "2021-04-23",
         "total_orders_count": 114,
         "total_grocery_orders_count": 12,
@@ -54,6 +56,7 @@
         "is_nadir_of_this_month": 0
     },
     {
+        "region_id": 2,
         "day": "2021-04-22",
         "total_orders_count": 147,
         "total_grocery_orders_count": 23,
@@ -81,6 +84,7 @@
         "is_nadir_of_this_month": 0
     },
     {
+        "region_id": 2,
         "day": "2021-04-21",
         "total_orders_count": 114,
         "total_grocery_orders_count": 19,
@@ -108,6 +112,7 @@
         "is_nadir_of_this_month": 0
     },
     {
+        "region_id": 2,
         "day": "2021-04-20",
         "total_orders_count": 118,
         "total_grocery_orders_count": 17,
@@ -135,6 +140,7 @@
         "is_nadir_of_this_month": 0
     },
     {
+        "region_id": 2,
         "day": "2021-04-19",
         "total_orders_count": 117,
         "total_grocery_orders_count": 16,
@@ -162,6 +168,7 @@
         "is_nadir_of_this_month": 0
     },
     {
+        "region_id": 2,
         "day": "2021-04-18",
         "total_orders_count": 114,
         "total_grocery_orders_count": 15,
@@ -189,6 +196,7 @@
         "is_nadir_of_this_month": 0
     },
     {
+        "region_id": 2,
         "day": "2021-04-17",
         "total_orders_count": 104,
         "total_grocery_orders_count": 10,
@@ -216,6 +224,7 @@
         "is_nadir_of_this_month": 0
     },
     {
+        "region_id": 2,
         "day": "2021-04-16",
         "total_orders_count": 86,
         "total_grocery_orders_count": 16,
@@ -243,6 +252,7 @@
         "is_nadir_of_this_month": 0
     },
     {
+        "region_id": 2,
         "day": "2021-04-15",
         "total_orders_count": 94,
         "total_grocery_orders_count": 14,
@@ -270,6 +280,7 @@
         "is_nadir_of_this_month": 0
     },
     {
+        "region_id": 2,
         "day": "2021-04-14",
         "total_orders_count": 85,
         "total_grocery_orders_count": 13,
@@ -297,6 +308,7 @@
         "is_nadir_of_this_month": 0
     },
     {
+        "region_id": 2,
         "day": "2021-04-13",
         "total_orders_count": 96,
         "total_grocery_orders_count": 17,
@@ -324,6 +336,7 @@
         "is_nadir_of_this_month": 0
     },
     {
+        "region_id": 2,
         "day": "2021-04-12",
         "total_orders_count": 129,
         "total_grocery_orders_count": 14,
@@ -351,6 +364,7 @@
         "is_nadir_of_this_month": 0
     },
     {
+        "region_id": 2,
         "day": "2021-04-11",
         "total_orders_count": 83,
         "total_grocery_orders_count": 8,
@@ -378,6 +392,7 @@
         "is_nadir_of_this_month": 0
     },
     {
+        "region_id": 2,
         "day": "2021-04-10",
         "total_orders_count": 75,
         "total_grocery_orders_count": 6,
@@ -405,6 +420,7 @@
         "is_nadir_of_this_month": 0
     },
     {
+        "region_id": 2,
         "day": "2021-04-09",
         "total_orders_count": 58,
         "total_grocery_orders_count": 9,
@@ -432,6 +448,7 @@
         "is_nadir_of_this_month": 0
     },
     {
+        "region_id": 2,
         "day": "2021-04-08",
         "total_orders_count": 71,
         "total_grocery_orders_count": 8,
@@ -459,6 +476,7 @@
         "is_nadir_of_this_month": 0
     },
     {
+        "region_id": 2,
         "day": "2021-04-07",
         "total_orders_count": 131,
         "total_grocery_orders_count": 10,
@@ -486,6 +504,7 @@
         "is_nadir_of_this_month": 0
     },
     {
+        "region_id": 2,
         "day": "2021-04-06",
         "total_orders_count": 98,
         "total_grocery_orders_count": 12,
@@ -513,6 +532,7 @@
         "is_nadir_of_this_month": 0
     },
     {
+        "region_id": 2,
         "day": "2021-04-05",
         "total_orders_count": 93,
         "total_grocery_orders_count": 10,
@@ -540,6 +560,7 @@
         "is_nadir_of_this_month": 0
     },
     {
+        "region_id": 2,
         "day": "2021-04-04",
         "total_orders_count": 99,
         "total_grocery_orders_count": 18,
@@ -567,6 +588,7 @@
         "is_nadir_of_this_month": 0
     },
     {
+        "region_id": 2,
         "day": "2021-04-03",
         "total_orders_count": 88,
         "total_grocery_orders_count": 12,
@@ -594,6 +616,7 @@
         "is_nadir_of_this_month": 0
     },
     {
+        "region_id": 2,
         "day": "2021-04-02",
         "total_orders_count": 98,
         "total_grocery_orders_count": 13,
@@ -621,6 +644,7 @@
         "is_nadir_of_this_month": 0
     },
     {
+        "region_id": 2,
         "day": "2021-04-01",
         "total_orders_count": 125,
         "total_grocery_orders_count": 18,
@@ -648,6 +672,7 @@
         "is_nadir_of_this_month": 1
     },
     {
+        "region_id": 2,
         "day": "2021-03-31",
         "total_orders_count": 93,
         "total_grocery_orders_count": 10,
@@ -675,6 +700,7 @@
         "is_nadir_of_this_month": 0
     },
     {
+        "region_id": 2,
         "day": "2021-03-30",
         "total_orders_count": 92,
         "total_grocery_orders_count": 9,
@@ -702,6 +728,7 @@
         "is_nadir_of_this_month": 0
     },
     {
+        "region_id": 2,
         "day": "2021-03-29",
         "total_orders_count": 99,
         "total_grocery_orders_count": 13,
@@ -729,6 +756,7 @@
         "is_nadir_of_this_month": 0
     },
     {
+        "region_id": 2,
         "day": "2021-03-28",
         "total_orders_count": 94,
         "total_grocery_orders_count": 20,
@@ -756,6 +784,7 @@
         "is_nadir_of_this_month": 0
     },
     {
+        "region_id": 2,
         "day": "2021-03-27",
         "total_orders_count": 60,
         "total_grocery_orders_count": 4,
@@ -783,6 +812,7 @@
         "is_nadir_of_this_month": 0
     },
     {
+        "region_id": 2,
         "day": "2021-03-26",
         "total_orders_count": 88,
         "total_grocery_orders_count": 14,
@@ -810,6 +840,7 @@
         "is_nadir_of_this_month": 0
     },
     {
+        "region_id": 2,
         "day": "2021-03-25",
         "total_orders_count": 77,
         "total_grocery_orders_count": 25,
@@ -837,6 +868,7 @@
         "is_nadir_of_this_month": 0
     },
     {
+        "region_id": 2,
         "day": "2021-03-24",
         "total_orders_count": 99,
         "total_grocery_orders_count": 17,
@@ -864,6 +896,7 @@
         "is_nadir_of_this_month": 1
     },
     {
+        "region_id": 2,
         "day": "2021-03-23",
         "total_orders_count": 81,
         "total_grocery_orders_count": 3,
@@ -891,6 +924,7 @@
         "is_nadir_of_this_month": 0
     },
     {
+        "region_id": 2,
         "day": "2021-03-22",
         "total_orders_count": 51,
         "total_grocery_orders_count": 8,
@@ -918,6 +952,7 @@
         "is_nadir_of_this_month": 0
     },
     {
+        "region_id": 2,
         "day": "2021-03-21",
         "total_orders_count": 31,
         "total_grocery_orders_count": 2,
@@ -945,6 +980,7 @@
         "is_nadir_of_this_month": 0
     },
     {
+        "region_id": 2,
         "day": "2021-03-20",
         "total_orders_count": 37,
         "total_grocery_orders_count": 1,
@@ -972,6 +1008,7 @@
         "is_nadir_of_this_month": 0
     },
     {
+        "region_id": 2,
         "day": "2021-03-19",
         "total_orders_count": 28,
         "total_grocery_orders_count": 2,
@@ -999,6 +1036,7 @@
         "is_nadir_of_this_month": 0
     },
     {
+        "region_id": 2,
         "day": "2021-03-18",
         "total_orders_count": 109,
         "total_grocery_orders_count": 1,
@@ -1026,6 +1064,7 @@
         "is_nadir_of_this_month": 0
     },
     {
+        "region_id": 2,
         "day": "2021-03-17",
         "total_orders_count": 29,
         "total_grocery_orders_count": 0,
@@ -1053,6 +1092,7 @@
         "is_nadir_of_this_month": 0
     },
     {
+        "region_id": 2,
         "day": "2021-03-16",
         "total_orders_count": 63,
         "total_grocery_orders_count": 1,
@@ -1080,6 +1120,7 @@
         "is_nadir_of_this_month": 0
     },
     {
+        "region_id": 2,
         "day": "2021-03-15",
         "total_orders_count": 35,
         "total_grocery_orders_count": 2,
@@ -1107,6 +1148,7 @@
         "is_nadir_of_this_month": 0
     },
     {
+        "region_id": 2,
         "day": "2021-03-14",
         "total_orders_count": 31,
         "total_grocery_orders_count": 2,
@@ -1134,6 +1176,7 @@
         "is_nadir_of_this_month": 0
     },
     {
+        "region_id": 2,
         "day": "2021-03-13",
         "total_orders_count": 32,
         "total_grocery_orders_count": 0,
@@ -1161,6 +1204,7 @@
         "is_nadir_of_this_month": 0
     },
     {
+        "region_id": 2,
         "day": "2021-03-12",
         "total_orders_count": 31,
         "total_grocery_orders_count": 0,
@@ -1188,6 +1232,7 @@
         "is_nadir_of_this_month": 0
     },
     {
+        "region_id": 2,
         "day": "2021-03-11",
         "total_orders_count": 34,
         "total_grocery_orders_count": 0,
@@ -1215,6 +1260,7 @@
         "is_nadir_of_this_month": 0
     },
     {
+        "region_id": 2,
         "day": "2021-03-10",
         "total_orders_count": 44,
         "total_grocery_orders_count": 0,
@@ -1242,6 +1288,7 @@
         "is_nadir_of_this_month": 0
     },
     {
+        "region_id": 2,
         "day": "2021-03-09",
         "total_orders_count": 23,
         "total_grocery_orders_count": 0,
@@ -1269,6 +1316,7 @@
         "is_nadir_of_this_month": 0
     },
     {
+        "region_id": 2,
         "day": "2021-03-08",
         "total_orders_count": 50,
         "total_grocery_orders_count": 0,
@@ -1296,6 +1344,7 @@
         "is_nadir_of_this_month": 0
     },
     {
+        "region_id": 2,
         "day": "2021-03-07",
         "total_orders_count": 53,
         "total_grocery_orders_count": 0,
@@ -1323,6 +1372,7 @@
         "is_nadir_of_this_month": 0
     },
     {
+        "region_id": 2,
         "day": "2021-03-06",
         "total_orders_count": 63,
         "total_grocery_orders_count": 2,
@@ -1350,6 +1400,7 @@
         "is_nadir_of_this_month": 0
     },
     {
+        "region_id": 2,
         "day": "2021-03-05",
         "total_orders_count": 65,
         "total_grocery_orders_count": 3,
@@ -1377,6 +1428,7 @@
         "is_nadir_of_this_month": 0
     },
     {
+        "region_id": 2,
         "day": "2021-03-04",
         "total_orders_count": 37,
         "total_grocery_orders_count": 1,
@@ -1404,6 +1456,7 @@
         "is_nadir_of_this_month": 0
     },
     {
+        "region_id": 2,
         "day": "2021-03-03",
         "total_orders_count": 30,
         "total_grocery_orders_count": 0,
@@ -1431,6 +1484,7 @@
         "is_nadir_of_this_month": 0
     },
     {
+        "region_id": 2,
         "day": "2021-03-02",
         "total_orders_count": 26,
         "total_grocery_orders_count": 0,
@@ -1458,6 +1512,7 @@
         "is_nadir_of_this_month": 0
     },
     {
+        "region_id": 2,
         "day": "2021-03-01",
         "total_orders_count": 40,
         "total_grocery_orders_count": 0,
@@ -1485,6 +1540,7 @@
         "is_nadir_of_this_month": 0
     },
     {
+        "region_id": 2,
         "day": "2021-02-28",
         "total_orders_count": 21,
         "total_grocery_orders_count": 0,
@@ -1512,6 +1568,7 @@
         "is_nadir_of_this_month": 0
     },
     {
+        "region_id": 2,
         "day": "2021-02-27",
         "total_orders_count": 27,
         "total_grocery_orders_count": 0,
@@ -1539,6 +1596,7 @@
         "is_nadir_of_this_month": 0
     },
     {
+        "region_id": 2,
         "day": "2021-02-26",
         "total_orders_count": 28,
         "total_grocery_orders_count": 0,
@@ -1566,6 +1624,7 @@
         "is_nadir_of_this_month": 0
     },
     {
+        "region_id": 2,
         "day": "2021-02-25",
         "total_orders_count": 16,
         "total_grocery_orders_count": 0,
@@ -1593,6 +1652,7 @@
         "is_nadir_of_this_month": 0
     },
     {
+        "region_id": 2,
         "day": "2021-02-24",
         "total_orders_count": 15,
         "total_grocery_orders_count": 0,
@@ -1620,6 +1680,7 @@
         "is_nadir_of_this_month": 0
     },
     {
+        "region_id": 2,
         "day": "2021-02-23",
         "total_orders_count": 27,
         "total_grocery_orders_count": 0,
@@ -1647,6 +1708,7 @@
         "is_nadir_of_this_month": 0
     },
     {
+        "region_id": 2,
         "day": "2021-02-22",
         "total_orders_count": 15,
         "total_grocery_orders_count": 0,
@@ -1674,6 +1736,7 @@
         "is_nadir_of_this_month": 0
     },
     {
+        "region_id": 2,
         "day": "2021-02-21",
         "total_orders_count": 35,
         "total_grocery_orders_count": 0,
@@ -1701,6 +1764,7 @@
         "is_nadir_of_this_month": 0
     },
     {
+        "region_id": 2,
         "day": "2021-02-20",
         "total_orders_count": 13,
         "total_grocery_orders_count": 0,
@@ -1728,6 +1792,7 @@
         "is_nadir_of_this_month": 0
     },
     {
+        "region_id": 2,
         "day": "2021-02-19",
         "total_orders_count": 11,
         "total_grocery_orders_count": 0,
@@ -1755,6 +1820,7 @@
         "is_nadir_of_this_month": 0
     },
     {
+        "region_id": 2,
         "day": "2021-02-18",
         "total_orders_count": 22,
         "total_grocery_orders_count": 0,
@@ -1782,6 +1848,7 @@
         "is_nadir_of_this_month": 0
     },
     {
+        "region_id": 2,
         "day": "2021-02-17",
         "total_orders_count": 21,
         "total_grocery_orders_count": 0,
@@ -1809,6 +1876,7 @@
         "is_nadir_of_this_month": 0
     },
     {
+        "region_id": 2,
         "day": "2021-02-16",
         "total_orders_count": 18,
         "total_grocery_orders_count": 0,
@@ -1836,6 +1904,7 @@
         "is_nadir_of_this_month": 0
     },
     {
+        "region_id": 2,
         "day": "2021-02-15",
         "total_orders_count": 38,
         "total_grocery_orders_count": 0,
@@ -1863,6 +1932,7 @@
         "is_nadir_of_this_month": 1
     },
     {
+        "region_id": 2,
         "day": "2021-02-14",
         "total_orders_count": 40,
         "total_grocery_orders_count": 0,
@@ -1890,6 +1960,7 @@
         "is_nadir_of_this_month": 0
     },
     {
+        "region_id": 2,
         "day": "2021-02-13",
         "total_orders_count": 22,
         "total_grocery_orders_count": 0,
@@ -1917,6 +1988,7 @@
         "is_nadir_of_this_month": 0
     },
     {
+        "region_id": 2,
         "day": "2021-02-12",
         "total_orders_count": 16,
         "total_grocery_orders_count": 0,
@@ -1944,6 +2016,7 @@
         "is_nadir_of_this_month": 0
     },
     {
+        "region_id": 2,
         "day": "2021-02-11",
         "total_orders_count": 18,
         "total_grocery_orders_count": 0,
@@ -1971,6 +2044,7 @@
         "is_nadir_of_this_month": 0
     },
     {
+        "region_id": 2,
         "day": "2021-02-10",
         "total_orders_count": 24,
         "total_grocery_orders_count": 0,
@@ -1998,6 +2072,7 @@
         "is_nadir_of_this_month": 0
     },
     {
+        "region_id": 2,
         "day": "2021-02-09",
         "total_orders_count": 56,
         "total_grocery_orders_count": 0,
@@ -2025,6 +2100,7 @@
         "is_nadir_of_this_month": 0
     },
     {
+        "region_id": 2,
         "day": "2021-02-08",
         "total_orders_count": 37,
         "total_grocery_orders_count": 0,
@@ -2052,6 +2128,7 @@
         "is_nadir_of_this_month": 0
     },
     {
+        "region_id": 2,
         "day": "2021-02-07",
         "total_orders_count": 37,
         "total_grocery_orders_count": 0,
@@ -2079,6 +2156,7 @@
         "is_nadir_of_this_month": 0
     },
     {
+        "region_id": 2,
         "day": "2021-02-06",
         "total_orders_count": 24,
         "total_grocery_orders_count": 0,
@@ -2106,6 +2184,7 @@
         "is_nadir_of_this_month": 0
     },
     {
+        "region_id": 2,
         "day": "2021-02-05",
         "total_orders_count": 35,
         "total_grocery_orders_count": 0,
@@ -2133,6 +2212,7 @@
         "is_nadir_of_this_month": 0
     },
     {
+        "region_id": 2,
         "day": "2021-02-04",
         "total_orders_count": 34,
         "total_grocery_orders_count": 0,
@@ -2160,6 +2240,7 @@
         "is_nadir_of_this_month": 0
     },
     {
+        "region_id": 2,
         "day": "2021-02-03",
         "total_orders_count": 48,
         "total_grocery_orders_count": 0,
@@ -2187,6 +2268,7 @@
         "is_nadir_of_this_month": 0
     },
     {
+        "region_id": 2,
         "day": "2021-02-02",
         "total_orders_count": 32,
         "total_grocery_orders_count": 0,
@@ -2214,6 +2296,7 @@
         "is_nadir_of_this_month": 0
     },
     {
+        "region_id": 2,
         "day": "2021-02-01",
         "total_orders_count": 34,
         "total_grocery_orders_count": 0,
@@ -2241,6 +2324,7 @@
         "is_nadir_of_this_month": 0
     },
     {
+        "region_id": 2,
         "day": "2021-01-31",
         "total_orders_count": 37,
         "total_grocery_orders_count": 0,
@@ -2268,6 +2352,7 @@
         "is_nadir_of_this_month": 0
     },
     {
+        "region_id": 2,
         "day": "2021-01-30",
         "total_orders_count": 60,
         "total_grocery_orders_count": 0,
@@ -2295,6 +2380,7 @@
         "is_nadir_of_this_month": 0
     },
     {
+        "region_id": 2,
         "day": "2021-01-29",
         "total_orders_count": 45,
         "total_grocery_orders_count": 0,
@@ -2322,6 +2408,7 @@
         "is_nadir_of_this_month": 0
     },
     {
+        "region_id": 2,
         "day": "2021-01-28",
         "total_orders_count": 42,
         "total_grocery_orders_count": 0,
@@ -2349,6 +2436,7 @@
         "is_nadir_of_this_month": 0
     },
     {
+        "region_id": 2,
         "day": "2021-01-27",
         "total_orders_count": 46,
         "total_grocery_orders_count": 0,
@@ -2376,6 +2464,7 @@
         "is_nadir_of_this_month": 0
     },
     {
+        "region_id": 2,
         "day": "2021-01-26",
         "total_orders_count": 26,
         "total_grocery_orders_count": 0,
@@ -2403,6 +2492,7 @@
         "is_nadir_of_this_month": 0
     },
     {
+        "region_id": 2,
         "day": "2021-01-25",
         "total_orders_count": 34,
         "total_grocery_orders_count": 0,
@@ -2430,6 +2520,7 @@
         "is_nadir_of_this_month": 0
     },
     {
+        "region_id": 2,
         "day": "2021-01-24",
         "total_orders_count": 27,
         "total_grocery_orders_count": 0,
@@ -2457,6 +2548,7 @@
         "is_nadir_of_this_month": 0
     },
     {
+        "region_id": 2,
         "day": "2021-01-23",
         "total_orders_count": 26,
         "total_grocery_orders_count": 0,
@@ -2484,6 +2576,7 @@
         "is_nadir_of_this_month": 0
     },
     {
+        "region_id": 2,
         "day": "2021-01-22",
         "total_orders_count": 13,
         "total_grocery_orders_count": 0,
@@ -2511,6 +2604,7 @@
         "is_nadir_of_this_month": 0
     },
     {
+        "region_id": 2,
         "day": "2021-01-21",
         "total_orders_count": 23,
         "total_grocery_orders_count": 0,
@@ -2538,6 +2632,7 @@
         "is_nadir_of_this_month": 0
     },
     {
+        "region_id": 2,
         "day": "2021-01-20",
         "total_orders_count": 17,
         "total_grocery_orders_count": 0,
@@ -2565,6 +2660,7 @@
         "is_nadir_of_this_month": 0
     },
     {
+        "region_id": 2,
         "day": "2021-01-19",
         "total_orders_count": 52,
         "total_grocery_orders_count": 0,
@@ -2592,6 +2688,7 @@
         "is_nadir_of_this_month": 0
     },
     {
+        "region_id": 2,
         "day": "2021-01-18",
         "total_orders_count": 24,
         "total_grocery_orders_count": 0,
@@ -2619,6 +2716,7 @@
         "is_nadir_of_this_month": 0
     },
     {
+        "region_id": 2,
         "day": "2021-01-17",
         "total_orders_count": 26,
         "total_grocery_orders_count": 0,
@@ -2646,6 +2744,7 @@
         "is_nadir_of_this_month": 0
     },
     {
+        "region_id": 2,
         "day": "2021-01-16",
         "total_orders_count": 37,
         "total_grocery_orders_count": 0,
@@ -2673,6 +2772,7 @@
         "is_nadir_of_this_month": 0
     },
     {
+        "region_id": 2,
         "day": "2021-01-15",
         "total_orders_count": 29,
         "total_grocery_orders_count": 0,
@@ -2700,6 +2800,7 @@
         "is_nadir_of_this_month": 0
     },
     {
+        "region_id": 2,
         "day": "2021-01-14",
         "total_orders_count": 24,
         "total_grocery_orders_count": 0,
@@ -2727,6 +2828,7 @@
         "is_nadir_of_this_month": 0
     },
     {
+        "region_id": 2,
         "day": "2021-01-13",
         "total_orders_count": 50,
         "total_grocery_orders_count": 0,
@@ -2754,6 +2856,7 @@
         "is_nadir_of_this_month": 1
     },
     {
+        "region_id": 2,
         "day": "2021-01-12",
         "total_orders_count": 89,
         "total_grocery_orders_count": 0,
@@ -2781,6 +2884,7 @@
         "is_nadir_of_this_month": 1
     },
     {
+        "region_id": 2,
         "day": "2021-01-11",
         "total_orders_count": 39,
         "total_grocery_orders_count": 0,
@@ -2808,6 +2912,7 @@
         "is_nadir_of_this_month": 0
     },
     {
+        "region_id": 2,
         "day": "2021-01-10",
         "total_orders_count": 29,
         "total_grocery_orders_count": 0,
@@ -2835,6 +2940,7 @@
         "is_nadir_of_this_month": 0
     },
     {
+        "region_id": 2,
         "day": "2021-01-09",
         "total_orders_count": 42,
         "total_grocery_orders_count": 0,
@@ -2862,6 +2968,7 @@
         "is_nadir_of_this_month": 0
     },
     {
+        "region_id": 2,
         "day": "2021-01-08",
         "total_orders_count": 8,
         "total_grocery_orders_count": 0,
@@ -2889,6 +2996,7 @@
         "is_nadir_of_this_month": 0
     },
     {
+        "region_id": 2,
         "day": "2021-01-07",
         "total_orders_count": 22,
         "total_grocery_orders_count": 0,
@@ -2916,6 +3024,7 @@
         "is_nadir_of_this_month": 0
     },
     {
+        "region_id": 2,
         "day": "2021-01-06",
         "total_orders_count": 20,
         "total_grocery_orders_count": 0,
@@ -2943,6 +3052,7 @@
         "is_nadir_of_this_month": 0
     },
     {
+        "region_id": 2,
         "day": "2021-01-05",
         "total_orders_count": 26,
         "total_grocery_orders_count": 0,
@@ -2970,6 +3080,7 @@
         "is_nadir_of_this_month": 0
     },
     {
+        "region_id": 2,
         "day": "2021-01-04",
         "total_orders_count": 20,
         "total_grocery_orders_count": 0,
@@ -2997,6 +3108,7 @@
         "is_nadir_of_this_month": 0
     },
     {
+        "region_id": 2,
         "day": "2021-01-03",
         "total_orders_count": 35,
         "total_grocery_orders_count": 0,
@@ -3024,6 +3136,7 @@
         "is_nadir_of_this_month": 0
     },
     {
+        "region_id": 2,
         "day": "2021-01-02",
         "total_orders_count": 31,
         "total_grocery_orders_count": 0,
@@ -3051,6 +3164,7 @@
         "is_nadir_of_this_month": 0
     },
     {
+        "region_id": 2,
         "day": "2021-01-01",
         "total_orders_count": 3,
         "total_grocery_orders_count": 0,
@@ -3078,6 +3192,7 @@
         "is_nadir_of_this_month": 0
     },
     {
+        "region_id": 2,
         "day": "2020-12-31",
         "total_orders_count": 1,
         "total_grocery_orders_count": 0,
@@ -3105,6 +3220,7 @@
         "is_nadir_of_this_month": 0
     },
     {
+        "region_id": 2,
         "day": "2020-12-30",
         "total_orders_count": 6,
         "total_grocery_orders_count": 0,
@@ -3132,6 +3248,7 @@
         "is_nadir_of_this_month": 0
     },
     {
+        "region_id": 2,
         "day": "2020-12-29",
         "total_orders_count": 5,
         "total_grocery_orders_count": 0,
@@ -3159,6 +3276,7 @@
         "is_nadir_of_this_month": 0
     },
     {
+        "region_id": 2,
         "day": "2020-12-28",
         "total_orders_count": 2,
         "total_grocery_orders_count": 0,
@@ -3186,6 +3304,7 @@
         "is_nadir_of_this_month": 1
     },
     {
+        "region_id": 2,
         "day": "2020-12-27",
         "total_orders_count": 0,
         "total_grocery_orders_count": 0,
@@ -3213,6 +3332,7 @@
         "is_nadir_of_this_month": 0
     },
     {
+        "region_id": 2,
         "day": "2020-12-26",
         "total_orders_count": 3,
         "total_grocery_orders_count": 0,
@@ -3240,6 +3360,7 @@
         "is_nadir_of_this_month": 0
     },
     {
+        "region_id": 2,
         "day": "2020-12-25",
         "total_orders_count": 19,
         "total_grocery_orders_count": 0,
