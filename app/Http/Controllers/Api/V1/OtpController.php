@@ -334,6 +334,9 @@ class OtpController extends BaseApiController
             $user->status = User::STATUS_ACTIVE;
             $newUser = true;
         }
+        if ($user->settings || empty($user->settings)) {
+            $user->settings = config('defaults.user.settings');
+        }
         $user->last_logged_in_at = now();
         $user->save();
         $user->assignRole('User');
