@@ -6,13 +6,14 @@
     }
 </script>--}}
 <script>
-    let OneSignal = window.OneSignal || [];
+    window.OneSignal = window.OneSignal || [];
     OneSignal.push(function () {
         OneSignal.init({
             appId: "{{config('services.onesignal.app_id')}}",
             notifyButton: {
                 enable: true,
             },
+            subdomainName: "titan-tiptop",
             persistNotification: true,
             welcomeNotification: {
                 "title": "Welcome 😇",
