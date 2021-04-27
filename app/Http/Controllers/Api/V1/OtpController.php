@@ -331,6 +331,7 @@ class OtpController extends BaseApiController
             $user->username = $phoneNumber.'-auto';
             $user->approved_at = now();
             $user->phone_verified_at = now();
+            $user->status = User::STATUS_ACTIVE;
             $newUser = true;
         }
         $user->last_logged_in_at = now();

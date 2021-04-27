@@ -1,10 +1,10 @@
 <script src="https://cdn.onesignal.com/sdks/OneSignalSDK.js" async=""></script>
 
-<script type="text/javascript">
+{{--<script type="text/javascript">
     if (window.App.authenticated) {
 
     }
-</script>
+</script>--}}
 <script>
     let OneSignal = window.OneSignal || [];
     OneSignal.push(function () {
@@ -60,7 +60,7 @@
         });
     }
 
-    
+
     OneSignal.push(function () {
         // If we're on an unsupported browser, do nothing
         if (!OneSignal.isPushNotificationsSupported()) {

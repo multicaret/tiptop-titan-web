@@ -55,6 +55,8 @@
         </script>
     @endif
 
+    @include('admin.notifications.onesignal-init')
+
 <!-- Core scripts -->
     <script src="/admin-assets/js/pace.js"></script>
     <!-- Libs -->
@@ -263,7 +265,6 @@
         });
     });
 </script>--}}
-@include('admin.notifications.onesignal-init')
 
 
 @stack('scripts')
