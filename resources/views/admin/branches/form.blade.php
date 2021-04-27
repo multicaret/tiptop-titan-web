@@ -24,12 +24,12 @@
     <div class="nav-tabs-top nav-responsive-xl">
         <ul class="nav nav-tabs nav-justified">
             <li class="nav-item">
-                <a class="nav-link active" data-toggle="tab" href="#navs-bottom-responsive-link-1">
+                <a class="nav-link active" data-toggle="tab" href="#settings-tab">
                     <i class="fas fa-edit"></i>&nbsp;Settings
                 </a>
             </li>
             <li class="nav-item">
-                <a class="nav-link" data-toggle="tab" href="#navs-bottom-responsive-link-2">
+                <a class="nav-link" data-toggle="tab" href="#working-hours-tab">
                     <i class="far fa-clock"></i>&nbsp;Working Hours
                 </a>
             </li>
@@ -46,13 +46,13 @@
             </li>
             @if($branch->isFood())
                 <li class="nav-item">
-                    <a class="nav-link" data-toggle="tab" href="#navs-bottom-responsive-link-4">
+                    <a class="nav-link" data-toggle="tab" href="#categories-tab">
                         <i class="fas fa-shapes"></i>&nbsp;Categories
                     </a>
                 </li>
             @endif
             <li class="nav-item">
-                <a class="nav-link" data-toggle="tab" href="#navs-bottom-responsive-link-5">
+                <a class="nav-link" data-toggle="tab" href="#users-tab">
                     <i class="fas fa-user-tie"></i>&nbsp;Users
                 </a>
             </li>
@@ -73,12 +73,12 @@
             </li>
         </ul>
         <div class="tab-content">
-            <div class="tab-pane fade active show" id="navs-bottom-responsive-link-1">
+            <div class="tab-pane fade active show" id="settings-tab">
                 <div class="card-body">
                     @include('admin.branches.partials._form-inner')
                 </div>
             </div>
-            <div class="tab-pane fade" id="navs-bottom-responsive-link-2">
+            <div class="tab-pane fade" id="working-hours-tab">
                 <div class="card-body">
                     @if(is_null($branch->id))
                         @include('admin.branches.partials._inaccessible')
@@ -122,7 +122,7 @@
                 </div>
             </div>
             @if($branch->isFood())
-                <div class="tab-pane fade" id="navs-bottom-responsive-link-4">
+                <div class="tab-pane fade" id="categories-tab">
                     <div class="card-body">
                         @if(is_null($branch->id))
                             @include('admin.branches.partials._inaccessible')
@@ -145,7 +145,7 @@
                 </div>
             @endif
 
-            <div class="tab-pane fade" id="navs-bottom-responsive-link-5">
+            <div class="tab-pane fade" id="users-tab">
                 <div class="card-body">
                     @if(is_null($branch->id))
                         @include('admin.branches.partials._inaccessible')
@@ -157,8 +157,11 @@
                                 ] as $role => $users)
                             @if($branch->id)
                                 <h4 class="d-flex justify-content-between align-items-center w-100 font-weight-bold py-3 mb-2">
-                                    <i class="fas fa-{{$users[1]}}"
-                                       style="font-size:1.4em"> {{Str::plural(str_replace('-', ' ', Str::title($role)))}}</i>
+                                    <span>
+                                    <i class="fas fa-{{$users[1]}} fa-lg"></i>
+                                    &nbsp;
+                                    {{Str::plural(str_replace('-', ' ', Str::title($role)))}}
+                                    </span>
                                     <x-admin.add-copy-buttons
                                         :createRoute="route('admin.users.create',[
                                         'role'=> $role,
