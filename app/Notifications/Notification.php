@@ -138,9 +138,6 @@ class Notification extends BaseNotification
                 ]);
             }*/
 
-            $oneSignalMessage->setIcon(url(config('defaults.images.brand_icon')))
-                             ->setParameter('large_icon', url(config('defaults.images.brand_logo')));
-
             return $oneSignalMessage;
         } catch (\Exception $e) {
             info('error @toOneSignal in OrderStatusUpdated', [
