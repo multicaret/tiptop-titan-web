@@ -243,7 +243,7 @@ class ProductController extends Controller
             "{$defaultLocale}.title" => 'required',
             'price' => 'required',
             'type' => 'required',
-            'price_discount_began_at' => 'required||date',
+            'price_discount_began_at' => 'required|date',
             'price_discount_finished_at' => 'required|date|after:price_discount_began_at',
             'custom_banner_began_at' => 'required|date',
             'custom_banner_ended_at' => 'required|date|after:custom_banner_began_at',
