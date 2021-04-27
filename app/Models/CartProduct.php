@@ -42,6 +42,10 @@ use Illuminate\Support\Carbon;
  * @method static Builder|CartProduct whereTotalOptionsPrice($value)
  * @method static Builder|CartProduct whereUpdatedAt($value)
  * @mixin Eloquent
+ * @property float $price for Food products only, for their options
+ * @property float $total_price for Food products only, for their options
+ * @method static Builder|CartProduct wherePrice($value)
+ * @method static Builder|CartProduct whereTotalPrice($value)
  */
 class CartProduct extends Pivot
 {
