@@ -4,10 +4,12 @@
     @if(isset($notification->data['icon']))
         <div class="fas {{$notification->data['icon']}} text-primary fa-lg"></div>
     @endif
-    <div class="media-body line-height-condenced ml-3">
-        <div class="text-body">{{$notification->data['body']}}</div>
-        {{--        <div class="text-light small mt-1">--}}
-        {{--        </div>--}}
-        <div class="text-light small mt-1">{{$notification->created_at->ago()}}</div>
-    </div>
+    @isset($notification->data['body']['en'])
+        <div class="media-body line-height-condenced ml-3">
+            <div class="text-body">{{($notification->data['body']['en'])}}</div>
+            {{--        <div class="text-light small mt-1">--}}
+            {{--        </div>--}}
+            <div class="text-light small mt-1">{{$notification->created_at->ago()}}</div>
+        </div>
+    @endisset
 </a>

@@ -1,4 +1,3 @@
-{{$branches}}
 @extends('layouts.admin')
 
 @section('title', $user->id? trans('strings.editing') .' - ' . trans("strings.$role") : trans(trans('strings.add') . ' - ' . trans("strings.$role")))
