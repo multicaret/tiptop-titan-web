@@ -6,6 +6,7 @@ namespace App\Models\OldModels;
 use App\Models\User;
 use Eloquent;
 use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Support\Carbon;
 use Str;
 
@@ -51,9 +52,14 @@ use Str;
  * @property string|null $locale
  * @property mixed|null $tokens
  * @property int $orders_count
+ * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\OldModels\OldFirebaseUsersTokens[] $firebaseUser
+ * @property-read int|null $firebase_user_count
+ * @property-read \App\Models\OldModels\OldFirebaseUsersTokens|null $firebase_data
  * @property-read string $first_name
  * @property-read string $last_name
+ * @property-read array $mobile_app_details
  * @property-read mixed $role_name
+ * @property-read mixed $settings
  * @property-read string|null $tel_code_number
  * @property-read string|null $tel_number
  * @property-read string $updated_username
@@ -124,6 +130,7 @@ class OldUser extends OldModel
             'tel_code_number' => 'phone_country_code',
             'tel_number' => 'phone_number',
             'orders_count' => 'total_number_of_orders',
+            'settings' => 'settings',
             'created_at' => 'created_at',
             'updated_at' => 'updated_at',
 
@@ -160,6 +167,16 @@ class OldUser extends OldModel
 //            '' => User::ROLE_CONTENT_EDITOR,
 //            '' => User::ROLE_TRANSLATOR,
         ];
+    }
+
+    public function firebaseUser(): HasMany
+    {
+        return $this->hasMany(OldFirebaseUsersTokens::class, 'user_id')->whereNotNull('device_type');
+    }
+
+    public function getFirebaseDataAttribute(): ?OldFirebaseUsersTokens
+    {
+        return $this->firebaseUser()->latest()->first();
     }
 
     public function getUpdatedUsernameAttribute(): string
@@ -245,5 +262,27 @@ class OldUser extends OldModel
         $roleNameSnakeCase = self::roleComparing()[$this->type];
 
         return Str::title(str_replace('-', ' ', $roleNameSnakeCase));
+    }
+
+    public function getSettingsAttribute()
+    {
+        return config('defaults.user.settings');
+    }
+
+    public function getMobileAppDetailsAttribute(): array
+    {
+        return [
+            'version' => '0.0.0',
+            'buildNumber' => 0,
+            'device' => [
+                'manufacturer' => '',
+                'name' => '',
+                'model' => '',
+                'platform' => ! is_null($this->firebase_data)? $this->firebase_data->device_type : '',
+                'serial' => ! is_null($this->firebase_data)? $this->firebase_data->device_id : '',
+                'uuid' => '',
+                'version' => '',
+            ],
+        ];
     }
 }
