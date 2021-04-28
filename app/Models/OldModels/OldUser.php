@@ -154,8 +154,8 @@ class OldUser extends OldModel
             // Todo: ask MK
             'DRIVER' => User::ROLE_TIPTOP_DRIVER,
             'CUSTOMER' => User::ROLE_USER,
-            '' => User::ROLE_USER_SIDE,
-            null => User::ROLE_USER_SIDE,
+            '' => User::ROLE_USER,
+            null => User::ROLE_USER,
 //            '' => User::ROLE_SUPERVISOR,
 //            '' => User::ROLE_CONTENT_EDITOR,
 //            '' => User::ROLE_TRANSLATOR,

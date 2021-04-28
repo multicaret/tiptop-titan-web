@@ -237,7 +237,6 @@ class User extends Authenticatable implements HasMedia, MustVerifyEmail
     public const ROLE_RESTAURANT_DRIVER = 'restaurant-driver';
     public const ROLE_TIPTOP_DRIVER = 'tiptop-driver';
     public const ROLE_USER = 'user';
-    public const ROLE_USER_SIDE = 'user-side';
 
     public const EMPLOYMENT_EMPLOYEE = 1;
     public const EMPLOYMENT_FREELANCER = 2;
@@ -477,11 +476,6 @@ class User extends Authenticatable implements HasMedia, MustVerifyEmail
         return $this->hasRole(self::ROLE_USER);
     }
 
-    public function getIsOwnerAttribute()
-    {
-        return $this->hasRole(self::ROLE_OWNER);
-    }
-
     public function getIsAdminAttribute()
     {
         return $this->hasRole(self::ROLE_ADMIN);
@@ -523,11 +517,6 @@ class User extends Authenticatable implements HasMedia, MustVerifyEmail
     public function getTranslatorAttribute()
     {
         return $this->hasRole(self::ROLE_TRANSLATOR);
-    }
-
-    public function getAnalystAttribute()
-    {
-        return $this->hasRole(self::ROLE_ANALYST);
     }
 
     public function orders(): HasMany
@@ -704,7 +693,6 @@ class User extends Authenticatable implements HasMedia, MustVerifyEmail
             'restaurant_driver' => self::ROLE_RESTAURANT_DRIVER,
             'tiptop_driver' => self::ROLE_TIPTOP_DRIVER,
             'user' => self::ROLE_USER,
-            'user_side' => self::ROLE_USER_SIDE,
         ];
     }
 

@@ -543,11 +543,6 @@ class DatumImporter extends Command
 
     private function importUsers()
     {
-        $userSideRoleName = \Str::title(str_replace('-', ' ', User::ROLE_USER_SIDE));
-        $userSideRole = Role::where('name', $userSideRoleName)->first();
-        if (is_null($userSideRole)) {
-            Role::create(['name' => $userSideRoleName]);
-        }
         $oldUsers = OldUser::withoutGlobalScopes()
                            ->whereNotIn('status', [OldUser::STATUS_PENDING])
                            ->where('id', '>', 2)
