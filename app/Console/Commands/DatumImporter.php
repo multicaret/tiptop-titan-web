@@ -218,7 +218,7 @@ class DatumImporter extends Command
         }
         $tempBranch['type'] = $type;
         $tempBranch['status'] = OldBranch::statusesComparing()[$oldBranch->status];
-        $tempBranch['has_tip_top_delivery'] = $oldBranch->app_delivery_service === 1;
+        $tempBranch['has_tip_top_delivery'] = $this->getHasTiptopDelivery($oldBranch);
         $tempBranch['has_restaurant_delivery'] = $oldBranch->delivery_service === 1;
         $isInserted = Branch::insert($tempBranch);
         if ($isInserted) {
@@ -887,6 +887,15 @@ class DatumImporter extends Command
             $collections = ['from' => OldMedia::COLLECTION_LOGO, 'to' => OldMedia::COLLECTION_LOGO];
             $this->assignImageToModel($chain, $chain->id, OldMedia::TYPE_RESTAURANT, $collections);
             $this->bar->advance();
+        }
+    }
+
+    private function getHasTiptopDelivery(OldBranch $oldBranch): int
+    {
+        if (($oldBranch->app_minimun_order > 0 && $oldBranch->app_delivery_service === 0)) {
+            return 1;
+        } else {
+            return ($oldBranch->app_delivery_service ? 1 : 0);
         }
     }
 
