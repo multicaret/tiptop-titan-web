@@ -273,7 +273,7 @@ class BranchController extends Controller
             $branch->restaurant_fixed_delivery_fee = $request->input('restaurant_fixed_delivery_fee');
         }
         if ($request->has('restaurant_free_delivery_threshold')) {
-            $branch->restaurant_fixed_delivery_fee = $request->input('restaurant_free_delivery_threshold');
+            $branch->restaurant_free_delivery_threshold = $request->input('restaurant_free_delivery_threshold');
         }
         if ($request->has('restaurant_extra_delivery_fee_per_km')) {
             $branch->restaurant_extra_delivery_fee_per_km = $request->input('restaurant_extra_delivery_fee_per_km');
