@@ -1,7 +1,7 @@
 <style>
     .notifications-list {
         max-height: 250px;
-        overflow: scroll;
+        overflow-y: scroll;
     }
 </style>
 <div>
