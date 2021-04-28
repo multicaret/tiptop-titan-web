@@ -51,7 +51,7 @@ class TokanTeam extends Model
     public const STATUS_ACTIVE = 2;
     public const STATUS_INACTIVE = 3;
 
-    protected $fillable = [];
+    protected $guarded = [];
 
     public function user()
     {

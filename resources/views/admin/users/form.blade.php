@@ -80,6 +80,13 @@
                         </div>
                     </div>--}}
                     <div class="col-md-6">
+                        @component('admin.components.form-group', ['name' => 'phone', 'type' => 'tel'])
+                            @slot('label', 'Phone')
+                            @slot('attributes', ['required'])
+                            @slot('value', $user->phone_number)
+                        @endcomponent
+                    </div>
+                    <div class="col-md-6">
                         @component('admin.components.form-group', ['name' => 'gender', 'type' => 'select'])
                             @slot('label', 'Gender')
                             {{--@slot('attributes', ['required'])--}}

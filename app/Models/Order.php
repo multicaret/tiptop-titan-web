@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Models\TookanInfo;
 use App\Traits\HasAppTypes;
 use App\Traits\HasTypes;
 use App\Traits\RecordsActivity;
@@ -533,5 +534,8 @@ class Order extends Model
         return false;
     }
 
-
+    public function tookanInfo()
+    {
+        return $this->morphOne(TookanInfo::class, 'tookanable');
+    }
 }
