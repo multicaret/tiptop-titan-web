@@ -158,7 +158,7 @@
                                                                                                        messages</a>
                 </div>
             </div>--}}
-            <livewire:notifications/>
+            <livewire:navbar-notifications>
             <!-- Divider -->
             <div class="nav-item d-none d-lg-block text-big font-weight-light line-height-1 opacity-25 mr-3 ml-1">|
             </div>

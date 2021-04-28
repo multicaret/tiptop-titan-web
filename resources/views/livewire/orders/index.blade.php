@@ -61,9 +61,7 @@
                                      class="d-block ui-w-50">--}}
                                 <i class="far fa-clock fa-3x text-primary"></i>
                                 <div class="media-body ml-4 text-secondary">
-                                    <span>{{ now()->format(config('defaults.date.normal_format')) }}</span>
-                                    &nbsp;&nbsp; - &nbsp;&nbsp;
-                                    <span {{--wire:poll.1m--}}>{{ now()->format(config('defaults.time.normal_format')) }}</span>
+                                    <span>{{ now()->format(config('defaults.defaults.datetime.normal_format')) }}</span>
                                 </div>
                             </div>
                         </div>

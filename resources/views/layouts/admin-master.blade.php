@@ -19,7 +19,7 @@
 
     <!-- Icons. Uncomment required icon fonts -->
     <link rel="stylesheet" href="{{ asset('/admin-assets/fonts/fontawesome.css') }}">
-    <link rel="stylesheet" href="{{ asset('/admin-assets/css/custom.css') }}">
+    <link rel="stylesheet" href="{{ asset('/admin-assets/css/custom.css') }}?ver=1.0">
     <link rel="stylesheet" href="{{ asset('/admin-assets/fonts/ionicons.css') }}">
     <link rel="stylesheet" href="{{ asset('/admin-assets/fonts/linearicons.css') }}">
     {{--    <link rel="stylesheet" href="{{ asset('/admin-assets/fonts/open-iconic.css') }}">--}}
@@ -109,6 +109,8 @@
             ]
         ]) !!};
     </script>
+
+{{--    @include('admin.notifications.onesignal-init')--}}
 
     @stack('styles')
 
@@ -263,7 +265,6 @@
         });
     });
 </script>--}}
-@include('admin.notifications.onesignal-init')
 
 
 @stack('scripts')

@@ -867,7 +867,7 @@ class DatatableController extends AjaxController
                              ])->render();
                          })
                          ->editColumn('issue', function ($order) {
-                             return ! is_null($order->ratingIssue) ? $order->ratingIssue->title : '';
+                             return optional($order->ratingIssue)->title;
                          })
                          ->editColumn('rating', function ($order) {
                              return view('admin.components.datatables._rating', [

@@ -111,15 +111,17 @@ class CartController extends BaseApiController
             }
             $cartProduct->quantity = $requestQuantity;
             $cartProduct->save();
+
+            // Disabled since food products don't storage
             // Checking available quantity
-            if ($cartProduct->product->is_storage_tracking_enabled) {
+            /*if ($cartProduct->product->is_storage_tracking_enabled) {
                 if ($cartProduct->product->available_quantity <= $cartProduct->quantity) {
                     $errorData = ['availableQuantity' => $cartProduct->product->available_quantity];
                     $errorsMessage = 'The requested product is currently unavailable';
 
                     return $this->respondValidationFails($errorsMessage, $errorData);
                 }
-            }
+            }*/
 
             $this->resetCartProductOptions($cartProduct);
             if ( ! is_null($selectedOptions)) {

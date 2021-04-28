@@ -296,16 +296,20 @@
                                         @endif
                                     @endcomponent
                                 </div>
-                                <div class="col-md-3">
-                                    @component('admin.components.form-group', ['name' => 'available_quantity', 'type' => 'number'])
-                                        @slot('label', trans('strings.available_quantity'))
-                                        @slot('attributes', ['placeholder' => '24'])
-                                        @if(! is_null($product->id))
-                                            @slot('value', $product->available_quantity)
-                                        @endif
-                                    @endcomponent
-                                </div>
-                                <div class="col-md-3">
+                                @if($product->is_grocery)
+                                    <div class="col-md-3">
+                                        @component('admin.components.form-group', ['name' => 'available_quantity', 'type' => 'number'])
+                                            @slot('label', trans('strings.available_quantity'))
+                                            @slot('attributes', ['placeholder' => '24'])
+                                            @if(! is_null($product->id))
+                                                @slot('value', $product->available_quantity)
+                                            @endif
+                                        @endcomponent
+                                    </div>
+                                @else
+                                    <input type="hidden" name="available_quantity" value="">
+                                @endif
+                                {{--<div class="col-md-3">
                                     @component('admin.components.form-group', ['name' => 'maximum_orderable_quantity', 'type' => 'number'])
                                         @slot('label', trans('strings.maximum_orderable_quantity'))
                                         @slot('attributes', ['placeholder' => '5'])
@@ -313,7 +317,7 @@
                                             @slot('value', $product->maximum_orderable_quantity)
                                         @endif
                                     @endcomponent
-                                </div>
+                                </div>--}}
                                 <div class="col-md-12">
                                     <span class="">
                                         <label class="switcher switcher-primary mr-3 my-2">
@@ -331,7 +335,8 @@
                                         @lang('strings.price_discount_by_percentage')
                                     </span>
                                 </div>
-                                <div class="col-md-12">
+                                @if($product->is_grocery)
+                                    <div class="col-md-12">
                                     <span class="">
                                     <label class="switcher switcher-primary mr-3 my-2">
                                         <input type="checkbox" class="switcher-input"
@@ -347,7 +352,10 @@
                                     </label>
                                         Enable Storage Tracking
                                     </span>
-                                </div>
+                                    </div>
+                                @else
+                                    <input type="hidden" name="is_storage_tracking_enabled" value="false">
+                                @endif
                                 <div class="col-6">
                                     <label class="control-label">
                                         @lang('strings.status') <b class="text-danger">*</b>
@@ -453,7 +461,7 @@
             <input type="hidden" name="unit_id" :value="JSON.stringify(product.unit)">
             <input type="hidden" name="unattached-media" class="deleted-file" value="">
             <button class="btn btn-success" type="submit">{{trans('strings.submit')}}</button>
-            @if($product->is_food)
+            @if($product->id && $product->is_food)
                 <a class="btn btn-outline-primary" type="submit" href="{{route('admin.products.options',$product)}}"
                    target="_blank">
                     Options
