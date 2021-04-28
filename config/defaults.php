@@ -252,7 +252,7 @@ return [
         'branch_owner' => [],
         'branch_manager' => [],
         'translator' => [],
-        'branch_driver' => [],
+        'restaurant_driver' => [],
         'tiptop_driver' => [],
     ],
     'roles' => [
