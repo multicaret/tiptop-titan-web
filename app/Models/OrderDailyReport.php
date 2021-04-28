@@ -13,11 +13,11 @@ use Illuminate\Support\Carbon;
  * @property int $id
  * @property int $region_id
  * @property Carbon $day
- * @property int $groceries_orders_count
- * @property int $food_orders_count
+ * @property int $total_grocery_orders_count
+ * @property int $total_food_orders_count
  * @property int $total_orders_count
- * @property int $delivered_groceries_orders_count
- * @property int $delivered_food_orders_count
+ * @property int $total_delivered_grocery_orders_count
+ * @property int $total_delivered_food_orders_count
  * @property int $total_delivered_orders_count
  * @property int $average_delivery_time
  * @property float $average_orders_value
@@ -51,10 +51,6 @@ use Illuminate\Support\Carbon;
  * @method static Builder|OrderDailyReport whereAverageOrdersValue($value)
  * @method static Builder|OrderDailyReport whereCreatedAt($value)
  * @method static Builder|OrderDailyReport whereDay($value)
- * @method static Builder|OrderDailyReport whereDeliveredFoodOrdersCount($value)
- * @method static Builder|OrderDailyReport whereDeliveredGroceriesOrdersCount($value)
- * @method static Builder|OrderDailyReport whereFoodOrdersCount($value)
- * @method static Builder|OrderDailyReport whereGroceriesOrdersCount($value)
  * @method static Builder|OrderDailyReport whereId($value)
  * @method static Builder|OrderDailyReport whereIosDevicesCount($value)
  * @method static Builder|OrderDailyReport whereIsNadirOfThisMonth($value)
@@ -74,7 +70,11 @@ use Illuminate\Support\Carbon;
  * @method static Builder|OrderDailyReport whereOtherDevicesCount($value)
  * @method static Builder|OrderDailyReport whereRegionId($value)
  * @method static Builder|OrderDailyReport whereRegisteredUsersCount($value)
+ * @method static Builder|OrderDailyReport whereTotalDeliveredFoodOrdersCount($value)
+ * @method static Builder|OrderDailyReport whereTotalDeliveredGroceryOrdersCount($value)
  * @method static Builder|OrderDailyReport whereTotalDeliveredOrdersCount($value)
+ * @method static Builder|OrderDailyReport whereTotalFoodOrdersCount($value)
+ * @method static Builder|OrderDailyReport whereTotalGroceryOrdersCount($value)
  * @method static Builder|OrderDailyReport whereTotalMobileUsersCount($value)
  * @method static Builder|OrderDailyReport whereTotalOrdersCount($value)
  * @method static Builder|OrderDailyReport whereTotalWebUsersCount($value)

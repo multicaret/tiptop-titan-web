@@ -28,8 +28,8 @@ use Illuminate\Support\Carbon;
  * @property Carbon|null $created_at
  * @property Carbon|null $updated_at
  * @property-read bool $has_children
- * @property-read OldCategoryTranslation|null $translation
- * @property-read Collection|OldCategoryTranslation[] $translations
+ * @property-read \App\Models\OldModels\OldCategoryTranslation|null $translation
+ * @property-read Collection|\App\Models\OldModels\OldCategoryTranslation[] $translations
  * @property-read int|null $translations_count
  * @method static Builder|OldCategory grocery()
  * @method static Builder|OldCategory listsTranslations(string $translationField)

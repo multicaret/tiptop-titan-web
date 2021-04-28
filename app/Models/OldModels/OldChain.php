@@ -24,12 +24,12 @@ use Illuminate\Support\Carbon;
  * @property Carbon|null $created_at
  * @property Carbon|null $updated_at
  * @property string|null $zoho_id
- * @property-read Collection|OldBranch[] $branches
+ * @property-read Collection|\App\Models\OldModels\OldBranch[] $branches
  * @property-read int|null $branches_count
- * @property-read Collection|OldProduct[] $products
+ * @property-read Collection|\App\Models\OldModels\OldProduct[] $products
  * @property-read int|null $products_count
- * @property-read OldChainTranslation|null $translation
- * @property-read Collection|OldChainTranslation[] $translations
+ * @property-read \App\Models\OldModels\OldChainTranslation|null $translation
+ * @property-read Collection|\App\Models\OldModels\OldChainTranslation[] $translations
  * @property-read int|null $translations_count
  * @method static Builder|OldChain listsTranslations(string $translationField)
  * @method static Builder|OldChain newModelQuery()

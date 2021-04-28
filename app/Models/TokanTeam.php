@@ -24,7 +24,7 @@ use Illuminate\Support\Carbon;
  * @property-read bool $is_inactive
  * @property-read array $status_js
  * @property-read mixed $status_name
- * @property-read Collection|User[] $user
+ * @property-read Collection|\App\Models\User[] $user
  * @property-read int|null $user_count
  * @method static Builder|TokanTeam active()
  * @method static Builder|TokanTeam draft()

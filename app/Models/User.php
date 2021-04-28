@@ -90,17 +90,16 @@ use Spatie\Permission\Traits\HasRoles;
  * @property string|null $remember_token
  * @property Carbon|null $created_at
  * @property Carbon|null $updated_at
- * @property-read Collection|Location[] $addresses
+ * @property-read Collection|\App\Models\Location[] $addresses
  * @property-read int|null $addresses_count
- * @property-read Branch|null $branch
- * @property-read Collection|Cart[] $carts
+ * @property-read \App\Models\Branch|null $branch
+ * @property-read Collection|\App\Models\Cart[] $carts
  * @property-read int|null $carts_count
- * @property-read City|null $city
- * @property-read Country|null $country
- * @property-read Collection|CouponUsage[] $couponUsages
+ * @property-read \App\Models\City|null $city
+ * @property-read \App\Models\Country|null $country
+ * @property-read Collection|\App\Models\CouponUsage[] $couponUsages
  * @property-read int|null $coupon_usages_count
- * @property-read Currency|null $currency
- * @property-read mixed $analyst
+ * @property-read \App\Models\Currency|null $currency
  * @property-read bool $avatar
  * @property-read mixed $average_rating_all_types
  * @property-read mixed $average_rating
@@ -108,11 +107,11 @@ use Spatie\Permission\Traits\HasRoles;
  * @property-read mixed $international_phone
  * @property-read bool $is_active
  * @property-read mixed $is_admin
+ * @property-read bool $is_branch_manager
  * @property-read bool $is_food
  * @property-read bool $is_grocery
  * @property-read bool $is_inactive
  * @property-read bool $is_manager
- * @property-read mixed $is_owner
  * @property-read bool $is_super
  * @property-read mixed $is_user
  * @property-read mixed $name
@@ -127,12 +126,12 @@ use Spatie\Permission\Traits\HasRoles;
  * @property-read mixed $user_average_rating
  * @property-read mixed $user_sum_rating_all_types
  * @property-read mixed $user_sum_rating
- * @property-read Language|null $language
+ * @property-read \App\Models\Language|null $language
  * @property-read MediaCollection|Media[] $media
  * @property-read int|null $media_count
  * @property-read DatabaseNotificationCollection|DatabaseNotification[] $notifications
  * @property-read int|null $notifications_count
- * @property-read Collection|Order[] $orders
+ * @property-read Collection|\App\Models\Order[] $orders
  * @property-read int|null $orders_count
  * @property-read Collection|Permission[] $permissions
  * @property-read int|null $permissions_count
@@ -140,15 +139,15 @@ use Spatie\Permission\Traits\HasRoles;
  * @property-read int|null $ratings_count
  * @property-read Collection|InteractionRelation[] $ratingsPure
  * @property-read int|null $ratings_pure_count
- * @property-read Region|null $region
+ * @property-read \App\Models\Region|null $region
  * @property-read Collection|Role[] $roles
  * @property-read int|null $roles_count
- * @property-read TokanTeam|null $team
- * @property-read Collection|PersonalAccessToken[] $tokens
+ * @property-read \App\Models\TokanTeam|null $team
+ * @property-read Collection|\App\Models\PersonalAccessToken[] $tokens
  * @property-read int|null $tokens_count
  * @method static Builder|User active()
  * @method static Builder|User draft()
- * @method static UserFactory factory(...$parameters)
+ * @method static \Database\Factories\UserFactory factory(...$parameters)
  * @method static Builder|User foods()
  * @method static Builder|User groceries()
  * @method static Builder|User inActive()
@@ -207,7 +206,6 @@ use Spatie\Permission\Traits\HasRoles;
  * @method static Builder|User whereWalletFreeTotal($value)
  * @method static Builder|User whereWalletReservedTotal($value)
  * @mixin Eloquent
- * @property-read bool $is_branch_manager
  */
 class User extends Authenticatable implements HasMedia, MustVerifyEmail
 {

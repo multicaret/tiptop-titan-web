@@ -20,8 +20,8 @@ use Illuminate\Support\Carbon;
  * @property float $discounted_amount
  * @property Carbon|null $created_at
  * @property Carbon|null $updated_at
- * @property-read Coupon $coupon
- * @property-read User $redeemer
+ * @property-read \App\Models\Coupon $coupon
+ * @property-read \App\Models\User $redeemer
  * @method static Builder|CouponUsage newModelQuery()
  * @method static Builder|CouponUsage newQuery()
  * @method static Builder|CouponUsage query()

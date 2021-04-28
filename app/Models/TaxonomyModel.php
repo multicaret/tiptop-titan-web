@@ -49,14 +49,14 @@ use Spatie\MediaLibrary\MediaCollections\Models\Media;
  * @property Carbon|null $created_at
  * @property Carbon|null $updated_at
  * @property Carbon|null $deleted_at
- * @property-read Branch|null $branch
- * @property-read Collection|Branch[] $branches
+ * @property-read \App\Models\Branch|null $branch
+ * @property-read Collection|\App\Models\Branch[] $branches
  * @property-read int|null $branches_count
- * @property-read Chain|null $chain
- * @property-read User $creator
- * @property-read Collection|Product[] $crossSellsProducts
+ * @property-read \App\Models\Chain|null $chain
+ * @property-read \App\Models\User $creator
+ * @property-read Collection|\App\Models\Product[] $crossSellsProducts
  * @property-read int|null $cross_sells_products_count
- * @property-read User $editor
+ * @property-read \App\Models\User $editor
  * @property-read mixed $cover
  * @property-read mixed $cover_small
  * @property-read bool $is_active
@@ -64,27 +64,27 @@ use Spatie\MediaLibrary\MediaCollections\Models\Media;
  * @property-read mixed $link
  * @property-read array $status_js
  * @property-read mixed $status_name
- * @property-read Taxonomy|null $ingredientCategory
+ * @property-read \App\Models\Taxonomy|null $ingredientCategory
  * @property-read Collection|TaxonomyModel[] $ingredientsOfCategory
  * @property-read int|null $ingredients_of_category_count
  * @property-read MediaCollection|Media[] $media
  * @property-read int|null $media_count
- * @property-read Collection|Product[] $menuProducts
+ * @property-read Collection|\App\Models\Product[] $menuProducts
  * @property-read int|null $menu_products_count
- * @property-read Collection|Post[] $posts
+ * @property-read Collection|\App\Models\Post[] $posts
  * @property-read int|null $posts_count
- * @property-read Collection|Product[] $products
+ * @property-read Collection|\App\Models\Product[] $products
  * @property-read int|null $products_count
- * @property-read Collection|Post[] $tagPosts
+ * @property-read Collection|\App\Models\Post[] $tagPosts
  * @property-read int|null $tag_posts_count
- * @property-read TaxonomyTranslation|null $translation
- * @property-read Collection|TaxonomyTranslation[] $translations
+ * @property-read \App\Models\TaxonomyTranslation|null $translation
+ * @property-read Collection|\App\Models\TaxonomyTranslation[] $translations
  * @property-read int|null $translations_count
- * @property-read Collection|Product[] $upSellsProducts
+ * @property-read Collection|\App\Models\Product[] $upSellsProducts
  * @property-read int|null $up_sells_products_count
- * @property-read Collection|User[] $usersOfCategory
+ * @property-read Collection|\App\Models\User[] $usersOfCategory
  * @property-read int|null $users_of_category_count
- * @property-read Collection|User[] $usersOfSkill
+ * @property-read Collection|\App\Models\User[] $usersOfSkill
  * @property-read int|null $users_of_skill_count
  * @method static Builder|TaxonomyModel active()
  * @method static Builder|TaxonomyModel draft()

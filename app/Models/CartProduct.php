@@ -22,13 +22,13 @@ use Illuminate\Support\Carbon;
  * @property array|null $product_object
  * @property Carbon|null $created_at
  * @property Carbon|null $updated_at
- * @property-read Cart $cart
- * @property-read Collection|CartProductOption[] $cartProductOptions
+ * @property-read \App\Models\Cart $cart
+ * @property-read Collection|\App\Models\CartProductOption[] $cartProductOptions
  * @property-read int|null $cart_product_options_count
- * @property-read Collection|CartProductOptionSelection[] $cartProductOptionsSelections
+ * @property-read Collection|\App\Models\CartProductOptionSelection[] $cartProductOptionsSelections
  * @property-read int|null $cart_product_options_selections_count
  * @property-read mixed $selected_options
- * @property-read Product $product
+ * @property-read \App\Models\Product $product
  * @method static Builder|CartProduct newModelQuery()
  * @method static Builder|CartProduct newQuery()
  * @method static Builder|CartProduct query()
@@ -42,10 +42,6 @@ use Illuminate\Support\Carbon;
  * @method static Builder|CartProduct whereTotalOptionsPrice($value)
  * @method static Builder|CartProduct whereUpdatedAt($value)
  * @mixin Eloquent
- * @property float $price for Food products only, for their options
- * @property float $total_price for Food products only, for their options
- * @method static Builder|CartProduct wherePrice($value)
- * @method static Builder|CartProduct whereTotalPrice($value)
  */
 class CartProduct extends Pivot
 {

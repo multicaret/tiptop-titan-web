@@ -29,7 +29,7 @@ use Spatie\MediaLibrary\MediaCollections\Models\Media;
  * @property int $status 1:draft, 2:active, 3:Inactive, 4..n:CUSTOM
  * @property Carbon|null $created_at
  * @property Carbon|null $updated_at
- * @property-read Country $country
+ * @property-read \App\Models\Country $country
  * @property-read mixed $cover
  * @property-read mixed $gallery
  * @property-read bool $is_active
@@ -38,10 +38,10 @@ use Spatie\MediaLibrary\MediaCollections\Models\Media;
  * @property-read mixed $status_name
  * @property-read MediaCollection|Media[] $media
  * @property-read int|null $media_count
- * @property-read Region|null $region
- * @property-read Timezone|null $timezone
- * @property-read CityTranslation|null $translation
- * @property-read Collection|CityTranslation[] $translations
+ * @property-read \App\Models\Region|null $region
+ * @property-read \App\Models\Timezone|null $timezone
+ * @property-read \App\Models\CityTranslation|null $translation
+ * @property-read Collection|\App\Models\CityTranslation[] $translations
  * @property-read int|null $translations_count
  * @method static Builder|City active()
  * @method static Builder|City draft()
