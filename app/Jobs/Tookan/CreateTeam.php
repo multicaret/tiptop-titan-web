@@ -50,14 +50,14 @@ class CreateTeam /*implements ShouldQueue*/
         $responseData = $response->json();
         if (  $responseData['status'] == 100) {
             info('Tookan Request missing parameter', [
-                'captain_id' => $this->user->id,
+                'captain_id' => $this->team->id,
                 'response' => $response->json()
             ]);
             //    $this->fail();
         }
         if (  $responseData['status'] == 201) {
             info('Tookan Request missing parameter', [
-                'captain_id' => $this->user->id,
+                'captain_id' => $this->team->id,
                 'response' => $response->json()
             ]);
             //    $this->fail();
@@ -65,7 +65,7 @@ class CreateTeam /*implements ShouldQueue*/
         }
         if (isset($responseData['data']['team_id'])) {
             $this->team->tokan_team_id = $responseData['data']['team_id'];
-            $this->team->save();
+            $this->team->saveQuietly();
         }
     }
     /**

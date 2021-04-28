@@ -95,6 +95,8 @@ use Spatie\MediaLibrary\MediaCollections\Models\Collections\MediaCollection;
  * @property-read Collection|Taxonomy[] $groceryCategories
  * @property-read int|null $grocery_categories_count
  * @property-read Collection|Location[] $locations
+ * @property-read Collection|Location[] $contacts
+ * @property-read Collection|Location[] $addresses
  * @property-read int|null $locations_count
  * @property-read Collection|User[] $managers
  * @property-read int|null $managers_count
@@ -285,6 +287,14 @@ class Branch extends Model implements HasMedia
     public function locations(): HasMany
     {
         return $this->hasMany(Location::class, 'contactable_id');
+    }
+    public function contacts(): HasMany
+    {
+        return $this->hasMany(Location::class, 'contactable_id')->where('type',Location::TYPE_CONTACT);
+    }
+    public function addresses(): HasMany
+    {
+        return $this->hasMany(Location::class, 'contactable_id')->where('type',Location::TYPE_ADDRESS);
     }
 
     public function drivers(): BelongsToMany

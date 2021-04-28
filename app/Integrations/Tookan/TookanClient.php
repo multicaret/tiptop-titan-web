@@ -30,11 +30,19 @@ class TookanClient
     }
     public function createCaptain(User $user){
 
-        if (empty($user->team) || empty($user->team->tokan_team_id || $user->role_name != User::ROLE_TIPTOP_DRIVER))
+        if ( $user->role_name != User::ROLE_TIPTOP_DRIVER)
         {
-            return false;
+             return false;
         }
 
+        if (empty($user->team) || empty($user->team->tokan_team_id))
+        {
+            $team = TokanTeam::first();
+            if (empty($team)) return false;
+            $user->team_id = $team->id;
+            $user->saveQuietly();
+            $user->load('team');
+        }
         $captainData = $this->prepareCaptainData($user);
 
         return $this->apiRequest('POST', 'add_agent',$captainData);
@@ -42,11 +50,19 @@ class TookanClient
     }
 
     public function updateCaptain(User $user){
-        if (empty($user->team) || empty($user->team->tokan_team_id || $user->role_name != User::ROLE_TIPTOP_DRIVER))
+        if ( $user->role_name != User::ROLE_TIPTOP_DRIVER)
         {
             return false;
         }
 
+        if (empty($user->team) || empty($user->team->tokan_team_id))
+        {
+            $team = TokanTeam::first();
+            if (empty($team)) return false;
+            $user->team_id = $team->id;
+            $user->saveQuietly();
+            $user->load('team');
+        }
         $captainData = $this->prepareCaptainData($user);
 
         return $this->apiRequest('POST', 'edit_agent',array_merge(['fleet_id' => (string) $user->tookan_id],$captainData));
@@ -113,17 +129,17 @@ class TookanClient
             'timezone'                => '-180',
             'team_id'                 => $order->type === Chain::CHANNEL_GROCERY_OBJECT ? $market_team_id : $food_team_id,
             'auto_assignment'         => 1,
-            'job_pickup_phone'        => $order->branch->contact_phone_1,
-            'job_pickup_name'         => $order->branch->contact_name,
-            'job_pickup_email'        => $order->branch->contact_email,
-            'job_pickup_address'      => $order->branch->address ,
-            'job_pickup_latitude'     => $order->branch->latitude ,
+            'job_pickup_phone'        => $order->branch->primary_phone_number,
+            'job_pickup_name'         => $order->branch->contacts->first()->name,
+      //      'job_pickup_email'        => $order->branch->contact_email,
+            'job_pickup_address'      => $order->branch->addresses->first()->address1 ,
+            'job_pickup_latitude'     => $order->branch->longitude ,
             'job_pickup_longitude'    => $order->branch->longitude ,
-            'job_pickup_datetime'     => now()->addMinutes(10)->toDateTimeString(),
-            'customer_email'          => $order->email,
-            'customer_username'       => $order->customer->name,
-            'customer_phone'          => $order->address->phone_number ?? $this->order->customer->phone_number,
-            'customer_address'        => $order->address->address,
+            'job_pickup_datetime'     => now()->addMinutes(13)->toDateTimeString(),
+            'customer_email'          => $order->user->email,
+            'customer_username'       => $order->user->first .' '.$order->user->last,
+            'customer_phone'          => $order->user->phone_number,
+            'customer_address'        => $order->address->address1,
             'latitude'                => $order->address->latitude,
             'longitude'               => $order->address->longitude,
             'job_delivery_datetime'   => now()->addMinutes(15)->toDateTimeString(),
@@ -136,28 +152,28 @@ class TookanClient
             'meta_data'               => [
                 [
                     'label' => 'price',
-                    'data' => (string) $this->order->cost
+                    'data' => (string) $order->total
                 ],
-                [
-                    'label' => 'payment_method',
-                    'data' => (string) __('jo3aan::orders.payment_methods.' . $this->order->payment_method .'.label',[],'ar')
-                ],
-                [
-                    'label' => 'payment_status',
-                    'data' => $this->order->payment_status == 'NOT_PAID' ? 'لم يتم الدفع' : 'تم الدفع'
-                ],
-                [
-                    'label' => 'tiptop_order_number',
-                    'data' => $this->order->code
-                ],
-                [
-                    'label' => 'delivery_address_notes',
-                    'data'  =>  $this->order->address->address_description
-                ],
-                [
-                    'label' => 'customer_phone_number',
-                    'data' =>  $this->order->customer->phone_number
-                ],
+//                [
+//                    'label' => 'payment_method',
+//                    'data' => (string) __('jo3aan::orders.payment_methods.' . $this->order->payment_method .'.label',[],'ar')
+//                ],
+//                [
+//                    'label' => 'payment_status',
+//                    'data' => $this->order->payment_status == 'NOT_PAID' ? 'لم يتم الدفع' : 'تم الدفع'
+//                ],
+//                [
+//                    'label' => 'tiptop_order_number',
+//                    'data' => $this->order->code
+//                ],
+//                [
+//                    'label' => 'delivery_address_notes',
+//                    'data'  =>  $this->order->address->address_description
+//                ],
+//                [
+//                    'label' => 'customer_phone_number',
+//                    'data' =>  $this->order->customer->phone_number
+//                ],
             ],
 
         ];
@@ -176,7 +192,7 @@ class TookanClient
             'transport_type'    => '2',
             'timezone'          => '-180',
             'password'          => 'Tiptopagent@123',
-            'team_id'           => (string)$user->team->tokan_team_id,
+            'team_id'           => (string) $user->team->tokan_team_id,
         ];
     }
 

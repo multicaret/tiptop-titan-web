@@ -76,7 +76,7 @@ class CreateCaptain /*implements ShouldQueue*/
         }
         if (isset($responseData['data']) && isset($responseData['data']['fleet_id'])) {
             $this->user->tookan_id = $responseData['data']['fleet_id'];
-            $this->user->save();
+            $this->user->saveQuietly();
         } else {
 
         }
