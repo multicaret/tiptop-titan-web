@@ -7,6 +7,7 @@ use App\Models\Branch;
 use App\Models\BranchTranslation;
 use App\Models\Chain;
 use App\Models\ChainTranslation;
+use App\Models\City;
 use App\Models\Location;
 use App\Models\OldModels\OldBranch;
 use App\Models\OldModels\OldBranchTranslation;
@@ -19,10 +20,12 @@ use App\Models\OldModels\OldMedia;
 use App\Models\OldModels\OldOrder;
 use App\Models\OldModels\OldProduct;
 use App\Models\OldModels\OldProductTranslation;
+use App\Models\OldModels\OldRegion;
 use App\Models\OldModels\OldUser;
 use App\Models\Order;
 use App\Models\Product;
 use App\Models\ProductTranslation;
+use App\Models\Region;
 use App\Models\Taxonomy;
 use App\Models\TaxonomyModel;
 use App\Models\TaxonomyTranslation;
@@ -62,6 +65,7 @@ class DatumImporter extends Command
     public const CHOICE_ORDERS = 'orders';
     public const CHOICE_FOR_SERVER = 'for-server';
     public const CHOICE_INGREDIENTS_CATEGORIES = 'ingredients-categories';
+    public const CHOICE_REGIONS_CITIES = 'regions-cities';
     private ProgressBar $bar;
     private Collection $foodCategories;
     private array $importerChoices;
@@ -130,6 +134,8 @@ class DatumImporter extends Command
             $this->runServerCommands();
         } elseif ($this->modelName === self::CHOICE_INGREDIENTS_CATEGORIES) {
             $this->ingredientsCategories();
+        } elseif ($this->modelName === self::CHOICE_REGIONS_CITIES) {
+            $this->importRegionsCities();
         }
         \DB::statement('SET FOREIGN_KEY_CHECKS=1;');
         $this->newLine(2);
@@ -891,6 +897,30 @@ class DatumImporter extends Command
             return 1;
         } else {
             return ($oldBranch->app_delivery_service ? 1 : 0);
+        }
+    }
+
+    private function importRegionsCities()
+    {
+        $iraqCountryId = 107;
+        $oldRegions = OldRegion::whereNameEn('Baghdad')
+                               ->get()
+                               ->merge(OldRegion::whereNotIn('name_en', ['Baghdad'])->get());
+        foreach ($oldRegions as $oldRegion) {
+            $freshRegion = Region::create($oldRegion->name_en, $iraqCountryId);
+            $freshRegion->status = Region::STATUS_ACTIVE;
+            $freshRegion->translateOrNew('en')->name = $oldRegion->name_en;
+            $freshRegion->translateOrNew('ar')->name = $oldRegion->name_ar;
+            $freshRegion->translateOrNew('ku')->name = $oldRegion->name_ar;
+            $freshRegion->save();
+            foreach ($oldRegion->cities as $city) {
+                $freshCity = City::create($city->name_en, $iraqCountryId, $freshRegion->id);
+                $freshCity->status = City::STATUS_ACTIVE;
+                $freshCity->translateOrNew('en')->name = $city->name_en;
+                $freshCity->translateOrNew('ar')->name = $city->name_ar;
+                $freshCity->translateOrNew('ku')->name = $city->name_ar;
+                $freshCity->save();
+            }
         }
     }
 

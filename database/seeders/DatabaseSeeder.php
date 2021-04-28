@@ -37,6 +37,7 @@ class DatabaseSeeder extends Seeder
     public const DEFAULT_USERS_NUMBER = 50;
     private int $lastTaxonomyId = 0;
     private int $lastBranchId = 0;
+    private array $tablesFromOldDB = ['cities', 'city_translations', 'region_translations','regions'];
 
     /**
      * Seed the application's database.
@@ -45,18 +46,17 @@ class DatabaseSeeder extends Seeder
      */
     public function run()
     {
-        if ( ! is_null(env('DB_DATABASE_OLD'))) {
+        $oldDbHasExist = ! is_null(env('DB_DATABASE_OLD'));
+        if ($oldDbHasExist) {
             $groceryDefaultBranchArgument = DatumImporter::CHOICE_GROCERY_DEFAULT_BRANCH;
-            Artisan::call('datum:importer '.$groceryDefaultBranchArgument.'');
-            echo Artisan::output();
+            $this->command->call('datum:importer', ['model' => $groceryDefaultBranchArgument]);
             $groceryCategories = DatumImporter::CHOICE_GROCERY_CATEGORIES;
-            Artisan::call("datum:importer {$groceryCategories}");
-            echo Artisan::output();
+            $this->command->call('datum:importer', ['model' => $groceryCategories]);
             $groceryProducts = DatumImporter::CHOICE_GROCERY_PRODUCTS;
-            Artisan::call("datum:importer {$groceryProducts}");
-            echo Artisan::output();
+            $this->command->call('datum:importer', ['model' => $groceryProducts]);
             $this->lastTaxonomyId = Taxonomy::latest()->first()->id;
             $this->lastBranchId = Branch::latest()->first()->id;
+            $this->command->callSilently('datum:importer', ['model' => 'regions-cities']);
         }
         DB::statement('SET FOREIGN_KEY_CHECKS=0;');
         $this->rolesAndPermissions();
@@ -64,6 +64,9 @@ class DatabaseSeeder extends Seeder
         $files = File::allFiles(storage_path('seeders'));
         foreach ($files as $table) {
             $tableName = explode('.', $table->getFilename())[0];
+            if ( $oldDbHasExist && in_array($tableName, $this->tablesFromOldDB)) {
+                continue;
+            }
             if (Schema::hasTable($tableName)) {
                 DB::table($tableName)->truncate();
                 $tableContent = json_decode(file_get_contents($table->getPathname()), 1);
@@ -100,16 +103,11 @@ class DatabaseSeeder extends Seeder
 //        factory(App\Models\Location::class, 10)->create();
 
         $this->apiAccessTokensSeeder($super, $admin);
-        Artisan::call('translation:import');
+        $this->command->callSilently('translation:import');
         echo 'Done 🤤 '.PHP_EOL;
-        if ( ! is_null(env('IMPORT_IMAGES'))) {
-            Artisan::call('datum:importer ProductImages');
-            echo Artisan::output();
-        } else {
-            echo PHP_EOL;
-            $productImagesArgument = DatumImporter::CHOICE_PRODUCT_IMAGES;
-            $this->command->info('Run `php artisan datum:importer '.$productImagesArgument.'` if you want to import products images');
-        }
+        $this->command->newLine();
+        $productImagesArgument = DatumImporter::CHOICE_PRODUCT_IMAGES;
+        $this->command->info('Run `php artisan datum:importer '.$productImagesArgument.'` if you want to import products images');
         $this->command->newLine();
         $forMoreDataArgument = DatumImporter::CHOICE_FOR_SERVER;
         $this->command->warn('Run `php artisan datum:importer '.$forMoreDataArgument.'` if you want more data');
