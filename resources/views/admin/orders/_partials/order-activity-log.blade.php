@@ -1,4 +1,4 @@
-<ul class="vertical-timeline" style="height:360px;overflow-y: scroll;padding-top:15px;">
+<ul class="vertical-timeline" style="height:360px;overflow-y: scroll;padding-top:15px;margin-bottom: 2.5rem;">
     @php
         $activities = $order->activity()->latest()->get()
     @endphp
@@ -26,9 +26,9 @@
                         </div>
                     @endif
                     <div class="{{$activity->getCssClassesBasedOnType()}}">
-                        <span>Record Update date: </span>
-                        &nbsp
-                        <span>{{$activity->updated_at->format(config('defaults.datetime.normal_format'))}}</span>
+{{--                        <span>Record Update date: </span>--}}
+{{--                        &nbsp--}}
+{{--                        <span>{{$activity->z_at->format(config('defaults.datetime.normal_format'))}}</span>--}}
                     </div>
                     <div class="edit-by">
                         <div class="person">

@@ -123,14 +123,14 @@
                         <div class="col-12 py-3 border-bottom">
                             <b>Address</b>
                             <a target="_blank" class="text-primary pull-right"
-                               href="https://maps.google.com/?ll={{optional($order->address)->latitude}},{{optional($order->address)->longitude}}">
+                               href="https://maps.google.com/?q={{optional($order->address)->latitude}},{{optional($order->address)->longitude}}">
                                 {{optional($order->address)->address1}}
                             </a>
                         </div>
-                        <div class="col-12 pt-3">
+                        <div class="col-12 pt-3 pb-3">
                             <b>Attached to Customer notes</b>
                             <div class="form-group">
-                                        <textarea class="form-control" rows="3"
+                                        <textarea class="form-control" rows="5"
                                                   wire:model.lazy="agentNotes"></textarea>
                             </div>
                         </div>
@@ -162,12 +162,19 @@
                                 {{$order->user->email}}
                             </a>
                         </div>
-                        <div class="col-12 py-3">
+                        <div class="col-12 py-3 border-bottom">
                             <b>Primary phone number</b>
                             <a class="text-primary pull-right"
                                href="tel:{{$order->branch->primary_phone_number}}"
                                target="_blank">
                                 {{$order->branch->primary_phone_number}}
+                            </a>
+                        </div>
+                        <div class="col-12 py-3">
+                            <b>Address</b>
+                            <a class="text-primary pull-right" href="https://maps.google.com/?q={{$order->branch->latitude}},{{$order->branch->longitude}}"
+                               target="_blank">
+                                Open In Google Maps <i class="fas fa-external-link-alt"></i>
                             </a>
                         </div>
                     </div>
