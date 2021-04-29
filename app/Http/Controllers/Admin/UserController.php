@@ -395,7 +395,7 @@ class UserController extends Controller
 
     private function roleValidation(string $role)
     {
-        if ( ! in_array($role, User::getAllRoles())) {
+        if ( ! in_array($role, User::getAllRoles()) || $role == User::ROLE_SUPER) {
             return abort(404);
         }
     }
