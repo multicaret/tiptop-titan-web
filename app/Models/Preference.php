@@ -27,8 +27,8 @@ use Spatie\MediaLibrary\MediaCollections\Models\Collections\MediaCollection;
  * @property Carbon|null $updated_at
  * @property-read MediaCollection|\Spatie\MediaLibrary\MediaCollections\Models\Media[] $media
  * @property-read int|null $media_count
- * @property-read PreferenceTranslation|null $translation
- * @property-read \Illuminate\Database\Eloquent\Collection|PreferenceTranslation[] $translations
+ * @property-read \App\Models\PreferenceTranslation|null $translation
+ * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\PreferenceTranslation[] $translations
  * @property-read int|null $translations_count
  * @method static Builder|Preference listsTranslations(string $translationField)
  * @method static Builder|Preference newModelQuery()

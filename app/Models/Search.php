@@ -22,8 +22,8 @@ use Illuminate\Support\Str;
  * @property int $type 1:Market, 2: Food
  * @property Carbon|null $created_at
  * @property Carbon|null $updated_at
- * @property-read Branch|null $branch
- * @property-read Chain|null $chain
+ * @property-read \App\Models\Branch|null $branch
+ * @property-read \App\Models\Chain|null $chain
  * @property-read bool $is_food
  * @property-read bool $is_grocery
  * @method static Builder|Search foods()

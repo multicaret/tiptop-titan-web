@@ -91,6 +91,7 @@
                             @slot('selected', $user->gender)
                         @endcomponent
                     </div>
+
                     @if(in_array($role, \App\Models\User::rolesHaving('branches')))
                         <div class="col-6">
                             @component('admin.components.form-group', ['name' => 'branches[]', 'type' => 'select'])

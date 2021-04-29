@@ -251,9 +251,8 @@ return [
         'marketer' => [],
         'branch_owner' => [],
         'branch_manager' => [],
-        'editor' => [],
         'translator' => [],
-        'branch_driver' => [],
+        'restaurant_driver' => [],
         'tiptop_driver' => [],
     ],
     'roles' => [

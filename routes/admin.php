@@ -63,7 +63,8 @@ Route::post('preferences/{section}', 'PreferenceController@update')->name('prefe
 Route::get('preferences', 'PreferenceController@index')->name('preferences.index');
 Route::post('preferences', 'PreferenceController@store')->name('preferences.store');
 Route::resource('taxonomies', 'TaxonomyController');
-
+Route::get('notifications', 'NotificationController@index')->name('notifications.index');
+Route::get('notifications/{notification}/handle', 'NotificationController@handle')->name('notifications.handle');
 
 Route::resource('media', 'MediaController')->only(['store']);
 Route::resource('roles', 'RoleController');

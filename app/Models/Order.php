@@ -62,7 +62,7 @@ use Illuminate\Support\Carbon;
  * @property string|null $restaurant_notes
  * @property Carbon|null $completed_at
  * @property string|null $notes
- * @property int $status
+ * @property int $status 
  *                     0: Cancelled,
  *                     1: Draft,
  *                     6: Waiting Courier,
@@ -73,22 +73,22 @@ use Illuminate\Support\Carbon;
  * @property Carbon|null $created_at
  * @property Carbon|null $updated_at
  * @property Carbon|null $deleted_at
- * @property-read Collection|Activity[] $activity
+ * @property-read Collection|\App\Models\Activity[] $activity
  * @property-read int|null $activity_count
- * @property-read Location $address
- * @property-read Collection|OrderAgentNote[] $agentNotes
+ * @property-read \App\Models\Location $address
+ * @property-read Collection|\App\Models\OrderAgentNote[] $agentNotes
  * @property-read int|null $agent_notes_count
- * @property-read Branch $branch
- * @property-read Taxonomy|null $cancellationReason
- * @property-read Cart|null $cart
- * @property-read Chain $chain
- * @property-read Coupon|null $coupon
+ * @property-read \App\Models\Branch $branch
+ * @property-read \App\Models\Taxonomy|null $cancellationReason
+ * @property-read \App\Models\Cart|null $cart
+ * @property-read \App\Models\Chain $chain
+ * @property-read \App\Models\Coupon|null $coupon
  * @property-read bool $is_food
  * @property-read bool $is_grocery
- * @property-read PaymentMethod $paymentMethod
+ * @property-read \App\Models\PaymentMethod $paymentMethod
  * @property-read Order|null $previousOrder
- * @property-read Taxonomy|null $ratingIssue
- * @property-read User $user
+ * @property-read \App\Models\Taxonomy|null $ratingIssue
+ * @property-read \App\Models\User $user
  * @method static \Illuminate\Database\Eloquent\Builder|Order atTheAddress()
  * @method static \Illuminate\Database\Eloquent\Builder|Order cancelled()
  * @method static \Illuminate\Database\Eloquent\Builder|Order delivered()

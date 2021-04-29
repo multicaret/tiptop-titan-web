@@ -21,9 +21,9 @@ use Illuminate\Support\Carbon;
  * @property mixed|null $selectable_object
  * @property Carbon|null $created_at
  * @property Carbon|null $updated_at
- * @property-read CartProduct $cartProduct
- * @property-read ProductOption $productOption
- * @property-read Model|Eloquent $selectable
+ * @property-read \App\Models\CartProduct $cartProduct
+ * @property-read \App\Models\ProductOption $productOption
+ * @property-read Model|\Eloquent $selectable
  * @method static Builder|CartProductOptionSelection newModelQuery()
  * @method static Builder|CartProductOptionSelection newQuery()
  * @method static Builder|CartProductOptionSelection query()

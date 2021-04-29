@@ -159,6 +159,16 @@ class OrderController extends BaseApiController
             'address_id' => 'required',
         ];
 
+        $user = auth()->user();
+        $userCart = Cart::with('branch')
+                        ->whereId($request->input('cart_id'))
+                        ->first();
+        $branch = $userCart->branch;
+
+        if ($branch->type == Branch::CHANNEL_FOOD_OBJECT) {
+            $validationRules['delivery_type'] = 'required';
+        }
+
         $validator = validator()->make($request->all(), $validationRules);
         if ($validator->fails()) {
             return $this->respondValidationFails($validator->errors());
@@ -170,24 +180,29 @@ class OrderController extends BaseApiController
             return $this->respondNotFound('Address not found');
         }
 
-        $user = auth()->user();
-        $userCart = Cart::whereId($request->input('cart_id'))->first();
-        $branch = $userCart->branch;
-        $minimumOrder = $branch->minimum_order;
-        $underMinimumOrderDeliveryFee = $branch->under_minimum_order_delivery_fee;
-        $freeDeliveryThreshold = $branch->free_delivery_threshold;
-
-        $deliveryFee = 0;
-        if ($userCart->total >= $minimumOrder) {
-            $deliveryFee = $branch->fixed_delivery_fee + $underMinimumOrderDeliveryFee;
-        }
-
-        if ($userCart->total >= $freeDeliveryThreshold) {
-            $deliveryFee = 0;
-        }
-
         DB::beginTransaction();
         $newOrder = new Order();
+
+        if($request->input('delivery_type') == 'tiptop'){
+        $isDeliveryByTiptop = true;
+        }elseif($request->input('delivery_type') == 'restaurant'){
+        $isDeliveryByTiptop = false;
+        }else{
+//         return $this->respondValidationFails($errors);
+        }
+
+        $deliveryType = 'tiptop';
+        if (
+            $branch->type == Branch::CHANNEL_FOOD_OBJECT &&
+            ! $isDeliveryByTiptop &&
+            $branch
+        ) {
+            $deliveryType = 'restaurant';
+        }
+        $deliveryFee = $this->foo($branch, $userCart, $deliveryType);
+
+        $newOrder->is_delivery_by_tiptop = $isDeliveryByTiptop;
+
         $newOrder->user_id = auth()->id();
         $newOrder->chain_id = $request->input('chain_id');
         $newOrder->branch_id = $request->input('branch_id');
@@ -202,7 +217,7 @@ class OrderController extends BaseApiController
         $newOrder->private_delivery_fee = $newOrder->delivery_fee;
         $newOrder->private_grand_total = $newOrder->grand_total;
 //        $newOrder->private_payment_method_commission = $request->input('private_payment_method_commission');
-        $newOrder->customer_notes = $request->input('notes');
+        $newOrder->notes = $request->input('notes');
         $newOrder->status = Order::STATUS_NEW;
         $newOrder->completed_at = now();
         $newOrder->type = $branch->type;
@@ -367,6 +382,29 @@ class OrderController extends BaseApiController
         return Taxonomy::ratingIssues()->get()->map(function ($item) {
             return ['id' => $item->id, 'title' => $item->getTranslation()->title];
         });
+    }
+
+    /**
+     * @param $branch
+     * @param $userCart
+     * @return int
+     */
+    private function foo($branch, $userCart, $deliveryType): int
+    {
+        $minimumOrder = $branch->minimum_order;
+        $underMinimumOrderDeliveryFee = $branch->under_minimum_order_delivery_fee;
+        $freeDeliveryThreshold = $branch->free_delivery_threshold;
+
+        $deliveryFee = 0;
+        if ($userCart->total >= $minimumOrder) {
+            $deliveryFee = $branch->fixed_delivery_fee + $underMinimumOrderDeliveryFee;
+        }
+
+        if ($userCart->total >= $freeDeliveryThreshold) {
+            $deliveryFee = 0;
+        }
+
+        return $deliveryFee;
     }
 
 

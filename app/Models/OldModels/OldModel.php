@@ -9,7 +9,7 @@ use Illuminate\Database\Eloquent\Model;
 
 abstract class OldModel extends Model
 {
-    protected $connection = 'mysql-old';
+    public $connection = 'mysql-old';
 
     protected static function booted()
     {

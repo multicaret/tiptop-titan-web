@@ -37,16 +37,16 @@ use Illuminate\Support\Carbon;
  * @property Carbon|null $created_at
  * @property Carbon|null $updated_at
  * @property Carbon|null $deleted_at
- * @property-read City|null $city
+ * @property-read \App\Models\City|null $city
  * @property-read bool $is_active
  * @property-read bool $is_food
  * @property-read bool $is_grocery
  * @property-read bool $is_inactive
  * @property-read array $status_js
  * @property-read mixed $status_name
- * @property-read Region|null $region
- * @property-read SlideTranslation|null $translation
- * @property-read Collection|SlideTranslation[] $translations
+ * @property-read \App\Models\Region|null $region
+ * @property-read \App\Models\SlideTranslation|null $translation
+ * @property-read Collection|\App\Models\SlideTranslation[] $translations
  * @property-read int|null $translations_count
  * @method static \Illuminate\Database\Eloquent\Builder|Slide active()
  * @method static \Illuminate\Database\Eloquent\Builder|Slide draft()

@@ -100,6 +100,7 @@ class AuthController extends BaseApiController
                 'accessToken' => $accessToken,
             ]);
 
+            return $user->is_branch_manager;
             if ($user->is_branch_manager) {
                 $branch = ['restaurant' => new FoodBranchResource($user->branch)];
 

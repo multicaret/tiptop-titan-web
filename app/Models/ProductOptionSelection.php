@@ -19,10 +19,10 @@ use Illuminate\Support\Carbon;
  * @property float $price
  * @property Carbon|null $created_at
  * @property Carbon|null $updated_at
- * @property-read ProductOption $option
- * @property-read Product $product
- * @property-read ProductOptionSelectionTranslation|null $translation
- * @property-read Collection|ProductOptionSelectionTranslation[] $translations
+ * @property-read \App\Models\ProductOption $option
+ * @property-read \App\Models\Product $product
+ * @property-read \App\Models\ProductOptionSelectionTranslation|null $translation
+ * @property-read Collection|\App\Models\ProductOptionSelectionTranslation[] $translations
  * @property-read int|null $translations_count
  * @method static Builder|ProductOptionSelection listsTranslations(string $translationField)
  * @method static Builder|ProductOptionSelection newModelQuery()

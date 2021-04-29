@@ -171,10 +171,10 @@ class OldLocation extends OldModel
 
     public function getCountryIdAttribute()
     {
-        if (is_null($this->country)) {
+        if (is_null($this->country) || empty($this->country)) {
             return null;
         }
-        $country = Country::where('english_name', 'like', "%$this->country%")->first();
+        $country = Country::whereTranslationLike('name', 'like', "%$this->country%")->first();
         if (is_null($country)) {
             return null;
         }
@@ -184,10 +184,10 @@ class OldLocation extends OldModel
 
     public function getRegionIdAttribute()
     {
-        if (is_null($this->city)) {
+        if (is_null($this->city) || empty($this->city)) {
             return null;
         }
-        $region = Region::where('english_name', 'like', "%$this->city%")->first();
+        $region = Region::whereTranslationLike('name', "%$this->city%")->first();
         if (is_null($region)) {
             return null;
         }
@@ -197,11 +197,11 @@ class OldLocation extends OldModel
 
     public function getCityIdAttribute()
     {
-        if (is_null($this->municipality)) {
+        if (is_null($this->municipality) || empty($this->municipality)) {
             return null;
         }
 
-        $city = City::where('english_name', 'like', "%$this->municipality%")->first();
+        $city = City::whereTranslationLike('name', "%$this->municipality%")->first();
         if (is_null($city)) {
             return null;
         }

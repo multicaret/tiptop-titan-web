@@ -26,21 +26,21 @@ use Illuminate\Support\Carbon;
  * @property int $status 1:draft, 2:active, 3:Inactive, 4..n:CUSTOM
  * @property Carbon|null $created_at
  * @property Carbon|null $updated_at
- * @property-read Collection|City[] $cities
+ * @property-read Collection|\App\Models\City[] $cities
  * @property-read int|null $cities_count
- * @property-read Currency|null $currency
+ * @property-read \App\Models\Currency|null $currency
  * @property-read bool $is_active
  * @property-read bool $is_inactive
  * @property-read array $status_js
  * @property-read mixed $status_name
- * @property-read Language|null $language
- * @property-read Collection|Location[] $locations
+ * @property-read \App\Models\Language|null $language
+ * @property-read Collection|\App\Models\Location[] $locations
  * @property-read int|null $locations_count
- * @property-read Collection|Region[] $regions
+ * @property-read Collection|\App\Models\Region[] $regions
  * @property-read int|null $regions_count
- * @property-read Timezone|null $timezone
- * @property-read CountryTranslation|null $translation
- * @property-read Collection|CountryTranslation[] $translations
+ * @property-read \App\Models\Timezone|null $timezone
+ * @property-read \App\Models\CountryTranslation|null $translation
+ * @property-read Collection|\App\Models\CountryTranslation[] $translations
  * @property-read int|null $translations_count
  * @method static Builder|Country active()
  * @method static Builder|Country draft()

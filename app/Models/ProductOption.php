@@ -19,7 +19,7 @@ use Illuminate\Support\Carbon;
  * @property int $product_id
  * @property bool $is_based_on_ingredients
  * @property bool $is_required
- * @property int $type
+ * @property int $type 
  *                     1: Including,
  *                     2: Excluding,
  * @property int|null $max_number_of_selection
@@ -29,13 +29,13 @@ use Illuminate\Support\Carbon;
  * @property int|null $order_column
  * @property Carbon|null $created_at
  * @property Carbon|null $updated_at
- * @property-read Collection|Taxonomy[] $ingredients
+ * @property-read Collection|\App\Models\Taxonomy[] $ingredients
  * @property-read int|null $ingredients_count
- * @property-read Product $product
- * @property-read Collection|ProductOptionSelection[] $selections
+ * @property-read \App\Models\Product $product
+ * @property-read Collection|\App\Models\ProductOptionSelection[] $selections
  * @property-read int|null $selections_count
- * @property-read ProductOptionTranslation|null $translation
- * @property-read Collection|ProductOptionTranslation[] $translations
+ * @property-read \App\Models\ProductOptionTranslation|null $translation
+ * @property-read Collection|\App\Models\ProductOptionTranslation[] $translations
  * @property-read int|null $translations_count
  * @method static Builder|ProductOption listsTranslations(string $translationField)
  * @method static Builder|ProductOption newModelQuery()
