@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Http\Controllers\Controller;
 use App\Traits\HasAppTypes;
 use App\Traits\HasMediaTrait;
 use App\Traits\HasStatuses;
@@ -354,17 +355,90 @@ class Branch extends Model implements HasMedia
         return $this->raters->count() > 0;
     }
 
-    public function calculateDeliveryFee($totalAmount): float
+
+    public function validateCartValue($totalAmount, $isTipTopDelivery = true)
     {
-        $deliveryFee = $this->fixed_delivery_fee;
-        if ($this->under_minimum_order_delivery_fee > 0) {
-            if ($totalAmount < $this->minimum_order) {
-                $deliveryFee += $this->under_minimum_order_delivery_fee;
+        if ( ! $isTipTopDelivery) {
+            // Todo: branch DOES NOT have restaurant delivery. return false + message
+            $minimumOrder = $this->restaurant_minimum_order;
+            $fixedDeliveryFee = $this->restaurant_fixed_delivery_fee;
+            $underMinimumOrderDeliveryFee = $this->restaurant_under_minimum_order_delivery_fee;
+            $freeDeliveryThreshold = $this->restaurant_free_delivery_threshold;
+            $extraDeliveryFeePerKm = $this->restaurant_extra_delivery_fee_per_km;
+            $fixedDeliveryDistanceKeyName = 'tiptop_fixed_delivery_distance';
+        } else {
+            // Todo: branch DOES NOT have tiptop delivery. return false + message
+            $minimumOrder = $this->minimum_order;
+            $fixedDeliveryFee = $this->fixed_delivery_fee;
+            $underMinimumOrderDeliveryFee = $this->under_minimum_order_delivery_fee;
+            $freeDeliveryThreshold = $this->free_delivery_threshold;
+            $extraDeliveryFeePerKm = $this->extra_delivery_fee_per_km;
+            $fixedDeliveryDistanceKeyName = 'restaurant_fixed_delivery_distance';
+        }
+
+        if ($totalAmount >= $freeDeliveryThreshold) {
+            return [
+                'isValid' => true,
+                'message' => null,
+            ];
+        }
+
+        // under min cart:
+        //  min_order > 0
+
+        // cart total < min_order && under_minimum_order_delivery_fee == 0
+        // return fasle + message
+    }
+
+    public function calculateDeliveryFee(
+        $totalAmount,
+        $isTipTopDelivery = true,
+        $hasCouponWithFreeDelivery = false,
+        $addressId = null
+    ): float {
+
+        if ($hasCouponWithFreeDelivery) {
+            return 0;
+        }
+
+        if ( ! $isTipTopDelivery) {
+            $minimumOrder = $this->restaurant_minimum_order;
+            $fixedDeliveryFee = $this->restaurant_fixed_delivery_fee;
+            $underMinimumOrderDeliveryFee = $this->restaurant_under_minimum_order_delivery_fee;
+            $freeDeliveryThreshold = $this->restaurant_free_delivery_threshold;
+            $extraDeliveryFeePerKm = $this->restaurant_extra_delivery_fee_per_km;
+            $fixedDeliveryDistanceKeyName = 'tiptop_fixed_delivery_distance';
+        } else {
+            $minimumOrder = $this->minimum_order;
+            $fixedDeliveryFee = $this->fixed_delivery_fee;
+            $underMinimumOrderDeliveryFee = $this->under_minimum_order_delivery_fee;
+            $freeDeliveryThreshold = $this->free_delivery_threshold;
+            $extraDeliveryFeePerKm = $this->extra_delivery_fee_per_km;
+            $fixedDeliveryDistanceKeyName = 'restaurant_fixed_delivery_distance';
+        }
+
+        if ($totalAmount >= $freeDeliveryThreshold) {
+            return 0;
+        }
+
+        $deliveryFee = $fixedDeliveryFee;
+
+        // Calculating Delivery Fee Based on Distance
+        if (
+            ! is_null($addressId) &&
+            ! is_null($address = Location::active()->where('id', $addressId)->first()) &&
+            ! is_null($address->latitude) &&
+            ! is_null($address->longitude)
+        ) {
+            $distance = Controller::distanceBetween($this->latitude, $this->longitude, $address->latitude,
+                $address->longitude);
+            if ($distance != 0 && Preference::retrieveValue($fixedDeliveryDistanceKeyName) && $distance > Preference::retrieveValue($fixedDeliveryDistanceKeyName)) {
+                $deliveryFee = $extraDeliveryFeePerKm * $distance;
             }
         }
 
-        if ($totalAmount >= $this->free_delivery_threshold) {
-            $deliveryFee = 0;
+        if ($underMinimumOrderDeliveryFee > 0 && $totalAmount < $minimumOrder) {
+            $deliveryFee += $underMinimumOrderDeliveryFee;
         }
 
         return $deliveryFee;

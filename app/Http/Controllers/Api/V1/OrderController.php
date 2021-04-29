@@ -99,6 +99,7 @@ class OrderController extends BaseApiController
         $validationRules = [
             'chain_id' => 'required',
             'branch_id' => 'required',
+            'selected_address_id' => 'required',
         ];
 
         $validator = validator()->make($request->all(), $validationRules);
@@ -128,7 +129,8 @@ class OrderController extends BaseApiController
                 'logo' => $method->logo,
             ];
         });
-        $deliveryFeeCalculated = $branch->calculateDeliveryFee($userCart->total);
+        $deliveryFeeCalculated = $branch->calculateDeliveryFee($userCart->total, true, false,
+            $request->input('selected_address_id'));
         $grandTotal = $deliveryFeeCalculated + $userCart->total;
 
         return $this->respond([
@@ -156,14 +158,14 @@ class OrderController extends BaseApiController
             'branch_id' => 'required',
             'cart_id' => 'required',
             'payment_method_id' => 'required',
-            'address_id' => 'required',
+            'selected_address_id' => 'required',
         ];
 
         $user = auth()->user();
-        $userCart = Cart::with('branch')
-                        ->whereId($request->input('cart_id'))
-                        ->first();
-        $branch = $userCart->branch;
+        $activeCart = Cart::with('branch')
+                          ->whereId($request->input('cart_id'))
+                          ->first();
+        $branch = $activeCart->branch;
 
         if ($branch->type == Branch::CHANNEL_FOOD_OBJECT) {
             $validationRules['delivery_type'] = 'required';
@@ -174,61 +176,35 @@ class OrderController extends BaseApiController
             return $this->respondValidationFails($validator->errors());
         }
 
-
-        $address = Location::find($request->input('address_id'));
+        $address = Location::find($request->input('selected_address_id'));
         if (is_null($address)) {
             return $this->respondNotFound('Address not found');
         }
 
+        $isDeliveryTypeTipTop = $request->input('delivery_type', 'tiptop') == 'tiptop';
+
+        // return $this->respond errors = $branch->validateCartValue()
+
         DB::beginTransaction();
         $newOrder = new Order();
-
-        if($request->input('delivery_type') == 'tiptop'){
-        $isDeliveryByTiptop = true;
-        }elseif($request->input('delivery_type') == 'restaurant'){
-        $isDeliveryByTiptop = false;
-        }else{
-//         return $this->respondValidationFails($errors);
-        }
-
-        $deliveryType = 'tiptop';
-        if (
-            $branch->type == Branch::CHANNEL_FOOD_OBJECT &&
-            ! $isDeliveryByTiptop &&
-            $branch
-        ) {
-            $deliveryType = 'restaurant';
-        }
-        $deliveryFee = $this->foo($branch, $userCart, $deliveryType);
-
-        $newOrder->is_delivery_by_tiptop = $isDeliveryByTiptop;
-
-        $newOrder->user_id = auth()->id();
+        $newOrder->is_delivery_by_tiptop = $isDeliveryTypeTipTop;
+        $newOrder->user_id = $user->id;
         $newOrder->chain_id = $request->input('chain_id');
         $newOrder->branch_id = $request->input('branch_id');
         $newOrder->cart_id = $request->input('cart_id');
         $newOrder->payment_method_id = $request->input('payment_method_id');
         $newOrder->address_id = $address->id;
         $newOrder->city_id = $address->city_id;
-        $newOrder->total = $userCart->total;
-        $newOrder->delivery_fee = $deliveryFee;
-        $newOrder->grand_total = $userCart->total + $deliveryFee;
-        $newOrder->private_total = $newOrder->total;
-        $newOrder->private_delivery_fee = $newOrder->delivery_fee;
-        $newOrder->private_grand_total = $newOrder->grand_total;
-//        $newOrder->private_payment_method_commission = $request->input('private_payment_method_commission');
-        $newOrder->notes = $request->input('notes');
-        $newOrder->status = Order::STATUS_NEW;
-        $newOrder->completed_at = now();
+        $newOrder->customer_notes = $request->input('notes');
         $newOrder->type = $branch->type;
         $newOrder->save();
 
         // Todo: work on payment method & do it.
-        $userCart->status = Cart::STATUS_COMPLETED;
-        $userCart->save();
+        $activeCart->status = Cart::STATUS_COMPLETED;
+        $activeCart->save();
 
         // Deduct the purchased quantity from the available quantity of each product.
-        foreach ($userCart->products as $product) {
+        foreach ($activeCart->products as $product) {
             if ($product->is_storage_tracking_enabled) {
                 if ($product->available_quantity > 0) {
                     $newAvailableQuantity = $product->available_quantity - $product->pivot->quantity;
@@ -245,6 +221,8 @@ class OrderController extends BaseApiController
         }
 
 
+        $hasFreeDeliveryCoupon = false;
+        $couponDiscountAmount = 0;
         if ( ! is_null($couponRedeemCode = $request->input('coupon_redeem_code'))) {
             $coupon = Coupon::where('redeem_code', $couponRedeemCode)->first();
             if (is_null($coupon)) {
@@ -257,25 +235,31 @@ class OrderController extends BaseApiController
 
             [$isAmountValid, $totalDiscountedAmount] = $coupon->validateCouponDiscountAmount($newOrder->total);
 
-            $deliveryFee = $branch->calculateDeliveryFee($newOrder->total);
-            if ($coupon->has_free_delivery) {
-                $deliveryFee = 0;
-            }
+            $hasFreeDeliveryCoupon = $coupon->has_free_delivery;
 
             if ($isExpirationDateAndUsageValid && $isAmountValid) {
-                $couponDiscountAmount = $userCart->total - $totalDiscountedAmount;
+                $couponDiscountAmount = $activeCart->total - $totalDiscountedAmount;
                 $newOrder->coupon_id = $coupon->id;
-                $newOrder->delivery_fee = $deliveryFee;
-                $newOrder->coupon_discount_amount = $couponDiscountAmount;
-                $newOrder->grand_total = $userCart->total + $deliveryFee - ($couponDiscountAmount);
-                $newOrder->private_delivery_fee = $newOrder->delivery_fee;
-                $newOrder->private_grand_total = $newOrder->grand_total;
-                $newOrder->save();
 
-                CouponUsage::storeCouponUsage($totalDiscountedAmount, $coupon, $userCart->id, $user->id, $newOrder->id);
+                CouponUsage::storeCouponUsage($totalDiscountedAmount, $coupon, $activeCart->id, $user->id,
+                    $newOrder->id);
             }
         }
 
+        $deliveryFee = $branch->calculateDeliveryFee($newOrder->total, $isDeliveryTypeTipTop, $hasFreeDeliveryCoupon,
+            $address->id);
+        $grandTotal = $activeCart->total + $deliveryFee - ($couponDiscountAmount);
+
+        $newOrder->coupon_discount_amount = $couponDiscountAmount;
+        $newOrder->delivery_fee = $deliveryFee;
+        $newOrder->total = $activeCart->total;
+        $newOrder->grand_total = $grandTotal;
+        $newOrder->private_total = $newOrder->total;
+        $newOrder->private_delivery_fee = $newOrder->delivery_fee;
+        $newOrder->private_grand_total = $newOrder->grand_total;
+        $newOrder->status = Order::STATUS_NEW;
+        $newOrder->completed_at = now();
+        $newOrder->save();
 
         $user->increment('total_number_of_orders');
         $user->save();
