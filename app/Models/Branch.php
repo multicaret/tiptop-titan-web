@@ -70,13 +70,13 @@ use Spatie\MediaLibrary\MediaCollections\Models\Collections\MediaCollection;
  * @property Carbon|null $created_at
  * @property Carbon|null $updated_at
  * @property string|null $deleted_at
- * @property-read \App\Models\Chain $chain
- * @property-read \App\Models\City|null $city
- * @property-read Collection|\App\Models\User[] $drivers
+ * @property-read Chain $chain
+ * @property-read City|null $city
+ * @property-read Collection|User[] $drivers
  * @property-read int|null $drivers_count
- * @property-read Collection|\App\Models\User[] $favoriters
+ * @property-read Collection|User[] $favoriters
  * @property-read int|null $favoriters_count
- * @property-read Collection|\App\Models\Taxonomy[] $foodCategories
+ * @property-read Collection|Taxonomy[] $foodCategories
  * @property-read int|null $food_categories_count
  * @property-read mixed $average_rating_all_types
  * @property-read mixed $average_rating
@@ -93,35 +93,35 @@ use Spatie\MediaLibrary\MediaCollections\Models\Collections\MediaCollection;
  * @property-read mixed $user_average_rating
  * @property-read mixed $user_sum_rating_all_types
  * @property-read mixed $user_sum_rating
- * @property-read Collection|\App\Models\Taxonomy[] $groceryCategories
+ * @property-read Collection|Taxonomy[] $groceryCategories
  * @property-read int|null $grocery_categories_count
  * @property-read Collection|Location[] $locations
  * @property-read Collection|Location[] $contacts
  * @property-read Collection|Location[] $addresses
  * @property-read int|null $locations_count
- * @property-read Collection|\App\Models\User[] $managers
+ * @property-read Collection|User[] $managers
  * @property-read int|null $managers_count
  * @property-read MediaCollection|\Spatie\MediaLibrary\MediaCollections\Models\Media[] $media
  * @property-read int|null $media_count
- * @property-read Collection|\App\Models\Taxonomy[] $menuCategories
+ * @property-read Collection|Taxonomy[] $menuCategories
  * @property-read int|null $menu_categories_count
- * @property-read Collection|\App\Models\User[] $owners
+ * @property-read Collection|User[] $owners
  * @property-read int|null $owners_count
- * @property-read Collection|\App\Models\Product[] $products
+ * @property-read Collection|Product[] $products
  * @property-read int|null $products_count
  * @property-read Collection|InteractionRelation[] $ratings
  * @property-read int|null $ratings_count
  * @property-read Collection|InteractionRelation[] $ratingsPure
  * @property-read int|null $ratings_pure_count
- * @property-read \App\Models\Region|null $region
- * @property-read Collection|\App\Models\Taxonomy[] $searchTags
+ * @property-read Region|null $region
+ * @property-read Collection|Taxonomy[] $searchTags
  * @property-read int|null $search_tags_count
- * @property-read \App\Models\BranchTranslation|null $translation
- * @property-read Collection|\App\Models\BranchTranslation[] $translations
+ * @property-read BranchTranslation|null $translation
+ * @property-read Collection|BranchTranslation[] $translations
  * @property-read int|null $translations_count
- * @property-read Collection|\App\Models\User[] $users
+ * @property-read Collection|User[] $users
  * @property-read int|null $users_count
- * @property-read Collection|\App\Models\WorkingHour[] $workingHours
+ * @property-read Collection|WorkingHour[] $workingHours
  * @property-read int|null $working_hours_count
  * @method static Builder|Branch active()
  * @method static Builder|Branch draft()
@@ -369,21 +369,23 @@ class Branch extends Model implements HasMedia
     public function validateCartValue($totalAmount, $isTipTopDelivery = true)
     {
         if ( ! $isTipTopDelivery) {
-            // Todo: branch DOES NOT have restaurant delivery. return false + message
-            $minimumOrder = $this->restaurant_minimum_order;
-            $fixedDeliveryFee = $this->restaurant_fixed_delivery_fee;
-            $underMinimumOrderDeliveryFee = $this->restaurant_under_minimum_order_delivery_fee;
             $freeDeliveryThreshold = $this->restaurant_free_delivery_threshold;
-            $extraDeliveryFeePerKm = $this->restaurant_extra_delivery_fee_per_km;
-            $fixedDeliveryDistanceKeyName = 'tiptop_fixed_delivery_distance';
+            $minimumOrder = $this->restaurant_minimum_order;
+            if ( ! $this->has_restaurant_delivery) {
+                return [
+                    'isValid' => false,
+                    'message' => trans('api.branch_doesnt_has_restaurant_delivery'),
+                ];
+            }
         } else {
-            // Todo: branch DOES NOT have tiptop delivery. return false + message
-            $minimumOrder = $this->minimum_order;
-            $fixedDeliveryFee = $this->fixed_delivery_fee;
-            $underMinimumOrderDeliveryFee = $this->under_minimum_order_delivery_fee;
             $freeDeliveryThreshold = $this->free_delivery_threshold;
-            $extraDeliveryFeePerKm = $this->extra_delivery_fee_per_km;
-            $fixedDeliveryDistanceKeyName = 'restaurant_fixed_delivery_distance';
+            $minimumOrder = $this->minimum_order;
+            if ( ! $this->has_tip_top_delivery) {
+                return [
+                    'isValid' => false,
+                    'message' => trans('api.branch_doesnt_has_tip_top_delivery'),
+                ];
+            }
         }
 
         if ($totalAmount >= $freeDeliveryThreshold) {
@@ -393,11 +395,19 @@ class Branch extends Model implements HasMedia
             ];
         }
 
-        // under min cart:
-        //  min_order > 0
+        if ($minimumOrder > 0) {
+            if ($totalAmount < $minimumOrder && $this->under_minimum_order_delivery_fee == 0) {
+                return [
+                    'isValid' => false,
+                    'message' => trans('api.cart_total_under_minimum'),
+                ];
+            }
+        }
 
-        // cart total < min_order && under_minimum_order_delivery_fee == 0
-        // return fasle + message
+        return [
+            'isValid' => true,
+            'message' => null,
+        ];
     }
 
     public function calculateDeliveryFee(
