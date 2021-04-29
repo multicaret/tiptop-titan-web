@@ -112,12 +112,12 @@ class OrderController extends BaseApiController
         $userCart = Cart::retrieve($chainId, $branchId, auth()->id());
         $branch = Branch::find($branchId);
 
-        if ($userCart->total < $branch->minimum_order && $branch->under_minimum_order_delivery_fee == 0) {
-            $message = trans('api.cart_total_under_minimum');
-
-            return $this->setStatusCode(Response::HTTP_BAD_REQUEST)
-                        ->respondWithMessage($message);
-        }
+//        if ($userCart->total < $branch->minimum_order && $branch->under_minimum_order_delivery_fee == 0) {
+//            $message = trans('api.cart_total_under_minimum');
+//
+//            return $this->setStatusCode(Response::HTTP_BAD_REQUEST)
+//                        ->respondWithMessage($message);
+//        }
 
 
         $paymentMethods = PaymentMethod::active()->get()->map(function ($method) {
@@ -129,6 +129,7 @@ class OrderController extends BaseApiController
                 'logo' => $method->logo,
             ];
         });
+        // Todo: update delivery type for both types
         $deliveryFeeCalculated = $branch->calculateDeliveryFee($userCart->total, true, false,
             $request->input('selected_address_id'));
         $grandTotal = $deliveryFeeCalculated + $userCart->total;
