@@ -2,6 +2,10 @@
 
 namespace App\Observers;
 
+use App\Integrations\TookanClient;
+use App\Jobs\Tookan\CancelTask;
+use App\Jobs\Tookan\CreateTask;
+use App\Jobs\Tookan\MarkTaskAsDelivered;
 use App\Models\Order;
 use App\Models\User;
 use App\Notifications\OrderStatusUpdated;
@@ -46,6 +50,22 @@ class OrderObserver
                 $manager->notify(new OrderStatusUpdated($order, $manager->role_name));
             }
             $order->user->notify(new OrderStatusUpdated($order, $order->user->role_name));
+
+            //dispatching tookan jobs based on changed order's status
+            $tookan_status = config('services.tookan.status');
+
+            if ($order->status == Order::STATUS_PREPARING && $order->is_delivery_by_tiptop && $tookan_status)
+            {
+                CreateTask::dispatch($order);
+            }
+            else if ($order->status == Order::STATUS_CANCELLED && $order->is_delivery_by_tiptop && $tookan_status)
+            {
+                CancelTask::dispatch($order);
+            }
+  /*        else if ($order->status == Order::STATUS_DELIVERED && $order->is_delivery_by_tiptop && $tookan_status)
+            {
+                MarkTaskAsDelivered::dispatch($order);
+            }*/
         }
         $order->recordActivity('updated');
     }

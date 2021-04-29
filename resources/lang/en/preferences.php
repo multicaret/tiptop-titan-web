@@ -2,12 +2,12 @@
 
 return [
     'index' => 'Preferences',
-    /* General Settings */
+    /* General Section */
     'app_title' => 'App title',
     'app_description' => 'App description',
     'This field affects the SEO' => 'This field affects the SEO',
 
-    /* Appearance Settings */
+    /* Appearance Section */
     'logo_light' => 'Logo light',
     'logo_dark' => 'Logo dark',
     'app_favicon' => 'App favicon',
@@ -37,13 +37,13 @@ return [
     'google_analytics' => 'Google analytics',
     'Google Analytics ID' => 'Google Analytics ID',
 
-    /* Notifications Settings */
+    /* Notifications Section */
     'SMS, Email and other related settings' => 'SMS, Email and other related settings',
     'sms_verification_content' => 'SMS verification content',
     'mobile_app_needs_approval_message' => 'Mobile app needs approval message',
     'mobile_app_account_is_suspended' => 'Mobile app account is suspended',
 
-    /* Advanced Settings */
+    /* Advanced Section */
     'Danger Area' => 'Danger Area',
     'maintenance_mode' => 'Maintenance mode',
     'custom_css_head' => 'Custom CSS Head',
@@ -53,6 +53,10 @@ return [
     'JS or any other code to be placed at the end of the head tag' => 'JS or any other code to be placed at the end of the <code>&lt;head&gt;</code> tag',
     'JS or any other code to be placed at the top of the body tag' => 'JS or any other code to be placed at the top of the <code>&lt;body&gt;</code> tag',
 
+    /* Operations Section */
+    'in KM' => 'in KM',
+
+    /* Support Section */
     'support_number' => 'Support number',
 
 

@@ -147,6 +147,7 @@ class UserController extends Controller
             'first' => 'required|min:3|max:60',
             'email' => 'required|email|min:3|max:255|unique:users,email',
             'password' => 'required|string|min:6|confirmed',
+            'phone' => 'required|numeric|digits_between:7,15',
         ]);
         $previousOrderValue = User::orderBy('order_column', 'ASC')->first();
         $order = is_null($previousOrderValue) ? 1 : $previousOrderValue->order_column + 1;
@@ -167,6 +168,8 @@ class UserController extends Controller
         $user->team_id = $request->team_id;
         $user->branch_id = $request->branch_id;
         $user->order_column = $order;
+        $user->phone_country_code = '964';
+        $user->phone_number = $request->phone;
 
         $user->save();
 
@@ -191,7 +194,6 @@ class UserController extends Controller
 
         $this->handleSubmittedSingleMedia('avatar', $request, $user);
 
-        DB::commit();
 
         if (in_array($role, User::rolesHaving('branches'))) {
             $user->branches($role)->sync($request->input('branches'));
@@ -199,6 +201,7 @@ class UserController extends Controller
 
         $roleName = $this->getRoleName($role);
         $user->assignRole($roleName);
+        DB::commit();
 
         return redirect()
             ->route('admin.users.index', ['role' => $role])
@@ -248,6 +251,7 @@ class UserController extends Controller
         $validationRules = [
             'first' => 'required|min:3|max:60',
             'email' => 'required|email|min:3|max:255|unique:users,email,'.$user->id,
+            'phone' => 'required|numeric|digits_between:7,15',
         ];
 
         if ( ! empty($request->password)) {
@@ -268,6 +272,7 @@ class UserController extends Controller
         $user->employment = $request->employment;
         $user->team_id = $request->team_id;
         $user->branch_id = $request->branch_id;
+        $user->phone_number = $request->phone;
         $user->save();
 
         if ( ! empty($request->password)) {
@@ -302,7 +307,8 @@ class UserController extends Controller
             $user->branches($role)->sync($request->input('branches'));
         }
 
-        $user->assignRole($user->role_name);
+        $roleName = $this->getRoleName($user->role_name);
+        $user->assignRole($roleName);
         if (auth()->user()->hasRole([User::ROLE_SUPER, User::ROLE_ADMIN])) {
             $permissions = array_keys($request->input('permissions', []));
             $user->syncPermissions($permissions);
@@ -408,7 +414,6 @@ class UserController extends Controller
         }
         $regions = Region::whereCountryId(config('defaults.country.id'))->get();
         $kinds = array_values(Location::getKindsForMaps());
-        $kind = $address->actualKind;
         return view('admin.users.address-form', compact(['user', 'address', 'regions', 'kinds']));
     }
 

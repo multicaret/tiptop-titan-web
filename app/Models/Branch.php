@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Http\Controllers\Controller;
 use App\Traits\HasAppTypes;
 use App\Traits\HasMediaTrait;
 use App\Traits\HasStatuses;
@@ -69,8 +70,12 @@ use Spatie\MediaLibrary\MediaCollections\Models\Collections\MediaCollection;
  * @property Carbon|null $created_at
  * @property Carbon|null $updated_at
  * @property string|null $deleted_at
+ * @property-read Collection|\App\Models\Location[] $addresses
+ * @property-read int|null $addresses_count
  * @property-read \App\Models\Chain $chain
  * @property-read \App\Models\City|null $city
+ * @property-read Collection|\App\Models\Location[] $contacts
+ * @property-read int|null $contacts_count
  * @property-read Collection|\App\Models\User[] $drivers
  * @property-read int|null $drivers_count
  * @property-read Collection|\App\Models\User[] $favoriters
@@ -286,6 +291,14 @@ class Branch extends Model implements HasMedia
     {
         return $this->hasMany(Location::class, 'contactable_id');
     }
+    public function contacts(): HasMany
+    {
+        return $this->hasMany(Location::class, 'contactable_id')->where('type',Location::TYPE_CONTACT);
+    }
+    public function addresses(): HasMany
+    {
+        return $this->hasMany(Location::class, 'contactable_id')->where('type',Location::TYPE_ADDRESS);
+    }
 
     public function drivers(): BelongsToMany
     {
@@ -354,17 +367,100 @@ class Branch extends Model implements HasMedia
         return $this->raters->count() > 0;
     }
 
-    public function calculateDeliveryFee($totalAmount): float
+
+    public function validateCartValue($totalAmount, $isTipTopDelivery = true)
     {
-        $deliveryFee = $this->fixed_delivery_fee;
-        if ($this->under_minimum_order_delivery_fee > 0) {
-            if ($totalAmount < $this->minimum_order) {
-                $deliveryFee += $this->under_minimum_order_delivery_fee;
+        if ( ! $isTipTopDelivery) {
+            $freeDeliveryThreshold = $this->restaurant_free_delivery_threshold;
+            $minimumOrder = $this->restaurant_minimum_order;
+            if ( ! $this->has_restaurant_delivery) {
+                return [
+                    'isValid' => false,
+                    'message' => trans('api.branch_doesnt_has_restaurant_delivery'),
+                ];
+            }
+        } else {
+            $freeDeliveryThreshold = $this->free_delivery_threshold;
+            $minimumOrder = $this->minimum_order;
+            if ( ! $this->has_tip_top_delivery) {
+                return [
+                    'isValid' => false,
+                    'message' => trans('api.branch_doesnt_has_tip_top_delivery'),
+                ];
             }
         }
 
-        if ($totalAmount >= $this->free_delivery_threshold) {
-            $deliveryFee = 0;
+        if ($totalAmount >= $freeDeliveryThreshold) {
+            return [
+                'isValid' => true,
+                'message' => null,
+            ];
+        }
+
+        if ($minimumOrder > 0) {
+            if ($totalAmount < $minimumOrder && $this->under_minimum_order_delivery_fee == 0) {
+                return [
+                    'isValid' => false,
+                    'message' => trans('api.cart_total_under_minimum'),
+                ];
+            }
+        }
+
+        return [
+            'isValid' => true,
+            'message' => null,
+        ];
+    }
+
+    public function calculateDeliveryFee(
+        $totalAmount,
+        $isTipTopDelivery = true,
+        $hasCouponWithFreeDelivery = false,
+        $addressId = null
+    ): float {
+
+        if ($hasCouponWithFreeDelivery) {
+            return 0;
+        }
+
+        if ( ! $isTipTopDelivery) {
+            $minimumOrder = $this->restaurant_minimum_order;
+            $fixedDeliveryFee = $this->restaurant_fixed_delivery_fee;
+            $underMinimumOrderDeliveryFee = $this->restaurant_under_minimum_order_delivery_fee;
+            $freeDeliveryThreshold = $this->restaurant_free_delivery_threshold;
+            $extraDeliveryFeePerKm = $this->restaurant_extra_delivery_fee_per_km;
+            $fixedDeliveryDistanceKeyName = 'tiptop_fixed_delivery_distance';
+        } else {
+            $minimumOrder = $this->minimum_order;
+            $fixedDeliveryFee = $this->fixed_delivery_fee;
+            $underMinimumOrderDeliveryFee = $this->under_minimum_order_delivery_fee;
+            $freeDeliveryThreshold = $this->free_delivery_threshold;
+            $extraDeliveryFeePerKm = $this->extra_delivery_fee_per_km;
+            $fixedDeliveryDistanceKeyName = 'restaurant_fixed_delivery_distance';
+        }
+
+        if ($totalAmount >= $freeDeliveryThreshold) {
+            return 0;
+        }
+
+        $deliveryFee = $fixedDeliveryFee;
+
+        // Calculating Delivery Fee Based on Distance
+        if (
+            ! is_null($addressId) &&
+            ! is_null($address = Location::active()->where('id', $addressId)->first()) &&
+            ! is_null($address->latitude) &&
+            ! is_null($address->longitude)
+        ) {
+            $distance = Controller::distanceBetween($this->latitude, $this->longitude, $address->latitude,
+                $address->longitude);
+            if ($distance != 0 && Preference::retrieveValue($fixedDeliveryDistanceKeyName) && $distance > Preference::retrieveValue($fixedDeliveryDistanceKeyName)) {
+                $deliveryFee = $extraDeliveryFeePerKm * $distance;
+            }
+        }
+
+        if ($underMinimumOrderDeliveryFee > 0 && $totalAmount < $minimumOrder) {
+            $deliveryFee += $underMinimumOrderDeliveryFee;
         }
 
         return $deliveryFee;

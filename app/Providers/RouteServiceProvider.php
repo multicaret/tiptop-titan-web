@@ -43,6 +43,7 @@ class RouteServiceProvider extends ServiceProvider
         $this->mapWebDashboardRoutes();
         $this->mapAjaxRoutes();
         $this->mapWebRoutes();
+        $this->mapTookanRoutes();
     }
 
 
@@ -161,6 +162,17 @@ class RouteServiceProvider extends ServiceProvider
              ->middleware(['api', 'localization-redirect'])
              ->namespace($this->namespace.'\Api\Restaurants\V1')
              ->group(base_path('routes/api-restaurants.v1.php'));
+    }
+    /**
+     * Define the "webhooks" routes for tookan.
+     *
+     *
+     * @return void
+     */
+    protected function mapTookanRoutes()
+    {
+        Route::namespace($this->namespace.'\Tookan')
+            ->group(base_path('routes/tookan-webhooks.php'));
     }
 
     /**

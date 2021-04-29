@@ -42,6 +42,18 @@ class TeamController extends Controller
                 'width' => '40',
             ],
             [
+                'data' => 'tokan_team_id',
+                'name' => 'tokan_team_id',
+                'title' => 'Tookan ID',
+                'width' => '40',
+            ],
+            [
+                'data' => 'description',
+                'name' => 'description',
+                'title' => 'Description',
+                'width' => '40',
+            ],
+            [
                 'data' => 'status',
                 'name' => 'status',
                 'title' => 'Status',

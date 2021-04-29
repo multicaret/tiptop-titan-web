@@ -53,8 +53,10 @@ use Illuminate\Support\Str;
  * @property-read \App\Models\Country|null $country
  * @property-read \App\Models\User $creator
  * @property-read \App\Models\User $editor
+ * @property-read mixed $actual_kind
  * @property-read bool $is_active
  * @property-read bool $is_inactive
+ * @property-read mixed $kind_name
  * @property-read array $status_js
  * @property-read mixed $status_name
  * @property-read \App\Models\Region|null $region
@@ -217,7 +219,7 @@ class Location extends Model
 
     public function getActualKindAttribute()
     {
-        return self::getKindsForMaps()[$this->kind];
+        return self::getKindsForMaps()[$this->kind - 1];
     }
 
     public function getKindNameAttribute()

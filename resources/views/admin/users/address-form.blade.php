@@ -45,7 +45,7 @@
                                 </label>
                                 <multiselect
                                     :options="kinds"
-                                    v-model="address.kind"
+                                    v-model="kind"
                                     track-by="id"
                                     label="title"
                                     select-label=""
@@ -182,11 +182,10 @@
         <div class="col-md-12">
             <input type="hidden" name="region" :value="JSON.stringify(address.region)">
             <input type="hidden" name="city" :value="JSON.stringify(address.city)">
-            <input type="hidden" name="kind" :value="JSON.stringify(address.kind)">
+            <input type="hidden" name="kind" :value="JSON.stringify(kind)">
             <button class="btn btn-success" type="submit">{{trans('strings.submit')}}</button>
         </div>
     </form>
-
 @endsection
 
 @push('scripts')
@@ -225,6 +224,7 @@
             data: {
                 address: @json($address),
                 kinds: @json($kinds),
+                kind: @json($address->actualKind),
                 regions: @json($regions),
                 cities: [],
             },
