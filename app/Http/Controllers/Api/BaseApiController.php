@@ -15,7 +15,6 @@ class BaseApiController extends Controller
     use ValidatesRequests;
 
     public const PAGINATION = 30;
-    public const NOTIFICATION_LED_COLOR = '34495e';
 
     private $statusCode = Response::HTTP_OK;
 
@@ -47,16 +46,16 @@ class BaseApiController extends Controller
 
     public function respondWithMessage($message)
     {
-        return $this->respond(null, '', $message);
+        return $this->respond(null, null, $message);
     }
 
-    public function respondValidationFails($errors, $data = null)
+    public function respondValidationFails($errors = [], $data = null)
     {
         return $this->setStatusCode(Response::HTTP_UNPROCESSABLE_ENTITY)
                     ->respond($data, $errors, 'Invalid Data');
     }
 
-    public function respond($data, $errors = '', $message = '', $headers = [])
+    public function respond($data, $errors = [], $message = '', $headers = [])
     {
 
         return response()->json([
