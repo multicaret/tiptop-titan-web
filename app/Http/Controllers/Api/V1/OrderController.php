@@ -129,8 +129,8 @@ class OrderController extends BaseApiController
                 'logo' => $method->logo,
             ];
         });
-        // Todo: update delivery type for both types
-        $deliveryFeeCalculated = $branch->calculateDeliveryFee($userCart->total, true, false,
+
+        $deliveryFeeCalculated = $branch->calculateDeliveryFee($userCart->total, $branch->has_tip_top_delivery, false,
             $request->input('selected_address_id'));
         $grandTotal = $deliveryFeeCalculated + $userCart->total;
 
