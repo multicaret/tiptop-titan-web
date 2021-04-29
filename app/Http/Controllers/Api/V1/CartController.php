@@ -285,8 +285,8 @@ class CartController extends BaseApiController
     {
         \DB::beginTransaction();
         $cartProduct = CartProduct::find($cartProductId);
-        $cart->total -= ($cartProduct->total_options_price + $cartProduct->product->discounted_price);
-        $cart->without_discount_total -= ($cartProduct->total_options_price + $cartProduct->product->price);
+        $cart->total -= ($cartProduct->options_price + $cartProduct->product->discounted_price) * $cartProduct->quantity;
+        $cart->without_discount_total -= ($cartProduct->options_price + $cartProduct->product->price) * $cartProduct->quantity;
         $cart->save();
         $cartProduct->delete();
         \DB::commit();
