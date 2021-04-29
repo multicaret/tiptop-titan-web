@@ -184,7 +184,10 @@ class OrderController extends BaseApiController
 
         $isDeliveryTypeTipTop = $request->input('delivery_type', 'tiptop') == 'tiptop';
 
-        // return $this->respond errors = $branch->validateCartValue()
+        $validateCartValue = $branch->validateCartValue($activeCart->total, $isDeliveryTypeTipTop);
+        if ( ! $validateCartValue['isValid']) {
+            $this->respondValidationFails(['cart_value' => $validateCartValue['message']]);
+        }
 
         DB::beginTransaction();
         $newOrder = new Order();

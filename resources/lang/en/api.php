@@ -9,5 +9,7 @@ return [
     'interaction_failed_please_check_parameters' => 'Interaction failed please check parameters',
     'cart_total_under_minimum' => 'Cart Total Under Minimum',
     'restaurant_added_to_wishlist_successfully' => 'Restaurant added to wishlist successfully',
-    'restaurant_removed_from_wishlist_successfully' => 'Restaurant removed from wishlist successfully'
+    'restaurant_removed_from_wishlist_successfully' => 'Restaurant removed from wishlist successfully',
+    'branch_doesnt_has_restaurant_delivery' => 'Branch doesn\'t has restaurant delivery',
+    'branch_doesnt_has_tip_top_delivery' => 'Branch doesn\'t has tip top delivery',
 ];
