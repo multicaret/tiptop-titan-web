@@ -186,7 +186,7 @@ class OrderController extends BaseApiController
 
         $validateCartValue = $branch->validateCartValue($activeCart->total, $isDeliveryTypeTipTop);
         if ( ! $validateCartValue['isValid']) {
-            $this->respondValidationFails(['cart_value' => $validateCartValue['message']]);
+            return $this->respondValidationFails(['cart_value' => $validateCartValue['message']]);
         }
 
         DB::beginTransaction();
