@@ -6,8 +6,8 @@ use App\Http\Controllers\Api\BaseApiController;
 use App\Http\Resources\FoodBranchResource;
 use App\Http\Resources\UserResource;
 use App\Models\Preference;
+use App\Models\User;
 use Illuminate\Http\Request;
-use Illuminate\Http\Resources\Json\JsonResource;
 use Illuminate\Validation\Rule;
 use Symfony\Component\HttpFoundation\Response;
 
@@ -92,22 +92,22 @@ class AuthController extends BaseApiController
             $deviceName = $request->input('device_name', 'New Device');
             // Todo: to @MK please send the mobile_app_details from mobile side, and send it here, and use it as device name.
             $accessToken = $user->createToken($deviceName, config('defaults.user.mobile_app_details'))->plainTextToken;
-            $respond = $this->respond([
+            $respondData = [
                 'user' => new UserResource($user),
                 'isEmailVerified' => self::isEmailVerified($user),
                 'isApproved' => self::isApproved($user),
                 'isSuspended' => self::isSuspended($user),
                 'accessToken' => $accessToken,
-            ]);
+                'restaurant' => null,
+            ];
 
-            return $user->is_branch_manager;
-            if ($user->is_branch_manager) {
-                $branch = ['restaurant' => new FoodBranchResource($user->branch)];
-
-                return array_merge($respond, $branch);
+            if ($user->role_name == User::ROLE_BRANCH_OWNER || $user->role_name == User::ROLE_BRANCH_MANAGER) {
+                if ($user->branches()->count()) {
+                    $respondData['restaurant'] = new FoodBranchResource($user->branches()->first());
+                }
             }
 
-            return $respond;
+            $this->respond($respondData);
 
         } else {
             return $this->respondWithMessage(trans('auth.failed'));
