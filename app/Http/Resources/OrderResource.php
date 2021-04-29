@@ -51,9 +51,9 @@ class OrderResource extends JsonResource
                 'driverHasBeenRated' => ! is_null($this->driver_rating_value),
                 'driverRatingValue' => (double) $this->driver_rating_value,
                 'ratingComment' => $this->rating_comment,
-                'hasGoodFoodQualityRating' => (bool) $this->has_good_food_quality_rating,
-                'hasGoodPackagingQualityRating' => (bool) $this->has_good_packaging_quality_rating,
-                'hasGoodOrderAccuracyRating' => (bool) $this->has_good_order_accuracy_rating,
+                'hasGoodFoodQualityRating' => $this->has_good_food_quality_rating,
+                'hasGoodPackagingQualityRating' => $this->has_good_packaging_quality_rating,
+                'hasGoodOrderAccuracyRating' => $this->has_good_order_accuracy_rating,
                 'ratingIssue' => [
                     'id' => (int) optional($this->ratingIssue)->id,
                     'title' => optional($this->ratingIssue)->title,

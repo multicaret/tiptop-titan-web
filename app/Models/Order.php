@@ -189,9 +189,12 @@ class Order extends Model
         'private_total' => 'double',
         'private_delivery_fee' => 'double',
         'private_grand_total' => 'double',
-        'is_delivery_by_tiptop' => 'boolean',
         'completed_at' => 'datetime',
         'rated_at' => 'datetime',
+        'is_delivery_by_tiptop' => 'boolean',
+        'has_good_food_quality_rating' => 'boolean',
+        'has_good_packaging_quality_rating' => 'boolean',
+        'has_good_order_accuracy_rating' => 'boolean',
     ];
 
     private static function getFormattedActivityLogDifferenceItem(
