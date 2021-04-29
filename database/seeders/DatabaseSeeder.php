@@ -25,8 +25,6 @@ use DB;
 use File;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Arr;
-use Illuminate\Support\Collection;
-use Illuminate\Support\Facades\Artisan;
 use Illuminate\Support\Facades\Schema;
 use Spatie\Permission\Models\Permission;
 use Spatie\Permission\Models\Role;
@@ -37,7 +35,7 @@ class DatabaseSeeder extends Seeder
     public const DEFAULT_USERS_NUMBER = 50;
     private int $lastTaxonomyId = 0;
     private int $lastBranchId = 0;
-    private array $tablesFromOldDB = ['cities', 'city_translations', 'region_translations','regions'];
+    private array $tablesFromOldDB = ['cities', 'city_translations', 'region_translations', 'regions'];
 
     /**
      * Seed the application's database.
@@ -64,7 +62,7 @@ class DatabaseSeeder extends Seeder
         $files = File::allFiles(storage_path('seeders'));
         foreach ($files as $table) {
             $tableName = explode('.', $table->getFilename())[0];
-            if ( $oldDbHasExist && in_array($tableName, $this->tablesFromOldDB)) {
+            if ($oldDbHasExist && in_array($tableName, $this->tablesFromOldDB)) {
                 continue;
             }
             if (Schema::hasTable($tableName)) {
@@ -710,6 +708,26 @@ class DatabaseSeeder extends Seeder
             'last_logged_in_at' => now(),
         ]);
         $admin->assignRole('Admin');
+
+        $owner = User::create([
+            'first' => 'Restaurant Owner',
+            'last' => 'Demo',
+            'username' => 'owner-demo',
+            'email' => 'owner@trytiptop.app',
+            'password' => '$2y$10$6c61PAC4QYS.45dEgBxGaOgpfOdfg33LyG1OorGSvjOyRCVw.gy6i', // secret
+            'language_id' => config('defaults.language.id'),
+            'country_id' => config('defaults.country.id'),
+            'region_id' => config('defaults.region.id'),
+            'city_id' => config('defaults.city.id'),
+            'currency_id' => config('defaults.currency.id'),
+            'remember_token' => Str::random(10),
+            'approved_at' => now(),
+            'status' => User::STATUS_ACTIVE,
+            'phone_verified_at' => now(),
+            'email_verified_at' => now(),
+            'last_logged_in_at' => now(),
+        ]);
+        $owner->assignRole('Branch Owner');
 
         return [$super, $admin];
     }
