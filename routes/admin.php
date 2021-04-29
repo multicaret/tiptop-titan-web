@@ -22,6 +22,9 @@ Route::post('users/{role}/store', 'UserController@store')->name('users.store');
 Route::get('users/{user}/edit', 'UserController@edit')->name('users.edit');
 Route::put('users/{user}/update', 'UserController@update')->name('users.update');
 Route::delete('users/{user}/delete', 'UserController@destroy')->name('users.destroy');
+
+Route::get('users/{user}/addresses/{address}/edit', 'UserController@editAddress')->name('users.addresses.edit');
+Route::put('users/{user}/addresses/{address}/update', 'UserController@updateAddress')->name('users.addresses.update');
 /*
 
 Route::resource('users', 'UserController')->except(['show']);

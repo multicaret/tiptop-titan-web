@@ -215,9 +215,14 @@ class Location extends Model
         })->first();
     }
 
-    public function getKind()
+    public function getActualKindAttribute()
     {
-        return self::getKinds()[$this->kind];
+        return self::getKindsForMaps()[$this->kind];
+    }
+
+    public function getKindNameAttribute()
+    {
+        return self::getActualKindAttribute()['title'];
     }
 
     /**
