@@ -414,7 +414,6 @@ class UserController extends Controller
         }
         $regions = Region::whereCountryId(config('defaults.country.id'))->get();
         $kinds = array_values(Location::getKindsForMaps());
-        $kind = $address->actualKind;
         return view('admin.users.address-form', compact(['user', 'address', 'regions', 'kinds']));
     }
 
