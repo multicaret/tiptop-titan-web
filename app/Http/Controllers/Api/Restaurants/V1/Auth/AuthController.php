@@ -107,8 +107,7 @@ class AuthController extends BaseApiController
                 }
             }
 
-            $this->respond($respondData);
-
+            return $this->respond($respondData);
         } else {
             return $this->respondWithMessage(trans('auth.failed'));
         }
