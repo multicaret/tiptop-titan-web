@@ -43,7 +43,6 @@
                                     @lang('strings.kind')
                                     <b class="text-danger">*</b>
                                 </label>
-                                @{{ address.kind }}
                                 <multiselect
                                     :options="kinds"
                                     v-model="address.kind"
