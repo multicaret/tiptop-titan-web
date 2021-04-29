@@ -2,10 +2,15 @@
 
 namespace App\Observers;
 
+use App\Jobs\Tookan\CreateCaptain;
+use App\Jobs\Tookan\ToggleCaptainStatus;
 use App\Models\User;
+use Spatie\Permission\Models\Role;
 
 class UserObserver
 {
+    public $afterCommit = true;
+
     /**
      * Handle the User "created" event.
      *
@@ -14,7 +19,11 @@ class UserObserver
      */
     public function created(User $user)
     {
-        //
+        $tookan_status = config('services.tookan.status');
+
+        if ($user->role_name == User::ROLE_TIPTOP_DRIVER && $tookan_status) {
+            CreateCaptain::dispatchSync($user);
+        }
     }
 
     /**
@@ -25,7 +34,17 @@ class UserObserver
      */
     public function updated(User $user)
     {
-        //
+        $tookan_status = config('services.tookan.status');
+
+        if ($user->role_name == User::ROLE_TIPTOP_DRIVER && $tookan_status) {
+            CreateCaptain::dispatchSync($user);
+            if ($user->wasChanged('status')) {
+                //  dd(123);
+                ToggleCaptainStatus::dispatchSync($user);
+            }
+
+
+        }
     }
 
     /**
@@ -36,7 +55,13 @@ class UserObserver
      */
     public function deleted(User $user)
     {
-        //
+
+        $tookan_status = config('services.tookan.status');
+
+        if (!empty($user->tookan_id) && $tookan_status) {
+            ToggleCaptainStatus::dispatchSync($user,true);
+        }
+
     }
 
     /**
