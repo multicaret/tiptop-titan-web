@@ -45,7 +45,7 @@
 
     <script src="/admin-assets/js/material-ripple.js"></script>
     <script src="/admin-assets/js/layout-helpers.js"></script>
-    @if(auth()->check() && auth()->user()->id !== 1)
+    {{--@if(auth()->check() && auth()->user()->id !== 1)
         <script src="/admin-assets/js/theme-settings.js"></script>
         <script>
             window.themeSettings = new ThemeSettings({
@@ -53,7 +53,7 @@
                 themesPath: '/admin-assets/css/rtl/'
             });
         </script>
-    @endif
+    @endif--}}
 
 <!-- Core scripts -->
     <script src="/admin-assets/js/pace.js"></script>
@@ -110,7 +110,7 @@
         ]) !!};
     </script>
 
-{{--    @include('admin.notifications.onesignal-init')--}}
+    @include('admin.notifications.onesignal-init')
 
     @stack('styles')
 
