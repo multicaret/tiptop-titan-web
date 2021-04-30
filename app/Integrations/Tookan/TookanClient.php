@@ -16,7 +16,7 @@ class TookanClient
     public function __construct()
     {
         $this->base_url = config('services.tookan.base_url');
-        $this->api_key  = config('services.tookan.api_key');
+        $this->api_key = config('services.tookan.api_key');
 
     }
 
@@ -25,110 +25,6 @@ class TookanClient
         $taskData = $this->prepareTaskData($order);
 
         return $this->apiRequest('POST', 'create_task', $taskData);
-    }
-
-    public function cancelTask(Order $order)
-    {
-
-    }
-
-    public function createCaptain(User $user)
-    {
-
-        if ($user->role_name != User::ROLE_TIPTOP_DRIVER) {
-            return false;
-        }
-
-        if (empty($user->team) || empty($user->team->tookan_team_id)) {
-            $team = TookanTeam::first();
-            if (empty($team)) {
-                return false;
-            }
-            $user->team_id = $team->id;
-            $user->saveQuietly();
-            $user->load('team');
-        }
-        $captainData = $this->prepareCaptainData($user);
-
-        return $this->apiRequest('POST', 'add_agent', $captainData);
-
-    }
-
-    public function updateCaptain(User $user)
-    {
-        if ($user->role_name != User::ROLE_TIPTOP_DRIVER) {
-            return false;
-        }
-
-        if (empty($user->team) || empty($user->team->tookan_team_id)) {
-            $team = TookanTeam::first();
-            if (empty($team)) {
-                return false;
-            }
-            $user->team_id = $team->id;
-            $user->saveQuietly();
-            $user->load('team');
-        }
-        $captainData = $this->prepareCaptainData($user);
-
-        return $this->apiRequest('POST', 'edit_agent',
-            array_merge(['fleet_id' => (string) $user->tookan_id], $captainData));
-
-    }
-
-    public function blockCaptain(User $user, $deleteOperation = false)
-    {
-        if (empty($user->team) || empty($user->team->tookan_team_id || $user->role_name != User::ROLE_TIPTOP_DRIVER)) {
-            return false;
-        }
-
-        $captainStatusData = $this->prepareCaptainStatusData(($user->status != User::STATUS_ACTIVE || $deleteOperation) ? 0 : 1);
-
-        return $this->apiRequest('POST', 'block_and_unblock_fleet',
-            array_merge(['fleet_id' => (string) $user->tookan_id], $captainStatusData));
-
-    }
-
-    public function createTeam(TookanTeam $tookanTeam)
-    {
-
-        $teamData = $this->prepareTeamData($tookanTeam);
-
-        return $this->apiRequest('POST', 'create_team', $teamData);
-
-    }
-
-    public function updateTeam(TookanTeam $tookanTeam, $team_id)
-    {
-
-        $teamData = $this->prepareTeamData($tookanTeam);
-
-        return $this->apiRequest('POST', 'update_team', array_merge(['team_id' => (string) $team_id], $teamData));
-
-    }
-
-    public function apiRequest($method, $endpoint, $data = [])
-    {
-        try {
-            $url = $this->base_url.$endpoint;
-
-            $request = Http::withHeaders([
-                'cache-control' => 'no-cache',
-                'content-type' => 'application/json',
-                'Connection' => 'keep-alive'
-            ]);
-            $response = null;
-            if ($method == 'POST') {
-                $response = $request->post($url, array_merge(['api_key' => $this->api_key], $data));
-            } elseif ($method == 'GET') {
-                $response = $request->get($url, array_merge(['api_key' => $this->api_key], $data));
-            }
-
-            return $response;
-        } catch (\Exception $ex) {
-            return false;
-        }
-
     }
 
     public function prepareTaskData(Order $order)
@@ -144,8 +40,8 @@ class TookanClient
             'job_pickup_phone' => $order->branch->primary_phone_number,
             'job_pickup_name' => $order->branch->contacts->first()->name,
             //      'job_pickup_email'        => $order->branch->contact_email,
-            'job_pickup_address' => $order->branch->addresses->first()->address1,
-            'job_pickup_latitude' => $order->branch->longitude,
+            'job_pickup_address' => $order->branch->addresses()->first()->address1,
+            'job_pickup_latitude' => $order->branch->latitude,
             'job_pickup_longitude' => $order->branch->longitude,
             'job_pickup_datetime' => now()->addMinutes(13)->toDateTimeString(),
             'customer_email' => $order->user->email,
@@ -191,15 +87,66 @@ class TookanClient
         ];
     }
 
+    public function apiRequest($method, $endpoint, $data = [])
+    {
+        try {
+            $url = $this->base_url.$endpoint;
+
+            $request = Http::withHeaders([
+                'cache-control' => 'no-cache',
+                'content-type' => 'application/json',
+                'Connection' => 'keep-alive'
+            ]);
+            $response = null;
+            if ($method == 'POST') {
+                $response = $request->post($url, array_merge(['api_key' => $this->api_key], $data));
+            } elseif ($method == 'GET') {
+                $response = $request->get($url, array_merge(['api_key' => $this->api_key], $data));
+            }
+
+            return $response;
+        } catch (\Exception $ex) {
+            return false;
+        }
+
+    }
+
+    public function cancelTask(Order $order)
+    {
+
+    }
+
+    public function createCaptain(User $user)
+    {
+
+        if ($user->role_name != User::ROLE_TIPTOP_DRIVER) {
+            return false;
+        }
+
+        if (empty(optional($user->team)->tookan_team_id)) {
+            $team = TookanTeam::first();
+            if (empty($team)) {
+                return false;
+            }
+            $user->team_id = $team->id;
+            $user->saveQuietly();
+            $user->load('team');
+        }
+        $captainData = $this->prepareCaptainData($user);
+
+        return $this->apiRequest('POST', 'add_agent', $captainData);
+
+    }
+
     public function prepareCaptainData(User $user)
     {
         return [
             //   'tags'              => $this->driver->tookanInfo->type == 'food' ? 'food' : 'market',
-            'email'             => $user->email,
-            'username'          => $user->username,
-            'first_name'        => $user->first,
-            'last_name'         => $user->last,
-            'profile_url'       => $user->avatar,
+            'email' => $user->email,
+            'username' => $user->username,
+            'first_name' => $user->first,
+            'last_name' => $user->last,
+            'profile_url' => $user->avatar,
             'profile_thumb_url' => $user->avatar,
             'phone' => $user->international_phone,
             'transport_type' => '2',
@@ -207,6 +154,57 @@ class TookanClient
             'password' => 'Tiptopagent@123',
             'team_id' => (string) $user->team->tookan_team_id,
         ];
+    }
+
+    public function updateCaptain(User $user)
+    {
+        if ($user->role_name != User::ROLE_TIPTOP_DRIVER) {
+            return false;
+        }
+
+        if (empty(optional($user->team)->tookan_team_id)) {
+            $team = TookanTeam::first();
+            if (empty($team)) {
+                return false;
+            }
+            $user->team_id = $team->id;
+            $user->saveQuietly();
+            $user->load('team');
+        }
+        $captainData = $this->prepareCaptainData($user);
+
+        return $this->apiRequest('POST', 'edit_agent',
+            array_merge(['fleet_id' => (string) $user->tookan_id], $captainData));
+
+    }
+
+    public function blockCaptain(User $user, $deleteOperation = false)
+    {
+        if (empty(optional($user->team)->tookan_team_id || $user->role_name != User::ROLE_TIPTOP_DRIVER)) {
+            return false;
+        }
+
+        $captainStatusData = $this->prepareCaptainStatusData(($user->status != User::STATUS_ACTIVE || $deleteOperation) ? 0 : 1);
+
+        return $this->apiRequest('POST', 'block_and_unblock_fleet',
+            array_merge(['fleet_id' => (string) $user->tookan_id], $captainStatusData));
+
+    }
+
+    public function prepareCaptainStatusData($status)
+    {
+        return [
+            'block_status' => $status,
+        ];
+    }
+
+    public function createTeam(TookanTeam $tookanTeam)
+    {
+
+        $teamData = $this->prepareTeamData($tookanTeam);
+
+        return $this->apiRequest('POST', 'create_team', $teamData);
+
     }
 
     public function prepareTeamData(TookanTeam $tookanTeam)
@@ -217,10 +215,12 @@ class TookanClient
         ];
     }
 
-    public function prepareCaptainStatusData($status)
+    public function updateTeam(TookanTeam $tookanTeam, $team_id)
     {
-        return [
-            'block_status' => $status,
-        ];
+
+        $teamData = $this->prepareTeamData($tookanTeam);
+
+        return $this->apiRequest('POST', 'update_team', array_merge(['team_id' => (string) $team_id], $teamData));
+
     }
 }
