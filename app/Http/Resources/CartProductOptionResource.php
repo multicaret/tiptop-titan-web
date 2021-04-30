@@ -15,16 +15,16 @@ class CartProductOptionResource extends JsonResource
     {
         $isProductOptionBasedOnIngredients = $this->productOption->is_based_on_ingredients;
         if ($isProductOptionBasedOnIngredients) {
-            $selectedOptions = $this->ingredients()->pluck('selectable_id')->all();
+            $selectionIds = $this->ingredients()->pluck('selectable_id')->all();
         } else {
-            $selectedOptions = $this->selections()->pluck('selectable_id')->all();
+            $selectionIds = $this->selections()->pluck('selectable_id')->all();
         }
 
         return [
             'id' => $this->id,
             'cartProductId' => $this->cart_product_id,
             'productOptionId' => $this->product_option_id,
-            'selectedOptions' => $selectedOptions,
+            'selectionIds' => $selectionIds,
         ];
     }
 }
