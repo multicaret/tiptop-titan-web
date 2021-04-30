@@ -14,11 +14,18 @@ class CartProductOptionResource extends JsonResource
      */
     public function toArray($request)
     {
+        $selectionIds = [];
+        foreach ($this->selections as $selection) {
+            foreach ($selection->selectable as $selectable) {
+                $selectionIds[] = $selectable->id;
+            }
+        }
+
         return [
             'id' => $this->id,
             'cartProductId' => $this->cart_product_id,
             'productOptionId' => $this->product_option_id,
-            'selectionIds' => $this->selections()->pluck('selectable_id')->toArray(),
+            'selectionIds' => $selectionIds,
         ];
     }
 }
