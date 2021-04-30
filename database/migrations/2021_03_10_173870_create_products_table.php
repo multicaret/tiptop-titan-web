@@ -58,6 +58,7 @@ class CreateProductsTable extends Migration
             $table->foreign('branch_id')->references('id')->on('branches')->onDelete('cascade');
             $table->foreign('category_id')->references('id')->on('taxonomies')->onDelete('cascade');
             $table->foreign('unit_id')->references('id')->on('taxonomies')->onDelete('cascade');
+            $table->foreign('cloned_from_product_id')->references('id')->on('products');
         });
     }
 
