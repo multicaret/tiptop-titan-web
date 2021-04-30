@@ -23,7 +23,6 @@ class CreateTookansTable extends Migration
             $table->string('pickup_tracking_link')->nullable();
             $table->string('job_hash')->nullable();
             $table->string('job_token')->nullable();
-
             $table->timestamps();
         });
     }

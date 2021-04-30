@@ -48,11 +48,17 @@ Route::resource('chains', 'ChainController')->except(['show']);
 Route::post('branches/{branch}/workingHours', 'BranchController@storeWorkingHours')->name('branch.working-hours');
 Route::resource('branches', 'BranchController')->except(['show']);
 Route::resource('restaurants', 'RestaurantController')->only(['create', 'store']);
+
 Route::get('products/{product}/options', 'ProductOptionsController@create')->name('products.options');
 Route::resource('products', 'ProductController')->except(['show']);
-Route::get('orders/ratings', 'OrderController@ratings')->name('orders.ratings');
+
+Route::get('ratings/orders', 'OrderController@orderRatings')->name('orders.ratings');
+//Route::get('ratings/drivers', 'OrderController@Orderratings')->name('orders.ratings'); //future routes
+//Route::get('ratings/branches', 'OrderController@Orderratings')->name('orders.ratings');
+
 Route::get('orders', 'OrderController@index')->name('orders.index');
 Route::get('orders/{order}', 'OrderController@show')->name('orders.show');
+
 Route::get('reports/daily', 'OrderDailyReportController@index')->name('reports.index');
 Route::resource('coupons', 'CouponController')->except(['show']);
 Route::resource('payment-methods', 'PaymentMethodController')->only('index');

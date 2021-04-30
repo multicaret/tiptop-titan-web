@@ -15,7 +15,7 @@ use App\Models\Product;
 use App\Models\Region;
 use App\Models\Slide;
 use App\Models\Taxonomy;
-use App\Models\TokanTeam;
+use App\Models\TookanTeam;
 use App\Models\User;
 use App\Scopes\ActiveScope;
 use Closure;
@@ -245,6 +245,14 @@ class ComposerServiceProvider extends ServiceProvider
                                 ],
                                 'routeName' => 'admin.taxonomies.index',
                             ],
+                            [
+                                'title' => 'Ratings',
+                                'icon' => 'fas fa-star',
+                                'params' => [
+                                    'type' => Order::getCorrectChannelName(Order::CHANNEL_FOOD_OBJECT, false)
+                                ],
+                                'routeName' => 'admin.orders.ratings',
+                            ],
                         ]
                     ]
                 ]
@@ -342,8 +350,8 @@ class ComposerServiceProvider extends ServiceProvider
                                 'title' => 'Captain Teams',
                                 'icon' => 'fas fa-users',
                                 'routeName' => 'admin.teams.index',
-                                'countPrimary' => TokanTeam::active()->count(),
-                                'countDanger' => TokanTeam::inactive()->count(),
+                                'countPrimary' => TookanTeam::active()->count(),
+                                'countDanger' => TookanTeam::inactive()->count(),
                             ],
                         ]
                     ]
@@ -648,7 +656,7 @@ class ComposerServiceProvider extends ServiceProvider
         try {
             $sideNavItem['route'] = route($sideNavItem['routeName'], $params);
         } catch (Exception $e) {
-            dd('There was an error generating this route: ',$sideNavItem);
+            dd('There was an error generating this route: ', $sideNavItem);
         }
     }
 

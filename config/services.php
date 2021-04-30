@@ -56,6 +56,7 @@ return [
         'client_secret' => env('LINKEDIN_CLIENT_SECRET', ''),
         'redirect' => config('app.url').'/login/linkedin/callback',
     ],
+
     'tookan' => [
         'status' => env('TOOKAN_STATUS',false),
         'base_url' => env('TOOKAN_BASE_URL', 'https://api.tookanapp.com/v2/'),
