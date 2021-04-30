@@ -163,6 +163,7 @@ class RouteServiceProvider extends ServiceProvider
              ->namespace($this->namespace.'\Api\Restaurants\V1')
              ->group(base_path('routes/api-restaurants.v1.php'));
     }
+
     /**
      * Define the "webhooks" routes for tookan.
      *
@@ -171,8 +172,10 @@ class RouteServiceProvider extends ServiceProvider
      */
     protected function mapTookanRoutes()
     {
-        Route::namespace($this->namespace.'\Tookan')
-            ->group(base_path('routes/tookan-webhooks.php'));
+        Route::prefix('tookan')
+             ->name('tookan.')
+             ->namespace($this->namespace.'\Tookan')
+             ->group(base_path('routes/tookan.php'));
     }
 
     /**

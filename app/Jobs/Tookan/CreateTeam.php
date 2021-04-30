@@ -4,7 +4,7 @@ namespace App\Jobs\Tookan;
 
 use App\Integrations\Tookan\TookanClient;
 use App\Jobs\Middleware\RateLimited;
-use App\Models\TokanTeam;
+use App\Models\TookanTeam;
 use App\Models\User;
 use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldBeUnique;
@@ -22,9 +22,9 @@ class CreateTeam /*implements ShouldQueue*/
     /**
      * Create a new job instance.
      *
-     * @param  TokanTeam  $team
+     * @param  TookanTeam  $team
      */
-    public function __construct(TokanTeam $team)
+    public function __construct(TookanTeam $team)
     {
         $this->team = $team;
     }
@@ -38,7 +38,7 @@ class CreateTeam /*implements ShouldQueue*/
     {
         $client = new TookanClient();
 
-        if (empty($team_id = $this->team->tokan_team_id)) {
+        if (empty($team_id = $this->team->tookan_team_id)) {
             $response = $client->createTeam($this->team);
         } else {
             $response = $client->updateTeam($this->team, $team_id);
@@ -64,7 +64,7 @@ class CreateTeam /*implements ShouldQueue*/
 
         }
         if (isset($responseData['data']['team_id'])) {
-            $this->team->tokan_team_id = $responseData['data']['team_id'];
+            $this->team->tookan_team_id = $responseData['data']['team_id'];
             $this->team->saveQuietly();
         }
     }

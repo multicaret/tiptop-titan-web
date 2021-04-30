@@ -3,10 +3,10 @@
 namespace App\Providers;
 
 use App\Models\Order;
-use App\Models\TokanTeam;
+use App\Models\TookanTeam;
 use App\Models\User;
 use App\Observers\OrderObserver;
-use App\Observers\TokanTeamObserver;
+use App\Observers\TookanTeamObserver;
 use App\Observers\UserObserver;
 use Illuminate\Auth\Events\Registered;
 use Illuminate\Auth\Listeners\SendEmailVerificationNotification;
@@ -39,6 +39,6 @@ class EventServiceProvider extends ServiceProvider
     {
         User::observe(UserObserver::class);
         Order::observe(OrderObserver::class);
-        TokanTeam::observe(TokanTeamObserver::class);
+        TookanTeam::observe(TookanTeamObserver::class);
     }
 }

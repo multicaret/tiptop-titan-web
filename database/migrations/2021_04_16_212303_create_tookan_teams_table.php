@@ -1,11 +1,11 @@
 <?php
 
-use App\Models\TokanTeam;
+use App\Models\TookanTeam;
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreateTokanTeamsTable extends Migration
+class CreateTookanTeamsTable extends Migration
 {
     /**
      * Run the migrations.
@@ -14,13 +14,14 @@ class CreateTokanTeamsTable extends Migration
      */
     public function up()
     {
-        Schema::create('tokan_teams', function (Blueprint $table) {
+        Schema::create('tookan_teams', function (Blueprint $table) {
             $table->id();
             $table->unsignedBigInteger('creator_id');
             $table->unsignedBigInteger('editor_id')->index();
+            $table->string('tookan_team_id')->nullable();
             $table->string('name');
             $table->string('description')->nullable();
-            $table->unsignedTinyInteger('status')->default(TokanTeam::STATUS_DRAFT)->comment('1:draft, 2:active, 3:Inactive, 4..n:CUSTOM');
+            $table->unsignedTinyInteger('status')->default(TookanTeam::STATUS_DRAFT)->comment('1:draft, 2:active, 3:Inactive, 4..n:CUSTOM');
 
             $table->timestamps();
         });
@@ -33,6 +34,6 @@ class CreateTokanTeamsTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('tokan_teams');
+        Schema::dropIfExists('tookan_teams');
     }
 }

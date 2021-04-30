@@ -1,8 +1,7 @@
 <?php
 
 //Tookan Webhooks
-Route::group(['prefix' => 'tookan'], function (){
-Route::post('pickup/success', function (){
+Route::post('pickup/success', function () {
     dd(123);
 });
 Route::post('pickup/success', 'TookanController@pickupSuccessWebHook');
@@ -16,5 +15,3 @@ Route::post('delivery/agent_started', 'TookanController@deliveryAgentStarted');
 Route::post('delivery/agent_arrived', 'TookanController@deliveryAgentArrived');
 Route::post('driver_assigned', 'TookanController@driverAssigned');
 Route::get('order/{order}/delivery_tracking_url', 'TookanController@getDeliveryTrackingUrl')->name('tracking_url');
-
-});

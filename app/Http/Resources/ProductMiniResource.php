@@ -15,6 +15,13 @@ class ProductMiniResource extends JsonResource
      */
     public function toArray($request)
     {
+        $showStatus = false;
+        $user = auth('sanctum')->user();
+        if ( ! is_null($user) && ($user->is_branch_manager)) {
+            $showStatus = true;
+        }
+
+
         return [
             'id' => (int) $this->id,
             'englishTitle' => optional($this->translate('en'))->title,
@@ -41,6 +48,7 @@ class ProductMiniResource extends JsonResource
                 'coverFull' => $this->cover_full,
                 'gallery' => $this->gallery,
             ],
+            'isActive' => $this->when($showStatus, $this->status == Product::STATUS_ACTIVE),
         ];
     }
 }

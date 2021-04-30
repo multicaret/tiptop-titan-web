@@ -3,7 +3,7 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
-use App\Models\TokanTeam;
+use App\Models\TookanTeam;
 use DB;
 use Illuminate\Http\Request;
 use Illuminate\View\View;
@@ -42,8 +42,8 @@ class TeamController extends Controller
                 'width' => '40',
             ],
             [
-                'data' => 'tokan_team_id',
-                'name' => 'tokan_team_id',
+                'data' => 'tookan_team_id',
+                'name' => 'tookan_team_id',
                 'title' => 'Tookan ID',
                 'width' => '40',
             ],
@@ -72,7 +72,7 @@ class TeamController extends Controller
 
     public function create(Request $request)
     {
-        $data['team'] = new TokanTeam();
+        $data['team'] = new TookanTeam();
 
         return view('admin.teams.form', $data);
     }
@@ -81,7 +81,7 @@ class TeamController extends Controller
     {
 //        $request->validate($this->validationRules());
 
-        $team = new TokanTeam();
+        $team = new TookanTeam();
         $this->saveLogic($request, $team);
 
         return redirect()
@@ -92,14 +92,14 @@ class TeamController extends Controller
             ]);
     }
 
-    public function edit(TokanTeam $team, Request $request)
+    public function edit(TookanTeam $team, Request $request)
     {
         $data['team'] = $team;
 
         return view('admin.teams.form', $data);
     }
 
-    public function update(Request $request, TokanTeam $team)
+    public function update(Request $request, TookanTeam $team)
     {
         $this->saveLogic($request, $team, true);
 
@@ -111,7 +111,7 @@ class TeamController extends Controller
             ]);
     }
 
-    public function destroy(TokanTeam $team)
+    public function destroy(TookanTeam $team)
     {
         $team->delete();
 
@@ -121,7 +121,7 @@ class TeamController extends Controller
         ]);
     }
 
-    private function saveLogic($request, TokanTeam $team, bool $isUpdating = false)
+    private function saveLogic($request, TookanTeam $team, bool $isUpdating = false)
     {
         DB::beginTransaction();
         if ( ! $isUpdating) {

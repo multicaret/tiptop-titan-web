@@ -22,7 +22,12 @@ class CategoryMiniResource extends JsonResource
         $products = null;
         $isMenuCategory = $this->type == Taxonomy::TYPE_MENU_CATEGORY;
         if ($isMenuCategory) {
-            $products = ProductMiniResource::collection($this->menuProducts()->orderByDesc('order_column')->get());
+            $menuProducts = $this->menuProducts();
+            $user = auth('sanctum')->user();
+            if (is_null($user) || ( ! is_null($user) && ! $user->is_branch_manager)) {
+                $menuProducts = $menuProducts->active();
+            }
+            $products = ProductMiniResource::collection($menuProducts->orderByDesc('order_column')->get());
         }
 
         return [
