@@ -57,7 +57,7 @@
                 </a>
             </li>
             <li class="nav-item">
-                <a class="nav-link" target="_blank" href="{{route('admin.orders.index',['branch-id' => $branch->id])}}">
+                <a class="nav-link" target="_blank" href="{{route('admin.orders.index',['branchId' => $branch->id])}}">
                     @if($branch->type == \App\Models\Branch::CHANNEL_GROCERY_OBJECT)
                         <i class="fas fa-shopping-basket"></i>&nbsp;Orders
                     @else
