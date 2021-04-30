@@ -29,9 +29,9 @@ Route::middleware('auth:sanctum')
              Route::get('/', 'BranchController@show');
              Route::post('/', 'BranchController@update');
              Route::get('edit', 'BranchController@edit');
-             Route::post('toggle-activity', 'BranchController@toggleActivity');
+             Route::post('toggle-status', 'BranchController@toggleStatus');
              Route::post('products/{product}', 'ProductController@update');
-             Route::post('products/{product}/toggle-status', 'ProductController@update');
+             Route::post('products/{product}/toggle-status', 'ProductController@toggleStatus');
 
              // Orders
              Route::get('orders', 'OrderController@index');

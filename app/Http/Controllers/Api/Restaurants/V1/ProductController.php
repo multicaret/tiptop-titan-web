@@ -4,7 +4,6 @@ namespace App\Http\Controllers\Api\Restaurants\V1;
 
 
 use App\Http\Controllers\Api\BaseApiController;
-use App\Http\Resources\ProductResource;
 use App\Models\Branch;
 use App\Models\Product;
 use DB;
@@ -26,7 +25,7 @@ class ProductController extends BaseApiController
 
         $restaurant = Branch::find($restaurant);
         $product = Product::find($product);
-        if (is_null($restaurant) || is_null($product) || $product->branch_id != $restaurant->id ) {
+        if (is_null($restaurant) || is_null($product) || $product->branch_id != $restaurant->id) {
             return $this->respondNotFound();
         }
 
@@ -46,5 +45,29 @@ class ProductController extends BaseApiController
         ]);*/
     }
 
+
+    public function toggleStatus($product, Request $request)
+    {
+        $rules = [
+            'status' => 'required',
+        ];
+
+        $validator = validator()->make($request->all(), $rules);
+        if ($validator->fails()) {
+            return $this->respondValidationFails($validator->errors());
+        }
+        $product = Product::find($product);
+        if (is_null($product)) {
+            return $this->respondNotFound();
+        }
+        $product->status = $request->input('status') ? Product::STATUS_ACTIVE : Product::STATUS_INACTIVE;
+        $product->save();
+
+        return $this->respond(
+            [
+                'isOpen' => $product->is_open_now
+            ],
+        );
+    }
 
 }

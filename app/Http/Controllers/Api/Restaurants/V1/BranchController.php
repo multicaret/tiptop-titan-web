@@ -79,13 +79,21 @@ class BranchController extends BaseApiController
         ]);*/
     }
 
-    public function toggleActivity($restaurant)
+    public function toggleStatus($restaurant, Request $request)
     {
+        $rules = [
+            'status' => 'required',
+        ];
+
+        $validator = validator()->make($request->all(), $rules);
+        if ($validator->fails()) {
+            return $this->respondValidationFails($validator->errors());
+        }
         $restaurant = Branch::find($restaurant);
         if (is_null($restaurant)) {
             return $this->respondNotFound();
         }
-        $restaurant->is_open_now = ! $restaurant->is_open_now;
+        $restaurant->is_open_now = $request->input('status') ? Branch::STATUS_ACTIVE : Branch::STATUS_INACTIVE;
         $restaurant->save();
 
         return $this->respond(
