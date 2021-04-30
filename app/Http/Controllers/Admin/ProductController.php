@@ -236,14 +236,17 @@ class ProductController extends Controller
         $toValidateInFood = [];
         if ($request->type == Product::getCorrectChannelName(Product::CHANNEL_FOOD_OBJECT, 0)) {
             $toValidateInFood = [
-                'category' => 'required',
+                'master_category' => 'required',
             ];
         }
-
         $generalValidateItems = [
             "{$defaultLocale}.title" => 'required',
             'price' => 'required',
             'type' => 'required',
+            'price_discount_began_at' => 'required|date',
+            'price_discount_finished_at' => 'required|date|after:price_discount_began_at',
+            'custom_banner_began_at' => 'required|date',
+            'custom_banner_ended_at' => 'required|date|after:custom_banner_began_at',
         ];
 
         return array_merge($toValidateInGrocery, $generalValidateItems, $toValidateInFood);
@@ -265,7 +268,6 @@ class ProductController extends Controller
         } else {
             $product->branch_id = optional(json_decode($request->input('branch')))->id;
         }
-//        dd($product->branch_id);
 
         $product->unit_id = optional(json_decode($request->input('unit_id')))->id;
         $product->price = $request->input('price');

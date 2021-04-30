@@ -18,11 +18,11 @@ use Illuminate\Support\Carbon;
  * @property array|null $product_option_object
  * @property Carbon|null $created_at
  * @property Carbon|null $updated_at
- * @property-read CartProduct $cartProduct
- * @property-read Collection|CartProductOptionSelection[] $ingredients
+ * @property-read \App\Models\CartProduct $cartProduct
+ * @property-read Collection|\App\Models\CartProductOptionSelection[] $ingredients
  * @property-read int|null $ingredients_count
- * @property-read ProductOption $productOption
- * @property-read Collection|CartProductOptionSelection[] $selections
+ * @property-read \App\Models\ProductOption $productOption
+ * @property-read Collection|\App\Models\CartProductOptionSelection[] $selections
  * @property-read int|null $selections_count
  * @method static Builder|CartProductOption newModelQuery()
  * @method static Builder|CartProductOption newQuery()

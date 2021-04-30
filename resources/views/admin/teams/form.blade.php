@@ -45,11 +45,11 @@
                             @endcomponent
                         </div>
                         <div class="col-md-4">
-                            @component('admin.components.form-group', ['name' => 'tokan_team_id', 'type' => 'text'])
+                            @component('admin.components.form-group', ['name' => 'tookan_team_id', 'type' => 'text'])
                                 @slot('label', 'Tookan ID')
                                 @slot('attributes', ['disabled'])
                                 @if(! is_null($team->id))
-                                    @slot('value', $team->tokan_team_id)
+                                    @slot('value', $team->tookan_team_id)
                                 @endif
                             @endcomponent
                         </div>
@@ -62,7 +62,7 @@
                         <div class="col-4">
                             @component('admin.components.form-group', ['name' => 'status', 'type' => 'select'])
                                 @slot('label', trans('strings.status'))
-                                @slot('options', \App\Models\TokanTeam::getStatusesArray())
+                                @slot('options', \App\Models\TookanTeam::getStatusesArray())
                                 @slot('selected', $team->status)
                             @endcomponent
                         </div>

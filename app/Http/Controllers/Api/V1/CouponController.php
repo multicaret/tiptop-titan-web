@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Api\V1;
 
 use App\Http\Controllers\Api\BaseApiController;
 use App\Models\Branch;
+use App\Models\Cart;
 use App\Models\Coupon;
 use App\Models\Currency;
 use Illuminate\Contracts\Container\BindingResolutionException;
@@ -37,16 +38,22 @@ class CouponController extends BaseApiController
             'branch_id' => 'required',
             // cart_id is required for security reasons, please don't remove it
             'cart_id' => 'required',
+            'selected_address_id' => 'required',
         ];
+        $activeCart = Cart::with('branch')
+                          ->whereId($request->input('cart_id'))
+                          ->first();
+        $branch = $activeCart->branch;
+
+        if ($branch->type == Branch::CHANNEL_FOOD_OBJECT) {
+            $validationRules['delivery_type'] = 'required';
+        }
 
         $validator = validator()->make($request->all(), $validationRules);
         if ($validator->fails()) {
             return $this->respondValidationFails($validator->errors());
         }
 
-        $user = auth()->user();
-        $branch = Branch::find($request->input('branch_id'));
-        $activeCart = $user->activeCart($branch->id);
         $coupon = Coupon::where('redeem_code', $code)->first();
         if (is_null($coupon)) {
             return $this->respondWithMessage("There is no such coupon code($code)");
@@ -66,10 +73,9 @@ class CouponController extends BaseApiController
         if ( ! $isAmountValid) {
             return $this->setStatusCode(Response::HTTP_BAD_REQUEST)->respond(null, ['Coupon is invalid']);
         }
-        $deliveryFee = $branch->calculateDeliveryFee($activeCart->total);
-        if ($coupon->has_free_delivery) {
-            $deliveryFee = 0;
-        }
+        $isDeliveryTypeTipTop = $request->input('delivery_type') == 'tiptop';
+        $deliveryFee = $branch->calculateDeliveryFee($activeCart->total, $isDeliveryTypeTipTop,
+            $coupon->has_free_delivery, $request->input('selected_address_id'));
 
         $data = [];
         foreach (

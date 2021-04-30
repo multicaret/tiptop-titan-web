@@ -63,11 +63,11 @@ use Illuminate\Support\Carbon;
  * @property string|null $zoho_delivery_item_id
  * @property string|null $zoho_tiptop_delivery_item_id
  * @property string|null $zoho_books_account_id
- * @property-read Collection|OldCategory[] $categories
+ * @property-read Collection|\App\Models\OldModels\OldCategory[] $categories
  * @property-read int|null $categories_count
- * @property-read OldChain $oldChain
- * @property-read OldBranchTranslation|null $translation
- * @property-read Collection|OldBranchTranslation[] $translations
+ * @property-read \App\Models\OldModels\OldChain $oldChain
+ * @property-read \App\Models\OldModels\OldBranchTranslation|null $translation
+ * @property-read Collection|\App\Models\OldModels\OldBranchTranslation[] $translations
  * @property-read int|null $translations_count
  * @method static Builder|OldBranch listsTranslations(string $translationField)
  * @method static Builder|OldBranch newModelQuery()
@@ -156,6 +156,7 @@ class OldBranch extends OldModel
             'updated_at' => 'updated_at',
             'contact_phone_1' => 'primary_phone_number',
             'contact_phone_2' => 'secondary_phone_number',
+            'address' => 'full_address',
         ];
 
         if ($type === Branch::CHANNEL_GROCERY_OBJECT) {

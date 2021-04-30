@@ -36,7 +36,7 @@ use Spatie\MediaLibrary\MediaCollections\Models\Media as MediaAlias;
  * @property-read string $extension
  * @property-read string $human_readable_size
  * @property-read string $type
- * @property-read Model|Eloquent $model
+ * @property-read Model|\Eloquent $model
  * @method static MediaCollection|static[] all($columns = ['*'])
  * @method static MediaCollection|static[] get($columns = ['*'])
  * @method static Builder|OldMedia newModelQuery()

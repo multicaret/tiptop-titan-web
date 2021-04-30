@@ -6,8 +6,9 @@ use App\Http\Controllers\Controller;
 use App\Models\Branch;
 use App\Models\City;
 use App\Models\Country;
+use App\Models\Location;
 use App\Models\Region;
-use App\Models\TokanTeam;
+use App\Models\TookanTeam;
 use App\Models\User;
 use DB;
 use Illuminate\Http\RedirectResponse;
@@ -372,7 +373,7 @@ class UserController extends Controller
             ],
             'countries' => Country::all(),
             'regions' => Region::where('country_id', config('defaults.country.id'))->get(),
-            'teams' => TokanTeam::active()->get()
+            'teams' => TookanTeam::active()->get()
                                 ->mapWithKeys(function ($item) {
                                     return [$item['id'] => $item['name']];
                                 }),
@@ -400,9 +401,58 @@ class UserController extends Controller
 
     private function roleValidation(string $role)
     {
-        if ( ! in_array($role, User::getAllRoles())) {
+        if ( ! in_array($role, User::getAllRoles()) || $role == User::ROLE_SUPER) {
             return abort(404);
         }
+    }
+
+    public function editAddress(User $user, Location $address, Request $request)
+    {
+        $role = Str::kebab($user->role_name);
+        if ($role != User::ROLE_USER || $address->contactable_id != $user->id) {
+            return abort(Response::HTTP_NOT_FOUND);
+        }
+        $regions = Region::whereCountryId(config('defaults.country.id'))->get();
+        $kinds = array_values(Location::getKindsForMaps());
+        return view('admin.users.address-form', compact(['user', 'address', 'regions', 'kinds']));
+    }
+
+    public function updateAddress(User $user, Location $address, Request $request)
+    {
+        $validationRules = [
+            'alias' => 'required',
+            'region_id' => 'required',
+            'city_id' => 'required',
+            'address1' => 'required',
+        ];
+
+//        $request->validate($validationRules);
+
+        DB::beginTransaction();
+        $userId = $user->id;
+        $address->editor_id = $userId;
+        $address->country_id = $request->country_id ?? config('defaults.country.id');
+        $address->region_id = optional(json_decode($request->input('region')))->id;
+        $address->city_id = optional(json_decode($request->input('city')))->id;
+        $address->kind = optional(json_decode($request->input('kind')))->id;
+        $address->alias = $request->alias;
+        $address->address1 = $request->address1;
+//        $address->building = $request->building;
+//        $address->floor = $request->floor;
+//        $address->apartment = $request->flat;
+        $address->latitude = $request->latitude;
+        $address->longitude = $request->longitude;
+        $address->notes = $request->notes;
+        $address->save();
+
+        DB::commit();
+
+        return redirect()
+            ->route('admin.users.edit', ['user' => $user])
+            ->with('message', [
+                'type' => 'Success',
+                'text' => 'Successfully Updated'
+            ]);
     }
 
 }

@@ -10,7 +10,7 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Carbon;
 
 /**
- * App\Models\TokanTeam
+ * App\Models\TookanTeam
  *
  * @property int $id
  * @property int $creator_id
@@ -24,26 +24,26 @@ use Illuminate\Support\Carbon;
  * @property-read bool $is_inactive
  * @property-read array $status_js
  * @property-read mixed $status_name
- * @property-read Collection|User[] $user
+ * @property-read Collection|\App\Models\User[] $user
  * @property-read int|null $user_count
- * @method static Builder|TokanTeam active()
- * @method static Builder|TokanTeam draft()
- * @method static Builder|TokanTeam inactive()
- * @method static Builder|TokanTeam newModelQuery()
- * @method static Builder|TokanTeam newQuery()
- * @method static Builder|TokanTeam notActive()
- * @method static Builder|TokanTeam query()
- * @method static Builder|TokanTeam whereCreatedAt($value)
- * @method static Builder|TokanTeam whereCreatorId($value)
- * @method static Builder|TokanTeam whereDescription($value)
- * @method static Builder|TokanTeam whereEditorId($value)
- * @method static Builder|TokanTeam whereId($value)
- * @method static Builder|TokanTeam whereName($value)
- * @method static Builder|TokanTeam whereStatus($value)
- * @method static Builder|TokanTeam whereUpdatedAt($value)
+ * @method static Builder|TookanTeam active()
+ * @method static Builder|TookanTeam draft()
+ * @method static Builder|TookanTeam inactive()
+ * @method static Builder|TookanTeam newModelQuery()
+ * @method static Builder|TookanTeam newQuery()
+ * @method static Builder|TookanTeam notActive()
+ * @method static Builder|TookanTeam query()
+ * @method static Builder|TookanTeam whereCreatedAt($value)
+ * @method static Builder|TookanTeam whereCreatorId($value)
+ * @method static Builder|TookanTeam whereDescription($value)
+ * @method static Builder|TookanTeam whereEditorId($value)
+ * @method static Builder|TookanTeam whereId($value)
+ * @method static Builder|TookanTeam whereName($value)
+ * @method static Builder|TookanTeam whereStatus($value)
+ * @method static Builder|TookanTeam whereUpdatedAt($value)
  * @mixin Eloquent
  */
-class TokanTeam extends Model
+class TookanTeam extends Model
 {
     use HasStatuses;
 

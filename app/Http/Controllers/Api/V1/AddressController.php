@@ -111,7 +111,9 @@ class AddressController extends BaseApiController
             return $this->respondWithMessage(__('strings.successfully_deleted'));
         }
 
-        return $this->respondValidationFails('There seems to be a problem');
+        return $this->respondValidationFails([
+            ''=> 'There seems to be a problem'
+        ]);
     }
 
     public function changeSelectedAddress(Request $request)

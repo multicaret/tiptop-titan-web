@@ -35,10 +35,10 @@ use Illuminate\Support\Carbon;
  * @property string|null $deleted_at
  * @property Carbon|null $created_at
  * @property Carbon|null $updated_at
- * @property-read Collection|OldCategory[] $categories
+ * @property-read Collection|\App\Models\OldModels\OldCategory[] $categories
  * @property-read int|null $categories_count
- * @property-read OldProductTranslation|null $translation
- * @property-read Collection|OldProductTranslation[] $translations
+ * @property-read \App\Models\OldModels\OldProductTranslation|null $translation
+ * @property-read Collection|\App\Models\OldModels\OldProductTranslation[] $translations
  * @property-read int|null $translations_count
  * @method static Builder|OldProduct listsTranslations(string $translationField)
  * @method static Builder|OldProduct newModelQuery()

@@ -85,7 +85,7 @@
                             <div class="col-6">
                                 @component('admin.components.form-group', ['name' => 'status', 'type' => 'select'])
                                     @slot('label', trans('strings.status'))
-                                    @slot('options', \App\Models\TokanTeam::getStatusesArray())
+                                    @slot('options', \App\Models\TookanTeam::getStatusesArray())
                                     @slot('selected', $city->status)
                                 @endcomponent
                             </div>

@@ -46,7 +46,7 @@
                     <div class="form-group col">
                         <div class="d-flex justify-content-around mb-3">
                             <span class="font-weight-bold float-right">
-                                Issue: {{$order->ratingIssue->title}}
+                                Issue: {{optional($order->ratingIssue)->title}}
                             </span>
                             @include('admin.components.datatables._rating', ['rating' => $order->branch_rating_value])
                         </div>

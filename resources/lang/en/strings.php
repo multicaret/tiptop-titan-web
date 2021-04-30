@@ -289,4 +289,6 @@ return [
     'search_tags' => 'Search Tags',
     'select_status' => 'Select status',
     'team' => 'Team',
+    'kind' => 'Kind',
+    'address_title' => 'Title of Address',
 ];

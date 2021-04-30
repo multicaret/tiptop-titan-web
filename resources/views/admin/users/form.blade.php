@@ -98,6 +98,7 @@
                             @slot('selected', $user->gender)
                         @endcomponent
                     </div>
+
                     @if(in_array($role, \App\Models\User::rolesHaving('branches')))
                         <div class="col-6">
                             @component('admin.components.form-group', ['name' => 'branches[]', 'type' => 'select'])
@@ -175,6 +176,56 @@
                 </div>
             </div>
         </div>
+        @if($role == \App\Models\User::ROLE_USER)
+            <div class="card card-outline-inverse mb-4">
+                <h4 class="card-header">Addresses</h4>
+                <div class="card-body">
+                    <div class="row">
+                        @if(!empty($user->addresses->count()))
+                            @foreach($user->addresses as $address)
+                                <div class="col-4">
+                                    <div class="card mb-3 border-light">
+                                        <div class="card-body">
+                                            <div class="">
+                                                <h4 class="card-title d-inline">{{is_null($address->alias) ? 'Empty' : $address->alias}}</h4>
+                                                <div
+                                                    class="text-muted d-inline float-right">{{$address->kindName}}
+                                                </div>
+                                                <hr>
+                                            </div>
+                                            @php
+                                                $empty = '<p class="card-text text-muted d-inline">Empty</p>'
+                                            @endphp
+
+                                            @foreach(['City'=> optional($address->region)->name,
+                                                    'Neighborhood'=>optional($address->city)->name,
+                                                    'Address'=>$address->address1, 'Directions'=>$address->notes,
+                                                    'Latitude'=>$address->latitude, 'Longitude'=>$address->longitude]
+                                                    as $name => $var)
+                                                <div class="card-text mb-2">
+                                                    {{$name}}
+                                                    : {!!empty($var) ? $empty : $var!!}
+                                                </div>
+                                            @endforeach
+                                            <a href="{{ route('admin.users.addresses.edit', ['user' => $user, 'address' => $address]) }}">
+                                                <button type="button"
+                                                        class="btn btn-primary btn-sm rounded-pill d-block float-right">
+                                                    {{trans('strings.edit')}}
+                                                </button>
+                                            </a>
+                                        </div>
+                                    </div>
+                                </div>
+                            @endforeach
+                        @else
+                            <div class="col-4 text-muted">
+                                User has no addresses
+                            </div>
+                        @endif
+                    </div>
+                </div>
+            </div>
+        @endif
         <div class="card card-outline-inverse mb-4">
             <h4 class="card-header">
                 Login Details
@@ -207,300 +258,6 @@
                 </div>
             </div>
         </div>
-        {{--<div class="card card-outline-inverse mb-4">
-            <h4 class="card-header">
-                Contact Details
-            </h4>
-            <div class="card-body">
-                <div class="row">
-                    <div class="col-4">
-                        <div class="form-group">
-                            <label class="control-label">
-                                @lang('strings.country')
-                            </label>
-                            <multiselect
-                                :options="countries"
-                                v-model="user.country"
-                                track-by="name"
-                                label="name"
-                                :searchable="true"
-                                :allow-empty="true"
-                                select-label=""
-                                selected-label=""
-                                deselect-label=""
-                                placeholder=""
-                                @select="retrieveRegions"
-                                autocomplete="false"
-                            ></multiselect>
-                        </div>
-                    </div>
-
-                    <div class="col-4">
-                        <div class="form-group">
-                            <label class="control-label">
-                                @lang('strings.region')
-                            </label>
-                            <multiselect
-                                :options="regions"
-                                v-model="user.region"
-                                track-by="name"
-                                label="name"
-                                :searchable="true"
-                                :allow-empty="true"
-                                select-label=""
-                                selected-label=""
-                                deselect-label=""
-                                placeholder=""
-                                @select="retrieveCities"
-                                autocomplete="false"
-                            ></multiselect>
-                        </div>
-                    </div>
-
-                    <div class="col-4">
-                        <div class="form-group">
-                            <label class="control-label">
-                                @lang('strings.city')
-                            </label>
-                            <multiselect
-                                :options="cities"
-                                v-model="user.city"
-                                track-by="name"
-                                label="name"
-                                :searchable="true"
-                                :allow-empty="true"
-                                select-label=""
-                                selected-label=""
-                                deselect-label=""
-                                placeholder=""
-                                --}}{{--@select="retrieveNeighborhoods"--}}{{--
-                                autocomplete="false"
-                            ></multiselect>
-                        </div>
-                    </div>
-                </div>
-                <div class="row">
-                    <div class="col-6">
-                        <div class="form-group {{ $errors->has('address1') ? 'has-error' : '' }}">
-                            <label for="address1" class="control-label">Address 1</label>
-                            <input type="text" id="address1" name="address1" class="form-control"
-                                   value="{{ old('address1')??optional($user->defaultAddress)->address1 }}">
-                            @if ($errors->has('address1'))
-                                <span class="help-block">
-                                        <b>{{ $errors->first('address1') }}</b>
-                                    </span>
-                            @endif
-                        </div>
-                    </div>
-
-                    <div class="col-6">
-                        <div class="form-group {{ $errors->has('address2') ? 'has-error' : '' }}">
-                            <label for="address2" class="control-label">Address 2</label>
-                            <input type="text" id="address2" name="address2" class="form-control"
-                                   value="{{ old('address2')??optional($user->defaultAddress)->address2 }}">
-                            @if ($errors->has('address2'))
-                                <span class="help-block">
-                                        <b>{{ $errors->first('address2') }}</b>
-                                    </span>
-                            @endif
-                        </div>
-                    </div>
-                </div>
-                <div class="row">
-                    <div class="col-5">
-                        <div class="form-group">
-                            <label for="" class="">
-                                Phones:
-                            </label>
-                            <div v-for="(phone,index) in phones"
-                                 :class="{'input-group mb-3':true, 'has-danger' :!isValidPhone(phone.value)}">
-                                <div class="input-group-prepend">
-                                    <button class="btn btn-outline-secondary dropdown-toggle" type="button"
-                                            data-toggle="dropdown">
-                                        @{{ phone.option.name }}
-                                    </button>
-                                    <div class="dropdown-menu">
-                                        <button class="dropdown-item" v-for="phoneOption in phoneOptions"
-                                            @click="phone.option = phoneOption" type="button">
-                                            @{{ phoneOption.name }}
-                                        </button>
-                                    </div>
-                                </div>
-                                <input type="text"
-                                       :class="{'form-control':true,'form-control-danger': !isValidPhone(phone.value)}"
-                                       placeholder=""
-                                       v-model="phone.value">
-                                <div class="input-group-append">
-                                    <button class="btn btn-block btn-danger" type="button"
-                                        @click="removePhone(index)">
-                                        <i class="ti-trash"></i>
-                                    </button>
-                                </div>
-                            </div>
-
-                            <div class="input-group mb-3">
-                                <input type="text" class="form-control" placeholder="00123456789"
-                                       v-model="newPhone.value">
-                                <div class="input-group-append">
-                                    <button class="btn btn-sm d-inline-block btn-outline-success" type="button"
-                                        @click="addPhone"
-                                            :disabled="newPhone.value == '' || !isValidPhone(newPhone.value)">
-                                        <i class="ti-plus"></i> Add
-                                    </button>
-                                </div>
-                            </div>
-                            <small class=" text-danger"
-                                   v-show="newPhone.value != '' && !isValidPhone(newPhone.value)">
-                                Invalid Phone
-                            </small>
-                        </div>
-                    </div>
-                    <div class="offset-1"></div>
-                    <div class="col-5">
-                        <div class="form-group">
-                            <label for="" class="">
-                                Emails:
-                            </label>
-                            <div v-for="(email,index) in emails"
-                                 :class="{'input-group mb-3':true, 'has-danger' :!isValidEmail(email.value)}">
-                                <input type="text"
-                                       :class="{'form-control':true,'form-control-danger': !isValidEmail(email.value)}"
-                                       placeholder=""
-                                       v-model="email.value">
-                                <div class="input-group-append">
-                                    <button class="btn btn-block btn-danger" type="button"
-                                        @click="removeEmail(index)">
-                                        <i class="ti-trash"></i>
-                                    </button>
-                                </div>
-                            </div>
-
-                            <div class="input-group mb-3">
-                                <input type="text" class="form-control" placeholder="example@domain.com"
-                                       v-model="newEmail.value">
-                                <div class="input-group-append">
-                                    <button class="btn btn-sm d-inline-block btn-outline-success" type="button"
-                                        @click="addEmail"
-                                            :disabled="newEmail.value == '' || !isValidEmail(newEmail.value)">
-                                        <i class="ti-plus"></i> Add
-                                    </button>
-                                </div>
-                            </div>
-                            <small class=" text-danger"
-                                   v-show="newEmail.value != '' && !isValidEmail(newEmail.value)">
-                                Invalid Email
-                            </small>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>--}}
-
-
-        {{--<div class="row">
-            <div class="col-md-10 row">
-
-                <div class="col-md-12">
-                     @component('admin.components.form-group', ['name' => 'role', 'type' => 'select'])
-                         @slot('label', 'Role')
-                         @slot('attributes', ['required'])
-                         @slot('options', [
-                             \App\Models\User::ROLE_USER => trans('strings.'. \App\Models\User::ROLE_USER),
-                             \App\Models\User::ROLE_EDITOR => trans('strings.'. \App\Models\User::ROLE_EDITOR),
-                             \App\Models\User::ROLE_ADMIN => trans('strings.'. \App\Models\User::ROLE_ADMIN),
-                         ])
-                     @endcomponent
-                 </div>
-            </div>
-        </div>--}}
-
-        {{--        Cedit said they didn't want any user-specific permissions--}}
-        {{--@role('Super')
-        <div id="accordion">
-            <div class="card mb-2">
-                <a class="text-body" data-toggle="collapse" href="#accordion-1">
-                    <h4 class="card-header">{{trans('strings.permissions')}}</h4>
-                </a>
-
-                <div id="accordion-1" class="collapse" data-parent="#accordion">
-                    <div class="card-body">
-                        <div class="row">
-                            @foreach($permissions as $permissionName => $group)
-                                <div class="col-12">
-                                    <div class="card card-hover card-outline-inverse mb-3 permission-accordion">
-                                        <div class="card-header with-elements">
-                                            <span class="card-header-title mr-2">
-                                                {{trans('roles.'.$permissionName.'.title')}}
-                                            </span>
-                                            <div class="card-header-elements ml-md-auto">
-                                                <button type="button" class="btn btn-xs btn-outline-success select-all">
-                                                    <span class="ion ion-md-checkmark"></span>
-                                                    Select All
-                                                </button>
-                                                <button type="button"
-                                                        class="btn btn-xs btn-outline-danger deselect-all">
-                                                    <span class="ion ion-md-time"></span>
-                                                    Deselect All
-                                                </button>
-                                                <button type="button"
-                                                        class="btn btn-xs btn-outline-warning inherit-all">
-                                                    <span class="ion ion-md-time"></span>
-                                                    Inherit All
-                                                </button>
-                                            </div>
-                                        </div>
-
-
-                                        <div class="card-body">
-                                            <div class="row">
-                                                @foreach($group as $permission)
-                                                    <div class="col-6">
-                                                        {{trans('roles.'.$permissionName.'.'.str_replace('.','_',$permission))}}
-                                                    </div>
-                                                    <div class="col-md-2">
-                                                        <label class="custom-control custom-radio">
-                                                            <input type="radio" class="custom-control-input"
-                                                                   id="{{'01_' . str_replace('.','-',$permission)}}"
-                                                                   name="permissions[{{$permission}}]"
-                                                                   value="1"
-                                                                {{$user->hasDirectPermission($permission) || $user->hasPermissionTo($permission)? 'checked' : '' }}
-                                                            >
-                                                            <span class="custom-control-label">Yes</span>
-                                                        </label>
-                                                    </div>
-                                                    <div class="col-md-2">
-                                                        <label class="custom-control custom-radio">
-                                                            <input type="radio" class="custom-control-input"
-                                                                   id="{{'00_' . str_replace('.','-',$permission)}}"
-                                                                   value="0"
-                                                                {{ $user->hasPermissionTo($permission) || !$user->hasDirectPermission($permission) ? '' : 'checked' }}
-                                                            >
-                                                            <span class="custom-control-label">No</span>
-                                                        </label>
-                                                    </div>
-                                                    <div class="col-md-2">
-                                                        <label class="custom-control custom-radio">
-                                                            <input type="radio" class="custom-control-input"
-                                                                   id="{{'02_' . str_replace('.','-',$permission)}}"
-                                                                   value="2"
-                                                                {{$user->hasPermissionTo($permission)? 'checked': 'disabled' }}
-                                                            >
-                                                            <span class="custom-control-label">Inherit</span>
-                                                        </label>
-                                                    </div>
-                                                @endforeach
-                                            </div>
-
-                                        </div>
-                                    </div>
-                                </div>
-                            @endforeach
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-        @endrole--}}
         <div class="ml-1">
             @if(is_null($user->id))
                 @component('admin.components.form-group', ['name' => 'send_notification', 'type' => 'checkbox'])
@@ -557,84 +314,6 @@
             $(this).parents(".permission-accordion").find('[value="2"]').prop('checked', true);
         });
     </script>
-    {{--<script>
-        new Vue({
-            el: '#vue-app',
-            data: {
-                user: @json($user),
-                countries: @json($countries),
-                regions: @json($regions),
-                cities: @json($cities),
-                emails: [
-                    {value: 'foo@bar.com', valid: true},
-                    {value: 'foo2@bar2.com', valid: true},
-                ],
-                newEmail: {value: '', valid: false},
-                phoneOptions: [
-                    {name: 'Mobile', value: 'Mobile'},
-                    {name: 'WhatsApp Mobile', value: 'whatsapp-mobile'},
-                    {name: 'Work Phone', value: 'work-phone'},
-                    {name: 'Work Mobile', value: 'work-mobile'},
-                    {name: 'Home Phone', value: 'home-phone'},
-                ],
-                phones: [
-                    {value: '00123123', valid: true, option: {name: 'Work Phone', value: 'work-phone'}},
-                    {value: '00123123', valid: true, option: {name: 'Work Mobile', value: 'work-mobile'}},
-                ],
-                newPhone: {value: '', valid: false, option: {name: 'Mobile', value: 'mobile'}},
-            },
-            methods: {
-                addEmail: function () {
-                    if (this.isValidEmail(this.newEmail.value)) {
-                        this.newEmail.valid = true;
-                        this.emails.push(this.newEmail);
-                        this.newEmail = {value: '', valid: false};
-                    }
-                },
-                removeEmail: function (index) {
-                    this.emails.splice(index, 1);
-                },
-                isValidEmail: function (value) {
-                    return /^(?:[\w\!\#\$\%\&\'\*\+\-\/\=\?\^\`\{\|\}\~]+\.)*[\w\!\#\$\%\&\'\*\+\-\/\=\?\^\`\{\|\}\~]+@(?:(?:(?:[a-zA-Z0-9](?:[a-zA-Z0-9\-](?!\.)){0,61}[a-zA-Z0-9]?\.)+[a-zA-Z0-9](?:[a-zA-Z0-9\-](?!$)){0,61}[a-zA-Z0-9]?)|(?:\[(?:(?:[01]?\d{1,2}|2[0-4]\d|25[0-5])\.){3}(?:[01]?\d{1,2}|2[0-4]\d|25[0-5])\]))$/.test(value);
-                },
-                addPhone: function () {
-                    if (this.isValidPhone(this.newPhone.value)) {
-                        this.newPhone.valid = true;
-                        this.phones.push(this.newPhone);
-                        this.newPhone = {value: '', valid: false, option: this.phoneOptions[0]};
-                        console.log("this.newPhone", this.newPhone);
-                    }
-                },
-                removePhone: function (index) {
-                    this.phones.splice(index, 1);
-                },
-                isValidPhone: function (value) {
-                    return /^[0]{2}|[+]/.test(value);
-                },
-                retrieveRegions: function (country) {
-                    axios.post(window.App.domain + `/ajax/countries/${country.id}/regions`)
-                        .then((res) => {
-                            this.regions = res.data;
-                            this.user.region_id = res.data.length > 1 ? this.regions[0] : null;
-                        });
-                },
-                retrieveCities: function (region) {
-                    axios.post(window.App.domain + `/ajax/countries/${region.country_id}/regions/${region.id}/cities`)
-                        .then((res) => {
-                            this.cities = res.data;
-                        });
-                },
-                /*retrieveNeighborhoods: function (city) {
-                    axios.post(window.App.domain + `/ajax/countries/${city.country_id}/regions/${city.region_id}/cities/${city.id}/neighborhoods`)
-                        .then((res) => {
-                            this.neighrboods = res.data;
-                        });
-                },*/
-            },
-
-        })
-    </script>--}}
-
     <script src="/admin-assets/libs/select2/select2.js"></script>
     <script>
         $(function () {
@@ -652,4 +331,5 @@
             });
         });
     </script>
+
 @endpush

@@ -14,7 +14,7 @@ use App\Models\Product;
 use App\Models\Region;
 use App\Models\Slide;
 use App\Models\Taxonomy;
-use App\Models\TokanTeam;
+use App\Models\TookanTeam;
 use App\Models\Translation;
 use App\Models\User;
 use Carbon\Carbon;
@@ -384,7 +384,7 @@ class DatatableController extends AjaxController
 
     public function teams(Request $request)
     {
-        $teams = TokanTeam::selectRaw('tokan_teams.*')->latest();
+        $teams = TookanTeam::selectRaw('tookan_teams.*')->latest();
 
         return DataTables::of($teams)
                          ->editColumn('action', function ($team) {
@@ -867,7 +867,7 @@ class DatatableController extends AjaxController
                              ])->render();
                          })
                          ->editColumn('issue', function ($order) {
-                             return ! is_null($order->ratingIssue) ? $order->ratingIssue->title : '';
+                             return optional($order->ratingIssue)->title;
                          })
                          ->editColumn('rating', function ($order) {
                              return view('admin.components.datatables._rating', [

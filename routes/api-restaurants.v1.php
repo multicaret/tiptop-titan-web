@@ -26,11 +26,12 @@ Route::middleware('auth:sanctum')
          Route::get('notifications', 'NotificationController@index');
 
          Route::group(['prefix' => 'restaurants/{restaurant}'], function () {
-             Route::get('edit', 'BranchController@edit');
+             Route::get('/', 'BranchController@show');
              Route::post('/', 'BranchController@update');
-             Route::post('toggle-activity', 'BranchController@toggleActivity');
-             Route::get('categories', 'BranchController@categories');
+             Route::get('edit', 'BranchController@edit');
+             Route::post('toggle-status', 'BranchController@toggleStatus');
              Route::post('products/{product}', 'ProductController@update');
+             Route::post('products/{product}/toggle-status', 'ProductController@toggleStatus');
 
              // Orders
              Route::get('orders', 'OrderController@index');

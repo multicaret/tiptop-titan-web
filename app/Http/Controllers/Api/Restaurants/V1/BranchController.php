@@ -3,7 +3,6 @@
 namespace App\Http\Controllers\Api\Restaurants\V1;
 
 use App\Http\Controllers\Api\BaseApiController;
-use App\Http\Resources\CategoryMiniResource;
 use App\Http\Resources\FoodBranchResource;
 use App\Models\Branch;
 use DB;
@@ -11,6 +10,15 @@ use Illuminate\Http\Request;
 
 class BranchController extends BaseApiController
 {
+    public function show($restaurant)
+    {
+        $restaurant = Branch::find($restaurant);
+        if (is_null($restaurant)) {
+            return $this->respondNotFound('Restaurants not found');
+        }
+
+        return $this->respond(new FoodBranchResource($restaurant));
+    }
 
     public function edit(Request $request, $restaurant)
     {
@@ -71,33 +79,27 @@ class BranchController extends BaseApiController
         ]);*/
     }
 
-    public function categories($restaurant)
+    public function toggleStatus($restaurant, Request $request)
     {
-        $restaurant = Branch::find($restaurant);
+        $rules = [
+            'status' => 'required',
+        ];
 
-        if (is_null($restaurant)) {
-            return $this->respondNotFound();
+        $validator = validator()->make($request->all(), $rules);
+        if ($validator->fails()) {
+            return $this->respondValidationFails($validator->errors());
         }
-
-        return $this->respond([
-            'categories' => CategoryMiniResource::collection($restaurant->menuCategories()->orderByDesc('order_column')->get())
-        ]);
-    }
-
-    public function toggleActivity($restaurant)
-    {
         $restaurant = Branch::find($restaurant);
         if (is_null($restaurant)) {
             return $this->respondNotFound();
         }
-        $restaurant->is_open_now = ! $restaurant->is_open_now;
+        $restaurant->is_open_now = $request->input('status') ? Branch::STATUS_ACTIVE : Branch::STATUS_INACTIVE;
         $restaurant->save();
 
-        return $this->respond(
-            [
-                'is_open_now' => $restaurant->is_open_now
-            ],
-        );
+        return $this->respond([
+            'success' => true,
+            'message' => 'Successfully Updated',
+        ]);
     }
 
 }

@@ -251,7 +251,6 @@ return [
         'marketer' => [],
         'branch_owner' => [],
         'branch_manager' => [],
-        'editor' => [],
         'translator' => [],
         'restaurant_driver' => [],
         'tiptop_driver' => [],
@@ -280,9 +279,6 @@ return [
         ],
         'branch_manager' => [
             'name' => 'Branch Manager',
-        ],
-        'editor' => [
-            'name' => 'Editor',
         ],
         'translator' => [
             'name' => 'Translator',

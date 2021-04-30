@@ -18,8 +18,8 @@ use Illuminate\Support\Carbon;
  * @property string $message
  * @property Carbon|null $created_at
  * @property Carbon|null $updated_at
- * @property-read User $agent
- * @property-read Order $order
+ * @property-read \App\Models\User $agent
+ * @property-read \App\Models\Order $order
  * @method static Builder|OrderAgentNote newModelQuery()
  * @method static Builder|OrderAgentNote newQuery()
  * @method static Builder|OrderAgentNote query()

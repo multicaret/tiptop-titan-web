@@ -15,7 +15,7 @@ use App\Models\Product;
 use App\Models\Region;
 use App\Models\Slide;
 use App\Models\Taxonomy;
-use App\Models\TokanTeam;
+use App\Models\TookanTeam;
 use App\Models\User;
 use App\Scopes\ActiveScope;
 use Closure;
@@ -342,8 +342,8 @@ class ComposerServiceProvider extends ServiceProvider
                                 'title' => 'Captain Teams',
                                 'icon' => 'fas fa-users',
                                 'routeName' => 'admin.teams.index',
-                                'countPrimary' => TokanTeam::active()->count(),
-                                'countDanger' => TokanTeam::inactive()->count(),
+                                'countPrimary' => TookanTeam::active()->count(),
+                                'countDanger' => TookanTeam::inactive()->count(),
                             ],
                         ]
                     ]

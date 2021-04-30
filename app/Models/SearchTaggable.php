@@ -18,7 +18,7 @@ use Illuminate\Support\Carbon;
  * @property int|null $order_column
  * @property Carbon|null $created_at
  * @property Carbon|null $updated_at
- * @property-read Model|Eloquent $searchTaggable
+ * @property-read Model|\Eloquent $searchTaggable
  * @method static Builder|SearchTaggable newModelQuery()
  * @method static Builder|SearchTaggable newQuery()
  * @method static Builder|SearchTaggable query()

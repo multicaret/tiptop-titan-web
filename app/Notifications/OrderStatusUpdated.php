@@ -61,7 +61,7 @@ class OrderStatusUpdated extends Notification
         }
 
         $via = [
-            OneSignalChannel::class,
+//            OneSignalChannel::class,
             'database',
 //            'mail',
         ];

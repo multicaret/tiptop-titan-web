@@ -22,6 +22,9 @@ Route::post('users/{role}/store', 'UserController@store')->name('users.store');
 Route::get('users/{user}/edit', 'UserController@edit')->name('users.edit');
 Route::put('users/{user}/update', 'UserController@update')->name('users.update');
 Route::delete('users/{user}/delete', 'UserController@destroy')->name('users.destroy');
+
+Route::get('users/{user}/addresses/{address}/edit', 'UserController@editAddress')->name('users.addresses.edit');
+Route::put('users/{user}/addresses/{address}/update', 'UserController@updateAddress')->name('users.addresses.update');
 /*
 
 Route::resource('users', 'UserController')->except(['show']);
@@ -60,7 +63,8 @@ Route::post('preferences/{section}', 'PreferenceController@update')->name('prefe
 Route::get('preferences', 'PreferenceController@index')->name('preferences.index');
 Route::post('preferences', 'PreferenceController@store')->name('preferences.store');
 Route::resource('taxonomies', 'TaxonomyController');
-
+Route::get('notifications', 'NotificationController@index')->name('notifications.index');
+Route::get('notifications/{notification}/handle', 'NotificationController@handle')->name('notifications.handle');
 
 Route::resource('media', 'MediaController')->only(['store']);
 Route::resource('roles', 'RoleController');

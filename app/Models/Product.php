@@ -65,18 +65,18 @@ use Spatie\MediaLibrary\MediaCollections\Models\Media;
  * @property Carbon|null $created_at
  * @property Carbon|null $updated_at
  * @property Carbon|null $deleted_at
- * @property-read Collection|Barcode[] $barcodes
+ * @property-read Collection|\App\Models\Barcode[] $barcodes
  * @property-read int|null $barcodes_count
- * @property-read Branch|null $branch
- * @property-read Collection|Cart[] $carts
+ * @property-read \App\Models\Branch|null $branch
+ * @property-read Collection|\App\Models\Cart[] $carts
  * @property-read int|null $carts_count
- * @property-read Collection|Taxonomy[] $categories
+ * @property-read Collection|\App\Models\Taxonomy[] $categories
  * @property-read int|null $categories_count
- * @property-read Taxonomy $category
- * @property-read Chain $chain
- * @property-read User $creator
- * @property-read User $editor
- * @property-read Collection|User[] $favoriters
+ * @property-read \App\Models\Taxonomy $category
+ * @property-read \App\Models\Chain $chain
+ * @property-read \App\Models\User $creator
+ * @property-read \App\Models\User $editor
+ * @property-read Collection|\App\Models\User[] $favoriters
  * @property-read int|null $favoriters_count
  * @property-read mixed $cover
  * @property-read mixed $cover_full
@@ -93,17 +93,17 @@ use Spatie\MediaLibrary\MediaCollections\Models\Media;
  * @property-read mixed $price_formatted
  * @property-read array $status_js
  * @property-read mixed $status_name
- * @property-read Taxonomy $masterCategory
+ * @property-read \App\Models\Taxonomy $masterCategory
  * @property-read MediaCollection|Media[] $media
  * @property-read int|null $media_count
- * @property-read Collection|ProductOption[] $options
+ * @property-read Collection|\App\Models\ProductOption[] $options
  * @property-read int|null $options_count
- * @property-read Collection|Taxonomy[] $searchTags
+ * @property-read Collection|\App\Models\Taxonomy[] $searchTags
  * @property-read int|null $search_tags_count
- * @property-read ProductTranslation|null $translation
- * @property-read Collection|ProductTranslation[] $translations
+ * @property-read \App\Models\ProductTranslation|null $translation
+ * @property-read Collection|\App\Models\ProductTranslation[] $translations
  * @property-read int|null $translations_count
- * @property-read Taxonomy|null $unit
+ * @property-read \App\Models\Taxonomy|null $unit
  * @method static Builder|Product active()
  * @method static Builder|Product draft()
  * @method static Builder|Product foods()

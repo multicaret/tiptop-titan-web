@@ -44,9 +44,9 @@ use Illuminate\Support\Carbon;
  * @property string|null $branch_rating_value
  * @property Carbon|null $rated_at
  * @property string|null $rating_comment
- * @property int|null $has_good_food_quality_rating
- * @property int|null $has_good_packaging_quality_rating
- * @property int|null $has_good_order_accuracy_rating
+ * @property bool|null $has_good_food_quality_rating
+ * @property bool|null $has_good_packaging_quality_rating
+ * @property bool|null $has_good_order_accuracy_rating
  * @property string|null $driver_rating_value
  * @property string|null $driver_rating_comment
  * @property string|null $driver_rated_at
@@ -62,8 +62,8 @@ use Illuminate\Support\Carbon;
  * @property string|null $agent_os
  * @property string|null $restaurant_notes
  * @property Carbon|null $completed_at
- * @property string|null $notes
- * @property int $status
+ * @property string|null $customer_notes
+ * @property int $status 
  *                     0: Cancelled,
  *                     1: Draft,
  *                     6: Waiting Courier,
@@ -74,22 +74,23 @@ use Illuminate\Support\Carbon;
  * @property Carbon|null $created_at
  * @property Carbon|null $updated_at
  * @property Carbon|null $deleted_at
- * @property-read Collection|Activity[] $activity
+ * @property-read Collection|\App\Models\Activity[] $activity
  * @property-read int|null $activity_count
- * @property-read Location $address
- * @property-read Collection|OrderAgentNote[] $agentNotes
+ * @property-read \App\Models\Location $address
+ * @property-read Collection|\App\Models\OrderAgentNote[] $agentNotes
  * @property-read int|null $agent_notes_count
- * @property-read Branch $branch
- * @property-read Taxonomy|null $cancellationReason
- * @property-read Cart|null $cart
- * @property-read Chain $chain
- * @property-read Coupon|null $coupon
+ * @property-read \App\Models\Branch $branch
+ * @property-read \App\Models\Taxonomy|null $cancellationReason
+ * @property-read \App\Models\Cart|null $cart
+ * @property-read \App\Models\Chain $chain
+ * @property-read \App\Models\Coupon|null $coupon
  * @property-read bool $is_food
  * @property-read bool $is_grocery
- * @property-read PaymentMethod $paymentMethod
+ * @property-read \App\Models\PaymentMethod $paymentMethod
  * @property-read Order|null $previousOrder
- * @property-read Taxonomy|null $ratingIssue
- * @property-read User $user
+ * @property-read \App\Models\Taxonomy|null $ratingIssue
+ * @property-read TookanInfo|null $tookanInfo
+ * @property-read \App\Models\User $user
  * @method static \Illuminate\Database\Eloquent\Builder|Order atTheAddress()
  * @method static \Illuminate\Database\Eloquent\Builder|Order cancelled()
  * @method static \Illuminate\Database\Eloquent\Builder|Order delivered()
@@ -118,6 +119,7 @@ use Illuminate\Support\Carbon;
  * @method static \Illuminate\Database\Eloquent\Builder|Order whereCouponDiscountAmount($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Order whereCouponId($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Order whereCreatedAt($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Order whereCustomerNotes($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Order whereDeletedAt($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Order whereDeliveryFee($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Order whereDeliveryTime($value)
@@ -132,7 +134,6 @@ use Illuminate\Support\Carbon;
  * @method static \Illuminate\Database\Eloquent\Builder|Order whereHasGoodPackagingQualityRating($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Order whereId($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Order whereIsDeliveryByTiptop($value)
- * @method static \Illuminate\Database\Eloquent\Builder|Order whereNotes($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Order wherePaymentMethodId($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Order wherePreviousOrderId($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Order wherePrivateDeliveryFee($value)
@@ -190,9 +191,12 @@ class Order extends Model
         'private_total' => 'double',
         'private_delivery_fee' => 'double',
         'private_grand_total' => 'double',
-        'is_delivery_by_tiptop' => 'boolean',
         'completed_at' => 'datetime',
         'rated_at' => 'datetime',
+        'is_delivery_by_tiptop' => 'boolean',
+        'has_good_food_quality_rating' => 'boolean',
+        'has_good_packaging_quality_rating' => 'boolean',
+        'has_good_order_accuracy_rating' => 'boolean',
     ];
 
     private static function getFormattedActivityLogDifferenceItem(
@@ -537,5 +541,33 @@ class Order extends Model
     public function tookanInfo()
     {
         return $this->morphOne(TookanInfo::class, 'tookanable');
+    }
+
+    public static function validateAndGetDeliveryFee(Branch $branch, $userCart, $isDeliveryByTiptop, $distance)
+    {
+        $deliveryType = 'tiptop';
+        if (
+            $branch->type == Branch::CHANNEL_FOOD_OBJECT &&
+            ! $isDeliveryByTiptop &&
+            $branch->has_restaurant_delivery
+        ) {
+            $deliveryType = 'restaurant';
+        }
+
+        if ($deliveryType == 'tiptop') {
+            $minimumOrder = $branch->minimum_order;
+            $underMinimumOrderDeliveryFee = $branch->under_minimum_order_delivery_fee;
+            $fixedDeliveryFee = $branch->fixed_delivery_fee;
+            $freeDeliveryThreshold = $branch->free_delivery_threshold;
+            $extraDeliveryFeePerKm = $branch->extra_delivery_fee_per_km;
+        } else {
+            $minimumOrder = $branch->restaurant_minimum_order;
+            $underMinimumOrderDeliveryFee = $branch->restaurant_under_minimum_order_delivery_fee;
+            $fixedDeliveryFee = $branch->restaurant_fixed_delivery_fee;
+            $freeDeliveryThreshold = $branch->restaurant_free_delivery_threshold;
+            $extraDeliveryFeePerKm = $branch->restaurant_extra_delivery_fee_per_km;
+        }
+
+        // coupon
     }
 }
