@@ -265,37 +265,31 @@ class BranchController extends Controller
         $branch->latitude = $request->input('latitude');
         $branch->longitude = $request->input('longitude');
         $branch->has_tip_top_delivery = $request->input('has_tip_top_delivery') == 'on' ? 1 : 0;
-        $branch->minimum_order = $request->input('minimum_order');
-        $branch->free_delivery_threshold = $request->input('free_delivery_threshold');
-        $branch->extra_delivery_fee_per_km = $request->input('extra_delivery_fee_per_km');
-        if ($request->input('restaurant_minimum_order')) {
-            $branch->restaurant_minimum_order = $request->input('restaurant_minimum_order');
-        } else {
-            $branch->restaurant_minimum_order = 0;
-        }
-        if ($request->input('restaurant_under_minimum_order_delivery_fee')) {
-            $branch->restaurant_under_minimum_order_delivery_fee = $request->input('restaurant_under_minimum_order_delivery_fee');
-        } else {
-            $branch->restaurant_under_minimum_order_delivery_fee = 0;
-        }
-        if ($request->input('restaurant_fixed_delivery_fee')) {
-            $branch->restaurant_fixed_delivery_fee = $request->input('restaurant_fixed_delivery_fee');
-        } else {
-            $branch->restaurant_fixed_delivery_fee = 0;
-        }
-        if ($request->input('restaurant_free_delivery_threshold')) {
-            $branch->restaurant_free_delivery_threshold = $request->input('restaurant_free_delivery_threshold');
-        } else {
-            $branch->restaurant_free_delivery_threshold = 0;
-        }
-        if ($request->input('restaurant_extra_delivery_fee_per_km')) {
-            $branch->restaurant_extra_delivery_fee_per_km = $request->input('restaurant_extra_delivery_fee_per_km');
-        } else {
-            $branch->restaurant_extra_delivery_fee_per_km = 0;
-        }
         $branch->has_restaurant_delivery = $request->input('has_restaurant_delivery') == 'on' ? 1 : 0;
-        $branch->under_minimum_order_delivery_fee = $request->input('under_minimum_order_delivery_fee');
-        $branch->fixed_delivery_fee = $request->input('fixed_delivery_fee');
+
+        $inputs = [
+            //tiptop inputs
+            'minimum_order',
+            'fixed_delivery_fee',
+            'under_minimum_order_delivery_fee',
+            'free_delivery_threshold',
+            'extra_delivery_fee_per_km',
+            //restaurant inputs
+            'restaurant_minimum_order',
+            'restaurant_fixed_delivery_fee',
+            'restaurant_under_minimum_order_delivery_fee',
+            'restaurant_free_delivery_threshold',
+            'restaurant_extra_delivery_fee_per_km',
+        ];
+
+        foreach($inputs as $input){
+            if ($request->input($input)) {
+                $branch->$input = $request->input($input);
+            } else {
+                $branch->$input = 0;
+            }
+        }
+
         $branch->primary_phone_number = $request->input('primary_phone_number');
 //        $branch->secondary_phone_number = $request->input('secondary_phone_number');
 //        $branch->whatsapp_phone_number = $request->input('whatsapp_phone_number');
