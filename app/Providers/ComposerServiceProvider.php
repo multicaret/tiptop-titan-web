@@ -245,6 +245,14 @@ class ComposerServiceProvider extends ServiceProvider
                                 ],
                                 'routeName' => 'admin.taxonomies.index',
                             ],
+                            [
+                                'title' => 'Ratings',
+                                'icon' => 'fas fa-star',
+                                'params' => [
+                                    'type' => Order::getCorrectChannelName(Order::CHANNEL_FOOD_OBJECT, false)
+                                ],
+                                'routeName' => 'admin.orders.ratings',
+                            ],
                         ]
                     ]
                 ]
@@ -648,7 +656,7 @@ class ComposerServiceProvider extends ServiceProvider
         try {
             $sideNavItem['route'] = route($sideNavItem['routeName'], $params);
         } catch (Exception $e) {
-            dd('There was an error generating this route: ',$sideNavItem);
+            dd('There was an error generating this route: ', $sideNavItem);
         }
     }
 
