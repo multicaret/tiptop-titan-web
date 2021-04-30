@@ -59,6 +59,11 @@ class CartProductOptionSelection extends Pivot
         return $this->belongsTo(CartProduct::class, 'cart_product_id');
     }
 
+    public function cartProductOption(): BelongsTo
+    {
+        return $this->belongsTo(CartProductOption::class, 'cart_product_option_id');
+    }
+
     public function productOption(): BelongsTo
     {
         return $this->belongsTo(ProductOption::class, 'product_option_id');

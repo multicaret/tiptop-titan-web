@@ -59,15 +59,23 @@ class CartProductOption extends Pivot
         return $this->belongsTo(ProductOption::class, 'product_option_id');
     }
 
+
     public function selections()
     {
+        return $this->morphMany(CartProductOptionSelection::class, 'selectable');
+    }
+
+
+    /*public function selections()
+    {
+
         return $this->hasMany(CartProductOptionSelection::class, 'cart_product_option_id', 'cart_product_id')
                     ->where('selectable_type',
                         $this->productOption->is_based_on_ingredients ?
                             Taxonomy::class :
                             ProductOptionSelection::class
                     );
-    }
+    }*/
 
     /*public function ingredients()
     {
