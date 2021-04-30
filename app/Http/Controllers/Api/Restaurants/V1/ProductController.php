@@ -12,7 +12,7 @@ use Illuminate\Http\Request;
 class ProductController extends BaseApiController
 {
 
-    public function update(Request $request, $restaurant, $product)
+    public function update($restaurant, $product, Request $request)
     {
         $rules = [
             'price' => 'required',
@@ -32,17 +32,12 @@ class ProductController extends BaseApiController
         DB::beginTransaction();
         $product->price = $request->price;
         $product->save();
-
         DB::commit();
 
         return $this->respond([
             'success' => true,
             'message' => 'Successfully Updated',
         ]);
-
-        /*return $this->respond([
-            'restaurant' => new FoodBranchResource($restaurant)
-        ]);*/
     }
 
 
@@ -63,11 +58,10 @@ class ProductController extends BaseApiController
         $product->status = $request->input('status') ? Product::STATUS_ACTIVE : Product::STATUS_INACTIVE;
         $product->save();
 
-        return $this->respond(
-            [
-                'isOpen' => $product->is_open_now
-            ],
-        );
+        return $this->respond([
+            'success' => true,
+            'message' => 'Successfully Updated',
+        ]);
     }
 
 }

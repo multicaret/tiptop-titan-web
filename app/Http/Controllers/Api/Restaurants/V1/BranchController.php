@@ -96,11 +96,10 @@ class BranchController extends BaseApiController
         $restaurant->is_open_now = $request->input('status') ? Branch::STATUS_ACTIVE : Branch::STATUS_INACTIVE;
         $restaurant->save();
 
-        return $this->respond(
-            [
-                'isOpen' => $restaurant->is_open_now
-            ],
-        );
+        return $this->respond([
+            'success' => true,
+            'message' => 'Successfully Updated',
+        ]);
     }
 
 }
