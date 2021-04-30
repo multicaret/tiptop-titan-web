@@ -16,6 +16,7 @@ class CartProductOptionSelectionTable extends Migration
         Schema::create('cart_product_option_selection', function (Blueprint $table) {
             $table->id();
             $table->unsignedBigInteger('cart_product_id')->index();
+            $table->unsignedBigInteger('cart_product_option_id')->index();
             $table->unsignedBigInteger('product_option_id')->index();
             $table->morphs('selectable', 'cart_product_selection'); // selections | ingredients
             $table->json('selectable_object')->nullable();
@@ -25,6 +26,12 @@ class CartProductOptionSelectionTable extends Migration
                   ->references('id')
                   ->on('cart_product')
                   ->onDelete('cascade');
+
+            $table->foreign('cart_product_option_id')
+                  ->references('id')
+                  ->on('cart_product_option')
+                  ->onDelete('cascade');
+
             $table->foreign('product_option_id')
                   ->references('id')
                   ->on('product_options')
