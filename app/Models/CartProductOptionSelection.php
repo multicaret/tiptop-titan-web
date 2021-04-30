@@ -44,6 +44,7 @@ class CartProductOptionSelection extends Pivot
 
     protected $fillable = [
         'cart_product_id',
+        'cart_product_option_id',
         'product_option_id',
         'selectable_type',
         'selectable_id',

@@ -142,6 +142,7 @@ class CartController extends BaseApiController
                         $selectableType = $onIngredients ? Taxonomy::class : ProductOptionSelection::class;
                         CartProductOptionSelection::firstOrCreate([
                             'cart_product_id' => $cartProduct->id,
+                            'cart_product_option_id' => $cartProductOption->id,
                             'product_option_id' => $selectedOption['product_option_id'],
                             'selectable_type' => $selectableType,
                             'selectable_id' => $selectionId,
