@@ -132,6 +132,12 @@ class CartController extends BaseApiController
                         'product_option_id' => $selectedOption['product_option_id']
                     ]);
                     $onIngredients = $cartProductOption->productOption->is_based_on_ingredients;
+
+                    info('got product options to store @foodAdjustCartData', [
+                        '$selectedOption' => $selectedOption,
+                    ]);
+
+
                     foreach ($selectedOption['selected_ids'] as $selectionId) {
                         $selectableType = $onIngredients ? Taxonomy::class : ProductOptionSelection::class;
                         CartProductOptionSelection::firstOrCreate([
