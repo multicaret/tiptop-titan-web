@@ -20,7 +20,7 @@ class UnitResource extends JsonResource
     {
 
         return [
-            'id' => (int) $this->id,
+            'id' => $this->id,
             'title' => $this->title,
             'step' => $this->step,
         ];

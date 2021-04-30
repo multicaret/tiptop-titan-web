@@ -23,7 +23,7 @@ class ProductMiniResource extends JsonResource
 
 
         return [
-            'id' => (int) $this->id,
+            'id' => $this->id,
             'englishTitle' => optional($this->translate('en'))->title,
             'title' => $this->title,
             'excerpt' => [

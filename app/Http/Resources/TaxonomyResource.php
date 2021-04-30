@@ -21,7 +21,7 @@ class TaxonomyResource extends JsonResource
     {
 
         return [
-            'id' => (int) $this->id,
+            'id' => $this->id,
             'type' => $this->getCorrectTypeName(),
             'icon' => $this->icon,
             'title' => $this->title,

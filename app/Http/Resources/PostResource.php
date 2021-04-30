@@ -20,7 +20,7 @@ class PostResource extends JsonResource
     public function toArray($request)
     {
         return [
-            'id' => (int) $this->id,
+            'id' => $this->id,
             'user' => new UserResource($this->user),
 //            'comments' => CommentResource::collection($this->whenLoaded('comments')),
             'title' => $this->title,

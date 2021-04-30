@@ -32,7 +32,7 @@ class GroceryCategoryChildResource extends JsonResource
         $products = Product::whereIn('id', $productsIds)->get();
 
         return [
-            'id' => (int) $this->id,
+            'id' => $this->id,
             'type' => $this->getCorrectTypeName(),
             'icon' => $this->icon,
             'englishTitle' => $this->translate('en')->title,

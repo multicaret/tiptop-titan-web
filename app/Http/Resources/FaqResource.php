@@ -19,7 +19,7 @@ class FaqResource extends JsonResource
     public function toArray($request)
     {
         return [
-            'id' => (int) $this->id,
+            'id' => $this->id,
             'question' => $this->title,
             'answer' => [
                 'raw' => strip_tags($this->content),
