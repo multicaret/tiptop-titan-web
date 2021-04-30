@@ -4,7 +4,7 @@ namespace App\Integrations\Tookan;
 
 use App\Models\Chain;
 use App\Models\Order;
-use App\Models\TokanTeam;
+use App\Models\TookanTeam;
 use App\Models\User;
 use Illuminate\Support\Facades\Http;
 
@@ -35,9 +35,9 @@ class TookanClient
              return false;
         }
 
-        if (empty($user->team) || empty($user->team->tokan_team_id))
+        if (empty($user->team) || empty($user->team->tookan_team_id))
         {
-            $team = TokanTeam::first();
+            $team = TookanTeam::first();
             if (empty($team)) return false;
             $user->team_id = $team->id;
             $user->saveQuietly();
@@ -55,9 +55,9 @@ class TookanClient
             return false;
         }
 
-        if (empty($user->team) || empty($user->team->tokan_team_id))
+        if (empty($user->team) || empty($user->team->tookan_team_id))
         {
-            $team = TokanTeam::first();
+            $team = TookanTeam::first();
             if (empty($team)) return false;
             $user->team_id = $team->id;
             $user->saveQuietly();
@@ -69,7 +69,7 @@ class TookanClient
 
     }
     public function blockCaptain(User $user,$deleteOperation = false){
-        if (empty($user->team) || empty($user->team->tokan_team_id || $user->role_name != User::ROLE_TIPTOP_DRIVER))
+        if (empty($user->team) || empty($user->team->tookan_team_id || $user->role_name != User::ROLE_TIPTOP_DRIVER))
         {
             return false;
         }
@@ -79,16 +79,16 @@ class TookanClient
         return $this->apiRequest('POST', 'block_and_unblock_fleet',array_merge(['fleet_id' => (string)$user->tookan_id],$captainStatusData));
 
     }
-    public function createTeam(TokanTeam $tokanTeam){
+    public function createTeam(TookanTeam $tookanTeam){
 
-        $teamData = $this->prepareTeamData($tokanTeam);
+        $teamData = $this->prepareTeamData($tookanTeam);
 
         return $this->apiRequest('POST', 'create_team',$teamData);
 
     }
-    public function updateTeam(TokanTeam $tokanTeam,$team_id){
+    public function updateTeam(TookanTeam $tookanTeam,$team_id){
 
-        $teamData = $this->prepareTeamData($tokanTeam);
+        $teamData = $this->prepareTeamData($tookanTeam);
 
         return $this->apiRequest('POST', 'update_team',array_merge(['team_id' => (string)$team_id],$teamData));
 
@@ -122,8 +122,8 @@ class TookanClient
     }
 
     public function prepareTaskData(Order $order){
-        $food_team_id = TokanTeam::where('name','Food')->first();
-        $market_team_id = TokanTeam::where('name','Market')->first();
+        $food_team_id = TookanTeam::where('name','Food')->first();
+        $market_team_id = TookanTeam::where('name','Market')->first();
         return [
             'order_id'                => $order->reference_code,
             'timezone'                => '-180',
@@ -192,13 +192,13 @@ class TookanClient
             'transport_type'    => '2',
             'timezone'          => '-180',
             'password'          => 'Tiptopagent@123',
-            'team_id'           => (string) $user->team->tokan_team_id,
+            'team_id'           => (string) $user->team->tookan_team_id,
         ];
     }
 
-    public function prepareTeamData(TokanTeam $tokanTeam){
+    public function prepareTeamData(TookanTeam $tookanTeam){
         return [
-            'team_name' => $tokanTeam->name,
+            'team_name' => $tookanTeam->name,
             'battery_usage' => 1,
         ];
     }
