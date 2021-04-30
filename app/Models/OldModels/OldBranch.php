@@ -156,6 +156,7 @@ class OldBranch extends OldModel
             'updated_at' => 'updated_at',
             'contact_phone_1' => 'primary_phone_number',
             'contact_phone_2' => 'secondary_phone_number',
+            'address' => 'full_address',
         ];
 
         if ($type === Branch::CHANNEL_GROCERY_OBJECT) {
