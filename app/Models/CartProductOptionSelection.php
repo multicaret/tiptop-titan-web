@@ -42,6 +42,13 @@ class CartProductOptionSelection extends Pivot
 
     protected $table = 'cart_product_option_selection';
 
+    protected $fillable = [
+        'cart_product_id',
+        'product_option_id',
+        'selectable_type',
+        'selectable_id',
+    ];
+
     protected $casts = [
         'product_option_object' => 'json',
     ];

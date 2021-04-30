@@ -41,6 +41,11 @@ class CartProductOption extends Model
         'product_option_object' => 'json',
     ];
 
+    protected $fillable = [
+        'cart_product_id',
+        'product_option_id',
+    ];
+
     public static function boot()
     {
         static::creating(function ($model) {
