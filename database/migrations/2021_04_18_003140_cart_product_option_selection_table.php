@@ -17,7 +17,7 @@ class CartProductOptionSelectionTable extends Migration
             $table->id();
             $table->unsignedBigInteger('cart_product_id')->index();
             $table->unsignedBigInteger('cart_product_option_id')->index();
-            $table->unsignedBigInteger('product_option_id')->index();
+            $table->unsignedBigInteger('product_option_id')->index()->nullable();
             $table->morphs('selectable', 'cart_product_selection'); // selections | ingredients
             $table->json('selectable_object')->nullable();
             $table->timestamps();
@@ -35,7 +35,7 @@ class CartProductOptionSelectionTable extends Migration
             $table->foreign('product_option_id')
                   ->references('id')
                   ->on('product_options')
-                  ->onDelete('cascade');
+                  ->onDelete('set null');
         });
     }
 

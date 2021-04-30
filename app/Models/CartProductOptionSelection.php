@@ -73,4 +73,14 @@ class CartProductOptionSelection extends Pivot
     {
         return $this->morphTo();
     }
+
+    public function selectableSmart()
+    {
+        return $this->selectable()
+                    ->where('selectable_type',
+                        $this->productOption->is_based_on_ingredients ?
+                            Taxonomy::class :
+                            ProductOptionSelection::class
+                    );
+    }
 }
