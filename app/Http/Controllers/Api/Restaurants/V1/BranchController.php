@@ -90,7 +90,7 @@ class BranchController extends BaseApiController
 
         return $this->respond(
             [
-                'is_open_now' => $restaurant->is_open_now
+                'isOpen' => $restaurant->is_open_now
             ],
         );
     }
