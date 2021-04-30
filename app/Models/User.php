@@ -10,7 +10,6 @@ use App\Traits\HasGender;
 use App\Traits\HasMediaTrait;
 use App\Traits\HasStatuses;
 use App\Traits\HasViewCount;
-use Database\Factories\UserFactory;
 use Eloquent;
 use Illuminate\Auth\Passwords\CanResetPassword;
 use Illuminate\Contracts\Auth\MustVerifyEmail;
@@ -497,7 +496,8 @@ class User extends Authenticatable implements HasMedia, MustVerifyEmail
      */
     public function getIsBranchManagerAttribute(): bool
     {
-        return $this->hasAnyRole([self::ROLE_BRANCH_OWNER, self::ROLE_BRANCH_MANAGER]);
+//        return $this->hasAnyRole([self::ROLE_BRANCH_OWNER, self::ROLE_BRANCH_MANAGER]);
+        return $this->role_name == self::ROLE_BRANCH_OWNER || $this->role_name == self::ROLE_BRANCH_MANAGER;
     }
 
     /**
