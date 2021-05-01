@@ -125,19 +125,19 @@
             <!-- Nav -->
             <nav class="js-mega-menu navbar navbar-expand-lg">
                 <!-- White Logo -->
-                <a class="navbar-brand navbar-brand-default" href="index.html" aria-label="Front">
+                <a class="navbar-brand navbar-brand-default" href="{{url('/')}}" aria-label="Front">
                     <img src="/frontend-assets/images/logo-white.png" alt="TipTop Logo">
                 </a>
                 <!-- End White Logo -->
 
                 <!-- Default Logo -->
-                <a class="navbar-brand navbar-brand-on-scroll" href="index.html" aria-label="Front">
+                <a class="navbar-brand navbar-brand-on-scroll" href="{{url('/')}}" aria-label="Front">
                     <img src="/frontend-assets/images/logo.png" alt="TipTop Logo">
                 </a>
                 <!-- End Default Logo -->
 
                 <!-- Default Logo -->
-                <a class="navbar-brand navbar-brand-collapsed" href="index.html" aria-label="Front">
+                <a class="navbar-brand navbar-brand-collapsed" href="{{url('/')}}" aria-label="Front">
                     <img src="/frontend-assets/images/logo.png" alt="TipTop Logo">
                 </a>
                 <!-- End Default Logo -->
@@ -777,7 +777,7 @@
 <!-- ========== FOOTER ========== -->
 <footer class="container text-center space-1">
     <!-- Logo -->
-    <a class="d-inline-flex align-items-center mb-2" href="index.html" aria-label="Front">
+    <a class="d-inline-flex align-items-center mb-2" href="{{url('/')}}" aria-label="Front">
         <img class="brand" src="/frontend-assets/images/logo.png" alt="Logo">
     </a>
     <!-- End Logo -->

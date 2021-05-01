@@ -414,7 +414,7 @@
 <!-- ========== FOOTER ========== -->
 <footer class="container text-center space-1">
     <!-- Logo -->
-    <a class="d-inline-flex align-items-center mb-2" href="index.html" aria-label="Front">
+    <a class="d-inline-flex align-items-center mb-2" href="{{url('/')}}" aria-label="Front">
         <img class="brand" src="/frontend-assets/images/logo.png" alt="Logo">
     </a>
     <!-- End Logo -->

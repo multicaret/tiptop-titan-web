@@ -14,6 +14,8 @@ Route::get('about-us', 'PageController@about')->name('about');
 Route::get('contact-us', 'PageController@contact')->name('contact');
 Route::post('contact-us', 'PageController@contactForm');
 
+Route::get('download/{platform}', 'HomeController@download');
+
 Route::get('privacy-policy.html', function () {
     return redirect(route('pages.privacy'));
 });
