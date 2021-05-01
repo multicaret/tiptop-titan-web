@@ -484,7 +484,6 @@ return [
         'typed_taxonomies',
         'typed_posts',
         'typed_users',
-        'preferences',
         'countries',
         'offers',
     ],

@@ -18,6 +18,7 @@ use App\Models\Taxonomy;
 use App\Models\TokanTeam;
 use App\Models\User;
 use App\Scopes\ActiveScope;
+use App\Utilities\PermissionsGenerator;
 use Closure;
 use Exception;
 use Illuminate\Http\Request;
@@ -87,7 +88,7 @@ class ComposerServiceProvider extends ServiceProvider
     {
         $links = [];
         $links = array_merge($links, [
-            [
+            $this->getCan('orders') ? [
                 'children' => [
                     [
                         'title' => 'Orders',
@@ -95,7 +96,7 @@ class ComposerServiceProvider extends ServiceProvider
                         'routeName' => 'admin.orders.index',
                     ],
                 ]
-            ],
+            ] : [],
             [
                 'children' => [
                     [
@@ -553,17 +554,15 @@ class ComposerServiceProvider extends ServiceProvider
         //
     }
 
-    private function getSubChildren(array $children)
+    private function getSubChildren(array $children): array
     {
-        return collect($children)->mapWithKeys(function ($item, $key) {
-            return [
-                $key => [
-                    'title' => \Str::title($item['title']),
-                    'icon' => $item['icon'],
-                    'routeName' => $item['route'],
-                ]
-            ];
-        })->all();
+        return collect($children)->mapWithKeys(fn($item, $key) => [
+            $key => [
+                'title' => \Str::title($item['title']),
+                'icon' => $item['icon'],
+                'routeName' => $item['route'],
+            ]
+        ])->all();
     }
 
 
@@ -608,8 +607,10 @@ class ComposerServiceProvider extends ServiceProvider
 
     private function getCan(string $viewName, string $crudAction = 'index'): bool
     {
-        $permissionSource = "defaults.all_permission.admin.$viewName.$crudAction";
-        $permissionName = config($permissionSource);
+        $allRolesPermissions = PermissionsGenerator::getAllRolesPermissions('super');
+        if (isset(\Arr::dot($allRolesPermissions)["{$viewName}.{$crudAction}"])) {
+            $permissionName = $allRolesPermissions[$viewName][$crudAction];
+        }
 
         return ! is_null($permissionName) ? auth()->user()->can($permissionName) : false;
     }
@@ -648,7 +649,7 @@ class ComposerServiceProvider extends ServiceProvider
         try {
             $sideNavItem['route'] = route($sideNavItem['routeName'], $params);
         } catch (Exception $e) {
-            dd('There was an error generating this route: ',$sideNavItem);
+            dd('There was an error generating this route: ', $sideNavItem);
         }
     }
 
