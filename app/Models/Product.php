@@ -182,7 +182,6 @@ class Product extends Model implements HasMedia
     public const STATUS_DRAFT = 1;
     public const STATUS_ACTIVE = 2;
     public const STATUS_INACTIVE = 3;
-    public const STATUS_INACTIVE_SEASONABLE = 4;
     public const STATUS_TRANSLATION_NOT_COMPLETED = 5;
 
     public const CHANNEL_GROCERY_OBJECT = 1;
@@ -309,11 +308,6 @@ class Product extends Model implements HasMedia
                 'id' => self::STATUS_INACTIVE,
                 'title' => __('Inactive'),
                 'class' => 'danger',
-            ],
-            self::STATUS_INACTIVE_SEASONABLE => [
-                'id' => self::STATUS_INACTIVE_SEASONABLE,
-                'title' => __('Inactive Seasonable'),
-                'class' => 'warning',
             ],
             self::STATUS_TRANSLATION_NOT_COMPLETED => [
                 'id' => self::STATUS_TRANSLATION_NOT_COMPLETED,
