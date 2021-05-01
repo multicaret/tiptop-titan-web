@@ -45,7 +45,7 @@ class OrderController extends Controller
      *
      * @return Application|Factory|\Illuminate\Contracts\View\View|View
      */
-    public function ratings(Request $request)
+    public function orderRatings(Request $request)
     {
         $typeName = Order::getCorrectChannelName($request->type, false);
         $columns = [

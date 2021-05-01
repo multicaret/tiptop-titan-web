@@ -48,16 +48,20 @@ class CreateProductsTable extends Migration
             $table->timestamp('custom_banner_ended_at')->nullable();
             $table->boolean('is_storage_tracking_enabled')->nullable(true);
             $table->unsignedTinyInteger('on_mobile_grid_tile_weight')->default(3);
+            $table->unsignedBigInteger('importer_id')->nullable();
             $table->unsignedBigInteger('cloned_from_product_id')->nullable();
             $table->timestamps();
             $table->softDeletes();
 
+            $table->unique(['branch_id', 'importer_id']);
+            
             $table->foreign('creator_id')->references('id')->on('users')->onDelete('cascade');
             $table->foreign('editor_id')->references('id')->on('users')->onDelete('cascade');
             $table->foreign('chain_id')->references('id')->on('chains')->onDelete('cascade');
             $table->foreign('branch_id')->references('id')->on('branches')->onDelete('cascade');
             $table->foreign('category_id')->references('id')->on('taxonomies')->onDelete('cascade');
             $table->foreign('unit_id')->references('id')->on('taxonomies')->onDelete('cascade');
+            $table->foreign('cloned_from_product_id')->references('id')->on('products');
         });
     }
 

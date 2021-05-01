@@ -19,7 +19,7 @@ class ProductResource extends JsonResource
         $isFavorited = auth('sanctum')->check() ? $this->isFavoritedBy(auth('sanctum')->user()) : false;
 
         return [
-            'id' => (int) $this->id,
+            'id' => $this->id,
             'uuid' => $this->uuid,
             'englishTitle' => $this->translate('en')->title,
             'title' => $this->title,

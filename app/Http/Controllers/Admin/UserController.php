@@ -8,7 +8,7 @@ use App\Models\City;
 use App\Models\Country;
 use App\Models\Location;
 use App\Models\Region;
-use App\Models\TokanTeam;
+use App\Models\TookanTeam;
 use App\Models\User;
 use DB;
 use Illuminate\Http\RedirectResponse;
@@ -374,7 +374,7 @@ class UserController extends Controller
             ],
             'countries' => Country::all(),
             'regions' => Region::where('country_id', config('defaults.country.id'))->get(),
-            'teams' => TokanTeam::active()->get()
+            'teams' => TookanTeam::active()->get()
                                 ->mapWithKeys(function ($item) {
                                     return [$item['id'] => $item['name']];
                                 }),

@@ -3,7 +3,7 @@
 namespace App\Http\Controllers\Api\Restaurants\V1;
 
 use App\Http\Controllers\Api\BaseApiController;
-use App\Http\Resources\OrderRestaurantResource;
+use App\Http\Resources\OrderResource;
 use App\Models\Branch;
 use App\Models\Order;
 use DB;
@@ -34,7 +34,7 @@ class OrderController extends BaseApiController
                        ->latest()
                        ->get();
 
-        return $this->respond(OrderRestaurantResource::collection($orders));
+        return $this->respond(OrderResource::collection($orders));
     }
 
 
@@ -45,7 +45,7 @@ class OrderController extends BaseApiController
             return $this->respondNotFound();
         }
 
-        return $this->respond(new OrderRestaurantResource($order));
+        return $this->respond(new OrderResource($order));
     }
 
     public function update(Request $request, $restaurant, $order)

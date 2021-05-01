@@ -8,6 +8,15 @@ use App\Models\ProductOption;
 
 class HomeController extends Controller
 {
+    public function download($platform)
+    {
+        if ($platform != 'ios' && $platform != 'android') {
+            return redirect('/');
+        }
+
+        return view('frontend.download-app', compact('platform'));
+    }
+
     public function index()
     {
         return view('frontend.home');

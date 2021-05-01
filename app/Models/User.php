@@ -10,7 +10,6 @@ use App\Traits\HasGender;
 use App\Traits\HasMediaTrait;
 use App\Traits\HasStatuses;
 use App\Traits\HasViewCount;
-use Database\Factories\UserFactory;
 use Eloquent;
 use Illuminate\Auth\Passwords\CanResetPassword;
 use Illuminate\Contracts\Auth\MustVerifyEmail;
@@ -142,7 +141,7 @@ use Spatie\Permission\Traits\HasRoles;
  * @property-read \App\Models\Region|null $region
  * @property-read Collection|Role[] $roles
  * @property-read int|null $roles_count
- * @property-read \App\Models\TokanTeam|null $team
+ * @property-read \App\Models\TookanTeam|null $team
  * @property-read Collection|\App\Models\PersonalAccessToken[] $tokens
  * @property-read int|null $tokens_count
  * @method static Builder|User active()
@@ -497,7 +496,8 @@ class User extends Authenticatable implements HasMedia, MustVerifyEmail
      */
     public function getIsBranchManagerAttribute(): bool
     {
-        return $this->hasAnyRole([self::ROLE_BRANCH_OWNER, self::ROLE_BRANCH_MANAGER]);
+//        return $this->hasAnyRole([self::ROLE_BRANCH_OWNER, self::ROLE_BRANCH_MANAGER]);
+        return $this->role_name == self::ROLE_BRANCH_OWNER || $this->role_name == self::ROLE_BRANCH_MANAGER;
     }
 
     /**
@@ -550,7 +550,7 @@ class User extends Authenticatable implements HasMedia, MustVerifyEmail
 
     public function team(): BelongsTo
     {
-        return $this->belongsTo(TokanTeam::class);
+        return $this->belongsTo(TookanTeam::class);
     }
 
     public function language(): BelongsTo
