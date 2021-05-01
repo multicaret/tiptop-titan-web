@@ -69,14 +69,16 @@
                         <small class="d-block"><sub>Delivered</sub></small>
                     </th>
                     <th>
+                        <i class="fas fa-coins"></i>
+                        <small class="d-block"><sub>Revenue</sub></small>
+                    </th>
+                    <th>
                         <i class="fas fa-stopwatch"></i>
                         <small class="d-block"><sub>Avg. Delivery</sub></small>
-                        Avg. D.T
                     </th>
                     <th>
                         <i class="fas fa-shopping-basket"></i>
                         <small class="d-block"><sub>Avg. Cart</sub></small>
-                        AOV
                     </th>
                     <th class="bg-windows-darker">
                         <i class="far fa-clock"></i>
@@ -113,7 +115,6 @@
                     <th>
                         <i class="fas fa-user-check"></i>
                         <small class="d-block"><sub>ORDERS</sub></small>
-                        %N.U.O
                     </th>
                     <th>
                         <i class="fab fa-apple"></i>
@@ -178,6 +179,22 @@
                             <small class="text-muted">
                                 ({{$report->total_delivered_orders_count}})
                             </small>
+                            {{\App\Http\Controllers\Controller::percentageInRespectToTwoNumbers($report->total_delivered_orders_count,$report->total_orders_count).'%'}}
+                        </td>
+
+                        <td>
+                            {{--// Todo: Make this "Total Delivered Carts Value"--}}
+                            @php
+                                if($channel == 'grocery') {
+                                    $report->total_delivered_orders_count = $report->total_delivered_grocery_orders_count;
+                                }elseif($channel == 'food') {
+                                    $report->total_delivered_orders_count = $report->total_delivered_food_orders_count;
+                                }
+                            @endphp
+                            <small class="text-muted">
+                                ({{$report->total_delivered_orders_count}})
+                            </small>
+
                             {{\App\Http\Controllers\Controller::percentageInRespectToTwoNumbers($report->total_delivered_orders_count,$report->total_orders_count).'%'}}
                         </td>
                         <td>
