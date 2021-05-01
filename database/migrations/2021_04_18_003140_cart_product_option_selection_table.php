@@ -29,7 +29,7 @@ class CartProductOptionSelectionTable extends Migration
 
             $table->foreign('cart_product_option_id')
                   ->references('id')
-                  ->on('cart_product_option')
+                  ->on('cart_product_options')
                   ->onDelete('cascade');
 
             $table->foreign('product_option_id')
