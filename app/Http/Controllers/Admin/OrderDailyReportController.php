@@ -10,7 +10,7 @@ class OrderDailyReportController extends Controller
 
     public function __construct()
     {
-//        $this->middleware('permission:chain.permissions.index', ['only' => ['index', 'store']]);
+        $this->middleware('permission:daily-report.permissions.index', ['only' => ['index']]);
     }
 
 

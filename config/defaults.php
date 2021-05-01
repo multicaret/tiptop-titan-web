@@ -41,11 +41,11 @@ return [
         'alpha3_code' => 'IRQ',
     ],
     'region' => [
-        'id' => 2,
+        'id' => 6,
         'english_name' => 'Erbil',
     ],
     'city' => [
-        'id' => 1,
+        'id' => 4,
         'english_name' => 'Italian Village',
     ],
     'images' => [
@@ -176,85 +176,7 @@ return [
         'twitter' => ['id' => null, 'url' => null],
         'google' => ['id' => null, 'url' => null],
     ],
-    'all_permission' => [
-        'super' => [
-            'posts' => [
-                'index' => 'post.permissions.index',
-                'create' => 'post.permissions.create',
-                'edit' => 'post.permissions.edit',
-                'destroy' => 'post.permissions.destroy',
-            ],
-            'users' => [
-                'index' => 'user.permissions.index',
-                'create' => 'user.permissions.create',
-                'edit' => 'user.permissions.edit',
-                'destroy' => 'user.permissions.destroy',
-            ],
-            'countries' => [
-                'index' => 'country.permissions.index',
-                'create' => 'country.permissions.create',
-                'edit' => 'country.permissions.edit',
-                'destroy' => 'country.permissions.destroy',
-            ],
-            'cities' => [
-                'index' => 'city.permissions.index',
-                'create' => 'city.permissions.create',
-                'edit' => 'city.permissions.edit',
-                'destroy' => 'city.permissions.destroy',
-            ],
-            'regions' => [
-                'index' => 'region.permissions.index',
-                'create' => 'region.permissions.create',
-                'edit' => 'region.permissions.edit',
-                'destroy' => 'region.permissions.destroy',
-            ],
-            'offers' => [
-                'index' => 'offer.permissions.index',
-                'create' => 'offer.permissions.create',
-                'edit' => 'offer.permissions.edit',
-                'destroy' => 'offer.permissions.destroy',
-            ],
-            'payment_methods' => [
-                'index' => 'payment_method.permissions.index',
-                'create' => 'payment_method.permissions.create',
-                'edit' => 'payment_method.permissions.edit',
-                'destroy' => 'payment_method.permissions.destroy',
-            ],
-            'taxonomies' => [
-                'index' => 'taxonomy.permissions.index',
-                'create' => 'taxonomy.permissions.create',
-                'edit' => 'taxonomy.permissions.edit',
-                'destroy' => 'taxonomy.permissions.destroy',
-            ],
-            'preferences' => [
-                'index' => 'preference.permissions.index',
-                'create' => 'preference.permissions.create',
-                'edit' => 'preference.permissions.edit',
-                'destroy' => 'preference.permissions.destroy',
-            ],
-            'roles' => [
-                'index' => 'role.permissions.index',
-                'create' => 'role.permissions.create',
-                'edit' => 'role.permissions.edit',
-                'destroy' => 'role.permissions.destroy',
-            ],
-            'translations' => [
-                'index' => 'translation.permissions.index',
-                'edit' => 'translation.permissions.edit',
-            ],
-        ],
-        'admin' => [],
-        'user' => [],
-        'supervisor' => [],
-        'agent' => [],
-        'content_editor' => [],
-        'marketer' => [],
-        'branch_owner' => [],
-        'branch_manager' => [],
-        'translator' => [],
-        'restaurant_driver' => [],
-        'tiptop_driver' => [],
-    ],
+    'all_permission' => [],
     'roles' => [
         'super' => [
             'name' => 'Super',
@@ -418,5 +340,151 @@ return [
                 ['key' => 'id', 'value' => 1]
             ],
         ]
-    ]
+    ],
+    'permissions' => [
+        'grocery_chain' => [
+            'index' => 'grocery-chain.permissions.index',
+            'create' => 'grocery-chain.permissions.create',
+            'edit' => 'grocery-chain.permissions.edit',
+            'destroy' => 'grocery-chain.permissions.destroy',
+        ],
+        'food_chain' => [
+            'index' => 'food-chain.permissions.index',
+            'create' => 'food-chain.permissions.create',
+            'edit' => 'food-chain.permissions.edit',
+            'destroy' => 'food-chain.permissions.destroy',
+        ],
+        'grocery_branches' => [
+            'index' => 'grocery-branch.permissions.index',
+            'create' => 'grocery-branch.permissions.create',
+            'edit' => 'grocery-branch.permissions.edit',
+            'destroy' => 'grocery-branch.permissions.destroy',
+        ],
+        'food_branches' => [
+            'index' => 'food-branch.permissions.index',
+            'create' => 'food-branch.permissions.create',
+            'edit' => 'food-branch.permissions.edit',
+            'destroy' => 'food-branch.permissions.destroy',
+        ],
+        'grocery_products' => [
+            'index' => 'grocery-product.permissions.index',
+            'create' => 'grocery-product.permissions.create',
+            'edit' => 'grocery-product.permissions.edit',
+            'destroy' => 'grocery-product.permissions.destroy',
+        ],
+        'food_products' => [
+            'index' => 'food-product.permissions.index',
+            'create' => 'food-product.permissions.create',
+            'edit' => 'food-product.permissions.edit',
+            'destroy' => 'food-product.permissions.destroy',
+        ],
+        'typed_taxonomies' => [
+            'index' => 'type-taxonomy.permissions.index',
+            'create' => 'type-taxonomy.permissions.create',
+            'edit' => 'type-taxonomy.permissions.edit',
+            'destroy' => 'type-taxonomy.permissions.destroy',
+        ],
+        'rating_grocery_orders' => [
+            'index' => 'rating-grocery-order.permissions.index',
+            'create' => 'rating-grocery-order.permissions.create',
+            'edit' => 'rating-grocery-order.permissions.edit',
+            'destroy' => 'rating-grocery-order.permissions.destroy',
+        ],
+        'slides' => [
+            'index' => 'slide.permissions.index',
+            'create' => 'slide.permissions.create',
+            'edit' => 'slide.permissions.edit',
+            'destroy' => 'slide.permissions.destroy',
+        ],
+        'typed_posts' => [
+            'index' => 'type-post.permissions.index',
+            'create' => 'type-post.permissions.create',
+            'edit' => 'type-post.permissions.edit',
+            'destroy' => 'type-post.permissions.destroy',
+        ],
+        'typed_users' => [
+            'index' => 'type-user.permissions.index',
+            'create' => 'type-user.permissions.create',
+            'edit' => 'type-user.permissions.edit',
+            'destroy' => 'type-user.permissions.destroy',
+        ],
+        'coupons' => [
+            'index' => 'coupon.permissions.index',
+            'create' => 'coupon.permissions.create',
+            'edit' => 'coupon.permissions.edit',
+            'destroy' => 'coupon.permissions.destroy',
+        ],
+        'daily_report' => [
+            'index' => 'daily-report.permissions.index',
+            'create' => 'daily-report.permissions.create',
+            'edit' => 'daily-report.permissions.edit',
+            'destroy' => 'daily-report.permissions.destroy',
+        ],
+        'countries' => [
+            'index' => 'country.permissions.index',
+            'create' => 'country.permissions.create',
+            'edit' => 'country.permissions.edit',
+            'destroy' => 'country.permissions.destroy',
+        ],
+        'cities' => [
+            'index' => 'city.permissions.index',
+            'create' => 'city.permissions.create',
+            'edit' => 'city.permissions.edit',
+            'destroy' => 'city.permissions.destroy',
+        ],
+        'regions' => [
+            'index' => 'region.permissions.index',
+            'create' => 'region.permissions.create',
+            'edit' => 'region.permissions.edit',
+            'destroy' => 'region.permissions.destroy',
+        ],
+        'offers' => [
+            'index' => 'offer.permissions.index',
+            'create' => 'offer.permissions.create',
+            'edit' => 'offer.permissions.edit',
+            'destroy' => 'offer.permissions.destroy',
+        ],
+        'payment_methods' => [
+            'index' => 'payment_method.permissions.index',
+            'create' => 'payment_method.permissions.create',
+            'edit' => 'payment_method.permissions.edit',
+            'destroy' => 'payment_method.permissions.destroy',
+        ],
+        'preferences' => [
+            'index' => 'preference.permissions.index',
+            'create' => 'preference.permissions.create',
+            'edit' => 'preference.permissions.edit',
+            'destroy' => 'preference.permissions.destroy',
+        ],
+        'roles' => [
+            'index' => 'role.permissions.index',
+            'create' => 'role.permissions.create',
+            'edit' => 'role.permissions.edit',
+            'destroy' => 'role.permissions.destroy',
+        ],
+        'tookan_teams' => [
+            'index' => 'tookan-team.permissions.index',
+            'create' => 'tookan-team.permissions.create',
+            'edit' => 'tookan-team.permissions.edit',
+            'destroy' => 'tookan-team.permissions.destroy',
+        ],
+        'translations' => [
+            'index' => 'translation.permissions.index',
+            'edit' => 'translation.permissions.edit',
+        ],
+        'orders' => [
+            'index' => 'order.permissions.index',
+            'edit' => 'order.permissions.edit',
+        ],
+        'deep_links' => [
+            'index' => 'deep-link.permissions.index',
+        ],
+    ],
+    'general_roles_exceptions' => [
+        'typed_taxonomies',
+        'typed_posts',
+        'typed_users',
+        'countries',
+        'offers',
+    ],
 ];

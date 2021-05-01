@@ -16,6 +16,17 @@ use Illuminate\Http\Request;
 class ProductController extends Controller
 {
 
+    public function __construct()
+    {
+
+        $productType = \request('type');
+        $this->middleware('permission:'.$productType.'.permissions.index', ['only' => ['index', 'store']]);
+        $this->middleware('permission:'.$productType.'.permissions.create', ['only' => ['create', 'store']]);
+        $this->middleware('permission:'.$productType.'.permissions.edit', ['only' => ['edit', 'update']]);
+        $this->middleware('permission:'.$productType.'.permissions.destroy', ['only' => ['destroy']]);
+    }
+
+
     public function index(Request $request)
     {
         $columns = [
@@ -217,7 +228,7 @@ class ProductController extends Controller
                                           ->get()
                                           ->map($getIdTitle)
                                           ->all();*/
-            $data['categories'] = Taxonomy::menuCategories()->get();
+            $data['categories'] = $request->has('branch_id') ? Branch::find($request->input('branch_id'))->menuCategories : Taxonomy::menuCategories()->get();
         }
         $data['searchTags'] = Taxonomy::searchTags()->get();
 
@@ -236,7 +247,7 @@ class ProductController extends Controller
         $toValidateInFood = [];
         if ($request->type == Product::getCorrectChannelName(Product::CHANNEL_FOOD_OBJECT, 0)) {
             $toValidateInFood = [
-                'category' => 'required',
+                'master_category' => 'required',
             ];
         }
         $generalValidateItems = [
@@ -268,7 +279,6 @@ class ProductController extends Controller
         } else {
             $product->branch_id = optional(json_decode($request->input('branch')))->id;
         }
-//        dd($product->branch_id);
 
         $product->unit_id = optional(json_decode($request->input('unit_id')))->id;
         $product->price = $request->input('price');

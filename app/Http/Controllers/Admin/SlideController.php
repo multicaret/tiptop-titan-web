@@ -20,10 +20,10 @@ class SlideController extends Controller
 
     public function __construct()
     {
-//        $this->middleware('permission:slide.permissions.index', ['only' => ['index', 'store']]);
-//        $this->middleware('permission:slide.permissions.create', ['only' => ['create', 'store']]);
-//        $this->middleware('permission:slide.permissions.edit', ['only' => ['edit', 'update']]);
-//        $this->middleware('permission:slide.permissions.destroy', ['only' => ['destroy']]);
+        $this->middleware('permission:slide.permissions.index', ['only' => ['index', 'store']]);
+        $this->middleware('permission:slide.permissions.create', ['only' => ['create', 'store']]);
+        $this->middleware('permission:slide.permissions.edit', ['only' => ['edit', 'update']]);
+        $this->middleware('permission:slide.permissions.destroy', ['only' => ['destroy']]);
     }
 
     /**

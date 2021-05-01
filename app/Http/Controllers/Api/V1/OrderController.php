@@ -18,7 +18,6 @@ use App\Models\User;
 use DB;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
-use Symfony\Component\HttpFoundation\Response;
 
 class OrderController extends BaseApiController
 {
@@ -72,6 +71,15 @@ class OrderController extends BaseApiController
         }
 
         return $this->respondNotFound();
+    }
+
+    public function show($id)
+    {
+        $order = Order::findOrFail($id);
+
+        return $this->respond([
+            'order' => new OrderResource($order),
+        ]);
     }
 
     public function destroy($id)
@@ -129,8 +137,8 @@ class OrderController extends BaseApiController
                 'logo' => $method->logo,
             ];
         });
-        // Todo: update delivery type for both types
-        $deliveryFeeCalculated = $branch->calculateDeliveryFee($userCart->total, true, false,
+
+        $deliveryFeeCalculated = $branch->calculateDeliveryFee($userCart->total, $branch->has_tip_top_delivery, false,
             $request->input('selected_address_id'));
         $grandTotal = $deliveryFeeCalculated + $userCart->total;
 
@@ -186,7 +194,7 @@ class OrderController extends BaseApiController
 
         $validateCartValue = $branch->validateCartValue($activeCart->total, $isDeliveryTypeTipTop);
         if ( ! $validateCartValue['isValid']) {
-            $this->respondValidationFails(['cart_value' => $validateCartValue['message']]);
+            return $this->respondValidationFails(['cart_value' => $validateCartValue['message']]);
         }
 
         DB::beginTransaction();

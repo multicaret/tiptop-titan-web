@@ -36,11 +36,20 @@
             <div class="col-md-12 mt-4">
                 <div class="card card-outline-inverse">
                     <div class="card-body row">
-                        <div class="col-md-12">
+                        <div class="col-md-8">
                             @component('admin.components.form-group', ['name' => 'name', 'type' => 'text'])
                                 @slot('label', trans('strings.name'))
                                 @if(! is_null($team->id))
                                     @slot('value', $team->name)
+                                @endif
+                            @endcomponent
+                        </div>
+                        <div class="col-md-4">
+                            @component('admin.components.form-group', ['name' => 'tookan_team_id', 'type' => 'text'])
+                                @slot('label', 'Tookan ID')
+                                @slot('attributes', ['disabled'])
+                                @if(! is_null($team->id))
+                                    @slot('value', $team->tookan_team_id)
                                 @endif
                             @endcomponent
                         </div>
@@ -53,7 +62,7 @@
                         <div class="col-4">
                             @component('admin.components.form-group', ['name' => 'status', 'type' => 'select'])
                                 @slot('label', trans('strings.status'))
-                                @slot('options', \App\Models\TokanTeam::getStatusesArray())
+                                @slot('options', \App\Models\TookanTeam::getStatusesArray())
                                 @slot('selected', $team->status)
                             @endcomponent
                         </div>

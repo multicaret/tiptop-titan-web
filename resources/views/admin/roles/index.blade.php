@@ -4,7 +4,7 @@
     @can('role.permissions.create')
         <h4 class="d-flex justify-content-between align-items-center w-100 font-weight-bold py-3 mb-4">
             {{trans('strings.roles')}}
-            <a href="{{ route('admin.roles.create') }}">
+            <a href="{{ route('admin.roles.create') }}" class="d-none">
                 <button type="button" class="btn btn-primary rounded-pill d-block">
                     <span class="ion ion-md-add"></span>
                     &nbsp;

@@ -15,9 +15,10 @@ use App\Models\Product;
 use App\Models\Region;
 use App\Models\Slide;
 use App\Models\Taxonomy;
-use App\Models\TokanTeam;
+use App\Models\TookanTeam;
 use App\Models\User;
 use App\Scopes\ActiveScope;
+use App\Utilities\PermissionsGenerator;
 use Closure;
 use Exception;
 use Illuminate\Http\Request;
@@ -87,7 +88,7 @@ class ComposerServiceProvider extends ServiceProvider
     {
         $links = [];
         $links = array_merge($links, [
-            [
+            $this->getCan('orders') ? [
                 'children' => [
                     [
                         'title' => 'Orders',
@@ -95,7 +96,7 @@ class ComposerServiceProvider extends ServiceProvider
                         'routeName' => 'admin.orders.index',
                     ],
                 ]
-            ],
+            ] : [],
             [
                 'children' => [
                     [
@@ -245,6 +246,14 @@ class ComposerServiceProvider extends ServiceProvider
                                 ],
                                 'routeName' => 'admin.taxonomies.index',
                             ],
+                            [
+                                'title' => 'Ratings',
+                                'icon' => 'fas fa-star',
+                                'params' => [
+                                    'type' => Order::getCorrectChannelName(Order::CHANNEL_FOOD_OBJECT, false)
+                                ],
+                                'routeName' => 'admin.orders.ratings',
+                            ],
                         ]
                     ]
                 ]
@@ -342,8 +351,8 @@ class ComposerServiceProvider extends ServiceProvider
                                 'title' => 'Captain Teams',
                                 'icon' => 'fas fa-users',
                                 'routeName' => 'admin.teams.index',
-                                'countPrimary' => TokanTeam::active()->count(),
-                                'countDanger' => TokanTeam::inactive()->count(),
+                                'countPrimary' => TookanTeam::active()->count(),
+                                'countDanger' => TookanTeam::inactive()->count(),
                             ],
                         ]
                     ]
@@ -553,17 +562,15 @@ class ComposerServiceProvider extends ServiceProvider
         //
     }
 
-    private function getSubChildren(array $children)
+    private function getSubChildren(array $children): array
     {
-        return collect($children)->mapWithKeys(function ($item, $key) {
-            return [
-                $key => [
-                    'title' => \Str::title($item['title']),
-                    'icon' => $item['icon'],
-                    'routeName' => $item['route'],
-                ]
-            ];
-        })->all();
+        return collect($children)->mapWithKeys(fn($item, $key) => [
+            $key => [
+                'title' => \Str::title($item['title']),
+                'icon' => $item['icon'],
+                'routeName' => $item['route'],
+            ]
+        ])->all();
     }
 
 
@@ -608,8 +615,10 @@ class ComposerServiceProvider extends ServiceProvider
 
     private function getCan(string $viewName, string $crudAction = 'index'): bool
     {
-        $permissionSource = "defaults.all_permission.admin.$viewName.$crudAction";
-        $permissionName = config($permissionSource);
+        $allRolesPermissions = PermissionsGenerator::getAllRolesPermissions('super');
+        if (isset(\Arr::dot($allRolesPermissions)["{$viewName}.{$crudAction}"])) {
+            $permissionName = $allRolesPermissions[$viewName][$crudAction];
+        }
 
         return ! is_null($permissionName) ? auth()->user()->can($permissionName) : false;
     }
@@ -620,8 +629,8 @@ class ComposerServiceProvider extends ServiceProvider
         $sidenavLinksCollection = $sidenavLinksCollection->filter($this->getNoneEmptyItem());
         $sidenavLinksCollection->transform(function ($mainItem) {
             if ( ! empty($mainItem)) {
-                $requestParams = \request()->toArray();
-                $requestRouteName = \request()->route()->getName();
+                $requestParams = request()->toArray();
+                $requestRouteName = request()->route()->getName();
                 $this->updateItemStatus($mainItem['children'], $requestParams, $requestRouteName);
 
                 return $mainItem;
@@ -648,7 +657,7 @@ class ComposerServiceProvider extends ServiceProvider
         try {
             $sideNavItem['route'] = route($sideNavItem['routeName'], $params);
         } catch (Exception $e) {
-            dd('There was an error generating this route: ',$sideNavItem);
+            dd('There was an error generating this route: ', $sideNavItem);
         }
     }
 
@@ -670,7 +679,7 @@ class ComposerServiceProvider extends ServiceProvider
                 $sidenavItem[$index]['status'] = $pathIsEqual ? 'active' : '';
                 if (count(explode('.', $item['routeName'])) > 2) {
                     if (Str::afterLast($item['routeName'], '.') === 'index') {
-                        $pathIsEqual = \request()->routeIs(Str::beforeLast($item['routeName'], '.').'.*');
+                        $pathIsEqual = request()->routeIs(Str::beforeLast($item['routeName'], '.').'.*');
                         $sidenavItem[$index]['status'] = $pathIsEqual ? 'active' : '';
                     }
                 }

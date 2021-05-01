@@ -22,6 +22,10 @@ class OrdersTable extends Component
     public $customerEmail;
     public $customerPhone;
     public $branchName;
+    public $branchId;
+
+
+    protected $queryString = ['branchId'];
 
     /*
      * Filter By Date.
@@ -46,12 +50,13 @@ class OrdersTable extends Component
 
     private function retrieveOrders()
     {
-        if (is_null($this->filterByDate)) {
+        if (is_null($this->filterByDate) && is_null($this->branchId)) {
             $this->filterByDate = now()->format(config('defaults.date.short_format'));
         }
         $orders = Order::orderBy('created_at', 'desc')
                        ->orderBy('status');
 
+        $shouldSearchByDate = false;
         if ( ! empty($this->referenceCode)) {
             $orders = $orders->where('reference_code', $this->referenceCode);
         } elseif ( ! empty($this->customerName)) {
@@ -77,8 +82,14 @@ class OrdersTable extends Component
                     $queryTranslations->where('title', 'like', '%'.$branchName.'%');
                 });
             });
+        } elseif ( ! is_null($this->branchId)) {
+            $orders = $orders->whereBranchId($this->branchId);
+        } else {
+            $shouldSearchByDate = true;
         }
-        $orders = $orders->whereDate('created_at', $this->filterByDate);
+        if ($shouldSearchByDate) {
+            $orders = $orders->whereDate('created_at', $this->filterByDate);
+        }
         $orders = $orders->get();
         $this->orders = $orders;
     }

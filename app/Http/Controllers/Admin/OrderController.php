@@ -15,7 +15,10 @@ class OrderController extends Controller
 
     public function __construct()
     {
-//        $this->middleware('permission:chain.permissions.index', ['only' => ['index', 'store']]);
+       /* $this->middleware('permission:order.permissions.index', ['only' => ['index', 'store']]);
+        $this->middleware('permission:order.permissions.show', ['only' => ['show']]);
+        $ratingOrderType = request('type');
+        $this->middleware('permission:rating-'.$ratingOrderType.'.permissions.index', ['only' => ['index', 'store']]);*/
     }
 
     public function index()
@@ -42,7 +45,7 @@ class OrderController extends Controller
      *
      * @return Application|Factory|\Illuminate\Contracts\View\View|View
      */
-    public function ratings(Request $request)
+    public function orderRatings(Request $request)
     {
         $typeName = Order::getCorrectChannelName($request->type, false);
         $columns = [

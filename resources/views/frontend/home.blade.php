@@ -1,5 +1,5 @@
-@extends('layouts.frontend')
-@section('title',__('Home'))
-@section('content')
-    {{__('Home')}}
-@endsection
+{{--@extends('layouts.frontend')--}}
+{{--@section('title',__('Home'))--}}
+{{--@section('content')--}}
+    @include('frontend.'. localization()->getCurrentLocale().'-home')
+{{--@endsection--}}

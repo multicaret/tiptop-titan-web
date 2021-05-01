@@ -170,7 +170,7 @@ class DatumImporter extends Command
     private function showChoice(): void
     {
         $this->modelName = (string) $this->argument('model');
-        $this->line('Start importing....');
+        $this->line("Start importing {$this->modelName}....");
         if (empty($this->modelName)) {
             $this->modelName = $this->choice('What is model name?', $this->importerChoices, 1);
         }
@@ -558,13 +558,8 @@ class DatumImporter extends Command
         $this->bar->start();
         foreach ($oldUsers as $oldUser) {
             if (is_null($oldUser->email)) {
-                if ( ! is_null($oldUser->tel_number)) {
-                    $generatedUniqueString = $oldUser->tel_number.'_'.$this->getUuidString(2, 3);
-                    $telNumber = $generatedUniqueString;
-                } else {
-                    $telNumber = $this->getUuidString();
-                }
-                $oldUser->email = $telNumber.'_old_user@'.parse_url(env('APP_URL'), PHP_URL_HOST);
+                $uuidString = $this->getUuidString(0, 0);
+                $oldUser->email = $uuidString.'_old_user@'.parse_url(env('APP_URL'), PHP_URL_HOST);
             }
             $canAddThisUser = true;
 //            if ( ! is_null($oldUser->tel_number) || ! is_null($oldUser->tel_code_number)) {
@@ -586,8 +581,7 @@ class DatumImporter extends Command
         foreach ($oldUser->attributesComparing() as $oldModelKey => $newModelKey) {
             $tempUser[$newModelKey] = $oldUser->{$oldModelKey};
         }
-        $tempUser['settings'] = json_encode([]);
-        $tempUser['status'] = $oldUser->status === OldUser::STATUS_ACTIVE ? User::STATUS_ACTIVE : User::STATUS_INACTIVE;
+        $tempUser['status'] = $this->getOldUserStatus($oldUser);
         try {
             $isInserted = User::insert($tempUser);
             if ($isInserted) {
@@ -922,6 +916,20 @@ class DatumImporter extends Command
                 $freshCity->save();
             }
         }
+    }
+
+    private function getOldUserStatus(OldUser $oldUser): int
+    {
+        if ($oldUser->status === OldUser::STATUS_ACTIVE) {
+            $status = User::STATUS_ACTIVE;
+            if ($oldUser->type === 'DRIVER' && $oldUser->sub_type !== 'APP_DRIVER') {
+                $status = User::STATUS_INACTIVE;
+            }
+        } else {
+            $status = User::STATUS_INACTIVE;
+        }
+
+        return $status;
     }
 
 }

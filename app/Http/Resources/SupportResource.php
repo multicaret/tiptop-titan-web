@@ -19,7 +19,7 @@ class SupportResource extends JsonResource
     public function toArray($request)
     {
         return [
-            'id' => (int) $this->id,
+            'id' => $this->id,
             'key' => $this->key,
             'title' => trans('strings.'.$this->key),
             'value' => $this->type == 'file' ? url($this->value) : $this->value,

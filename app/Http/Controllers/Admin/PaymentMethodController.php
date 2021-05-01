@@ -27,10 +27,10 @@ class PaymentMethodController extends Controller
     function __construct()
     {
         $this->modelName = PaymentMethod::class;
-//        $this->middleware('permission:payment_method.permissions.index', ['only' => ['index', 'store']]);
-//        $this->middleware('permission:payment_method.permissions.create', ['only' => ['create', 'store']]);
-//        $this->middleware('permission:payment_method.permissions.edit', ['only' => ['edit', 'update']]);
-//        $this->middleware('permission:payment_method.permissions.destroy', ['only' => ['destroy']]);
+        $this->middleware('permission:payment_method.permissions.index', ['only' => ['index', 'store']]);
+        $this->middleware('permission:payment_method.permissions.create', ['only' => ['create', 'store']]);
+        $this->middleware('permission:payment_method.permissions.edit', ['only' => ['edit', 'update']]);
+        $this->middleware('permission:payment_method.permissions.destroy', ['only' => ['destroy']]);
     }
 
 

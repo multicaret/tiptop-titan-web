@@ -1,3 +1,9 @@
+@php
+    $productChannels = \App\Models\Product::getChannelsArray();
+    $orderChannels = \App\Models\Order::getChannelsArray();
+    $currentBranchChannel = \App\Models\Branch::getChannelsArray()[\App\Models\Branch::CHANNEL_GROCERY_OBJECT];
+@endphp
+
 @extends('layouts.admin')
 
 @if(!is_null($branch->id))
@@ -57,7 +63,7 @@
                 </a>
             </li>
             <li class="nav-item">
-                <a class="nav-link" target="_blank" href="{{route('admin.orders.index',['branch-id' => $branch->id])}}">
+                <a class="nav-link" target="_blank" href="{{route('admin.orders.index',['branchId' => $branch->id])}}">
                     @if($branch->type == \App\Models\Branch::CHANNEL_GROCERY_OBJECT)
                         <i class="fas fa-shopping-basket"></i>&nbsp;Orders
                     @else
@@ -67,7 +73,10 @@
             </li>
             <li class="nav-item">
                 <a class="nav-link" target="_blank"
-                   href="{{route('admin.orders.ratings',['branch-id' => $branch->id])}}">
+                   href="{{route('admin.orders.ratings',['type' => request()->type ==  $currentBranchChannel ?
+                                            $orderChannels[\App\Models\Order::CHANNEL_GROCERY_OBJECT] :
+                                            $orderChannels[\App\Models\Order::CHANNEL_FOOD_OBJECT],
+                                            'branch-id' => $branch->id])}}">
                     <i class="fas fa-star"></i>&nbsp;Ratings
                 </a>
             </li>
@@ -98,10 +107,6 @@
                     @if(is_null($branch->id))
                         @include('admin.branches.partials._inaccessible')
                     @else
-                        @php
-                            $productChannels = \App\Models\Product::getChannelsArray();
-                            $currentBranchChannel = \App\Models\Branch::getChannelsArray()[\App\Models\Branch::CHANNEL_GROCERY_OBJECT];
-                        @endphp
                         @if($branch->id)
                             <div class="d-flex justify-content-end mb-3">
                                 <a class="btn btn-primary" target="_blank"

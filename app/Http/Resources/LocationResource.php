@@ -38,7 +38,7 @@ class LocationResource extends JsonResource
         $kind = $this->getKindForMarker($this->kind);
 
         return [
-            'id' => (int) $this->id,
+            'id' => $this->id,
             'country' => new CountryResource($this->country),
             'region' => new RegionResource($this->region),
             'city' => new CityResource($this->city),

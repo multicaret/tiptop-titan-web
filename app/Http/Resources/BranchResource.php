@@ -27,7 +27,7 @@ class BranchResource extends JsonResource
         $isFavorited = auth('sanctum')->check() ? $this->isFavoritedBy(auth('sanctum')->user()) : false;
 
         return [
-            'id' => (int) $this->id,
+            'id' => $this->id,
             'title' => $this->title,
             'regionId' => $this->region_id,
             'cityId' => $this->city_id,

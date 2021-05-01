@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
+use App\Utilities\PermissionsGenerator;
 use Illuminate\Contracts\Foundation\Application;
 use Illuminate\Contracts\View\Factory;
 use Illuminate\Http\RedirectResponse;
@@ -36,8 +37,11 @@ class RoleController extends Controller
      */
     public function index(Request $request)
     {
-        $roles = Role::paginate(10);
-
+        $callback = function ($item) {
+            return \Str::of($item)->replace('_',' ')->title()->jsonSerialize();
+        };
+        $rolesNamesWithAnyPermissions = \collect(PermissionsGenerator::rolesWithAnyPermissions())->transform($callback)->toArray();
+        $roles = Role::whereNotIn('name', $rolesNamesWithAnyPermissions)->paginate(10);
         return view('admin.roles.index', compact('roles'));
     }
 
@@ -49,8 +53,7 @@ class RoleController extends Controller
     public function create()
     {
         $role = new Role();
-        $permissions = config('defaults.all_permission.super');
-
+        $permissions = PermissionsGenerator::getAllRolesPermissions('super');
         return view('admin.roles.form', compact('permissions', 'role'));
     }
 
@@ -100,9 +103,7 @@ class RoleController extends Controller
      */
     public function edit(Role $role)
     {
-        $permissions = config('defaults.all_permission.super');
-
-//        $permissionsNames = array_values($role->permissions->pluck('name')->toArray());
+        $permissions = PermissionsGenerator::getAllRolesPermissions(\Str::snake($role->name));
 
         return view('admin.roles.form', compact('role', 'permissions'));
     }
