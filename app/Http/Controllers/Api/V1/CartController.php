@@ -10,6 +10,7 @@ use App\Models\CartProduct;
 use App\Models\CartProductOption;
 use App\Models\CartProductOptionSelection;
 use App\Models\Product;
+use App\Models\ProductOption;
 use App\Models\ProductOptionIngredient;
 use App\Models\ProductOptionSelection;
 use App\Models\Taxonomy;
@@ -127,28 +128,38 @@ class CartController extends BaseApiController
             if ( ! is_null($selectedOptions)) {
                 // Todo: update delete method with delete by ids
                 foreach ($selectedOptions as $selectedOption) {
+                    $productOption = ProductOption::find($selectedOption['product_option_id']);
+                    if (is_null($productOption)) {
+                        // A Product option just got deleted from the other side of the world! React to this change!
+                        return $this->respondValidationFails([
+                            'optionDeleted' => 'Unfortunately, one of the selected option is not available anymore',
+                        ]);
+                    }
                     $cartProductOption = CartProductOption::firstOrCreate([
                         'cart_product_id' => $cartProduct->id,
-                        'product_option_id' => $selectedOption['product_option_id']
+                        'product_option_id' => $productOption->id
                     ]);
-                    $onIngredients = $cartProductOption->productOption->is_based_on_ingredients;
-
-                    info('got product options to store @foodAdjustCartData', [
-                        '$selectedOption' => $selectedOption,
-                    ]);
-
+                    $isBasedOnIngredients = $cartProductOption->productOption->is_based_on_ingredients;
 
                     foreach ($selectedOption['selected_ids'] as $selectionId) {
-                        $selectableType = $onIngredients ? Taxonomy::class : ProductOptionSelection::class;
+                        $selectableType = $isBasedOnIngredients ? Taxonomy::class : ProductOptionSelection::class;
+                        $productOptionSelection = $selectableType::find($selectionId);
+                        if (is_null($productOptionSelection)) {
+                            // A Product option just got deleted from the other side of the world! React to this change!
+                            return $this->respondValidationFails([
+                                'selectionDeleted' => 'Unfortunately, one of the selections of ('.$productOption->title.') is not available anymore',
+                            ]);
+                        }
+
                         CartProductOptionSelection::firstOrCreate([
                             'cart_product_id' => $cartProduct->id,
                             'cart_product_option_id' => $cartProductOption->id,
-                            'product_option_id' => $selectedOption['product_option_id'],
+                            'product_option_id' => $productOption->id,
                             'selectable_type' => $selectableType,
-                            'selectable_id' => $selectionId,
+                            'selectable_id' => $productOptionSelection->id,
                         ]);
-                        $optionPrice = $this->getOptionPrice($selectableType, $selectionId,
-                            $selectedOption['product_option_id']);
+                        $optionPrice = $this->getOptionPrice($selectableType, $productOptionSelection->id,
+                            $productOption->id);
                         $cartProduct->options_price += $optionPrice;
                     }
                 }
