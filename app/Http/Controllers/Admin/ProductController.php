@@ -19,7 +19,7 @@ class ProductController extends Controller
     public function __construct()
     {
 
-        $productType = \request('type');
+        $productType = request('type');
         $this->middleware('permission:'.$productType.'.permissions.index', ['only' => ['index', 'store']]);
         $this->middleware('permission:'.$productType.'.permissions.create', ['only' => ['create', 'store']]);
         $this->middleware('permission:'.$productType.'.permissions.edit', ['only' => ['edit', 'update']]);

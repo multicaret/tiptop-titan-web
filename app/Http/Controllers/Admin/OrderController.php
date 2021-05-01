@@ -16,7 +16,7 @@ class OrderController extends Controller
     public function __construct()
     {
         $this->middleware('permission:order.permissions.show', ['only' => ['show']]);
-        $ratingOrderType = \request('type');
+        $ratingOrderType = request('type');
         $this->middleware('permission:order.permissions.index|rating-'.$ratingOrderType.'.permissions.index', ['only' => ['index', 'store']]);
     }
 
