@@ -220,7 +220,7 @@ class UserController extends Controller
      *
      * @return Response
      */
-    public function edit(User $user, Request $request)
+    public function edit($role, User $user, Request $request)
     {
         $role = Str::kebab($user->role_name);
         $data = $this->essentialData($role);
@@ -245,7 +245,7 @@ class UserController extends Controller
      * @param  Request  $request
      * @return RedirectResponse
      */
-    public function update(User $user, Request $request)
+    public function update($role, User $user, Request $request)
     {
         $role = Str::kebab($user->role_name);
 
@@ -330,7 +330,7 @@ class UserController extends Controller
      *
      * @return Response
      */
-    public function destroy(User $user)
+    public function destroy($role, User $user)
     {
         if ($user->delete()) {
             return back()->with('message', [

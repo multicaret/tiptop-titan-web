@@ -16,12 +16,11 @@ Route::get('/', function () {
 })->name('index');
 
 Route::get('users/{role}', 'UserController@index')->name('users.index');
+Route::get('users/{role}/{user}/edit', 'UserController@edit')->name('users.edit');
+Route::put('users/{role}/{user}/update', 'UserController@update')->name('users.update');
+Route::delete('users/{role}/{user}/delete', 'UserController@destroy')->name('users.destroy');
 Route::get('users/{role}/create', 'UserController@create')->name('users.create');
 Route::post('users/{role}/store', 'UserController@store')->name('users.store');
-//Bottom ones don't have a "role" wildcard (cue in angry MK sounds)
-Route::get('users/{user}/edit', 'UserController@edit')->name('users.edit');
-Route::put('users/{user}/update', 'UserController@update')->name('users.update');
-Route::delete('users/{user}/delete', 'UserController@destroy')->name('users.destroy');
 
 Route::get('users/{user}/addresses/{address}/edit', 'UserController@editAddress')->name('users.addresses.edit');
 Route::put('users/{user}/addresses/{address}/update', 'UserController@updateAddress')->name('users.addresses.update');

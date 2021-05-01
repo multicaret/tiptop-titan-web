@@ -22,7 +22,7 @@ class BranchController extends Controller
 
     public function __construct()
     {
-        $branchType = \request('type');
+        $branchType = request('type');
         $this->middleware('permission:'.$branchType.'.permissions.index', ['only' => ['index', 'store']]);
         $this->middleware('permission:'.$branchType.'.permissions.create', ['only' => ['create', 'store']]);
         $this->middleware('permission:'.$branchType.'.permissions.edit', ['only' => ['edit', 'update']]);
