@@ -77,6 +77,7 @@ Route::middleware('auth:sanctum')
          Route::get('orders/food', 'OrderController@indexFood');
          Route::get('orders/create', 'OrderController@create');
          Route::post('orders', 'OrderController@store');
+         Route::get('orders/{order}', 'OrderController@show');
          Route::post('orders/{order}/delete', 'OrderController@destroy');
 
          // Carts

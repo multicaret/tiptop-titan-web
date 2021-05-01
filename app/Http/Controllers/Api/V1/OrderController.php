@@ -18,7 +18,6 @@ use App\Models\User;
 use DB;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
-use Symfony\Component\HttpFoundation\Response;
 
 class OrderController extends BaseApiController
 {
@@ -72,6 +71,15 @@ class OrderController extends BaseApiController
         }
 
         return $this->respondNotFound();
+    }
+
+    public function show($id)
+    {
+        $order = Order::findOrFail($id);
+
+        return $this->respond([
+            'order' => new OrderResource($order),
+        ]);
     }
 
     public function destroy($id)
