@@ -170,7 +170,7 @@ class DatumImporter extends Command
     private function showChoice(): void
     {
         $this->modelName = (string) $this->argument('model');
-        $this->line('Start importing....');
+        $this->line("Start importing {$this->modelName}....");
         if (empty($this->modelName)) {
             $this->modelName = $this->choice('What is model name?', $this->importerChoices, 1);
         }
