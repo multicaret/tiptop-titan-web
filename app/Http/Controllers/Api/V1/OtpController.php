@@ -328,7 +328,7 @@ class OtpController extends BaseApiController
             $user->phone_country_code = $phoneCountryCode;
             $user->phone_number = $phoneNumber;
 //            $user->email = $phoneNumber.'@otp';
-            $user->username = $phoneNumber.'-auto';
+            $user->username = Controller::uuid().'-auto';
             $user->approved_at = now();
             $user->phone_verified_at = now();
             $user->status = User::STATUS_ACTIVE;
