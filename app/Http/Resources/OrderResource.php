@@ -62,7 +62,7 @@ class OrderResource extends JsonResource
                 ],
             ],
             'status' => $this->status,
-            'statusTitle' => $this->status_name,
+            'statusName' => $this->status_name,
             'user' => new UserResource($this->user),
             'cart' => new CartResource($this->cart),
             'paymentMethod' => new PaymentMethodResource($this->paymentMethod),
