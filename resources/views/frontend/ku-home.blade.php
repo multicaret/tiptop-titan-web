@@ -233,7 +233,8 @@
                     </div>
 
                     <!--					<a class="btn btn-light btn-wide btn-pill shadow-soft transition-3d-hover mb-2 mb-sm-0 mr-4" href="#">Contact Sales</a>-->
-                    <a class="btn btn-indigo btn-wide btn-pill transition-3d-hover mb-2 mb-sm-0" href="#lead-form-section">
+                    <a class="btn btn-indigo btn-wide btn-pill transition-3d-hover mb-2 mb-sm-0"
+                       href="#lead-form-section">
                         لێره‌ داشكاندن به‌ده‌ست بهێنه‌
                     </a>
                     <!-- End Info -->
@@ -250,8 +251,10 @@
 
                             <div class="device-wrapper ">
                                 <div class="device device-iphone-x">
-                                    <img class="device-iphone-x-frame" src="/frontend-assets/images/iphone-x.svg" alt="iPhone Frame">
-                                    <img class="device-iphone-x-screen" src="/frontend-assets/images/screenshots-ku/1.png" alt="TipTop Screenshot">
+                                    <img class="device-iphone-x-frame" src="/frontend-assets/images/iphone-x.svg"
+                                         alt="iPhone Frame">
+                                    <img class="device-iphone-x-screen"
+                                         src="/frontend-assets/images/screenshots-ku/1.png" alt="TipTop Screenshot">
                                 </div>
                             </div>
                         </div>
@@ -362,7 +365,8 @@
                         داوا بكه‌ و ئێمه‌ش ده‌یگه‌یه‌نین
                     </h2>
                     <p>
-                        ئه‌وه‌ی له‌سه‌رته‌ ژماره‌ و ناونیشانت تۆمار بكه‌یت و داوا بكه‌ی، ئێمه‌ش ژه‌مه‌كه‌ت بۆ ده‌گه‌ینین له‌ماوه‌ی
+                        ئه‌وه‌ی له‌سه‌رته‌ ژماره‌ و ناونیشانت تۆمار بكه‌یت و داوا بكه‌ی، ئێمه‌ش ژه‌مه‌كه‌ت بۆ ده‌گه‌ینین
+                        له‌ماوه‌ی
                         چه‌ند خووله‌كێكدا
                     </p>
                 </div>
@@ -404,8 +408,10 @@
                         هه‌موو چێشتخانه‌كان لێته‌وه‌ نزیكن
                     </h2>
                     <p>
-                        چێشتخانه‌كانی شاره‌كه‌ت بدۆزه‌ره‌وه‌ و ئه‌وه‌ی ده‌ته‌وێ هه‌ڵبژێره‌! كۆمه‌ڵه‌یه‌كی هه‌مه‌جۆرمان له‌ چێشتخانه‌
-                        و خواردن و خواردنه‌وه‌ هه‌یه‌ و، ده‌توانیت له‌ ئه‌ژماره‌كه‌ت زیاتر له‌ ناونیشانێك زیاد بكه‌یت! شوێنی ماڵ و
+                        چێشتخانه‌كانی شاره‌كه‌ت بدۆزه‌ره‌وه‌ و ئه‌وه‌ی ده‌ته‌وێ هه‌ڵبژێره‌! كۆمه‌ڵه‌یه‌كی هه‌مه‌جۆرمان
+                        له‌ چێشتخانه‌
+                        و خواردن و خواردنه‌وه‌ هه‌یه‌ و، ده‌توانیت له‌ ئه‌ژماره‌كه‌ت زیاتر له‌ ناونیشانێك زیاد بكه‌یت!
+                        شوێنی ماڵ و
                         كار و خێزان و هاوڕێیان! ئێستا له‌گه‌ڵ TipTop ده‌توانی هه‌رچه‌ند ناونیشانت بوێ زیادی بكه‌یت.
                     </p>
                 </div>
@@ -421,7 +427,8 @@
                     <div class="device device-iphone-x w-75 mx-auto">
                         <img class="device-iphone-x-frame" src="/frontend-assets/images/iphone-x.svg"
                              alt="Image Description">
-                        <img class="device-iphone-x-screen" src="/frontend-assets/images/screenshots-ku/RestauratnsList.png"
+                        <img class="device-iphone-x-screen"
+                             src="/frontend-assets/images/screenshots-ku/RestauratnsList.png"
                              alt="Image Description">
                     </div>
                     <!-- End Device Mockup -->
@@ -447,7 +454,8 @@
                         به‌دواداچوون بۆ باری داواكارییه‌كه‌ت بكه‌
                     </h2>
                     <p>
-                        ده‌توانی خووله‌ك به‌ خووله‌ك به‌دواداچوون بكه‌یت كه‌ خواردنه‌كه‌ به‌كوێ گه‌یشت و كه‌ی ده‌گاته‌ لات، ئه‌وه‌ی
+                        ده‌توانی خووله‌ك به‌ خووله‌ك به‌دواداچوون بكه‌یت كه‌ خواردنه‌كه‌ به‌كوێ گه‌یشت و كه‌ی ده‌گاته‌
+                        لات، ئه‌وه‌ی
                         له‌سه‌رته‌ ئه‌پڵیكه‌یشنه‌كه‌ داببه‌زێنی و به‌خته‌وه‌ر بیت‌ به‌ تایبه‌تمه‌ندییه‌كانی TipTop
                     </p>
                 </div>
@@ -487,29 +495,34 @@
             <div class="container-fluid px-lg-9">
                 <div class="row justify-content-md-center align-items-center mx-n2">
                     <div class="d-none d-md-inline-block col-md px-2">
-                        <img class="img-fluid shadow rounded mb-3 mb-lg-5" src="/frontend-assets/images/screenshots-ku/Home.png"
+                        <img class="img-fluid shadow rounded mb-3 mb-lg-5"
+                             src="/frontend-assets/images/screenshots-ku/Home.png"
                              alt="Image Description">
                         <!--                        <img class="img-fluid shadow rounded" src="/frontend-assets//frontend-assets/assets/img/407x115/img1.jpg" alt="Image Description">-->
                     </div>
                     <div class="col-3 col-md px-2"
                          data-parallaxanimation='[{property: "transform", value:" translate3d(0,@{{val}}rem,0)", initial:"7", mid:"0", final:"-7"}]'>
-                        <img class="img-fluid shadow rounded mb-3 mb-lg-5" src="/frontend-assets/images/screenshots-ku/RestauratnsList.png"
+                        <img class="img-fluid shadow rounded mb-3 mb-lg-5"
+                             src="/frontend-assets/images/screenshots-ku/RestauratnsList.png"
                              alt="Image Description">
                         <!--                        <img class="img-fluid shadow rounded" src="/frontend-assets//frontend-assets/assets/img/407x283/img1.jpg" alt="Image Description">-->
                     </div>
                     <div class="col-6 col-md px-2">
-                        <img class="img-fluid shadow rounded mb-3 mb-lg-5" src="/frontend-assets/images/screenshots-ku/menu.png"
+                        <img class="img-fluid shadow rounded mb-3 mb-lg-5"
+                             src="/frontend-assets/images/screenshots-ku/menu.png"
                              alt="Image Description">
                         <!--                        <img class="img-fluid shadow rounded" src="/frontend-assets//frontend-assets/assets/img/407x472/img3.jpg" alt="Image Description">-->
                     </div>
                     <div class="col-3 col-md px-2"
                          data-parallaxanimation='[{property: "transform", value:" translate3d(0,@{{val}}rem,0)", initial:"-7", mid:"0", final:"7"}]'>
-                        <img class="img-fluid shadow rounded mb-3 mb-lg-5" src="/frontend-assets/images/screenshots-ku/orderconfirm.png"
+                        <img class="img-fluid shadow rounded mb-3 mb-lg-5"
+                             src="/frontend-assets/images/screenshots-ku/orderconfirm.png"
                              alt="Image Description">
                         <!--                        <img class="img-fluid shadow rounded" src="/frontend-assets//frontend-assets/assets/img/407x535/img1.jpg" alt="Image Description">-->
                     </div>
                     <div class="d-none d-md-inline-block col-md px-2">
-                        <img class="img-fluid shadow rounded mb-3 mb-lg-5" src="/frontend-assets/images/screenshots-ku/Checkout.png"
+                        <img class="img-fluid shadow rounded mb-3 mb-lg-5"
+                             src="/frontend-assets/images/screenshots-ku/Checkout.png"
                              alt="Image Description">
                         <!--                        <img class="img-fluid shadow rounded" src="/frontend-assets//frontend-assets/assets/img/407x472/img2.jpg" alt="Image Description">-->
                     </div>
@@ -550,7 +563,8 @@
                         </h2>
                     </div>
                     <div class="col-md-3 text-md-right">
-                        <a class="btn btn-light btn-wide btn-pill transition-3d-hover mx-1 mb-2" href="#lead-form-section">
+                        <a class="btn btn-light btn-wide btn-pill transition-3d-hover mx-1 mb-2"
+                           href="#lead-form-section">
                             لێره‌ داشكاندن به‌ده‌ست بهێنه‌
                         </a>
                     </div>
@@ -768,7 +782,8 @@
     </a>
     <!-- End Logo -->
 
-    <p class="small text-muted mb-0">2021 © All rights reserved. Try Tiptop Kargo Ve Sanal Magazacilik Ticaret Limited Sirketi.</p>
+    <p class="small text-muted mb-0">2021 © All rights reserved. Try Tiptop Kargo Ve Sanal Magazacilik Ticaret Limited
+                                     Sirketi.</p>
 </footer>
 <!-- ========== END FOOTER ========== -->
 
@@ -814,7 +829,7 @@
 <script src="https://cdn.jsdelivr.net/npm/vue@2.6.12/dist/vue.js"></script>
 <!--<script src="https://cdn.jsdelivr.net/npm/vue@2.6.12"></script>-->
 
-<script>
+{{--<script>
     let app = new Vue({
         el: '#lead-form-section-section',
         data: {
@@ -869,7 +884,7 @@
             }
         }
     })
-</script>
+</script>--}}
 
 <!-- JS Plugins Init. -->
 <script>
