@@ -20,7 +20,7 @@ class BranchController extends BaseApiController
         return $this->respond(new FoodBranchResource($restaurant));
     }
 
-    public function edit(Request $request, $restaurant)
+    public function edit($restaurant)
     {
         $restaurant = Branch::find($restaurant);
 
@@ -35,7 +35,7 @@ class BranchController extends BaseApiController
         );
     }
 
-    public function update(Request $request, $restaurant)
+    public function update($restaurant, Request $request)
     {
         $rules = [
             'delivery_time' => 'required',
@@ -57,10 +57,12 @@ class BranchController extends BaseApiController
         }
 
         DB::beginTransaction();
-        [
-            $restaurant->restaurant_min_delivery_minutes,
-            $restaurant->restaurant_max_delivery_minutes
-        ] = explode('-', $request->delivery_time);
+        if (str_contains($request->delivery_time, '-')) {
+            [
+                $restaurant->restaurant_min_delivery_minutes,
+                $restaurant->restaurant_max_delivery_minutes
+            ] = explode('-', $request->delivery_time);
+        }
         $restaurant->restaurant_minimum_order = $request->minimum_order;
         $restaurant->restaurant_fixed_delivery_fee = $request->delivery_fee;
 //        $restaurant->covered_area_diameter = $request->covered_area_diameter;

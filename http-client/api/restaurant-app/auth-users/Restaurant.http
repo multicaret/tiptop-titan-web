@@ -5,7 +5,7 @@ Accept: application/json
 Content-Type: application/json
 
 ### restaurants update
-PUT {{host}}/{{locale}}/api/restaurants/v1/restaurants/445
+POST {{host}}/{{locale}}/api/restaurants/v1/restaurants/445
 Accept: application/json
 Content-Type: application/json
 Authorization: Bearer {{token}}
@@ -19,10 +19,14 @@ Authorization: Bearer {{token}}
 }
 
 ### restaurants toggle activity
-POST {{host}}/{{locale}}/api/restaurants/v1/restaurants/445/toggle-activity
+POST {{host}}/{{locale}}/api/restaurants/v1/restaurants/445/toggle-status
 Accept: application/json
 Content-Type: application/json
 Authorization: Bearer {{token}}
+
+{
+    "status": true
+}
 
 ### restaurants categories
 GET {{host}}/{{locale}}/api/restaurants/v1/restaurants/412/categories
@@ -31,11 +35,21 @@ Content-Type: application/json
 Authorization: Bearer {{token}}
 
 ### products adjust price
-PUT {{host}}/{{locale}}/api/restaurants/v1/restaurants/473/products/37462
+POST {{host}}/{{locale}}/api/restaurants/v1/restaurants/473/products/37462
 Accept: application/json
 Content-Type: application/json
 Authorization: Bearer {{token}}
 
 {
     "price": 37
+}
+
+### products toggle status
+POST {{host}}/{{locale}}/api/restaurants/v1/restaurants/410/products/45815/toggle-status
+Accept: application/json
+Content-Type: application/json
+Authorization: Bearer {{token}}
+
+{
+    "status": true
 }

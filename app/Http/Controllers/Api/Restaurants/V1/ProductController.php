@@ -41,7 +41,7 @@ class ProductController extends BaseApiController
     }
 
 
-    public function toggleStatus($product, Request $request)
+    public function toggleStatus($restaurant, $product, Request $request)
     {
         $rules = [
             'status' => 'required',
@@ -50,6 +50,11 @@ class ProductController extends BaseApiController
         $validator = validator()->make($request->all(), $rules);
         if ($validator->fails()) {
             return $this->respondValidationFails($validator->errors());
+        }
+
+        $restaurant = Branch::find($restaurant);
+        if (is_null($restaurant)) {
+            return $this->respondNotFound();
         }
         $product = Product::find($product);
         if (is_null($product)) {
