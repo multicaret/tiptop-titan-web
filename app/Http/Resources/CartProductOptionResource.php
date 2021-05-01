@@ -16,7 +16,7 @@ class CartProductOptionResource extends JsonResource
     {
         $selectionIds = [];
         foreach ($this->selections as $selection) {
-            foreach ($selection->selectable as $selectable) {
+            foreach ($selection->selectable()->get() as $selectable) {
                 $selectionIds[] = $selectable->id;
             }
         }
