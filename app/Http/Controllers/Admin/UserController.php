@@ -220,7 +220,7 @@ class UserController extends Controller
      *
      * @return Response
      */
-    public function edit(User $user, Request $request)
+    public function edit($role, User $user, Request $request)
     {
         $role = Str::kebab($user->role_name);
         $data = $this->essentialData($role);
@@ -245,7 +245,7 @@ class UserController extends Controller
      * @param  Request  $request
      * @return RedirectResponse
      */
-    public function update(User $user, Request $request)
+    public function update($role, User $user, Request $request)
     {
         $role = Str::kebab($user->role_name);
 
@@ -330,7 +330,7 @@ class UserController extends Controller
      *
      * @return Response
      */
-    public function destroy(User $user)
+    public function destroy($role, User $user)
     {
         if ($user->delete()) {
             return back()->with('message', [
@@ -375,9 +375,9 @@ class UserController extends Controller
             'countries' => Country::all(),
             'regions' => Region::where('country_id', config('defaults.country.id'))->get(),
             'teams' => TookanTeam::active()->get()
-                                ->mapWithKeys(function ($item) {
-                                    return [$item['id'] => $item['name']];
-                                }),
+                                 ->mapWithKeys(function ($item) {
+                                     return [$item['id'] => $item['name']];
+                                 }),
             'cities' => City::where('region_id', config('defaults.region.id'))->get(),
             'menuCategoryData' => $menuCategoryData,
             'branches' => $branches,
@@ -415,6 +415,7 @@ class UserController extends Controller
         }
         $regions = Region::whereCountryId(config('defaults.country.id'))->get();
         $kinds = array_values(Location::getKindsForMaps());
+
         return view('admin.users.address-form', compact(['user', 'address', 'regions', 'kinds']));
     }
 
