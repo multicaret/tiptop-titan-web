@@ -223,9 +223,12 @@
                                     @endcomponent
                                 </div>
                                 <div class="col-6">
-                                    @component('admin.components.form-group', ['name' => 'featured_at', 'type' => 'datetime-local'])
+                                    @component('admin.components.form-group', ['name' => 'featured_at', 'type' => 'date'])
                                         @slot('label', 'Featured at')
                                         @slot('value', $branch->featured_at)
+                                        @slot('attributes',[
+                                            'min' => now()->format('Y-m-d'),
+                                        ])
                                     @endcomponent
                                 </div>
                                 <div class="col-6">

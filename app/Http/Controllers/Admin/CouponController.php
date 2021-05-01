@@ -15,8 +15,6 @@ use Illuminate\Http\Response;
 class CouponController extends Controller
 {
 
-
-
     public function __construct()
     {
         $this->middleware('permission:coupon.permissions.index', ['only' => ['index', 'store']]);
@@ -24,8 +22,6 @@ class CouponController extends Controller
         $this->middleware('permission:coupon.permissions.edit', ['only' => ['edit', 'update']]);
         $this->middleware('permission:coupon.permissions.destroy', ['only' => ['destroy']]);
     }
-
-
 
     /**
      * Display a listing of the resource.
