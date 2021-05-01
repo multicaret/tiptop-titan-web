@@ -22,7 +22,7 @@ class UserController extends Controller
 
     public function __construct()
     {
-        $userType = \request()->segment(3);
+        $userType = request()->segment(3);
         $this->middleware('permission:'.$userType.'.permissions.index', ['only' => ['index', 'store']]);
         $this->middleware('permission:'.$userType.'.permissions.create', ['only' => ['create', 'store']]);
         $this->middleware('permission:'.$userType.'.permissions.edit', ['only' => ['edit', 'update']]);

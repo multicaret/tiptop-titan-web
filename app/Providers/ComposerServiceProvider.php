@@ -629,8 +629,8 @@ class ComposerServiceProvider extends ServiceProvider
         $sidenavLinksCollection = $sidenavLinksCollection->filter($this->getNoneEmptyItem());
         $sidenavLinksCollection->transform(function ($mainItem) {
             if ( ! empty($mainItem)) {
-                $requestParams = \request()->toArray();
-                $requestRouteName = \request()->route()->getName();
+                $requestParams = request()->toArray();
+                $requestRouteName = request()->route()->getName();
                 $this->updateItemStatus($mainItem['children'], $requestParams, $requestRouteName);
 
                 return $mainItem;
@@ -679,7 +679,7 @@ class ComposerServiceProvider extends ServiceProvider
                 $sidenavItem[$index]['status'] = $pathIsEqual ? 'active' : '';
                 if (count(explode('.', $item['routeName'])) > 2) {
                     if (Str::afterLast($item['routeName'], '.') === 'index') {
-                        $pathIsEqual = \request()->routeIs(Str::beforeLast($item['routeName'], '.').'.*');
+                        $pathIsEqual = request()->routeIs(Str::beforeLast($item['routeName'], '.').'.*');
                         $sidenavItem[$index]['status'] = $pathIsEqual ? 'active' : '';
                     }
                 }
