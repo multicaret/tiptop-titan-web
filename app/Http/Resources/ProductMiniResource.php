@@ -15,10 +15,10 @@ class ProductMiniResource extends JsonResource
      */
     public function toArray($request)
     {
-        $showStatus = false;
+        $signedInUserIsBranchManager = false;
         $user = auth('sanctum')->user();
         if ( ! is_null($user) && ($user->is_branch_manager)) {
-            $showStatus = true;
+            $signedInUserIsBranchManager = true;
         }
 
 
@@ -48,7 +48,8 @@ class ProductMiniResource extends JsonResource
                 'coverFull' => $this->cover_full,
                 'gallery' => $this->gallery,
             ],
-            'isActive' => $this->when($showStatus, $this->status == Product::STATUS_ACTIVE),
+            'isActive' => $this->when($signedInUserIsBranchManager, $this->status == Product::STATUS_ACTIVE),
+            'isDisabled' => $this->when(! $signedInUserIsBranchManager, $this->status == Product::STATUS_INACTIVE),
         ];
     }
 }
