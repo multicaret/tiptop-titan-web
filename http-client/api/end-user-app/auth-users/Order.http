@@ -10,6 +10,12 @@ Authorization: Bearer {{token}}
     "branch_id": "1"
 }
 
+### Order show
+GET {{host}}/{{locale}}/api/v1/orders/{{orderId}}
+Accept: application/json
+Content-Type: application/json
+Authorization: Bearer {{token}}
+
 ### Grocery previous orders index
 GET {{host}}/{{locale}}/api/v1/orders/grocery
 Accept: application/json
