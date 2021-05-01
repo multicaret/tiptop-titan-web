@@ -45,7 +45,6 @@ use Illuminate\Support\Carbon;
  */
 class CartProduct extends Pivot
 {
-    protected $appends = ['selected_options'];
     protected $hidden = ['product_object'];
     protected $casts = [
         'product_object' => 'json',
