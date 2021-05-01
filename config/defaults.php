@@ -41,11 +41,11 @@ return [
         'alpha3_code' => 'IRQ',
     ],
     'region' => [
-        'id' => 2,
+        'id' => 6,
         'english_name' => 'Erbil',
     ],
     'city' => [
-        'id' => 1,
+        'id' => 4,
         'english_name' => 'Italian Village',
     ],
     'images' => [
