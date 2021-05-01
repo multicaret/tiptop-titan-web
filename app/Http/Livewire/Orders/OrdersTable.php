@@ -56,6 +56,7 @@ class OrdersTable extends Component
         $orders = Order::orderBy('created_at', 'desc')
                        ->orderBy('status');
 
+        $shouldSearchByDate = false;
         if ( ! empty($this->referenceCode)) {
             $orders = $orders->where('reference_code', $this->referenceCode);
         } elseif ( ! empty($this->customerName)) {
@@ -81,10 +82,12 @@ class OrdersTable extends Component
                     $queryTranslations->where('title', 'like', '%'.$branchName.'%');
                 });
             });
-        } elseif (!is_null($this->branchId)) {
+        } elseif ( ! is_null($this->branchId)) {
             $orders = $orders->whereBranchId($this->branchId);
+        } else {
+            $shouldSearchByDate = true;
         }
-        if (is_null($this->branchId)){
+        if ($shouldSearchByDate) {
             $orders = $orders->whereDate('created_at', $this->filterByDate);
         }
         $orders = $orders->get();
