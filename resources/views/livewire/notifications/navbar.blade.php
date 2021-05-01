@@ -1,9 +1,3 @@
-<style>
-    .notifications-list {
-        max-height: 250px;
-        overflow-y: scroll;
-    }
-</style>
 <div>
     <div class="demo-navbar-notifications nav-item dropdown mr-lg-3">
         @if($unreadUserNotifications->count())
