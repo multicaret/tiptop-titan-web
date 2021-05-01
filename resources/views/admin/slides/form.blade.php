@@ -138,17 +138,21 @@
                             </div>
                         </div>
                         <div class="col-6">
-                            @component('admin.components.form-group', ['name' =>'begins_at', 'type' => 'datetime-local'])
+                            @component('admin.components.form-group', ['name' =>'begins_at', 'type' => 'date'])
                                 @slot('label', 'Begins At')
                                 @slot('value', \Carbon\Carbon::parse($slide->begins_at))
-                                @slot('attributes',[])
+                                @slot('attributes',[
+                                    'min' => now()->format('Y-m-d'),
+                                ])
                             @endcomponent
                         </div>
                         <div class="col-6">
-                            @component('admin.components.form-group', ['name' =>'expires_at', 'type' => 'datetime-local'])
+                            @component('admin.components.form-group', ['name' =>'expires_at', 'type' => 'date'])
                                 @slot('label', 'Expires At')
                                 @slot('value', \Carbon\Carbon::parse($slide->expires_at))
-                                @slot('attributes',[])
+                                @slot('attributes',[
+                                    'min' => now()->addDay()->format('Y-m-d'),
+                                ])
                             @endcomponent
                         </div>
                         <div class="col-6">

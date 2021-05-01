@@ -251,31 +251,39 @@
                                     </div>
                                 @endif
                                 <div class="col-3">
-                                    @component('admin.components.form-group', ['name' =>'price_discount_began_at', 'type' => 'datetime-local'])
+                                    @component('admin.components.form-group', ['name' =>'price_discount_began_at', 'type' => 'date'])
                                         @slot('label', trans('strings.discount_begins_at'))
                                         @slot('value', \Carbon\Carbon::parse($product->price_discount_began_at))
-                                        @slot('attributes',[])
+                                        @slot('attributes',[
+                                            'min' => now()->format('Y-m-d'),
+                                        ])
                                     @endcomponent
                                 </div>
                                 <div class="col-3">
-                                    @component('admin.components.form-group', ['name' =>'price_discount_finished_at', 'type' => 'datetime-local'])
+                                    @component('admin.components.form-group', ['name' =>'price_discount_finished_at', 'type' => 'date'])
                                         @slot('label', trans('strings.discount_ends_at'))
                                         @slot('value', \Carbon\Carbon::parse($product->price_discount_finished_at))
-                                        @slot('attributes',[])
+                                        @slot('attributes',[
+                                            'min' => now()->addDay()->format('Y-m-d'),
+                                        ])
                                     @endcomponent
                                 </div>
                                 <div class="col-3">
-                                    @component('admin.components.form-group', ['name' =>'custom_banner_began_at', 'type' => 'datetime-local'])
+                                    @component('admin.components.form-group', ['name' =>'custom_banner_began_at', 'type' => 'date'])
                                         @slot('label', trans('strings.banner_begins_at'))
                                         @slot('value', \Carbon\Carbon::parse($product->custom_banner_began_at))
-                                        @slot('attributes',[])
+                                        @slot('attributes',[
+                                            'min' => now()->format('Y-m-d'),
+                                        ])
                                     @endcomponent
                                 </div>
                                 <div class="col-3">
-                                    @component('admin.components.form-group', ['name' =>'custom_banner_ended_at', 'type' => 'datetime-local'])
+                                    @component('admin.components.form-group', ['name' =>'custom_banner_ended_at', 'type' => 'date'])
                                         @slot('label', trans('strings.banner_ends_at'))
                                         @slot('value', \Carbon\Carbon::parse($product->custom_banner_ended_at))
-                                        @slot('attributes',[])
+                                        @slot('attributes',[
+                                            'min' => now()->addDay()->format('Y-m-d'),
+                                        ])
                                     @endcomponent
                                 </div>
                                 <div class="col-md-3">
