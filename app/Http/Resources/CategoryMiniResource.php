@@ -31,7 +31,7 @@ class CategoryMiniResource extends JsonResource
         }
 
         return [
-            'id' => (int) $this->id,
+            'id' => $this->id,
             'icon' => $this->icon,
             'englishTitle' => optional($this->translate('en'))->title,
             'title' => $this->title,

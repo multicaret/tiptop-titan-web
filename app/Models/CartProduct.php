@@ -45,7 +45,6 @@ use Illuminate\Support\Carbon;
  */
 class CartProduct extends Pivot
 {
-    protected $appends = ['selected_options'];
     protected $hidden = ['product_object'];
     protected $casts = [
         'product_object' => 'json',
@@ -69,23 +68,5 @@ class CartProduct extends Pivot
     public function cartProductOptionsSelections(): HasMany
     {
         return $this->hasMany(CartProductOptionSelection::class, 'cart_product_id');
-    }
-
-    public function getSelectedOptionsAttribute()
-    {
-        $callback = function (CartProductOption $item) {
-            if ($item->productOption->is_based_on_ingredients) {
-                $selectionIds = $item->ingredients()->pluck('selectable_id')->all();
-            } else {
-                $selectionIds = $item->selections()->pluck('selectable_id')->all();
-            }
-
-            return [
-                'product_option_id' => $item->product_option_id,
-                'selected_ids' => $selectionIds
-            ];
-        };
-
-        return $this->cartProductOptions->map($callback);
     }
 }

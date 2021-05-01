@@ -16,7 +16,7 @@ class ChainResource extends JsonResource
     public function toArray($request)
     {
         return [
-            'id' => (int) $this->id,
+            'id' => $this->id,
             'regionId' => $this->region_id,
             'cityId' => $this->city_id,
             'currencyId' => $this->currency_id,

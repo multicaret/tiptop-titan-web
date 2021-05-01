@@ -13,10 +13,10 @@ class CartProductOptionTable extends Migration
      */
     public function up()
     {
-        Schema::create('cart_product_option', function (Blueprint $table) {
+        Schema::create('cart_product_options', function (Blueprint $table) {
             $table->id();
             $table->unsignedBigInteger('cart_product_id')->index();
-            $table->unsignedBigInteger('product_option_id')->index();
+            $table->unsignedBigInteger('product_option_id')->index()->nullable();
             $table->json('product_option_object')->nullable();
             $table->timestamps();
 
@@ -24,10 +24,11 @@ class CartProductOptionTable extends Migration
                   ->references('id')
                   ->on('cart_product')
                   ->onDelete('cascade');
+
             $table->foreign('product_option_id')
                   ->references('id')
                   ->on('product_options')
-                  ->onDelete('cascade');
+                  ->onDelete('set null');
         });
     }
 
@@ -38,6 +39,6 @@ class CartProductOptionTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('cart_product_option');
+        Schema::dropIfExists('cart_product_options');
     }
 }

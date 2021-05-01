@@ -19,7 +19,7 @@ class FoodCategoryResource extends JsonResource
     public function toArray($request)
     {
         return [
-            'id' => (int) $this->id,
+            'id' => $this->id,
             'icon' => $this->icon,
             'englishTitle' => $this->translate('en')->title,
             'title' => $this->title,

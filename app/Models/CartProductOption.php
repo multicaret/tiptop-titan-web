@@ -5,8 +5,8 @@ namespace App\Models;
 use Eloquent;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Collection;
+use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
-use Illuminate\Database\Eloquent\Relations\Pivot;
 use Illuminate\Support\Carbon;
 
 /**
@@ -35,10 +35,15 @@ use Illuminate\Support\Carbon;
  * @method static Builder|CartProductOption whereUpdatedAt($value)
  * @mixin Eloquent
  */
-class CartProductOption extends Pivot
+class CartProductOption extends Model
 {
     protected $casts = [
         'product_option_object' => 'json',
+    ];
+
+    protected $fillable = [
+        'cart_product_id',
+        'product_option_id',
     ];
 
     public static function boot()
@@ -59,15 +64,9 @@ class CartProductOption extends Pivot
         return $this->belongsTo(ProductOption::class, 'product_option_id');
     }
 
+
     public function selections()
     {
-        return $this->hasMany(CartProductOptionSelection::class, 'cart_product_id', 'cart_product_id')
-                    ->where('selectable_type', ProductOptionSelection::class);
-    }
-
-    public function ingredients()
-    {
-        return $this->hasMany(CartProductOptionSelection::class, 'cart_product_id', 'cart_product_id')
-                    ->where('selectable_type', Taxonomy::class);
+        return $this->hasMany(CartProductOptionSelection::class, 'cart_product_option_id');
     }
 }

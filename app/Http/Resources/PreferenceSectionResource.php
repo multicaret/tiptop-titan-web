@@ -21,7 +21,7 @@ class PreferenceSectionResource extends JsonResource
     public function toArray($request)
     {
         return [
-            'id' => (int) $this->id,
+            'id' => $this->id,
             'title' => $this->key,
             'notes' => $this->notes ? $this->notes : null,
             'icon' => $this->icon,

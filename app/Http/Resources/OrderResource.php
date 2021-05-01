@@ -21,7 +21,8 @@ class OrderResource extends JsonResource
     public function toArray($request)
     {
         return [
-            'id' => (int) $this->id,
+            'id' => $this->id,
+            'referenceCode' => $this->reference_code,
             'address' => new LocationResource(Location::withTrashed()->where('id', $this->address_id)->first()),
             'completedAt' => [
                 'formatted' => $this->completed_at->format(config('defaults.datetime.normal_format')),

@@ -44,7 +44,7 @@ class FoodBranchResource extends JsonResource
         }
 
         return [
-            'id' => (int) $this->id,
+            'id' => $this->id,
             'title' => $this->title,
             'regionId' => $this->region_id,
             'cityId' => $this->city_id,

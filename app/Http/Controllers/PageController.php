@@ -46,9 +46,10 @@ class PageController extends Controller
 
     public function privacyPolicy()
     {
-        $page = Post::find(Post::PRIVACY_PAGE_ID);
+//        $page = Post::find(Post::PRIVACY_PAGE_ID);
 
-        return view('frontend.pages.show', compact('page'));
+//        return view('frontend.pages.show', compact('page'));
+        return view('frontend.pages.privacy');
     }
 
     public function contactForm(Request $request)
