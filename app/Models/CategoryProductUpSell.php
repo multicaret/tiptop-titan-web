@@ -27,6 +27,8 @@ use Illuminate\Support\Carbon;
  * @method static Builder|CategoryProductUpSell whereProductId($value)
  * @method static Builder|CategoryProductUpSell whereUpdatedAt($value)
  * @mixin Eloquent
+ * @noinspection PhpFullyQualifiedNameUsageInspection
+ * @noinspection PhpUnnecessaryFullyQualifiedNameInspection
  */
 class CategoryProductUpSell extends Pivot
 {

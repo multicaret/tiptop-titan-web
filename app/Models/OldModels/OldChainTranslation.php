@@ -29,6 +29,8 @@ use Illuminate\Database\Eloquent\Model;
  * @method static Builder|OldChainTranslation whereRestaurantId($value)
  * @method static Builder|OldChainTranslation whereTitle($value)
  * @mixin Eloquent
+ * @noinspection PhpFullyQualifiedNameUsageInspection
+ * @noinspection PhpUnnecessaryFullyQualifiedNameInspection
  */
 class OldChainTranslation extends Model
 {

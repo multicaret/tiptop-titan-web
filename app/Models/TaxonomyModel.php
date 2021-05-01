@@ -98,6 +98,7 @@ use Spatie\MediaLibrary\MediaCollections\Models\Media;
  * @method static Builder|TaxonomyModel newModelQuery()
  * @method static Builder|TaxonomyModel newQuery()
  * @method static Builder|TaxonomyModel notActive()
+ * @method static Builder|TaxonomyModel notDraft()
  * @method static Builder|TaxonomyModel notTranslatedIn(?string $locale = null)
  * @method static \Illuminate\Database\Query\Builder|TaxonomyModel onlyTrashed()
  * @method static Builder|TaxonomyModel orWhereTranslation(string $translationField, $value, ?string $locale = null)
@@ -140,6 +141,8 @@ use Spatie\MediaLibrary\MediaCollections\Models\Media;
  * @method static \Illuminate\Database\Query\Builder|TaxonomyModel withTrashed()
  * @method static \Illuminate\Database\Query\Builder|TaxonomyModel withoutTrashed()
  * @mixin Eloquent
+ * @noinspection PhpFullyQualifiedNameUsageInspection
+ * @noinspection PhpUnnecessaryFullyQualifiedNameInspection
  */
 class TaxonomyModel extends Model implements HasMedia, ShouldHaveTypes, TranslatableContract
 {

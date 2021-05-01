@@ -62,6 +62,8 @@ use Spatie\MediaLibrary\MediaCollections\Models\Media as MediaAlias;
  * @method static Builder|OldMedia whereUpdatedAt($value)
  * @method static Builder|OldMedia whereUuid($value)
  * @mixin Eloquent
+ * @noinspection PhpFullyQualifiedNameUsageInspection
+ * @noinspection PhpUnnecessaryFullyQualifiedNameInspection
  */
 class OldMedia extends MediaAlias
 {

@@ -58,6 +58,8 @@ use Illuminate\Support\Carbon;
  * @method static Builder|OldCategory whereUpdatedAt($value)
  * @method static Builder|OldCategory withTranslation()
  * @mixin Eloquent
+ * @noinspection PhpFullyQualifiedNameUsageInspection
+ * @noinspection PhpUnnecessaryFullyQualifiedNameInspection
  */
 class OldCategory extends Model
 {

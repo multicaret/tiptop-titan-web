@@ -106,6 +106,8 @@ use Str;
  * @method static Builder|OldUser whereWorkiomId($value)
  * @method static Builder|OldUser whereZohoId($value)
  * @mixin Eloquent
+ * @noinspection PhpFullyQualifiedNameUsageInspection
+ * @noinspection PhpUnnecessaryFullyQualifiedNameInspection
  */
 class OldUser extends OldModel
 {
@@ -278,8 +280,8 @@ class OldUser extends OldModel
                 'manufacturer' => '',
                 'name' => '',
                 'model' => '',
-                'platform' => ! is_null($this->firebase_data)? $this->firebase_data->device_type : '',
-                'serial' => ! is_null($this->firebase_data)? $this->firebase_data->device_id : '',
+                'platform' => ! is_null($this->firebase_data) ? $this->firebase_data->device_type : '',
+                'serial' => ! is_null($this->firebase_data) ? $this->firebase_data->device_id : '',
                 'uuid' => '',
                 'version' => '',
             ],

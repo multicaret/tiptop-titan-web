@@ -57,6 +57,7 @@ use Illuminate\Support\Carbon;
  * @method static \Illuminate\Database\Eloquent\Builder|Slide newModelQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|Slide newQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|Slide notActive()
+ * @method static \Illuminate\Database\Eloquent\Builder|Slide notDraft()
  * @method static \Illuminate\Database\Eloquent\Builder|Slide notTranslatedIn(?string $locale = null)
  * @method static Builder|Slide onlyTrashed()
  * @method static \Illuminate\Database\Eloquent\Builder|Slide orWhereTranslation(string $translationField, $value, ?string $locale = null)
@@ -91,6 +92,8 @@ use Illuminate\Support\Carbon;
  * @method static Builder|Slide withTrashed()
  * @method static Builder|Slide withoutTrashed()
  * @mixin Eloquent
+ * @noinspection PhpFullyQualifiedNameUsageInspection
+ * @noinspection PhpUnnecessaryFullyQualifiedNameInspection
  */
 class Slide extends Model
 {

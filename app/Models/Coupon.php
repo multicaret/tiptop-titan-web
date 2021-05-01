@@ -53,6 +53,7 @@ use Illuminate\Support\Carbon;
  * @method static Builder|Coupon newModelQuery()
  * @method static Builder|Coupon newQuery()
  * @method static Builder|Coupon notActive()
+ * @method static Builder|Coupon notDraft()
  * @method static Builder|Coupon query()
  * @method static Builder|Coupon whereChannel($value)
  * @method static Builder|Coupon whereCreatedAt($value)
@@ -77,6 +78,8 @@ use Illuminate\Support\Carbon;
  * @method static Builder|Coupon whereTotalRedeemedCount($value)
  * @method static Builder|Coupon whereUpdatedAt($value)
  * @mixin Eloquent
+ * @noinspection PhpFullyQualifiedNameUsageInspection
+ * @noinspection PhpUnnecessaryFullyQualifiedNameInspection
  */
 class Coupon extends Model
 {

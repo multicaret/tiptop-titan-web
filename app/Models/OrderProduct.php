@@ -13,6 +13,8 @@ use Illuminate\Database\Eloquent\Relations\Pivot;
  * @method static Builder|OrderProduct newQuery()
  * @method static Builder|OrderProduct query()
  * @mixin Eloquent
+ * @noinspection PhpFullyQualifiedNameUsageInspection
+ * @noinspection PhpUnnecessaryFullyQualifiedNameInspection
  */
 class OrderProduct extends Pivot
 {

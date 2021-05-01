@@ -25,6 +25,8 @@ use Illuminate\Database\Eloquent\Model;
  * @method static Builder|PaymentMethodTranslation wherePaymentMethodId($value)
  * @method static Builder|PaymentMethodTranslation whereTitle($value)
  * @mixin Eloquent
+ * @noinspection PhpFullyQualifiedNameUsageInspection
+ * @noinspection PhpUnnecessaryFullyQualifiedNameInspection
  */
 class PaymentMethodTranslation extends Model
 {

@@ -38,6 +38,7 @@ use Spatie\MediaLibrary\MediaCollections\Models\Media;
  * @method static Builder|Manufacturer newModelQuery()
  * @method static Builder|Manufacturer newQuery()
  * @method static Builder|Manufacturer notActive()
+ * @method static Builder|Manufacturer notDraft()
  * @method static Builder|Manufacturer query()
  * @method static Builder|Manufacturer whereCityId($value)
  * @method static Builder|Manufacturer whereCreatedAt($value)
@@ -48,6 +49,8 @@ use Spatie\MediaLibrary\MediaCollections\Models\Media;
  * @method static Builder|Manufacturer whereRegionId($value)
  * @method static Builder|Manufacturer whereUpdatedAt($value)
  * @mixin Eloquent
+ * @noinspection PhpFullyQualifiedNameUsageInspection
+ * @noinspection PhpUnnecessaryFullyQualifiedNameInspection
  */
 class Manufacturer extends Model implements HasMedia
 {

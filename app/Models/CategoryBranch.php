@@ -24,6 +24,8 @@ use Illuminate\Support\Carbon;
  * @method static Builder|CategoryBranch whereId($value)
  * @method static Builder|CategoryBranch whereUpdatedAt($value)
  * @mixin Eloquent
+ * @noinspection PhpFullyQualifiedNameUsageInspection
+ * @noinspection PhpUnnecessaryFullyQualifiedNameInspection
  */
 class CategoryBranch extends Pivot
 {

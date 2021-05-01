@@ -23,6 +23,8 @@ use Illuminate\Database\Eloquent\Model;
  * @method static Builder|RemoteConfigTranslation whereRemoteConfigId($value)
  * @method static Builder|RemoteConfigTranslation whereTitle($value)
  * @mixin Eloquent
+ * @noinspection PhpFullyQualifiedNameUsageInspection
+ * @noinspection PhpUnnecessaryFullyQualifiedNameInspection
  */
 class RemoteConfigTranslation extends Model
 {

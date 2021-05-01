@@ -68,6 +68,7 @@ use Illuminate\Support\Str;
  * @method static \Illuminate\Database\Eloquent\Builder|Location newModelQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|Location newQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|Location notActive()
+ * @method static \Illuminate\Database\Eloquent\Builder|Location notDraft()
  * @method static Builder|Location onlyTrashed()
  * @method static \Illuminate\Database\Eloquent\Builder|Location query()
  * @method static \Illuminate\Database\Eloquent\Builder|Location whereAddress1($value)
@@ -108,6 +109,8 @@ use Illuminate\Support\Str;
  * @method static Builder|Location withTrashed()
  * @method static Builder|Location withoutTrashed()
  * @mixin Eloquent
+ * @noinspection PhpFullyQualifiedNameUsageInspection
+ * @noinspection PhpUnnecessaryFullyQualifiedNameInspection
  */
 class Location extends Model
 {

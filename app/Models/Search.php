@@ -41,6 +41,8 @@ use Illuminate\Support\Str;
  * @method static Builder|Search whereType($value)
  * @method static Builder|Search whereUpdatedAt($value)
  * @mixin Eloquent
+ * @noinspection PhpFullyQualifiedNameUsageInspection
+ * @noinspection PhpUnnecessaryFullyQualifiedNameInspection
  */
 class Search extends Model
 {

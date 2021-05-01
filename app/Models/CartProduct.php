@@ -27,7 +27,6 @@ use Illuminate\Support\Carbon;
  * @property-read int|null $cart_product_options_count
  * @property-read Collection|\App\Models\CartProductOptionSelection[] $cartProductOptionsSelections
  * @property-read int|null $cart_product_options_selections_count
- * @property-read mixed $selected_options
  * @property-read \App\Models\Product $product
  * @method static Builder|CartProduct newModelQuery()
  * @method static Builder|CartProduct newQuery()
@@ -42,6 +41,8 @@ use Illuminate\Support\Carbon;
  * @method static Builder|CartProduct whereTotalOptionsPrice($value)
  * @method static Builder|CartProduct whereUpdatedAt($value)
  * @mixin Eloquent
+ * @noinspection PhpFullyQualifiedNameUsageInspection
+ * @noinspection PhpUnnecessaryFullyQualifiedNameInspection
  */
 class CartProduct extends Pivot
 {

@@ -43,6 +43,7 @@ use Illuminate\Support\Carbon;
  * @property string|null $branch_rating_value
  * @property Carbon|null $rated_at
  * @property string|null $rating_comment
+ * @property int|null $rating_issue_id
  * @property bool|null $has_good_food_quality_rating
  * @property bool|null $has_good_packaging_quality_rating
  * @property bool|null $has_good_order_accuracy_rating
@@ -51,15 +52,14 @@ use Illuminate\Support\Carbon;
  * @property string|null $driver_rated_at
  * @property int|null $cancellation_reason_id
  * @property string|null $cancellation_reason_note
- * @property int|null $rating_issue_id
  * @property int|null $delivery_time
  * @property float $tiptop_share_result
  * @property float $tiptop_share_percentage is tiptop_share_percentage, which is taken directly from commission column in Branch
  * @property float $restaurant_share_result
- * @property string|null $private_notes take discount_method_id and store it
  * @property string|null $agent_device
  * @property string|null $agent_os
  * @property string|null $restaurant_notes
+ * @property string|null $private_notes This column is generic, for now it has the 'discount_method_id' for orders with coupons from the old DB
  * @property Carbon|null $completed_at
  * @property string|null $customer_notes
  * @property int $status
@@ -85,10 +85,11 @@ use Illuminate\Support\Carbon;
  * @property-read \App\Models\Coupon|null $coupon
  * @property-read bool $is_food
  * @property-read bool $is_grocery
+ * @property-read mixed $status_name
  * @property-read \App\Models\PaymentMethod $paymentMethod
  * @property-read Order|null $previousOrder
  * @property-read \App\Models\Taxonomy|null $ratingIssue
- * @property-read TookanInfo|null $tookanInfo
+ * @property-read \App\Models\TookanInfo|null $tookanInfo
  * @property-read \App\Models\User $user
  * @method static \Illuminate\Database\Eloquent\Builder|Order atTheAddress()
  * @method static \Illuminate\Database\Eloquent\Builder|Order cancelled()
@@ -156,6 +157,8 @@ use Illuminate\Support\Carbon;
  * @method static Builder|Order withTrashed()
  * @method static Builder|Order withoutTrashed()
  * @mixin Eloquent
+ * @noinspection PhpFullyQualifiedNameUsageInspection
+ * @noinspection PhpUnnecessaryFullyQualifiedNameInspection
  */
 class Order extends Model
 {

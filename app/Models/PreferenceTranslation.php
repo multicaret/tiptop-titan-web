@@ -21,6 +21,8 @@ use Illuminate\Database\Eloquent\Model;
  * @method static Builder|PreferenceTranslation wherePreferenceId($value)
  * @method static Builder|PreferenceTranslation whereValue($value)
  * @mixin Eloquent
+ * @noinspection PhpFullyQualifiedNameUsageInspection
+ * @noinspection PhpUnnecessaryFullyQualifiedNameInspection
  */
 class PreferenceTranslation extends Model
 {

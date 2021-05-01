@@ -46,6 +46,8 @@ use Illuminate\Support\Carbon;
  * @method static Builder|Cart whereUserId($value)
  * @method static Builder|Cart whereWithoutDiscountTotal($value)
  * @mixin Eloquent
+ * @noinspection PhpFullyQualifiedNameUsageInspection
+ * @noinspection PhpUnnecessaryFullyQualifiedNameInspection
  */
 class Cart extends Model
 {

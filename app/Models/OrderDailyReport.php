@@ -80,6 +80,8 @@ use Illuminate\Support\Carbon;
  * @method static Builder|OrderDailyReport whereTotalWebUsersCount($value)
  * @method static Builder|OrderDailyReport whereUpdatedAt($value)
  * @mixin Eloquent
+ * @noinspection PhpFullyQualifiedNameUsageInspection
+ * @noinspection PhpUnnecessaryFullyQualifiedNameInspection
  */
 class OrderDailyReport extends Model
 {

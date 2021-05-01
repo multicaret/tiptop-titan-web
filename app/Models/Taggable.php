@@ -29,6 +29,8 @@ use Illuminate\Support\Carbon;
  * @method static Builder|Taggable whereTaxonomyId($value)
  * @method static Builder|Taggable whereUpdatedAt($value)
  * @mixin Eloquent
+ * @noinspection PhpFullyQualifiedNameUsageInspection
+ * @noinspection PhpUnnecessaryFullyQualifiedNameInspection
  */
 class Taggable extends Model
 {

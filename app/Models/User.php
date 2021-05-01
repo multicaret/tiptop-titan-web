@@ -154,6 +154,7 @@ use Spatie\Permission\Traits\HasRoles;
  * @method static Builder|User newModelQuery()
  * @method static Builder|User newQuery()
  * @method static Builder|User notActive()
+ * @method static Builder|User notDraft()
  * @method static Builder|User notSuper()
  * @method static Builder|User owners()
  * @method static Builder|User permission($permissions)
@@ -205,6 +206,8 @@ use Spatie\Permission\Traits\HasRoles;
  * @method static Builder|User whereWalletFreeTotal($value)
  * @method static Builder|User whereWalletReservedTotal($value)
  * @mixin Eloquent
+ * @noinspection PhpFullyQualifiedNameUsageInspection
+ * @noinspection PhpUnnecessaryFullyQualifiedNameInspection
  */
 class User extends Authenticatable implements HasMedia, MustVerifyEmail
 {
