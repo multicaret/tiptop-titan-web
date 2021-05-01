@@ -134,9 +134,12 @@
                                 @endcomponent
                             </div>
                             <div class="col-6">
-                                @component('admin.components.form-group', ['name' => 'expired_at', 'type' => 'datetime-local'])
+                                @component('admin.components.form-group', ['name' => 'expired_at', 'type' => 'date'])
                                     @slot('label', 'Expired At')
                                     @slot('value', $coupon->expired_at)
+                                    @slot('attributes',[
+                                        'min' => now()->addDay()->format('Y-m-d'),
+                                    ])
                                 @endcomponent
                             </div>
                             <div class="col-4 d-flex align-items-center">
