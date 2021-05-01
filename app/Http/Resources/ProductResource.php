@@ -62,6 +62,7 @@ class ProductResource extends JsonResource
             'depth' => $this->depth,
             'weight' => $this->weight,
             'isFavorited' => $isFavorited,
+            'isDisabled' => $this->status == Product::STATUS_INACTIVE,
 
             'options' => ProductOptionResource::collection($this->options),
             'unit' => new UnitResource($this->unit),
