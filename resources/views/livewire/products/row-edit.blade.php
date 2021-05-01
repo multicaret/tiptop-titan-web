@@ -95,7 +95,7 @@
     <td>{{$product->status_name}}</td>
     <td>
         <a target="_blank" class="btn btn-outline-success btn-sm d-block mb-1" href="{{route('admin.products.edit',
-                            ['type'=> request()->type,
+                            ['type'=> \App\Models\Product::getCorrectChannelName($product->type),
                             'branch_id' => $product->branch_id,
                             'chain_id' => $product->chain_id,
                             $product->uuid])}}">
