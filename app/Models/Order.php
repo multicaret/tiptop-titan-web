@@ -2,7 +2,6 @@
 
 namespace App\Models;
 
-use App\Models\TookanInfo;
 use App\Traits\HasAppTypes;
 use App\Traits\HasTypes;
 use App\Traits\RecordsActivity;
@@ -63,7 +62,7 @@ use Illuminate\Support\Carbon;
  * @property string|null $restaurant_notes
  * @property Carbon|null $completed_at
  * @property string|null $customer_notes
- * @property int $status 
+ * @property int $status
  *                     0: Cancelled,
  *                     1: Draft,
  *                     6: Waiting Courier,
@@ -319,6 +318,11 @@ class Order extends Model
     public function getStatusName()
     {
         return trans('strings.order_status_'.$this->status);
+    }
+
+    public function getStatusNameAttribute()
+    {
+        return $this->getStatusName();
     }
 
     public function getAllStatuses($statusesToSelectFrom = null)

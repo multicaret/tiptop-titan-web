@@ -18,10 +18,11 @@ class ChainController extends Controller
 
     public function __construct()
     {
-//        $this->middleware('permission:chain.permissions.index', ['only' => ['index', 'store']]);
-//        $this->middleware('permission:chain.permissions.create', ['only' => ['create', 'store']]);
-//        $this->middleware('permission:chain.permissions.edit', ['only' => ['edit', 'update']]);
-//        $this->middleware('permission:chain.permissions.destroy', ['only' => ['destroy']]);
+        $chainType = \request('type');
+        $this->middleware('permission:'.$chainType.'.permissions.index', ['only' => ['index', 'store']]);
+        $this->middleware('permission:'.$chainType.'.permissions.create', ['only' => ['create', 'store']]);
+        $this->middleware('permission:'.$chainType.'.permissions.edit', ['only' => ['edit', 'update']]);
+        $this->middleware('permission:'.$chainType.'.permissions.destroy', ['only' => ['destroy']]);
     }
 
     /**

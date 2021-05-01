@@ -13,10 +13,10 @@ class TeamController extends Controller
 
     public function __construct()
     {
-//        $this->middleware('permission:team.permissions.index', ['only' => ['index', 'store']]);
-//        $this->middleware('permission:team.permissions.create', ['only' => ['create', 'store']]);
-//        $this->middleware('permission:team.permissions.edit', ['only' => ['edit', 'update']]);
-//        $this->middleware('permission:team.permissions.destroy', ['only' => ['destroy']]);
+        $this->middleware('permission:tookan-team.permissions.index', ['only' => ['index', 'store']]);
+        $this->middleware('permission:tookan-team.permissions.create', ['only' => ['create', 'store']]);
+        $this->middleware('permission:tookan-team.permissions.edit', ['only' => ['edit', 'update']]);
+        $this->middleware('permission:tookan-team.permissions.destroy', ['only' => ['destroy']]);
     }
 
     /**

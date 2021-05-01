@@ -21,10 +21,10 @@ use App\Models\TaxonomyTranslation;
 use App\Models\Translation;
 use App\Models\User;
 use App\Models\WorkingHour;
+use App\Utilities\PermissionsGenerator;
 use DB;
 use File;
 use Illuminate\Database\Seeder;
-use Illuminate\Support\Arr;
 use Illuminate\Support\Facades\Schema;
 use Spatie\Permission\Models\Permission;
 use Spatie\Permission\Models\Role;
@@ -403,9 +403,7 @@ class DatabaseSeeder extends Seeder
     private function rolesAndPermissions(): void
     {
         $roles = config('defaults.roles');
-        $allRolesPermissions = config('defaults.all_permission');
-        $allRolesPermissions['admin'] = $allRolesPermissions['super'];
-        $allRolesPermissions['user'] = Arr::except($allRolesPermissions['super'], ['payment_methods', 'roles']);
+        $allRolesPermissions = PermissionsGenerator::getAllRolesPermissions();
         foreach ($allRolesPermissions as $permissionKey => $rolePermissions) {
             $roleName = $roles[$permissionKey];
             $role = Role::create($roleName);
@@ -427,222 +425,7 @@ class DatabaseSeeder extends Seeder
     private function preferences($host)
     {
         $defaultUriScheme = 'app.trytiptop.flutter';
-        $preferences = [
-            'General Settings' => [
-                'type' => 'section',
-                'group_name' => 'general_settings',
-                'icon' => 'fas fa-home',
-                'notes' => 'Website name and description',
-                'children' => [
-                    'app_title' => [
-                        'type' => 'text',
-                        'value' => config('app.name'),
-                        'notes' => 'This field affects the SEO'
-                    ],
-                    'app_description' => [
-                        'type' => 'textarea',
-                        'value' => '',
-                        'notes' => 'This field affects the SEO'
-                    ],
-                    'default_channel' => [
-                        'type' => 'selected_channel',
-                        'value' => 'food',
-                        'notes' => ''
-                    ],
-                ]
-            ],
-            /*'Appearance Settings' => [
-                'type' => 'section',
-                'group_name' => 'appearance_settings',
-                'icon' => 'fas fa-palette',
-                'notes' => 'Logo, favicon and appearance settings',
-                'children' => [
-                    'logo_light' => [
-                        'type' => 'file',
-                        'value' => '/images/logo-light.png',
-                        'notes' => ''
-                    ],
-                    'logo_dark' => [
-                        'type' => 'file',
-                        'value' => '/images/logo-dark-2.png',
-                        'notes' => ''
-                    ],
-                    'app_favicon' => [
-                        'type' => 'file',
-                        'value' => '/assets/images/favicon.png',
-                        'notes' => 'Recommended Size 64x64'
-                    ],
-                ]
-            ],*/
-            /*'Homepage Related' => [
-                'type' => 'section',
-                'group_name' => 'home_settings',
-                'icon' => 'fas fa-home',
-                'notes' => 'All Homepage details & settings',
-                'children' => [
-                    'homepage_youtube_video_id' => [
-                        'type' => 'text',
-                        'value' => 'n_Cn8eFo7u8',
-                        'notes' => ''
-                    ],
-                ]
-            ],*/
-            'Contact Details' => [
-                'type' => 'section',
-                'group_name' => 'contact_details',
-                'icon' => 'fas fa-phone-alt',
-                'notes' => 'Phone, email and other contact settings',
-                'children' => [
-                    'contact_mobile' => [
-                        'type' => 'tel',
-                        'value' => '',
-                        'notes' => ''
-                    ],
-                    'contact_phone' => [
-                        'type' => 'tel',
-                        'value' => '',
-                        'notes' => ''
-                    ],
-                    'contact_phone_whatsApp' => [
-                        'type' => 'tel',
-                        'value' => '',
-                        'notes' => ''
-                    ],
-                    'contact_email' => [
-                        'type' => 'email',
-                        'value' => 'info@'.$host,
-                        'notes' => ''
-                    ],
-                    'address' => [
-                        'type' => 'text',
-                        'value' => '',
-                        'notes' => ''
-                    ],
-                ]
-            ],
-            'Social Media' => [
-                'type' => 'section',
-                'group_name' => 'social_media',
-                'icon' => 'fab fa-twitter',
-                'notes' => 'Facebook, Twitter and other social media settings',
-                'children' => [
-                    'social_media_facebook' => [
-                        'type' => 'url',
-                        'value' => 'https://facebook.com/'.strstr($host, '.', true),
-                        'notes' => ''
-                    ],
-                    'social_media_instagram' => [
-                        'type' => 'url',
-                        'value' => 'https://instagram.com/'.strstr($host, '.', true),
-                        'notes' => ''
-                    ],
-                    'social_media_linkedin' => [
-                        'type' => 'url',
-                        'value' => 'https://linkedin.com/'.strstr($host, '.', true),
-                        'notes' => ''
-                    ],
-                    'social_media_twitter' => [
-                        'type' => 'url',
-                        'value' => 'https://twitter.com/'.strstr($host, '.', true),
-                        'notes' => ''
-                    ]
-                ]
-            ],
-            'Tools & 3rd parties integrations' => [
-                'type' => 'section',
-                'group_name' => 'tools_integrations',
-                'icon' => 'fas fa-plug',
-                'notes' => 'Google Search Engine, Google Analytics & Others',
-                'children' => [
-                    'google_site_verification' => [
-                        'type' => 'text',
-                        'value' => '',
-                        'notes' => 'Google Webmasters Site Verification'
-                    ],
-                    'google_analytics' => [
-                        'type' => 'text',
-                        'value' => '',
-                        'notes' => 'Google Analytics ID'
-                    ],
-                    'adjust_deep_link_uri_scheme' => [
-                        'type' => 'text',
-                        'value' => $defaultUriScheme,
-                        'notes' => 'Choose your custom URI scheme'
-                    ],
-                ]
-            ],
-            'Notifications Settings' => [
-                'type' => 'section',
-                'notes' => 'SMS, Email and other related settings',
-                'group_name' => 'notification_settings',
-                'icon' => 'fas fa-bullhorn',
-                'children' => [
-                    'mobile_app_needs_approval_message' => [
-                        'type' => 'text',
-                        'value' => 'Hi %name%, welcome your account is not approved yet, please check back soon :)',
-                        'notes' => 'Please use the following variable within your text message, %name%'
-                    ],
-                    'mobile_app_account_is_suspended' => [
-                        'type' => 'text',
-                        'value' => 'Dear %name%, your account is suspended @_@',
-                        'notes' => 'Please use the following variable within your text message, %name%'
-                    ],
-                ]
-            ],
-            'Operations' => [
-                'type' => 'section',
-                'notes' => 'Operation section',
-                'group_name' => 'operation_section',
-                'icon' => 'fas fa-truck',
-                'children' => [
-                    'tiptop_fixed_delivery_distance' => [
-                        'type' => 'number',
-                        'value' => '5',
-                        'notes' => 'in KM'
-                    ],
-                    'restaurant_fixed_delivery_distance' => [
-                        'type' => 'number',
-                        'value' => '5',
-                        'notes' => 'in KM'
-                    ],
-                ]
-            ],
-            'Support' => [
-                'type' => 'section',
-                'notes' => 'Support section',
-                'group_name' => 'support_section',
-                'icon' => 'fas fa-headphones-alt',
-                'children' => [
-                    'support_number' => [
-                        'type' => 'text',
-                        'value' => '',
-                    ],
-                ]
-            ],
-            'Advanced Settings' => [
-                'type' => 'section',
-                'notes' => 'CSS, JS & codes area',
-                'group_name' => 'advanced_settings',
-                'icon' => 'fas fa-hammer',
-                'children' => [
-                    'custom_css_head' => [
-                        'type' => 'textarea',
-                        'value' => '',
-                        'notes' => 'ONLY css code to be placed at the end of the head tag',
-                    ],
-                    'custom_code_head' => [
-                        'type' => 'textarea',
-                        'value' => '',
-                        'notes' => 'JS or any other code to be placed at the end of the head tag',
-                    ],
-                    'custom_code_body' => [
-                        'type' => 'textarea',
-                        'value' => '',
-                        'notes' => 'JS or any other code to be placed at the top of the body tag',
-                    ],
-                ]
-            ],
-        ];
+        $preferences = $this->getPreferences($host, $defaultUriScheme);
 
         echo PHP_EOL.'Inserting Preferences'.PHP_EOL;
         foreach ($preferences as $key => $data) {
@@ -2127,6 +1910,228 @@ class DatabaseSeeder extends Seeder
         }
 
         return $categories;
+    }
+
+
+
+    public static function getPreferences($host, $defaultUriScheme = 'app.trytiptop.flutter'): array
+    {
+        return [
+            'General Settings' => [
+                'type' => 'section',
+                'group_name' => 'general_settings',
+                'icon' => 'fas fa-home',
+                'notes' => 'Website name and description',
+                'children' => [
+                    'app_title' => [
+                        'type' => 'text',
+                        'value' => config('app.name'),
+                        'notes' => 'This field affects the SEO'
+                    ],
+                    'app_description' => [
+                        'type' => 'textarea',
+                        'value' => '',
+                        'notes' => 'This field affects the SEO'
+                    ],
+                    'default_channel' => [
+                        'type' => 'selected_channel',
+                        'value' => 'food',
+                        'notes' => ''
+                    ],
+                ]
+            ],
+            /*'Appearance Settings' => [
+                'type' => 'section',
+                'group_name' => 'appearance_settings',
+                'icon' => 'fas fa-palette',
+                'notes' => 'Logo, favicon and appearance settings',
+                'children' => [
+                    'logo_light' => [
+                        'type' => 'file',
+                        'value' => '/images/logo-light.png',
+                        'notes' => ''
+                    ],
+                    'logo_dark' => [
+                        'type' => 'file',
+                        'value' => '/images/logo-dark-2.png',
+                        'notes' => ''
+                    ],
+                    'app_favicon' => [
+                        'type' => 'file',
+                        'value' => '/assets/images/favicon.png',
+                        'notes' => 'Recommended Size 64x64'
+                    ],
+                ]
+            ],*/
+            /*'Homepage Related' => [
+                'type' => 'section',
+                'group_name' => 'home_settings',
+                'icon' => 'fas fa-home',
+                'notes' => 'All Homepage details & settings',
+                'children' => [
+                    'homepage_youtube_video_id' => [
+                        'type' => 'text',
+                        'value' => 'n_Cn8eFo7u8',
+                        'notes' => ''
+                    ],
+                ]
+            ],*/
+            'Contact Details' => [
+                'type' => 'section',
+                'group_name' => 'contact_details',
+                'icon' => 'fas fa-phone-alt',
+                'notes' => 'Phone, email and other contact settings',
+                'children' => [
+                    'contact_mobile' => [
+                        'type' => 'tel',
+                        'value' => '',
+                        'notes' => ''
+                    ],
+                    'contact_phone' => [
+                        'type' => 'tel',
+                        'value' => '',
+                        'notes' => ''
+                    ],
+                    'contact_phone_whatsApp' => [
+                        'type' => 'tel',
+                        'value' => '',
+                        'notes' => ''
+                    ],
+                    'contact_email' => [
+                        'type' => 'email',
+                        'value' => 'info@'.$host,
+                        'notes' => ''
+                    ],
+                    'address' => [
+                        'type' => 'text',
+                        'value' => '',
+                        'notes' => ''
+                    ],
+                ]
+            ],
+            'Social Media' => [
+                'type' => 'section',
+                'group_name' => 'social_media',
+                'icon' => 'fab fa-twitter',
+                'notes' => 'Facebook, Twitter and other social media settings',
+                'children' => [
+                    'social_media_facebook' => [
+                        'type' => 'url',
+                        'value' => 'https://facebook.com/'.strstr($host, '.', true),
+                        'notes' => ''
+                    ],
+                    'social_media_instagram' => [
+                        'type' => 'url',
+                        'value' => 'https://instagram.com/'.strstr($host, '.', true),
+                        'notes' => ''
+                    ],
+                    'social_media_linkedin' => [
+                        'type' => 'url',
+                        'value' => 'https://linkedin.com/'.strstr($host, '.', true),
+                        'notes' => ''
+                    ],
+                    'social_media_twitter' => [
+                        'type' => 'url',
+                        'value' => 'https://twitter.com/'.strstr($host, '.', true),
+                        'notes' => ''
+                    ]
+                ]
+            ],
+            'Tools & 3rd parties integrations' => [
+                'type' => 'section',
+                'group_name' => 'tools_integrations',
+                'icon' => 'fas fa-plug',
+                'notes' => 'Google Search Engine, Google Analytics & Others',
+                'children' => [
+                    'google_site_verification' => [
+                        'type' => 'text',
+                        'value' => '',
+                        'notes' => 'Google Webmasters Site Verification'
+                    ],
+                    'google_analytics' => [
+                        'type' => 'text',
+                        'value' => '',
+                        'notes' => 'Google Analytics ID'
+                    ],
+                    'adjust_deep_link_uri_scheme' => [
+                        'type' => 'text',
+                        'value' => $defaultUriScheme,
+                        'notes' => 'Choose your custom URI scheme'
+                    ],
+                ]
+            ],
+            'Notifications Settings' => [
+                'type' => 'section',
+                'notes' => 'SMS, Email and other related settings',
+                'group_name' => 'notification_settings',
+                'icon' => 'fas fa-bullhorn',
+                'children' => [
+                    'mobile_app_needs_approval_message' => [
+                        'type' => 'text',
+                        'value' => 'Hi %name%, welcome your account is not approved yet, please check back soon :)',
+                        'notes' => 'Please use the following variable within your text message, %name%'
+                    ],
+                    'mobile_app_account_is_suspended' => [
+                        'type' => 'text',
+                        'value' => 'Dear %name%, your account is suspended @_@',
+                        'notes' => 'Please use the following variable within your text message, %name%'
+                    ],
+                ]
+            ],
+            'Operations' => [
+                'type' => 'section',
+                'notes' => 'Operation section',
+                'group_name' => 'operation_section',
+                'icon' => 'fas fa-truck',
+                'children' => [
+                    'tiptop_fixed_delivery_distance' => [
+                        'type' => 'number',
+                        'value' => '5',
+                        'notes' => 'in KM'
+                    ],
+                    'restaurant_fixed_delivery_distance' => [
+                        'type' => 'number',
+                        'value' => '5',
+                        'notes' => 'in KM'
+                    ],
+                ]
+            ],
+            'Support' => [
+                'type' => 'section',
+                'notes' => 'Support section',
+                'group_name' => 'support_section',
+                'icon' => 'fas fa-headphones-alt',
+                'children' => [
+                    'support_number' => [
+                        'type' => 'text',
+                        'value' => '',
+                    ],
+                ]
+            ],
+            'Advanced Settings' => [
+                'type' => 'section',
+                'notes' => 'CSS, JS & codes area',
+                'group_name' => 'advanced_settings',
+                'icon' => 'fas fa-hammer',
+                'children' => [
+                    'custom_css_head' => [
+                        'type' => 'textarea',
+                        'value' => '',
+                        'notes' => 'ONLY css code to be placed at the end of the head tag',
+                    ],
+                    'custom_code_head' => [
+                        'type' => 'textarea',
+                        'value' => '',
+                        'notes' => 'JS or any other code to be placed at the end of the head tag',
+                    ],
+                    'custom_code_body' => [
+                        'type' => 'textarea',
+                        'value' => '',
+                        'notes' => 'JS or any other code to be placed at the top of the body tag',
+                    ],
+                ]
+            ],
+        ];
     }
 
 }
