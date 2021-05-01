@@ -22,10 +22,11 @@ class UserController extends Controller
 
     public function __construct()
     {
-        $this->middleware('permission:user.permissions.index', ['only' => ['index', 'store']]);
-        $this->middleware('permission:user.permissions.create', ['only' => ['create', 'store']]);
-        $this->middleware('permission:user.permissions.edit', ['only' => ['edit', 'update']]);
-        $this->middleware('permission:user.permissions.destroy', ['only' => ['destroy']]);
+        $userType = \request()->segment(3);
+        $this->middleware('permission:'.$userType.'.permissions.index', ['only' => ['index', 'store']]);
+        $this->middleware('permission:'.$userType.'.permissions.create', ['only' => ['create', 'store']]);
+        $this->middleware('permission:'.$userType.'.permissions.edit', ['only' => ['edit', 'update']]);
+        $this->middleware('permission:'.$userType.'.permissions.destroy', ['only' => ['destroy']]);
     }
 
     public function index(Request $request, $role)

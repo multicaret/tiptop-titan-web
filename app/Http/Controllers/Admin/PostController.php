@@ -17,10 +17,11 @@ class PostController extends Controller
 
     public function __construct()
     {
-        $this->middleware('permission:post.permissions.index', ['only' => ['index', 'store']]);
-        $this->middleware('permission:post.permissions.create', ['only' => ['create', 'store']]);
-        $this->middleware('permission:post.permissions.edit', ['only' => ['edit', 'update']]);
-        $this->middleware('permission:post.permissions.destroy', ['only' => ['destroy']]);
+        $postType = Post::getCorrectTypeName(\request('type'), false);
+        $this->middleware('permission:'.$postType.'.permissions.index', ['only' => ['index', 'store']]);
+        $this->middleware('permission:'.$postType.'.permissions.create', ['only' => ['create', 'store']]);
+        $this->middleware('permission:'.$postType.'.permissions.edit', ['only' => ['edit', 'update']]);
+        $this->middleware('permission:'.$postType.'.permissions.destroy', ['only' => ['destroy']]);
     }
 
     /**
