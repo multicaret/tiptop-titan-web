@@ -1,16 +1,17 @@
 <div>
-    <style>
-        .table-fixed-head {
-            overflow-y: auto;
-            height: {{ ($orders->count() != 0? $orders->count() * 59 :100)+59 }}px;
-        }
+    @push('styles')
+        <style>
+            .table-fixed-head {
+                overflow-y: auto;
+                height: {{ ($orders->count() != 0? $orders->count() * 59 :100)+59 }}px;
+            }
 
-        .table-fixed-head thead th {
-            position: sticky;
-            top: 0;
-        }
-
-    </style>
+            .table-fixed-head thead th {
+                position: sticky;
+                top: 0;
+            }
+        </style>
+    @endpush
     <div class="card">
         <div class="card-body">
             <div class="card-text row">
@@ -77,7 +78,8 @@
                 <tbody wire:poll.1s>
                 @if($orders)
                     @forelse($orders as $order)
-                        <tr class="cursor-pointer {{ $order->getLateCssBgClass()}}" onclick="openOrder({{$order->id}})">
+                        <tr class="cursor-pointer {{ $order->getLateCssBgClass()}}"
+                            onclick="openOrder({{$order->id}})">
                             <td style="width:10px">
                                 {{$order->reference_code}}
                             </td>
@@ -127,6 +129,7 @@
                                     loop hover></lottie-player>--}}
                             </td>
                             <td>
+                                {{--                                {{dd($order->user_id)}}--}}
                                 @if($order->user->total_number_of_orders == 1)
                                     <span data-toggle="tooltip" data-placement="top"
                                           title="This is their first order ever!">

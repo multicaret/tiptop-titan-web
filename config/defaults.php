@@ -342,37 +342,37 @@ return [
         ]
     ],
     'permissions' => [
-        'grocery_chain' => [
+        'grocery_chain_chains' => [
             'index' => 'grocery-chain.permissions.index',
             'create' => 'grocery-chain.permissions.create',
             'edit' => 'grocery-chain.permissions.edit',
             'destroy' => 'grocery-chain.permissions.destroy',
         ],
-        'food_chain' => [
+        'food_chain_chains' => [
             'index' => 'food-chain.permissions.index',
             'create' => 'food-chain.permissions.create',
             'edit' => 'food-chain.permissions.edit',
             'destroy' => 'food-chain.permissions.destroy',
         ],
-        'grocery_branches' => [
+        'grocery_branch_branches' => [
             'index' => 'grocery-branch.permissions.index',
             'create' => 'grocery-branch.permissions.create',
             'edit' => 'grocery-branch.permissions.edit',
             'destroy' => 'grocery-branch.permissions.destroy',
         ],
-        'food_branches' => [
+        'food_branch_branches' => [
             'index' => 'food-branch.permissions.index',
             'create' => 'food-branch.permissions.create',
             'edit' => 'food-branch.permissions.edit',
             'destroy' => 'food-branch.permissions.destroy',
         ],
-        'grocery_products' => [
+        'grocery_product_products' => [
             'index' => 'grocery-product.permissions.index',
             'create' => 'grocery-product.permissions.create',
             'edit' => 'grocery-product.permissions.edit',
             'destroy' => 'grocery-product.permissions.destroy',
         ],
-        'food_products' => [
+        'food_product_products' => [
             'index' => 'food-product.permissions.index',
             'create' => 'food-product.permissions.create',
             'edit' => 'food-product.permissions.edit',

@@ -29,7 +29,7 @@ class PermissionsGenerator
 
         $allRolesPermissions = [];
         foreach ($roles as $roleKey => $role) {
-            if ( ! \in_array($roleKey, self::rolesWithAnyPermissions())) {
+            if ( ! \in_array($roleKey, self::rolesWithoutAnyPermissions())) {
                 $allRolesPermissions[$roleKey] = \Arr::except($defaultPermissions, $rolesExceptions[$roleKey]);
             } else {
                 $allRolesPermissions[$roleKey] = [];
@@ -113,7 +113,7 @@ class PermissionsGenerator
                 }
             }
         }
-        unset($allRolesPermissions['preferences']);
+//        unset($allRolesPermissions['preferences']);
 
         return \array_merge($allRolesPermissions, self::dotArrayToAssociative($tempPreferencesSections));
     }
@@ -513,7 +513,7 @@ class PermissionsGenerator
         return \collect($rolesExceptions)->mapWithKeys($callback)->toArray();
     }
 
-    public static function rolesWithAnyPermissions(): array
+    public static function rolesWithoutAnyPermissions(): array
     {
         return [
             'branch_owner',

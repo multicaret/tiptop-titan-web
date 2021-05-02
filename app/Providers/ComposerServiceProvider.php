@@ -76,7 +76,6 @@ class ComposerServiceProvider extends ServiceProvider
                 // or if you want to add parameter to route user params attribute as array to build it like '["type" => "faq"]'
                 $sidenavLinks = array_merge($sidenavLinks, $this->getAllSideNavLinks());
                 $sidenavLinks = $this->workOnActiveItem($sidenavLinks);
-//                dd($sidenavLinks);
                 $view->with([
                     'sidenavLinks' => $sidenavLinks,
                 ]);
@@ -88,7 +87,7 @@ class ComposerServiceProvider extends ServiceProvider
     {
         $links = [];
         $links = array_merge($links, [
-            $this->getCan('orders') ? [
+            [
                 'children' => [
                     [
                         'title' => 'Orders',
@@ -96,7 +95,7 @@ class ComposerServiceProvider extends ServiceProvider
                         'routeName' => 'admin.orders.index',
                     ],
                 ]
-            ] : [],
+            ],
             [
                 'children' => [
                     [
@@ -620,7 +619,7 @@ class ComposerServiceProvider extends ServiceProvider
             $permissionName = $allRolesPermissions[$viewName][$crudAction];
         }
 
-        return ! is_null($permissionName) ? auth()->user()->can($permissionName) : false;
+        return isset($permissionName) ? auth()->user()->can($permissionName) : true;
     }
 
     private function workOnActiveItem(array $sidenavLinks): array
@@ -636,7 +635,7 @@ class ComposerServiceProvider extends ServiceProvider
                 return $mainItem;
             }
         });
-
+        $sidenavLinksCollection = $sidenavLinksCollection->filter($this->getNoneEmptyChildren());
         return $sidenavLinksCollection->toArray();
     }
 
@@ -666,6 +665,16 @@ class ComposerServiceProvider extends ServiceProvider
     {
         $sidenavItem = Arr::where($sidenavItem, $this->getNoneEmptyItem());
         foreach ($sidenavItem as $index => $item) {
+            if ($item['routeName'] != 'admin.index') {
+                $viewName = \Str::of($item['routeName'])->between('admin.', '.')->studly()->snake()->jsonSerialize();
+                if (isset($item['params'])) {
+                    $viewName = \Str::of(\Arr::first($item['params']))->studly()->snake()->append('_'.$viewName)->jsonSerialize();
+                }
+                if ( ! $this->getCan($viewName)) {
+                    unset($sidenavItem[$index]);
+                    continue;
+                }
+            }
             if (isset($item['subChildren']) && count($item['subChildren'])) {
                 $this->updateItemStatus($sidenavItem[$index]['subChildren'], $requestParams, $requestRouteName);
             }
@@ -700,6 +709,13 @@ class ComposerServiceProvider extends ServiceProvider
     {
         return function ($item) {
             return ! empty($item);
+        };
+    }
+
+    private function getNoneEmptyChildren(): Closure
+    {
+        return function ($item) {
+            return ! empty($item['children']);
         };
     }
 }

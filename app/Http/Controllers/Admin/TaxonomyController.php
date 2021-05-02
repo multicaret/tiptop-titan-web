@@ -20,7 +20,7 @@ class TaxonomyController extends Controller
     public function __construct()
     {
         $type = request('type');
-        $this->middleware('permission:'.$type.'taxonomy.permissions.index', ['only' => ['index', 'store']]);
+        $this->middleware('permission:'.$type.'.permissions.index', ['only' => ['index', 'store']]);
         $this->middleware('permission:'.$type.'.permissions.create', ['only' => ['create', 'store']]);
         $this->middleware('permission:'.$type.'.permissions.edit', ['only' => ['edit', 'update']]);
         $this->middleware('permission:'.$type.'.permissions.destroy', ['only' => ['destroy']]);
