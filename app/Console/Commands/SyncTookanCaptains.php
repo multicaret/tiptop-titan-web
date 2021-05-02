@@ -45,7 +45,7 @@ class SyncTookanCaptains extends Command
         if (!$tookan_status) return 0;
 
         $role = ucwords(str_replace('-', ' ', Str::title(User::ROLE_TIPTOP_DRIVER)));
-        User::active()->role($role)->chunk(5,function ($captains){
+        User::active()->limit(30)->role($role)->chunk(5,function ($captains){
             foreach ($captains as $captain)
             {
                 if(empty($captain->tookan_id))
