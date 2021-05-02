@@ -21,7 +21,7 @@
           @if(is_null($user->id))
           action="{{route('admin.users.store', ['role' => $role])}}"
           @else
-          action="{{route('admin.users.update', [$user, 'role' => $role])}}"
+          action="{{route('admin.users.update', ['role' => $role, 'user' => $user])}}"
         @endif
     >
         {{csrf_field()}}

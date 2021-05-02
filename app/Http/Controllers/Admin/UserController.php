@@ -455,7 +455,7 @@ class UserController extends Controller
         DB::commit();
 
         return redirect()
-            ->route('admin.users.edit', ['user' => $user])
+            ->route('admin.users.edit', ['role' => $user->role_name, 'user' => $user])
             ->with('message', [
                 'type' => 'Success',
                 'text' => 'Successfully Updated'
