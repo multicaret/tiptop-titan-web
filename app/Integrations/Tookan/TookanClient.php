@@ -12,11 +12,13 @@ class TookanClient
 {
     protected $base_url;
     protected $api_key;
+    protected $default_team_id;
 
     public function __construct()
     {
         $this->base_url = config('services.tookan.base_url');
         $this->api_key = config('services.tookan.api_key');
+        $this->default_team_id = config('services.tookan.default_team_id');
 
     }
 
@@ -29,8 +31,8 @@ class TookanClient
 
     public function prepareTaskData(Order $order)
     {
-        $food_team_id = TookanTeam::where('name', 'Food')->first();
-        $market_team_id = TookanTeam::where('name', 'Market')->first();
+        $food_team_id = TookanTeam::where('name','like', '%Food%')->first();
+        $market_team_id = TookanTeam::where('name','like', '%Market%')->first();
 
         return [
             'order_id' => $order->reference_code,
