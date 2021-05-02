@@ -40,7 +40,7 @@ class RoleController extends Controller
         $callback = function ($item) {
             return \Str::of($item)->replace('_',' ')->title()->jsonSerialize();
         };
-        $rolesNamesWithAnyPermissions = \collect(PermissionsGenerator::rolesWithAnyPermissions())->transform($callback)->toArray();
+        $rolesNamesWithAnyPermissions = \collect(PermissionsGenerator::rolesWithoutAnyPermissions())->transform($callback)->toArray();
         $roles = Role::whereNotIn('name', $rolesNamesWithAnyPermissions)->paginate(10);
         return view('admin.roles.index', compact('roles'));
     }
