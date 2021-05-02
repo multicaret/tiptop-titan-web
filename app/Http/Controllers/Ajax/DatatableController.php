@@ -48,14 +48,11 @@ class DatatableController extends AjaxController
 
         return DataTables::of($users)
                          ->editColumn('action', function ($user) {
-                             $data = [];
-                             if (auth()->user()->role == User::ROLE_SUPER || auth()->user()->role != User::ROLE_SUPER) {
-                                 $data = [
-                                     'modelId' => $user->id,
-                                     'editAction' => route('admin.users.edit', [$user, 'type' => request('type')]),
-                                     'deleteAction' => route('admin.users.destroy', $user),
-                                 ];
-                             }
+                             $data = [
+                                 'modelId' => $user->id,
+                                 'editAction' => route('admin.users.edit', ['role' => $user->role_name, $user]),
+                                 'deleteAction' => route('admin.users.destroy', $user),
+                             ];
 
                              return view('admin.components.datatables._row-actions', $data)->render();
                          })

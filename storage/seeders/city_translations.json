@@ -2,2941 +2,2920 @@
     {
         "id": 1,
         "city_id": 1,
-        "name": "Italian Village",
+        "name": "Iskann",
         "locale": "en",
         "slug": null
     },
     {
         "id": 2,
         "city_id": 1,
-        "name": "القرية الفرنسية",
+        "name": "اسكان",
         "locale": "ar",
         "slug": null
     },
     {
         "id": 3,
         "city_id": 1,
-        "name": "القرية الفرنسية",
-        "locale": "ku",
-        "slug": null
-    },
-    {
-        "id": 1,
-        "city_id": 2,
-        "name": "Iskann",
-        "locale": "en",
-        "slug": null
-    },
-    {
-        "id":  2,
-        "city_id":  2,
-        "name": "اسكان",
-        "locale": "ar",
-        "slug":  null
-    },
-    {
-        "id":  3,
-        "city_id":  2,
         "name": "ئیسكان",
         "locale": "ku",
-        "slug":  null
+        "slug": null
     },
     {
-        "id": 1,
-        "city_id": 3,
+        "id": 4,
+        "city_id": 2,
         "name": "Pizishkan",
         "locale": "en",
         "slug": null
     },
     {
-        "id":  2,
-        "city_id":  3,
+        "id": 5,
+        "city_id": 2,
         "name": "شارع الأطباء",
         "locale": "ar",
-        "slug":  null
+        "slug": null
     },
     {
-        "id":  3,
-        "city_id":  3,
+        "id": 6,
+        "city_id": 2,
         "name": "شه‌قامی پزیشكان",
         "locale": "ku",
-        "slug":  null
+        "slug": null
     },
     {
-        "id": 1,
-        "city_id": 4,
+        "id": 7,
+        "city_id": 3,
         "name": "English Village",
         "locale": "en",
         "slug": null
     },
     {
-        "id":  2,
-        "city_id":  4,
+        "id": 8,
+        "city_id": 3,
         "name": "القرية الانكليزية",
         "locale": "ar",
-        "slug":  null
+        "slug": null
     },
     {
-        "id":  3,
-        "city_id":  4,
+        "id": 9,
+        "city_id": 3,
         "name": "گوندی ئینگلیزی",
         "locale": "ku",
-        "slug":  null
+        "slug": null
     },
     {
-        "id": 1,
-        "city_id": 5,
+        "id": 10,
+        "city_id": 4,
         "name": "Italian Village 1",
         "locale": "en",
         "slug": null
     },
     {
-        "id":  2,
-        "city_id":  5,
+        "id": 11,
+        "city_id": 4,
         "name": "القرية الايطالية ١",
         "locale": "ar",
-        "slug":  null
+        "slug": null
     },
     {
-        "id":  3,
-        "city_id":  5,
+        "id": 12,
+        "city_id": 4,
         "name": "گوندی ئیتاڵی 1",
         "locale": "ku",
-        "slug":  null
+        "slug": null
     },
     {
-        "id": 1,
-        "city_id": 6,
+        "id": 13,
+        "city_id": 5,
         "name": "Italian Village 2",
         "locale": "en",
         "slug": null
     },
     {
-        "id":  2,
-        "city_id":  6,
+        "id": 14,
+        "city_id": 5,
         "name": "القرية الايطالية ٢",
         "locale": "ar",
-        "slug":  null
+        "slug": null
     },
     {
-        "id":  3,
-        "city_id":  6,
+        "id": 15,
+        "city_id": 5,
         "name": "گوندی ئیتاڵی 2",
         "locale": "ku",
-        "slug":  null
+        "slug": null
     },
     {
-        "id": 1,
-        "city_id": 7,
+        "id": 16,
+        "city_id": 6,
         "name": "Lebanese village",
         "locale": "en",
         "slug": null
     },
     {
-        "id":  2,
-        "city_id":  7,
+        "id": 17,
+        "city_id": 6,
         "name": "القرية اللبنانية",
         "locale": "ar",
-        "slug":  null
+        "slug": null
     },
     {
-        "id":  3,
-        "city_id":  7,
+        "id": 18,
+        "city_id": 6,
         "name": "گوندی لوبنانی",
         "locale": "ku",
-        "slug":  null
+        "slug": null
     },
     {
-        "id": 1,
-        "city_id": 8,
+        "id": 19,
+        "city_id": 7,
         "name": "Azadi 1",
         "locale": "en",
         "slug": null
     },
     {
-        "id":  2,
-        "city_id":  8,
+        "id": 20,
+        "city_id": 7,
         "name": "أزادي ١",
         "locale": "ar",
-        "slug":  null
+        "slug": null
     },
     {
-        "id":  3,
-        "city_id":  8,
+        "id": 21,
+        "city_id": 7,
         "name": "ئازادی 1",
         "locale": "ku",
-        "slug":  null
+        "slug": null
     },
     {
-        "id": 1,
-        "city_id": 9,
+        "id": 22,
+        "city_id": 8,
         "name": "Azadi 2",
         "locale": "en",
         "slug": null
     },
     {
-        "id":  2,
-        "city_id":  9,
+        "id": 23,
+        "city_id": 8,
         "name": "أزادي ٢",
         "locale": "ar",
-        "slug":  null
+        "slug": null
     },
     {
-        "id":  3,
-        "city_id":  9,
+        "id": 24,
+        "city_id": 8,
         "name": "ئازادی 2",
         "locale": "ku",
-        "slug":  null
+        "slug": null
     },
     {
-        "id": 1,
-        "city_id": 10,
+        "id": 25,
+        "city_id": 9,
         "name": "MRF Towers",
         "locale": "en",
         "slug": null
     },
     {
-        "id":  2,
-        "city_id":  10,
+        "id": 26,
+        "city_id": 9,
         "name": "ام ار اف",
         "locale": "ar",
-        "slug":  null
+        "slug": null
     },
     {
-        "id":  3,
-        "city_id":  10,
+        "id": 27,
+        "city_id": 9,
         "name": "ئێم ئار ئێف",
         "locale": "ku",
-        "slug":  null
+        "slug": null
     },
     {
-        "id": 1,
-        "city_id": 11,
+        "id": 28,
+        "city_id": 10,
         "name": "Andazyaran",
         "locale": "en",
         "slug": null
     },
     {
-        "id":  2,
-        "city_id":  11,
+        "id": 29,
+        "city_id": 10,
         "name": "أندازياران",
         "locale": "ar",
-        "slug":  null
+        "slug": null
     },
     {
-        "id":  3,
-        "city_id":  11,
+        "id": 30,
+        "city_id": 10,
         "name": "ئه‌ندازیاران",
         "locale": "ku",
-        "slug":  null
+        "slug": null
     },
     {
-        "id": 1,
-        "city_id": 12,
+        "id": 31,
+        "city_id": 11,
         "name": "Andazyaran City",
         "locale": "en",
         "slug": null
     },
     {
-        "id":  2,
-        "city_id":  12,
+        "id": 32,
+        "city_id": 11,
         "name": "أندازياران ستي",
         "locale": "ar",
-        "slug":  null
+        "slug": null
     },
     {
-        "id":  3,
-        "city_id":  12,
+        "id": 33,
+        "city_id": 11,
         "name": "ئه‌ندازیاران ستی",
         "locale": "ku",
-        "slug":  null
+        "slug": null
     },
     {
-        "id": 1,
-        "city_id": 13,
+        "id": 34,
+        "city_id": 12,
         "name": "Ashti City 2",
         "locale": "en",
         "slug": null
     },
     {
-        "id":  2,
-        "city_id":  13,
+        "id": 35,
+        "city_id": 12,
         "name": "آشتي ستي",
         "locale": "ar",
-        "slug":  null
+        "slug": null
     },
     {
-        "id":  3,
-        "city_id":  13,
+        "id": 36,
+        "city_id": 12,
         "name": "ئاشتی ستی",
         "locale": "ku",
-        "slug":  null
+        "slug": null
     },
     {
-        "id": 1,
-        "city_id": 14,
+        "id": 37,
+        "city_id": 13,
         "name": "Ashti City 1",
         "locale": "en",
         "slug": null
     },
     {
-        "id":  2,
-        "city_id":  14,
+        "id": 38,
+        "city_id": 13,
         "name": "آشتي ستي 1",
         "locale": "ar",
-        "slug":  null
+        "slug": null
     },
     {
-        "id":  3,
-        "city_id":  14,
+        "id": 39,
+        "city_id": 13,
         "name": "ئاشتی ستی 1",
         "locale": "ku",
-        "slug":  null
+        "slug": null
     },
     {
-        "id": 1,
-        "city_id": 15,
+        "id": 40,
+        "city_id": 14,
         "name": "Ayinda 2",
         "locale": "en",
         "slug": null
     },
     {
-        "id":  2,
-        "city_id":  15,
+        "id": 41,
+        "city_id": 14,
         "name": "آيندة 2",
         "locale": "ar",
-        "slug":  null
+        "slug": null
     },
     {
-        "id":  3,
-        "city_id":  15,
+        "id": 42,
+        "city_id": 14,
         "name": "ئاینده‌ 1",
         "locale": "ku",
-        "slug":  null
+        "slug": null
     },
     {
-        "id": 1,
-        "city_id": 16,
+        "id": 43,
+        "city_id": 15,
         "name": "Ayinda City",
         "locale": "en",
         "slug": null
     },
     {
-        "id":  2,
-        "city_id":  16,
+        "id": 44,
+        "city_id": 15,
         "name": "آيندة ستي",
         "locale": "ar",
-        "slug":  null
+        "slug": null
     },
     {
-        "id":  3,
-        "city_id":  16,
+        "id": 45,
+        "city_id": 15,
         "name": "ئاینده‌ ستی",
         "locale": "ku",
-        "slug":  null
+        "slug": null
     },
     {
-        "id": 1,
-        "city_id": 17,
+        "id": 46,
+        "city_id": 16,
         "name": "Badawa",
         "locale": "en",
         "slug": null
     },
     {
-        "id":  2,
-        "city_id":  17,
+        "id": 47,
+        "city_id": 16,
         "name": "باداوة",
         "locale": "ar",
-        "slug":  null
+        "slug": null
     },
     {
-        "id":  3,
-        "city_id":  17,
+        "id": 48,
+        "city_id": 16,
         "name": "باداوه‌",
         "locale": "ku",
-        "slug":  null
+        "slug": null
     },
     {
-        "id": 1,
-        "city_id": 18,
+        "id": 49,
+        "city_id": 17,
         "name": "Park View",
         "locale": "en",
         "slug": null
     },
     {
-        "id":  2,
-        "city_id":  18,
+        "id": 50,
+        "city_id": 17,
         "name": "بارك فيو",
         "locale": "ar",
-        "slug":  null
+        "slug": null
     },
     {
-        "id":  3,
-        "city_id":  18,
+        "id": 51,
+        "city_id": 17,
         "name": "پارك ڤیو",
         "locale": "ku",
-        "slug":  null
+        "slug": null
     },
     {
-        "id": 1,
-        "city_id": 19,
+        "id": 52,
+        "city_id": 18,
         "name": "Bahirka",
         "locale": "en",
         "slug": null
     },
     {
-        "id":  2,
-        "city_id":  19,
+        "id": 53,
+        "city_id": 18,
         "name": "بحركة",
         "locale": "ar",
-        "slug":  null
+        "slug": null
     },
     {
-        "id":  3,
-        "city_id":  19,
+        "id": 54,
+        "city_id": 18,
         "name": "به‌حركه‌",
         "locale": "ku",
-        "slug":  null
+        "slug": null
     },
     {
-        "id": 1,
-        "city_id": 20,
+        "id": 55,
+        "city_id": 19,
         "name": "Bakhtiari",
         "locale": "en",
         "slug": null
     },
     {
-        "id":  2,
-        "city_id":  20,
+        "id": 56,
+        "city_id": 19,
         "name": "بختياري",
         "locale": "ar",
-        "slug":  null
+        "slug": null
     },
     {
-        "id":  3,
-        "city_id":  20,
+        "id": 57,
+        "city_id": 19,
         "name": "به‌ختیاری",
         "locale": "ku",
-        "slug":  null
+        "slug": null
     },
     {
-        "id": 1,
-        "city_id": 21,
+        "id": 58,
+        "city_id": 20,
         "name": "Brayaty",
         "locale": "en",
         "slug": null
     },
     {
-        "id":  2,
-        "city_id":  21,
+        "id": 59,
+        "city_id": 20,
         "name": "برايتي",
         "locale": "ar",
-        "slug":  null
+        "slug": null
     },
     {
-        "id":  3,
-        "city_id":  21,
+        "id": 60,
+        "city_id": 20,
         "name": "برایه‌تی",
         "locale": "ku",
-        "slug":  null
+        "slug": null
     },
     {
-        "id": 1,
-        "city_id": 22,
+        "id": 61,
+        "city_id": 21,
         "name": "Perlament",
         "locale": "en",
         "slug": null
     },
     {
-        "id":  2,
-        "city_id":  22,
+        "id": 62,
+        "city_id": 21,
         "name": "وزيران",
         "locale": "ar",
-        "slug":  null
+        "slug": null
     },
     {
-        "id":  3,
-        "city_id":  22,
+        "id": 63,
+        "city_id": 21,
         "name": "وه‌زیران",
         "locale": "ku",
-        "slug":  null
+        "slug": null
     },
     {
-        "id": 1,
-        "city_id": 23,
+        "id": 64,
+        "city_id": 22,
         "name": "Bnaslawa",
         "locale": "en",
         "slug": null
     },
     {
-        "id":  2,
-        "city_id":  23,
+        "id": 65,
+        "city_id": 22,
         "name": "بنسلاوة",
         "locale": "ar",
-        "slug":  null
+        "slug": null
     },
     {
-        "id":  3,
-        "city_id":  23,
+        "id": 66,
+        "city_id": 22,
         "name": "بنه‌سڵاوه‌",
         "locale": "ku",
-        "slug":  null
+        "slug": null
     },
     {
-        "id": 1,
-        "city_id": 24,
+        "id": 67,
+        "city_id": 23,
         "name": "Bahar",
         "locale": "en",
         "slug": null
     },
     {
-        "id":  2,
-        "city_id":  24,
+        "id": 68,
+        "city_id": 23,
         "name": "بهار",
         "locale": "ar",
-        "slug":  null
+        "slug": null
     },
     {
-        "id":  3,
-        "city_id":  24,
+        "id": 69,
+        "city_id": 23,
         "name": "به‌هار",
         "locale": "ku",
-        "slug":  null
+        "slug": null
     },
     {
-        "id": 1,
-        "city_id": 25,
+        "id": 70,
+        "city_id": 24,
         "name": "Pirzin",
         "locale": "en",
         "slug": null
     },
     {
-        "id":  2,
-        "city_id":  25,
+        "id": 71,
+        "city_id": 24,
         "name": "بیرزین",
         "locale": "ar",
-        "slug":  null
+        "slug": null
     },
     {
-        "id":  3,
-        "city_id":  25,
+        "id": 72,
+        "city_id": 24,
         "name": "پیرزین",
         "locale": "ku",
-        "slug":  null
+        "slug": null
     },
     {
-        "id": 1,
-        "city_id": 26,
+        "id": 73,
+        "city_id": 25,
         "name": "Taajeel",
         "locale": "en",
         "slug": null
     },
     {
-        "id":  2,
-        "city_id":  26,
+        "id": 74,
+        "city_id": 25,
         "name": "تعجيل",
         "locale": "ar",
-        "slug":  null
+        "slug": null
     },
     {
-        "id":  3,
-        "city_id":  26,
+        "id": 75,
+        "city_id": 25,
         "name": "ته‌عجیل",
         "locale": "ku",
-        "slug":  null
+        "slug": null
     },
     {
-        "id": 1,
-        "city_id": 27,
+        "id": 76,
+        "city_id": 26,
         "name": "Turaq",
         "locale": "en",
         "slug": null
     },
     {
-        "id":  2,
-        "city_id":  27,
+        "id": 77,
+        "city_id": 26,
         "name": "توراق",
         "locale": "ar",
-        "slug":  null
+        "slug": null
     },
     {
-        "id":  3,
-        "city_id":  27,
+        "id": 78,
+        "city_id": 26,
         "name": "توره‌ق",
         "locale": "ku",
-        "slug":  null
+        "slug": null
     },
     {
-        "id": 1,
-        "city_id": 28,
+        "id": 79,
+        "city_id": 27,
         "name": "Tayrawa",
         "locale": "en",
         "slug": null
     },
     {
-        "id":  2,
-        "city_id":  28,
+        "id": 80,
+        "city_id": 27,
         "name": "تيراوة",
         "locale": "ar",
-        "slug":  null
+        "slug": null
     },
     {
-        "id":  3,
-        "city_id":  28,
+        "id": 81,
+        "city_id": 27,
         "name": "ته‌یراوه‌",
         "locale": "ku",
-        "slug":  null
+        "slug": null
     },
     {
-        "id": 1,
-        "city_id": 29,
+        "id": 82,
+        "city_id": 28,
         "name": "Chnar",
         "locale": "en",
         "slug": null
     },
     {
-        "id":  2,
-        "city_id":  29,
+        "id": 83,
+        "city_id": 28,
         "name": "جنار",
         "locale": "ar",
-        "slug":  null
+        "slug": null
     },
     {
-        "id":  3,
-        "city_id":  29,
+        "id": 84,
+        "city_id": 28,
         "name": "چنار",
         "locale": "ku",
-        "slug":  null
+        "slug": null
     },
     {
-        "id": 1,
-        "city_id": 30,
+        "id": 85,
+        "city_id": 29,
         "name": "Chwarchra",
         "locale": "en",
         "slug": null
     },
     {
-        "id":  2,
-        "city_id":  30,
+        "id": 86,
+        "city_id": 29,
         "name": "جوارجرا",
         "locale": "ar",
-        "slug":  null
+        "slug": null
     },
     {
-        "id":  3,
-        "city_id":  30,
+        "id": 87,
+        "city_id": 29,
         "name": "چوارچرا",
         "locale": "ku",
-        "slug":  null
+        "slug": null
     },
     {
-        "id": 1,
-        "city_id": 31,
+        "id": 88,
+        "city_id": 30,
         "name": "Khanzad",
         "locale": "en",
         "slug": null
     },
     {
-        "id":  2,
-        "city_id":  31,
+        "id": 89,
+        "city_id": 30,
         "name": "خانزاد",
         "locale": "ar",
-        "slug":  null
+        "slug": null
     },
     {
-        "id":  3,
-        "city_id":  31,
+        "id": 90,
+        "city_id": 30,
         "name": "خانزاد",
         "locale": "ku",
-        "slug":  null
+        "slug": null
     },
     {
-        "id": 1,
-        "city_id": 32,
+        "id": 91,
+        "city_id": 31,
         "name": "Khanaqah",
         "locale": "en",
         "slug": null
     },
     {
-        "id":  2,
-        "city_id":  32,
+        "id": 92,
+        "city_id": 31,
         "name": "خانقاة",
         "locale": "ar",
-        "slug":  null
+        "slug": null
     },
     {
-        "id":  3,
-        "city_id":  32,
+        "id": 93,
+        "city_id": 31,
         "name": "خانه‌قا",
         "locale": "ku",
-        "slug":  null
+        "slug": null
     },
     {
-        "id": 1,
-        "city_id": 33,
+        "id": 94,
+        "city_id": 32,
         "name": "Khebat",
         "locale": "en",
         "slug": null
     },
     {
-        "id":  2,
-        "city_id":  33,
+        "id": 95,
+        "city_id": 32,
         "name": "خبات",
         "locale": "ar",
-        "slug":  null
+        "slug": null
     },
     {
-        "id":  3,
-        "city_id":  33,
+        "id": 96,
+        "city_id": 32,
         "name": "خه‌بات",
         "locale": "ku",
-        "slug":  null
+        "slug": null
     },
     {
-        "id": 1,
-        "city_id": 34,
+        "id": 97,
+        "city_id": 33,
         "name": "Dream City",
         "locale": "en",
         "slug": null
     },
     {
-        "id":  2,
-        "city_id":  34,
+        "id": 98,
+        "city_id": 33,
         "name": "دريم ستي",
         "locale": "ar",
-        "slug":  null
+        "slug": null
     },
     {
-        "id":  3,
-        "city_id":  34,
+        "id": 99,
+        "city_id": 33,
         "name": "دریم ستی",
         "locale": "ku",
-        "slug":  null
+        "slug": null
     },
     {
-        "id": 1,
-        "city_id": 35,
+        "id": 100,
+        "city_id": 34,
         "name": "The Atlantic",
         "locale": "en",
         "slug": null
     },
     {
-        "id":  2,
-        "city_id":  35,
+        "id": 101,
+        "city_id": 34,
         "name": "ذي اتلانتيك",
         "locale": "ar",
-        "slug":  null
+        "slug": null
     },
     {
-        "id":  3,
-        "city_id":  35,
+        "id": 102,
+        "city_id": 34,
         "name": "زه‌ ئه‌تلانتیك",
         "locale": "ku",
-        "slug":  null
+        "slug": null
     },
     {
-        "id": 1,
-        "city_id": 36,
+        "id": 103,
+        "city_id": 35,
         "name": "Rapereen",
         "locale": "en",
         "slug": null
     },
     {
-        "id":  2,
-        "city_id":  36,
+        "id": 104,
+        "city_id": 35,
         "name": "رابرين",
         "locale": "ar",
-        "slug":  null
+        "slug": null
     },
     {
-        "id":  3,
-        "city_id":  36,
+        "id": 105,
+        "city_id": 35,
         "name": "ڕاپه‌ڕین",
         "locale": "ku",
-        "slug":  null
+        "slug": null
     },
     {
-        "id": 1,
-        "city_id": 37,
+        "id": 106,
+        "city_id": 36,
         "name": "Rasty",
         "locale": "en",
         "slug": null
     },
     {
-        "id":  2,
-        "city_id":  37,
+        "id": 107,
+        "city_id": 36,
         "name": "راستي",
         "locale": "ar",
-        "slug":  null
+        "slug": null
     },
     {
-        "id":  3,
-        "city_id":  37,
+        "id": 108,
+        "city_id": 36,
         "name": "ڕاستی",
         "locale": "ku",
-        "slug":  null
+        "slug": null
     },
     {
-        "id": 1,
-        "city_id": 38,
+        "id": 109,
+        "city_id": 37,
         "name": "Rizgari / Kuran 1",
         "locale": "en",
         "slug": null
     },
     {
-        "id":  2,
-        "city_id":  38,
+        "id": 110,
+        "city_id": 37,
         "name": "رزكاري - كوران ١",
         "locale": "ar",
-        "slug":  null
+        "slug": null
     },
     {
-        "id":  3,
-        "city_id":  38,
+        "id": 111,
+        "city_id": 37,
         "name": "ڕزگاری - كوران 1",
         "locale": "ku",
-        "slug":  null
+        "slug": null
     },
     {
-        "id": 1,
-        "city_id": 39,
+        "id": 112,
+        "city_id": 38,
         "name": "Rizgari / Kuran 2",
         "locale": "en",
         "slug": null
     },
     {
-        "id":  2,
-        "city_id":  39,
+        "id": 113,
+        "city_id": 38,
         "name": "رزكاري - كوران ٢",
         "locale": "ar",
-        "slug":  null
+        "slug": null
     },
     {
-        "id":  3,
-        "city_id":  39,
+        "id": 114,
+        "city_id": 38,
         "name": "ڕزگاری - كوران 2",
         "locale": "ku",
-        "slug":  null
+        "slug": null
     },
     {
-        "id": 1,
-        "city_id": 40,
+        "id": 115,
+        "city_id": 39,
         "name": "Rojhelat",
         "locale": "en",
         "slug": null
     },
     {
-        "id":  2,
-        "city_id":  40,
+        "id": 116,
+        "city_id": 39,
         "name": "روز هلات",
         "locale": "ar",
-        "slug":  null
+        "slug": null
     },
     {
-        "id":  3,
-        "city_id":  40,
+        "id": 117,
+        "city_id": 39,
         "name": "ڕۆژهه‌ڵات",
         "locale": "ku",
-        "slug":  null
+        "slug": null
     },
     {
-        "id": 1,
-        "city_id": 41,
+        "id": 118,
+        "city_id": 40,
         "name": "Roshanbiry",
         "locale": "en",
         "slug": null
     },
     {
-        "id":  2,
-        "city_id":  41,
+        "id": 119,
+        "city_id": 40,
         "name": "روشنبیري",
         "locale": "ar",
-        "slug":  null
+        "slug": null
     },
     {
-        "id":  3,
-        "city_id":  41,
+        "id": 120,
+        "city_id": 40,
         "name": "ڕۆشنبیری",
         "locale": "ku",
-        "slug":  null
+        "slug": null
     },
     {
-        "id": 1,
-        "city_id": 42,
+        "id": 121,
+        "city_id": 41,
         "name": "Roshnbiri 2",
         "locale": "en",
         "slug": null
     },
     {
-        "id":  2,
-        "city_id":  42,
+        "id": 122,
+        "city_id": 41,
         "name": "روشنبیري ٢",
         "locale": "ar",
-        "slug":  null
+        "slug": null
     },
     {
-        "id":  3,
-        "city_id":  42,
+        "id": 123,
+        "city_id": 41,
         "name": "ڕۆشنبیری 2",
         "locale": "ku",
-        "slug":  null
+        "slug": null
     },
     {
-        "id": 1,
-        "city_id": 43,
+        "id": 124,
+        "city_id": 42,
         "name": "Runaky",
         "locale": "en",
         "slug": null
     },
     {
-        "id":  2,
-        "city_id":  43,
+        "id": 125,
+        "city_id": 42,
         "name": "روناكي",
         "locale": "ar",
-        "slug":  null
+        "slug": null
     },
     {
-        "id":  3,
-        "city_id":  43,
+        "id": 126,
+        "city_id": 42,
         "name": "ڕۆناكی",
         "locale": "ku",
-        "slug":  null
+        "slug": null
     },
     {
-        "id": 1,
-        "city_id": 44,
+        "id": 127,
+        "city_id": 43,
         "name": "Royal City",
         "locale": "en",
         "slug": null
     },
     {
-        "id":  2,
-        "city_id":  44,
+        "id": 128,
+        "city_id": 43,
         "name": "رويال ستي",
         "locale": "ar",
-        "slug":  null
+        "slug": null
     },
     {
-        "id":  3,
-        "city_id":  44,
+        "id": 129,
+        "city_id": 43,
         "name": "ڕۆیاڵ ستی",
         "locale": "ku",
-        "slug":  null
+        "slug": null
     },
     {
-        "id": 1,
-        "city_id": 45,
+        "id": 130,
+        "city_id": 44,
         "name": "Zanko 1",
         "locale": "en",
         "slug": null
     },
     {
-        "id":  2,
-        "city_id":  45,
+        "id": 131,
+        "city_id": 44,
         "name": "زانكو ١",
         "locale": "ar",
-        "slug":  null
+        "slug": null
     },
     {
-        "id":  3,
-        "city_id":  45,
+        "id": 132,
+        "city_id": 44,
         "name": "زانكۆ 1",
         "locale": "ku",
-        "slug":  null
+        "slug": null
     },
     {
-        "id": 1,
-        "city_id": 46,
+        "id": 133,
+        "city_id": 45,
         "name": "Zanko 2",
         "locale": "en",
         "slug": null
     },
     {
-        "id":  2,
-        "city_id":  46,
+        "id": 134,
+        "city_id": 45,
         "name": "زانكو ٢",
         "locale": "ar",
-        "slug":  null
+        "slug": null
     },
     {
-        "id":  3,
-        "city_id":  46,
+        "id": 135,
+        "city_id": 45,
         "name": "زانكۆ 2",
         "locale": "ku",
-        "slug":  null
+        "slug": null
     },
     {
-        "id": 1,
-        "city_id": 47,
+        "id": 136,
+        "city_id": 46,
         "name": "Zanko 3",
         "locale": "en",
         "slug": null
     },
     {
-        "id":  2,
-        "city_id":  47,
+        "id": 137,
+        "city_id": 46,
         "name": "زانكو ٣",
         "locale": "ar",
-        "slug":  null
+        "slug": null
     },
     {
-        "id":  3,
-        "city_id":  47,
+        "id": 138,
+        "city_id": 46,
         "name": "زانكۆ 3",
         "locale": "ku",
-        "slug":  null
+        "slug": null
     },
     {
-        "id": 1,
-        "city_id": 48,
+        "id": 139,
+        "city_id": 47,
         "name": "Zanyari",
         "locale": "en",
         "slug": null
     },
     {
-        "id":  2,
-        "city_id":  48,
+        "id": 140,
+        "city_id": 47,
         "name": "زانياري",
         "locale": "ar",
-        "slug":  null
+        "slug": null
     },
     {
-        "id":  3,
-        "city_id":  48,
+        "id": 141,
+        "city_id": 47,
         "name": "زانیاری",
         "locale": "ku",
-        "slug":  null
+        "slug": null
     },
     {
-        "id": 1,
-        "city_id": 49,
+        "id": 142,
+        "city_id": 48,
         "name": "Zanayan",
         "locale": "en",
         "slug": null
     },
     {
-        "id":  2,
-        "city_id":  49,
+        "id": 143,
+        "city_id": 48,
         "name": "زانايان",
         "locale": "ar",
-        "slug":  null
+        "slug": null
     },
     {
-        "id":  3,
-        "city_id":  49,
+        "id": 144,
+        "city_id": 48,
         "name": "زانایان",
         "locale": "ku",
-        "slug":  null
+        "slug": null
     },
     {
-        "id": 1,
-        "city_id": 50,
+        "id": 145,
+        "city_id": 49,
         "name": "Zeelan City",
         "locale": "en",
         "slug": null
     },
     {
-        "id":  2,
-        "city_id":  50,
+        "id": 146,
+        "city_id": 49,
         "name": "زيلان ستي",
         "locale": "ar",
-        "slug":  null
+        "slug": null
     },
     {
-        "id":  3,
-        "city_id":  50,
+        "id": 147,
+        "city_id": 49,
         "name": "زیلان ستی",
         "locale": "ku",
-        "slug":  null
+        "slug": null
     },
     {
-        "id": 1,
-        "city_id": 51,
+        "id": 148,
+        "city_id": 50,
         "name": "Zin City",
         "locale": "en",
         "slug": null
     },
     {
-        "id":  2,
-        "city_id":  51,
+        "id": 149,
+        "city_id": 50,
         "name": "زين ستي",
         "locale": "ar",
-        "slug":  null
+        "slug": null
     },
     {
-        "id":  3,
-        "city_id":  51,
+        "id": 150,
+        "city_id": 50,
         "name": "زین ستی",
         "locale": "ku",
-        "slug":  null
+        "slug": null
     },
     {
-        "id": 1,
-        "city_id": 52,
+        "id": 151,
+        "city_id": 51,
         "name": "Zheyan",
         "locale": "en",
         "slug": null
     },
     {
-        "id":  2,
-        "city_id":  52,
+        "id": 152,
+        "city_id": 51,
         "name": "ژیان",
         "locale": "ar",
-        "slug":  null
+        "slug": null
     },
     {
-        "id":  3,
-        "city_id":  52,
+        "id": 153,
+        "city_id": 51,
         "name": "ژیان",
         "locale": "ku",
-        "slug":  null
+        "slug": null
     },
     {
-        "id": 1,
-        "city_id": 53,
+        "id": 154,
+        "city_id": 52,
         "name": "Star Tower",
         "locale": "en",
         "slug": null
     },
     {
-        "id":  2,
-        "city_id":  53,
+        "id": 155,
+        "city_id": 52,
         "name": "ستار تاور",
         "locale": "ar",
-        "slug":  null
+        "slug": null
     },
     {
-        "id":  3,
-        "city_id":  53,
+        "id": 156,
+        "city_id": 52,
         "name": "ستار تاوه‌ر",
         "locale": "ku",
-        "slug":  null
+        "slug": null
     },
     {
-        "id": 1,
-        "city_id": 54,
+        "id": 157,
+        "city_id": 53,
         "name": "Sarbasty",
         "locale": "en",
         "slug": null
     },
     {
-        "id":  2,
-        "city_id":  54,
+        "id": 158,
+        "city_id": 53,
         "name": "سربستي",
         "locale": "ar",
-        "slug":  null
+        "slug": null
     },
     {
-        "id":  3,
-        "city_id":  54,
+        "id": 159,
+        "city_id": 53,
         "name": "سه‌ربه‌ستی",
         "locale": "ku",
-        "slug":  null
+        "slug": null
     },
     {
-        "id": 1,
-        "city_id": 55,
+        "id": 160,
+        "city_id": 54,
         "name": "Sarwaran",
         "locale": "en",
         "slug": null
     },
     {
-        "id":  2,
-        "city_id":  55,
+        "id": 161,
+        "city_id": 54,
         "name": "سروران",
         "locale": "ar",
-        "slug":  null
+        "slug": null
     },
     {
-        "id":  3,
-        "city_id":  55,
+        "id": 162,
+        "city_id": 54,
         "name": "سه‌روه‌ران",
         "locale": "ku",
-        "slug":  null
+        "slug": null
     },
     {
-        "id": 1,
-        "city_id": 56,
+        "id": 163,
+        "city_id": 55,
         "name": "Safeen 1",
         "locale": "en",
         "slug": null
     },
     {
-        "id":  2,
-        "city_id":  56,
+        "id": 164,
+        "city_id": 55,
         "name": "سفين ١",
         "locale": "ar",
-        "slug":  null
+        "slug": null
     },
     {
-        "id":  3,
-        "city_id":  56,
+        "id": 165,
+        "city_id": 55,
         "name": "سه‌فین 1",
         "locale": "ku",
-        "slug":  null
+        "slug": null
     },
     {
-        "id": 1,
-        "city_id": 57,
+        "id": 166,
+        "city_id": 56,
         "name": "Safeen 2",
         "locale": "en",
         "slug": null
     },
     {
-        "id":  2,
-        "city_id":  57,
+        "id": 167,
+        "city_id": 56,
         "name": "سفين ٢",
         "locale": "ar",
-        "slug":  null
+        "slug": null
     },
     {
-        "id":  3,
-        "city_id":  57,
+        "id": 168,
+        "city_id": 56,
         "name": "سه‌فین 2",
         "locale": "ku",
-        "slug":  null
+        "slug": null
     },
     {
-        "id": 1,
-        "city_id": 58,
+        "id": 169,
+        "city_id": 57,
         "name": "Safeen 3",
         "locale": "en",
         "slug": null
     },
     {
-        "id":  2,
-        "city_id":  58,
+        "id": 170,
+        "city_id": 57,
         "name": "سفين ٣",
         "locale": "ar",
-        "slug":  null
+        "slug": null
     },
     {
-        "id":  3,
-        "city_id":  58,
+        "id": 171,
+        "city_id": 57,
         "name": "سه‌فین 3",
         "locale": "ku",
-        "slug":  null
+        "slug": null
     },
     {
-        "id": 1,
-        "city_id": 59,
+        "id": 172,
+        "city_id": 58,
         "name": "Sultan Muthafar",
         "locale": "en",
         "slug": null
     },
     {
-        "id":  2,
-        "city_id":  59,
+        "id": 173,
+        "city_id": 58,
         "name": "سلطان مظفر",
         "locale": "ar",
-        "slug":  null
+        "slug": null
     },
     {
-        "id":  3,
-        "city_id":  59,
+        "id": 174,
+        "city_id": 58,
         "name": "سوڵتان مزه‌فه‌ر",
         "locale": "ku",
-        "slug":  null
+        "slug": null
     },
     {
-        "id": 1,
-        "city_id": 60,
+        "id": 175,
+        "city_id": 59,
         "name": "Setaqan",
         "locale": "en",
         "slug": null
     },
     {
-        "id":  2,
-        "city_id":  60,
+        "id": 176,
+        "city_id": 59,
         "name": "سيتاقان",
         "locale": "ar",
-        "slug":  null
+        "slug": null
     },
     {
-        "id":  3,
-        "city_id":  60,
+        "id": 177,
+        "city_id": 59,
         "name": "سێتاقان",
         "locale": "ku",
-        "slug":  null
+        "slug": null
     },
     {
-        "id": 1,
-        "city_id": 61,
+        "id": 178,
+        "city_id": 60,
         "name": "Saidawa",
         "locale": "en",
         "slug": null
     },
     {
-        "id":  2,
-        "city_id":  61,
+        "id": 179,
+        "city_id": 60,
         "name": "سيداوة",
         "locale": "ar",
-        "slug":  null
+        "slug": null
     },
     {
-        "id":  3,
-        "city_id":  61,
+        "id": 180,
+        "city_id": 60,
         "name": "سه‌یداوه‌",
         "locale": "ku",
-        "slug":  null
+        "slug": null
     },
     {
-        "id": 1,
-        "city_id": 62,
+        "id": 181,
+        "city_id": 61,
         "name": "Shadi",
         "locale": "en",
         "slug": null
     },
     {
-        "id":  2,
-        "city_id":  62,
+        "id": 182,
+        "city_id": 61,
         "name": "شادي",
         "locale": "ar",
-        "slug":  null
+        "slug": null
     },
     {
-        "id":  3,
-        "city_id":  62,
+        "id": 183,
+        "city_id": 61,
         "name": "شادی",
         "locale": "ku",
-        "slug":  null
+        "slug": null
     },
     {
-        "id": 1,
-        "city_id": 63,
+        "id": 184,
+        "city_id": 62,
         "name": "Sharawani",
         "locale": "en",
         "slug": null
     },
     {
-        "id":  2,
-        "city_id":  63,
+        "id": 185,
+        "city_id": 62,
         "name": "شاراواني",
         "locale": "ar",
-        "slug":  null
+        "slug": null
     },
     {
-        "id":  3,
-        "city_id":  63,
+        "id": 186,
+        "city_id": 62,
         "name": "شاره‌وانی",
         "locale": "ku",
-        "slug":  null
+        "slug": null
     },
     {
-        "id": 1,
-        "city_id": 64,
+        "id": 187,
+        "city_id": 63,
         "name": "Shaways",
         "locale": "en",
         "slug": null
     },
     {
-        "id":  2,
-        "city_id":  64,
+        "id": 188,
+        "city_id": 63,
         "name": "شاويس",
         "locale": "ar",
-        "slug":  null
+        "slug": null
     },
     {
-        "id":  3,
-        "city_id":  64,
+        "id": 189,
+        "city_id": 63,
         "name": "شاوێس",
         "locale": "ku",
-        "slug":  null
+        "slug": null
     },
     {
-        "id": 1,
-        "city_id": 65,
+        "id": 190,
+        "city_id": 64,
         "name": "Ara Apartments",
         "locale": "en",
         "slug": null
     },
     {
-        "id":  2,
-        "city_id":  65,
+        "id": 191,
+        "city_id": 64,
         "name": "شقق آرا",
         "locale": "ar",
-        "slug":  null
+        "slug": null
     },
     {
-        "id":  3,
-        "city_id":  65,
+        "id": 192,
+        "city_id": 64,
         "name": "شووقه‌كانی ئارا",
         "locale": "ku",
-        "slug":  null
+        "slug": null
     },
     {
-        "id": 1,
-        "city_id": 66,
+        "id": 193,
+        "city_id": 65,
         "name": "Shorish",
         "locale": "en",
         "slug": null
     },
     {
-        "id":  2,
-        "city_id":  66,
+        "id": 194,
+        "city_id": 65,
         "name": "شورش",
         "locale": "ar",
-        "slug":  null
+        "slug": null
     },
     {
-        "id":  3,
-        "city_id":  66,
+        "id": 195,
+        "city_id": 65,
         "name": "شۆرش",
         "locale": "ku",
-        "slug":  null
+        "slug": null
     },
     {
-        "id": 1,
-        "city_id": 67,
+        "id": 196,
+        "city_id": 66,
         "name": "Salaheddin",
         "locale": "en",
         "slug": null
     },
     {
-        "id":  2,
-        "city_id":  67,
+        "id": 197,
+        "city_id": 66,
         "name": "صلاح الدين",
         "locale": "ar",
-        "slug":  null
+        "slug": null
     },
     {
-        "id":  3,
-        "city_id":  67,
+        "id": 198,
+        "city_id": 66,
         "name": "سه‌لاحه‌دین",
         "locale": "ku",
-        "slug":  null
+        "slug": null
     },
     {
-        "id": 1,
-        "city_id": 68,
+        "id": 199,
+        "city_id": 67,
         "name": "Empire World",
         "locale": "en",
         "slug": null
     },
     {
-        "id":  2,
-        "city_id":  68,
+        "id": 200,
+        "city_id": 67,
         "name": "أمباير",
         "locale": "ar",
-        "slug":  null
+        "slug": null
     },
     {
-        "id":  3,
-        "city_id":  68,
+        "id": 201,
+        "city_id": 67,
         "name": "ئیمپایه‌ر",
         "locale": "ku",
-        "slug":  null
+        "slug": null
     },
     {
-        "id": 1,
-        "city_id": 69,
+        "id": 202,
+        "city_id": 68,
         "name": "Arab",
         "locale": "en",
         "slug": null
     },
     {
-        "id":  2,
-        "city_id":  69,
+        "id": 203,
+        "city_id": 68,
         "name": "عرب",
         "locale": "ar",
-        "slug":  null
+        "slug": null
     },
     {
-        "id":  3,
-        "city_id":  69,
+        "id": 204,
+        "city_id": 68,
         "name": "عه‌ره‌ب",
         "locale": "ku",
-        "slug":  null
+        "slug": null
     },
     {
-        "id": 1,
-        "city_id": 70,
+        "id": 205,
+        "city_id": 69,
         "name": "Krekaran",
         "locale": "en",
         "slug": null
     },
     {
-        "id":  2,
-        "city_id":  70,
+        "id": 206,
+        "city_id": 69,
         "name": "عمال",
         "locale": "ar",
-        "slug":  null
+        "slug": null
     },
     {
-        "id":  3,
-        "city_id":  70,
+        "id": 207,
+        "city_id": 69,
         "name": "كرێكاران",
         "locale": "ku",
-        "slug":  null
+        "slug": null
     },
     {
-        "id": 1,
-        "city_id": 71,
+        "id": 208,
+        "city_id": 70,
         "name": "Ainkawa",
         "locale": "en",
         "slug": null
     },
     {
-        "id":  2,
-        "city_id":  71,
+        "id": 209,
+        "city_id": 70,
         "name": "عين كاوا",
         "locale": "ar",
-        "slug":  null
+        "slug": null
     },
     {
-        "id":  3,
-        "city_id":  71,
+        "id": 210,
+        "city_id": 70,
         "name": "عه‌نكاوه‌",
         "locale": "ku",
-        "slug":  null
+        "slug": null
     },
     {
-        "id": 1,
-        "city_id": 72,
+        "id": 211,
+        "city_id": 71,
         "name": "Global City",
         "locale": "en",
         "slug": null
     },
     {
-        "id":  2,
-        "city_id":  72,
+        "id": 212,
+        "city_id": 71,
         "name": "غلوبال ستي",
         "locale": "ar",
-        "slug":  null
+        "slug": null
     },
     {
-        "id":  3,
-        "city_id":  72,
+        "id": 213,
+        "city_id": 71,
         "name": "گلۆباڵ ستی",
         "locale": "ku",
-        "slug":  null
+        "slug": null
     },
     {
-        "id": 1,
-        "city_id": 73,
+        "id": 214,
+        "city_id": 72,
         "name": "Qarabo",
         "locale": "en",
         "slug": null
     },
     {
-        "id":  2,
-        "city_id":  73,
+        "id": 215,
+        "city_id": 72,
         "name": "قربو",
         "locale": "ar",
-        "slug":  null
+        "slug": null
     },
     {
-        "id":  3,
-        "city_id":  73,
+        "id": 216,
+        "city_id": 72,
         "name": "قه‌ره‌بو",
         "locale": "ku",
-        "slug":  null
+        "slug": null
     },
     {
-        "id": 1,
-        "city_id": 74,
+        "id": 217,
+        "city_id": 73,
         "name": "Vital Village",
         "locale": "en",
         "slug": null
     },
     {
-        "id":  2,
-        "city_id":  74,
+        "id": 218,
+        "city_id": 73,
         "name": "قرية فيتال",
         "locale": "ar",
-        "slug":  null
+        "slug": null
     },
     {
-        "id":  3,
-        "city_id":  74,
+        "id": 219,
+        "city_id": 73,
         "name": "گوندی ڤیتاڵ",
         "locale": "ku",
-        "slug":  null
+        "slug": null
     },
     {
-        "id": 1,
-        "city_id": 75,
+        "id": 220,
+        "city_id": 74,
         "name": "New Qala",
         "locale": "en",
         "slug": null
     },
     {
-        "id":  2,
-        "city_id":  75,
+        "id": 221,
+        "city_id": 74,
         "name": "قلعة الجدیدة",
         "locale": "ar",
-        "slug":  null
+        "slug": null
     },
     {
-        "id":  3,
-        "city_id":  75,
+        "id": 222,
+        "city_id": 74,
         "name": "قه‌ڵای نوێ",
         "locale": "ku",
-        "slug":  null
+        "slug": null
     },
     {
-        "id": 1,
-        "city_id": 76,
+        "id": 223,
+        "city_id": 75,
         "name": "Qaisray",
         "locale": "en",
         "slug": null
     },
     {
-        "id":  2,
-        "city_id":  76,
+        "id": 224,
+        "city_id": 75,
         "name": "قيصرية",
         "locale": "ar",
-        "slug":  null
+        "slug": null
     },
     {
-        "id":  3,
-        "city_id":  76,
+        "id": 225,
+        "city_id": 75,
         "name": "قه‌یسه‌ری",
         "locale": "ku",
-        "slug":  null
+        "slug": null
     },
     {
-        "id": 1,
-        "city_id": 77,
+        "id": 226,
+        "city_id": 76,
         "name": "Karezan",
         "locale": "en",
         "slug": null
     },
     {
-        "id":  2,
-        "city_id":  77,
+        "id": 227,
+        "city_id": 76,
         "name": "كاريزان",
         "locale": "ar",
-        "slug":  null
+        "slug": null
     },
     {
-        "id":  3,
-        "city_id":  77,
+        "id": 228,
+        "city_id": 76,
         "name": "كارێزان",
         "locale": "ku",
-        "slug":  null
+        "slug": null
     },
     {
-        "id": 1,
-        "city_id": 78,
+        "id": 229,
+        "city_id": 77,
         "name": "Galawezh",
         "locale": "en",
         "slug": null
     },
     {
-        "id":  2,
-        "city_id":  78,
+        "id": 230,
+        "city_id": 77,
         "name": "كالاويش",
         "locale": "ar",
-        "slug":  null
+        "slug": null
     },
     {
-        "id":  3,
-        "city_id":  78,
+        "id": 231,
+        "city_id": 77,
         "name": "گه‌لاوێژ",
         "locale": "ku",
-        "slug":  null
+        "slug": null
     },
     {
-        "id": 1,
-        "city_id": 79,
+        "id": 232,
+        "city_id": 78,
         "name": "Kani",
         "locale": "en",
         "slug": null
     },
     {
-        "id":  2,
-        "city_id":  79,
+        "id": 233,
+        "city_id": 78,
         "name": "كاني",
         "locale": "ar",
-        "slug":  null
+        "slug": null
     },
     {
-        "id":  3,
-        "city_id":  79,
+        "id": 234,
+        "city_id": 78,
         "name": "كانی",
         "locale": "ku",
-        "slug":  null
+        "slug": null
     },
     {
-        "id": 1,
-        "city_id": 80,
+        "id": 235,
+        "city_id": 79,
         "name": "Ganjan City",
         "locale": "en",
         "slug": null
     },
     {
-        "id":  2,
-        "city_id":  80,
+        "id": 236,
+        "city_id": 79,
         "name": "كنجان ستي",
         "locale": "ar",
-        "slug":  null
+        "slug": null
     },
     {
-        "id":  3,
-        "city_id":  80,
+        "id": 237,
+        "city_id": 79,
         "name": "گه‌نجان ستی",
         "locale": "ku",
-        "slug":  null
+        "slug": null
     },
     {
-        "id": 1,
-        "city_id": 81,
+        "id": 238,
+        "city_id": 80,
         "name": "Kuran Ankawa",
         "locale": "en",
         "slug": null
     },
     {
-        "id":  2,
-        "city_id":  81,
+        "id": 239,
+        "city_id": 80,
         "name": "كوران عنكاوة",
         "locale": "ar",
-        "slug":  null
+        "slug": null
     },
     {
-        "id":  3,
-        "city_id":  81,
+        "id": 240,
+        "city_id": 80,
         "name": "كورانی عه‌نكاوه‌",
         "locale": "ku",
-        "slug":  null
+        "slug": null
     },
     {
-        "id": 1,
-        "city_id": 82,
+        "id": 241,
+        "city_id": 81,
         "name": "Gulan City",
         "locale": "en",
         "slug": null
     },
     {
-        "id":  2,
-        "city_id":  82,
+        "id": 242,
+        "city_id": 81,
         "name": "كولان ستي",
         "locale": "ar",
-        "slug":  null
+        "slug": null
     },
     {
-        "id":  3,
-        "city_id":  82,
+        "id": 243,
+        "city_id": 81,
         "name": "گوڵان ستی",
         "locale": "ku",
-        "slug":  null
+        "slug": null
     },
     {
-        "id": 1,
-        "city_id": 83,
+        "id": 244,
+        "city_id": 82,
         "name": "Komari",
         "locale": "en",
         "slug": null
     },
     {
-        "id":  2,
-        "city_id":  83,
+        "id": 245,
+        "city_id": 82,
         "name": "كوماري",
         "locale": "ar",
-        "slug":  null
+        "slug": null
     },
     {
-        "id":  3,
-        "city_id":  83,
+        "id": 246,
+        "city_id": 82,
         "name": "كۆماری",
         "locale": "ku",
-        "slug":  null
+        "slug": null
     },
     {
-        "id": 1,
-        "city_id": 84,
+        "id": 247,
+        "city_id": 83,
         "name": "Kwestan",
         "locale": "en",
         "slug": null
     },
     {
-        "id":  2,
-        "city_id":  84,
+        "id": 248,
+        "city_id": 83,
         "name": "كويستان",
         "locale": "ar",
-        "slug":  null
+        "slug": null
     },
     {
-        "id":  3,
-        "city_id":  84,
+        "id": 249,
+        "city_id": 83,
         "name": "كوێستان",
         "locale": "ku",
-        "slug":  null
+        "slug": null
     },
     {
-        "id": 1,
-        "city_id": 85,
+        "id": 250,
+        "city_id": 84,
         "name": "Kasnazan",
         "locale": "en",
         "slug": null
     },
     {
-        "id":  2,
-        "city_id":  85,
+        "id": 251,
+        "city_id": 84,
         "name": "کسنزان",
         "locale": "ar",
-        "slug":  null
+        "slug": null
     },
     {
-        "id":  3,
-        "city_id":  85,
+        "id": 252,
+        "city_id": 84,
         "name": "كه‌سنه‌زان",
         "locale": "ku",
-        "slug":  null
+        "slug": null
     },
     {
-        "id": 1,
-        "city_id": 86,
+        "id": 253,
+        "city_id": 85,
         "name": "Gulan 1",
         "locale": "en",
         "slug": null
     },
     {
-        "id":  2,
-        "city_id":  86,
+        "id": 254,
+        "city_id": 85,
         "name": "گولان 1",
         "locale": "ar",
-        "slug":  null
+        "slug": null
     },
     {
-        "id":  3,
-        "city_id":  86,
+        "id": 255,
+        "city_id": 85,
         "name": "گوڵان 1",
         "locale": "ku",
-        "slug":  null
+        "slug": null
     },
     {
-        "id": 1,
-        "city_id": 87,
+        "id": 256,
+        "city_id": 86,
         "name": "Gulan 2",
         "locale": "en",
         "slug": null
     },
     {
-        "id":  2,
-        "city_id":  87,
+        "id": 257,
+        "city_id": 86,
         "name": "گولان ٢",
         "locale": "ar",
-        "slug":  null
+        "slug": null
     },
     {
-        "id":  3,
-        "city_id":  87,
+        "id": 258,
+        "city_id": 86,
         "name": "گوڵان 2",
         "locale": "ku",
-        "slug":  null
+        "slug": null
     },
     {
-        "id": 1,
-        "city_id": 88,
+        "id": 259,
+        "city_id": 87,
         "name": "Pank Village",
         "locale": "en",
         "slug": null
     },
     {
-        "id":  2,
-        "city_id":  88,
+        "id": 260,
+        "city_id": 87,
         "name": "گوندی پانك",
         "locale": "ar",
-        "slug":  null
+        "slug": null
     },
     {
-        "id":  3,
-        "city_id":  88,
+        "id": 261,
+        "city_id": 87,
         "name": "گوندی پانك",
         "locale": "ku",
-        "slug":  null
+        "slug": null
     },
     {
-        "id": 1,
-        "city_id": 89,
+        "id": 262,
+        "city_id": 88,
         "name": "Lana City",
         "locale": "en",
         "slug": null
     },
     {
-        "id":  2,
-        "city_id":  89,
+        "id": 263,
+        "city_id": 88,
         "name": "لانا ستي",
         "locale": "ar",
-        "slug":  null
+        "slug": null
     },
     {
-        "id":  3,
-        "city_id":  89,
+        "id": 264,
+        "city_id": 88,
         "name": "لانا ستی",
         "locale": "ku",
-        "slug":  null
+        "slug": null
     },
     {
-        "id": 1,
-        "city_id": 90,
+        "id": 265,
+        "city_id": 89,
         "name": "Lawan",
         "locale": "en",
         "slug": null
     },
     {
-        "id":  2,
-        "city_id":  90,
+        "id": 266,
+        "city_id": 89,
         "name": "لاوان",
         "locale": "ar",
-        "slug":  null
+        "slug": null
     },
     {
-        "id":  3,
-        "city_id":  90,
+        "id": 267,
+        "city_id": 89,
         "name": "لاوان",
         "locale": "ku",
-        "slug":  null
+        "slug": null
     },
     {
-        "id": 1,
-        "city_id": 91,
+        "id": 268,
+        "city_id": 90,
         "name": "Lawan City",
         "locale": "en",
         "slug": null
     },
     {
-        "id":  2,
-        "city_id":  91,
+        "id": 269,
+        "city_id": 90,
         "name": "لاوان ستي",
         "locale": "ar",
-        "slug":  null
+        "slug": null
     },
     {
-        "id":  3,
-        "city_id":  91,
+        "id": 270,
+        "city_id": 90,
         "name": "لاوان ستی",
         "locale": "ku",
-        "slug":  null
+        "slug": null
     },
     {
-        "id": 1,
-        "city_id": 92,
+        "id": 271,
+        "city_id": 91,
         "name": "Majidawa",
         "locale": "en",
         "slug": null
     },
     {
-        "id":  2,
-        "city_id":  92,
+        "id": 272,
+        "city_id": 91,
         "name": "ماجيداوا",
         "locale": "ar",
-        "slug":  null
+        "slug": null
     },
     {
-        "id":  3,
-        "city_id":  92,
+        "id": 273,
+        "city_id": 91,
         "name": "ماجیداوه‌",
         "locale": "ku",
-        "slug":  null
+        "slug": null
     },
     {
-        "id": 1,
-        "city_id": 93,
+        "id": 274,
+        "city_id": 92,
         "name": "Mamostayan 1",
         "locale": "en",
         "slug": null
     },
     {
-        "id":  2,
-        "city_id":  93,
+        "id": 275,
+        "city_id": 92,
         "name": "ماموستايان",
         "locale": "ar",
-        "slug":  null
+        "slug": null
     },
     {
-        "id":  3,
-        "city_id":  93,
+        "id": 276,
+        "city_id": 92,
         "name": "مامۆستایان",
         "locale": "ku",
-        "slug":  null
+        "slug": null
     },
     {
-        "id": 1,
-        "city_id": 94,
+        "id": 277,
+        "city_id": 93,
         "name": "Mamostayan 2",
         "locale": "en",
         "slug": null
     },
     {
-        "id":  2,
-        "city_id":  94,
+        "id": 278,
+        "city_id": 93,
         "name": "ماموستايان ٢",
         "locale": "ar",
-        "slug":  null
+        "slug": null
     },
     {
-        "id":  3,
-        "city_id":  94,
+        "id": 279,
+        "city_id": 93,
         "name": "مامۆستایان 2",
         "locale": "ku",
-        "slug":  null
+        "slug": null
     },
     {
-        "id": 1,
-        "city_id": 95,
+        "id": 280,
+        "city_id": 94,
         "name": "Mustawfi",
         "locale": "en",
         "slug": null
     },
     {
-        "id":  2,
-        "city_id":  95,
+        "id": 281,
+        "city_id": 94,
         "name": "مستوفي",
         "locale": "ar",
-        "slug":  null
+        "slug": null
     },
     {
-        "id":  3,
-        "city_id":  95,
+        "id": 282,
+        "city_id": 94,
         "name": "مسته‌وفی",
         "locale": "ku",
-        "slug":  null
+        "slug": null
     },
     {
-        "id": 1,
-        "city_id": 96,
+        "id": 283,
+        "city_id": 95,
         "name": "Mufti",
         "locale": "en",
         "slug": null
     },
     {
-        "id":  2,
-        "city_id":  96,
+        "id": 284,
+        "city_id": 95,
         "name": "مفتي",
         "locale": "ar",
-        "slug":  null
+        "slug": null
     },
     {
-        "id":  3,
-        "city_id":  96,
+        "id": 285,
+        "city_id": 95,
         "name": "موفتی",
         "locale": "ku",
-        "slug":  null
+        "slug": null
     },
     {
-        "id": 1,
-        "city_id": 97,
+        "id": 286,
+        "city_id": 96,
         "name": "Minara",
         "locale": "en",
         "slug": null
     },
     {
-        "id":  2,
-        "city_id":  97,
+        "id": 287,
+        "city_id": 96,
         "name": "منارة",
         "locale": "ar",
-        "slug":  null
+        "slug": null
     },
     {
-        "id":  3,
-        "city_id":  97,
+        "id": 288,
+        "city_id": 96,
         "name": "مناره‌",
         "locale": "ku",
-        "slug":  null
+        "slug": null
     },
     {
-        "id": 1,
-        "city_id": 98,
+        "id": 289,
+        "city_id": 97,
         "name": "Minara 1",
         "locale": "en",
         "slug": null
     },
     {
-        "id":  2,
-        "city_id":  98,
+        "id": 290,
+        "city_id": 97,
         "name": "منارة ١",
         "locale": "ar",
-        "slug":  null
+        "slug": null
     },
     {
-        "id":  3,
-        "city_id":  98,
+        "id": 291,
+        "city_id": 97,
         "name": "مناره‌ 1",
         "locale": "ku",
-        "slug":  null
+        "slug": null
     },
     {
-        "id": 1,
-        "city_id": 99,
+        "id": 292,
+        "city_id": 98,
         "name": "Manara 2",
         "locale": "en",
         "slug": null
     },
     {
-        "id":  2,
-        "city_id":  99,
+        "id": 293,
+        "city_id": 98,
         "name": "منارة ٢",
         "locale": "ar",
-        "slug":  null
+        "slug": null
     },
     {
-        "id":  3,
-        "city_id":  99,
+        "id": 294,
+        "city_id": 98,
         "name": "مناره‌ 2",
         "locale": "ku",
-        "slug":  null
+        "slug": null
     },
     {
-        "id": 1,
-        "city_id": 100,
+        "id": 295,
+        "city_id": 99,
         "name": "Mantikawa",
         "locale": "en",
         "slug": null
     },
     {
-        "id":  2,
-        "city_id":  100,
+        "id": 296,
+        "city_id": 99,
         "name": "منتيكاوا",
         "locale": "ar",
-        "slug":  null
+        "slug": null
     },
     {
-        "id":  3,
-        "city_id":  100,
+        "id": 297,
+        "city_id": 99,
         "name": "مه‌نتكاوه‌",
         "locale": "ku",
-        "slug":  null
+        "slug": null
     },
     {
-        "id": 1,
-        "city_id": 101,
+        "id": 298,
+        "city_id": 100,
         "name": "99 Sector",
         "locale": "en",
         "slug": null
     },
     {
-        "id":  2,
-        "city_id":  101,
+        "id": 299,
+        "city_id": 100,
         "name": "منطقة 99",
         "locale": "ar",
-        "slug":  null
+        "slug": null
     },
     {
-        "id":  3,
-        "city_id":  101,
+        "id": 300,
+        "city_id": 100,
         "name": "گه‌ڕه‌كی 99",
         "locale": "ku",
-        "slug":  null
+        "slug": null
     },
     {
-        "id": 1,
-        "city_id": 102,
+        "id": 301,
+        "city_id": 101,
         "name": "Mehabad",
         "locale": "en",
         "slug": null
     },
     {
-        "id":  2,
-        "city_id":  102,
+        "id": 302,
+        "city_id": 101,
         "name": "مهاباد",
         "locale": "ar",
-        "slug":  null
+        "slug": null
     },
     {
-        "id":  3,
-        "city_id":  102,
+        "id": 303,
+        "city_id": 101,
         "name": "مه‌هاباد",
         "locale": "ku",
-        "slug":  null
+        "slug": null
     },
     {
-        "id": 1,
-        "city_id": 103,
+        "id": 304,
+        "city_id": 102,
         "name": "Roya tower",
         "locale": "en",
         "slug": null
     },
     {
-        "id":  2,
-        "city_id":  103,
+        "id": 305,
+        "city_id": 102,
         "name": "رويا تاور",
         "locale": "ar",
-        "slug":  null
+        "slug": null
     },
     {
-        "id":  3,
-        "city_id":  103,
+        "id": 306,
+        "city_id": 102,
         "name": "ڕۆیا تاوه‌ر",
         "locale": "ku",
-        "slug":  null
+        "slug": null
     },
     {
-        "id": 1,
-        "city_id": 104,
+        "id": 307,
+        "city_id": 103,
         "name": "Naz",
         "locale": "en",
         "slug": null
     },
     {
-        "id":  2,
-        "city_id":  104,
+        "id": 308,
+        "city_id": 103,
         "name": "ناز",
         "locale": "ar",
-        "slug":  null
+        "slug": null
     },
     {
-        "id":  3,
-        "city_id":  104,
+        "id": 309,
+        "city_id": 103,
         "name": "ناز",
         "locale": "ku",
-        "slug":  null
+        "slug": null
     },
     {
-        "id": 1,
-        "city_id": 105,
+        "id": 310,
+        "city_id": 104,
         "name": "Naz City",
         "locale": "en",
         "slug": null
     },
     {
-        "id":  2,
-        "city_id":  105,
+        "id": 311,
+        "city_id": 104,
         "name": "ناز ستي",
         "locale": "ar",
-        "slug":  null
+        "slug": null
     },
     {
-        "id":  3,
-        "city_id":  105,
+        "id": 312,
+        "city_id": 104,
         "name": "ناز ستی",
         "locale": "ku",
-        "slug":  null
+        "slug": null
     },
     {
-        "id": 1,
-        "city_id": 106,
+        "id": 313,
+        "city_id": 105,
         "name": "Nishtiman",
         "locale": "en",
         "slug": null
     },
     {
-        "id":  2,
-        "city_id":  106,
+        "id": 314,
+        "city_id": 105,
         "name": "نشتيمان",
         "locale": "ar",
-        "slug":  null
+        "slug": null
     },
     {
-        "id":  3,
-        "city_id":  106,
+        "id": 315,
+        "city_id": 105,
         "name": "نشتیمان",
         "locale": "ku",
-        "slug":  null
+        "slug": null
     },
     {
-        "id": 1,
-        "city_id": 107,
+        "id": 316,
+        "city_id": 106,
         "name": "Newroz",
         "locale": "en",
         "slug": null
     },
     {
-        "id":  2,
-        "city_id":  107,
+        "id": 317,
+        "city_id": 106,
         "name": "نوروز",
         "locale": "ar",
-        "slug":  null
+        "slug": null
     },
     {
-        "id":  3,
-        "city_id":  107,
+        "id": 318,
+        "city_id": 106,
         "name": "نه‌ورۆز",
         "locale": "ku",
-        "slug":  null
+        "slug": null
     },
     {
-        "id": 1,
-        "city_id": 108,
+        "id": 319,
+        "city_id": 107,
         "name": "Nuseran",
         "locale": "en",
         "slug": null
     },
     {
-        "id":  2,
-        "city_id":  108,
+        "id": 320,
+        "city_id": 107,
         "name": "نوسةران",
         "locale": "ar",
-        "slug":  null
+        "slug": null
     },
     {
-        "id":  3,
-        "city_id":  108,
+        "id": 321,
+        "city_id": 107,
         "name": "نووسه‌ران",
         "locale": "ku",
-        "slug":  null
+        "slug": null
     },
     {
-        "id": 1,
-        "city_id": 109,
+        "id": 322,
+        "city_id": 108,
         "name": "New Azadi - Atconz",
         "locale": "en",
         "slug": null
     },
     {
-        "id":  2,
-        "city_id":  109,
+        "id": 323,
+        "city_id": 108,
         "name": "اتكونز",
         "locale": "ar",
-        "slug":  null
+        "slug": null
     },
     {
-        "id":  3,
-        "city_id":  109,
+        "id": 324,
+        "city_id": 108,
         "name": "ئه‌تكۆنز",
         "locale": "ku",
-        "slug":  null
+        "slug": null
     },
     {
-        "id": 1,
-        "city_id": 110,
+        "id": 325,
+        "city_id": 109,
         "name": "Harshem",
         "locale": "en",
         "slug": null
     },
     {
-        "id":  2,
-        "city_id":  110,
+        "id": 326,
+        "city_id": 109,
         "name": "هرشم",
         "locale": "ar",
-        "slug":  null
+        "slug": null
     },
     {
-        "id":  3,
-        "city_id":  110,
+        "id": 327,
+        "city_id": 109,
         "name": "هه‌رشم",
         "locale": "ku",
-        "slug":  null
+        "slug": null
     },
     {
-        "id": 1,
-        "city_id": 111,
+        "id": 328,
+        "city_id": 110,
         "name": "Harshem 2",
         "locale": "en",
         "slug": null
     },
     {
-        "id":  2,
-        "city_id":  111,
+        "id": 329,
+        "city_id": 110,
         "name": "هرشم ٢",
         "locale": "ar",
-        "slug":  null
+        "slug": null
     },
     {
-        "id":  3,
-        "city_id":  111,
+        "id": 330,
+        "city_id": 110,
         "name": "هه‌رشم 2",
         "locale": "ku",
-        "slug":  null
+        "slug": null
     },
     {
-        "id": 1,
-        "city_id": 112,
+        "id": 331,
+        "city_id": 111,
         "name": "Harshem 3",
         "locale": "en",
         "slug": null
     },
     {
-        "id":  2,
-        "city_id":  112,
+        "id": 332,
+        "city_id": 111,
         "name": "هرشم ٣",
         "locale": "ar",
-        "slug":  null
+        "slug": null
     },
     {
-        "id":  3,
-        "city_id":  112,
+        "id": 333,
+        "city_id": 111,
         "name": "هه‌رشم 3",
         "locale": "ku",
-        "slug":  null
+        "slug": null
     },
     {
-        "id": 1,
-        "city_id": 113,
+        "id": 334,
+        "city_id": 112,
         "name": "Hesarok 5",
         "locale": "en",
         "slug": null
     },
     {
-        "id":  2,
-        "city_id":  113,
+        "id": 335,
+        "city_id": 112,
         "name": "هساروك",
         "locale": "ar",
-        "slug":  null
+        "slug": null
     },
     {
-        "id":  3,
-        "city_id":  113,
+        "id": 336,
+        "city_id": 112,
         "name": "حه‌سارۆك",
         "locale": "ku",
-        "slug":  null
+        "slug": null
     },
     {
-        "id": 1,
-        "city_id": 114,
+        "id": 337,
+        "city_id": 113,
         "name": "Hevalan",
         "locale": "en",
         "slug": null
     },
     {
-        "id":  2,
-        "city_id":  114,
+        "id": 338,
+        "city_id": 113,
         "name": "هفالان",
         "locale": "ar",
-        "slug":  null
+        "slug": null
     },
     {
-        "id":  3,
-        "city_id":  114,
+        "id": 339,
+        "city_id": 113,
         "name": "هه‌ڤاڵان",
         "locale": "ku",
-        "slug":  null
+        "slug": null
     },
     {
-        "id": 1,
-        "city_id": 115,
+        "id": 340,
+        "city_id": 114,
         "name": "New Hawler",
         "locale": "en",
         "slug": null
     },
     {
-        "id":  2,
-        "city_id":  115,
+        "id": 341,
+        "city_id": 114,
         "name": "هولير نيوي",
         "locale": "ar",
-        "slug":  null
+        "slug": null
     },
     {
-        "id":  3,
-        "city_id":  115,
+        "id": 342,
+        "city_id": 114,
         "name": "هه‌ولێری نوێ",
         "locale": "ku",
-        "slug":  null
+        "slug": null
     },
     {
-        "id": 1,
-        "city_id": 116,
+        "id": 343,
+        "city_id": 115,
         "name": "Reagion 94",
         "locale": "en",
         "slug": null
     },
     {
-        "id":  2,
-        "city_id":  116,
+        "id": 344,
+        "city_id": 115,
         "name": "منطقة 94",
         "locale": "ar",
-        "slug":  null
+        "slug": null
     },
     {
-        "id":  3,
-        "city_id":  116,
+        "id": 345,
+        "city_id": 115,
         "name": "گه‌ڕه‌كی 94",
         "locale": "ku",
-        "slug":  null
+        "slug": null
     },
     {
-        "id": 1,
-        "city_id": 117,
+        "id": 346,
+        "city_id": 116,
         "name": "Reagion 92",
         "locale": "en",
         "slug": null
     },
     {
-        "id":  2,
-        "city_id":  117,
+        "id": 347,
+        "city_id": 116,
         "name": "منطقة 92",
         "locale": "ar",
-        "slug":  null
+        "slug": null
     },
     {
-        "id":  3,
-        "city_id":  117,
+        "id": 348,
+        "city_id": 116,
         "name": "گه‌ڕه‌كی 92",
         "locale": "ku",
-        "slug":  null
+        "slug": null
     },
     {
-        "id": 1,
-        "city_id": 118,
+        "id": 349,
+        "city_id": 117,
         "name": "Heran City",
         "locale": "en",
         "slug": null
     },
     {
-        "id":  2,
-        "city_id":  118,
+        "id": 350,
+        "city_id": 117,
         "name": "هیران ستی",
         "locale": "ar",
-        "slug":  null
+        "slug": null
     },
     {
-        "id":  3,
-        "city_id":  118,
+        "id": 351,
+        "city_id": 117,
         "name": "هیران ستی",
         "locale": "ku",
-        "slug":  null
+        "slug": null
     },
     {
-        "id": 1,
-        "city_id": 119,
+        "id": 352,
+        "city_id": 118,
         "name": "Shikh Ahmed",
         "locale": "en",
         "slug": null
     },
     {
-        "id":  2,
-        "city_id":  119,
+        "id": 353,
+        "city_id": 118,
         "name": "شيخ احمد",
         "locale": "ar",
-        "slug":  null
+        "slug": null
     },
     {
-        "id":  3,
-        "city_id":  119,
+        "id": 354,
+        "city_id": 118,
         "name": "شێخ ئه‌حمه‌د",
         "locale": "ku",
-        "slug":  null
+        "slug": null
     },
     {
-        "id": 1,
-        "city_id": 120,
+        "id": 355,
+        "city_id": 119,
         "name": "Hay Shorta",
         "locale": "en",
         "slug": null
     },
     {
-        "id":  2,
-        "city_id":  120,
+        "id": 356,
+        "city_id": 119,
         "name": "حي الشرطة",
         "locale": "ar",
-        "slug":  null
+        "slug": null
     },
     {
-        "id":  3,
-        "city_id":  120,
+        "id": 357,
+        "city_id": 119,
         "name": "حه‌ی شورته‌",
         "locale": "ku",
-        "slug":  null
+        "slug": null
     },
     {
-        "id": 1,
-        "city_id": 121,
+        "id": 358,
+        "city_id": 120,
         "name": "Seven Nissan",
         "locale": "en",
         "slug": null
     },
     {
-        "id":  2,
-        "city_id":  121,
+        "id": 359,
+        "city_id": 120,
         "name": "سبعة نيسان",
         "locale": "ar",
-        "slug":  null
+        "slug": null
     },
     {
-        "id":  3,
-        "city_id":  121,
+        "id": 360,
+        "city_id": 120,
         "name": "سه‌بعه‌ نیسان",
         "locale": "ku",
-        "slug":  null
+        "slug": null
     },
     {
-        "id": 1,
-        "city_id": 122,
+        "id": 361,
+        "city_id": 121,
         "name": "Alaban st.",
         "locale": "en",
         "slug": null
     },
     {
-        "id":  2,
-        "city_id":  122,
+        "id": 362,
+        "city_id": 121,
         "name": "شارع الالبان",
         "locale": "ar",
-        "slug":  null
+        "slug": null
     },
     {
-        "id":  3,
-        "city_id":  122,
+        "id": 363,
+        "city_id": 121,
         "name": "شه‌قامی ئه‌لبان",
         "locale": "ku",
-        "slug":  null
+        "slug": null
     },
     {
-        "id": 1,
-        "city_id": 123,
+        "id": 364,
+        "city_id": 122,
         "name": "Mojamma maareth",
         "locale": "en",
         "slug": null
     },
     {
-        "id":  2,
-        "city_id":  123,
+        "id": 365,
+        "city_id": 122,
         "name": "مجمع المعارض",
         "locale": "ar",
-        "slug":  null
+        "slug": null
     },
     {
-        "id":  3,
-        "city_id":  123,
+        "id": 366,
+        "city_id": 122,
         "name": "كۆمه‌ڵگه‌ی پێشانگه‌كان",
         "locale": "ku",
-        "slug":  null
+        "slug": null
     },
     {
-        "id": 1,
-        "city_id": 124,
+        "id": 367,
+        "city_id": 123,
         "name": "Jehan city",
         "locale": "en",
         "slug": null
     },
     {
-        "id":  2,
-        "city_id":  124,
+        "id": 368,
+        "city_id": 123,
         "name": "جيهان ستي",
         "locale": "ar",
-        "slug":  null
+        "slug": null
     },
     {
-        "id":  3,
-        "city_id":  124,
+        "id": 369,
+        "city_id": 123,
         "name": "جیهان ستی",
         "locale": "ku",
-        "slug":  null
+        "slug": null
     },
     {
-        "id": 1,
-        "city_id": 125,
+        "id": 370,
+        "city_id": 124,
         "name": "Hakem Awaa",
         "locale": "en",
         "slug": null
     },
     {
-        "id":  2,
-        "city_id":  125,
+        "id": 371,
+        "city_id": 124,
         "name": "حاكماوة",
         "locale": "ar",
-        "slug":  null
+        "slug": null
     },
     {
-        "id":  3,
-        "city_id":  125,
+        "id": 372,
+        "city_id": 124,
         "name": "حاكماوه‌",
         "locale": "ku",
-        "slug":  null
+        "slug": null
     },
     {
-        "id": 1,
-        "city_id": 126,
+        "id": 373,
+        "city_id": 125,
         "name": "Setakan",
         "locale": "en",
         "slug": null
     },
     {
-        "id":  2,
-        "city_id":  126,
+        "id": 374,
+        "city_id": 125,
         "name": "سيطاقان",
         "locale": "ar",
-        "slug":  null
+        "slug": null
     },
     {
-        "id":  3,
-        "city_id":  126,
+        "id": 375,
+        "city_id": 125,
         "name": "سێتاقان",
         "locale": "ku",
-        "slug":  null
+        "slug": null
     },
     {
-        "id": 1,
-        "city_id": 127,
+        "id": 376,
+        "city_id": 126,
         "name": "Park 32",
         "locale": "en",
         "slug": null
     },
     {
-        "id":  2,
-        "city_id":  127,
+        "id": 377,
+        "city_id": 126,
         "name": "بارك 32",
         "locale": "ar",
-        "slug":  null
+        "slug": null
     },
     {
-        "id":  3,
-        "city_id":  127,
+        "id": 378,
+        "city_id": 126,
         "name": "32 پارك",
         "locale": "ku",
-        "slug":  null
+        "slug": null
     },
     {
-        "id": 1,
-        "city_id": 128,
+        "id": 379,
+        "city_id": 127,
         "name": "Mojamma Nobel",
         "locale": "en",
         "slug": null
     },
     {
-        "id":  2,
-        "city_id":  128,
+        "id": 380,
+        "city_id": 127,
         "name": "مجمع نوبل",
         "locale": "ar",
-        "slug":  null
+        "slug": null
     },
     {
-        "id":  3,
-        "city_id":  128,
+        "id": 381,
+        "city_id": 127,
         "name": "كۆمه‌ڵگه‌ی نۆبل",
         "locale": "ku",
-        "slug":  null
+        "slug": null
     },
     {
-        "id": 1,
-        "city_id": 129,
+        "id": 382,
+        "city_id": 128,
         "name": "Kordistan City",
         "locale": "en",
         "slug": null
     },
     {
-        "id":  2,
-        "city_id":  129,
+        "id": 383,
+        "city_id": 128,
         "name": "كوردستان ستي",
         "locale": "ar",
-        "slug":  null
+        "slug": null
     },
     {
-        "id":  3,
-        "city_id":  129,
+        "id": 384,
+        "city_id": 128,
         "name": "كوردستان ستی",
         "locale": "ku",
-        "slug":  null
+        "slug": null
     },
     {
-        "id": 1,
-        "city_id": 130,
+        "id": 385,
+        "city_id": 129,
         "name": "Ako Park",
         "locale": "en",
         "slug": null
     },
     {
-        "id":  2,
-        "city_id":  130,
+        "id": 386,
+        "city_id": 129,
         "name": "اكو بارك",
         "locale": "ar",
-        "slug":  null
+        "slug": null
     },
     {
-        "id":  3,
-        "city_id":  130,
+        "id": 387,
+        "city_id": 129,
         "name": "ئاكۆ پارك",
         "locale": "ku",
-        "slug":  null
+        "slug": null
     },
     {
-        "id": 1,
-        "city_id": 131,
+        "id": 388,
+        "city_id": 130,
         "name": "Moula omar",
         "locale": "en",
         "slug": null
     },
     {
-        "id":  2,
-        "city_id":  131,
+        "id": 389,
+        "city_id": 130,
         "name": "ملا عمر",
         "locale": "ar",
-        "slug":  null
+        "slug": null
     },
     {
-        "id":  3,
-        "city_id":  131,
+        "id": 390,
+        "city_id": 130,
         "name": "مه‌لا عومه‌ر",
         "locale": "ku",
-        "slug":  null
+        "slug": null
     },
     {
-        "id": 1,
-        "city_id": 132,
+        "id": 391,
+        "city_id": 131,
         "name": "Shokak korea",
         "locale": "en",
         "slug": null
     },
     {
-        "id":  2,
-        "city_id":  132,
+        "id": 392,
+        "city_id": 131,
         "name": "شقق كوريا",
         "locale": "ar",
-        "slug":  null
+        "slug": null
     },
     {
-        "id":  3,
-        "city_id":  132,
+        "id": 393,
+        "city_id": 131,
         "name": "شووقه‌كانی كۆریا",
         "locale": "ku",
-        "slug":  null
+        "slug": null
     },
     {
-        "id": 1,
-        "city_id": 133,
+        "id": 394,
+        "city_id": 132,
         "name": "Amrica village",
         "locale": "en",
         "slug": null
     },
     {
-        "id":  2,
-        "city_id":  133,
+        "id": 395,
+        "city_id": 132,
         "name": "القرية الامريكية",
         "locale": "ar",
-        "slug":  null
+        "slug": null
     },
     {
-        "id":  3,
-        "city_id":  133,
+        "id": 396,
+        "city_id": 132,
         "name": "گوندی ئه‌مریكی",
         "locale": "ku",
-        "slug":  null
+        "slug": null
     },
     {
-        "id": 1,
-        "city_id": 134,
+        "id": 397,
+        "city_id": 133,
         "name": "Khanrad Hotel",
         "locale": "en",
         "slug": null
     },
     {
-        "id":  2,
-        "city_id":  134,
+        "id": 398,
+        "city_id": 133,
         "name": "فندق خانراد",
         "locale": "ar",
-        "slug":  null
+        "slug": null
     },
     {
-        "id":  3,
-        "city_id":  134,
+        "id": 399,
+        "city_id": 133,
         "name": "هۆتێل حانزاد",
         "locale": "ku",
-        "slug":  null
+        "slug": null
     },
     {
-        "id": 1,
-        "city_id": 135,
+        "id": 400,
+        "city_id": 134,
         "name": "FarmanBRAN",
         "locale": "en",
         "slug": null
     },
     {
-        "id":  2,
-        "city_id":  135,
+        "id": 401,
+        "city_id": 134,
         "name": "فارمانبران",
         "locale": "ar",
-        "slug":  null
+        "slug": null
     },
     {
-        "id":  3,
-        "city_id":  135,
+        "id": 402,
+        "city_id": 134,
         "name": "فه‌رمانبه‌ران",
         "locale": "ku",
-        "slug":  null
+        "slug": null
     },
     {
-        "id": 1,
-        "city_id": 136,
+        "id": 403,
+        "city_id": 135,
         "name": "Alton city",
         "locale": "en",
         "slug": null
     },
     {
-        "id":  2,
-        "city_id":  136,
+        "id": 404,
+        "city_id": 135,
         "name": "التون ستي",
         "locale": "ar",
-        "slug":  null
+        "slug": null
     },
     {
-        "id":  3,
-        "city_id":  136,
+        "id": 405,
+        "city_id": 135,
         "name": "ئاڵتون ستی",
         "locale": "ku",
-        "slug":  null
+        "slug": null
     },
     {
-        "id": 1,
-        "city_id": 137,
+        "id": 406,
+        "city_id": 136,
         "name": "Zereen",
         "locale": "en",
         "slug": null
     },
     {
-        "id":  2,
-        "city_id":  137,
+        "id": 407,
+        "city_id": 136,
         "name": "زيرين",
         "locale": "ar",
-        "slug":  null
+        "slug": null
     },
     {
-        "id":  3,
-        "city_id":  137,
+        "id": 408,
+        "city_id": 136,
         "name": "زێڕین",
         "locale": "ku",
-        "slug":  null
+        "slug": null
     },
     {
-        "id": 1,
-        "city_id": 138,
+        "id": 409,
+        "city_id": 137,
         "name": "Ozal city",
         "locale": "en",
         "slug": null
     },
     {
-        "id":  2,
-        "city_id":  138,
+        "id": 410,
+        "city_id": 137,
         "name": "اوزال ستي",
         "locale": "ar",
-        "slug":  null
+        "slug": null
     },
     {
-        "id":  3,
-        "city_id":  138,
+        "id": 411,
+        "city_id": 137,
         "name": "ئۆزال ستی",
         "locale": "ku",
-        "slug":  null
+        "slug": null
     },
     {
-        "id": 1,
-        "city_id": 139,
+        "id": 412,
+        "city_id": 138,
         "name": "Asuda City",
         "locale": "en",
         "slug": null
     },
     {
-        "id":  2,
-        "city_id":  139,
+        "id": 413,
+        "city_id": 138,
         "name": "اسودة ستي",
         "locale": "ar",
-        "slug":  null
+        "slug": null
     },
     {
-        "id":  3,
-        "city_id":  139,
+        "id": 414,
+        "city_id": 138,
         "name": "ئاسووده‌ ستی",
         "locale": "ku",
-        "slug":  null
+        "slug": null
     },
     {
-        "id": 1,
-        "city_id": 140,
+        "id": 415,
+        "city_id": 139,
         "name": "Ainkawa 108",
         "locale": "en",
         "slug": null
     },
     {
-        "id":  2,
-        "city_id":  140,
+        "id": 416,
+        "city_id": 139,
         "name": "عنكاوا 108",
         "locale": "ar",
-        "slug":  null
+        "slug": null
     },
     {
-        "id":  3,
-        "city_id":  140,
+        "id": 417,
+        "city_id": 139,
         "name": "108 عه‌نكاوه‌",
         "locale": "ku",
-        "slug":  null
+        "slug": null
     }
 ]

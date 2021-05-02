@@ -21,6 +21,8 @@ use Illuminate\Database\Eloquent\Model;
  * @method static Builder|OldCategoryOldProduct whereDishId($value)
  * @method static Builder|OldCategoryOldProduct whereExcelColumnKey($value)
  * @mixin Eloquent
+ * @noinspection PhpFullyQualifiedNameUsageInspection
+ * @noinspection PhpUnnecessaryFullyQualifiedNameInspection
  */
 class OldCategoryOldProduct extends Model
 {

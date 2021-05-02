@@ -25,7 +25,7 @@ class CategoryMiniResource extends JsonResource
             $menuProducts = $this->menuProducts();
             $user = auth('sanctum')->user();
             if (is_null($user) || ( ! is_null($user) && ! $user->is_branch_manager)) {
-                $menuProducts = $menuProducts->active();
+                $menuProducts = $menuProducts->notDraft();
             }
             $products = ProductMiniResource::collection($menuProducts->orderByDesc('order_column')->get());
         }

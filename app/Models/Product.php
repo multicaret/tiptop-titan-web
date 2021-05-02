@@ -61,6 +61,7 @@ use Spatie\MediaLibrary\MediaCollections\Models\Media;
  * @property Carbon|null $custom_banner_ended_at
  * @property bool|null $is_storage_tracking_enabled
  * @property int $on_mobile_grid_tile_weight
+ * @property int|null $importer_id
  * @property int|null $cloned_from_product_id
  * @property Carbon|null $created_at
  * @property Carbon|null $updated_at
@@ -114,6 +115,7 @@ use Spatie\MediaLibrary\MediaCollections\Models\Media;
  * @method static Builder|Product newModelQuery()
  * @method static Builder|Product newQuery()
  * @method static Builder|Product notActive()
+ * @method static Builder|Product notDraft()
  * @method static Builder|Product notTranslatedIn(?string $locale = null)
  * @method static \Illuminate\Database\Query\Builder|Product onlyTrashed()
  * @method static Builder|Product orWhereTranslation(string $translationField, $value, ?string $locale = null)
@@ -137,6 +139,7 @@ use Spatie\MediaLibrary\MediaCollections\Models\Media;
  * @method static Builder|Product whereEditorId($value)
  * @method static Builder|Product whereHeight($value)
  * @method static Builder|Product whereId($value)
+ * @method static Builder|Product whereImporterId($value)
  * @method static Builder|Product whereIsStorageTrackingEnabled($value)
  * @method static Builder|Product whereMaximumOrderableQuantity($value)
  * @method static Builder|Product whereMinimumOrderableQuantity($value)
@@ -165,6 +168,8 @@ use Spatie\MediaLibrary\MediaCollections\Models\Media;
  * @method static \Illuminate\Database\Query\Builder|Product withTrashed()
  * @method static \Illuminate\Database\Query\Builder|Product withoutTrashed()
  * @mixin Eloquent
+ * @noinspection PhpFullyQualifiedNameUsageInspection
+ * @noinspection PhpUnnecessaryFullyQualifiedNameInspection
  */
 class Product extends Model implements HasMedia
 {
@@ -182,7 +187,6 @@ class Product extends Model implements HasMedia
     public const STATUS_DRAFT = 1;
     public const STATUS_ACTIVE = 2;
     public const STATUS_INACTIVE = 3;
-    public const STATUS_INACTIVE_SEASONABLE = 4;
     public const STATUS_TRANSLATION_NOT_COMPLETED = 5;
 
     public const CHANNEL_GROCERY_OBJECT = 1;
@@ -309,11 +313,6 @@ class Product extends Model implements HasMedia
                 'id' => self::STATUS_INACTIVE,
                 'title' => __('Inactive'),
                 'class' => 'danger',
-            ],
-            self::STATUS_INACTIVE_SEASONABLE => [
-                'id' => self::STATUS_INACTIVE_SEASONABLE,
-                'title' => __('Inactive Seasonable'),
-                'class' => 'warning',
             ],
             self::STATUS_TRANSLATION_NOT_COMPLETED => [
                 'id' => self::STATUS_TRANSLATION_NOT_COMPLETED,

@@ -24,6 +24,8 @@ use Illuminate\Support\Carbon;
  * @method static Builder|ProductSearchTag whereSearchTagId($value)
  * @method static Builder|ProductSearchTag whereUpdatedAt($value)
  * @mixin Eloquent
+ * @noinspection PhpFullyQualifiedNameUsageInspection
+ * @noinspection PhpUnnecessaryFullyQualifiedNameInspection
  */
 class ProductSearchTag extends Pivot
 {

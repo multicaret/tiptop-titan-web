@@ -39,6 +39,8 @@ use Illuminate\Support\Carbon;
  * @method static Builder|MetaData whereUpdatedAt($value)
  * @method static Builder|MetaData withTranslation()
  * @mixin Eloquent
+ * @noinspection PhpFullyQualifiedNameUsageInspection
+ * @noinspection PhpUnnecessaryFullyQualifiedNameInspection
  */
 class MetaData extends Model
 {

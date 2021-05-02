@@ -34,6 +34,8 @@ use Illuminate\Database\Eloquent\Model;
  * @method static Builder|WorkingHour whereWorkableId($value)
  * @method static Builder|WorkingHour whereWorkableType($value)
  * @mixin Eloquent
+ * @noinspection PhpFullyQualifiedNameUsageInspection
+ * @noinspection PhpUnnecessaryFullyQualifiedNameInspection
  */
 class WorkingHour extends Model
 {

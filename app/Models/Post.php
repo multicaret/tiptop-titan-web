@@ -76,6 +76,7 @@ use Spatie\MediaLibrary\MediaCollections\Models\Media;
  * @method static Builder|Post newQuery()
  * @method static Builder|Post news()
  * @method static Builder|Post notActive()
+ * @method static Builder|Post notDraft()
  * @method static Builder|Post notTranslatedIn(?string $locale = null)
  * @method static \Illuminate\Database\Query\Builder|Post onlyTrashed()
  * @method static Builder|Post orWhereTranslation(string $translationField, $value, ?string $locale = null)
@@ -108,6 +109,8 @@ use Spatie\MediaLibrary\MediaCollections\Models\Media;
  * @method static \Illuminate\Database\Query\Builder|Post withTrashed()
  * @method static \Illuminate\Database\Query\Builder|Post withoutTrashed()
  * @mixin Eloquent
+ * @noinspection PhpFullyQualifiedNameUsageInspection
+ * @noinspection PhpUnnecessaryFullyQualifiedNameInspection
  */
 class Post extends Model implements HasMedia, ShouldHaveTypes
 {

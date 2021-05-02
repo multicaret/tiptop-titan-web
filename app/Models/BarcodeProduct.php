@@ -24,6 +24,8 @@ use Illuminate\Support\Carbon;
  * @method static Builder|BarcodeProduct whereProductId($value)
  * @method static Builder|BarcodeProduct whereUpdatedAt($value)
  * @mixin Eloquent
+ * @noinspection PhpFullyQualifiedNameUsageInspection
+ * @noinspection PhpUnnecessaryFullyQualifiedNameInspection
  */
 class BarcodeProduct extends Pivot
 {

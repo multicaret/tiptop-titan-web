@@ -29,6 +29,8 @@ use Spatie\MediaLibrary\MediaCollections\Models\Collections\MediaCollection;
  * @method static Builder|SlideTranslation whereLocale($value)
  * @method static Builder|SlideTranslation whereSlideId($value)
  * @mixin Eloquent
+ * @noinspection PhpFullyQualifiedNameUsageInspection
+ * @noinspection PhpUnnecessaryFullyQualifiedNameInspection
  */
 class SlideTranslation extends Model implements HasMedia
 {

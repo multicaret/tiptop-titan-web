@@ -75,6 +75,8 @@ use Illuminate\Support\Carbon;
  * @method static Builder|OldProduct whereUpdatedAt($value)
  * @method static Builder|OldProduct withTranslation()
  * @mixin Eloquent
+ * @noinspection PhpFullyQualifiedNameUsageInspection
+ * @noinspection PhpUnnecessaryFullyQualifiedNameInspection
  */
 class OldProduct extends OldModel
 {

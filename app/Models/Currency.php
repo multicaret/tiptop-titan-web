@@ -36,6 +36,7 @@ use Illuminate\Support\Carbon;
  * @method static Builder|Currency newModelQuery()
  * @method static Builder|Currency newQuery()
  * @method static Builder|Currency notActive()
+ * @method static Builder|Currency notDraft()
  * @method static Builder|Currency query()
  * @method static Builder|Currency whereCode($value)
  * @method static Builder|Currency whereCreatedAt($value)
@@ -49,6 +50,8 @@ use Illuminate\Support\Carbon;
  * @method static Builder|Currency whereThousandsSeparator($value)
  * @method static Builder|Currency whereUpdatedAt($value)
  * @mixin Eloquent
+ * @noinspection PhpFullyQualifiedNameUsageInspection
+ * @noinspection PhpUnnecessaryFullyQualifiedNameInspection
  */
 class Currency extends Model
 {

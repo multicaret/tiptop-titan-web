@@ -35,7 +35,10 @@ class DatabaseSeeder extends Seeder
     public const DEFAULT_USERS_NUMBER = 50;
     private int $lastTaxonomyId = 0;
     private int $lastBranchId = 0;
-    private array $tablesFromOldDB = ['cities', 'city_translations', 'region_translations', 'regions'];
+    private array $tablesFromOldDB = [
+        // Disabled since we have them as JSON files
+        /*'cities', 'city_translations', 'region_translations', 'regions'*/
+    ];
 
     /**
      * Seed the application's database.
@@ -54,7 +57,8 @@ class DatabaseSeeder extends Seeder
             $this->command->call('datum:importer', ['model' => $groceryProducts]);
             $this->lastTaxonomyId = Taxonomy::latest()->first()->id;
             $this->lastBranchId = Branch::latest()->first()->id;
-            $this->command->callSilently('datum:importer', ['model' => 'regions-cities']);
+            // Disabled since we have them as JSON files
+//            $this->command->callSilently('datum:importer', ['model' => 'regions-cities']);
         }
         DB::statement('SET FOREIGN_KEY_CHECKS=0;');
         $this->rolesAndPermissions();
@@ -1911,7 +1915,6 @@ class DatabaseSeeder extends Seeder
 
         return $categories;
     }
-
 
 
     public static function getPreferences($host, $defaultUriScheme = 'app.trytiptop.flutter'): array

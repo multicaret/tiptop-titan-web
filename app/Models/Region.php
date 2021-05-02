@@ -48,6 +48,7 @@ use Spatie\MediaLibrary\MediaCollections\Models\Media;
  * @method static Builder|Region newModelQuery()
  * @method static Builder|Region newQuery()
  * @method static Builder|Region notActive()
+ * @method static Builder|Region notDraft()
  * @method static Builder|Region notTranslatedIn(?string $locale = null)
  * @method static Builder|Region orWhereTranslation(string $translationField, $value, ?string $locale = null)
  * @method static Builder|Region orWhereTranslationLike(string $translationField, $value, ?string $locale = null)
@@ -67,6 +68,8 @@ use Spatie\MediaLibrary\MediaCollections\Models\Media;
  * @method static Builder|Region whereUpdatedAt($value)
  * @method static Builder|Region withTranslation()
  * @mixin Eloquent
+ * @noinspection PhpFullyQualifiedNameUsageInspection
+ * @noinspection PhpUnnecessaryFullyQualifiedNameInspection
  */
 class Region extends Model implements HasMedia
 {

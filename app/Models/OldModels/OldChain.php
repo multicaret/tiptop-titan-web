@@ -55,6 +55,8 @@ use Illuminate\Support\Carbon;
  * @method static Builder|OldChain whereZohoId($value)
  * @method static Builder|OldChain withTranslation()
  * @mixin Eloquent
+ * @noinspection PhpFullyQualifiedNameUsageInspection
+ * @noinspection PhpUnnecessaryFullyQualifiedNameInspection
  */
 class OldChain extends OldModel
 {

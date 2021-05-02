@@ -35,6 +35,7 @@ use Spatie\MediaLibrary\MediaCollections\Models\Collections\MediaCollection;
  * @method static Builder|Barcode newModelQuery()
  * @method static Builder|Barcode newQuery()
  * @method static Builder|Barcode notActive()
+ * @method static Builder|Barcode notDraft()
  * @method static Builder|Barcode query()
  * @method static Builder|Barcode whereCode($value)
  * @method static Builder|Barcode whereCountryId($value)
@@ -44,6 +45,8 @@ use Spatie\MediaLibrary\MediaCollections\Models\Collections\MediaCollection;
  * @method static Builder|Barcode whereId($value)
  * @method static Builder|Barcode whereUpdatedAt($value)
  * @mixin Eloquent
+ * @noinspection PhpFullyQualifiedNameUsageInspection
+ * @noinspection PhpUnnecessaryFullyQualifiedNameInspection
  */
 class Barcode extends Model implements HasMedia
 {

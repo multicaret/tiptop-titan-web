@@ -35,6 +35,8 @@ use Illuminate\Support\Carbon;
  * @method static Builder|QrCode whereRouteParams($value)
  * @method static Builder|QrCode whereUpdatedAt($value)
  * @mixin Eloquent
+ * @noinspection PhpFullyQualifiedNameUsageInspection
+ * @noinspection PhpUnnecessaryFullyQualifiedNameInspection
  */
 class QrCode extends Model
 {

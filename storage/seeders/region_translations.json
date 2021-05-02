@@ -2,15 +2,15 @@
     {
         "id": 1,
         "region_id": 1,
-        "name": "Baghdad",
-        "locale": "en",
+        "name": "بغداد",
+        "locale": "ar",
         "slug": null
     },
     {
         "id": 2,
         "region_id": 1,
-        "name": "بغداد",
-        "locale": "ar",
+        "name": "Baghdad",
+        "locale": "en",
         "slug": null
     },
     {
@@ -23,21 +23,378 @@
     {
         "id": 4,
         "region_id": 2,
-        "name": "Erbil",
-        "locale": "en",
+        "name": "بابل",
+        "locale": "ar",
         "slug": null
     },
     {
         "id": 5,
         "region_id": 2,
-        "name": "أربيل",
-        "locale": "ar",
+        "name": "Babil",
+        "locale": "en",
         "slug": null
     },
     {
         "id": 6,
         "region_id": 2,
-        "name": "أربيل",
+        "name": "بابل",
+        "locale": "ku",
+        "slug": null
+    },
+    {
+        "id": 7,
+        "region_id": 3,
+        "name": "دهوك",
+        "locale": "ar",
+        "slug": null
+    },
+    {
+        "id": 8,
+        "region_id": 3,
+        "name": "Dahuk",
+        "locale": "en",
+        "slug": null
+    },
+    {
+        "id": 9,
+        "region_id": 3,
+        "name": "دهوك",
+        "locale": "ku",
+        "slug": null
+    },
+    {
+        "id": 10,
+        "region_id": 4,
+        "name": "ذي قار",
+        "locale": "ar",
+        "slug": null
+    },
+    {
+        "id": 11,
+        "region_id": 4,
+        "name": "Dhi Qar",
+        "locale": "en",
+        "slug": null
+    },
+    {
+        "id": 12,
+        "region_id": 4,
+        "name": "ذي قار",
+        "locale": "ku",
+        "slug": null
+    },
+    {
+        "id": 13,
+        "region_id": 5,
+        "name": "ديالى",
+        "locale": "ar",
+        "slug": null
+    },
+    {
+        "id": 14,
+        "region_id": 5,
+        "name": "Diyala",
+        "locale": "en",
+        "slug": null
+    },
+    {
+        "id": 15,
+        "region_id": 5,
+        "name": "ديالى",
+        "locale": "ku",
+        "slug": null
+    },
+    {
+        "id": 16,
+        "region_id": 6,
+        "name": "اربيل",
+        "locale": "ar",
+        "slug": null
+    },
+    {
+        "id": 17,
+        "region_id": 6,
+        "name": "Erbil",
+        "locale": "en",
+        "slug": null
+    },
+    {
+        "id": 18,
+        "region_id": 6,
+        "name": "اربيل",
+        "locale": "ku",
+        "slug": null
+    },
+    {
+        "id": 19,
+        "region_id": 7,
+        "name": "كربلاء",
+        "locale": "ar",
+        "slug": null
+    },
+    {
+        "id": 20,
+        "region_id": 7,
+        "name": "Karbala",
+        "locale": "en",
+        "slug": null
+    },
+    {
+        "id": 21,
+        "region_id": 7,
+        "name": "كربلاء",
+        "locale": "ku",
+        "slug": null
+    },
+    {
+        "id": 22,
+        "region_id": 8,
+        "name": "كردستان العراق",
+        "locale": "ar",
+        "slug": null
+    },
+    {
+        "id": 23,
+        "region_id": 8,
+        "name": "Kurdistan",
+        "locale": "en",
+        "slug": null
+    },
+    {
+        "id": 24,
+        "region_id": 8,
+        "name": "كردستان العراق",
+        "locale": "ku",
+        "slug": null
+    },
+    {
+        "id": 25,
+        "region_id": 9,
+        "name": "ميسان",
+        "locale": "ar",
+        "slug": null
+    },
+    {
+        "id": 26,
+        "region_id": 9,
+        "name": "Maysan",
+        "locale": "en",
+        "slug": null
+    },
+    {
+        "id": 27,
+        "region_id": 9,
+        "name": "ميسان",
+        "locale": "ku",
+        "slug": null
+    },
+    {
+        "id": 28,
+        "region_id": 10,
+        "name": "نينوى",
+        "locale": "ar",
+        "slug": null
+    },
+    {
+        "id": 29,
+        "region_id": 10,
+        "name": "Ninawa",
+        "locale": "en",
+        "slug": null
+    },
+    {
+        "id": 30,
+        "region_id": 10,
+        "name": "نينوى",
+        "locale": "ku",
+        "slug": null
+    },
+    {
+        "id": 31,
+        "region_id": 11,
+        "name": "صلاح الدين",
+        "locale": "ar",
+        "slug": null
+    },
+    {
+        "id": 32,
+        "region_id": 11,
+        "name": "Salah-ad-Din",
+        "locale": "en",
+        "slug": null
+    },
+    {
+        "id": 33,
+        "region_id": 11,
+        "name": "صلاح الدين",
+        "locale": "ku",
+        "slug": null
+    },
+    {
+        "id": 34,
+        "region_id": 12,
+        "name": "واسط",
+        "locale": "ar",
+        "slug": null
+    },
+    {
+        "id": 35,
+        "region_id": 12,
+        "name": "Wasit",
+        "locale": "en",
+        "slug": null
+    },
+    {
+        "id": 36,
+        "region_id": 12,
+        "name": "واسط",
+        "locale": "ku",
+        "slug": null
+    },
+    {
+        "id": 37,
+        "region_id": 13,
+        "name": "الأنبار",
+        "locale": "ar",
+        "slug": null
+    },
+    {
+        "id": 38,
+        "region_id": 13,
+        "name": "al-Anbar",
+        "locale": "en",
+        "slug": null
+    },
+    {
+        "id": 39,
+        "region_id": 13,
+        "name": "الأنبار",
+        "locale": "ku",
+        "slug": null
+    },
+    {
+        "id": 40,
+        "region_id": 14,
+        "name": "البصرة",
+        "locale": "ar",
+        "slug": null
+    },
+    {
+        "id": 41,
+        "region_id": 14,
+        "name": "al-Basrah",
+        "locale": "en",
+        "slug": null
+    },
+    {
+        "id": 42,
+        "region_id": 14,
+        "name": "البصرة",
+        "locale": "ku",
+        "slug": null
+    },
+    {
+        "id": 43,
+        "region_id": 15,
+        "name": "المثنى",
+        "locale": "ar",
+        "slug": null
+    },
+    {
+        "id": 44,
+        "region_id": 15,
+        "name": "al-Muthanna",
+        "locale": "en",
+        "slug": null
+    },
+    {
+        "id": 45,
+        "region_id": 15,
+        "name": "المثنى",
+        "locale": "ku",
+        "slug": null
+    },
+    {
+        "id": 46,
+        "region_id": 16,
+        "name": "القادسية",
+        "locale": "ar",
+        "slug": null
+    },
+    {
+        "id": 47,
+        "region_id": 16,
+        "name": "al-Qadisiyah",
+        "locale": "en",
+        "slug": null
+    },
+    {
+        "id": 48,
+        "region_id": 16,
+        "name": "القادسية",
+        "locale": "ku",
+        "slug": null
+    },
+    {
+        "id": 49,
+        "region_id": 17,
+        "name": "النجف",
+        "locale": "ar",
+        "slug": null
+    },
+    {
+        "id": 50,
+        "region_id": 17,
+        "name": "an-Najaf",
+        "locale": "en",
+        "slug": null
+    },
+    {
+        "id": 51,
+        "region_id": 17,
+        "name": "النجف",
+        "locale": "ku",
+        "slug": null
+    },
+    {
+        "id": 52,
+        "region_id": 18,
+        "name": "السليمانية",
+        "locale": "ar",
+        "slug": null
+    },
+    {
+        "id": 53,
+        "region_id": 18,
+        "name": "as-Sulaymaniyah",
+        "locale": "en",
+        "slug": null
+    },
+    {
+        "id": 54,
+        "region_id": 18,
+        "name": "السليمانية",
+        "locale": "ku",
+        "slug": null
+    },
+    {
+        "id": 55,
+        "region_id": 19,
+        "name": "التأميم (كركوك)",
+        "locale": "ar",
+        "slug": null
+    },
+    {
+        "id": 56,
+        "region_id": 19,
+        "name": "at-Ta'mim",
+        "locale": "en",
+        "slug": null
+    },
+    {
+        "id": 57,
+        "region_id": 19,
+        "name": "التأميم (كركوك)",
         "locale": "ku",
         "slug": null
     }

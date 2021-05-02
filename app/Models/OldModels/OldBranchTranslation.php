@@ -25,6 +25,8 @@ use Illuminate\Database\Eloquent\Model;
  * @method static Builder|OldBranchTranslation whereLocale($value)
  * @method static Builder|OldBranchTranslation whereTitleSuffex($value)
  * @mixin Eloquent
+ * @noinspection PhpFullyQualifiedNameUsageInspection
+ * @noinspection PhpUnnecessaryFullyQualifiedNameInspection
  */
 class OldBranchTranslation extends Model
 {

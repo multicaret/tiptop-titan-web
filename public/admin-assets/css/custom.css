@@ -319,3 +319,7 @@ th, td {
     border-color: #e8e8e9;
 }
 
+.notifications-list {
+    max-height: 250px !important;
+    overflow-y: scroll !important;
+}

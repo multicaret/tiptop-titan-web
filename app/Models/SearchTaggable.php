@@ -30,6 +30,8 @@ use Illuminate\Support\Carbon;
  * @method static Builder|SearchTaggable whereTaxonomyId($value)
  * @method static Builder|SearchTaggable whereUpdatedAt($value)
  * @mixin Eloquent
+ * @noinspection PhpFullyQualifiedNameUsageInspection
+ * @noinspection PhpUnnecessaryFullyQualifiedNameInspection
  */
 class SearchTaggable extends Model
 {

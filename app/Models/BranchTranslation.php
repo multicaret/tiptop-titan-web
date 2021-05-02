@@ -23,6 +23,8 @@ use Illuminate\Database\Eloquent\Model;
  * @method static Builder|BranchTranslation whereLocale($value)
  * @method static Builder|BranchTranslation whereTitle($value)
  * @mixin Eloquent
+ * @noinspection PhpFullyQualifiedNameUsageInspection
+ * @noinspection PhpUnnecessaryFullyQualifiedNameInspection
  */
 class BranchTranslation extends Model
 {

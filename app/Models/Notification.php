@@ -37,6 +37,8 @@ use Illuminate\Support\Carbon;
  * @method static Builder|Notification whereType($value)
  * @method static Builder|Notification whereUpdatedAt($value)
  * @mixin Eloquent
+ * @noinspection PhpFullyQualifiedNameUsageInspection
+ * @noinspection PhpUnnecessaryFullyQualifiedNameInspection
  */
 class Notification extends DatabaseNotification
 {

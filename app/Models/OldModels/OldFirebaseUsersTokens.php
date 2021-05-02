@@ -31,6 +31,8 @@ use Illuminate\Support\Carbon;
  * @method static Builder|OldFirebaseUsersTokens whereUpdatedAt($value)
  * @method static Builder|OldFirebaseUsersTokens whereUserId($value)
  * @mixin Eloquent
+ * @noinspection PhpFullyQualifiedNameUsageInspection
+ * @noinspection PhpUnnecessaryFullyQualifiedNameInspection
  */
 class OldFirebaseUsersTokens extends OldModel
 {

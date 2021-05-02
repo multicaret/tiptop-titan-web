@@ -49,6 +49,7 @@ use Illuminate\Support\Carbon;
  * @method static Builder|Country newModelQuery()
  * @method static Builder|Country newQuery()
  * @method static Builder|Country notActive()
+ * @method static Builder|Country notDraft()
  * @method static Builder|Country notTranslatedIn(?string $locale = null)
  * @method static Builder|Country orWhereTranslation(string $translationField, $value, ?string $locale = null)
  * @method static Builder|Country orWhereTranslationLike(string $translationField, $value, ?string $locale = null)
@@ -73,6 +74,8 @@ use Illuminate\Support\Carbon;
  * @method static Builder|Country whereUpdatedAt($value)
  * @method static Builder|Country withTranslation()
  * @mixin Eloquent
+ * @noinspection PhpFullyQualifiedNameUsageInspection
+ * @noinspection PhpUnnecessaryFullyQualifiedNameInspection
  */
 class Country extends Model
 {

@@ -24,6 +24,8 @@ use Illuminate\Support\Carbon;
  * @method static Builder|BranchDriver whereUpdatedAt($value)
  * @method static Builder|BranchDriver whereUserId($value)
  * @mixin Eloquent
+ * @noinspection PhpFullyQualifiedNameUsageInspection
+ * @noinspection PhpUnnecessaryFullyQualifiedNameInspection
  */
 class BranchDriver extends Pivot
 {

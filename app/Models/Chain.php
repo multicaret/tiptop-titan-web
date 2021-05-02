@@ -77,6 +77,7 @@ use Spatie\MediaLibrary\MediaCollections\Models\Media;
  * @method static Builder|Chain newModelQuery()
  * @method static Builder|Chain newQuery()
  * @method static Builder|Chain notActive()
+ * @method static Builder|Chain notDraft()
  * @method static Builder|Chain notTranslatedIn(?string $locale = null)
  * @method static Builder|Chain orWhereTranslation(string $translationField, $value, ?string $locale = null)
  * @method static Builder|Chain orWhereTranslationLike(string $translationField, $value, ?string $locale = null)
@@ -113,6 +114,8 @@ use Spatie\MediaLibrary\MediaCollections\Models\Media;
  * @method static Builder|Chain whereWhatsappPhoneNumber($value)
  * @method static Builder|Chain withTranslation()
  * @mixin Eloquent
+ * @noinspection PhpFullyQualifiedNameUsageInspection
+ * @noinspection PhpUnnecessaryFullyQualifiedNameInspection
  */
 class Chain extends Model implements HasMedia
 {

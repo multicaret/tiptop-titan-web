@@ -35,6 +35,8 @@ use Illuminate\Support\Carbon;
  * @method static Builder|CouponUsage whereRedeemerId($value)
  * @method static Builder|CouponUsage whereUpdatedAt($value)
  * @mixin Eloquent
+ * @noinspection PhpFullyQualifiedNameUsageInspection
+ * @noinspection PhpUnnecessaryFullyQualifiedNameInspection
  */
 class CouponUsage extends Model
 {
