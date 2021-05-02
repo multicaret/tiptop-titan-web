@@ -203,6 +203,15 @@ class DatumImporter extends Command
         }
     }
 
+    private function findCityRegionIdsFromOldBranch(OldBranch $oldBranch): array
+    {
+        $newRegion = Region::whereTranslationLike('name', $oldBranch->region->name_en)->first();
+        $regionId = ! is_null($newRegion) ? $newRegion->id : self::DEFAULT_REGION;
+        $newCity = City::whereTranslationLike('name', $oldBranch->city->name_en)->first();
+        $cityId = ! is_null($newCity) ? $newCity->id : self::DEFAULT_CITY;
+        return [$regionId, $cityId];
+    }
+
     private function insertBranch(OldBranch $oldBranch, $type): void
     {
         $tempBranch = [];
@@ -211,12 +220,13 @@ class DatumImporter extends Command
                 $tempBranch[$newModelKey] = $oldBranch->{$oldModelKey};
             }
         }
+        [$regionId, $cityId] = $this->findCityRegionIdsFromOldBranch($oldBranch);
         $tempBranch['uuid'] = $this->getUuidString();
         $tempBranch['chain_id'] = ! is_null($oldBranch->chain_id) ? $oldBranch->chain_id : self::DEFAULT_CHAIN;
         $tempBranch['creator_id'] = self::CREATOR_EDITOR_ID;
         $tempBranch['editor_id'] = self::CREATOR_EDITOR_ID;
-        $tempBranch['region_id'] = self::DEFAULT_REGION;
-        $tempBranch['city_id'] = self::DEFAULT_CITY;
+        $tempBranch['region_id'] = $regionId;
+        $tempBranch['city_id'] = $cityId;
         if ($oldBranch->rating_count === 0) {
             $tempBranch['rating_count'] = ($oldBranch->rating > 0 ? 1 : 0);
         } else {
@@ -314,13 +324,20 @@ class DatumImporter extends Command
         }
     }
 
-    private function storeLocation($oldBranch, $freshBranch)
+    private function storeLocation(OldBranch $oldBranch, Branch $freshBranch)
     {
         $location = new Location();
         $location->creator_id = $location->editor_id = 1;
         $location->contactable_id = $freshBranch->id;
         $location->contactable_type = Branch::class;
         $location->type = Location::TYPE_CONTACT;
+        $location->country_id = config('defaults.country.id');
+        $location->region_id = $freshBranch->region_id;
+        $location->city_id = $freshBranch->city_id;
+        $location->address1 = $freshBranch->full_address;
+        $location->longitude = $freshBranch->longitude;
+        $location->latitude = $freshBranch->latitude;
+        $location->alias = 'Branch Owner';
         $location->name = $oldBranch->contact_name;
         $location->emails = $oldBranch->contact_email;
         $location->phones = $oldBranch->contact_phone_1;

@@ -65,7 +65,9 @@ use Illuminate\Support\Carbon;
  * @property string|null $zoho_books_account_id
  * @property-read Collection|\App\Models\OldModels\OldCategory[] $categories
  * @property-read int|null $categories_count
+ * @property-read \App\Models\OldModels\OldCity|null $city
  * @property-read \App\Models\OldModels\OldChain $oldChain
+ * @property-read \App\Models\OldModels\OldRegion|null $region
  * @property-read \App\Models\OldModels\OldBranchTranslation|null $translation
  * @property-read Collection|\App\Models\OldModels\OldBranchTranslation[] $translations
  * @property-read int|null $translations_count
@@ -138,7 +140,7 @@ class OldBranch extends OldModel
 
     protected $table = 'jo3aan_branches';
     protected $primaryKey = 'id';
-    protected $with = ['translations', 'categories'];
+    protected $with = ['translations', 'categories', 'region', 'city'];
     protected $translationForeignKey = 'branch_id';
     protected array $translatedAttributes = ['title_suffex', 'description'];
 
@@ -199,5 +201,15 @@ class OldBranch extends OldModel
     public function oldChain(): BelongsTo
     {
         return $this->belongsTo(OldChain::class, 'restaurant_id');
+    }
+
+    public function region(): BelongsTo
+    {
+        return $this->belongsTo(OldRegion::class, 'city_id');
+    }
+
+    public function city(): BelongsTo
+    {
+        return $this->belongsTo(OldCity::class, 'municipality_id');
     }
 }
