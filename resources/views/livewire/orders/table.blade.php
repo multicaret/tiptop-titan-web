@@ -3,7 +3,8 @@
         <style>
             .table-fixed-head {
                 overflow-y: auto;
-                height: {{ ($orders->count() != 0? $orders->count() * 59 :100)+59 }}px;
+                {{--height: {{ ($orders->count() != 0? $orders->count() * 59 :100)+59 }}px;--}}
+                     height: 50vh;
             }
 
             .table-fixed-head thead th {
@@ -60,7 +61,7 @@
         </div>
     </div>
     <div class="card">
-        <div class="table-fixed-head">
+        <div class="table-fixed-head" style="{{$orders->count() == 0 ?'height:150px;':''}}">
             <table class="table card-table table-striped">
                 <thead class="thead-dark">
                 <tr>
