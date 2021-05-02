@@ -298,7 +298,7 @@ class OldUser extends OldModel
 
     public function getSettingsAttribute()
     {
-        return config('defaults.user.settings');
+        return json_encode(config('defaults.user.settings'));
     }
 
     public function getMobileAppDetailsAttribute(): array
