@@ -4,7 +4,7 @@
             .table-fixed-head {
                 overflow-y: auto;
                 {{--height: {{ ($orders->count() != 0? $orders->count() * 59 :100)+59 }}px;--}}
-                     height: 50vh;
+                          height: 50vh;
             }
 
             .table-fixed-head thead th {
@@ -133,7 +133,8 @@
                                 {{--                                {{dd($order->user_id)}}--}}
                                 @if($order->user->total_number_of_orders == 1)
                                     <span data-toggle="tooltip" data-placement="top"
-                                          title="This is their first order ever!">
+                                          title="This is their first order ever!"
+                                          style="position: relative">
                                             <b>{{ $order->user->name }}</b>
                                             <lottie-player
                                                 src="{{url('animations/new.json')}}"
