@@ -87,6 +87,7 @@ class OrderDailyReport extends Model
 {
     protected $casts = [
         'day' => 'date',
+        'is_weekend' => 'boolean',
         'is_peak_this_month' => 'boolean',
         'is_nadir_this_month' => 'boolean',
         'is_peak_this_quarter' => 'boolean',
@@ -94,4 +95,12 @@ class OrderDailyReport extends Model
         'is_peak_this_year' => 'boolean',
         'is_nadir_this_year' => 'boolean',
     ];
+
+    public function adjustWeekend()
+    {
+        if ($this->day->dayOfWeek === \Carbon\Carbon::FRIDAY && ! $this->is_weekend) {
+            $this->is_weekend = true;
+            $this->save();
+        }
+    }
 }
