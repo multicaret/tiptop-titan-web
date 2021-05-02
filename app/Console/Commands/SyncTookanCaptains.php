@@ -2,7 +2,7 @@
 
 namespace App\Console\Commands;
 
-use App\Integrations\Tookan\TookanClient;
+use App\Jobs\Tookan\CreateCaptain;
 use App\Models\User;
 use Illuminate\Console\Command;
 use Illuminate\Support\Str;
@@ -45,14 +45,9 @@ class SyncTookanCaptains extends Command
         if (!$tookan_status) return 0;
 
         $role = ucwords(str_replace('-', ' ', Str::title(User::ROLE_TIPTOP_DRIVER)));
-        User::active()->role($role)->chunk(5,function ($captains){
-            foreach ($captains as $captain)
-            {
-                if(empty($captain->tookan_id))
-                    (new TookanClient())->createCaptain($captain);
-                else
-                    (new TookanClient())->updateCaptain($captain);
-
+        User::active()->limit(30)->role($role)->chunk(5, function ($captains) {
+            foreach ($captains as $captain) {
+                CreateCaptain::dispatchSync($captain);
             }
         });
 

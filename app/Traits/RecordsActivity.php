@@ -64,7 +64,7 @@ trait RecordsActivity
             'type' => $this->getActivityType($event)
         ])->delete();*/
         $this->activity()->firstOrCreate([
-            'user_id' => auth()->id(),
+            'user_id' => auth()->id() ?? 1,
             'type' => $this->getActivityType($event),
             'differences' => $differences ?? $this->getDirty()
         ]);
