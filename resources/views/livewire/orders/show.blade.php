@@ -101,7 +101,7 @@
                         <div class="col-12 pb-3 border-bottom">
                             <b>Name</b>
                             <a target="_blank" class="text-primary pull-right"
-                               href="{{route('admin.users.edit', $order->user->id)}}">
+                               href="{{route('admin.users.edit', ['role' => $order->user->role_name, 'user' => $order->user])}}">
                                 {{$order->user->name}}
                             </a>
                         </div>
@@ -151,7 +151,7 @@
                             <b>Name</b>
                             <a class="text-primary pull-right"
                                target="_blank"
-                               href="{{route('admin.branches.edit',[$order->branch->uuid,\App\Models\Branch::getCorrectChannelName($order->branch->type)])}}">
+                               href="{{route('admin.branches.edit',[$order->branch->uuid,'type' => \App\Models\Branch::getCorrectChannelName($order->branch->type)])}}">
                                 {{$order->branch->title}}
                             </a>
                         </div>
@@ -172,7 +172,8 @@
                         </div>
                         <div class="col-12 py-3">
                             <b>Address</b>
-                            <a class="text-primary pull-right" href="https://maps.google.com/?q={{$order->branch->latitude}},{{$order->branch->longitude}}"
+                            <a class="text-primary pull-right"
+                               href="https://maps.google.com/?q={{$order->branch->latitude}},{{$order->branch->longitude}}"
                                target="_blank">
                                 Open In Google Maps <i class="fas fa-external-link-alt"></i>
                             </a>

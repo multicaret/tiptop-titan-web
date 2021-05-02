@@ -135,7 +135,7 @@
                             </div>
                             <div class="col-6">
                                 @component('admin.components.form-group', ['name' => 'expired_at', 'type' => 'date'])
-                                    @slot('label', 'Expired At')
+                                    @slot('label', 'Expires At')
                                     @slot('value', $coupon->expired_at)
                                     @slot('attributes',[
                                         'min' => now()->addDay()->format('Y-m-d'),
@@ -155,7 +155,7 @@
                                         <span class="ion ion-md-close"></span>
                                       </span>
                                 </span>
-                                    <span class="switcher-label">Is include a delivery fee?</span>
+                                    <span class="switcher-label">Exclude delivery Fee?</span>
                                 </label>
                             </div>
                         </div>

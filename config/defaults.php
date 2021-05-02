@@ -39,6 +39,7 @@ return [
     'country' => [
         'id' => 107,
         'alpha3_code' => 'IRQ',
+        'phone_code' => '964',
     ],
     'region' => [
         'id' => 6,

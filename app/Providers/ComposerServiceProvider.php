@@ -432,6 +432,52 @@ class ComposerServiceProvider extends ServiceProvider
             [
                 'children' => [
                     [
+                        'title' => 'Promotions',
+                        'icon' => 'fas fa-chart-line',
+                        'routeName' => 'admin.index',
+                        'params' => ['type' => 'collapse'],
+                        'subChildren' => [
+                            [
+                                'title' => 'Coupons',
+                                'icon' => 'fas fa-ticket-alt',
+                                'routeName' => 'admin.coupons.index',
+                                'countPrimary' => Coupon::active()->count(),
+                                'countDanger' => Coupon::inactive()->count(),
+                            ],
+                        ]
+                    ]
+                ]
+            ],
+            [
+                'children' => [
+                    [
+                        'title' => 'Reports',
+                        'icon' => 'fas fa-chart-bar',
+                        'routeName' => 'admin.index',
+                        'params' => ['type' => 'collapse'],
+                        'subChildren' => [
+                            [
+                                'title' => 'Daily Report',
+                                'icon' => 'fas fa-calendar-alt',
+                                'routeName' => 'admin.reports.index',
+                            ],
+
+                        ]
+                    ]
+                ]
+            ],
+            [
+                'children' => [
+                    [
+                        'title' => 'Preferences',
+                        'icon' => 'fas fa-cog',
+                        'routeName' => 'admin.preferences.index',
+                    ],
+                ]
+            ],
+            [
+                'children' => [
+                    [
                         'title' => trans('strings.misc'),
                         'icon' => 'fas fa-list',
                         'routeName' => 'admin.index',
@@ -496,52 +542,6 @@ class ComposerServiceProvider extends ServiceProvider
 
                         ]
                     ]
-                ]
-            ],
-            [
-                'children' => [
-                    [
-                        'title' => 'Promotions',
-                        'icon' => 'fas fa-chart-line',
-                        'routeName' => 'admin.index',
-                        'params' => ['type' => 'collapse'],
-                        'subChildren' => [
-                            [
-                                'title' => 'Coupons',
-                                'icon' => 'fas fa-ticket-alt',
-                                'routeName' => 'admin.coupons.index',
-                                'countPrimary' => Coupon::active()->count(),
-                                'countDanger' => Coupon::inactive()->count(),
-                            ],
-                        ]
-                    ]
-                ]
-            ],
-            [
-                'children' => [
-                    [
-                        'title' => 'Reports',
-                        'icon' => 'fas fa-chart-bar',
-                        'routeName' => 'admin.index',
-                        'params' => ['type' => 'collapse'],
-                        'subChildren' => [
-                            [
-                                'title' => 'Daily Report',
-                                'icon' => 'fas fa-calendar-alt',
-                                'routeName' => 'admin.reports.index',
-                            ],
-
-                        ]
-                    ]
-                ]
-            ],
-            [
-                'children' => [
-                    [
-                        'title' => 'Preferences',
-                        'icon' => 'fas fa-cog',
-                        'routeName' => 'admin.preferences.index',
-                    ],
                 ]
             ],
         ]);
