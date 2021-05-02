@@ -30,12 +30,12 @@ use App\Models\Taxonomy;
 use App\Models\TaxonomyModel;
 use App\Models\TaxonomyTranslation;
 use App\Models\User;
+use App\Models\WorkingHour;
 use Illuminate\Console\Command;
 use Illuminate\Support\Collection as Collection;
 use Spatie\MediaLibrary\MediaCollections\Exceptions\FileCannotBeAdded;
 use Spatie\MediaLibrary\MediaCollections\Exceptions\FileDoesNotExist;
 use Spatie\MediaLibrary\MediaCollections\Exceptions\FileIsTooBig;
-use Spatie\Permission\Models\Role;
 use Symfony\Component\Console\Helper\ProgressBar;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
@@ -209,6 +209,7 @@ class DatumImporter extends Command
         $regionId = ! is_null($newRegion) ? $newRegion->id : self::DEFAULT_REGION;
         $newCity = City::whereTranslationLike('name', $oldBranch->city->name_en)->first();
         $cityId = ! is_null($newCity) ? $newCity->id : self::DEFAULT_CITY;
+
         return [$regionId, $cityId];
     }
 
@@ -256,6 +257,7 @@ class DatumImporter extends Command
                 }
                 BranchTranslation::insert($tempTranslation);
             }
+            $this->storeWorkingHours($oldBranch, $freshBranch);
             $this->storeLocation($oldBranch, $freshBranch);
         }
     }
@@ -947,6 +949,20 @@ class DatumImporter extends Command
         }
 
         return $status;
+    }
+
+    private function storeWorkingHours(OldBranch $oldBranch, $freshBranch)
+    {
+        foreach ($oldBranch->workingHours->loadWorkingHours() as $oldWorkingHour) {
+            $workingHour = new WorkingHour();
+            $workingHour->workable_id = $freshBranch->id;
+            $workingHour->workable_type = $oldWorkingHour->workable_type;
+            $workingHour->day = $oldWorkingHour->day;
+            $workingHour->is_day_off = $oldWorkingHour->is_day_off;
+            $workingHour->opens_at = $oldWorkingHour->opens_at;
+            $workingHour->closes_at = $oldWorkingHour->closes_at;
+            $workingHour->save();
+        }
     }
 
 }

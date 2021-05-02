@@ -214,4 +214,9 @@ class OldBranch extends OldModel
     {
         return $this->belongsTo(OldCity::class, 'municipality_id');
     }
+
+    public function workingHours()
+    {
+        return $this->hasOne(OldWorkingHoursForBranch::class, 'branch_id');
+    }
 }
