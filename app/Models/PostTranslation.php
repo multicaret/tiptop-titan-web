@@ -27,6 +27,8 @@ use Illuminate\Database\Eloquent\Model;
  * @method static Builder|PostTranslation wherePostId($value)
  * @method static Builder|PostTranslation whereTitle($value)
  * @mixin Eloquent
+ * @noinspection PhpFullyQualifiedNameUsageInspection
+ * @noinspection PhpUnnecessaryFullyQualifiedNameInspection
  */
 class PostTranslation extends Model
 {

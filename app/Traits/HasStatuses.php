@@ -61,6 +61,18 @@ trait HasStatuses
     }
 
     /**
+     * Scope a query to only include draft records.
+     *
+     * @param  Builder  $query
+     *
+     * @return Builder
+     */
+    public function scopeNotDraft($query)
+    {
+        return $query->where('status', '!=', self::STATUS_DRAFT);
+    }
+
+    /**
      * Scope a query to only include inactive records.
      *
      * @param  Builder  $query

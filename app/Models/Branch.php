@@ -135,6 +135,7 @@ use Spatie\MediaLibrary\MediaCollections\Models\Collections\MediaCollection;
  * @method static Builder|Branch newModelQuery()
  * @method static Builder|Branch newQuery()
  * @method static Builder|Branch notActive()
+ * @method static Builder|Branch notDraft()
  * @method static Builder|Branch notTranslatedIn(?string $locale = null)
  * @method static Builder|Branch orWhereTranslation(string $translationField, $value, ?string $locale = null)
  * @method static Builder|Branch orWhereTranslationLike(string $translationField, $value, ?string $locale = null)
@@ -188,6 +189,8 @@ use Spatie\MediaLibrary\MediaCollections\Models\Collections\MediaCollection;
  * @method static Builder|Branch whereWhatsappPhoneNumber($value)
  * @method static Builder|Branch withTranslation()
  * @mixin Eloquent
+ * @noinspection PhpFullyQualifiedNameUsageInspection
+ * @noinspection PhpUnnecessaryFullyQualifiedNameInspection
  */
 class Branch extends Model implements HasMedia
 {
@@ -293,13 +296,15 @@ class Branch extends Model implements HasMedia
     {
         return $this->hasMany(Location::class, 'contactable_id');
     }
+
     public function contacts(): HasMany
     {
-        return $this->hasMany(Location::class, 'contactable_id')->where('type',Location::TYPE_CONTACT);
+        return $this->hasMany(Location::class, 'contactable_id')->where('type', Location::TYPE_CONTACT);
     }
+
     public function addresses(): HasMany
     {
-        return $this->hasMany(Location::class, 'contactable_id')->where('type',Location::TYPE_ADDRESS);
+        return $this->hasMany(Location::class, 'contactable_id')->where('type', Location::TYPE_ADDRESS);
     }
 
     public function drivers(): BelongsToMany

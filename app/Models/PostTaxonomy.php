@@ -13,6 +13,8 @@ use Illuminate\Database\Eloquent\Relations\Pivot;
  * @method static Builder|PostTaxonomy newQuery()
  * @method static Builder|PostTaxonomy query()
  * @mixin Eloquent
+ * @noinspection PhpFullyQualifiedNameUsageInspection
+ * @noinspection PhpUnnecessaryFullyQualifiedNameInspection
  */
 class PostTaxonomy extends Pivot
 {

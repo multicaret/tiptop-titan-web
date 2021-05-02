@@ -30,6 +30,8 @@ use Illuminate\Support\Carbon;
  * @method static Builder|OrderAgentNote whereOrderId($value)
  * @method static Builder|OrderAgentNote whereUpdatedAt($value)
  * @mixin Eloquent
+ * @noinspection PhpFullyQualifiedNameUsageInspection
+ * @noinspection PhpUnnecessaryFullyQualifiedNameInspection
  */
 class OrderAgentNote extends Model
 {

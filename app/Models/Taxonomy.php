@@ -106,6 +106,7 @@ use Spatie\MediaLibrary\MediaCollections\Models\Media;
  * @method static Builder|Taxonomy newModelQuery()
  * @method static Builder|Taxonomy newQuery()
  * @method static Builder|Taxonomy notActive()
+ * @method static Builder|Taxonomy notDraft()
  * @method static Builder|Taxonomy notTranslatedIn(?string $locale = null)
  * @method static \Illuminate\Database\Query\Builder|Taxonomy onlyTrashed()
  * @method static Builder|Taxonomy orWhereTranslation(string $translationField, $value, ?string $locale = null)
@@ -151,6 +152,8 @@ use Spatie\MediaLibrary\MediaCollections\Models\Media;
  * @method static \Illuminate\Database\Eloquent\Builder|Node withoutSelf()
  * @method static \Illuminate\Database\Query\Builder|Taxonomy withoutTrashed()
  * @mixin Eloquent
+ * @noinspection PhpFullyQualifiedNameUsageInspection
+ * @noinspection PhpUnnecessaryFullyQualifiedNameInspection
  */
 class Taxonomy extends Node implements HasMedia, ShouldHaveTypes, TranslatableContract
 {

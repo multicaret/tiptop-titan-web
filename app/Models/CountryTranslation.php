@@ -23,6 +23,8 @@ use Illuminate\Database\Eloquent\Model;
  * @method static Builder|CountryTranslation whereName($value)
  * @method static Builder|CountryTranslation whereSlug($value)
  * @mixin Eloquent
+ * @noinspection PhpFullyQualifiedNameUsageInspection
+ * @noinspection PhpUnnecessaryFullyQualifiedNameInspection
  */
 class CountryTranslation extends Model
 {

@@ -32,6 +32,8 @@ use Illuminate\Support\Carbon;
  * @method static Builder|CartProductOption whereProductOptionObject($value)
  * @method static Builder|CartProductOption whereUpdatedAt($value)
  * @mixin Eloquent
+ * @noinspection PhpFullyQualifiedNameUsageInspection
+ * @noinspection PhpUnnecessaryFullyQualifiedNameInspection
  */
 class CartProductOption extends Model
 {

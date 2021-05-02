@@ -34,6 +34,8 @@ use Illuminate\Support\Carbon;
  * @method static Builder|OldCategoryTranslation whereTitle($value)
  * @method static Builder|OldCategoryTranslation whereUpdatedAt($value)
  * @mixin Eloquent
+ * @noinspection PhpFullyQualifiedNameUsageInspection
+ * @noinspection PhpUnnecessaryFullyQualifiedNameInspection
  */
 class OldCategoryTranslation extends Model
 {

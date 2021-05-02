@@ -44,6 +44,8 @@ use Illuminate\Support\Carbon;
  * @method static Builder|ProductOptionSelection whereUpdatedAt($value)
  * @method static Builder|ProductOptionSelection withTranslation()
  * @mixin Eloquent
+ * @noinspection PhpFullyQualifiedNameUsageInspection
+ * @noinspection PhpUnnecessaryFullyQualifiedNameInspection
  */
 class ProductOptionSelection extends Model
 {

@@ -37,6 +37,8 @@ use Illuminate\Database\Eloquent\Model;
  * @method static \Illuminate\Database\Eloquent\Builder|TookanInfo whereTookanableType($value)
  * @method static \Illuminate\Database\Eloquent\Builder|TookanInfo whereUpdatedAt($value)
  * @mixin \Eloquent
+ * @noinspection PhpFullyQualifiedNameUsageInspection
+ * @noinspection PhpUnnecessaryFullyQualifiedNameInspection
  */
 class TookanInfo extends Model
 {

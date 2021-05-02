@@ -44,6 +44,11 @@ class UserController extends Controller
                 'title' => trans('strings.last_name'),
             ],
             [
+                'data' => 'phone_number',
+                'name' => 'phone_number',
+                'visible' => false,
+            ],
+            [
                 'data' => 'username',
                 'name' => 'username',
                 'title' => trans('strings.username'),
@@ -148,7 +153,7 @@ class UserController extends Controller
             'first' => 'required|min:3|max:60',
             'email' => 'required|email|min:3|max:255|unique:users,email',
             'password' => 'required|string|min:6|confirmed',
-            'phone' => 'required|numeric|digits_between:7,15',
+            'phone' => 'required|numeric|digits_between:7,15|unique:users,phone_number',
         ]);
         $previousOrderValue = User::orderBy('order_column', 'ASC')->first();
         $order = is_null($previousOrderValue) ? 1 : $previousOrderValue->order_column + 1;
@@ -160,7 +165,7 @@ class UserController extends Controller
         $user->gender = $request->gender;
         $user->email = $request->email;
         $user->password = bcrypt($request->password);
-        $user->username = strstr($request->email, '@', 1);
+        $user->username = strstr($request->email, '@', 1).'-'.strtolower(Str::random(4));
         $user->status = $request->status;
         $user->country_id = $request->country_id;
         $user->region_id = $request->region_id;
@@ -252,7 +257,7 @@ class UserController extends Controller
         $validationRules = [
             'first' => 'required|min:3|max:60',
             'email' => 'required|email|min:3|max:255|unique:users,email,'.$user->id,
-            'phone' => 'required|numeric|digits_between:7,15',
+            'phone' => 'required|numeric|digits_between:7,15|unique:users,phone_number',
         ];
 
         if ( ! empty($request->password)) {

@@ -35,6 +35,8 @@ use Illuminate\Database\Eloquent\Model;
  * @method static Builder|MetaDataTranslation whereTwitterDescription($value)
  * @method static Builder|MetaDataTranslation whereTwitterTitle($value)
  * @mixin Eloquent
+ * @noinspection PhpFullyQualifiedNameUsageInspection
+ * @noinspection PhpUnnecessaryFullyQualifiedNameInspection
  */
 class MetaDataTranslation extends Model
 {

@@ -18,7 +18,7 @@ class ChainController extends Controller
 
     public function __construct()
     {
-        $chainType = \request('type');
+        $chainType = request('type');
         $this->middleware('permission:'.$chainType.'.permissions.index', ['only' => ['index', 'store']]);
         $this->middleware('permission:'.$chainType.'.permissions.create', ['only' => ['create', 'store']]);
         $this->middleware('permission:'.$chainType.'.permissions.edit', ['only' => ['edit', 'update']]);

@@ -39,6 +39,8 @@ use Illuminate\Support\Carbon;
  * @method static Builder|CartProductOptionSelection whereSelectableType($value)
  * @method static Builder|CartProductOptionSelection whereUpdatedAt($value)
  * @mixin Eloquent
+ * @noinspection PhpFullyQualifiedNameUsageInspection
+ * @noinspection PhpUnnecessaryFullyQualifiedNameInspection
  */
 class CartProductOptionSelection extends Pivot
 {

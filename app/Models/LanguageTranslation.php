@@ -21,6 +21,8 @@ use Illuminate\Database\Eloquent\Model;
  * @method static Builder|LanguageTranslation whereLocale($value)
  * @method static Builder|LanguageTranslation whereName($value)
  * @mixin Eloquent
+ * @noinspection PhpFullyQualifiedNameUsageInspection
+ * @noinspection PhpUnnecessaryFullyQualifiedNameInspection
  */
 class LanguageTranslation extends Model
 {

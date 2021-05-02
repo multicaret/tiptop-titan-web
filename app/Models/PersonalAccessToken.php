@@ -37,6 +37,8 @@ use Laravel\Sanctum\PersonalAccessToken as PersonalAccessTokenAlias;
  * @method static Builder|PersonalAccessToken whereTokenableType($value)
  * @method static Builder|PersonalAccessToken whereUpdatedAt($value)
  * @mixin Eloquent
+ * @noinspection PhpFullyQualifiedNameUsageInspection
+ * @noinspection PhpUnnecessaryFullyQualifiedNameInspection
  */
 class PersonalAccessToken extends PersonalAccessTokenAlias
 {

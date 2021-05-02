@@ -28,6 +28,8 @@ use Illuminate\Database\Eloquent\Model;
  * @method static Builder|OldProductTranslation whereTitle($value)
  * @method static Builder|OldProductTranslation whereUnit($value)
  * @mixin Eloquent
+ * @noinspection PhpFullyQualifiedNameUsageInspection
+ * @noinspection PhpUnnecessaryFullyQualifiedNameInspection
  */
 class OldProductTranslation extends Model
 {

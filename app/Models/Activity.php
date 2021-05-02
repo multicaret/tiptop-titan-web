@@ -36,6 +36,8 @@ use Illuminate\Support\Carbon;
  * @method static Builder|Activity whereUpdatedAt($value)
  * @method static Builder|Activity whereUserId($value)
  * @mixin Eloquent
+ * @noinspection PhpFullyQualifiedNameUsageInspection
+ * @noinspection PhpUnnecessaryFullyQualifiedNameInspection
  */
 class Activity extends Model
 {

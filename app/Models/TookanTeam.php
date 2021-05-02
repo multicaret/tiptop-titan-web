@@ -33,6 +33,7 @@ use Illuminate\Support\Carbon;
  * @method static Builder|TookanTeam newModelQuery()
  * @method static Builder|TookanTeam newQuery()
  * @method static Builder|TookanTeam notActive()
+ * @method static Builder|TookanTeam notDraft()
  * @method static Builder|TookanTeam query()
  * @method static Builder|TookanTeam whereCreatedAt($value)
  * @method static Builder|TookanTeam whereCreatorId($value)
@@ -44,6 +45,8 @@ use Illuminate\Support\Carbon;
  * @method static Builder|TookanTeam whereTookanTeamId($value)
  * @method static Builder|TookanTeam whereUpdatedAt($value)
  * @mixin Eloquent
+ * @noinspection PhpFullyQualifiedNameUsageInspection
+ * @noinspection PhpUnnecessaryFullyQualifiedNameInspection
  */
 class TookanTeam extends Model
 {

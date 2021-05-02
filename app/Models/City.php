@@ -50,6 +50,7 @@ use Spatie\MediaLibrary\MediaCollections\Models\Media;
  * @method static Builder|City newModelQuery()
  * @method static Builder|City newQuery()
  * @method static Builder|City notActive()
+ * @method static Builder|City notDraft()
  * @method static Builder|City notTranslatedIn(?string $locale = null)
  * @method static Builder|City orWhereTranslation(string $translationField, $value, ?string $locale = null)
  * @method static Builder|City orWhereTranslationLike(string $translationField, $value, ?string $locale = null)
@@ -73,6 +74,8 @@ use Spatie\MediaLibrary\MediaCollections\Models\Media;
  * @method static Builder|City whereUpdatedAt($value)
  * @method static Builder|City withTranslation()
  * @mixin Eloquent
+ * @noinspection PhpFullyQualifiedNameUsageInspection
+ * @noinspection PhpUnnecessaryFullyQualifiedNameInspection
  */
 class City extends Model implements HasMedia
 {

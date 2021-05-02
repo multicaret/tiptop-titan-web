@@ -26,6 +26,8 @@ use Illuminate\Support\Carbon;
  * @method static Builder|ProductOptionTranslation whereTitle($value)
  * @method static Builder|ProductOptionTranslation whereUpdatedAt($value)
  * @mixin Eloquent
+ * @noinspection PhpFullyQualifiedNameUsageInspection
+ * @noinspection PhpUnnecessaryFullyQualifiedNameInspection
  */
 class ProductOptionTranslation extends Model
 {

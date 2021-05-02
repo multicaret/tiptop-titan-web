@@ -26,6 +26,8 @@ use Illuminate\Support\Carbon;
  * @method static Builder|ProductOptionIngredient whereProductOptionId($value)
  * @method static Builder|ProductOptionIngredient whereUpdatedAt($value)
  * @mixin Eloquent
+ * @noinspection PhpFullyQualifiedNameUsageInspection
+ * @noinspection PhpUnnecessaryFullyQualifiedNameInspection
  */
 class ProductOptionIngredient extends Pivot
 {

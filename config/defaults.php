@@ -474,7 +474,7 @@ return [
         ],
         'orders' => [
             'index' => 'order.permissions.index',
-            'edit' => 'order.permissions.edit',
+            'show' => 'order.permissions.show',
         ],
         'deep_links' => [
             'index' => 'deep-link.permissions.index',

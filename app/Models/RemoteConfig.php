@@ -46,6 +46,8 @@ use Illuminate\Support\Carbon;
  * @method static Builder|RemoteConfig whereUpdatedAt($value)
  * @method static Builder|RemoteConfig withTranslation()
  * @mixin Eloquent
+ * @noinspection PhpFullyQualifiedNameUsageInspection
+ * @noinspection PhpUnnecessaryFullyQualifiedNameInspection
  */
 class RemoteConfig extends Model
 {

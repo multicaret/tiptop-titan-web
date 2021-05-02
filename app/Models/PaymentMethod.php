@@ -46,6 +46,7 @@ use Spatie\MediaLibrary\MediaCollections\Models\Media;
  * @method static \Illuminate\Database\Eloquent\Builder|PaymentMethod newModelQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|PaymentMethod newQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|PaymentMethod notActive()
+ * @method static \Illuminate\Database\Eloquent\Builder|PaymentMethod notDraft()
  * @method static \Illuminate\Database\Eloquent\Builder|PaymentMethod notTranslatedIn(?string $locale = null)
  * @method static Builder|PaymentMethod onlyTrashed()
  * @method static \Illuminate\Database\Eloquent\Builder|PaymentMethod orWhereTranslation(string $translationField, $value, ?string $locale = null)
@@ -68,6 +69,8 @@ use Spatie\MediaLibrary\MediaCollections\Models\Media;
  * @method static Builder|PaymentMethod withTrashed()
  * @method static Builder|PaymentMethod withoutTrashed()
  * @mixin Eloquent
+ * @noinspection PhpFullyQualifiedNameUsageInspection
+ * @noinspection PhpUnnecessaryFullyQualifiedNameInspection
  */
 class PaymentMethod extends Model implements HasMedia
 {

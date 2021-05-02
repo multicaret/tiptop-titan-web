@@ -24,6 +24,8 @@ use Illuminate\Database\Eloquent\Model;
  * @method static Builder|Timezone whereName($value)
  * @method static Builder|Timezone whereUtcOffset($value)
  * @mixin Eloquent
+ * @noinspection PhpFullyQualifiedNameUsageInspection
+ * @noinspection PhpUnnecessaryFullyQualifiedNameInspection
  */
 class Timezone extends Model
 {

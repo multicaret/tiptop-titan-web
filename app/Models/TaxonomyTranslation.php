@@ -25,6 +25,8 @@ use Illuminate\Database\Eloquent\Model;
  * @method static Builder|TaxonomyTranslation whereTaxonomyId($value)
  * @method static Builder|TaxonomyTranslation whereTitle($value)
  * @mixin Eloquent
+ * @noinspection PhpFullyQualifiedNameUsageInspection
+ * @noinspection PhpUnnecessaryFullyQualifiedNameInspection
  */
 class TaxonomyTranslation extends Model
 {

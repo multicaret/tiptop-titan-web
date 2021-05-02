@@ -23,6 +23,8 @@ use Illuminate\Database\Eloquent\Model;
  * @method static Builder|ChainTranslation whereLocale($value)
  * @method static Builder|ChainTranslation whereTitle($value)
  * @mixin Eloquent
+ * @noinspection PhpFullyQualifiedNameUsageInspection
+ * @noinspection PhpUnnecessaryFullyQualifiedNameInspection
  */
 class ChainTranslation extends Model
 {

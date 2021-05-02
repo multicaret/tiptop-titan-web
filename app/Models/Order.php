@@ -157,6 +157,8 @@ use Illuminate\Support\Carbon;
  * @method static Builder|Order withTrashed()
  * @method static Builder|Order withoutTrashed()
  * @mixin Eloquent
+ * @noinspection PhpFullyQualifiedNameUsageInspection
+ * @noinspection PhpUnnecessaryFullyQualifiedNameInspection
  */
 class Order extends Model
 {

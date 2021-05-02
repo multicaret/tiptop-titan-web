@@ -73,6 +73,8 @@ use Illuminate\Support\Carbon;
  * @method static Builder|OldLocation whereUpdatedAt($value)
  * @method static Builder|OldLocation whereUserId($value)
  * @mixin Eloquent
+ * @noinspection PhpFullyQualifiedNameUsageInspection
+ * @noinspection PhpUnnecessaryFullyQualifiedNameInspection
  */
 class OldLocation extends OldModel
 {

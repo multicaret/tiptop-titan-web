@@ -41,6 +41,8 @@ use Illuminate\Support\Carbon;
  * @method static Builder|CartProduct whereTotalOptionsPrice($value)
  * @method static Builder|CartProduct whereUpdatedAt($value)
  * @mixin Eloquent
+ * @noinspection PhpFullyQualifiedNameUsageInspection
+ * @noinspection PhpUnnecessaryFullyQualifiedNameInspection
  */
 class CartProduct extends Pivot
 {

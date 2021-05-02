@@ -133,6 +133,8 @@ use Illuminate\Support\Carbon;
  * @method static Builder|OldBranch whereZohoTiptopDeliveryItemId($value)
  * @method static Builder|OldBranch withTranslation()
  * @mixin Eloquent
+ * @noinspection PhpFullyQualifiedNameUsageInspection
+ * @noinspection PhpUnnecessaryFullyQualifiedNameInspection
  */
 class OldBranch extends OldModel
 {

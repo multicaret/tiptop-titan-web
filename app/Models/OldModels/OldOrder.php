@@ -120,6 +120,8 @@ use Illuminate\Support\Carbon;
  * @method static Builder|OldOrder whereZohoBooksInvoiceId($value)
  * @method static Builder|OldOrder whereZohoId($value)
  * @mixin Eloquent
+ * @noinspection PhpFullyQualifiedNameUsageInspection
+ * @noinspection PhpUnnecessaryFullyQualifiedNameInspection
  */
 class OldOrder extends OldModel
 {
