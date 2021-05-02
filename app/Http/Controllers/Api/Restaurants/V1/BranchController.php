@@ -95,7 +95,7 @@ class BranchController extends BaseApiController
         if (is_null($restaurant)) {
             return $this->respondNotFound();
         }
-        $restaurant->is_open_now = $request->input('status') ? Branch::STATUS_ACTIVE : Branch::STATUS_INACTIVE;
+        $restaurant->is_open_now = $request->input('status');
         $restaurant->save();
 
         return $this->respond([
