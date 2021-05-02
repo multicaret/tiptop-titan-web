@@ -50,8 +50,8 @@ class DatatableController extends AjaxController
                          ->editColumn('action', function ($user) {
                              $data = [
                                  'modelId' => $user->id,
-                                 'editAction' => route('admin.users.edit', ['role' => $user->role_name, $user]),
-                                 'deleteAction' => route('admin.users.destroy', $user),
+                                 'editAction' => route('admin.users.edit', ['role' => $user->role_name, 'user' => $user]),
+                                 'deleteAction' => route('admin.users.destroy', ['role' => $user->role_name, 'user' => $user]),
                              ];
 
                              return view('admin.components.datatables._row-actions', $data)->render();
