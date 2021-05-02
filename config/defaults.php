@@ -48,6 +48,8 @@ return [
     'city' => [
         'id' => 4,
         'english_name' => 'Italian Village',
+        'erbil_city_other_id' => 140,
+        'baghdad_city_other_id' => 141,
     ],
     'images' => [
         'brand_icon' => '/favicon.png',
