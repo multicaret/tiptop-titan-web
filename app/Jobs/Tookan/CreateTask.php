@@ -17,6 +17,7 @@ class CreateTask implements ShouldQueue
     use Dispatchable, InteractsWithQueue, Queueable, SerializesModels;
 
     public $order;
+
     /**
      * Create a new job instance.
      *
@@ -36,47 +37,49 @@ class CreateTask implements ShouldQueue
     {
         $response = (new TookanClient())->createTask($this->order);
 
+        $responseData = $response->json();
+
         if ( ! $response) {
             info('Tookan Request Error', [
-                'captain_id' => $this->user->id,
+                'order_id' => $this->order->id,
                 'response' => $response ?? 'empty'
             ]);
-        //    $this->fail();
+            //    $this->fail();
         }
+        $responseData = $response->json();
 
         if ( ! $response->successful()) {
             info('Tookan Request Error', [
-                'captain_id' => $this->user->id,
-                'response' => $response
+                'order_id' => $this->order->id,
+                'response' => $responseData
             ]);
-        //    $this->fail();
+            //    $this->fail();
 
         }
 
-        $responseData = $response->json();
-        if (  $responseData['status'] == 100) {
+        if ($responseData['status'] == 100) {
             info('Create Tookan Task Request error message', [
-                'captain_id' => $this->user->id,
-                'response' => $response->json()
+                'order_id' => $this->order->id,
+                'response' => $responseData
             ]);
             //    $this->fail();
         }
-        if (  $responseData['status'] == 201) {
+        if ($responseData['status'] == 201) {
             info('Create Tookan Task Request missing parameter', [
-                'captain_id' => $this->user->id,
-                'response' => $response->json()
+                'captain_id' => $this->order->id,
+                'response' => $responseData
             ]);
             //    $this->fail();
         }
-        if (isset($responseData['data']) && isset($response['pickup_job_id']) && isset($response['delivery_job_id']))
-        {
+        if (isset($response['data']) && isset($response['data']['pickup_job_id']) && isset($response['data']['delivery_job_id'])) {
+
             $this->order->tookanInfo()->create([
-                'job_pickup_id'          => $response['pickup_job_id'],
-                'job_delivery_id'        => $response['delivery_job_id'],
-                'delivery_tracking_link' => isset($response['delivery_tracing_link']) ? $response['delivery_tracing_link'] : NULL,
-                'pickup_tracking_link'   => isset($response['pickup_tracking_link']) ? $response['pickup_tracking_link'] : NULL,
-                'job_hash'  => isset($response['job_hash']) ? $response['job_hash'] : NULL,
-                'job_token' => isset($response['job_token']) ? $response['job_token'] : NULL,
+                'job_pickup_id' => $response['data']['pickup_job_id'],
+                'job_delivery_id' => $response['data']['delivery_job_id'],
+                'delivery_tracking_link' => isset($response['data']['delivery_tracing_link']) ? $response['data']['delivery_tracing_link'] : null,
+                'pickup_tracking_link' => isset($response['data']['pickup_tracking_link']) ? $response['data']['pickup_tracking_link'] : null,
+                'job_hash' => isset($response['data']['job_hash']) ? $response['data']['job_hash'] : null,
+                'job_token' => isset($response['data']['job_token']) ? $response['data']['job_token'] : null,
                 // 'type'      => //food or market,
             ]);
         } else {
@@ -90,8 +93,8 @@ class CreateTask implements ShouldQueue
      *
      * @return array
      */
-/*    public function middleware()
-    {
-        return [new RateLimited];
-    }*/
+    /*    public function middleware()
+        {
+            return [new RateLimited];
+        }*/
 }
