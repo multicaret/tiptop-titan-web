@@ -44,7 +44,7 @@ class AddressController extends BaseApiController
         $cities = City::whereCountryId(config('defaults.country.id'))->get();
 
 
-        $selectedRegion = Region::whereCountryId(config('defaults.country.id'))->skip(1)->first();
+        $selectedRegion = Region::find(config('defaults.region.id'));
         $selectedCity = City::whereRegionId($selectedRegion->id)->first();
 
         return $this->respond(
@@ -112,7 +112,7 @@ class AddressController extends BaseApiController
         }
 
         return $this->respondValidationFails([
-            ''=> 'There seems to be a problem'
+            '' => 'There seems to be a problem'
         ]);
     }
 
