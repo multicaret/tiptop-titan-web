@@ -69,9 +69,16 @@ class CouponController extends BaseApiController
             ]);
         }
 
-        [$isAmountValid, $totalDiscountedAmount] = $coupon->validateCouponDiscountAmount($activeCart->total);
+        [
+            $isAmountValid,
+            $totalDiscountedAmount,
+            $couponValidationMessage
+        ] = $coupon->validateCouponDiscountAmount($activeCart->total);
+
         if ( ! $isAmountValid) {
-            return $this->setStatusCode(Response::HTTP_BAD_REQUEST)->respond(null, ['Coupon is invalid']);
+            return $this->setStatusCode(Response::HTTP_BAD_REQUEST)->respond(null, [
+                'invalid' => $couponValidationMessage,
+            ]);
         }
         $isDeliveryTypeTipTop = $request->input('delivery_type') == 'tiptop';
         $deliveryFee = $branch->calculateDeliveryFee($activeCart->total, $isDeliveryTypeTipTop,

@@ -165,7 +165,7 @@ class Coupon extends Model
                 $message = 'User Cannot Use the current coupon';
             }
         } else {
-            $message = 'The exceeded the total usage amount';
+            $message = 'Coupon exceeded the total usage amount';
         }
 
         return [$isValid, $message];
@@ -175,11 +175,13 @@ class Coupon extends Model
 
     public function validateCouponDiscountAmount($amount): array
     {
+        $message = null;
         $isValid = $this->min_cart_value_allowed <= $amount;
 
         $totalDiscountedAmount = Controller::calculateDiscountedAmount($amount, $this->discount_amount,
             $this->discount_by_percentage);
         if ($this->max_allowed_discount_amount < $totalDiscountedAmount) {
+            $message = 'Maximum allowed discount amount is less than your cart total';
             $isValid = $isValid && true;
             $totalDiscountedAmount = $this->max_allowed_discount_amount;
         }
@@ -187,6 +189,7 @@ class Coupon extends Model
         return [
             $isValid,
             $totalDiscountedAmount,
+            $message,
         ];
 
     }
