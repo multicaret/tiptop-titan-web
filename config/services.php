@@ -61,6 +61,7 @@ return [
         'status' => env('TOOKAN_STATUS',false),
         'base_url' => env('TOOKAN_BASE_URL', 'https://api.tookanapp.com/v2/'),
         'api_key' => env('TOOKAN_API_KEY', '5a6a6086f44308454b472f71475b25401de1c1f923d873385f1d02'),
+        'default_team_id' => '890117',
     ],
 
 ];

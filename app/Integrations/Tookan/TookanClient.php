@@ -12,11 +12,13 @@ class TookanClient
 {
     protected $base_url;
     protected $api_key;
+    protected $default_team_id;
 
     public function __construct()
     {
         $this->base_url = config('services.tookan.base_url');
         $this->api_key = config('services.tookan.api_key');
+        $this->default_team_id = config('services.tookan.default_team_id');
 
     }
 
@@ -29,8 +31,8 @@ class TookanClient
 
     public function prepareTaskData(Order $order)
     {
-        $food_team_id = TookanTeam::where('name', 'Food')->first();
-        $market_team_id = TookanTeam::where('name', 'Market')->first();
+        $food_team_id = TookanTeam::where('name', 'like', '%Food%')->first();
+        $market_team_id = TookanTeam::where('name', 'like', '%Market%')->first();
 
         return [
             'order_id' => $order->reference_code,
@@ -40,7 +42,7 @@ class TookanClient
             'job_pickup_phone' => $order->branch->primary_phone_number,
             'job_pickup_name' => $order->branch->contacts->first()->name,
             //      'job_pickup_email'        => $order->branch->contact_email,
-            'job_pickup_address' => $order->branch->addresses()->first()->address1,
+            'job_pickup_address' => $order->branch->full_address,
             'job_pickup_latitude' => $order->branch->latitude,
             'job_pickup_longitude' => $order->branch->longitude,
             'job_pickup_datetime' => now()->addMinutes(13)->toDateTimeString(),
@@ -140,11 +142,13 @@ class TookanClient
 
     public function prepareCaptainData(User $user)
     {
+        info($user);
+
         return [
             //   'tags'              => $this->driver->tookanInfo->type == 'food' ? 'food' : 'market',
             'email' => $user->email,
             'username' => $user->username,
-            'first_name' => $user->first,
+            'first_name' => $user->first ?? $user->username,
             'last_name' => $user->last,
             'profile_url' => $user->avatar,
             'profile_thumb_url' => $user->avatar,
