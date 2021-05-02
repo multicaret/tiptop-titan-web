@@ -108,7 +108,7 @@
                                     'required',
                                     'class' => 'select2-branches w-100',
                                 ])
-                                @slot('selected', $menuCategoryData['hasBranch'] ?  $menuCategoryData['branchId'] : ($user->id? $user->branches($role): []))
+                                @slot('selected', $menuCategoryData['hasBranch'] ?  $menuCategoryData['branchId'] : ($user->id? $user->branches($role)->get(): []))
                             @endcomponent
                         </div>
                     @endif
