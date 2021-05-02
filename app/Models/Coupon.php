@@ -175,7 +175,7 @@ class Coupon extends Model
 
     public function validateCouponDiscountAmount($amount): array
     {
-        $message = null;
+        $message = '';
         $isValid = $this->min_cart_value_allowed <= $amount;
 
         $totalDiscountedAmount = Controller::calculateDiscountedAmount($amount, $this->discount_amount,
