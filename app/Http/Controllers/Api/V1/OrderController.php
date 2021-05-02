@@ -266,7 +266,7 @@ class OrderController extends BaseApiController
 
         $newOrder->coupon_discount_amount = $totalDiscountedAmount;
         $newOrder->delivery_fee = $deliveryFee;
-        $newOrder->total = $cartTotalAfterDeductCouponDiscount;
+        $newOrder->total = $activeCart->total;
         $newOrder->grand_total = $grandTotal;
         $newOrder->private_total = $newOrder->total;
         $newOrder->private_delivery_fee = $newOrder->delivery_fee;
