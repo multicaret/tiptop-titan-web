@@ -174,11 +174,11 @@ class OldLocation extends OldModel
     public function getCountryIdAttribute()
     {
         if (is_null($this->country) || empty($this->country)) {
-            return null;
+            return config('defaults.country.id');
         }
         $country = Country::whereTranslationLike('name', 'like', "%$this->country%")->first();
         if (is_null($country)) {
-            return null;
+            return config('defaults.country.id');
         }
 
         return $country->id;
@@ -189,7 +189,8 @@ class OldLocation extends OldModel
         if (is_null($this->city) || empty($this->city)) {
             return null;
         }
-        $region = Region::whereTranslationLike('name', "%$this->city%")->first();
+        $city = $this->city === 'Erbil Governorate' ? 'Erbil' : $this->city;
+        $region = Region::whereTranslationLike('name', "%$city%")->first();
         if (is_null($region)) {
             return null;
         }

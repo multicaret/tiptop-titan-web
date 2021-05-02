@@ -3,9 +3,11 @@
 namespace App\Models\OldModels;
 
 
+use App\Models\Region;
 use App\Models\User;
 use Eloquent;
 use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Support\Carbon;
 use Str;
@@ -58,11 +60,15 @@ use Str;
  * @property-read string $first_name
  * @property-read string $last_name
  * @property-read array $mobile_app_details
+ * @property-read mixed $new_city_id
+ * @property-read mixed $new_country_id
+ * @property-read mixed $region_id
  * @property-read mixed $role_name
  * @property-read mixed $settings
  * @property-read string|null $tel_code_number
  * @property-read string|null $tel_number
  * @property-read string $updated_username
+ * @property-read \App\Models\OldModels\OldRegion|null $region
  * @method static Builder|OldUser newModelQuery()
  * @method static Builder|OldUser newQuery()
  * @method static Builder|OldUser query()
@@ -131,6 +137,9 @@ class OldUser extends OldModel
             'last_name' => 'last',
             'tel_code_number' => 'phone_country_code',
             'tel_number' => 'phone_number',
+            'new_country_id' => 'country_id',
+            'region_id' => 'region_id',
+            'new_city_id' => 'city_id',
             'orders_count' => 'total_number_of_orders',
             'settings' => 'settings',
             'created_at' => 'created_at',
@@ -169,6 +178,27 @@ class OldUser extends OldModel
 //            '' => User::ROLE_CONTENT_EDITOR,
 //            '' => User::ROLE_TRANSLATOR,
         ];
+    }
+
+    public function getNewCountryIdAttribute()
+    {
+        return config('defaults.country.id');
+    }
+
+    public function region(): BelongsTo
+    {
+        return $this->belongsTo(OldRegion::class, 'city_id');
+    }
+
+    public function getRegionIdAttribute()
+    {
+        return ! is_null($this->region) ? optional(Region::whereTranslationLike('name',
+            $this->region->name_en)->first())->id : config('defaults.region.id');
+    }
+
+    public function getNewCityIdAttribute()
+    {
+        return config('defaults.city.id');
     }
 
     public function firebaseUser(): HasMany
