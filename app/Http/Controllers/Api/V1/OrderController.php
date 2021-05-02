@@ -254,7 +254,7 @@ class OrderController extends BaseApiController
                 $couponDiscountAmount = $activeCart->total - $totalDiscountedAmount;
                 $newOrder->coupon_id = $coupon->id;
 
-                CouponUsage::storeCouponUsage($activeCart - $totalDiscountedAmount, $coupon, $activeCart->id, $user->id,
+                CouponUsage::storeCouponUsage($activeCart->total - $totalDiscountedAmount, $coupon, $activeCart->id, $user->id,
                     $newOrder->id);
             }
         }
