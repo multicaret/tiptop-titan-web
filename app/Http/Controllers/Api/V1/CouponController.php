@@ -77,9 +77,7 @@ class CouponController extends BaseApiController
 
         if ( ! $isAmountValid) {
             return $this->setStatusCode(Response::HTTP_BAD_REQUEST)->respond(null, [
-                'coupon' => [
-                    'invalid' => $couponValidationMessage,
-                ]
+                'coupon' => [$couponValidationMessage]
             ]);
         }
         $isDeliveryTypeTipTop = $request->input('delivery_type') == 'tiptop';
