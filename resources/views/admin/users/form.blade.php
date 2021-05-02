@@ -61,7 +61,6 @@
                     <div class="col-md-6">
                         @component('admin.components.form-group', ['name' => 'last', 'type' => 'text'])
                             @slot('label', 'Last Name')
-                            @slot('attributes', ['required'])
                             @slot('value', $user->last)
                         @endcomponent
                     </div>
