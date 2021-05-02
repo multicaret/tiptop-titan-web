@@ -177,6 +177,9 @@ class Coupon extends Model
     {
         $message = '';
         $isValid = $this->min_cart_value_allowed <= $amount;
+        if ( ! $isValid) {
+            $message = 'Your cart is below allowed minimum';
+        }
 
         $totalDiscountedAmount = Controller::calculateDiscountedAmount($amount, $this->discount_amount,
             $this->discount_by_percentage);
