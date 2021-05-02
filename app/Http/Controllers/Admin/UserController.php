@@ -44,6 +44,11 @@ class UserController extends Controller
                 'title' => trans('strings.last_name'),
             ],
             [
+                'data' => 'phone_number',
+                'name' => 'phone_number',
+                'visible' => false,
+            ],
+            [
                 'data' => 'username',
                 'name' => 'username',
                 'title' => trans('strings.username'),
