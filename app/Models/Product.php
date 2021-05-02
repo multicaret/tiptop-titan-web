@@ -61,6 +61,7 @@ use Spatie\MediaLibrary\MediaCollections\Models\Media;
  * @property Carbon|null $custom_banner_ended_at
  * @property bool|null $is_storage_tracking_enabled
  * @property int $on_mobile_grid_tile_weight
+ * @property int|null $importer_id
  * @property int|null $cloned_from_product_id
  * @property Carbon|null $created_at
  * @property Carbon|null $updated_at
@@ -137,6 +138,7 @@ use Spatie\MediaLibrary\MediaCollections\Models\Media;
  * @method static Builder|Product whereEditorId($value)
  * @method static Builder|Product whereHeight($value)
  * @method static Builder|Product whereId($value)
+ * @method static Builder|Product whereImporterId($value)
  * @method static Builder|Product whereIsStorageTrackingEnabled($value)
  * @method static Builder|Product whereMaximumOrderableQuantity($value)
  * @method static Builder|Product whereMinimumOrderableQuantity($value)

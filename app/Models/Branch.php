@@ -59,6 +59,7 @@ use Spatie\MediaLibrary\MediaCollections\Models\Collections\MediaCollection;
  * @property string|null $whatsapp_phone_number
  * @property int|null $order_column
  * @property int $type 1:Market, 2: Food
+ * @property string|null $full_address
  * @property string|null $latitude
  * @property string|null $longitude
  * @property string $avg_rating
@@ -72,7 +73,7 @@ use Spatie\MediaLibrary\MediaCollections\Models\Collections\MediaCollection;
  * @property string|null $deleted_at
  * @property-read Collection|\App\Models\Location[] $addresses
  * @property-read int|null $addresses_count
- * @property \App\Models\Chain $chain
+ * @property-read \App\Models\Chain $chain
  * @property-read \App\Models\City|null $city
  * @property-read Collection|\App\Models\Location[] $contacts
  * @property-read int|null $contacts_count
@@ -152,6 +153,7 @@ use Spatie\MediaLibrary\MediaCollections\Models\Collections\MediaCollection;
  * @method static Builder|Branch whereFeaturedAt($value)
  * @method static Builder|Branch whereFixedDeliveryFee($value)
  * @method static Builder|Branch whereFreeDeliveryThreshold($value)
+ * @method static Builder|Branch whereFullAddress($value)
  * @method static Builder|Branch whereHasRestaurantDelivery($value)
  * @method static Builder|Branch whereHasTipTopDelivery($value)
  * @method static Builder|Branch whereId($value)

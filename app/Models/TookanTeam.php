@@ -15,6 +15,7 @@ use Illuminate\Support\Carbon;
  * @property int $id
  * @property int $creator_id
  * @property int $editor_id
+ * @property string|null $tookan_team_id
  * @property string $name
  * @property string|null $description
  * @property int $status 1:draft, 2:active, 3:Inactive, 4..n:CUSTOM
@@ -40,6 +41,7 @@ use Illuminate\Support\Carbon;
  * @method static Builder|TookanTeam whereId($value)
  * @method static Builder|TookanTeam whereName($value)
  * @method static Builder|TookanTeam whereStatus($value)
+ * @method static Builder|TookanTeam whereTookanTeamId($value)
  * @method static Builder|TookanTeam whereUpdatedAt($value)
  * @mixin Eloquent
  */

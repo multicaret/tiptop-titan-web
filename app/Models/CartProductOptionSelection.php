@@ -15,19 +15,22 @@ use Illuminate\Support\Carbon;
  *
  * @property int $id
  * @property int $cart_product_id
- * @property int $product_option_id
+ * @property int $cart_product_option_id
+ * @property int|null $product_option_id
  * @property string $selectable_type
  * @property int $selectable_id
  * @property mixed|null $selectable_object
  * @property Carbon|null $created_at
  * @property Carbon|null $updated_at
  * @property-read \App\Models\CartProduct $cartProduct
- * @property-read \App\Models\ProductOption $productOption
+ * @property-read \App\Models\CartProductOption $cartProductOption
+ * @property-read \App\Models\ProductOption|null $productOption
  * @property-read Model|\Eloquent $selectable
  * @method static Builder|CartProductOptionSelection newModelQuery()
  * @method static Builder|CartProductOptionSelection newQuery()
  * @method static Builder|CartProductOptionSelection query()
  * @method static Builder|CartProductOptionSelection whereCartProductId($value)
+ * @method static Builder|CartProductOptionSelection whereCartProductOptionId($value)
  * @method static Builder|CartProductOptionSelection whereCreatedAt($value)
  * @method static Builder|CartProductOptionSelection whereId($value)
  * @method static Builder|CartProductOptionSelection whereProductOptionId($value)

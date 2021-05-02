@@ -14,14 +14,12 @@ use Illuminate\Support\Carbon;
  *
  * @property int $id
  * @property int $cart_product_id
- * @property int $product_option_id
+ * @property int|null $product_option_id
  * @property array|null $product_option_object
  * @property Carbon|null $created_at
  * @property Carbon|null $updated_at
  * @property-read \App\Models\CartProduct $cartProduct
- * @property-read Collection|\App\Models\CartProductOptionSelection[] $ingredients
- * @property-read int|null $ingredients_count
- * @property-read \App\Models\ProductOption $productOption
+ * @property-read \App\Models\ProductOption|null $productOption
  * @property-read Collection|\App\Models\CartProductOptionSelection[] $selections
  * @property-read int|null $selections_count
  * @method static Builder|CartProductOption newModelQuery()
