@@ -246,7 +246,7 @@ class OrderController extends BaseApiController
             ] = $coupon->validateExpirationDateAndUsageCount();
 
             // Here we are passing the car total and not the new order total, because we are calculating the coupon logic again
-            [$isAmountValid, $totalDiscountedAmount] = $coupon->validateCouponDiscountAmount($newOrder->cart->total);
+            [$isAmountValid, $totalDiscountedAmount] = $coupon->validateCouponDiscountAmount($activeCart->total);
 
             $hasFreeDeliveryCoupon = $coupon->has_free_delivery;
 
@@ -254,7 +254,7 @@ class OrderController extends BaseApiController
                 $couponDiscountAmount = $activeCart->total - $totalDiscountedAmount;
                 $newOrder->coupon_id = $coupon->id;
 
-                CouponUsage::storeCouponUsage($totalDiscountedAmount, $coupon, $activeCart->id, $user->id,
+                CouponUsage::storeCouponUsage($activeCart - $totalDiscountedAmount, $coupon, $activeCart->id, $user->id,
                     $newOrder->id);
             }
         }
