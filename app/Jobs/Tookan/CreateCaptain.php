@@ -49,33 +49,33 @@ class CreateCaptain /*implements ShouldQueue*/
             ]);
             $this->fail();
         }
+        $responseData = $response->json();
 
         if ( ! $response->successful()) {
             info('Tookan Request Error', [
                 'captain_id' => $this->user->id,
-                'response' => $response
+                'response' => $responseData
             ]);
             $this->fail();
 
         }
-        $responseData = $response->json();
-        if (  $responseData['status'] == 100) {
+        if ($responseData['status'] == 100) {
             info('Tookan Request missing parameter', [
                 'captain_id' => $this->user->id,
-                'response' => $response->json()
+                'response' => $responseData
             ]);
             //    $this->fail();
         }
-        if (  $responseData['status'] == 201) {
+        if ($responseData['status'] == 201) {
             info('Tookan Request missing parameter', [
                 'captain_id' => $this->user->id,
-                'response' => $response->json()
+                'response' => $responseData
             ]);
             //    $this->fail();
 
         }
-        if (isset($responseData['data']) && isset($responseData['data']['fleet_id'])) {
-            $this->user->tookan_id = $responseData['data']['fleet_id'];
+        if (isset($response['data']) && isset($response['data']['fleet_id'])) {
+            $this->user->tookan_id = $response['data']['fleet_id'];
             $this->user->saveQuietly();
         } else {
 
@@ -86,8 +86,8 @@ class CreateCaptain /*implements ShouldQueue*/
      *
      * @return array
      */
-/*    public function middleware()
-    {
-        return [new RateLimited];
-    }*/
+    /*    public function middleware()
+        {
+            return [new RateLimited];
+        }*/
 }

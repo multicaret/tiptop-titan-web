@@ -361,4 +361,52 @@
             </div>
         </div>
     </div>
+    @if($order->is_delivery_by_tiptop && !empty($order->driver) )
+        <div class="row mt-4">
+        <div class="col-md-6">
+            <div class="card">
+                <h5 class="card-header font-weight-bold">
+                    <i class="fas fa-motorcycle"></i>&nbsp;
+                                               Delivery info
+                </h5>
+                <div class="card-body pb-0">
+                    <div class="row">
+                        <div class="col-12 pb-3 border-bottom">
+                            <b>Driver</b>
+                            <a target="_blank" class="text-primary pull-right"
+                               href="{{route('admin.users.edit', ['role' => $order->driver->role_name, 'user' => $order->driver])}}">
+                                {{$order->driver->name}}
+                            </a>
+                        </div>
+                        <div class="col-12 pb-3 border-bottom">
+                            <b>Phone</b>
+                            <a class="text-primary pull-right"
+                               href="tel:{{$order->user->phone_number}}"
+                               target="_blank">
+                                {{$order->driver->phone_number}}
+                            </a>
+                        </div>
+                        @if(!in_array($order->status,[\App\Models\Order::STATUS_DELIVERED,\App\Models\Order::STATUS_CANCELLED]) &&!empty($order->tookanInfo->pickup_tracking_link) && !empty($order->tookanInfo->delivery_tracking_link))
+                            <div class="col-12 py-3 border-bottom">
+                                <b>Pickup Tracking</b>
+                                <a class="text-primary pull-right" target="_blank"
+                                   href="{{$order->tookanInfo->pickup_tracking_link}}">
+                                    <i class="fas fa-external-link-alt text-warning"></i>
+                                </a>
+                            </div>
+                            <div class="col-12 py-3 border-bottom">
+                                <b>Delivery Tracking</b>
+                                <a class="text-primary pull-right" target="_blank"
+                                   href="{{$order->tookanInfo->delivery_tracking_link}}">
+                                    <i class="fas fa-external-link-alt text-warning"></i>
+                                </a>
+                            </div>
+                         @endif
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    @endif
+
 </div>
