@@ -2917,5 +2917,47 @@
         "name": "108 عه‌نكاوه‌",
         "locale": "ku",
         "slug": null
+    },
+    {
+        "id": 418,
+        "city_id": 140,
+        "name": "أخرى",
+        "locale": "ar",
+        "slug": null
+    },
+    {
+        "id": 419,
+        "city_id": 140,
+        "name": "Other",
+        "locale": "en",
+        "slug": null
+    },
+    {
+        "id": 420,
+        "city_id": 140,
+        "name": "أخرى",
+        "locale": "ku",
+        "slug": null
+    },
+    {
+        "id": 421,
+        "city_id": 141,
+        "name": "أخرى",
+        "locale": "ar",
+        "slug": null
+    },
+    {
+        "id": 422,
+        "city_id": 141,
+        "name": "Other",
+        "locale": "en",
+        "slug": null
+    },
+    {
+        "id": 423,
+        "city_id": 141,
+        "name": "أخرى",
+        "locale": "ku",
+        "slug": null
     }
 ]
