@@ -234,7 +234,8 @@ class OrderController extends BaseApiController
 
 
         $hasFreeDeliveryCoupon = false;
-        $couponDiscountAmount = 0;
+        $cartTotalAfterDeductCouponDiscount = 0;
+        $totalDiscountedAmount = 0;
         if ( ! is_null($couponRedeemCode = $request->input('coupon_redeem_code'))) {
             $coupon = Coupon::where('redeem_code', $couponRedeemCode)->first();
             if (is_null($coupon)) {
@@ -251,21 +252,21 @@ class OrderController extends BaseApiController
             $hasFreeDeliveryCoupon = $coupon->has_free_delivery;
 
             if ($isExpirationDateAndUsageValid && $isAmountValid) {
-                $couponDiscountAmount = $activeCart->total - $totalDiscountedAmount;
+                $cartTotalAfterDeductCouponDiscount = $activeCart->total - $totalDiscountedAmount;
                 $newOrder->coupon_id = $coupon->id;
 
-                CouponUsage::storeCouponUsage($activeCart->total - $totalDiscountedAmount, $coupon, $activeCart->id, $user->id,
+                CouponUsage::storeCouponUsage($totalDiscountedAmount, $coupon, $activeCart->id, $user->id,
                     $newOrder->id);
             }
         }
 
         $deliveryFee = $branch->calculateDeliveryFee($newOrder->total, $isDeliveryTypeTipTop, $hasFreeDeliveryCoupon,
             $address->id);
-        $grandTotal = $activeCart->total + $deliveryFee - ($couponDiscountAmount);
+        $grandTotal = $cartTotalAfterDeductCouponDiscount + $deliveryFee;
 
-        $newOrder->coupon_discount_amount = $couponDiscountAmount;
+        $newOrder->coupon_discount_amount = $totalDiscountedAmount;
         $newOrder->delivery_fee = $deliveryFee;
-        $newOrder->total = $activeCart->total;
+        $newOrder->total = $cartTotalAfterDeductCouponDiscount;
         $newOrder->grand_total = $grandTotal;
         $newOrder->private_total = $newOrder->total;
         $newOrder->private_delivery_fee = $newOrder->delivery_fee;
