@@ -136,6 +136,7 @@
                 </thead>
                 <tbody>
                 @forelse($dailyReports as $report)
+                    {{$report->adjustWeekend()}}
                     <tr>
                         <td>
                             <small class="text-muted d-block">

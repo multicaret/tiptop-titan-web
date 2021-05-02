@@ -17,6 +17,7 @@ class CreateOrderDailyReportsTable extends Migration
             $table->id();
             $table->unsignedBigInteger('region_id')->index();
             $table->date('day');
+            $table->boolean('is_weekend')->default(false);
             $table->unsignedInteger('total_grocery_orders_count');
             $table->unsignedInteger('total_food_orders_count');
             $table->unsignedInteger('total_orders_count');
