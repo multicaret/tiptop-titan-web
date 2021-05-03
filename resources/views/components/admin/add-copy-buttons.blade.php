@@ -18,7 +18,7 @@
     {{$slot}}
 
     @if ($showAddButton)
-        <a href="{{ isset($createRoute) ? $createRoute : '#' }}">
+        <a href="{{ isset($createRoute) ? $createRoute : '#' }}" target="_blank">
             <button type="button" class="btn btn-primary rounded-pill d-block">
                 <span class="ion ion-md-add"></span>
                 &nbsp;
