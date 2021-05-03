@@ -111,6 +111,10 @@ return [
             ],
         ],
         'generic_cover' => [
+            'LD' => [
+                'width' => 320,
+                'height' => 240,
+            ],
             'SD' => [
                 'width' => 640,
                 'height' => 480,
