@@ -66,6 +66,7 @@ class AddressController extends BaseApiController
             'region_id' => 'required',
             'city_id' => 'required',
             'address1' => 'required',
+            'phone_number' => 'required',
         ];
 
         $validator = validator()->make($request->all(), $rules);
@@ -76,16 +77,17 @@ class AddressController extends BaseApiController
         DB::beginTransaction();
         $userId = auth()->user()->id;
         $address = new Location();
+        $address->contactable_type = User::class;
+        $address->contactable_id = $userId;
         $address->creator_id = $userId;
         $address->editor_id = $userId;
         $address->country_id = $request->country_id ?? config('defaults.country.id');
-        $address->region_id = $request->input('region_id');
-        $address->city_id = $request->input('city_id');
-        $address->contactable_type = User::class;
-        $address->contactable_id = $userId;
+        $address->region_id = $request->region_id;
+        $address->city_id = $request->city_id;
         $address->kind = $request->kind;
         $address->address1 = $request->address1;
         $address->alias = $request->alias;
+        $address->phones = [$request->phone_number];
 //        $address->building = $request->building;
 //        $address->floor = $request->floor;
 //        $address->apartment = $request->flat;

@@ -29,8 +29,8 @@
                                 @php
                                     //if (auth()->user()->role == User::ROLE_SUPER) {
                                          $data = [
-                                             'editAction' => route('admin.users.edit', [$user, 'type' => request('type')]),
-                                             'deleteAction' => route('admin.users.destroy', $user),
+                                             'editAction' => route('admin.users.edit', ['role' => $user->role_name,$user, 'type' => request('type')]),
+                                             'deleteAction' => route('admin.users.destroy', ['role' => $user->role_name, 'user'=> $user]),
                                          ];
                                      //}
                                 @endphp

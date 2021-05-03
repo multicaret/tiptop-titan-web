@@ -234,7 +234,8 @@ class OrderController extends BaseApiController
 
 
         $hasFreeDeliveryCoupon = false;
-        $couponDiscountAmount = 0;
+        $cartTotalAfterDeductCouponDiscount = 0;
+        $totalDiscountedAmount = 0;
         if ( ! is_null($couponRedeemCode = $request->input('coupon_redeem_code'))) {
             $coupon = Coupon::where('redeem_code', $couponRedeemCode)->first();
             if (is_null($coupon)) {
@@ -245,12 +246,13 @@ class OrderController extends BaseApiController
                 $isExpirationDateAndUsageValid, $validationExpirationAndUsageMessage
             ] = $coupon->validateExpirationDateAndUsageCount();
 
-            [$isAmountValid, $totalDiscountedAmount] = $coupon->validateCouponDiscountAmount($newOrder->total);
+            // Here we are passing the car total and not the new order total, because we are calculating the coupon logic again
+            [$isAmountValid, $totalDiscountedAmount] = $coupon->validateCouponDiscountAmount($activeCart->total);
 
             $hasFreeDeliveryCoupon = $coupon->has_free_delivery;
 
             if ($isExpirationDateAndUsageValid && $isAmountValid) {
-                $couponDiscountAmount = $activeCart->total - $totalDiscountedAmount;
+                $cartTotalAfterDeductCouponDiscount = $activeCart->total - $totalDiscountedAmount;
                 $newOrder->coupon_id = $coupon->id;
 
                 CouponUsage::storeCouponUsage($totalDiscountedAmount, $coupon, $activeCart->id, $user->id,
@@ -260,9 +262,9 @@ class OrderController extends BaseApiController
 
         $deliveryFee = $branch->calculateDeliveryFee($newOrder->total, $isDeliveryTypeTipTop, $hasFreeDeliveryCoupon,
             $address->id);
-        $grandTotal = $activeCart->total + $deliveryFee - ($couponDiscountAmount);
+        $grandTotal = $cartTotalAfterDeductCouponDiscount + $deliveryFee;
 
-        $newOrder->coupon_discount_amount = $couponDiscountAmount;
+        $newOrder->coupon_discount_amount = $totalDiscountedAmount;
         $newOrder->delivery_fee = $deliveryFee;
         $newOrder->total = $activeCart->total;
         $newOrder->grand_total = $grandTotal;

@@ -257,7 +257,7 @@ class UserController extends Controller
         $validationRules = [
             'first' => 'required|min:3|max:60',
             'email' => 'required|email|min:3|max:255|unique:users,email,'.$user->id,
-            'phone' => 'required|numeric|digits_between:7,15|unique:users,phone_number',
+            'phone' => 'required|numeric|digits_between:7,15'.$user->phone_number,
         ];
 
         if ( ! empty($request->password)) {
@@ -455,7 +455,7 @@ class UserController extends Controller
         DB::commit();
 
         return redirect()
-            ->route('admin.users.edit', ['user' => $user])
+            ->route('admin.users.edit', ['role' => $user->role_name, 'user' => $user])
             ->with('message', [
                 'type' => 'Success',
                 'text' => 'Successfully Updated'

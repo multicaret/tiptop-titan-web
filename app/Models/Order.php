@@ -62,7 +62,7 @@ use Illuminate\Support\Carbon;
  * @property string|null $private_notes This column is generic, for now it has the 'discount_method_id' for orders with coupons from the old DB
  * @property Carbon|null $completed_at
  * @property string|null $customer_notes
- * @property int $status 
+ * @property int $status
  *                     0: Cancelled,
  *                     1: Draft,
  *                     6: Waiting Courier,
@@ -255,6 +255,11 @@ class Order extends Model
     public function coupon(): BelongsTo
     {
         return $this->belongsTo(Coupon::class);
+    }
+
+    public function driver(): BelongsTo
+    {
+        return $this->belongsTo(User::class);
     }
 
     public function previousOrder(): BelongsTo

@@ -265,6 +265,7 @@ class BranchController extends Controller
         $branch->region_id = isset($region) ? $region->id : null;
         $branch->latitude = $request->input('latitude');
         $branch->longitude = $request->input('longitude');
+        $branch->full_address = $request->input('full_address');
         $branch->has_tip_top_delivery = $request->input('has_tip_top_delivery') == 'on' ? 1 : 0;
         $branch->has_restaurant_delivery = $request->input('has_restaurant_delivery') == 'on' ? 1 : 0;
 

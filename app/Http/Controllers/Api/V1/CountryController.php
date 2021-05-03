@@ -23,7 +23,7 @@ class CountryController extends BaseApiController
         if ($request->has('all')) {
             $countries = Country::getAll();
         } else {
-            $countries = Country::whereIn('id', [Country::IRAQ_COUNTRY_ID, Country::TURKEY_COUNTRY_ID])->get();
+            $countries = Country::active()->get();
         }
         foreach ($countries as $country) {
             if ( ! empty($country->alpha3_code)) {

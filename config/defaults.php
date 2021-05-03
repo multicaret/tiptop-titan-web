@@ -39,6 +39,7 @@ return [
     'country' => [
         'id' => 107,
         'alpha3_code' => 'IRQ',
+        'phone_code' => '964',
     ],
     'region' => [
         'id' => 6,
@@ -47,6 +48,8 @@ return [
     'city' => [
         'id' => 4,
         'english_name' => 'Italian Village',
+        'erbil_city_other_id' => 140,
+        'baghdad_city_other_id' => 141,
     ],
     'images' => [
         'brand_icon' => '/favicon.png',

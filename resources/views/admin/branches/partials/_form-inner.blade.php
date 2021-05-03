@@ -98,7 +98,7 @@
                         <div class="row">
                             <div class="col-6">
                                 <div class="row">
-                                    <div class="col-12">
+                                    <div class="col-6">
                                         <div class="form-group">
                                             <label class="control-label">
                                                 @lang('strings.city')
@@ -125,7 +125,7 @@
                                             @enderror
                                         </div>
                                     </div>
-                                    <div class="col-12">
+                                    <div class="col-6">
                                         <div class="form-group">
                                             <label class="control-label">
                                                 Neighborhood
@@ -152,7 +152,18 @@
                                             @enderror
                                         </div>
                                     </div>
-                                    <div class="col-12">
+                                    <div class="col-md-12">
+                                        @component('admin.components.form-group', ['name' => 'full_address', 'type' => 'textarea'])
+                                            @slot('label', 'Full Address')
+                                            @slot('attributes', [
+                                                'rows' => 2,
+                                            ])
+                                            @if(! is_null($branch->id))
+                                                @slot('value', $branch->full_address)
+                                            @endif
+                                        @endcomponent
+                                    </div>
+                                    <div class="col-6">
                                         @component('admin.components.form-group', ['name' => 'latitude', 'type' => 'text'])
                                             @slot('label', 'Latitude')
                                             @slot('attributes', [
@@ -161,7 +172,7 @@
                                             @slot('value', $branch->latitude)
                                         @endcomponent
                                     </div>
-                                    <div class="col-12">
+                                    <div class="col-6">
                                         @component('admin.components.form-group', ['name' => 'longitude', 'type' => 'text'])
                                             @slot('label', 'Longitude')
                                             @slot('attributes', [
