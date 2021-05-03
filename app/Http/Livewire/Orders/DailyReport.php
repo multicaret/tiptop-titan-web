@@ -56,11 +56,11 @@ class DailyReport extends Component
         $dailyReports = $dailyReports->get();
 
         $lastWeekAvg = OrderDailyReport::retrievValues(false, $this->channel,
-            OrderDailyReport::where('updated_at', '>=',
-                Carbon::now()->subDays(7)->toDateTimeString())->get());
+            OrderDailyReport::where('day', '>=', Carbon::now()->subDays(7)->toDateString())
+                            ->get());
 
         $lastMonthAvg = OrderDailyReport::retrievValues(false, $this->channel,
-            OrderDailyReport::where('updated_at', '>=', Carbon::now()->subDays(30)->toDateTimeString())
+            OrderDailyReport::where('day', '>=', Carbon::now()->subDays(30)->toDateString())
                             ->get());
 
         $weekDaysAvg = OrderDailyReport::retrievValues(false, $this->channel,

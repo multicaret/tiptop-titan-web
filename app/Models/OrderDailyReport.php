@@ -15,12 +15,12 @@ use Illuminate\Support\Carbon;
  * @property int $region_id
  * @property Carbon $day
  * @property bool $is_weekend
- * @property int $total_grocery_orders_count
- * @property int $total_food_orders_count
- * @property int $total_orders_count
- * @property int $total_delivered_grocery_orders_count
- * @property int $total_delivered_food_orders_count
- * @property int $total_delivered_orders_count
+ * @property int $grocery_orders_count
+ * @property int $food_orders_count
+ * @property int $orders_count
+ * @property int $delivered_grocery_orders_count
+ * @property int $delivered_food_orders_count
+ * @property int $delivered_orders_count
  * @property int $average_delivery_time
  * @property float $average_orders_value
  * @property int $orders_count_between_09_12
@@ -110,29 +110,29 @@ class OrderDailyReport extends Model
     public static function retrievValues($isSum, $channel, $collection)
     {
         $collectionType = $isSum ? "sum" : "avg";
-        $totalOrderCountColumn = 'total_orders_count';
+        $totalOrderCountColumn = 'orders_count';
         if ($channel == 'grocery') {
-            $totalOrderCountColumn = 'total_grocery_orders_count';
+            $totalOrderCountColumn = 'grocery_orders_count';
         } elseif ($channel == 'food') {
-            $totalOrderCountColumn = 'total_food_orders_count';
+            $totalOrderCountColumn = 'food_orders_count';
         }
-        $totalDeliveredOrdersCount = 'total_delivered_orders_count';
+        $totalDeliveredOrdersCount = 'delivered_orders_count';
         if ($channel == 'grocery') {
-            $totalDeliveredOrdersCount = 'total_delivered_grocery_orders_count';
+            $totalDeliveredOrdersCount = 'delivered_grocery_orders_count';
         } elseif ($channel == 'food') {
-            $totalDeliveredOrdersCount = 'total_delivered_food_orders_count';
+            $totalDeliveredOrdersCount = 'delivered_food_orders_count';
         }
 
         return [
-            'total_orders_count' => [
+            'orders_count' => [
                 round($collection->$collectionType($totalOrderCountColumn)),
             ],
-            'total_delivered_orders_count' => [
+            'delivered_orders_count' => [
                 $isSum ? $collection->$collectionType($totalDeliveredOrdersCount) : Controller::percentageInRespectToTwoNumbers($collection->avg($totalDeliveredOrdersCount),
                         $collection->$collectionType($totalOrderCountColumn)).('%'),
                 $isSum ? null : $collection->sum($totalDeliveredOrdersCount),
             ],
-            'total_delivered_orders_count-2' => [
+            'delivered_orders_count-2' => [
                 $isSum ? $collection->$collectionType($totalDeliveredOrdersCount) : Controller::percentageInRespectToTwoNumbers($collection->avg($totalDeliveredOrdersCount),
                         $collection->$collectionType($totalOrderCountColumn)).('%'),
                 $isSum ? null : $collection->sum($totalDeliveredOrdersCount),
@@ -169,27 +169,27 @@ class OrderDailyReport extends Model
             ],
             'ordered_users_count' => [
                 $isSum ? $collection->$collectionType('ordered_users_count') : Controller::percentageInRespectToTwoNumbers($collection->$collectionType('ordered_users_count'),
-                    $collection->$collectionType('registered_users_count')).('%'),
+                        $collection->$collectionType('registered_users_count')).('%'),
                 $isSum ? null : $collection->sum('ordered_users_count'),
             ],
             'ios_devices_count' => [
                 $isSum ? $collection->$collectionType('ios_devices_count') : Controller::percentageInRespectToTwoNumbers($collection->$collectionType('ios_devices_count'),
-                    $collection->$collectionType('total_mobile_users_count')).('%'),
+                        $collection->$collectionType('total_mobile_users_count')).('%'),
                 $isSum ? null : $collection->sum('ios_devices_count'),
             ],
             'android_devices_count' => [
                 $isSum ? $collection->$collectionType('android_devices_count') : Controller::percentageInRespectToTwoNumbers($collection->$collectionType('android_devices_count'),
-                    $collection->$collectionType('total_mobile_users_count')).('%'),
+                        $collection->$collectionType('total_mobile_users_count')).('%'),
                 $isSum ? null : $collection->sum('android_devices_count'),
             ],
             'total_mobile_users_count' => [
                 $isSum ? $collection->$collectionType('total_mobile_users_count') : Controller::percentageInRespectToTwoNumbers($collection->$collectionType('total_mobile_users_count'),
-                    $collection->$collectionType('registered_users_count')).('%'),
+                        $collection->$collectionType('registered_users_count')).('%'),
                 $isSum ? null : $collection->sum('total_mobile_users_count'),
             ],
             'total_web_users_count' => [
                 $isSum ? $collection->$collectionType('total_web_users_count') : Controller::percentageInRespectToTwoNumbers($collection->$collectionType('total_web_users_count'),
-                    $collection->$collectionType('registered_users_count')).('%'),
+                        $collection->$collectionType('registered_users_count')).('%'),
                 $isSum ? null : $collection->sum('total_web_users_count')
             ],
         ];

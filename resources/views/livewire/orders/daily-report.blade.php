@@ -152,12 +152,12 @@
                         <td>
                             @php
                                 if($channel == 'grocery') {
-                                    $report->total_orders_count = $report->total_grocery_orders_count;
+                                    $report->orders_count = $report->grocery_orders_count;
                                 }elseif($channel == 'food') {
-                                    $report->total_orders_count = $report->total_food_orders_count;
+                                    $report->orders_count = $report->food_orders_count;
                                 }
                             @endphp
-                            {{$report->total_orders_count}}
+                            {{$report->orders_count}}
                          {{--   @if($report->is_peak_of_this_month)
                                 <div class="spinner-grow spinner-grow-sm text-success" role="status">
                                     <span class="sr-only">Loading...</span>
@@ -172,31 +172,31 @@
                         <td>
                             @php
                                 if($channel == 'grocery') {
-                                    $report->total_delivered_orders_count = $report->total_delivered_grocery_orders_count;
+                                    $report->delivered_orders_count = $report->delivered_grocery_orders_count;
                                 }elseif($channel == 'food') {
-                                    $report->total_delivered_orders_count = $report->total_delivered_food_orders_count;
+                                    $report->delivered_orders_count = $report->delivered_food_orders_count;
                                 }
                             @endphp
                             <small class="text-muted">
-                                ({{$report->total_delivered_orders_count}})
+                                ({{$report->delivered_orders_count}})
                             </small>
-                            {{\App\Http\Controllers\Controller::percentageInRespectToTwoNumbers($report->total_delivered_orders_count,$report->total_orders_count).'%'}}
+                            {{\App\Http\Controllers\Controller::percentageInRespectToTwoNumbers($report->delivered_orders_count,$report->orders_count).'%'}}
                         </td>
 
                         <td>
-                            {{--// Todo: Make this "Total Delivered Carts Value"--}}
+                            {{--// Todo: Make this "Total Delivered Cart Values"--}}
                             @php
                                 if($channel == 'grocery') {
-                                    $report->total_delivered_orders_count = $report->total_delivered_grocery_orders_count;
+                                    $report->delivered_orders_count = $report->delivered_grocery_orders_count;
                                 }elseif($channel == 'food') {
-                                    $report->total_delivered_orders_count = $report->total_delivered_food_orders_count;
+                                    $report->delivered_orders_count = $report->delivered_food_orders_count;
                                 }
                             @endphp
                             <small class="text-muted">
-                                ({{$report->total_delivered_orders_count}})
+                                ({{$report->delivered_orders_count}})
                             </small>
 
-                            {{\App\Http\Controllers\Controller::percentageInRespectToTwoNumbers($report->total_delivered_orders_count,$report->total_orders_count).'%'}}
+                            {{\App\Http\Controllers\Controller::percentageInRespectToTwoNumbers($report->delivered_orders_count,$report->orders_count).'%'}}
                         </td>
                         <td>
                             {{$report->average_delivery_time}}
