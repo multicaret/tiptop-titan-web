@@ -42,15 +42,16 @@ class DatatableController extends AjaxController
         }
         $users = User::orderBy('order_column')
                      ->role($role)
-                     ->with('branch')
                      ->selectRaw('users.*');
 
         return DataTables::of($users)
                          ->editColumn('action', function ($user) {
                              $data = [
                                  'modelId' => $user->id,
-                                 'editAction' => route('admin.users.edit', ['role' => $user->role_name, 'user' => $user]),
-                                 'deleteAction' => route('admin.users.destroy', ['role' => $user->role_name, 'user' => $user]),
+                                 'editAction' => route('admin.users.edit',
+                                     ['role' => $user->role_name, 'user' => $user]),
+                                 'deleteAction' => route('admin.users.destroy',
+                                     ['role' => $user->role_name, 'user' => $user]),
                              ];
 
                              return view('admin.components.datatables._row-actions', $data)->render();
@@ -65,13 +66,13 @@ class DatatableController extends AjaxController
                              return view('admin.components.datatables._row-actions-status', $data)
                                  ->render();
                          })
-                         ->editColumn('branch', function ($item) {
+            /*->editColumn('branch', function ($item) {
 
-                             return view('admin.components.datatables._row-reorder')->render();
-                         })
+                return view('admin.components.datatables._row-reorder')->render();
+            })*/
                          ->editColumn('order_column', function ($item) {
-                             return view('admin.components.datatables._row-reorder')->render();
-                         })
+                return view('admin.components.datatables._row-reorder')->render();
+            })
                          ->editColumn('employment', function ($item) {
                              if ($item->employment) {
                                  return User::getEmploymentsArray()[$item->employment];
