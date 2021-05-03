@@ -250,23 +250,28 @@ class ProductController extends Controller
                 'master_category' => 'required',
             ];
         }
+        $toValidateDate = [];
+        if ($request->has('is_enable_to_store_date')) {
+            $toValidateDate = [
+                'price_discount_began_at' => 'required|date',
+                'price_discount_finished_at' => 'required|date|after:price_discount_began_at',
+                'custom_banner_began_at' => 'required|date',
+                'custom_banner_ended_at' => 'required|date|after:custom_banner_began_at',
+            ];
+        }
+
         $generalValidateItems = [
             "{$defaultLocale}.title" => 'required',
             'price' => 'required',
             'type' => 'required',
-            'price_discount_began_at' => 'required|date',
-            'price_discount_finished_at' => 'required|date|after:price_discount_began_at',
-            'custom_banner_began_at' => 'required|date',
-            'custom_banner_ended_at' => 'required|date|after:custom_banner_began_at',
         ];
 
-        return array_merge($toValidateInGrocery, $generalValidateItems, $toValidateInFood);
+        return array_merge($toValidateInGrocery, $generalValidateItems, $toValidateInFood, $toValidateDate);
     }
 
     private function storeSaveLogic(Request $request, Product $product): void
     {
         DB::beginTransaction();
-
         $product->creator_id = $product->editor_id = auth()->id();
         if ($request->has('chain_id') && ! is_null($request->input('chain_id'))) {
             $product->chain_id = $request->input('chain_id');

@@ -250,41 +250,128 @@
                                         </div>
                                     </div>
                                 @endif
-                                <div class="col-3">
-                                    @component('admin.components.form-group', ['name' =>'price_discount_began_at', 'type' => 'date'])
-                                        @slot('label', trans('strings.discount_begins_at'))
-                                        @slot('value', \Carbon\Carbon::parse($product->price_discount_began_at))
-                                        @slot('attributes',[
-                                            'min' => now()->format('Y-m-d'),
-                                        ])
-                                    @endcomponent
+                                <div class="col-md-12">
+                                    <span class="">
+                                        <label class="switcher switcher-primary mr-3 my-2">
+                                            <input type="checkbox" class="switcher-input"
+                                                   v-model="isEnableToStoreDate"
+                                                   name="is_enable_to_store_date"
+                                                   :value="isEnableToStoreDate">
+                                            <span class="switcher-indicator">
+                                                <span class="switcher-yes">
+                                                    <span class="ion ion-md-checkmark"></span>
+                                                </span>
+                                                <span class="switcher-no">
+                                                    <span class="ion ion-md-close"></span>
+                                                </span>
+                                            </span>
+                                        </label>
+                                        Is enable to store date ?
+                                    </span>
                                 </div>
                                 <div class="col-3">
-                                    @component('admin.components.form-group', ['name' =>'price_discount_finished_at', 'type' => 'date'])
-                                        @slot('label', trans('strings.discount_ends_at'))
-                                        @slot('value', \Carbon\Carbon::parse($product->price_discount_finished_at))
-                                        @slot('attributes',[
-                                            'min' => now()->addDay()->format('Y-m-d'),
-                                        ])
-                                    @endcomponent
+                                    {{-- @component('admin.components.form-group', ['name' =>'price_discount_began_at', 'type' => 'date'])
+                                         @slot('label', trans('strings.discount_begins_at'))
+                                         @slot('value', \Carbon\Carbon::parse($product->price_discount_began_at))
+                                         @slot('attributes',[
+                                             'min' => now()->format('Y-m-d'),
+                                         ])
+                                     @endcomponent--}}
+                                    <div class="form-group">
+                                        <label
+                                            for="price-discount-began-at">{{trans('strings.discount_begins_at')}}</label>
+                                        <input type="date"
+                                               id="price-discount-began-at" class="form-control"
+                                               name="price_discount_began_at"
+                                               @if(!is_null($product->price_discount_began_at))
+                                               value="{{\Carbon\Carbon::parse($product->price_discount_began_at)->format(config('defaults.date.short_format'))}}"
+                                               @endif
+                                               min="{{now()->format('Y-m-d')}}"
+                                               :disabled="!isEnableToStoreDate">
+                                        <small class="form-text text-danger">
+                                            @error('price_discount_began_at')
+                                            {{$message}}
+                                            @enderror
+                                        </small>
+                                    </div>
                                 </div>
                                 <div class="col-3">
-                                    @component('admin.components.form-group', ['name' =>'custom_banner_began_at', 'type' => 'date'])
-                                        @slot('label', trans('strings.banner_begins_at'))
-                                        @slot('value', \Carbon\Carbon::parse($product->custom_banner_began_at))
-                                        @slot('attributes',[
-                                            'min' => now()->format('Y-m-d'),
-                                        ])
-                                    @endcomponent
+                                    {{--    @component('admin.components.form-group', ['name' =>'price_discount_finished_at', 'type' => 'date'])
+                                            @slot('label', trans('strings.discount_ends_at'))
+                                            @slot('value', \Carbon\Carbon::parse($product->price_discount_finished_at))
+                                            @slot('attributes',[
+                                                'min' => now()->addDay()->format('Y-m-d'),
+                                            ])
+                                        @endcomponent--}}
+                                    <div class="form-group">
+                                        <label
+                                            for="price-discount-finished-at">{{trans('strings.discount_ends_at')}}</label>
+                                        <input type="date"
+                                               id="price-discount-finished-at" class="form-control"
+                                               name="price_discount_finished_at"
+                                               @if(!is_null($product->price_discount_finished_at))
+                                               value="{{\Carbon\Carbon::parse($product->price_discount_finished_at)->format(config('defaults.date.short_format'))}}"
+                                               @endif
+                                               min="{{now()->addDay()->format('Y-m-d')}}"
+                                               :disabled="!isEnableToStoreDate">
+                                        <small class="form-text text-danger">
+                                            @error('price_discount_finished_at')
+                                            {{$message}}
+                                            @enderror
+                                        </small>
+                                    </div>
                                 </div>
                                 <div class="col-3">
-                                    @component('admin.components.form-group', ['name' =>'custom_banner_ended_at', 'type' => 'date'])
+                                    {{--  @component('admin.components.form-group', ['name' =>'custom_banner_began_at', 'type' => 'date'])
+                                          @slot('label', trans('strings.banner_begins_at'))
+                                          @slot('value', \Carbon\Carbon::parse($product->custom_banner_began_at))
+                                          @slot('attributes',[
+                                              'min' => now()->format('Y-m-d'),
+                                          ])
+                                      @endcomponent--}}
+                                    <div class="form-group">
+                                        <label
+                                            for="custom-banner-began-at">{{trans('strings.banner_begins_at')}}</label>
+                                        <input type="date"
+                                               id="custom-banner-began-at" class="form-control"
+                                               name="custom_banner_began_at"
+                                               @if(!is_null($product->custom_banner_began_at))
+                                               value="{{\Carbon\Carbon::parse($product->custom_banner_began_at)->format(config('defaults.date.short_format'))}}"
+                                               @endif
+                                               min="{{now()->format('Y-m-d')}}"
+                                               :disabled="!isEnableToStoreDate">
+                                        <small class="form-text text-danger">
+                                            @error('custom_banner_began_at')
+                                            {{$message}}
+                                            @enderror
+                                        </small>
+                                    </div>
+                                </div>
+                                <div class="col-3">
+                                    {{--@component('admin.components.form-group', ['name' =>'custom_banner_ended_at', 'type' => 'date'])
                                         @slot('label', trans('strings.banner_ends_at'))
                                         @slot('value', \Carbon\Carbon::parse($product->custom_banner_ended_at))
                                         @slot('attributes',[
                                             'min' => now()->addDay()->format('Y-m-d'),
                                         ])
-                                    @endcomponent
+                                    @endcomponent--}}
+                                    <div class="form-group">
+                                        <label
+                                            for="custom-banner-began-at">{{trans('strings.banner_ends_at')}}</label>
+                                        <input type="date"
+                                               id="custom-banner-began-at" class="form-control"
+                                               name="custom_banner_ended_at"
+                                               @if(!is_null($product->custom_banner_began_at))
+                                               value="{{\Carbon\Carbon::parse($product->custom_banner_ended_at)->format(config('defaults.date.short_format'))}}"
+                                               @endif
+                                               min="{{now()->addDay()->format('Y-m-d')}}"
+                                               :disabled="!isEnableToStoreDate">
+                                        <small class="form-text text-danger">
+                                            @error('custom_banner_ended_at')
+                                            {{$message}}
+                                            @enderror
+                                        </small>
+                                    </div>
                                 </div>
                                 <div class="col-md-3">
                                     @component('admin.components.form-group', ['name' => 'price', 'type' => 'number'])
@@ -298,7 +385,7 @@
                                 <div class="col-md-3">
                                     @component('admin.components.form-group', ['name' => 'price_discount_amount', 'type' => 'number'])
                                         @slot('label', trans('strings.discount_amount'))
-                                        @slot('attributes', ['required', 'placeholder' => '5000'])
+                                        @slot('attributes', ['placeholder' => '5000'])
                                         @if(! is_null($product->id))
                                             @slot('value', $product->price_discount_amount)
                                         @endif
@@ -495,6 +582,7 @@
                 searchTags: @json($searchTags),
                 statuses: @json(array_values(\App\Models\Product::getAllStatusesRich())),
                 isGrocery: @json($isGrocery),
+                isEnableToStoreDate: false,
             },
             beforeMount() {
                 if (!this.product.status_js) {
