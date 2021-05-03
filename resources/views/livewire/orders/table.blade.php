@@ -4,7 +4,7 @@
             .table-fixed-head {
                 overflow-y: auto;
                 {{--height: {{ ($orders->count() != 0? $orders->count() * 59 :100)+59 }}px;--}}
-                          height: 50vh;
+                height: 50vh;
             }
 
             .table-fixed-head thead th {
@@ -16,45 +16,56 @@
     <div class="card">
         <div class="card-body">
             <div class="card-text row">
-                <div class="col-2">
+                <div class="col-3">
                     <div class="form-group">
                         <label for="date-filter">Filter By Date</label>
                         <input type="date" wire:model="filterByDate" class="form-control" id="date-filter">
                     </div>
                 </div>
-                <div class="col-2">
+                <div class="col-3">
                     <div class="form-group">
                         <label for="reference-code">Order Reference Code</label>
                         <input type="text" inputmode="numeric" wire:model.debounce.300ms="referenceCode"
                                class="form-control" id="reference-code">
                     </div>
                 </div>
-                <div class="col-2">
+                <div class="col-3">
                     <div class="form-group">
                         <label for="customer-name">Customer Name</label>
                         <input type="text" wire:model.debounce.300ms="customerName"
                                class="form-control" id="customer-name">
                     </div>
                 </div>
-                <div class="col-2">
+                <div class="col-3">
                     <div class="form-group">
                         <label for="customer-email">Customer Email</label>
                         <input type="text" wire:model.debounce.300ms="customerEmail"
                                class="form-control" id="customer-email">
                     </div>
                 </div>
-                <div class="col-2">
+                <div class="col-3">
                     <div class="form-group">
                         <label for="customer-phone">Customer Phone</label>
                         <input type="text" wire:model.debounce.300ms="customerPhone"
                                class="form-control" id="customer-phone">
                     </div>
                 </div>
-                <div class="col-2">
+                <div class="col-3">
                     <div class="form-group">
                         <label for="branch-name">Branch Name</label>
                         <input type="text" wire:model.debounce.300ms="branchName"
                                class="form-control" id="branch-name">
+                    </div>
+                </div>
+                <div class="col-3">
+                    <div class="form-group">
+                        <label for="branch-name">Status</label>
+                        <select wire:model="searchByStatus" class="form-control">
+                            <option value="">All</option>
+                            <option value="{{\App\Models\Order::STATUS_NEW}}">New</option>
+                            <option value="{{\App\Models\Order::STATUS_PREPARING}}">Preparing</option>
+                            <option value="{{\App\Models\Order::STATUS_DELIVERED}}">Delivered</option>
+                        </select>
                     </div>
                 </div>
             </div>
