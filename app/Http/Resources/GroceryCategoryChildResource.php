@@ -22,10 +22,10 @@ class GroceryCategoryChildResource extends JsonResource
         $productsIds = $this->products()
                             ->where(function ($q) {
                                 $q->where('products.is_storage_tracking_enabled', false)
-                                    ->orWhere([
-                                        ['products.is_storage_tracking_enabled', true],
-                                        ['products.available_quantity', '>', 0]
-                                    ]);
+                                  ->orWhere([
+                                      ['products.is_storage_tracking_enabled', true],
+                                      ['products.available_quantity', '>', 0]
+                                  ]);
                             })
                             ->distinct('product_id')
                             ->pluck('product_id');
