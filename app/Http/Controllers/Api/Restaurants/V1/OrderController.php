@@ -28,9 +28,15 @@ class OrderController extends BaseApiController
             return $this->respondNotFound();
         }
 
+        if (str_contains($request->status, ',')) {
+            $statuses = explode(',', $request->status);
+        } else {
+            $statuses = [$request->status];
+        }
+
         $orders = Order::foods()
-                       ->whereBranchId($restaurant)
-                       ->where('status', $request->status)
+                       ->whereBranchId($restaurant->id)
+                       ->whereIn('status', $statuses)
                        ->latest()
                        ->get();
 
