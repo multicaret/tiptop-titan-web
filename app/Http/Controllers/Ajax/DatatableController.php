@@ -40,8 +40,7 @@ class DatatableController extends AjaxController
 //            $role = User::ROLE_USER;
             $role = [];
         }
-        $users = User::orderBy('order_column')
-                     ->role($role)
+        $users = User::role($role)
                      ->selectRaw('users.*');
 
         return DataTables::of($users)
@@ -70,14 +69,11 @@ class DatatableController extends AjaxController
 
                 return view('admin.components.datatables._row-reorder')->render();
             })*/
-                         ->editColumn('order_column', function ($item) {
-                return view('admin.components.datatables._row-reorder')->render();
-            })
                          ->editColumn('employment', function ($item) {
-                             if ($item->employment) {
-                                 return User::getEmploymentsArray()[$item->employment];
-                             }
-                         })
+                if ($item->employment) {
+                    return User::getEmploymentsArray()[$item->employment];
+                }
+            })
                          ->editColumn('last_logged_in_at', function ($item) {
                              if ( ! is_null($item->last_logged_in_at)) {
                                  return view('admin.components.datatables._date', [
@@ -94,7 +90,6 @@ class DatatableController extends AjaxController
                          })
                          ->rawColumns([
                              'action',
-                             'order_column',
                              'created_at',
                              'employment',
                              'last_logged_in_at',
@@ -511,7 +506,7 @@ class DatatableController extends AjaxController
             return ! is_null($item->city) ? $item->city->name : '';
             })*/
                          ->editColumn('location', function ($item) {
-                return (! is_null($item->city) ? $item->city->name : 'All Cities')." - ".(! is_null($item->region) ? $item->region->name : 'All Regions');
+                return (! is_null($item->city) ? $item->city->name : 'All Cities').' - '.(! is_null($item->region) ? $item->region->name : 'All Regions');
             })
                          ->editColumn('has_been_authenticated', function ($item) {
                              return Slide::getTargetsArray()[$item->has_been_authenticated];

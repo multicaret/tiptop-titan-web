@@ -21,7 +21,7 @@
 
     <div class="card">
         <div class="card-datatable table-responsive">
-            @component('admin.components.datatables.index')
+            @component('admin.components.datatables.index-without-ordering-ability')
                 @slot('columns' , $columns)
                 @slot('ajax_route' , route('ajax.datatables.users', request()->all()))
             @endcomponent

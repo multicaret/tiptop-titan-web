@@ -284,8 +284,6 @@ class User extends Authenticatable implements HasMedia, MustVerifyEmail
 
     protected $appends = [
         'name',
-        'avatar',
-        'cover',
     ];
 
     protected $with = [
