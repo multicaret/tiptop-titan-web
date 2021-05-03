@@ -32,6 +32,7 @@ class ProductMiniResource extends JsonResource
             ],
             'customBannerText' => $this->custom_banner_text,
             'unitText' => $this->unit_text,
+            'unit' => new UnitResource($this->unit),
             'availableQuantity' => $this->available_quantity,
             'minimumOrderableQuantity' => $this->minimum_orderable_quantity,
             'price' => [

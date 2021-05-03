@@ -37,6 +37,7 @@ class ProductResource extends JsonResource
             ],
             'customBannerText' => $this->custom_banner_text,
             'unitText' => $this->unit_text,
+            'unit' => new UnitResource($this->unit),
             'availableQuantity' => $this->available_quantity,
             'sku' => $this->sku,
             'upc' => $this->upc,
@@ -65,7 +66,6 @@ class ProductResource extends JsonResource
             'isDisabled' => $this->status == Product::STATUS_INACTIVE,
 
             'options' => ProductOptionResource::collection($this->options),
-            'unit' => new UnitResource($this->unit),
         ];
     }
 }
