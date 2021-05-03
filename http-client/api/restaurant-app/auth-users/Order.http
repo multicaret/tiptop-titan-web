@@ -1,9 +1,9 @@
 ################## Order/Checkout ##################
 ### Restaurant orders index
-GET {{host}}/{{locale}}/api/restaurants/v1/restaurants/1/orders
+GET {{host}}/{{locale}}/api/restaurants/v1/restaurants/413/orders
 Accept: application/json
 Content-Type: application/json
-Authorization: Bearer {{token}}
+Authorization: Bearer {{tokenRestaurant}}
 
 #1 cancelled
 #2 draft
@@ -13,17 +13,17 @@ Authorization: Bearer {{token}}
 #25 scheduled
 
 {
-    "status": "1"
+    "status": 20
 }
 
 ### Restaurant orders show
 GET {{host}}/{{locale}}/api/restaurants/v1/restaurants/445/orders/1
 Accept: application/json
 Content-Type: application/json
-Authorization: Bearer {{token}}
+Authorization: Bearer {{tokenRestaurant}}
 
 ### Restaurant notifications
 GET {{host}}/{{locale}}/api/restaurants/v1/restaurants/445/notifications
 Accept: application/json
 Content-Type: application/json
-Authorization: Bearer {{token}}
+Authorization: Bearer {{tokenRestaurant}}

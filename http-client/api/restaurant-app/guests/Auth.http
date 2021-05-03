@@ -4,7 +4,7 @@ Accept: application/json
 Content-Type: application/json
 
 {
-    "email": "demo@trytiptop.app",
+    "email": "owner@trytiptop.app",
     "password": "secret"
 }
 
@@ -12,4 +12,4 @@ Content-Type: application/json
 POST {{host}}/{{locale}}/api/restaurants/v1/logout
 Accept: application/json
 Content-Type: application/json
-Authorization: Bearer {{token}}
+Authorization: Bearer {{tokenRestaurant}}

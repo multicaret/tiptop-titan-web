@@ -8,7 +8,7 @@ Content-Type: application/json
 POST {{host}}/{{locale}}/api/restaurants/v1/restaurants/445
 Accept: application/json
 Content-Type: application/json
-Authorization: Bearer {{token}}
+Authorization: Bearer {{tokenRestaurant}}
 
 {
     "delivery_time": "6-7",
@@ -22,7 +22,7 @@ Authorization: Bearer {{token}}
 POST {{host}}/{{locale}}/api/restaurants/v1/restaurants/445/toggle-status
 Accept: application/json
 Content-Type: application/json
-Authorization: Bearer {{token}}
+Authorization: Bearer {{tokenRestaurant}}
 
 {
     "status": true
@@ -32,13 +32,13 @@ Authorization: Bearer {{token}}
 GET {{host}}/{{locale}}/api/restaurants/v1/restaurants/412/categories
 Accept: application/json
 Content-Type: application/json
-Authorization: Bearer {{token}}
+Authorization: Bearer {{tokenRestaurant}}
 
 ### products adjust price
 POST {{host}}/{{locale}}/api/restaurants/v1/restaurants/473/products/37462
 Accept: application/json
 Content-Type: application/json
-Authorization: Bearer {{token}}
+Authorization: Bearer {{tokenRestaurant}}
 
 {
     "price": 37
@@ -48,7 +48,7 @@ Authorization: Bearer {{token}}
 POST {{host}}/{{locale}}/api/restaurants/v1/restaurants/410/products/45815/toggle-status
 Accept: application/json
 Content-Type: application/json
-Authorization: Bearer {{token}}
+Authorization: Bearer {{tokenRestaurant}}
 
 {
     "status": true

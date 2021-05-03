@@ -4,7 +4,7 @@
 GET {{host}}/{{locale}}/api/restaurants/v1/boot
 Accept: application/json
 Content-Type: application/json
-Authorization: Bearer {{token}}
+Authorization: Bearer {{tokenRestaurant}}
 
 {
     "platform": "iOS",
@@ -15,7 +15,7 @@ Authorization: Bearer {{token}}
 POST {{host}}/{{locale}}/api/restaurants/v1/logs/create
 Accept: application/json
 Content-Type: application/json
-Authorization: Bearer {{token}}
+Authorization: Bearer {{tokenRestaurant}}
 
 {
     "data": "idk"
