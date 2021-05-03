@@ -199,11 +199,15 @@
                                                 $empty = '<p class="card-text text-muted d-inline">Empty</p>'
                                             @endphp
 
-                                            @foreach(['City'=> optional($address->region)->name,
+                                            @foreach([
+                                                    'City'=> optional($address->region)->name,
                                                     'Neighborhood'=>optional($address->city)->name,
-                                                    'Address'=>$address->address1, 'Directions'=>$address->notes,
-                                                    'Phone'=>$address->phones,
-                                                    'Latitude'=>$address->latitude, 'Longitude'=>$address->longitude]
+                                                    'Address'=>$address->address1,
+                                                    'Directions'=>$address->notes,
+                                                    'Phone'=> count($address->phones) ? $address->phones[0]: null,
+                                                    'Latitude'=>$address->latitude,
+                                                    'Longitude'=>$address->longitude
+                                            ]
                                                     as $name => $var)
                                                 <div class="card-text mb-2">
                                                     {{$name}}
