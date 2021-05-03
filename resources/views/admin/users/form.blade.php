@@ -189,7 +189,7 @@
                                                 <h4 class="card-title d-inline">{{is_null($address->alias) ? 'Empty' : $address->alias}}</h4>
                                                 <div class="text-muted d-inline float-right">
                                                     <img
-                                                        src="{{\App\Models\Location::getKindsForMaps()[$address->kind - 1]['icon']}}" alt="kind"
+                                                        src="{{\App\Models\Location::getKindsForMaps()[$address->kind]['icon']}}" alt="kind"
                                                         width="30px">
                                                 </div>
                                                 <hr>

@@ -200,7 +200,7 @@ class Location extends Model
     {
         $kindsForMaps = [];
         foreach (self::getKinds() as $id => $kind) {
-            $kindsForMaps[] = [
+            $kindsForMaps[$id] = [
                 'id' => $id,
                 'title' => $kind['title'],
                 'icon' => asset($kind['icon']),
@@ -222,7 +222,7 @@ class Location extends Model
 
     public function getActualKindAttribute()
     {
-        return self::getKindsForMaps()[$this->kind - 1];
+        return self::getKindsForMaps()[$this->kind];
     }
 
     public function getKindNameAttribute()
