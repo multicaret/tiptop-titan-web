@@ -198,13 +198,13 @@
                                             @php
                                                 $empty = '<p class="card-text text-muted d-inline">Empty</p>'
                                             @endphp
-
                                             @foreach([
                                                     'City'=> optional($address->region)->name,
                                                     'Neighborhood'=>optional($address->city)->name,
                                                     'Address'=>$address->address1,
                                                     'Directions'=>$address->notes,
-                                                    'Phone'=> count($address->phones) ? $address->phones[0]: null,
+                                                    //todo: this may not be a proper way to handle phones. Please examine it further
+                                                    'Phone'=> is_array($address->phones) && count($address->phones) ? $address->phones[0]: $address->phones,
                                                     'Latitude'=>$address->latitude,
                                                     'Longitude'=>$address->longitude
                                             ]
@@ -214,7 +214,7 @@
                                                     : {!!empty($var) ? $empty : $var!!}
                                                 </div>
                                             @endforeach
-                                            <a href="{{ route('admin.users.addresses.edit', ['user' => $user, 'address' => $address]) }}">
+                                            <a href="{{ route('admin.users.addresses.edit', ['user' => $user, 'address' => $address]) }}" target="_blank">
                                                 <button type="button"
                                                         class="btn btn-primary btn-sm rounded-pill d-block float-right">
                                                     {{trans('strings.edit')}}
