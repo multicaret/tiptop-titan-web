@@ -108,7 +108,7 @@
                                     'required',
                                     'class' => 'select2-branches w-100',
                                 ])
-                                @slot('selected', $menuCategoryData['hasBranch'] ?  $menuCategoryData['branchId'] : ($user->id? $user->branches($role)->get(): []))
+                                @slot('selected', $branchData['hasBranch'] ?  $branchData['branchId'] : ($user->id? $user->branches($role)->get(): []))
                             @endcomponent
                         </div>
                     @endif
@@ -187,8 +187,10 @@
                                         <div class="card-body">
                                             <div class="">
                                                 <h4 class="card-title d-inline">{{is_null($address->alias) ? 'Empty' : $address->alias}}</h4>
-                                                <div
-                                                    class="text-muted d-inline float-right">{{$address->kindName}}
+                                                <div class="text-muted d-inline float-right">
+                                                    <img
+                                                        src="{{\App\Models\Location::getKindsForMaps()[$address->kind - 1]['icon']}}" alt="kind"
+                                                        width="30px">
                                                 </div>
                                                 <hr>
                                             </div>
@@ -199,6 +201,7 @@
                                             @foreach(['City'=> optional($address->region)->name,
                                                     'Neighborhood'=>optional($address->city)->name,
                                                     'Address'=>$address->address1, 'Directions'=>$address->notes,
+                                                    'Phone'=>$address->phones,
                                                     'Latitude'=>$address->latitude, 'Longitude'=>$address->longitude]
                                                     as $name => $var)
                                                 <div class="card-text mb-2">

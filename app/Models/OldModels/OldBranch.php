@@ -71,6 +71,7 @@ use Illuminate\Support\Carbon;
  * @property-read \App\Models\OldModels\OldBranchTranslation|null $translation
  * @property-read Collection|\App\Models\OldModels\OldBranchTranslation[] $translations
  * @property-read int|null $translations_count
+ * @property-read \App\Models\OldModels\OldWorkingHoursForBranch|null $workingHours
  * @method static Builder|OldBranch listsTranslations(string $translationField)
  * @method static Builder|OldBranch newModelQuery()
  * @method static Builder|OldBranch newQuery()
@@ -213,5 +214,10 @@ class OldBranch extends OldModel
     public function city(): BelongsTo
     {
         return $this->belongsTo(OldCity::class, 'municipality_id');
+    }
+
+    public function workingHours()
+    {
+        return $this->hasOne(OldWorkingHoursForBranch::class, 'branch_id');
     }
 }
