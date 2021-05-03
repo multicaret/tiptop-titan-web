@@ -511,7 +511,7 @@ class DatatableController extends AjaxController
             return ! is_null($item->city) ? $item->city->name : '';
             })*/
                          ->editColumn('location', function ($item) {
-                return (! is_null($item->city) ? $item->city->name : '')." - ".(! is_null($item->region) ? $item->region->name : '');
+                return (! is_null($item->city) ? $item->city->name : 'All Cities')." - ".(! is_null($item->region) ? $item->region->name : 'All Regions');
             })
                          ->editColumn('has_been_authenticated', function ($item) {
                              return Slide::getTargetsArray()[$item->has_been_authenticated];
