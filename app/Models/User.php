@@ -289,7 +289,7 @@ class User extends Authenticatable implements HasMedia, MustVerifyEmail
     ];
 
     protected $with = [
-        'defaultAddress',
+//        'defaultAddress',
 //        'country',
     ];
 
