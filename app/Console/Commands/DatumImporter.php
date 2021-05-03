@@ -580,20 +580,7 @@ class DatumImporter extends Command
         $this->bar = $this->output->createProgressBar($oldUsers->count());
         $this->bar->start();
         foreach ($oldUsers as $oldUser) {
-            if (is_null($oldUser->email)) {
-                $uuidString = $this->getUuidString(0, 0);
-                $oldUser->email = $uuidString.'_old_user@'.parse_url(env('APP_URL'), PHP_URL_HOST);
-            }
-            $canAddThisUser = true;
-//            if ( ! is_null($oldUser->tel_number) || ! is_null($oldUser->tel_code_number)) {
-//                $phoneValidateCount = User::where('phone_number', $oldUser->tel_number)
-//                                          ->where('phone_country_code', $oldUser->tel_code_number)
-//                                          ->count();
-//                $canAddThisUser = $phoneValidateCount === 0;
-//            }
-            if ($canAddThisUser) {
-                $this->insertUser($oldUser);
-            }
+            $this->insertUser($oldUser);
             $this->bar->advance();
         }
     }

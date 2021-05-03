@@ -14,6 +14,7 @@ use Illuminate\Support\Carbon;
  * @property int $id
  * @property int $region_id
  * @property Carbon $day
+ * @property bool $is_weekend
  * @property int $total_grocery_orders_count
  * @property int $total_food_orders_count
  * @property int $total_orders_count
@@ -60,6 +61,7 @@ use Illuminate\Support\Carbon;
  * @method static Builder|OrderDailyReport whereIsPeakOfThisMonth($value)
  * @method static Builder|OrderDailyReport whereIsPeakOfThisQuarter($value)
  * @method static Builder|OrderDailyReport whereIsPeakOfThisYear($value)
+ * @method static Builder|OrderDailyReport whereIsWeekend($value)
  * @method static Builder|OrderDailyReport whereOrderedUsersCount($value)
  * @method static Builder|OrderDailyReport whereOrdersCountBetween0003($value)
  * @method static Builder|OrderDailyReport whereOrdersCountBetween0309($value)

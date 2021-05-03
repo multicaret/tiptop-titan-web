@@ -10,7 +10,6 @@ use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Support\Carbon;
-use Str;
 
 /**
  * App\Models\OldModels\OldUser
@@ -63,10 +62,11 @@ use Str;
  * @property-read mixed $new_city_id
  * @property-read mixed $new_country_id
  * @property-read mixed $region_id
- * @property-read mixed $role_name
+ * @property-read string $role_name
  * @property-read mixed $settings
  * @property-read string|null $tel_code_number
  * @property-read string|null $tel_number
+ * @property-read string|null $updated_email
  * @property-read string $updated_username
  * @property-read \App\Models\OldModels\OldRegion|null $region
  * @method static Builder|OldUser newModelQuery()
@@ -120,17 +120,29 @@ class OldUser extends OldModel
     protected $table = 'users';
     protected $primaryKey = 'id';
 
+    protected $appends = [
+        'first_name',
+        'last_name',
+    ];
+
 
     public const STATUS_ACTIVE = 'ACTIVE';
     public const STATUS_PENDING = 'PENDING';
     public const STATUS_SUSPENDED = 'SUSPENDED';
+    private int $randomUserPin;
+
+    public function __construct(array $attributes = [])
+    {
+        $this->randomUserPin = mt_rand(1000, 9999);
+        parent::__construct($attributes);
+    }
 
     public function attributesComparing(): array
     {
         $attributesKeys = [
             'id' => 'id',
             'updated_username' => 'username',
-            'email' => 'email',
+            'updated_email' => 'email',
             'password' => 'password',
             'birth_date' => 'dob',
             'first_name' => 'first',
@@ -174,10 +186,21 @@ class OldUser extends OldModel
             'CUSTOMER' => User::ROLE_USER,
             '' => User::ROLE_USER,
             null => User::ROLE_USER,
+            User::ROLE_RESTAURANT_DRIVER => User::ROLE_RESTAURANT_DRIVER,
+            User::ROLE_TIPTOP_DRIVER => User::ROLE_TIPTOP_DRIVER,
 //            '' => User::ROLE_SUPERVISOR,
 //            '' => User::ROLE_CONTENT_EDITOR,
 //            '' => User::ROLE_TRANSLATOR,
         ];
+    }
+
+    public function getUpdatedEmailAttribute(): ?string
+    {
+        if (is_null($this->email)) {
+            return 'ancient_'.$this->randomUserPin.'@'.parse_url(env('APP_URL'), PHP_URL_HOST);
+        }
+
+        return $this->email;
     }
 
     public function getNewCountryIdAttribute()
@@ -213,35 +236,45 @@ class OldUser extends OldModel
 
     public function getUpdatedUsernameAttribute(): string
     {
+        $tempString = $this->randomUserPin;
         if ( ! is_null($this->username)) {
             return $this->username;
-        } else {
-            $tempString = Str::snake($this->first_name).'_'.$this->tel_number;
-            $tempString = str_replace('_', '', $tempString);
-            if (empty($tempString)) {
-                $tempString = strstr($this->email, '@', 1);
-            }
-
-            if (User::whereUsername($tempString)->count()) {
-                $tempString = $this->getUuidString(15);
-            }
-
-            return $tempString;
         }
+
+        if (is_null($this->username) && ! is_null($this->email)) {
+            $tempString = strstr($this->email, '@', 1);
+        }
+
+        if ($tempString === $this->randomUserPin || User::whereUsername($tempString)->count()) {
+            $tempString = \Str::of($this->role_name.'_'.$tempString)->snake()->jsonSerialize();
+        }
+
+        return $tempString;
     }
+
+    private function getSplitName(): array
+    {
+        $stringable = \Str::of($this->name);
+        $faker = \Faker\Factory::create();
+        if ($stringable->isEmpty()) {
+            return [$faker->firstName, $faker->lastName];
+        }
+        if ( ! $stringable->contains(' ')) {
+            return [$this->name, $faker->lastName];
+        }
+
+        return [$stringable->beforeLast(' ')->jsonSerialize(), $stringable->afterLast(' ')->jsonSerialize()];
+    }
+
 
     public function getFirstNameAttribute(): string
     {
-        return trim(preg_replace('#'.preg_quote($this->last_name, '#').'#', '', $this->name));
+        return $this->getSplitName()[0];
     }
 
     public function getLastNameAttribute(): string
     {
-        if ((strpos($this->name, ' ') === false)) {
-            return '';
-        } else {
-            return preg_replace('#.*\s([\w-]*)$#', '$1', $this->name);
-        }
+        return $this->getSplitName()[1];
     }
 
     public function getTelCodeNumberAttribute(): ?string
@@ -251,7 +284,7 @@ class OldUser extends OldModel
         $countyCodeAttempts = ['+90', '+964', '+963', '+null'];
         foreach ($countyCodeAttempts as $tempCountryCode) {
             if ((strpos($phoneNumber, $tempCountryCode) !== false)) {
-                $countyCode = Str::substr($tempCountryCode, 1);
+                $countyCode = \Str::substr($tempCountryCode, 1);
                 break;
             }
         }
@@ -266,7 +299,7 @@ class OldUser extends OldModel
         $countyCodeAttempts = ['+90', '+964', '+963', '+null'];
         foreach ($countyCodeAttempts as $tempCountryCode) {
             if ((strpos($phoneNumber, $tempCountryCode) !== false)) {
-                $countyCode = Str::substr($tempCountryCode, 1);
+                $countyCode = \Str::substr($tempCountryCode, 1);
                 break;
             }
         }
@@ -289,11 +322,18 @@ class OldUser extends OldModel
         return $phoneNumber;
     }
 
-    public function getRoleNameAttribute()
+    public function getRoleNameAttribute(): string
     {
-        $roleNameSnakeCase = self::roleComparing()[$this->type];
 
-        return Str::title(str_replace('-', ' ', $roleNameSnakeCase));
+        $type = $this->type;
+        if ($type === 'DRIVER' && $this->sub_type !== 'APP_DRIVER') {
+            $type = User::ROLE_RESTAURANT_DRIVER;
+        } elseif ($type === 'DRIVER' && $this->sub_type === 'APP_DRIVER') {
+            $type = User::ROLE_TIPTOP_DRIVER;
+        }
+        $roleNameSnakeCase = self::roleComparing()[$type];
+
+        return \Str::title(str_replace('-', ' ', $roleNameSnakeCase));
     }
 
     public function getSettingsAttribute()
