@@ -17,7 +17,7 @@ class CountryRegionCityController extends AjaxController
      */
     public function index(Country $country, Region $region)
     {
-        return $region->cities->toArray();
+        return $region->cities()->active()->get();
     }
 
     /**
