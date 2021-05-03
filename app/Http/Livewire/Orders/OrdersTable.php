@@ -23,6 +23,7 @@ class OrdersTable extends Component
     public $customerPhone;
     public $branchName;
     public $branchId;
+    public $searchByStatus;
 
 
     protected $queryString = ['branchId'];
@@ -84,9 +85,12 @@ class OrdersTable extends Component
             });
         } elseif ( ! is_null($this->branchId)) {
             $orders = $orders->whereBranchId($this->branchId);
+        } elseif ( ! is_null($this->searchByStatus)) {
+            $orders = $orders->whereStatus($this->searchByStatus)->latest()->take(20);
         } else {
             $shouldSearchByDate = true;
         }
+
         if ($shouldSearchByDate) {
             $orders = $orders->whereDate('created_at', $this->filterByDate);
         }
