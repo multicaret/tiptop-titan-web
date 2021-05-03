@@ -523,6 +523,7 @@ class DatatableController extends AjaxController
                          })
                          ->editColumn('thumbnail', function (Slide $item) {
                              $image = config('defaults.images.slider_image');
+                             $imageLarge = config('defaults.images.slider_image');
                              $altTag = null;
                              $translations = $item->translations->filter(function ($translation) {
                                  return $translation->image != url(config('defaults.images.slider_image'));
@@ -530,11 +531,14 @@ class DatatableController extends AjaxController
 
                              if ( ! is_null($translations)) {
                                  $image = $translations->image;
+                                 $imageLarge = $translations->image_full;
                                  $altTag = $translations->alt_tag;
                              }
 
                              return view('admin.components.datatables._thumbnails', [
+                                 'id' => $item->id,
                                  'imageUrl' => $image,
+                                 'imageUrlLarge' => $imageLarge,
                                  'tooltip' => $altTag,
                              ])->render();
                          })
@@ -796,7 +800,9 @@ class DatatableController extends AjaxController
                          })
                          ->editColumn('image', function ($product) {
                              return view('admin.components.datatables._thumbnails', [
+                                 'id' => $product->id,
                                  'imageUrl' => $product->cover,
+                                 'imageUrlLarge' => $product->cover_full,
                                  'tooltip' => $product->title,
                                  'style' => 'height:120px',
                              ])->render();
