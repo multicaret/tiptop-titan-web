@@ -13,7 +13,7 @@ Authorization: Bearer {{tokenRestaurant}}
 #25 scheduled
 
 {
-    "status": 20
+    "status": "20,2"
 }
 
 ### Restaurant orders show
