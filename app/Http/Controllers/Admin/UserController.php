@@ -101,8 +101,8 @@ class UserController extends Controller
         } else {
             $columns = array_merge($columns, [
                 [
-                    'data' => 'team.name',
-                    'name' => 'team.name',
+                    'data' => 'team',
+                    'name' => 'team',
                     'title' => trans('strings.team')
                 ],
             ]);
