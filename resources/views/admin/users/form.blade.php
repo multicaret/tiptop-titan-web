@@ -61,7 +61,6 @@
                     <div class="col-md-6">
                         @component('admin.components.form-group', ['name' => 'last', 'type' => 'text'])
                             @slot('label', 'Last Name')
-                            @slot('attributes', ['required'])
                             @slot('value', $user->last)
                         @endcomponent
                     </div>
@@ -109,7 +108,7 @@
                                     'required',
                                     'class' => 'select2-branches w-100',
                                 ])
-                                @slot('selected', $menuCategoryData['hasBranch'] ?  $menuCategoryData['branchId'] : ($user->id? $user->branches($role): []))
+                                @slot('selected', $menuCategoryData['hasBranch'] ?  $menuCategoryData['branchId'] : ($user->id? $user->branches($role)->get(): []))
                             @endcomponent
                         </div>
                     @endif

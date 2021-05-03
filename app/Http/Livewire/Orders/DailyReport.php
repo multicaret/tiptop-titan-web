@@ -55,8 +55,28 @@ class DailyReport extends Component
         }
         $dailyReports = $dailyReports->get();
 
+        $lastWeekAvg = OrderDailyReport::retrievValues(false, $this->channel,
+            OrderDailyReport::where('updated_at', '>=',
+                Carbon::now()->subDays(7)->toDateTimeString())->get());
+
+        $lastMonthAvg = OrderDailyReport::retrievValues(false, $this->channel,
+            OrderDailyReport::where('updated_at', '>=', Carbon::now()->subDays(30)->toDateTimeString())
+                            ->get());
+
+        $weekDaysAvg = OrderDailyReport::retrievValues(false, $this->channel,
+            OrderDailyReport::where('is_weekend', false)
+                            ->get());
+
+        $weekendsAvg = OrderDailyReport::retrievValues(false, $this->channel,
+            OrderDailyReport::where('is_weekend', true)
+                            ->get());
+
+        $totalOrders = OrderDailyReport::retrievValues(true, $this->channel, OrderDailyReport::get());
+
         $regions = Region::active()->get();
 
-        return view('livewire.orders.daily-report', compact('dailyReports', 'regions'));
+        return view('livewire.orders.daily-report',
+            compact('dailyReports', 'regions', 'lastWeekAvg', 'lastMonthAvg',
+                'weekDaysAvg', 'weekendsAvg', 'totalOrders'));
     }
 }
