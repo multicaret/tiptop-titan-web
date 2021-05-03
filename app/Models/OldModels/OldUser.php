@@ -241,9 +241,9 @@ class OldUser extends OldModel
             return $this->username;
         }
 
-        if (is_null($this->username) && ! is_null($this->email)) {
+        /*if (is_null($this->username) && ! is_null($this->email)) {
             $tempString = strstr($this->email, '@', 1);
-        }
+        }*/
 
         if ($tempString === $this->randomUserPin || User::whereUsername($tempString)->count()) {
             $tempString = \Str::of($this->role_name.'_'.$tempString)->snake()->jsonSerialize();
