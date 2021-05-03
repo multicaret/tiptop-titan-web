@@ -316,7 +316,13 @@ class Controller extends BaseController
 
     public static function percentageInRespectToTwoNumbers($number1, $number2, $precision = 2)
     {
-        return (double) number_format($number1 / $number2 * 100, $precision);
+        if ( ! is_null($number2) && $number2 != 0) {
+            $result = $number1 / $number2 * 100;
+        } else {
+            $result = 0;
+        }
+
+        return (double) number_format($result, $precision);
     }
 
     /**
