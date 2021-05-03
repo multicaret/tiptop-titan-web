@@ -180,7 +180,7 @@
                 <h4 class="card-header">Addresses</h4>
                 <div class="card-body">
                     <div class="row">
-                        @if(!empty($user->addresses->count()))
+                        @if($user->addresses()->count())
                             @foreach($user->addresses as $address)
                                 <div class="col-4">
                                     <div class="card mb-3 border-light">
@@ -189,7 +189,8 @@
                                                 <h4 class="card-title d-inline">{{is_null($address->alias) ? 'Empty' : $address->alias}}</h4>
                                                 <div class="text-muted d-inline float-right">
                                                     <img
-                                                        src="{{\App\Models\Location::getKindsForMaps()[$address->kind]['icon']}}" alt="kind"
+                                                        src="{{\App\Models\Location::getKindsForMaps()[$address->kind]['icon']}}"
+                                                        alt="kind"
                                                         width="30px">
                                                 </div>
                                                 <hr>
