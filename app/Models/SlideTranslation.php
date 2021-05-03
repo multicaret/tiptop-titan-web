@@ -46,12 +46,7 @@ class SlideTranslation extends Model implements HasMedia
 
     public function getImageAttribute()
     {
-        $image = config('defaults.images.slider_image');
-        if ( ! is_null($media = $this->getFirstMedia('image'))) {
-            $image = $media->getUrl('HD');
-        }
-
-        return url($image);
+        return $this->getFirstMediaUrl('image', 'HD');
     }
 
     public function getImageFullAttribute()
