@@ -5,7 +5,6 @@ namespace App\Http\Resources;
 use App\Http\Controllers\Controller;
 use App\Models\Branch;
 use App\Models\Currency;
-use App\Models\Place;
 use App\Models\WorkingHour;
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
@@ -19,11 +18,12 @@ class BranchResource extends JsonResource
      */
     public function toArray($request)
     {
-        $workingHours = WorkingHour::retrieve($this);
+        $workingHours = WorkingHour::retrieve($this->resource);
 
         if ( ! $this->is_open_now) {
             $workingHours['isOpen'] = false;
         }
+
         $isFavorited = auth('sanctum')->check() ? $this->isFavoritedBy(auth('sanctum')->user()) : false;
 
         return [

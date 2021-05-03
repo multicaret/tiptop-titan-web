@@ -19,8 +19,7 @@ class FoodBranchResource extends JsonResource
      */
     public function toArray($request)
     {
-
-        $workingHours = WorkingHour::retrieve($this);
+        $workingHours = WorkingHour::retrieve($this->resource);
 
         if ( ! $this->is_open_now) {
             $workingHours['isOpen'] = false;

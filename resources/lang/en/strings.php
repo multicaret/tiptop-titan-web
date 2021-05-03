@@ -179,13 +179,13 @@ return [
     'twitter_description' => 'Twitter Description',
 
 
+    'working_day_0' => 'Sunday',
     'working_day_1' => 'Monday',
     'working_day_2' => 'Tuesday',
     'working_day_3' => 'Wednesday',
     'working_day_4' => 'Thursday',
     'working_day_5' => 'Friday',
     'working_day_6' => 'Saturday',
-    'working_day_7' => 'Sunday',
 
     'start_date' => 'Start Date',
     'expire_date' => 'End Date',
