@@ -64,7 +64,7 @@ class DatumImporter extends Command
     public const CHOICE_ADDRESSES = 'addresses';
     public const CHOICE_ORDERS = 'orders';
     public const CHOICE_FOR_SERVER = 'for-server';
-    public const CHOICE_INGREDIENTS_CATEGORIES = 'ingredients-categories';
+    public const CHOICE_TAXONOMIES = 'taxonomies';
     public const CHOICE_REGIONS_CITIES = 'regions-cities';
     private ProgressBar $bar;
     private Collection $foodCategories;
@@ -89,7 +89,7 @@ class DatumImporter extends Command
             self::CHOICE_USERS,
             self::CHOICE_ADDRESSES,
             self::CHOICE_ORDERS,
-            self::CHOICE_INGREDIENTS_CATEGORIES,
+            self::CHOICE_TAXONOMIES,
             self::CHOICE_CATEGORY_IMAGES,
             self::CHOICE_PRODUCT_IMAGES,
             self::CHOICE_CHAIN_IMAGES,
@@ -132,8 +132,8 @@ class DatumImporter extends Command
             $this->importOrders();
         } elseif ($this->modelName === self::CHOICE_FOR_SERVER) {
             $this->runServerCommands();
-        } elseif ($this->modelName === self::CHOICE_INGREDIENTS_CATEGORIES) {
-            $this->ingredientsCategories();
+        } elseif ($this->modelName === self::CHOICE_TAXONOMIES) {
+            $this->importTaxonomies();
         } elseif ($this->modelName === self::CHOICE_REGIONS_CITIES) {
             $this->importRegionsCities();
         }
@@ -162,7 +162,7 @@ class DatumImporter extends Command
         $this->handle();
         $this->modelName = self::CHOICE_ORDERS;
         $this->handle();
-        $this->modelName = self::CHOICE_INGREDIENTS_CATEGORIES;
+        $this->modelName = self::CHOICE_TAXONOMIES;
         $this->handle();
         $this->modelName = '';
     }
@@ -299,7 +299,7 @@ class DatumImporter extends Command
         $tempProduct['type'] = $type;
         $tempProduct['available_quantity'] = 100;
         $tempProduct['is_storage_tracking_enabled'] = 0;
-        $tempProduct['price_discount_by_percentage'] = $oldProduct->discount_type === OldProduct::TYPE_DISCOUNT_PERCENTAGE;
+        $tempProduct['price_discount_by_percentage'] = $oldProduct->discount_type === OldProduct::DISCOUNT_PERCENTAGE;
         $isInserted = Product::insert($tempProduct);
         if ($isInserted) {
             $freshProduct = Product::find($oldProduct->id);
@@ -509,7 +509,8 @@ class DatumImporter extends Command
         $this->newLine();
         foreach ($oldChains as $oldChain) {
             $oldChain->load(['products.categories']);
-            foreach ($oldChain->products->pluck('categories') as $productIndex => $categories) {
+            $oldProducts = $oldChain->products()->where('type', OldProduct::TYPE_MEALS)->get();
+            foreach ($oldProducts->pluck('categories') as $productIndex => $categories) {
                 foreach ($categories as $category) {
                     if ( ! $this->foodCategories->has($category->id)) {
                         $this->foodCategories = $this->foodCategories->put($category->id, $category->id);
@@ -519,7 +520,10 @@ class DatumImporter extends Command
                     }
                 }
             }
-            foreach ($oldChain->products as $oldProduct) {
+            $this->newLine();
+            $this->line('Start import Food Products. Total: '. $oldProducts->count());
+            $this->newLine();
+            foreach ($oldProducts as $oldProduct) {
                 $oldProduct->chain_id = $oldChain->id;
                 $oldProduct->branch_id = '';
                 $this->insertProducts($oldProduct, Product::CHANNEL_FOOD_OBJECT);
@@ -743,10 +747,23 @@ class DatumImporter extends Command
         return $collection->map($generateCollection)->all();
     }
 
-
-    private function ingredientsCategories()
+    private function importTaxonomies()
     {
         $super = User::find(1);
+        $taxonomies = $this->getTaxonomiesRaw();
+        foreach ($taxonomies as $item) {
+            try {
+                $this->createTaxonomy($item, $super);
+            } catch (\Exception $e) {
+                \Log::error($e->getMessage().'=>'.json_encode($item));
+            }
+        }
+        $this->ingredientsCategories($super);
+    }
+
+
+    private function ingredientsCategories(User $super)
+    {
         $ingredientsRawData = file_get_contents(storage_path('seeders/extras/ingredients.json'));
         $checkJsonFile = $this->removeBOM($ingredientsRawData);
         $checkJsonFile = json_decode($checkJsonFile, true);
@@ -963,6 +980,118 @@ class DatumImporter extends Command
             $workingHour->closes_at = $oldWorkingHour->closes_at;
             $workingHour->save();
         }
+    }
+
+    private function getTaxonomiesRaw(): array
+    {
+        return [
+            [
+                'type' => Taxonomy::TYPE_POST_CATEGORY,
+                'translations' => [
+                    [
+                        'locale' => 'en',
+                        'title' => 'General',
+                    ],
+                    [
+                        'locale' => 'ar',
+                        'title' => 'العام',
+                    ],
+                    [
+                        'locale' => 'ku',
+                        'title' => 'Genal',
+                    ]
+                ]
+            ],
+            [
+                'type' => Taxonomy::TYPE_UNIT,
+                'translations' => [
+                    [
+                        'locale' => 'en',
+                        'title' => 'Piece',
+                    ],
+                    [
+                        'locale' => 'ar',
+                        'title' => 'قطعة',
+                    ],
+                    [
+                        'locale' => 'ku',
+                        'title' => 'قطعة',
+                    ]
+                ]
+            ],
+            [
+                'type' => Taxonomy::TYPE_RATING_ISSUE,
+                'parent_id' => null,
+                'translations' => [
+                    [
+                        'locale' => 'en',
+                        'title' => 'I had an issue with products (s)',
+                    ],
+                    [
+                        'locale' => 'ar',
+                        'title' => 'Issue 1 item 1 Ar',
+                    ],
+                    [
+                        'locale' => 'ku',
+                        'title' => 'Issue 1 item 1 Ku',
+                    ]
+                ]
+            ],
+            [
+                'type' => Taxonomy::TYPE_RATING_ISSUE,
+                'parent_id' => null,
+                'translations' => [
+                    [
+                        'locale' => 'en',
+                        'title' => 'I had an issue with courier',
+                    ],
+                    [
+                        'locale' => 'ar',
+                        'title' => 'Issue 1 item 2 Ar',
+                    ],
+                    [
+                        'locale' => 'ku',
+                        'title' => 'Issue 1 item 2 Ku',
+                    ]
+                ]
+            ],
+            [
+                'type' => Taxonomy::TYPE_RATING_ISSUE,
+                'parent_id' => null,
+                'translations' => [
+                    [
+                        'locale' => 'en',
+                        'title' => 'I had an issue with application',
+                    ],
+                    [
+                        'locale' => 'ar',
+                        'title' => 'Issue 1 item 3 Ar',
+                    ],
+                    [
+                        'locale' => 'ku',
+                        'title' => 'Issue 1 item 3 Ku',
+                    ]
+                ]
+            ],
+            [
+                'type' => Taxonomy::TYPE_RATING_ISSUE,
+                'parent_id' => null,
+                'translations' => [
+                    [
+                        'locale' => 'en',
+                        'title' => 'Other',
+                    ],
+                    [
+                        'locale' => 'ar',
+                        'title' => 'Issue 1 item 4 Ar',
+                    ],
+                    [
+                        'locale' => 'ku',
+                        'title' => 'Issue 1 item 4 Ku',
+                    ]
+                ]
+            ],
+        ];
     }
 
 }

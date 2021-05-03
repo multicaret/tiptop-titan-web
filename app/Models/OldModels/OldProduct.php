@@ -88,8 +88,14 @@ class OldProduct extends OldModel
     protected array $translatedAttributes = ['title', 'description', 'image'];
     protected $translationForeignKey = 'dish_id';
 
-    public const TYPE_DISCOUNT_PERCENTAGE = 'PERCENTAGE';
-    public const TYPE_DISCOUNT_CASH = 'CASH';
+    public const DISCOUNT_PERCENTAGE = 'PERCENTAGE';
+    public const DISCOUNT_CASH = 'CASH';
+    public const TYPE_MEALS = 'MEALS';
+    public const TYPE_SIDE_DISHES = 'SIDE_DISHES';
+    public const TYPE_DRINKS = 'DRINKS';
+    public const TYPE_FRIES = 'FRIES';
+    public const TYPE_SALADS = 'SALADS';
+    public const TYPE_SAUCES = 'SAUCES';
 
 
     public static function attributesComparing(): array
