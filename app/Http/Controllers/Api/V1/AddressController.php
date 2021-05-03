@@ -30,7 +30,7 @@ class AddressController extends BaseApiController
 
         return $this->respond([
             'addresses' => LocationResource::collection($addresses),
-            'kinds' => Location::getKindsForMaps(),
+            'kinds' => array_values(Location::getKindsForMaps()),
         ]);
     }
 
