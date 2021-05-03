@@ -88,12 +88,16 @@ class DatatableController extends AjaxController
                                  'date' => $item->created_at
                              ])->render();
                          })
+                         ->editColumn('team', function ($user) {
+                             return optional($user->team)->name;
+                         })
                          ->rawColumns([
                              'action',
                              'created_at',
                              'employment',
                              'last_logged_in_at',
                              'status',
+                             'team',
                          ])
                          ->setRowAttr([
                              'row-id' => function ($user) {
