@@ -71,6 +71,7 @@ use Illuminate\Support\Carbon;
  * @property-read \App\Models\OldModels\OldBranchTranslation|null $translation
  * @property-read Collection|\App\Models\OldModels\OldBranchTranslation[] $translations
  * @property-read int|null $translations_count
+ * @property-read \App\Models\OldModels\OldWorkingHoursForBranch|null $workingHours
  * @method static Builder|OldBranch listsTranslations(string $translationField)
  * @method static Builder|OldBranch newModelQuery()
  * @method static Builder|OldBranch newQuery()

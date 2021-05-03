@@ -8,6 +8,17 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Support\Collection;
 
+/**
+ * App\Models\OldModels\OldWorkingHoursForBranch
+ *
+ * @property-read \App\Models\OldModels\OldBranch $branch
+ * @method static \Illuminate\Database\Eloquent\Builder|OldWorkingHoursForBranch newModelQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder|OldWorkingHoursForBranch newQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder|OldWorkingHoursForBranch query()
+ * @mixin \Eloquent
+ * @noinspection PhpFullyQualifiedNameUsageInspection
+ * @noinspection PhpUnnecessaryFullyQualifiedNameInspection
+ */
 class OldWorkingHoursForBranch extends Model
 {
 
