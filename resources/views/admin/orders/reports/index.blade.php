@@ -29,7 +29,7 @@
         .table-wrap {
             width: 100%;
             display: block;
-            max-height: 80vh;
+            max-height: 90vh;
             overflow: auto;
             position: relative;
             z-index: 1;

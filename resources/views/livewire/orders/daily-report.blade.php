@@ -158,7 +158,7 @@
                                 }
                             @endphp
                             {{$report->total_orders_count}}
-                            @if($report->is_peak_of_this_month)
+                         {{--   @if($report->is_peak_of_this_month)
                                 <div class="spinner-grow spinner-grow-sm text-success" role="status">
                                     <span class="sr-only">Loading...</span>
                                 </div>
@@ -167,7 +167,7 @@
                                 <div class="spinner-grow spinner-grow-sm text-danger" role="status">
                                     <span class="sr-only">Loading...</span>
                                 </div>
-                            @endif
+                            @endif--}}
                         </td>
                         <td>
                             @php
@@ -257,33 +257,58 @@
                 <tfoot>
                 <tr>
                     <th>AVG Last Week:</th>
-                    @for ($i = 0; $i < 17; $i++)
-                        <th>Data</th>
-                    @endfor
+                    @foreach($lastWeekAvg as $item)
+                        <th>
+                            @if(isset($item[1]))
+                                <small class="text-muted">({!! $item[1] !!})</small>
+                            @endif
+                            {!! $item[0] !!}
+                        </th>
+                    @endforeach
                 </tr>
                 <tr>
                     <th>AVG Last Month:</th>
-                    @for ($i = 0; $i < 17; $i++)
-                        <th>Data</th>
-                    @endfor
+                    @foreach($lastMonthAvg as $item)
+                        <th>
+                            @if(isset($item[1]))
+                                <small class="text-muted">({!! $item[1] !!})</small>
+                            @endif
+                            {!! $item[0] !!}
+                        </th>
+                    @endforeach
                 </tr>
                 <tr>
                     <th>Weekdays' AVG:</th>
-                    @for ($i = 0; $i < 17; $i++)
-                        <th>Data</th>
-                    @endfor
+                    @foreach($weekDaysAvg as $item)
+                        <th>
+                            @if(isset($item[1]))
+                                <small class="text-muted">({!! $item[1] !!})</small>
+                            @endif
+                            {!! $item[0] !!}
+                        </th>
+                    @endforeach
                 </tr>
                 <tr>
                     <th>Weekends' AVG</th>
-                    @for ($i = 0; $i < 17; $i++)
-                        <th>Data</th>
-                    @endfor
+                    @foreach($weekendsAvg as $item)
+                        <th>
+                            @if(isset($item[1]))
+                                <small class="text-muted">({!! $item[1] !!})</small>
+                            @endif
+                            {!! $item[0] !!}
+                        </th>
+                    @endforeach
                 </tr>
                 <tr>
                     <th>Total Orders</th>
-                    @for ($i = 0; $i < 17; $i++)
-                        <th>Data</th>
-                    @endfor
+                    @foreach($totalOrders as $item)
+                        <th>
+                            @if(isset($item[1]))
+                                <small class="text-muted">({!! $item[1] !!})</small>
+                            @endif
+                            {!! $item[0] !!}
+                        </th>
+                    @endforeach
                 </tr>
                 </tfoot>
             </table>
