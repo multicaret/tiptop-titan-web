@@ -531,39 +531,33 @@ class Taxonomy extends Node implements HasMedia, ShouldHaveTypes, TranslatableCo
 
     public function registerMediaCollections(): void
     {
-        /*$isGroceryCategory = $this->type === self::TYPE_GROCERY_CATEGORY;*/
-        $fallBackImageUrl = config('defaults.images.taxonomy_cover');
+        $isGroceryCategory = $this->type === self::TYPE_GROCERY_CATEGORY;
+        $fallBackImageUrl = $this->getDefaultCoverImageBasedOnType();
         $this->addMediaCollection('cover')
              ->useFallbackUrl(url($fallBackImageUrl))
              ->singleFile()
              ->withResponsiveImages()
-             ->registerMediaConversions(function (Media $media) /*use ($isGroceryCategory)*/ {
-                 /*if ($isGroceryCategory) {
+             ->registerMediaConversions(function (Media $media) use ($isGroceryCategory) {
+                 if ($isGroceryCategory) {
+                     foreach (config('defaults.image_conversions.icon') as $conversionName => $dimensions) {
+                         $this->addMediaConversion($conversionName)
+                              ->width($dimensions['width'])
+                              ->height($dimensions['height']);
+                     }
+                 } else {
                      foreach (config('defaults.image_conversions.generic_cover') as $conversionName => $dimensions) {
                          $this->addMediaConversion($conversionName)
                               ->width($dimensions['width'])
                               ->height($dimensions['height']);
                      }
-                 } else {*/
-                 foreach (config('defaults.image_conversions.generic_cover') as $conversionName => $dimensions) {
-                     $this->addMediaConversion($conversionName)
-                          ->width($dimensions['width'])
-                          ->height($dimensions['height']);
                  }
-//                 }
              });
     }
 
 
     public function getCoverAttribute()
     {
-        $cover = url(config('defaults.images.taxonomy_cover'));
-        if ($this->type == self::TYPE_GROCERY_CATEGORY) {
-            $cover = url(config('defaults.images.grocery_category_cover')).'?v=2';
-        }
-        if ($this->type == self::TYPE_FOOD_CATEGORY) {
-            $cover = url(config('defaults.images.food_category_cover'));
-        }
+        $cover = $this->getDefaultCoverImageBasedOnType();
 
         if ($this->hasMedia('cover')) {
             $cover = $this->getFirstMedia('cover')->getFullUrl('1K');
@@ -574,13 +568,7 @@ class Taxonomy extends Node implements HasMedia, ShouldHaveTypes, TranslatableCo
 
     public function getCoverSmallAttribute()
     {
-        $cover = url(config('defaults.images.taxonomy_cover'));
-        if ($this->type == self::TYPE_GROCERY_CATEGORY) {
-            $cover = url(config('defaults.images.grocery_category_cover')).'?v=2';
-        }
-        if ($this->type == self::TYPE_FOOD_CATEGORY) {
-            $cover = url(config('defaults.images.food_category_cover'));
-        }
+        $cover = $this->getDefaultCoverImageBasedOnType();
 
         if ($this->hasMedia('cover')) {
             $cover = $this->getFirstMedia('cover')->getFullUrl('SD');
@@ -638,5 +626,21 @@ class Taxonomy extends Node implements HasMedia, ShouldHaveTypes, TranslatableCo
         }
 
         return trim(route($routeName, [HasUuid::slugify($title).'-'.$this->uuid]), '-');
+    }
+
+    /**
+     * @return \Illuminate\Contracts\Foundation\Application|\Illuminate\Contracts\Routing\UrlGenerator|string
+     */
+    private function getDefaultCoverImageBasedOnType()
+    {
+        $cover = url(config('defaults.images.taxonomy_cover'));
+        if ($this->type == self::TYPE_GROCERY_CATEGORY) {
+            $cover = url(config('defaults.images.grocery_category_cover')).'?v=2';
+        }
+        if ($this->type == self::TYPE_FOOD_CATEGORY) {
+            $cover = url(config('defaults.images.food_category_cover'));
+        }
+
+        return $cover;
     }
 }
