@@ -70,16 +70,18 @@ class ComposerServiceProvider extends ServiceProvider
         });
 
         view()->composer('admin.partials._sidenav', function ($view) {
-            $view->with([
-                'sidenavLinks' => cache()->rememberForever('side_nav_links', function () {
-                    $sidenavLinks = $this->initSidenavLinks();
-                    // Todo: if you want to build route use buildInParams attribute to add it inside route like 'userId'
-                    // or if you want to add parameter to route user params attribute as array to build it like '["type" => "faq"]'
-                    $sidenavLinks = array_merge($sidenavLinks, $this->getAllSideNavLinks());
-                    $sidenavLinks = $this->workOnActiveItem($sidenavLinks);
+            $sidenavLinks = cache()->remember('side_nav_links', 60 * 60 * 2, function () {
+                $sidenavLinks = $this->initSidenavLinks();
+                // Todo: if you want to build route use buildInParams attribute to add it inside route like 'userId'
+                // or if you want to add parameter to route user params attribute as array to build it like '["type" => "faq"]'
+                $sidenavLinks = array_merge($sidenavLinks, $this->getAllSideNavLinks());
 
-                    return $sidenavLinks;
-                }),
+                return $sidenavLinks;
+            });
+
+            $sidenavLinks = $this->workOnActiveItem($sidenavLinks);
+            $view->with([
+                'sidenavLinks' => $sidenavLinks,
             ]);
         });
     }
