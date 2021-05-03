@@ -133,7 +133,7 @@ class OldUser extends OldModel
 
     public function __construct(array $attributes = [])
     {
-        $this->randomUserPin = mt_rand(1000, 9999);
+        $this->randomUserPin = mt_rand(100000, 999999);
         parent::__construct($attributes);
     }
 
