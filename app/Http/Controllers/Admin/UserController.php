@@ -445,6 +445,7 @@ class UserController extends Controller
         $address->kind = optional(json_decode($request->input('kind')))->id;
         $address->alias = $request->alias;
         $address->address1 = $request->address1;
+        $address->phones = $request->phone_number;
 //        $address->building = $request->building;
 //        $address->floor = $request->floor;
 //        $address->apartment = $request->flat;
