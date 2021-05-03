@@ -521,7 +521,7 @@ class DatumImporter extends Command
                 }
             }
             $this->newLine();
-            $this->line('Start import Food Products. Total: '. $oldProducts->count());
+            $this->line('Start import Food Products. Total: '.$oldProducts->count());
             $this->newLine();
             foreach ($oldProducts as $oldProduct) {
                 $oldProduct->chain_id = $oldChain->id;
@@ -566,6 +566,7 @@ class DatumImporter extends Command
             }
             $this->bar->advance();
         }
+        $this->newLine(2);
         $this->line('End Sync Chains with Branches|Products');
         $this->newLine(2);
     }
@@ -746,6 +747,7 @@ class DatumImporter extends Command
             }
         }
         $this->ingredientsCategories($super);
+        $this->runTaxonomyScripts();
     }
 
 
@@ -1079,6 +1081,12 @@ class DatumImporter extends Command
                 ]
             ],
         ];
+    }
+
+    private function runTaxonomyScripts()
+    {
+        $defaultUnit = Taxonomy::unitCategories()->first();
+        Product::groceries()->update(['unit_id' => optional($defaultUnit)->id]);
     }
 
 }
