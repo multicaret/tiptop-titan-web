@@ -137,6 +137,14 @@
                                 @slot('attributes', ['rows' => 4])
                             @endcomponent
                         </div>
+                        <div class="col-md-12">
+                            @component('admin.components.form-group', ['name' => 'phone_number', 'type' => 'tel'])
+                                @slot('label', trans('strings.phone_number'))
+                                @if(! is_null($address->id))
+                                    @slot('value', $address->phones)
+                                @endif
+                            @endcomponent
+                        </div>
                     </div>
                 </div>
             </div>

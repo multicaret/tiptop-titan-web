@@ -155,11 +155,18 @@
                     @if(is_null($branch->id))
                         @include('admin.branches.partials._inaccessible')
                     @else
-                        @foreach([
-                                    \App\Models\User::ROLE_BRANCH_OWNER => [$branch->owners, 'truck'],
-                                    \App\Models\User::ROLE_BRANCH_MANAGER => [$branch->managers, 'user-plus'],
-                                    \App\Models\User::ROLE_RESTAURANT_DRIVER => [$branch->drivers, 'users-cog'],
-                                ] as $role => $users)
+                        @php
+                            $branchUserRoles = [
+                                \App\Models\User::ROLE_BRANCH_OWNER => [$branch->owners, 'truck'],
+                                \App\Models\User::ROLE_BRANCH_MANAGER => [$branch->managers, 'user-plus'],
+                            ];
+                            if($branch->isFood()){
+                                $branchUserRoles = array_merge($branchUserRoles, [
+                                    \App\Models\User::ROLE_RESTAURANT_DRIVER => [$branch->drivers, 'users-cog']
+                                ]);
+                        }
+                        @endphp
+                        @foreach($branchUserRoles as $role => $users)
                             @if($branch->id)
                                 <h4 class="d-flex justify-content-between align-items-center w-100 font-weight-bold py-3 mb-2">
                                     <span>

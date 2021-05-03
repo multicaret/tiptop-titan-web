@@ -352,18 +352,19 @@ class UserController extends Controller
 
     private function essentialData($role)
     {
-        $menuCategoryData['hasBranch'] = request()->has('branch_id');
-        $branchExists = ! is_null(\App\Models\Branch::foods()->find(request()->input('branch_id')));
+        $branchData['hasBranch'] = request()->has('branch_id');
+        $branchExists = ! is_null(\App\Models\Branch::all()->find(request()->input('branch_id')));
         $branches = [];
-        if ($menuCategoryData['hasBranch']) {
+        if ($branchData['hasBranch']) {
             if ($branchExists) {
-                $menuCategoryData['branchId'] = request()->input('branch_id');
+                $branchData['branchId'] = request()->input('branch_id');
             } else {
                 abort(404);
             };
         }
         if (in_array($role, User::rolesHaving('branches'))) {
-            $branches = Branch::whereType(Branch::CHANNEL_FOOD_OBJECT)
+            $branchChannel = Branch::find($branchData['branchId'])->type == Branch::CHANNEL_FOOD_OBJECT ? Branch::CHANNEL_FOOD_OBJECT : Branch::CHANNEL_GROCERY_OBJECT;
+            $branches = Branch::whereType($branchChannel)
                               ->active()
                               ->get()
                               ->mapWithKeys(function ($item) {
@@ -384,7 +385,7 @@ class UserController extends Controller
                                      return [$item['id'] => $item['name']];
                                  }),
             'cities' => City::where('region_id', config('defaults.region.id'))->get(),
-            'menuCategoryData' => $menuCategoryData,
+            'branchData' => $branchData,
             'branches' => $branches,
         ];
     }
@@ -444,6 +445,7 @@ class UserController extends Controller
         $address->kind = optional(json_decode($request->input('kind')))->id;
         $address->alias = $request->alias;
         $address->address1 = $request->address1;
+        $address->phones = $request->phone_number;
 //        $address->building = $request->building;
 //        $address->floor = $request->floor;
 //        $address->apartment = $request->flat;
