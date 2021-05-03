@@ -4,7 +4,7 @@
             .table-fixed-head {
                 overflow-y: auto;
                 {{--height: {{ ($orders->count() != 0? $orders->count() * 59 :100)+59 }}px;--}}
-                height: 50vh;
+                   height: 50vh;
             }
 
             .table-fixed-head thead th {
@@ -96,8 +96,9 @@
                                 {{$order->reference_code}}
                             </td>
                             <td>
-                                <span data-toggle="tooltip" data-placement="top" title="{{$order->getStatusName()}}">
-                                @include('admin.orders._partials.statuses.'.$order->status)
+                                <span data-toggle="tooltip" data-placement="top" title="{{$order->getStatusName()}}"
+                                      key="{{$order->status}}">
+                                    @include('admin.orders._partials.statuses.'.$order->status)
                                 </span>
                             </td>
                             <td>

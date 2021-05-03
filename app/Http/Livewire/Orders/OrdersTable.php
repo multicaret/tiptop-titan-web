@@ -86,7 +86,7 @@ class OrdersTable extends Component
         } elseif ( ! is_null($this->branchId)) {
             $orders = $orders->whereBranchId($this->branchId);
         } elseif ( ! is_null($this->searchByStatus)) {
-            $orders = $orders->whereStatus($this->searchByStatus)->latest()->take(20);
+            $orders = $orders->whereStatus($this->searchByStatus)->latest()->take(200);
         } else {
             $shouldSearchByDate = true;
         }
