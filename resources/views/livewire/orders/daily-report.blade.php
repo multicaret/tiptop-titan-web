@@ -158,7 +158,7 @@
                                 }
                             @endphp
                             {{$report->total_orders_count}}
-                            @if($report->is_peak_of_this_month)
+                         {{--   @if($report->is_peak_of_this_month)
                                 <div class="spinner-grow spinner-grow-sm text-success" role="status">
                                     <span class="sr-only">Loading...</span>
                                 </div>
@@ -167,7 +167,7 @@
                                 <div class="spinner-grow spinner-grow-sm text-danger" role="status">
                                     <span class="sr-only">Loading...</span>
                                 </div>
-                            @endif
+                            @endif--}}
                         </td>
                         <td>
                             @php
