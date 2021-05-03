@@ -53,6 +53,11 @@ class UserController extends Controller
                 'name' => 'username',
                 'title' => trans('strings.username'),
             ],
+            [
+                'data' => 'email',
+                'visible' => false,
+                'searchable' => true,
+            ],
             /*[
                 'data' => 'email',
                 'name' => 'email',
@@ -103,7 +108,9 @@ class UserController extends Controller
                 [
                     'data' => 'team',
                     'name' => 'team',
-                    'title' => trans('strings.team')
+                    'title' => trans('strings.team'),
+                    'orderable' => false,
+                    'searchable' => false
                 ],
             ]);
         }
