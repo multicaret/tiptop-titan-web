@@ -53,6 +53,11 @@ class UserController extends Controller
                 'name' => 'username',
                 'title' => trans('strings.username'),
             ],
+            [
+                'data' => 'email',
+                'visible' => false,
+                'searchable' => true,
+            ],
             /*[
                 'data' => 'email',
                 'name' => 'email',
@@ -101,9 +106,11 @@ class UserController extends Controller
         } else {
             $columns = array_merge($columns, [
                 [
-                    'data' => 'team.name',
-                    'name' => 'team.name',
-                    'title' => trans('strings.team')
+                    'data' => 'team',
+                    'name' => 'team',
+                    'title' => trans('strings.team'),
+                    'orderable' => false,
+                    'searchable' => false
                 ],
             ]);
         }
@@ -445,7 +452,6 @@ class UserController extends Controller
         $address->kind = optional(json_decode($request->input('kind')))->id;
         $address->alias = $request->alias;
         $address->address1 = $request->address1;
-        $address->phones = $request->phone_number;
 //        $address->building = $request->building;
 //        $address->floor = $request->floor;
 //        $address->apartment = $request->flat;

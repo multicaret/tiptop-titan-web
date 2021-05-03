@@ -141,7 +141,7 @@
                             @component('admin.components.form-group', ['name' => 'phone_number', 'type' => 'tel'])
                                 @slot('label', trans('strings.phone_number'))
                                 @if(! is_null($address->id))
-                                    @slot('value', count($address->phones) ? $address->phones[0]: null)
+                                    @slot('value', is_array($address->phones) && count($address->phones) ? $address->phones[0]: $address->phones)
                                 @endif
                             @endcomponent
                         </div>
