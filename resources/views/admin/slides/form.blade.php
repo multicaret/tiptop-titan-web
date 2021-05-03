@@ -109,7 +109,7 @@
                                     :allow-empty="true"
                                     select-label=""
                                     selected-label=""
-                                    deselect-label=""
+                                    deselect-label="Get All Cities"
                                     placeholder="All"
                                     @select="retrieveCities"
                                     autocomplete="false"
@@ -130,9 +130,8 @@
                                     :allow-empty="true"
                                     select-label=""
                                     selected-label=""
-                                    deselect-label=""
+                                    deselect-label="Get All Cities"
                                     placeholder="All"
-                                    {{--                                        @select="retrieveNeighborhoods"--}}
                                     autocomplete="false"
                                 ></multiselect>
                             </div>
@@ -248,7 +247,7 @@
                     axios.post(window.App.domain + `/ajax/countries/${region.country_id}/regions/${region.id}/cities`)
                         .then((res) => {
                             this.cities = res.data;
-                            this.slide.city = this.cities[0]
+                            // this.slide.city = this.cities[0]
                         });
                 },
             },
