@@ -600,7 +600,7 @@ class DatumImporter extends Command
                 $freshUser->assignRole($oldUser->role_name);
             }
         } catch (\Exception $e) {
-            info('___id:'.$tempUser['id'],[$e->getMessage()]);
+            info('___id:'.$tempUser['id'], [$e->getMessage()]);
             $errorCode = $e->errorInfo[1];
             $errorMessage = $e->errorInfo[2];
             if ($errorCode == 1062 && \Str::contains($errorMessage, 'users_username_unique')) {
@@ -857,14 +857,17 @@ class DatumImporter extends Command
         $this->bar = $this->output->createProgressBar($products->count());
         $this->bar->start();
         foreach ($products as $product) {
-            $collectionTo = OldMedia::COLLECTION_COVER;
+            // Do not import images of chains-only
+            if (is_null($product->branch_id)) {
+                continue;
+            }
+
             if ($product->type === Product::CHANNEL_GROCERY_OBJECT) {
                 $productId = $product->id;
                 $collectionTo = OldMedia::COLLECTION_GALLERY;
-            } elseif (is_null($product->cloned_from_product_id)) {
-                continue;
             } else {
                 $productId = $product->cloned_from_product_id;
+                $collectionTo = OldMedia::COLLECTION_COVER;
             }
             $collections = ['from' => OldMedia::COLLECTION_COVER, 'to' => $collectionTo];
             $this->assignImageToModel($product, $productId, OldMedia::TYPE_DISH, $collections);
@@ -898,7 +901,7 @@ class DatumImporter extends Command
                          ->setName($modelTitle)
                          ->toMediaCollection($toCollection);
             } catch (FileDoesNotExist $e) {
-//                $errorMessage = 'Failed to load image because file does not exist: '.$e->getMessage();
+                $errorMessage = 'Failed to load image because file does not exist: '.$e->getMessage();
             } catch (FileIsTooBig $e) {
                 $errorMessage = sprintf('Failed to load image because file is too big: %s - Model id: %s',
                     $e->getMessage(), $newModel);
