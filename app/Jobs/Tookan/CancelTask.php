@@ -55,21 +55,7 @@ class CancelTask implements ShouldQueue
        //     $this->fail();
 
         }
-        if ($responseData['status'] == 100) {
-            info('Tookan Request missing parameter', [
-                'captain_id' => $this->order->id,
-                'response' => $responseData
-            ]);
-            //    $this->fail();
-        }
-        if ($responseData['status'] == 201) {
-            info('Tookan Request missing parameter', [
-                'captain_id' => $this->order->id,
-                'response' => $responseData
-            ]);
-            //    $this->fail();
 
-        }
 
 
     }
