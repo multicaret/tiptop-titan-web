@@ -89,7 +89,6 @@ class ProductController extends Controller
         $product = new Product();
         $product->type = Product::getCorrectChannel($request->type);
         $data = $this->essentialData($request, $product);
-//        $product->status_js = Product::getAllStatusesRich()[Product::STATUS_ACTIVE];
 
         return view('admin.products.form', $data);
     }
@@ -232,6 +231,11 @@ class ProductController extends Controller
             $data['categories'] = $request->has('branch_id') ? Branch::find($request->input('branch_id'))->menuCategories : Taxonomy::menuCategories()->get();
         }
         $data['searchTags'] = Taxonomy::searchTags()->get();
+        if ( ! is_null($product->id)) {
+            $data['selectedStatus'] = Product::getAllStatusesRich()[$product->status];
+        } else {
+            $data['selectedStatus'] = Product::getAllStatusesRich()[Product::STATUS_ACTIVE];
+        }
 
         return $data;
     }

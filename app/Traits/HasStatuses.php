@@ -7,13 +7,6 @@ use Illuminate\Database\Eloquent\Builder;
 trait HasStatuses
 {
 
-    public static function bootHasStatuses()
-    {
-        static::retrieved(function ($model) {
-            array_push($model->appends, 'status_js');
-        });
-    }
-
     public function getIsActiveAttribute(): bool
     {
         return $this->status === self::STATUS_ACTIVE;
@@ -126,10 +119,5 @@ trait HasStatuses
                 'class' => 'dark',
             ],
         ];
-    }
-
-    public function getStatusJsAttribute(): array
-    {
-        return self::getAllStatusesRich()[$this->status] ?? [];
     }
 }
