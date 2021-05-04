@@ -313,12 +313,7 @@ class Product extends Model implements HasMedia
                 'id' => self::STATUS_INACTIVE,
                 'title' => __('Inactive'),
                 'class' => 'danger',
-            ],
-            self::STATUS_TRANSLATION_NOT_COMPLETED => [
-                'id' => self::STATUS_TRANSLATION_NOT_COMPLETED,
-                'title' => __('Translation Not Completed'),
-                'class' => 'warning',
-            ],
+            ]
         ];
     }
 

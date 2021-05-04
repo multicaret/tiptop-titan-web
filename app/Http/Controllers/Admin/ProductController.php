@@ -89,6 +89,7 @@ class ProductController extends Controller
         $product = new Product();
         $product->type = Product::getCorrectChannel($request->type);
         $data = $this->essentialData($request, $product);
+//        $product->status_js = Product::getAllStatusesRich()[Product::STATUS_ACTIVE];
 
         return view('admin.products.form', $data);
     }
