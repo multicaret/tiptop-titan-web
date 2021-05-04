@@ -92,7 +92,6 @@ use Spatie\MediaLibrary\MediaCollections\Models\Media;
  * @property-read bool $is_grocery
  * @property-read bool $is_inactive
  * @property-read mixed $price_formatted
- * @property-read array $status_js
  * @property-read mixed $status_name
  * @property-read \App\Models\Taxonomy $masterCategory
  * @property-read MediaCollection|Media[] $media

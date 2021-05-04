@@ -25,7 +25,6 @@ use Illuminate\Support\Carbon;
  * @property-read int|null $countries_count
  * @property-read bool $is_active
  * @property-read bool $is_inactive
- * @property-read array $status_js
  * @property-read mixed $status_name
  * @property-read \App\Models\LanguageTranslation|null $translation
  * @property-read Collection|\App\Models\LanguageTranslation[] $translations

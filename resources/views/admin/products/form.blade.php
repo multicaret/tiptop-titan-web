@@ -457,11 +457,8 @@
                                     </label>
                                     <multiselect
                                         :options="statuses"
-                                        v-model="product.status_js"
-                                        track-by="id"
+                                        v-model="selectedStatus"
                                         label="title"
-                                        :searchable="true"
-                                        :allow-empty="true"
                                         select-label=""
                                         selected-label=""
                                         deselect-label=""
@@ -549,7 +546,7 @@
                 <input type="hidden" name="chain" :value="JSON.stringify(product.chain)">
                 <input type="hidden" name="branch" :value="JSON.stringify(product.branch)">
             @endif
-            <input type="hidden" name="status" :value="product.status_js.id">
+            <input type="hidden" name="status" :value="selectedStatus.id">
             <input type="hidden" name="search_tags">
             <input type="hidden" name="categories" :value="JSON.stringify(product.categories)">
             <input type="hidden" name="master_category" :value="JSON.stringify(product.master_category)">
@@ -583,15 +580,9 @@
                 statuses: @json(array_values(\App\Models\Product::getAllStatusesRich())),
                 isGrocery: @json($isGrocery),
                 isEnableToStoreDate: false,
+                selectedStatus: @json($selectedStatus),
             },
-            beforeMount() {
-                if (!this.product.status_js) {
-                    this.product.status_js = {
-                        id: null,
-                        title: null,
-                    };
-                }
-            },
+            beforeMount() {},
             mounted() {
                 this.selectSearchTags(this.product.search_tags ?? []);
             },

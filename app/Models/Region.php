@@ -34,7 +34,6 @@ use Spatie\MediaLibrary\MediaCollections\Models\Media;
  * @property-read mixed $gallery
  * @property-read bool $is_active
  * @property-read bool $is_inactive
- * @property-read array $status_js
  * @property-read mixed $status_name
  * @property-read MediaCollection|Media[] $media
  * @property-read int|null $media_count
