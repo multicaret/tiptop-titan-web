@@ -64,6 +64,7 @@ class TaxonomyController extends Controller
                     'data' => 'parent',
                     'name' => 'parent',
                     'title' => 'Parent',
+                    'searchable' => false,
                     'targets' => '_all'
                 ]
             ]);
