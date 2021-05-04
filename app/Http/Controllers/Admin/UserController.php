@@ -359,6 +359,7 @@ class UserController extends Controller
 
     private function essentialData($role)
     {
+        $branches = [];
         $branchData['hasBranch'] = request()->has('branch_id');
         $branchExists = ! is_null(\App\Models\Branch::all()->find(request()->input('branch_id')));
         if ($branchData['hasBranch']) {
@@ -377,11 +378,7 @@ class UserController extends Controller
             } else {
                 $branches = Branch::active();
             }
-
-            $branches = $branches->get()
-                                 ->mapWithKeys(function ($item) {
-                                     return [$item['id'] => $item['chain']['title'].' - '.$item['title'].' ('.$item['region']['english_name'].', '.$item['city']['english_name'].')'];
-                                 });
+            $branches = $branches->get()->mapWithKeys($this->getBranchSelectorOptions());
         }
 
         return [
@@ -473,6 +470,23 @@ class UserController extends Controller
                 'type' => 'Success',
                 'text' => 'Successfully Updated'
             ]);
+    }
+
+    private function getBranchSelectorOptions(): \Closure
+    {
+        return function ($item) {
+            $optionTitle = \Str::of($item->chain->title)
+                               ->append(' - ')
+                               ->append($item->title)
+                               ->append(' (')
+                               ->append($item->region->english_name)
+                               ->append(', ')
+                               ->append($item->city->english_name)
+                               ->append(')')
+                               ->jsonSerialize();
+
+            return [$item->id => $optionTitle];
+        };
     }
 
 }
