@@ -40,7 +40,31 @@ class OrderController extends BaseApiController
                        ->latest()
                        ->get();
 
-        return $this->respond(OrderResource::collection($orders));
+        return $this->respond([
+            'orders' => OrderResource::collection($orders),
+            'counts' => [
+                Order::STATUS_NEW => Order::foods()
+                                          ->whereBranchId($restaurant->id)
+                                          ->where('status', Order::STATUS_NEW)
+                                          ->count(),
+                Order::STATUS_PREPARING => Order::foods()
+                                                ->whereBranchId($restaurant->id)
+                                                ->where('status', Order::STATUS_PREPARING)
+                                                ->count(),
+                Order::STATUS_WAITING_COURIER => Order::foods()
+                                                      ->whereBranchId($restaurant->id)
+                                                      ->where('status', Order::STATUS_WAITING_COURIER)
+                                                      ->count(),
+                Order::STATUS_DELIVERED => Order::foods()
+                                                ->whereBranchId($restaurant->id)
+                                                ->where('status', Order::STATUS_DELIVERED)
+                                                ->count(),
+                Order::STATUS_CANCELLED => Order::foods()
+                                                ->whereBranchId($restaurant->id)
+                                                ->where('status', Order::STATUS_CANCELLED)
+                                                ->count(),
+            ]
+        ]);
     }
 
 

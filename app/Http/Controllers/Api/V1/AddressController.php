@@ -53,7 +53,7 @@ class AddressController extends BaseApiController
                 'cities' => CityResource::collection($cities),
                 'selectedRegion' => new RegionResource($selectedRegion),
                 'selectedCity' => new CityResource($selectedCity),
-                'kinds' => Location::getKindsForMaps(),
+                'kinds' => array_values(Location::getKindsForMaps()),
             ]
         );
 

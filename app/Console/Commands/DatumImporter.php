@@ -600,7 +600,22 @@ class DatumImporter extends Command
                 $freshUser->assignRole($oldUser->role_name);
             }
         } catch (\Exception $e) {
-            info($e->getMessage().'___id:'.$tempUser['id'].PHP_EOL);
+            info('___id:'.$tempUser['id'],[$e->getMessage()]);
+            $errorCode = $e->errorInfo[1];
+            $errorMessage = $e->errorInfo[2];
+            if ($errorCode == 1062 && \Str::contains($errorMessage, 'users_username_unique')) {
+                try {
+                    $tempUser['username'] = $this->getUuidString();
+                    User::insert($tempUser);
+                } catch (\Exception $e) {
+                    $errorMessage = $e->getMessage().'___id:'.$tempUser['id'].PHP_EOL;
+                    \Log::error('$errorMessage is: '.$errorMessage);
+                    $this->newLine(2);
+                    $this->error('Check the log.');
+                    $this->newLine(2);
+                }
+            }
+
         }
 
     }
