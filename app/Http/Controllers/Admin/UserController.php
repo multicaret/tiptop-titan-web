@@ -361,22 +361,27 @@ class UserController extends Controller
     {
         $branchData['hasBranch'] = request()->has('branch_id');
         $branchExists = ! is_null(\App\Models\Branch::all()->find(request()->input('branch_id')));
-        $branches = [];
         if ($branchData['hasBranch']) {
             if ($branchExists) {
                 $branchData['branchId'] = request()->input('branch_id');
+                $branchChannel = Branch::find($branchData['branchId'])->type;
             } else {
                 abort(404);
             };
         }
         if (in_array($role, User::rolesHaving('branches'))) {
-            $branchChannel = Branch::find($branchData['branchId'])->type == Branch::CHANNEL_FOOD_OBJECT ? Branch::CHANNEL_FOOD_OBJECT : Branch::CHANNEL_GROCERY_OBJECT;
-            $branches = Branch::whereType($branchChannel)
-                              ->active()
-                              ->get()
-                              ->mapWithKeys(function ($item) {
-                                  return [$item['id'] => $item['chain']['title'].' - '.$item['title'].' ('.$item['region']['english_name'].', '.$item['city']['english_name'].')'];
-                              });
+            //This piece of code fetches different queries if the user is for a specific branch
+            //and a specific channel or just a general user
+            if (isset($branchChannel)) {
+                $branches = Branch::whereType($branchChannel)->active();
+            } else {
+                $branches = Branch::active();
+            }
+
+            $branches = $branches->get()
+                                 ->mapWithKeys(function ($item) {
+                                     return [$item['id'] => $item['chain']['title'].' - '.$item['title'].' ('.$item['region']['english_name'].', '.$item['city']['english_name'].')'];
+                                 });
         }
 
         return [
