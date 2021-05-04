@@ -116,7 +116,6 @@ use Spatie\Permission\Traits\HasRoles;
  * @property-read mixed $name
  * @property-read mixed $role
  * @property-read mixed $role_name
- * @property-read array $status_js
  * @property-read mixed $status_name
  * @property-read mixed $sum_rating_all_types
  * @property-read mixed $sum_rating

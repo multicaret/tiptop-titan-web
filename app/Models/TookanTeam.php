@@ -23,7 +23,6 @@ use Illuminate\Support\Carbon;
  * @property Carbon|null $updated_at
  * @property-read bool $is_active
  * @property-read bool $is_inactive
- * @property-read array $status_js
  * @property-read mixed $status_name
  * @property-read Collection|\App\Models\User[] $user
  * @property-read int|null $user_count
