@@ -1,9 +1,7 @@
 <?php
 
 //Tookan Webhooks
-Route::post('pickup/success', function () {
-    dd(123);
-});
+
 Route::post('pickup/success', 'TookanController@pickupSuccessWebHook');
 Route::post('pickup/fail', 'TookanController@pickupFailWebHook');
 Route::post('pickup/request_received', 'TookanController@pickupRequestReceived');
