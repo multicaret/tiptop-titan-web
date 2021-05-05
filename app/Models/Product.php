@@ -199,7 +199,7 @@ class Product extends Model implements HasMedia
         'category'
     ];
 
-    protected $fillable = ['order_column'];
+    protected $fillable = ['order_column', 'creator_id', 'editor_id', 'chain_id', 'category_id'];
 
     protected $translatedAttributes = [
         'title',
@@ -312,7 +312,17 @@ class Product extends Model implements HasMedia
                 'id' => self::STATUS_INACTIVE,
                 'title' => __('Inactive'),
                 'class' => 'danger',
-            ]
+            ],
+            self::STATUS_DRAFT => [
+                'id' => self::STATUS_DRAFT,
+                'title' => __('Draft'),
+                'class' => 'warning',
+            ],
+            self::STATUS_TRANSLATION_NOT_COMPLETED => [
+                'id' => self::STATUS_TRANSLATION_NOT_COMPLETED,
+                'title' => __('Translation Not Completed'),
+                'class' => 'warning',
+            ],
         ];
     }
 
