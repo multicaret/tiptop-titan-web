@@ -165,8 +165,8 @@ class Post extends Model implements HasMedia, ShouldHaveTypes
 
     protected $with = [
         'translations',
-        'categories',
-        'comments'
+//        'categories',
+//        'comments'
     ];
 
     protected $translatedAttributes = ['title', 'content', 'excerpt', 'notes'];
