@@ -48,7 +48,7 @@ class DailyReport extends Component
 
     public function render()
     {
-        $dailyReports = OrderDailyReport::latest();
+        $dailyReports = OrderDailyReport::orderBy('day');
         $dailyReports = $dailyReports->whereBetween('day', [$this->dateFrom, $this->dateTo]);
         if ($this->regionId && $this->regionId != 'all') {
             $dailyReports = $dailyReports->where('region_id', $this->regionId);
