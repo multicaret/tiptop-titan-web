@@ -17,27 +17,10 @@ class SettingController extends BaseApiController
      *
      * @return AnonymousResourceCollection
      */
-    public function index(Request $request)
+    /*public function index(Request $request)
     {
         return PreferenceResource::collection(Preference::getAllPluckValueKey());
-    }
-
-
-    /**
-     * @param  Request  $request
-     *
-     * @return JsonResponse
-     */
-    public function updateProfileSettings(Request $request)
-    {
-        $user = auth()->user();
-        if ($request->has('settings') && $request->input('settings')) {
-            $user->settings = json_decode($request->settings);
-            $user->save();
-        }
-
-        return $this->respondWithMessage(__('Updated successfully'));
-    }
+    }*/
 
     /**
      * @param  Request  $request

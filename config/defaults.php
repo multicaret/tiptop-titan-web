@@ -133,6 +133,10 @@ return [
             ],
         ],
         'product_grocery_cover' => [
+            'LD' => [
+                'width' => 240,
+                'height' => 240,
+            ],
             'SD' => [
                 'width' => 480,
                 'height' => 480,

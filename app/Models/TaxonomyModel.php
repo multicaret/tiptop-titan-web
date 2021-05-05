@@ -174,7 +174,9 @@ class TaxonomyModel extends Model implements HasMedia, ShouldHaveTypes, Translat
     public $translationModel = TaxonomyTranslation::class;
     protected $fillable = ['creator_id', 'editor_id', 'title', 'description', 'parent_id', 'type', 'order_column', 'left', 'right'];
     protected $translatedAttributes = ['title', 'description'];
-    protected $with = ['translations', 'chain', 'branches'];
+    protected $with = [
+        'translations'
+    ];
 
     protected $appends = [
         'cover',
