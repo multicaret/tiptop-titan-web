@@ -264,7 +264,8 @@ class CartController extends BaseApiController
             $cart->total -= $cartProduct->total_options_price;
             $cart->without_discount_total -= $cartProduct->total_options_price;
             if ($cartProduct->product->is_storage_tracking_enabled) {
-                $cartProduct->product->increment('available_quantity');
+                // Enable this line if you wish to deduct the available quantity for customers as soon as they add this product to their cart.
+//                $cartProduct->product->increment('available_quantity');
             }
         } elseif ($action === 'increment') {
             $cart->total += ($quantity * $cartProduct->product->discounted_price);
@@ -272,7 +273,8 @@ class CartController extends BaseApiController
             $cart->total += $cartProduct->total_options_price;
             $cart->without_discount_total += $cartProduct->total_options_price;
             if ($cartProduct->product->is_storage_tracking_enabled) {
-                $cartProduct->product->decrement('available_quantity');
+                // Enable this line if you wish to deduct the available quantity for customers as soon as they add this product to their cart.
+//                $cartProduct->product->decrement('available_quantity');
             }
         }
     }
