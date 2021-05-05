@@ -89,6 +89,10 @@ class ProductController extends Controller
         $product = new Product();
         $product->type = Product::getCorrectChannel($request->type);
         $data = $this->essentialData($request, $product);
+        if (count($data['units'])) {
+            $product->unit_id = $data['units'][0]['id'];
+        }
+        $product->load('unit');
 
         return view('admin.products.form', $data);
     }
@@ -128,11 +132,17 @@ class ProductController extends Controller
 
     public function edit(Request $request, Product $product)
     {
-        $product->load(['masterCategory']);
         $data = $this->essentialData($request, $product);
-        $data['product'] = $product;
-        $product->load(['unit']);
-        $product->load(['searchTags']);
+        $product->load([
+            'chain',
+            'branch',
+            'masterCategory',
+            'unit',
+            'searchTags',
+        ]);
+        if ($product->is_grocery) {
+            $product->load('categories');
+        }
 
 
         return view('admin.products.form', $data);
