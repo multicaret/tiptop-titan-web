@@ -129,8 +129,14 @@ class HomeController extends BaseApiController
 
         if ($channel == config('app.app-channels.grocery')) {
 
-            $categories = cache()->tags(['taxonomies','api-home'])->rememberForever('all_grocery_categories_with_products', function () {
-                $groceryParentCategories = Taxonomy::active()->groceryCategories()->parents()->get();
+            $categories = cache()->tags([
+                'taxonomies', 'api-home'
+            ])->rememberForever('all_grocery_categories_with_products', function () {
+                $groceryParentCategories = Taxonomy::active()
+                                                   ->with('children.products')
+                                                   ->groceryCategories()
+                                                   ->parents()
+                                                   ->get();
 
                 return GroceryCategoryParentResource::collection($groceryParentCategories);
             });
