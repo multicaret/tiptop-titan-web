@@ -4590,5 +4590,75 @@
         "name": "قطر",
         "locale": "ar",
         "slug": null
+    },
+    {
+        "id": 12955,
+        "country_id": 252,
+        "name": "United Arab Emirates",
+        "locale": "en",
+        "slug": null
+    },
+    {
+        "id": 12956,
+        "country_id": 252,
+        "name": "الإمارات",
+        "locale": "ar",
+        "slug": null
+    },
+    {
+        "id": 12957,
+        "country_id": 253,
+        "name": "Lebanon",
+        "locale": "en",
+        "slug": null
+    },
+    {
+        "id": 12958,
+        "country_id": 253,
+        "name": "لبنان",
+        "locale": "ar",
+        "slug": null
+    },
+    {
+        "id": 12959,
+        "country_id": 254,
+        "name": "Bahrain",
+        "locale": "en",
+        "slug": null
+    },
+    {
+        "id": 12960,
+        "country_id": 254,
+        "name": "بحرين",
+        "locale": "ar",
+        "slug": null
+    },
+    {
+        "id": 12961,
+        "country_id": 255,
+        "name": "India",
+        "locale": "en",
+        "slug": null
+    },
+    {
+        "id": 12962,
+        "country_id": 255,
+        "name": "الهند",
+        "locale": "ar",
+        "slug": null
+    },
+    {
+        "id": 12963,
+        "country_id": 256,
+        "name": "Oman",
+        "locale": "en",
+        "slug": null
+    },
+    {
+        "id": 12964,
+        "country_id": 256,
+        "name": "عمان",
+        "locale": "ar",
+        "slug": null
     }
 ]

@@ -62,7 +62,6 @@ use Spatie\MediaLibrary\MediaCollections\Models\Media;
  * @property-read bool $is_active
  * @property-read bool $is_inactive
  * @property-read mixed $link
- * @property-read array $status_js
  * @property-read mixed $status_name
  * @property-read \App\Models\Taxonomy|null $ingredientCategory
  * @property-read Collection|TaxonomyModel[] $ingredientsOfCategory

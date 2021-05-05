@@ -115,9 +115,22 @@ class TookanClient
 
     public function cancelTask(Order $order)
     {
+        if (empty(optional($order->tookanInfo)->job_pickup_id) || empty(optional($order->tookanInfo)->job_delivery_id))
+        {
+            return false;
+        }
+
+        $cancelOrderData = $this->prepareCancelOrderData($order);
+
+        return $this->apiRequest('POST', 'delete_task', $cancelOrderData);
 
     }
 
+    public function prepareCancelOrderData(Order $order){
+        return[
+            'job_id' => $order->tookanInfo->job_pickup_id . ',' . $order->tookanInfo->job_delivery_id
+        ];
+    }
     public function createCaptain(User $user)
     {
 

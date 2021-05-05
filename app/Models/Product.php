@@ -81,6 +81,7 @@ use Spatie\MediaLibrary\MediaCollections\Models\Media;
  * @property-read int|null $favoriters_count
  * @property-read mixed $cover
  * @property-read mixed $cover_full
+ * @property-read mixed $cover_small
  * @property-read mixed $cover_thumbnail
  * @property-read mixed $discount_amount_calculated
  * @property-read mixed $discount_amount_calculated_formatted
@@ -92,7 +93,6 @@ use Spatie\MediaLibrary\MediaCollections\Models\Media;
  * @property-read bool $is_grocery
  * @property-read bool $is_inactive
  * @property-read mixed $price_formatted
- * @property-read array $status_js
  * @property-read mixed $status_name
  * @property-read \App\Models\Taxonomy $masterCategory
  * @property-read MediaCollection|Media[] $media
@@ -313,12 +313,7 @@ class Product extends Model implements HasMedia
                 'id' => self::STATUS_INACTIVE,
                 'title' => __('Inactive'),
                 'class' => 'danger',
-            ],
-            self::STATUS_TRANSLATION_NOT_COMPLETED => [
-                'id' => self::STATUS_TRANSLATION_NOT_COMPLETED,
-                'title' => __('Translation Not Completed'),
-                'class' => 'warning',
-            ],
+            ]
         ];
     }
 
@@ -336,15 +331,19 @@ class Product extends Model implements HasMedia
 
     public function getCoverAttribute()
     {
+        $isGrocery = $this->type === self::CHANNEL_GROCERY_OBJECT;
         $image = config('defaults.images.product_cover');
 
-        if ( ! is_null($media = $this->getFirstMedia('gallery'))) {
-            $image = $media->getUrl('HD');
+        if ($isGrocery) {
+            if ( ! is_null($media = $this->getFirstMedia('gallery'))) {
+                $image = $media->getUrl('HD');
+            }
         }
 
-        if ( ! is_null($media = $this->getFirstMedia('cover'))) {
-            //$media->responsive_images
-            $image = $media->getUrl('HD');
+        if ( ! $isGrocery) {
+            if ( ! is_null($media = $this->getFirstMedia('cover'))) {
+                $image = $media->getUrl('HD');
+            }
         }
 
         return url($image);
@@ -352,15 +351,19 @@ class Product extends Model implements HasMedia
 
     public function getCoverFullAttribute()
     {
+        $isGrocery = $this->type === self::CHANNEL_GROCERY_OBJECT;
         $image = config('defaults.images.product_cover');
 
-        if ( ! is_null($media = $this->getFirstMedia('gallery'))) {
-            $image = $media->getUrl('1K');
+        if ($isGrocery) {
+            if ( ! is_null($media = $this->getFirstMedia('gallery'))) {
+                $image = $media->getUrl('1K');
+            }
         }
 
-        if ( ! is_null($media = $this->getFirstMedia('cover'))) {
-            //$media->responsive_images
-            $image = $media->getUrl('1K');
+        if ( ! $isGrocery) {
+            if ( ! is_null($media = $this->getFirstMedia('cover'))) {
+                $image = $media->getUrl('1K');
+            }
         }
 
         return url($image);
@@ -368,15 +371,39 @@ class Product extends Model implements HasMedia
 
     public function getCoverThumbnailAttribute()
     {
+        $isGrocery = $this->type === self::CHANNEL_GROCERY_OBJECT;
         $image = config('defaults.images.product_cover');
 
-        if ( ! is_null($media = $this->getFirstMedia('gallery'))) {
-            $image = $media->getUrl('SD');
+        if ($isGrocery) {
+            if ( ! is_null($media = $this->getFirstMedia('gallery'))) {
+                $image = $media->getUrl('SD');
+            }
         }
 
-        if ( ! is_null($media = $this->getFirstMedia('cover'))) {
-            //$media->responsive_images
-            $image = $media->getUrl('SD');
+        if ( ! $isGrocery) {
+            if ( ! is_null($media = $this->getFirstMedia('cover'))) {
+                $image = $media->getUrl('SD');
+            }
+        }
+
+        return url($image);
+    }
+
+    public function getCoverSmallAttribute()
+    {
+        $isGrocery = $this->type === self::CHANNEL_GROCERY_OBJECT;
+        $image = config('defaults.images.product_cover');
+
+        if ($isGrocery) {
+            if ( ! is_null($media = $this->getFirstMedia('gallery'))) {
+                $image = $media->getUrl('LD');
+            }
+        }
+
+        if ( ! $isGrocery) {
+            if ( ! is_null($media = $this->getFirstMedia('cover'))) {
+                $image = $media->getUrl('LD');
+            }
         }
 
         return url($image);

@@ -47,7 +47,7 @@ class CreateCaptain /*implements ShouldQueue*/
                 'captain_id' => $this->user->id,
                 'response' => $response ?? 'empty'
             ]);
-            $this->fail();
+        //    $this->fail();
         }
         $responseData = $response->json();
 
@@ -56,7 +56,7 @@ class CreateCaptain /*implements ShouldQueue*/
                 'captain_id' => $this->user->id,
                 'response' => $responseData
             ]);
-            $this->fail();
+          //  $this->fail();
 
         }
         if ($responseData['status'] == 100) {

@@ -12,17 +12,29 @@ use Illuminate\Support\Carbon;
  * App\Models\OrderDailyReport
  *
  * @property int $id
+ * @property int $country_id
  * @property int $region_id
  * @property Carbon $day
  * @property bool $is_weekend
+ * @property int $orders_count
  * @property int $grocery_orders_count
  * @property int $food_orders_count
- * @property int $orders_count
+ * @property int $delivered_orders_count
  * @property int $delivered_grocery_orders_count
  * @property int $delivered_food_orders_count
- * @property int $delivered_orders_count
  * @property int $average_delivery_time
+ * @property float $orders_value
+ * @property float $grocery_orders_value
+ * @property float $food_orders_value
+ * @property float $delivered_orders_value
+ * @property float $delivered_grocery_orders_value
+ * @property float $delivered_food_orders_value
  * @property float $average_orders_value
+ * @property float $average_grocery_orders_value
+ * @property float $average_food_orders_value
+ * @property float $average_delivered_orders_value
+ * @property float $average_grocery_delivered_orders_value
+ * @property float $average_food_delivered_orders_value
  * @property int $orders_count_between_09_12
  * @property int $orders_count_between_12_15
  * @property int $orders_count_between_15_18
@@ -49,10 +61,26 @@ use Illuminate\Support\Carbon;
  * @method static Builder|OrderDailyReport newQuery()
  * @method static Builder|OrderDailyReport query()
  * @method static Builder|OrderDailyReport whereAndroidDevicesCount($value)
+ * @method static Builder|OrderDailyReport whereAverageDeliveredOrdersValue($value)
  * @method static Builder|OrderDailyReport whereAverageDeliveryTime($value)
+ * @method static Builder|OrderDailyReport whereAverageFoodDeliveredOrdersValue($value)
+ * @method static Builder|OrderDailyReport whereAverageFoodOrdersValue($value)
+ * @method static Builder|OrderDailyReport whereAverageGroceryDeliveredOrdersValue($value)
+ * @method static Builder|OrderDailyReport whereAverageGroceryOrdersValue($value)
  * @method static Builder|OrderDailyReport whereAverageOrdersValue($value)
+ * @method static Builder|OrderDailyReport whereCountryId($value)
  * @method static Builder|OrderDailyReport whereCreatedAt($value)
  * @method static Builder|OrderDailyReport whereDay($value)
+ * @method static Builder|OrderDailyReport whereDeliveredFoodOrdersCount($value)
+ * @method static Builder|OrderDailyReport whereDeliveredFoodOrdersValue($value)
+ * @method static Builder|OrderDailyReport whereDeliveredGroceryOrdersCount($value)
+ * @method static Builder|OrderDailyReport whereDeliveredGroceryOrdersValue($value)
+ * @method static Builder|OrderDailyReport whereDeliveredOrdersCount($value)
+ * @method static Builder|OrderDailyReport whereDeliveredOrdersValue($value)
+ * @method static Builder|OrderDailyReport whereFoodOrdersCount($value)
+ * @method static Builder|OrderDailyReport whereFoodOrdersValue($value)
+ * @method static Builder|OrderDailyReport whereGroceryOrdersCount($value)
+ * @method static Builder|OrderDailyReport whereGroceryOrdersValue($value)
  * @method static Builder|OrderDailyReport whereId($value)
  * @method static Builder|OrderDailyReport whereIosDevicesCount($value)
  * @method static Builder|OrderDailyReport whereIsNadirOfThisMonth($value)
@@ -63,6 +91,7 @@ use Illuminate\Support\Carbon;
  * @method static Builder|OrderDailyReport whereIsPeakOfThisYear($value)
  * @method static Builder|OrderDailyReport whereIsWeekend($value)
  * @method static Builder|OrderDailyReport whereOrderedUsersCount($value)
+ * @method static Builder|OrderDailyReport whereOrdersCount($value)
  * @method static Builder|OrderDailyReport whereOrdersCountBetween0003($value)
  * @method static Builder|OrderDailyReport whereOrdersCountBetween0309($value)
  * @method static Builder|OrderDailyReport whereOrdersCountBetween0912($value)
@@ -70,16 +99,11 @@ use Illuminate\Support\Carbon;
  * @method static Builder|OrderDailyReport whereOrdersCountBetween1518($value)
  * @method static Builder|OrderDailyReport whereOrdersCountBetween1821($value)
  * @method static Builder|OrderDailyReport whereOrdersCountBetween2100($value)
+ * @method static Builder|OrderDailyReport whereOrdersValue($value)
  * @method static Builder|OrderDailyReport whereOtherDevicesCount($value)
  * @method static Builder|OrderDailyReport whereRegionId($value)
  * @method static Builder|OrderDailyReport whereRegisteredUsersCount($value)
- * @method static Builder|OrderDailyReport whereTotalDeliveredFoodOrdersCount($value)
- * @method static Builder|OrderDailyReport whereTotalDeliveredGroceryOrdersCount($value)
- * @method static Builder|OrderDailyReport whereTotalDeliveredOrdersCount($value)
- * @method static Builder|OrderDailyReport whereTotalFoodOrdersCount($value)
- * @method static Builder|OrderDailyReport whereTotalGroceryOrdersCount($value)
  * @method static Builder|OrderDailyReport whereTotalMobileUsersCount($value)
- * @method static Builder|OrderDailyReport whereTotalOrdersCount($value)
  * @method static Builder|OrderDailyReport whereTotalWebUsersCount($value)
  * @method static Builder|OrderDailyReport whereUpdatedAt($value)
  * @mixin Eloquent

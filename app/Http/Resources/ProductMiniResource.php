@@ -5,6 +5,7 @@ namespace App\Http\Resources;
 use App\Models\Product;
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
+use Illuminate\Support\Str;
 
 /** @mixin Product */
 class ProductMiniResource extends JsonResource
@@ -27,8 +28,8 @@ class ProductMiniResource extends JsonResource
             'englishTitle' => optional($this->translate('en'))->title,
             'title' => $this->title,
             'excerpt' => [
-                'raw' => strip_tags($this->excerpt),
-                'formatted' => $this->excerpt,
+                'raw' => Str::limit(strip_tags($this->description), 500),
+                'formatted' => Str::limit(strip_tags($this->description), 500),
             ],
             'customBannerText' => $this->custom_banner_text,
             'unitText' => $this->unit_text,
@@ -45,6 +46,7 @@ class ProductMiniResource extends JsonResource
             ],
             'media' => [
                 'cover' => $this->cover,
+                'coverSmall' => $this->cover_small,
                 'coverThumbnail' => $this->cover_thumbnail,
                 'coverFull' => $this->cover_full,
                 'gallery' => $this->gallery,

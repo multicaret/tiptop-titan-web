@@ -600,7 +600,7 @@ class DatumImporter extends Command
                 $freshUser->assignRole($oldUser->role_name);
             }
         } catch (\Exception $e) {
-            info('___id:'.$tempUser['id'],[$e->getMessage()]);
+            info('___id:'.$tempUser['id'], [$e->getMessage()]);
             $errorCode = $e->errorInfo[1];
             $errorMessage = $e->errorInfo[2];
             if ($errorCode == 1062 && \Str::contains($errorMessage, 'users_username_unique')) {
@@ -857,14 +857,17 @@ class DatumImporter extends Command
         $this->bar = $this->output->createProgressBar($products->count());
         $this->bar->start();
         foreach ($products as $product) {
-            $collectionTo = OldMedia::COLLECTION_COVER;
+            // Do not import images of chains-only
+            if (is_null($product->branch_id)) {
+                continue;
+            }
+
             if ($product->type === Product::CHANNEL_GROCERY_OBJECT) {
                 $productId = $product->id;
                 $collectionTo = OldMedia::COLLECTION_GALLERY;
-            } elseif (is_null($product->cloned_from_product_id)) {
-                continue;
             } else {
                 $productId = $product->cloned_from_product_id;
+                $collectionTo = OldMedia::COLLECTION_COVER;
             }
             $collections = ['from' => OldMedia::COLLECTION_COVER, 'to' => $collectionTo];
             $this->assignImageToModel($product, $productId, OldMedia::TYPE_DISH, $collections);
@@ -887,24 +890,27 @@ class DatumImporter extends Command
                                  ->where($query)
                                  ->get();
         foreach ($oldMediaFiles as $oldMediaData) {
+            $imageUrl = $oldMediaData->image_url;
+            if (is_null($imageUrl)) {
+                continue;
+            }
             $errorMessage = null;
-            $toCollection = $collections['to'];
             $modelTitle = $newModel->getTranslation('en')->$imageNameAttribute;
             $modelTitleSlugged = \Str::slug($modelTitle);
             $fileName = "{$modelTitleSlugged}.{$oldMediaData->getExtensionAttribute()}";
             try {
-                $newModel->addMediaFromDisk($oldMediaData->disk_path, 'old_s3')
+                $newModel->addMediaFromUrl($imageUrl)
                          ->setFileName($fileName)
                          ->setName($modelTitle)
-                         ->toMediaCollection($toCollection);
+                         ->toMediaCollection($collections['to']);
             } catch (FileDoesNotExist $e) {
-//                $errorMessage = 'Failed to load image because file does not exist: '.$e->getMessage();
+                $errorMessage = 'Failed to load image because file does not exist: '.$e->getMessage().' - Model id: '. $newModel->id;
             } catch (FileIsTooBig $e) {
                 $errorMessage = sprintf('Failed to load image because file is too big: %s - Model id: %s',
-                    $e->getMessage(), $newModel);
+                    $e->getMessage(), $newModel->id);
             } catch (FileCannotBeAdded $e) {
                 $errorMessage = sprintf('Failed to load image because file cannot be added: %s - Model id: %s',
-                    $e->getMessage(), $newModel);
+                    $e->getMessage(), $newModel->id);
             }
             if ( ! is_null($errorMessage)) {
                 \Log::error($modelType.' - '.$errorMessage);

@@ -135,6 +135,7 @@ class SearchController extends BaseApiController
                                  $translationQuery->where('title', 'like', '%'.$searchQuery.'%');
                              });
                          })
+                         ->active()
                          ->foods()
                          ->get();
 

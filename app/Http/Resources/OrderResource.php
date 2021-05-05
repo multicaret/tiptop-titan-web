@@ -23,7 +23,7 @@ class OrderResource extends JsonResource
         return [
             'id' => $this->id,
             'referenceCode' => $this->reference_code,
-            'address' => new LocationResource(Location::withTrashed()->where('id', $this->address_id)->first()),
+            'address' => new LocationResource(Location::where('id', $this->address_id)->first()),
             'completedAt' => [
                 'formatted' => $this->completed_at->format(config('defaults.datetime.normal_format')),
                 'diffForHumans' => $this->completed_at->diffForHumans(),
