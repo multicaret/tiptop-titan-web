@@ -129,23 +129,23 @@ class HomeController extends BaseApiController
 
         if ($channel == config('app.app-channels.grocery')) {
 
-            $categories = cache()->tags([
-                'taxonomies', 'api-home'
-            ])->rememberForever('all_grocery_categories_with_products', function () {
-                $groceryParentCategories = Taxonomy::active()
-                                                   ->with('children.products')
-                                                   ->groceryCategories()
-                                                   ->parents()
-                                                   ->get();
+            $categories = cache()->tags('taxonomies', 'api-home')
+                                 ->rememberForever('all_grocery_categories_with_products', function () {
+                                     $groceryParentCategories = Taxonomy::active()
+                                                                        ->with('children.products')
+                                                                        ->groceryCategories()
+                                                                        ->parents()
+                                                                        ->get();
 
-                return GroceryCategoryParentResource::collection($groceryParentCategories);
-            });
+                                     return GroceryCategoryParentResource::collection($groceryParentCategories);
+                                 });
 
             [$distance, $branch] = Branch::getClosestAvailableBranch($latitude, $longitude);
             if ( ! is_null($branch)) {
                 if ( ! is_null($user)) {
                     $cart = Cart::retrieve($branch->chain_id, $branch->id, $user->id);
-                    $activeOrders = Order::groceries()->whereUserId($user->id)
+                    $activeOrders = Order::groceries()
+                                         ->whereUserId($user->id)
                                          ->whereNotIn('status', [
                                              Order::STATUS_CANCELLED,
                                              Order::STATUS_DELIVERED,

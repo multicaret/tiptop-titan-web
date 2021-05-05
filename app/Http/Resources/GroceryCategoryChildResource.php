@@ -21,7 +21,7 @@ class GroceryCategoryChildResource extends JsonResource
     {
         $categoryId = $this->id;
         $products = cache()
-            ->tags(['products', 'api-home'])
+            ->tags('products', 'api-home')
             ->rememberForever('products_of_child_category_'.$this->id, function () use ($categoryId) {
                 return Product::whereCategoryId($categoryId)
                               ->where(function ($q) {
