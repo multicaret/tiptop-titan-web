@@ -131,7 +131,7 @@ class OrderDailyReport extends Model
         }
     }
 
-    public static function retrievValues($isSum, $channel, $collection)
+    public static function retrieveValues($channel, $collection, $isSum = false): array
     {
         $collectionType = $isSum ? "sum" : "avg";
         $totalOrderCountColumn = 'orders_count';
@@ -147,6 +147,13 @@ class OrderDailyReport extends Model
             $totalDeliveredOrdersCount = 'delivered_food_orders_count';
         }
 
+        $totalDeliveredOrdersValue = 'delivered_orders_value';
+        if ($channel == 'grocery') {
+            $totalDeliveredOrdersValue = 'delivered_grocery_orders_value';
+        } elseif ($channel == 'food') {
+            $totalDeliveredOrdersValue = 'delivered_food_orders_value';
+        }
+
         return [
             'orders_count' => [
                 round($collection->$collectionType($totalOrderCountColumn)),
@@ -156,10 +163,10 @@ class OrderDailyReport extends Model
                         $collection->$collectionType($totalOrderCountColumn)).('%'),
                 $isSum ? null : $collection->sum($totalDeliveredOrdersCount),
             ],
-            'delivered_orders_count-2' => [
-                $isSum ? $collection->$collectionType($totalDeliveredOrdersCount) : Controller::percentageInRespectToTwoNumbers($collection->avg($totalDeliveredOrdersCount),
-                        $collection->$collectionType($totalOrderCountColumn)).('%'),
-                $isSum ? null : $collection->sum($totalDeliveredOrdersCount),
+            'delivered_orders_value' => [
+                $isSum ? $collection->$collectionType($totalDeliveredOrdersValue) : Controller::percentageInRespectToTwoNumbers($collection->avg($totalDeliveredOrdersValue),
+                        $collection->$collectionType($totalDeliveredOrdersCount)).('%'),
+                $isSum ? null : $collection->sum($totalDeliveredOrdersValue),
             ],
             'average_delivery_time' => [
                 round($collection->avg('average_delivery_time')).'<sub class="text-muted" style="font-size: 10px">minute</sub>',

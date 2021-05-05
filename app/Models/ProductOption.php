@@ -19,7 +19,7 @@ use Illuminate\Support\Carbon;
  * @property int $product_id
  * @property bool $is_based_on_ingredients
  * @property bool $is_required
- * @property int $type 
+ * @property int $type
  *                     1: Including,
  *                     2: Excluding,
  * @property int|null $max_number_of_selection
@@ -76,9 +76,9 @@ class ProductOption extends Model
     public const TYPE_EXCLUDING = 2;
 
     public const INPUT_TYPE_PILL = 1;
-    public const INPUT_TYPE_RADIO = 2;
-    public const INPUT_TYPE_CHECKBOX = 6;
-    public const INPUT_TYPE_SELECT = 7;
+    public const INPUT_TYPE_CHECKBOX = 2;
+    public const INPUT_TYPE_RADIO = 5;
+    public const INPUT_TYPE_SELECT = 6;
 
     public const SELECTION_TYPE_SINGLE_VALUE = 1;
     public const SELECTION_TYPE_MULTIPLE_VALUE = 2;
@@ -121,6 +121,32 @@ class ProductOption extends Model
             self::INPUT_TYPE_RADIO => 'radio',
             self::INPUT_TYPE_CHECKBOX => 'checkbox',
             self::INPUT_TYPE_SELECT => 'select',
+        ];
+    }
+
+    public static function getInputTypesArrayBasedOnSelectionType(): array
+    {
+        return [
+            self::SELECTION_TYPE_SINGLE_VALUE => [
+                [
+                    'id' => self::INPUT_TYPE_RADIO,
+                    'title' => 'radio',
+                ],
+                [
+                    'id' => self::INPUT_TYPE_SELECT,
+                    'title' => 'select',
+                ],
+            ],
+            self::SELECTION_TYPE_MULTIPLE_VALUE => [
+                [
+                    'id' => self::INPUT_TYPE_PILL,
+                    'title' => 'pill',
+                ],
+                [
+                    'id' => self::INPUT_TYPE_CHECKBOX,
+                    'title' => 'checkbox',
+                ],
+            ]
         ];
     }
 
