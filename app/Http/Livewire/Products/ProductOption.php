@@ -5,6 +5,7 @@ namespace App\Http\Livewire\Products;
 use App\Models\ProductOption as ProductOptionModel;
 use App\Models\ProductOptionSelection as ProductOptionSelectionModel;
 use App\Models\Taxonomy;
+use Illuminate\Support\Arr;
 use Livewire\Component;
 
 class ProductOption extends Component
@@ -90,11 +91,11 @@ class ProductOption extends Component
         $this->validate([
             'option.input_type' => 'required|numeric',
         ]);
-        $this->option->input_type = $newValue;
         if ($this->option->selection_type == ProductOptionModel::SELECTION_TYPE_SINGLE_VALUE) {
             $this->option->min_number_of_selection = 0;
             $this->option->max_number_of_selection = 1;
         }
+        $this->option->input_type = $newValue;
         $this->option->save();
 
         $this->emit('showToast', [
@@ -163,6 +164,7 @@ class ProductOption extends Component
         } elseif ($this->option->max_number_of_selection > 1) {
             $this->option->selection_type = ProductOptionModel::SELECTION_TYPE_MULTIPLE_VALUE;
         }
+        $this->option->input_type = $this->setInputTypeBasedOnCurrentSelectionType();
 
         if ($this->option->min_number_of_selection > $this->option->max_number_of_selection) {
             $this->option->min_number_of_selection = $this->option->max_number_of_selection - 1;
@@ -324,5 +326,42 @@ class ProductOption extends Component
             'onConfirmed' => 'deleteOption',
 //            'onCancelled' => 'cancelled'
         ]);
+    }
+
+    public function getAvailableInputTypes()
+    {
+        $options = [];
+        if ($this->option->is_based_on_ingredients) {
+//            $this->option->input_type = ProductOptionModel::INPUT_TYPE_PILL;
+            $options[] = [
+                'id' => ProductOptionModel::INPUT_TYPE_PILL,
+                'title' => 'Pill',
+            ];
+        } elseif ($this->option->max_number_of_selection == 1) {
+//            $this->option->input_type = ProductOptionModel::INPUT_TYPE_SELECT;
+            $options[] = [
+                'id' => ProductOptionModel::INPUT_TYPE_RADIO,
+                'title' => 'Radio',
+            ];
+            $options[] = [
+                'id' => ProductOptionModel::INPUT_TYPE_SELECT,
+                'title' => 'Select',
+            ];
+        }
+        if ($this->option->max_number_of_selection > 1) {
+//            $this->option->input_type = ProductOptionModel::INPUT_TYPE_CHECKBOX;
+            $options[] = [
+                'id' => ProductOptionModel::INPUT_TYPE_CHECKBOX,
+                'title' => 'Checkbox',
+            ];
+        }
+        $this->option->save();
+
+        return $options;
+    }
+
+    private function setInputTypeBasedOnCurrentSelectionType()
+    {
+        return Arr::first($this->option->getInputTypesArrayBasedOnSelectionType()[$this->option->selection_type])['id'];
     }
 }
