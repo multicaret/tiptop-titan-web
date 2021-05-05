@@ -198,11 +198,16 @@ class HomeController extends BaseApiController
             }
         }
 
-        $currentCurrency = Currency::find(config('defaults.currency.id'));
-        if (localization()->getCurrentLocale() == 'en') {
-            $currentCurrency->symbol = 'IQD';
-        }
-        $currencyResource = new CurrencyResource($currentCurrency);
+        $currentLocale = localization()->getCurrentLocale();
+        $currencyResource = cache()->tags('currencies')->rememberForever('iqd_currency_'.$currentLocale,
+            function () use ($currentLocale) {
+                $currentCurrency = Currency::find(config('defaults.currency.id'));
+                if ($currentLocale == 'en') {
+                    $currentCurrency->symbol = 'IQD';
+                }
+
+                return new CurrencyResource($currentCurrency);
+            });
 
         return $this->respond([
             'estimated_arrival_time' => [
