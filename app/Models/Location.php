@@ -46,7 +46,7 @@ use Illuminate\Support\Str;
  * @property int $status 1:draft, 2:active, 3:Inactive, 4..n:CUSTOM
  * @property Carbon|null $created_at
  * @property Carbon|null $updated_at
- * @property Carbon|null $deleted_at
+ * @property string|null $deleted_at
  * @property-read \App\Models\City|null $city
  * @property-read Model|\Eloquent $contactable
  * @property-read \App\Models\Country|null $country
@@ -67,7 +67,6 @@ use Illuminate\Support\Str;
  * @method static \Illuminate\Database\Eloquent\Builder|Location newQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|Location notActive()
  * @method static \Illuminate\Database\Eloquent\Builder|Location notDraft()
- * @method static Builder|Location onlyTrashed()
  * @method static \Illuminate\Database\Eloquent\Builder|Location query()
  * @method static \Illuminate\Database\Eloquent\Builder|Location whereAddress1($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Location whereAddress2($value)

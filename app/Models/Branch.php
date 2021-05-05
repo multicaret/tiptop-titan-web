@@ -73,7 +73,7 @@ use Spatie\MediaLibrary\MediaCollections\Models\Collections\MediaCollection;
  * @property string|null $deleted_at
  * @property-read Collection|\App\Models\Location[] $addresses
  * @property-read int|null $addresses_count
- * @property \App\Models\Chain $chain
+ * @property-read \App\Models\Chain $chain
  * @property-read \App\Models\City|null $city
  * @property-read Collection|\App\Models\Location[] $contacts
  * @property-read int|null $contacts_count
