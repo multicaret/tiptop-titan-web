@@ -104,8 +104,6 @@ use Illuminate\Support\Str;
  * @method static \Illuminate\Database\Eloquent\Builder|Location whereVat($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Location whereVatOffice($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Location whereWebsite($value)
- * @method static Builder|Location withTrashed()
- * @method static Builder|Location withoutTrashed()
  * @mixin Eloquent
  * @noinspection PhpFullyQualifiedNameUsageInspection
  * @noinspection PhpUnnecessaryFullyQualifiedNameInspection
