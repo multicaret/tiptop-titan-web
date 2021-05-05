@@ -29,7 +29,7 @@ class CreateTaxonomiesTable extends Migration
             $table->integer('left');
             $table->integer('right');
             $table->integer('depth')->nullable();
-            $table->decimal('step')->default(1);
+            $table->decimal('step')->nullable();
             $table->unsignedBigInteger('order_column')->nullable();
             $table->unsignedTinyInteger('status')->default(Taxonomy::STATUS_DRAFT)->comment('1:draft, 2:active, 3:Inactive, 4..n:CUSTOM');
             $table->timestamps();
