@@ -193,11 +193,11 @@ class Product extends Model implements HasMedia
     public const CHANNEL_FOOD_OBJECT = 2;
 
     protected $with = [
-        'chain',
-        'branch',
+//        'chain',
+//        'branch',
         'translations',
-        'categories',
-        'category'
+//        'categories',
+//        'category'
     ];
 
     protected $fillable = ['order_column'];
