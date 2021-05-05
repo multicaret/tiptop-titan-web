@@ -49,7 +49,6 @@ class ProductMiniResource extends JsonResource
                 'coverSmall' => $this->cover_small,
                 'coverThumbnail' => $this->cover_thumbnail,
                 'coverFull' => $this->cover_full,
-                'gallery' => $this->gallery,
             ],
             'isActive' => $this->when($signedInUserIsBranchManager, $this->status == Product::STATUS_ACTIVE),
             'isDisabled' => $this->when(! $signedInUserIsBranchManager, $this->status == Product::STATUS_INACTIVE),
