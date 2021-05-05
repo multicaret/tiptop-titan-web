@@ -269,13 +269,30 @@
                     </thead>
                     @if($order->cart)
                         <tbody>
-                        @foreach($order->cart->cartProducts as $orderProduct)
+                        @foreach($order->cart->cartProducts()->with('cartProductOptions')->get() as $orderProduct)
                             <tr>
                                 <td>
                                     <img src="{{$orderProduct->product_object['cover']}}"
                                          alt="Product cover" width="50">
                                 </td>
-                                <td>{{$orderProduct->product_object['title']}}</td>
+                                <td>
+                                    <span class="d-block">{{$orderProduct->product_object['title']}}</span>
+                                    @if($orderProduct->cartProductOptions()->count())
+                                        @foreach($orderProduct->cartProductOptions as $cartProductOption)
+                                            <div class="d-block">
+                                                <span class="mr-1">
+                                                {{$cartProductOption->product_option_object['title']}}
+                                                </span>:
+                                                @foreach($cartProductOption->selections as $selection)
+                                                    <a href="#!"
+                                                       class="badge badge-pill badge-warning mr-1">
+                                                        {{$selection->selectable_object['title']}} {{$selection->selectable_object['price']}}
+                                                    </a>
+                                                @endforeach
+                                            </div>
+                                        @endforeach
+                                    @endif
+                                </td>
                                 <td>{!! \App\Models\Currency::formatHtml($orderProduct->product_object['price']) !!}</td>
                                 <td>{{$orderProduct->quantity}}</td>
                                 <td>{!! \App\Models\Currency::formatHtml($orderProduct->product_object['price'] * $orderProduct->quantity) !!}</td>
