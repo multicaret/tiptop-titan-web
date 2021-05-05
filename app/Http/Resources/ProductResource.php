@@ -54,6 +54,7 @@ class ProductResource extends JsonResource
             ],
             'media' => [
                 'cover' => $this->cover,
+                'coverSmall' => $this->cover_small,
                 'coverThumbnail' => $this->cover_thumbnail,
                 'coverFull' => $this->cover_full,
                 'gallery' => $this->gallery,
