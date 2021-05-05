@@ -294,7 +294,6 @@ class ProductController extends Controller
         $product->price = $request->input('price');
         $product->price_discount_amount = $request->input('price_discount_amount');
         $product->available_quantity = $request->input('available_quantity');
-        dd($product->available_quantity);
         $product->minimum_orderable_quantity = $request->input('minimum_orderable_quantity');
         $product->maximum_orderable_quantity = $request->input('maximum_orderable_quantity');
         $product->price_discount_began_at = $request->input('price_discount_began_at');
