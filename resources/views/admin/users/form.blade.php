@@ -214,7 +214,8 @@
                                                     : {!!empty($var) ? $empty : $var!!}
                                                 </div>
                                             @endforeach
-                                            <a href="{{ route('admin.users.addresses.edit', ['user' => $user, 'address' => $address]) }}" target="_blank">
+                                            <a href="{{ route('admin.users.addresses.edit', ['user' => $user, 'address' => $address]) }}"
+                                               target="_blank">
                                                 <button type="button"
                                                         class="btn btn-primary btn-sm rounded-pill d-block float-right">
                                                     {{trans('strings.edit')}}
@@ -247,22 +248,24 @@
                     @endcomponent
                 </div>
 
-                <div class="col-md-6">
-                    @component('admin.components.form-group', ['name' => 'password', 'type' => 'password'])
-                        @slot('label', 'Password')
-                        @if(Route::currentRouteName() == 'admin.users.create')
-                            @slot('attributes', ['required'])
-                        @endif
-                    @endcomponent
-                </div>
-                <div class="col-md-6">
-                    @component('admin.components.form-group', ['name' => 'password_confirmation', 'type' => 'password'])
-                        @slot('label', 'Confirm Password')
-                        @if(Route::currentRouteName() == 'admin.users.create')
-                            @slot('attributes', ['required'])
-                        @endif
-                    @endcomponent
-                </div>
+                @if($user->role_name != \App\Models\User::ROLE_USER)
+                    <div class="col-md-6">
+                        @component('admin.components.form-group', ['name' => 'password', 'type' => 'password'])
+                            @slot('label', 'Password')
+                            @if(Route::currentRouteName() == 'admin.users.create')
+                                @slot('attributes', ['required'])
+                            @endif
+                        @endcomponent
+                    </div>
+                    <div class="col-md-6">
+                        @component('admin.components.form-group', ['name' => 'password_confirmation', 'type' => 'password'])
+                            @slot('label', 'Confirm Password')
+                            @if(Route::currentRouteName() == 'admin.users.create')
+                                @slot('attributes', ['required'])
+                            @endif
+                        @endcomponent
+                    </div>
+                @endif
             </div>
         </div>
         <div class="ml-1">
