@@ -105,7 +105,8 @@ class FoodBranchResource extends JsonResource
             'longitude' => (float) $this->longitude,
             'chain' => new ChainResource($this->chain),
             'isFavorited' => $isFavorited,
-            'categories' => $this->when(!$searchQuery, CategoryMiniResource::collection($this->menuCategories()->orderByDesc('order_column')->get())),
+            'categories' => $this->when(! $searchQuery,
+                CategoryMiniResource::collection($this->menuCategories()->orderBy('order_column')->get())),
             'searchProducts' => $this->when((bool) $searchQuery, ProductMiniResource::collection($searchProducts)),
         ];
     }
