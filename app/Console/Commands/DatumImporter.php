@@ -904,13 +904,13 @@ class DatumImporter extends Command
                          ->setName($modelTitle)
                          ->toMediaCollection($collections['to']);
             } catch (FileDoesNotExist $e) {
-                $errorMessage = 'Failed to load image because file does not exist: '.$e->getMessage();
+                $errorMessage = 'Failed to load image because file does not exist: '.$e->getMessage().' - Model id: '. $newModel->id;
             } catch (FileIsTooBig $e) {
                 $errorMessage = sprintf('Failed to load image because file is too big: %s - Model id: %s',
-                    $e->getMessage(), $newModel);
+                    $e->getMessage(), $newModel->id);
             } catch (FileCannotBeAdded $e) {
                 $errorMessage = sprintf('Failed to load image because file cannot be added: %s - Model id: %s',
-                    $e->getMessage(), $newModel);
+                    $e->getMessage(), $newModel->id);
             }
             if ( ! is_null($errorMessage)) {
                 \Log::error($modelType.' - '.$errorMessage);
