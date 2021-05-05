@@ -93,7 +93,7 @@ class AddressController extends BaseApiController
 //        $address->apartment = $request->flat;
         $address->latitude = $request->latitude;
         $address->longitude = $request->longitude;
-        $address->notes = $request->directions;
+        $address->notes = $request->notes;
         $address->save();
 
         DB::commit();
