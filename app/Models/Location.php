@@ -46,7 +46,6 @@ use Illuminate\Support\Str;
  * @property int $status 1:draft, 2:active, 3:Inactive, 4..n:CUSTOM
  * @property Carbon|null $created_at
  * @property Carbon|null $updated_at
- * @property string|null $deleted_at
  * @property-read \App\Models\City|null $city
  * @property-read Model|\Eloquent $contactable
  * @property-read \App\Models\Country|null $country
@@ -80,7 +79,6 @@ use Illuminate\Support\Str;
  * @method static \Illuminate\Database\Eloquent\Builder|Location whereCountryId($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Location whereCreatedAt($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Location whereCreatorId($value)
- * @method static \Illuminate\Database\Eloquent\Builder|Location whereDeletedAt($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Location whereEditorId($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Location whereEmails($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Location whereFloor($value)
