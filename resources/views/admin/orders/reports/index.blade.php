@@ -19,20 +19,23 @@
             padding-left: 15px
         }
 
-        .table-scroll {
-            position: relative;
-            width: 100%;
-            margin: auto;
-            display: table;
+        .table-wrap {
+            max-height: 50vh;
+            overflow: auto;
+            z-index: 1;
         }
 
-        .table-wrap {
-            width: 100%;
-            display: block;
-            max-height: 90vh;
-            overflow: auto;
-            position: relative;
-            z-index: 1;
+        .hidden-thead {
+            opacity: 1 !important;
+            height: 2px !important;
+            font-size: 0;
+            border-bottom: 1px solid black;
+        }
+
+        .hidden-thead tr,
+        .hidden-thead td,
+        .hidden-thead th {
+            border: unset !important;
         }
 
         .table-scroll table {
@@ -42,70 +45,26 @@
             border-spacing: 0;
         }
 
-        .table-scroll th, .table-scroll td {
-            padding: 5px 5px;
-            border: 1px solid #e8e8e9;
-            background: #fff;
-            vertical-align: top;
+        thead {
+            z-index: 1231231312123;
         }
 
-        .hidden-table table {
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            pointer-events: none;
-        }
+        /*
+                .table-scroll th, .table-scroll td {
+                    padding: 5px 5px;
+                    border: 1px solid #e8e8e9;
+                    background: #fff;
+                    vertical-align: top;
+                }
 
-        .hidden-table table + table {
-            top: auto;
-            bottom: 0;
-        }
-
-        .hidden-table table tbody, .hidden-table tfoot {
-            visibility: hidden;
-            border-color: #eee;
-        }
-
-        .hidden-table table + table thead {
-            visibility: hidden;
-            border-color: transparent;
-        }
-
-        .hidden-table table + table tfoot {
-            visibility: visible;
-            border-color: #000;
-        }
-
-        .hidden-table thead th {
-            color: #fff;
-            background-color: rgb(34 35 35);
-            border-color: #eee;
-        }
-
-        .hidden-table tfoot th, .hidden-table tfoot td {
-            color: #4E5155;
-            background-color: white;
-            border-color: #e8e8e9;
-        }
-
-        .hidden-table {
-            position: absolute;
-            top: 0;
-            right: 0;
-            left: 0;
-            bottom: 0;
-            overflow-y: scroll;
-        }
-
-        .hidden-table thead, .hidden-table tfoot, .hidden-table thead th, .hidden-table tfoot th, .hidden-table tfoot td {
-            position: relative;
-            z-index: 2;
-        }
+                .th {
+                    visibility: visible;
+                    border-color: #000;
+                }*/
     </style>
 @endpush
 @push('scripts')
-    <script>
+    {{--<script>
         $(function () {
             let fauxTable = $('#hidden-table')
             let mainTable = $('#main-table')
@@ -116,6 +75,6 @@
             fauxTable.append(clonedElement);
             fauxTable.append(clonedElement2);
         });
-    </script>
+    </script>--}}
 @endpush
 

@@ -14,6 +14,17 @@ class DailyReport extends Component
     public $regionId;
     public $channel = 'both';
 
+    public function updatedChannel($newValue)
+    {
+        [
+            $dailyReports, $lastWeekAvg, $lastMonthAvg, $weekDaysAvg, $weekendsAvg, $totalOrders, $regions
+        ] = $this->getAll();
+
+        return view('livewire.orders.daily-report',
+            compact('dailyReports', 'regions', 'lastWeekAvg', 'lastMonthAvg',
+                'weekDaysAvg', 'weekendsAvg', 'totalOrders'));
+    }
+
     public function updatedDateFrom($newValue)
     {
         $dateFrom = Carbon::parse($newValue);
@@ -48,35 +59,57 @@ class DailyReport extends Component
 
     public function render()
     {
-        $dailyReports = OrderDailyReport::orderBy('day');
+        [
+            $dailyReports, $lastWeekAvg, $lastMonthAvg, $weekDaysAvg, $weekendsAvg, $totalOrders, $regions
+        ] = $this->getAll();
+
+        return view('livewire.orders.daily-report',
+            compact('dailyReports', 'regions', 'lastWeekAvg', 'lastMonthAvg',
+                'weekDaysAvg', 'weekendsAvg', 'totalOrders'));
+    }
+
+    /**
+     * @return array
+     */
+    private function retrieveAverages(): array
+    {
+        $lastWeekAvg = OrderDailyReport::retrieveValues($this->channel,
+            OrderDailyReport::where('day', '>=', Carbon::now()->subDays(7)->toDateString())
+                            ->get());
+
+        $lastMonthAvg = OrderDailyReport::retrieveValues($this->channel,
+            OrderDailyReport::where('day', '>=', Carbon::now()->subDays(30)->toDateString())
+                            ->get());
+
+        $weekDaysAvg = OrderDailyReport::retrieveValues($this->channel,
+            OrderDailyReport::where('is_weekend', false)
+                            ->get());
+
+        $weekendsAvg = OrderDailyReport::retrieveValues($this->channel,
+            OrderDailyReport::where('is_weekend', true)
+                            ->get());
+
+        return [$lastWeekAvg, $lastMonthAvg, $weekDaysAvg, $weekendsAvg];
+    }
+
+    /**
+     * @return array
+     */
+    private function getAll(): array
+    {
+        $dailyReports = OrderDailyReport::orderByDesc('day');
         $dailyReports = $dailyReports->whereBetween('day', [$this->dateFrom, $this->dateTo]);
         if ($this->regionId && $this->regionId != 'all') {
             $dailyReports = $dailyReports->where('region_id', $this->regionId);
         }
         $dailyReports = $dailyReports->get();
 
-        $lastWeekAvg = OrderDailyReport::retrievValues(false, $this->channel,
-            OrderDailyReport::where('day', '>=', Carbon::now()->subDays(7)->toDateString())
-                            ->get());
+        [$lastWeekAvg, $lastMonthAvg, $weekDaysAvg, $weekendsAvg] = $this->retrieveAverages();
 
-        $lastMonthAvg = OrderDailyReport::retrievValues(false, $this->channel,
-            OrderDailyReport::where('day', '>=', Carbon::now()->subDays(30)->toDateString())
-                            ->get());
-
-        $weekDaysAvg = OrderDailyReport::retrievValues(false, $this->channel,
-            OrderDailyReport::where('is_weekend', false)
-                            ->get());
-
-        $weekendsAvg = OrderDailyReport::retrievValues(false, $this->channel,
-            OrderDailyReport::where('is_weekend', true)
-                            ->get());
-
-        $totalOrders = OrderDailyReport::retrievValues(true, $this->channel, OrderDailyReport::get());
+        $totalOrders = OrderDailyReport::retrieveValues($this->channel, OrderDailyReport::get(), true);
 
         $regions = Region::active()->get();
 
-        return view('livewire.orders.daily-report',
-            compact('dailyReports', 'regions', 'lastWeekAvg', 'lastMonthAvg',
-                'weekDaysAvg', 'weekendsAvg', 'totalOrders'));
+        return [$dailyReports, $lastWeekAvg, $lastMonthAvg, $weekDaysAvg, $weekendsAvg, $totalOrders, $regions];
     }
 }
