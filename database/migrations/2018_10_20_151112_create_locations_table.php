@@ -47,10 +47,9 @@ class CreateLocationsTable extends Migration
             $table->unsignedTinyInteger('kind')->default(Location::KIND_HOME)->comment('1: Home, 2: Work, 3:Other');
             $table->unsignedTinyInteger('status')->default(Location::STATUS_DRAFT)->comment('1:draft, 2:active, 3:Inactive, 4..n:CUSTOM');
             $table->timestamps();
-            $table->softDeletes();
 
-            $table->foreign('creator_id')->references('id')->on('users');
-            $table->foreign('editor_id')->references('id')->on('users');
+            $table->foreign('creator_id')->references('id')->on('users')->onDelete('cascade');
+            $table->foreign('editor_id')->references('id')->on('users')->onDelete('cascade');
             $table->foreign('country_id')->references('id')->on('countries');
             $table->foreign('region_id')->references('id')->on('regions');
             $table->foreign('city_id')->references('id')->on('cities');

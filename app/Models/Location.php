@@ -5,7 +5,6 @@ namespace App\Models;
 use App\Traits\HasStatuses;
 use Eloquent;
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Database\Query\Builder;
 use Illuminate\Support\Carbon;
 use Illuminate\Support\Str;
@@ -114,8 +113,6 @@ use Illuminate\Support\Str;
 class Location extends Model
 {
     use HasStatuses;
-    use SoftDeletes;
-
 
     public const STATUS_DRAFT = 1;
     public const STATUS_ACTIVE = 2;
