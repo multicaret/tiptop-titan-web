@@ -101,6 +101,42 @@ class OldMedia extends MediaAlias
         return sprintf($urlScheme, self::getModelTypes()[$this->model_type], $this->id, $this->file_name);
     }
 
+
+    public function getResizedDiskPathAttribute($conversion): string
+    {
+        $urlScheme = "media/%s/%d/resized/%s";
+        $extension = $this->getExtensionAttribute();
+        $resizedFileName = \Str::of($this->file_name)->beforeLast('.')->append('-')
+                               ->append($conversion.'.'.$extension);
+
+        return sprintf($urlScheme, self::getModelTypes()[$this->model_type], $this->id, $resizedFileName);
+    }
+
+
+    public function getImageUrlAttribute(): ?string
+    {
+        if ( ! \Storage::disk('old_s3')->exists($this->disk_path)) {
+            $urlScheme = 'https://tiptop-backend-staging.s3.eu-central-1.amazonaws.com/media/%s/%d/resized/%s';
+            $extension = $this->getExtensionAttribute();
+            $lastGeneratedConversion = $this->getGeneratedConversions()->keys()->last();
+            $resizedDiskPathAttribute = $this->getResizedDiskPathAttribute($lastGeneratedConversion);
+            if( ! \Storage::disk('old_s3')->exists($resizedDiskPathAttribute)){
+                return null;
+            }
+            $finalUrl = sprintf($urlScheme, self::getModelTypes()[$this->model_type], $this->id, $this->file_name);
+
+            return \Str::of($finalUrl)->beforeLast('.')
+                       ->append('-')
+                       ->append($lastGeneratedConversion)
+                       ->append('.'.$extension)
+                       ->jsonSerialize();
+        }
+
+        $urlScheme = 'https://tiptop-backend-staging.s3.eu-central-1.amazonaws.com/media/%s/%d/%s';
+        return sprintf($urlScheme, self::getModelTypes()[$this->model_type], $this->id, $this->file_name);
+
+    }
+
     public function getDiskAttribute(): string
     {
         return 'old_s3';

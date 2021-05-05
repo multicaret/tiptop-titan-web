@@ -890,16 +890,19 @@ class DatumImporter extends Command
                                  ->where($query)
                                  ->get();
         foreach ($oldMediaFiles as $oldMediaData) {
+            $imageUrl = $oldMediaData->image_url;
+            if (is_null($imageUrl)) {
+                continue;
+            }
             $errorMessage = null;
-            $toCollection = $collections['to'];
             $modelTitle = $newModel->getTranslation('en')->$imageNameAttribute;
             $modelTitleSlugged = \Str::slug($modelTitle);
             $fileName = "{$modelTitleSlugged}.{$oldMediaData->getExtensionAttribute()}";
             try {
-                $newModel->addMediaFromDisk($oldMediaData->disk_path, 'old_s3')
+                $newModel->addMediaFromUrl($imageUrl)
                          ->setFileName($fileName)
                          ->setName($modelTitle)
-                         ->toMediaCollection($toCollection);
+                         ->toMediaCollection($collections['to']);
             } catch (FileDoesNotExist $e) {
                 $errorMessage = 'Failed to load image because file does not exist: '.$e->getMessage();
             } catch (FileIsTooBig $e) {
