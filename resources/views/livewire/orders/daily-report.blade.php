@@ -182,19 +182,15 @@
                     </td>
 
                     <td>
-                        {{--// Todo: Make this "Total Delivered Cart Values"--}}
                         @php
                             if($channel == 'grocery') {
-                                $report->delivered_orders_count = $report->delivered_grocery_orders_count;
+                                $report->delivered_orders_value = $report->delivered_grocery_orders_value;
                             }elseif($channel == 'food') {
-                                $report->delivered_orders_count = $report->delivered_food_orders_count;
+                                $report->delivered_orders_value = $report->delivered_food_orders_value;
                             }
                         @endphp
-                        <small class="text-muted">
-                            ({{$report->delivered_orders_count}})
-                        </small>
-
-                        {{\App\Http\Controllers\Controller::percentageInRespectToTwoNumbers($report->delivered_orders_count,$report->orders_count).'%'}}
+                        {{--                        <small class="text-muted"></small>--}}
+                        {!! \App\Models\Currency::formatHtml($report->delivered_orders_value) !!}
                     </td>
                     <td>
                         {{$report->average_delivery_time}}
@@ -360,6 +356,17 @@
             </thead>
             <tbody>
             <tr>
+                <th>Total Orders</th>
+                @foreach($totalOrders as $item)
+                    <td>
+                        @if(isset($item[1]))
+                            <small class="text-muted">({!! $item[1] !!})</small>
+                        @endif
+                        {!! $item[0] !!}
+                    </td>
+                @endforeach
+            </tr>
+            <tr>
                 <th>AVG Last Week:</th>
                 @foreach($lastWeekAvg as $index => $item)
                     <td>
@@ -403,17 +410,7 @@
                     </td>
                 @endforeach
             </tr>
-            <tr>
-                <th>Total Orders</th>
-                @foreach($totalOrders as $item)
-                    <td>
-                        @if(isset($item[1]))
-                            <small class="text-muted">({!! $item[1] !!})</small>
-                        @endif
-                        {!! $item[0] !!}
-                    </td>
-                @endforeach
-            </tr>
+
             </tbody>
         </table>
     </div>

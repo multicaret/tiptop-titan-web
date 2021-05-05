@@ -106,7 +106,8 @@ class DailyReport extends Component
 
         [$lastWeekAvg, $lastMonthAvg, $weekDaysAvg, $weekendsAvg] = $this->retrieveAverages();
 
-        $totalOrders = OrderDailyReport::retrieveValues($this->channel, OrderDailyReport::get(), true);
+        $totalOrders = OrderDailyReport::retrieveValues($this->channel,
+            OrderDailyReport::whereBetween('day', [$this->dateFrom, $this->dateTo])->get(), true);
 
         $regions = Region::active()->get();
 
