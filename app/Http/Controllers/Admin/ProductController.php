@@ -243,35 +243,25 @@ class ProductController extends Controller
     private function validationRules($request): array
     {
         $defaultLocale = localization()->getDefaultLocale();
-        $toValidateInGrocery = [];
-        if ($request->type == Product::getCorrectChannelName(Product::CHANNEL_GROCERY_OBJECT, 0)) {
-            $toValidateInGrocery = [
-                'categories' => 'required',
-            ];
+        $rules = [];
+        if ($request->type == Product::getCorrectChannelName(Product::CHANNEL_GROCERY_OBJECT, false)) {
+            $rules['categories'] = 'required';
         }
-        $toValidateInFood = [];
-        if ($request->type == Product::getCorrectChannelName(Product::CHANNEL_FOOD_OBJECT, 0)) {
-            $toValidateInFood = [
-                'master_category' => 'required',
-            ];
+        if ($request->type == Product::getCorrectChannelName(Product::CHANNEL_FOOD_OBJECT, false)) {
+            $rules['master_category'] = 'required';
         }
-        $toValidateDate = [];
         if ($request->has('is_enable_to_store_date')) {
-            $toValidateDate = [
-                'price_discount_began_at' => 'required|date',
-                'price_discount_finished_at' => 'required|date|after:price_discount_began_at',
-                'custom_banner_began_at' => 'required|date',
-                'custom_banner_ended_at' => 'required|date|after:custom_banner_began_at',
-            ];
+            $rules['price_discount_began_at'] = 'required|date';
+            $rules['price_discount_finished_at'] = 'required|date|after:price_discount_began_at';
+            $rules['custom_banner_began_at'] = 'required|date';
+            $rules['custom_banner_ended_at'] = 'required|date|after:custom_banner_began_at';
         }
 
-        $generalValidateItems = [
-            "{$defaultLocale}.title" => 'required',
-            'price' => 'required',
-            'type' => 'required',
-        ];
+        $rules["$defaultLocale.title"] = 'required';
+        $rules['price'] = 'required';
+        $rules['type'] = 'required';
 
-        return array_merge($toValidateInGrocery, $generalValidateItems, $toValidateInFood, $toValidateDate);
+        return $rules;
     }
 
     private function storeSaveLogic(Request $request, Product $product): void
@@ -294,6 +284,7 @@ class ProductController extends Controller
         $product->price = $request->input('price');
         $product->price_discount_amount = $request->input('price_discount_amount');
         $product->available_quantity = $request->input('available_quantity');
+        dd($product->available_quantity);
         $product->minimum_orderable_quantity = $request->input('minimum_orderable_quantity');
         $product->maximum_orderable_quantity = $request->input('maximum_orderable_quantity');
         $product->price_discount_began_at = $request->input('price_discount_began_at');
