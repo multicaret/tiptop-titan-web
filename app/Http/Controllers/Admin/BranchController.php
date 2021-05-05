@@ -284,7 +284,7 @@ class BranchController extends Controller
             'restaurant_extra_delivery_fee_per_km',
         ];
 
-        foreach($inputs as $input){
+        foreach ($inputs as $input) {
             if ($request->input($input)) {
                 $branch->$input = $request->input($input);
             } else {
@@ -341,6 +341,8 @@ class BranchController extends Controller
 //        $this->storeWorkingHours($request, $branch);
         $branch->save();
         DB::commit();
+
+        cache()->tags('branches')->flush();
     }
 
     /**

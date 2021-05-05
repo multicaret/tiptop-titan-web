@@ -18,6 +18,13 @@ class GroceryCategoryParentResource extends JsonResource
      */
     public function toArray($request)
     {
+        $children = cache()
+            ->tags('taxonomies', 'api-home')
+            ->rememberForever('children_categories_of_parent_'.$this->id, function () {
+                return GroceryCategoryChildResource::collection($this->children);
+            });
+
+
         return [
             'id' => $this->id,
             'icon' => $this->icon,
@@ -28,7 +35,7 @@ class GroceryCategoryParentResource extends JsonResource
                 'formatted' => $this->description,
             ],
             'hasChildren' => $this->hasChildren(),
-            'children' => GroceryCategoryChildResource::collection($this->children),
+            'children' => $children,
             'cover' => $this->cover,
             'thumbnail' => $this->cover_small,
         ];

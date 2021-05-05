@@ -18,6 +18,9 @@
 
                     <!-- Content -->
                     <div class="container-fluid flex-grow-1 container-p-y">
+
+                        @include('admin.partials._validation-errors')
+
                         @yield('content')
                     </div>
                     <!-- / Content -->

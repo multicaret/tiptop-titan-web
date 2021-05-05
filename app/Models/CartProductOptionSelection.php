@@ -56,7 +56,7 @@ class CartProductOptionSelection extends Pivot
     ];
 
     protected $casts = [
-        'product_option_object' => 'json',
+        'selectable_object' => 'json',
     ];
 
     public static function boot()

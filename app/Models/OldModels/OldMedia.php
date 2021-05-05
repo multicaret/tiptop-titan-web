@@ -35,6 +35,8 @@ use Spatie\MediaLibrary\MediaCollections\Models\Media as MediaAlias;
  * @property-read string $disk_path
  * @property-read string $extension
  * @property-read string $human_readable_size
+ * @property-read string|null $image_url
+ * @property-read string $resized_disk_path
  * @property-read string $type
  * @property-read Model|\Eloquent $model
  * @method static MediaCollection|static[] all($columns = ['*'])

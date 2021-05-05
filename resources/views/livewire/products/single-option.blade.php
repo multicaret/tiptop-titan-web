@@ -147,27 +147,15 @@
                                 @endif
 
                                 <div class="form-group col-md-4">
-                                    <label class="form-label">Input Type</label>
+                                    <label class="form-label">
+                                        Input Type
+                                    </label>
                                     <select class="form-control" wire:model="option.input_type">
-                                        @if($option->is_based_on_ingredients)
-                                            <option value="{{\App\Models\ProductOption::INPUT_TYPE_PILL}}">
-                                                Pills
+                                        @foreach($this->getAvailableInputTypes() as $availableInputType)
+                                            <option value="{{$availableInputType['id']}}">
+                                                {{$availableInputType['title']}}
                                             </option>
-                                        @else
-                                            @if($option->max_number_of_selection == 1)
-                                                <option value="{{\App\Models\ProductOption::INPUT_TYPE_SELECT}}">
-                                                    Select
-                                                </option>
-                                                <option value="{{\App\Models\ProductOption::INPUT_TYPE_RADIO}}">
-                                                    Radio
-                                                </option>
-                                            @endif
-                                            @if($option->max_number_of_selection > 1)
-                                                <option value="{{\App\Models\ProductOption::INPUT_TYPE_CHECKBOX}}">
-                                                    Checkbox
-                                                </option>
-                                            @endif
-                                        @endif
+                                        @endforeach
                                     </select>
                                 </div>
                                 <div class="form-group col-md-4">

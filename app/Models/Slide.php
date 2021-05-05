@@ -122,7 +122,11 @@ class Slide extends Model
 
     protected $with = ['translations'];
 
-    protected $translatedAttributes = ['alt_tag', 'image'];
+    protected $translatedAttributes = [
+        'alt_tag',
+        'image',
+        'image_thumbnail',
+    ];
 
     protected $fillable = ['title', 'description', 'link_value', 'link_type', 'begins_at', 'expires_at', 'status'];
 

@@ -5,7 +5,6 @@ namespace App\Models;
 use App\Traits\HasStatuses;
 use Eloquent;
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Database\Query\Builder;
 use Illuminate\Support\Carbon;
 use Illuminate\Support\Str;
 
@@ -46,7 +45,6 @@ use Illuminate\Support\Str;
  * @property int $status 1:draft, 2:active, 3:Inactive, 4..n:CUSTOM
  * @property Carbon|null $created_at
  * @property Carbon|null $updated_at
- * @property Carbon|null $deleted_at
  * @property-read \App\Models\City|null $city
  * @property-read Model|\Eloquent $contactable
  * @property-read \App\Models\Country|null $country
@@ -67,7 +65,6 @@ use Illuminate\Support\Str;
  * @method static \Illuminate\Database\Eloquent\Builder|Location newQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|Location notActive()
  * @method static \Illuminate\Database\Eloquent\Builder|Location notDraft()
- * @method static Builder|Location onlyTrashed()
  * @method static \Illuminate\Database\Eloquent\Builder|Location query()
  * @method static \Illuminate\Database\Eloquent\Builder|Location whereAddress1($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Location whereAddress2($value)
@@ -81,7 +78,6 @@ use Illuminate\Support\Str;
  * @method static \Illuminate\Database\Eloquent\Builder|Location whereCountryId($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Location whereCreatedAt($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Location whereCreatorId($value)
- * @method static \Illuminate\Database\Eloquent\Builder|Location whereDeletedAt($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Location whereEditorId($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Location whereEmails($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Location whereFloor($value)
@@ -104,8 +100,6 @@ use Illuminate\Support\Str;
  * @method static \Illuminate\Database\Eloquent\Builder|Location whereVat($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Location whereVatOffice($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Location whereWebsite($value)
- * @method static Builder|Location withTrashed()
- * @method static Builder|Location withoutTrashed()
  * @mixin Eloquent
  * @noinspection PhpFullyQualifiedNameUsageInspection
  * @noinspection PhpUnnecessaryFullyQualifiedNameInspection
@@ -139,9 +133,9 @@ class Location extends Model
     ];
 
     protected $with = [
-        'country',
-        'region',
-        'city'
+//        'country',
+//        'region',
+//        'city'
     ];
 
     /**

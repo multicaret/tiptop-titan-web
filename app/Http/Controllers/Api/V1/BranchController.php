@@ -32,8 +32,8 @@ class BranchController extends BaseApiController
             return FoodCategoryResource::collection($categories);
         });
 
-        $minCart = Branch::foods()->get()->min('minimum_order');
-        $maxCart = Branch::foods()->get()->max('minimum_order');
+        $minCart = Branch::active()->foods()->get()->min('minimum_order');
+        $maxCart = Branch::active()->foods()->get()->max('minimum_order');
 
         return $this->respond([
             'categories' => $categories,
@@ -46,7 +46,7 @@ class BranchController extends BaseApiController
     {
         $categories = $request->input('categories');
 
-        $branches = Branch::foods();
+        $branches = Branch::active()->foods();
 
         if ($request->has('minimum_order') && ! is_null($minimumOrder = $request->input('minimum_order'))) {
             $branches = $branches->where(function ($query) use ($minimumOrder) {
