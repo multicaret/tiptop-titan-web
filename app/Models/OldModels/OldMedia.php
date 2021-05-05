@@ -88,7 +88,7 @@ class OldMedia extends MediaAlias
 
     public function getProductS3Url($id, $fileName): string
     {
-        $urlScheme = 'https://tiptop-backend-production.s3.eu-central-1.amazonaws.com/media/dishes/%d/%s';
+        $urlScheme = 'https://tiptop-backend-staging.s3.eu-central-1.amazonaws.com/media/dishes/%d/%s';
 
         return sprintf($urlScheme, $id, $fileName);
     }
