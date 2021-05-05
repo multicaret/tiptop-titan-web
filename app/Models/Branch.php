@@ -348,24 +348,31 @@ class Branch extends Model implements HasMedia
 
     public static function getClosestAvailableBranch($latitude, $longitude): array
     {
-        $distance = $branch = null;
-        $branchesOrderedByDistance = Branch::active()
-                                           ->groceries()
-                                           ->selectRaw('branches.id, DISTANCE_BETWEEN(latitude,longitude,?,?) as distance',
-                                               [$latitude, $longitude])
-                                           ->orderBy('distance')
-                                           ->get();
+        return cache()
+            ->tags('branches', 'api-home')
+            ->rememberForever('getClosestAvailableBranch_lat_'.$latitude.'_lng_'.$longitude, function () use (
+                $longitude,
+                $latitude
+            ) {
+                $distance = $branch = null;
+                $branchesOrderedByDistance = Branch::active()
+                                                   ->groceries()
+                                                   ->selectRaw('branches.id, DISTANCE_BETWEEN(latitude,longitude,?,?) as distance',
+                                                       [$latitude, $longitude])
+                                                   ->orderBy('distance')
+                                                   ->get();
 
-        foreach ($branchesOrderedByDistance as $branchOrderedByDistance) {
-            $branch = Branch::find($branchOrderedByDistance->id);
-            $branchWorkingHours = WorkingHour::retrieve($branch);
-            if ($branchWorkingHours['isOpen']) {
-                $distance = $branchOrderedByDistance->distance;
-                break;
-            }
-        }
+                foreach ($branchesOrderedByDistance as $branchOrderedByDistance) {
+                    $branch = Branch::find($branchOrderedByDistance->id);
+                    $branchWorkingHours = WorkingHour::retrieve($branch);
+                    if ($branchWorkingHours['isOpen']) {
+                        $distance = $branchOrderedByDistance->distance;
+                        break;
+                    }
+                }
 
-        return [$distance, $branch];
+                return [$distance, $branch];
+            });
     }
 
     public function getHasBeenRatedAttribute(): bool
