@@ -17,7 +17,7 @@ class CreateLocationsTable extends Migration
         Schema::create('locations', function (Blueprint $table) {
             $table->id();
             $table->unsignedBigInteger('creator_id')->index();
-            $table->unsignedBigInteger('editor_id');
+            $table->unsignedBigInteger('editor_id')->nullable();
             $table->nullableMorphs('contactable');
             $table->unsignedBigInteger('country_id')->index()->nullable();
             $table->unsignedBigInteger('region_id')->index()->nullable();
@@ -49,7 +49,7 @@ class CreateLocationsTable extends Migration
             $table->timestamps();
 
             $table->foreign('creator_id')->references('id')->on('users')->onDelete('cascade');
-            $table->foreign('editor_id')->references('id')->on('users')->onDelete('cascade');
+            $table->foreign('editor_id')->references('id')->on('users')->onDelete('set null');
             $table->foreign('country_id')->references('id')->on('countries');
             $table->foreign('region_id')->references('id')->on('regions');
             $table->foreign('city_id')->references('id')->on('cities');
