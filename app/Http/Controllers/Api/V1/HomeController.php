@@ -165,8 +165,8 @@ class HomeController extends BaseApiController
 
                 return FoodCategoryResource::collection($categories);
             });
-            $foodBranches = Branch::foods()
-                                  ->active()
+            $foodBranches = Branch::active()
+                                  ->foods()
                                   ->latest('published_at')
                                   ->get();
 

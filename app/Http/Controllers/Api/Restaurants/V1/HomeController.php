@@ -4,20 +4,20 @@ namespace App\Http\Controllers\Api\Restaurants\V1;
 
 
 use App\Http\Controllers\Api\BaseApiController;
-use App\Http\Resources\RemoteConfigResource;
 use App\Http\Resources\BranchResource;
 use App\Http\Resources\CartResource;
 use App\Http\Resources\CurrencyResource;
 use App\Http\Resources\FoodCategoryResource;
 use App\Http\Resources\GroceryCategoryParentResource;
 use App\Http\Resources\OrderResource;
+use App\Http\Resources\RemoteConfigResource;
 use App\Http\Resources\SlideResource;
-use App\Models\RemoteConfig;
 use App\Models\Branch;
 use App\Models\Cart;
 use App\Models\Currency;
 use App\Models\Location;
 use App\Models\Order;
+use App\Models\RemoteConfig;
 use App\Models\Slide;
 use App\Models\Taxonomy;
 use Illuminate\Http\JsonResponse;
@@ -153,8 +153,8 @@ class HomeController extends BaseApiController
 
                 return FoodCategoryResource::collection($categories);
             });
-            $foodBranches = Branch::foods()
-                                  ->active()
+            $foodBranches = Branch::active()
+                                  ->foods()
                                   ->latest('published_at')
                                   ->get();
 
