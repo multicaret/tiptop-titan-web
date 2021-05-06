@@ -26,13 +26,14 @@ class ProductOptionsWorksheet extends WorksheetImport
         $this->updateTypeAttribute($rawData);
         $this->updateInputTypeAttribute($rawData);
         $this->updateSelectionTypeAttribute($rawData);
-        $rawData['product_id'] = $this->getProductId($rawData);
+        $rawData['product_id'] = $this->productsImporter->getProductId($rawData);
+        $excelId = $rawData['excel_id'];
         unset($rawData['excel_id']);
         unset($rawData['id']);
         try {
             $productOption = ProductOption::create($rawData);
             $optionId = $productOption->translations()->first()->product_option_id;
-            $this->productsImporter->setProductsOptionsIds($rawData['product_id'], $optionId);
+            $this->productsImporter->setProductsOptionsIds($rawData['product_id'], $excelId, $optionId);
         } catch (\Exception $e) {
             dd($rawData, $e->getMessage(), $this->productsImporter->getProductsIds());
         }
@@ -76,14 +77,5 @@ class ProductOptionsWorksheet extends WorksheetImport
         } else {
             $rawData['selection_type'] = ProductOption::SELECTION_TYPE_MULTIPLE_VALUE;
         }
-    }
-
-    private function getProductId($rawData): ?int
-    {
-        if (isset($this->productsImporter->getProductsIds()[$rawData['product_id']])) {
-            return $this->productsImporter->getProductsIds()[$rawData['product_id']];
-        }
-
-        return null;
     }
 }

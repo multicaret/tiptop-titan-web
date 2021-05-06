@@ -63,12 +63,12 @@ class ProductsImporter implements WithMultipleSheets, SkipsUnknownSheets
         return $this->productsOptionsIds;
     }
 
-    public function setProductsOptionsIds($productId, $optionId): void
+    public function setProductsOptionsIds($productId, $optionExcelId, $optionId): void
     {
         if ($this->productsOptionsIds->has($productId)) {
-            $this->productsOptionsIds->get($productId)->push($optionId);
+            $this->productsOptionsIds->get($productId)->put($optionExcelId, $optionId);
         } else {
-            $this->productsOptionsIds->put($productId, collect([$optionId]));
+            $this->productsOptionsIds->put($productId, collect([$optionExcelId => $optionId]));
         }
     }
 
@@ -79,7 +79,7 @@ class ProductsImporter implements WithMultipleSheets, SkipsUnknownSheets
             self::WORKSHEET_MENU_CATEGORIES => new MenuCategoriesWorksheet($this->branch, $this),
             self::WORKSHEET_PRODUCTS => new ProductWorksheet($this->chain, $this->branch, $this),
             self::WORKSHEET_OPTIONS => new ProductOptionsWorksheet($this),
-            self::WORKSHEET_SELECTIONS => new ProductOptionsSelectionsWorksheet(),
+            self::WORKSHEET_SELECTIONS => new ProductOptionsSelectionsWorksheet($this),
         ];
     }
 
@@ -114,5 +114,14 @@ class ProductsImporter implements WithMultipleSheets, SkipsUnknownSheets
                 $rawData[$attribute] = \Str::lower($rawData[$attribute]) === 'yes';
             }
         }
+    }
+
+    public function getProductId($rawData): ?int
+    {
+        if (isset($this->getProductsIds()[$rawData['product_id']])) {
+            return $this->getProductsIds()[$rawData['product_id']];
+        }
+
+        return null;
     }
 }

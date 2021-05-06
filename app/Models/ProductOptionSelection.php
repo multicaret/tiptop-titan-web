@@ -52,6 +52,11 @@ class ProductOptionSelection extends Model
     use Translatable;
 
     protected $translatedAttributes = ['title'];
+    protected $fillable = [
+        'product_id',
+        'product_option_id',
+        'price',
+    ];
 
     protected $casts = [
         'price' => 'double',
