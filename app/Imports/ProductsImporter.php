@@ -9,20 +9,25 @@ use App\Imports\Worksheets\ProductOptionsWorksheet;
 use App\Imports\Worksheets\ProductWorksheet;
 use App\Models\Branch;
 use App\Models\Chain;
+use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Collection as CollectionAlias;
 use Maatwebsite\Excel\Concerns\SkipsUnknownSheets;
 use Maatwebsite\Excel\Concerns\WithConditionalSheets;
 use Maatwebsite\Excel\Concerns\WithMultipleSheets;
-use phpDocumentor\Reflection\Types\Collection;
 
 class ProductsImporter implements WithMultipleSheets, SkipsUnknownSheets
 {
     use WithConditionalSheets;
 
+    public const WORKSHEET_MENU_CATEGORIES = 'menu_categories';
+    public const WORKSHEET_PRODUCTS = 'products';
+    public const WORKSHEET_OPTIONS = 'options';
+    public const WORKSHEET_SELECTIONS = 'selections';
     protected Chain $chain;
     protected Branch $branch;
     protected CollectionAlias $menuCategoriesIds;
     protected CollectionAlias $productsIds;
+    protected CollectionAlias $productsOptionsIds;
 
     public function __construct(Chain $chain, Branch $branch)
     {
@@ -30,6 +35,7 @@ class ProductsImporter implements WithMultipleSheets, SkipsUnknownSheets
         $this->branch = $branch;
         $this->menuCategoriesIds = collect([]);
         $this->productsIds = collect([]);
+        $this->productsOptionsIds = collect([]);
     }
 
     public function getMenuCategoriesIds(): CollectionAlias
@@ -52,14 +58,28 @@ class ProductsImporter implements WithMultipleSheets, SkipsUnknownSheets
         $this->productsIds->put($excelId, $productId);
     }
 
+    public function getProductsOptionsIds(): CollectionAlias
+    {
+        return $this->productsOptionsIds;
+    }
+
+    public function setProductsOptionsIds($productId, $optionId): void
+    {
+        if ($this->productsOptionsIds->has($productId)) {
+            $this->productsOptionsIds->get($productId)->push($optionId);
+        } else {
+            $this->productsOptionsIds->put($productId, collect([$optionId]));
+        }
+    }
+
 
     public function conditionalSheets(): array
     {
         return [
-            'menu_categories' => new MenuCategoriesWorksheet($this->branch, $this),
-            'products' => new ProductWorksheet($this->chain, $this->branch, $this),
-            'options' => new ProductOptionsWorksheet($this),
-            'selections' => new ProductOptionsSelectionsWorksheet(),
+            self::WORKSHEET_MENU_CATEGORIES => new MenuCategoriesWorksheet($this->branch, $this),
+            self::WORKSHEET_PRODUCTS => new ProductWorksheet($this->chain, $this->branch, $this),
+            self::WORKSHEET_OPTIONS => new ProductOptionsWorksheet($this),
+            self::WORKSHEET_SELECTIONS => new ProductOptionsSelectionsWorksheet(),
         ];
     }
 
@@ -84,5 +104,15 @@ class ProductsImporter implements WithMultipleSheets, SkipsUnknownSheets
         }
 
         return array_merge($row, $rowTranslations);
+    }
+
+    public function updateBooleanAttributes(Model $model, array &$rawData): void
+    {
+        $casts = collect($model->getCasts());
+        foreach ($casts->filter(fn($v) => $v === 'boolean') as $attribute => $item) {
+            if (isset($rawData[$attribute])) {
+                $rawData[$attribute] = \Str::lower($rawData[$attribute]) === 'yes';
+            }
+        }
     }
 }

@@ -31,8 +31,8 @@ class MenuCategoriesWorksheet extends WorksheetImport
 
     private function createTaxonomy(array $taxonomy): TaxonomyModel
     {
-        unset($taxonomy['id']);
         $excelId = $taxonomy['excel_id'];
+        unset($taxonomy['id']);
         unset($taxonomy['excel_id']);
         $taxonomy['type'] = Taxonomy::TYPE_MENU_CATEGORY;
         $taxonomy['branch_id'] = $this->branch->id;
@@ -41,7 +41,11 @@ class MenuCategoriesWorksheet extends WorksheetImport
         $taxonomy['status'] = Taxonomy::STATUS_ACTIVE;
         $taxonomy['left'] = 1;
         $taxonomy['right'] = 1;
-        $taxonomyModel = TaxonomyModel::create($taxonomy);
+        try {
+            $taxonomyModel = TaxonomyModel::create($taxonomy);
+        } catch (\Exception $e) {
+            dd($e->getMessage(), $taxonomy);
+        }
         $taxonomyId = $taxonomyModel->translations()->first()->taxonomy_id;
         $this->productsImport->setMenuCategoriesIds($excelId , $taxonomyId);
         return $taxonomyModel;
