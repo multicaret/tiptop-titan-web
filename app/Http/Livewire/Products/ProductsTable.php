@@ -28,10 +28,12 @@ class ProductsTable extends Component
     public function retrieveProducts()
     {
         $products = Product::whereBranchId($this->branchId);
-        $searchByCategoryForGrocery = $this->searchByCategoryForGrocery;
         if ( ! is_null($this->searchByCategoryForFood) && $this->searchByCategoryForFood != 'all') {
             $products = $products->where('category_id', $this->searchByCategoryForFood);
-        } elseif ( ! is_null($searchByCategoryForGrocery) && $searchByCategoryForGrocery != 'all') {
+        }
+
+        $searchByCategoryForGrocery = $this->searchByCategoryForGrocery;
+        if ( ! is_null($searchByCategoryForGrocery) && $searchByCategoryForGrocery != 'all') {
             $products = $products->whereHas('categories', function ($query) use ($searchByCategoryForGrocery) {
                 $query->where('category_id', $searchByCategoryForGrocery);
             });

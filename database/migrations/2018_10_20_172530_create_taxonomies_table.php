@@ -20,8 +20,8 @@ class CreateTaxonomiesTable extends Migration
             $table->unsignedBigInteger('creator_id')->index();
             $table->unsignedBigInteger('editor_id');
             $table->unsignedBigInteger('parent_id')->index()->nullable();
-            $table->unsignedBigInteger('branch_id')->index()->nullable();
             $table->unsignedBigInteger('chain_id')->index()->nullable();
+            $table->unsignedBigInteger('branch_id')->index()->nullable();
             $table->unsignedBigInteger('ingredient_category_id')->nullable();
             $table->unsignedTinyInteger('type')->default(1)->comment('1:Category, 2: Tag, 3..n: CUSTOM');
             $table->string('icon')->nullable();
@@ -29,7 +29,7 @@ class CreateTaxonomiesTable extends Migration
             $table->integer('left');
             $table->integer('right');
             $table->integer('depth')->nullable();
-            $table->decimal('step')->default(1);
+            $table->decimal('step')->nullable();
             $table->unsignedBigInteger('order_column')->nullable();
             $table->unsignedTinyInteger('status')->default(Taxonomy::STATUS_DRAFT)->comment('1:draft, 2:active, 3:Inactive, 4..n:CUSTOM');
             $table->timestamps();
