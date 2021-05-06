@@ -31,5 +31,9 @@ use Illuminate\Support\Carbon;
  */
 class ProductOptionIngredient extends Pivot
 {
-    //
+    protected $fillable = [
+        'product_option_id',
+        'ingredient_id',
+        'price',
+    ];
 }

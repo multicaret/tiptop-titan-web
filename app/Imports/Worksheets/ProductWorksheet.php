@@ -17,7 +17,7 @@ class ProductWorksheet extends WorksheetImport
     protected Chain $chain;
     private ProductsImporter $productsImporter;
 
-    public function __construct(Chain $chain,Branch $branch, ProductsImporter $productsImporter)
+    public function __construct(Chain $chain, Branch $branch, ProductsImporter $productsImporter)
     {
         $this->chain = $chain;
         $this->branch = $branch;
@@ -29,7 +29,7 @@ class ProductWorksheet extends WorksheetImport
         $currentRowNumber = $this->getRowNumber();
         $rawData = ProductsImporter::getRowRawDataWithTranslations($row->toArray());
         $categoryIds = $this->workOnCategoryIds($rawData);
-        $this->updateBooleanAttributes(new Product(), $rawData);
+        $this->productsImporter->updateBooleanAttributes(new Product(), $rawData);
         $this->updateTypeAttribute($rawData);
         $this->updateStatusAttribute($rawData);
         $rawData['category_id'] = $this->productsImporter->getMenuCategoriesIds()->get($rawData['category_id']);
@@ -41,9 +41,14 @@ class ProductWorksheet extends WorksheetImport
         $excelId = $rawData['excel_id'];
         unset($rawData['excel_id']);
         unset($rawData['id']);
-        $product = Product::create($rawData);
+        try {
+            $product = Product::create($rawData);
+        } catch (\Exception $e) {
+            dd($e->getMessage(), $rawData);
+        }
         $product->categories()->sync($categoryIds);
         $this->productsImporter->setProductsIds($excelId, $product->translations()->first()->product_id);
+
         return $product;
     }
 
@@ -54,23 +59,16 @@ class ProductWorksheet extends WorksheetImport
                          ->replace('،', ',')
                          ->replace('.', ',')
                          ->replace(' ', ',')
+                         ->replace(PHP_EOL, ',')
                          ->replace(';', ',')
                          ->jsonSerialize();
         unset($rawData['category_ids']);
 
-        return explode(',', $idsString);
-    }
-
-    private function updateBooleanAttributes(Product $product, array &$rawData): ?array
-    {
-        $casts = collect($product->getCasts());
-        foreach ($casts->filter(fn($v) => $v === 'boolean') as $attribute => $item) {
-            if (isset($rawData[$attribute])) {
-                $rawData[$attribute] = \Str::lower($rawData[$attribute]) === 'yes';
-            }
+        if ( ! empty($idsString)) {
+            return explode(',', $idsString);
         }
 
-        return $rawData;
+        return [];
     }
 
     private function updateTypeAttribute(array &$rawData)
