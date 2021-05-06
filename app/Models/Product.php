@@ -200,7 +200,26 @@ class Product extends Model implements HasMedia
 //        'category'
     ];
 
-    protected $fillable = ['order_column', 'creator_id', 'editor_id', 'chain_id', 'category_id'];
+    protected $fillable = [
+        'order_column',
+        'creator_id',
+        'editor_id',
+        'chain_id',
+        'branch_id',
+        'category_id',
+        'type',
+        'price',
+        'price_discount_amount',
+        'price_discount_by_percentage',
+        'price_discount_began_at',
+        'price_discount_finished_at',
+        'available_quantity',
+        'width',
+        'height',
+        'minimum_orderable_quantity',
+        'maximum_orderable_quantity',
+        'importer_id',
+    ];
 
     protected $translatedAttributes = [
         'title',

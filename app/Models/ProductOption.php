@@ -83,6 +83,17 @@ class ProductOption extends Model
     public const SELECTION_TYPE_SINGLE_VALUE = 1;
     public const SELECTION_TYPE_MULTIPLE_VALUE = 2;
 
+    protected $fillable = [
+        'product_id',
+        'is_based_on_ingredients',
+        'is_required',
+        'type',
+        'max_number_of_selection',
+        'min_number_of_selection',
+        'input_type',
+        'selection_type',
+        'order_column',
+    ];
     protected $casts = [
         'is_based_on_ingredients' => 'boolean',
         'is_required' => 'boolean',
