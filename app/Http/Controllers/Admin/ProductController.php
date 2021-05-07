@@ -331,6 +331,8 @@ class ProductController extends Controller
         $product->push();
         DB::commit();
 
+        cache()->tags('productions', 'api-home')->flush();
+
         $this->handleSubmittedSingleMedia('cover', $request, $product);
         $this->handleSubmittedMedia($request, 'gallery', $product, 'gallery');
     }

@@ -167,6 +167,7 @@ class TaxonomyController extends Controller
 
         $request->validate($validationRules);
 
+        \DB::beginTransaction();
         $previousOrderValue = Taxonomy::orderBy('order_column', 'ASC')->first();
         $order = is_null($previousOrderValue) ? 1 : $previousOrderValue->order_column + 1;
 
@@ -211,7 +212,8 @@ class TaxonomyController extends Controller
             $parent = Taxonomy::find($parentId);
             $taxonomy->makeChildOf($parent);
         }
-        cache()->tags('taxonomies')->flush();
+        \DB::commit();
+        cache()->tags('taxonomies', 'api-home')->flush();
 
 
         return redirect()
@@ -259,6 +261,7 @@ class TaxonomyController extends Controller
 
         $request->validate($validationRules);
 
+        \DB::beginTransaction();
         $taxonomy->editor_id = auth()->id();
         $taxonomy->ingredient_category_id = $request->ingredient_category_id;
         if ($request->has('icon')) {
@@ -305,8 +308,8 @@ class TaxonomyController extends Controller
         $taxonomy->searchableTags()->sync($request->input('search_tags'));
 
         $this->handleSubmittedSingleMedia('cover', $request, $taxonomy);
-
-        cache()->tags('taxonomies')->flush();
+        \DB::commit();
+        cache()->tags('taxonomies', 'api-home')->flush();
 
         return redirect()
             ->route('admin.taxonomies.index', ['type' => $request->type])
