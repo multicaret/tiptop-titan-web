@@ -27,11 +27,9 @@ class CategoryController extends BaseApiController
                                            ->groceryCategories()
                                            ->parents()
                                            ->get();
-
-        return GroceryCategoryParentWithChildrenResource::collection($groceryParentCategories);
-
+        
         return $this->respond([
-            'parents' => $categories,
+            'parents' => GroceryCategoryParentWithChildrenResource::collection($groceryParentCategories),
         ]);
     }
 
