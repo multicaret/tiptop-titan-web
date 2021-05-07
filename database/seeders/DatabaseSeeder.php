@@ -428,7 +428,7 @@ class DatabaseSeeder extends Seeder
 
     private function preferences($host)
     {
-        $defaultUriScheme = 'app.trytiptop.flutter';
+        $defaultUriScheme = 'tiptoptitan';
         $preferences = $this->getPreferences($host, $defaultUriScheme);
 
         echo PHP_EOL.'Inserting Preferences'.PHP_EOL;
@@ -1917,7 +1917,7 @@ class DatabaseSeeder extends Seeder
     }
 
 
-    public static function getPreferences($host, $defaultUriScheme = 'app.trytiptop.flutter'): array
+    public static function getPreferences($host, $defaultUriScheme = 'tiptoptitan'): array
     {
         return [
             'General Settings' => [
