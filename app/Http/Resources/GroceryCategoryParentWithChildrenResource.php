@@ -7,7 +7,7 @@ use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
 
 /** @mixin Taxonomy */
-class GroceryCategoryParentResource extends JsonResource
+class GroceryCategoryParentWithChildrenResource extends JsonResource
 {
     /**
      * Transform the resource into an array.
@@ -18,6 +18,13 @@ class GroceryCategoryParentResource extends JsonResource
      */
     public function toArray($request)
     {
+        $children = cache()
+            ->tags('taxonomies', 'api-home')
+            ->rememberForever('children_categories_of_parent_'.$this->id, function () {
+                return GroceryCategoryChildResource::collection($this->children);
+            });
+
+
         return [
             'id' => $this->id,
             'icon' => $this->icon,
@@ -28,6 +35,7 @@ class GroceryCategoryParentResource extends JsonResource
                 'formatted' => $this->description,
             ],
             'hasChildren' => $this->hasChildren(),
+            'children' => $children,
             'cover' => $this->cover,
             'thumbnail' => $this->cover_small,
         ];
