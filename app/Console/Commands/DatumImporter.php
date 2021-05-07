@@ -627,22 +627,24 @@ class DatumImporter extends Command
         $this->bar = $this->output->createProgressBar($oldLocations->count());
         $this->bar->start();
         foreach ($oldLocations as $oldLocation) {
-            $tempLocation = [];
-            if (filter_var($oldLocation->email, FILTER_VALIDATE_EMAIL)) {
-                $tempLocation['emails'] = json_encode([$oldLocation->email]);
-            }
-            foreach ($oldLocation->attributesComparing() as $oldModelKey => $newModelKey) {
-                $tempLocation[$newModelKey] = $oldLocation->{$oldModelKey};
-            }
-            $tempLocation['creator_id'] = self::CREATOR_EDITOR_ID;
-            $tempLocation['editor_id'] = self::CREATOR_EDITOR_ID;
-            $tempLocation['phones'] = json_encode([$oldLocation->phones]);
-            $tempLocation['is_default'] = $oldLocation->defualt === OldLocation::IS_DEFAULT ? 1 : 0;
-            $tempLocation['status'] = $oldLocation->status === OldLocation::STATUS_ACTIVE ? Location::STATUS_ACTIVE : Location::STATUS_INACTIVE;
-            try {
-                $isInserted = Location::insert($tempLocation);
-            } catch (\Exception $e) {
-                dd($e->getMessage(), PHP_EOL, $tempLocation);
+            if (is_null($oldLocation->deleted_at)) {
+                $tempLocation = [];
+                if (filter_var($oldLocation->email, FILTER_VALIDATE_EMAIL)) {
+                    $tempLocation['emails'] = json_encode([$oldLocation->email]);
+                }
+                foreach ($oldLocation->attributesComparing() as $oldModelKey => $newModelKey) {
+                    $tempLocation[$newModelKey] = $oldLocation->{$oldModelKey};
+                }
+                $tempLocation['creator_id'] = self::CREATOR_EDITOR_ID;
+                $tempLocation['editor_id'] = self::CREATOR_EDITOR_ID;
+                $tempLocation['phones'] = json_encode([$oldLocation->phones]);
+                $tempLocation['is_default'] = $oldLocation->defualt === OldLocation::IS_DEFAULT ? 1 : 0;
+                $tempLocation['status'] = $oldLocation->status === OldLocation::STATUS_ACTIVE ? Location::STATUS_ACTIVE : Location::STATUS_INACTIVE;
+                try {
+                    $isInserted = Location::insert($tempLocation);
+                } catch (\Exception $e) {
+                    dd($e->getMessage(), PHP_EOL, $tempLocation);
+                }
             }
             $this->bar->advance();
         }
@@ -904,7 +906,7 @@ class DatumImporter extends Command
                          ->setName($modelTitle)
                          ->toMediaCollection($collections['to']);
             } catch (FileDoesNotExist $e) {
-                $errorMessage = 'Failed to load image because file does not exist: '.$e->getMessage().' - Model id: '. $newModel->id;
+                $errorMessage = 'Failed to load image because file does not exist: '.$e->getMessage().' - Model id: '.$newModel->id;
             } catch (FileIsTooBig $e) {
                 $errorMessage = sprintf('Failed to load image because file is too big: %s - Model id: %s',
                     $e->getMessage(), $newModel->id);

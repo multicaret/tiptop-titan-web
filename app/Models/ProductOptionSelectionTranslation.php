@@ -31,4 +31,5 @@ use Illuminate\Support\Carbon;
  */
 class ProductOptionSelectionTranslation extends Model
 {
+    protected $fillable = ['title'];
 }

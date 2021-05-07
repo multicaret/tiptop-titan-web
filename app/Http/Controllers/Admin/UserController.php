@@ -183,6 +183,7 @@ class UserController extends Controller
         $user->order_column = $order;
         $user->phone_country_code = '964';
         $user->phone_number = $request->phone;
+        $user->approved_at = now();
 
         $user->save();
 

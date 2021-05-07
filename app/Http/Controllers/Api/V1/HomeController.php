@@ -129,17 +129,23 @@ class HomeController extends BaseApiController
 
         if ($channel == config('app.app-channels.grocery')) {
 
-            $categories = cache()->tags(['taxonomies','api-home'])->rememberForever('all_grocery_categories_with_products', function () {
-                $groceryParentCategories = Taxonomy::active()->groceryCategories()->parents()->get();
+            $categories = cache()->tags('taxonomies', 'api-home')
+                                 ->rememberForever('all_grocery_categories_with_products', function () {
+                                     $groceryParentCategories = Taxonomy::active()
+                                                                        ->with('children.products')
+                                                                        ->groceryCategories()
+                                                                        ->parents()
+                                                                        ->get();
 
-                return GroceryCategoryParentResource::collection($groceryParentCategories);
-            });
+                                     return GroceryCategoryParentResource::collection($groceryParentCategories);
+                                 });
 
             [$distance, $branch] = Branch::getClosestAvailableBranch($latitude, $longitude);
             if ( ! is_null($branch)) {
                 if ( ! is_null($user)) {
                     $cart = Cart::retrieve($branch->chain_id, $branch->id, $user->id);
-                    $activeOrders = Order::groceries()->whereUserId($user->id)
+                    $activeOrders = Order::groceries()
+                                         ->whereUserId($user->id)
                                          ->whereNotIn('status', [
                                              Order::STATUS_CANCELLED,
                                              Order::STATUS_DELIVERED,
@@ -192,11 +198,16 @@ class HomeController extends BaseApiController
             }
         }
 
-        $currentCurrency = Currency::find(config('defaults.currency.id'));
-        if (localization()->getCurrentLocale() == 'en') {
-            $currentCurrency->symbol = 'IQD';
-        }
-        $currencyResource = new CurrencyResource($currentCurrency);
+        $currentLocale = localization()->getCurrentLocale();
+        $currencyResource = cache()->tags('currencies')->rememberForever('iqd_currency_'.$currentLocale,
+            function () use ($currentLocale) {
+                $currentCurrency = Currency::find(config('defaults.currency.id'));
+                if ($currentLocale == 'en') {
+                    $currentCurrency->symbol = 'IQD';
+                }
+
+                return new CurrencyResource($currentCurrency);
+            });
 
         return $this->respond([
             'estimated_arrival_time' => [

@@ -24,7 +24,7 @@ class SlideResource extends JsonResource
             ],
             'linkValue' => $this->link_value,
             'linkType' => $this->link_type,
-            'image' => $this->image,
+            'image' => $this->image_thumbnail,
         ];
     }
 }

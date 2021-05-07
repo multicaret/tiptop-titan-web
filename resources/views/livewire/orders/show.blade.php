@@ -286,7 +286,10 @@
                                                 @foreach($cartProductOption->selections as $selection)
                                                     <a href="#!"
                                                        class="badge badge-pill badge-warning mr-1">
-                                                        {{$selection->selectable_object['title']}} {{$selection->selectable_object['price']}}
+                                                        {{$selection->selectable_object['title']}}
+                                                        @if(array_key_exists('price',$selection->selectable_object) && $selection->selectable_object['price'])
+                                                            {{$selection->selectable_object['price']}}
+                                                        @endif
                                                     </a>
                                                 @endforeach
                                             </div>

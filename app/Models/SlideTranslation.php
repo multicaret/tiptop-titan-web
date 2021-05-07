@@ -41,8 +41,13 @@ class SlideTranslation extends Model implements HasMedia
     protected $fillable = ['title', 'description', 'alt_tag'];
 
     protected $appends = [
-        'image',
+        'image_thumbnail',
     ];
+
+    public function getImageThumbnailAttribute()
+    {
+        return $this->getFirstMediaUrl('image', 'SD');
+    }
 
     public function getImageAttribute()
     {
@@ -52,11 +57,6 @@ class SlideTranslation extends Model implements HasMedia
     public function getImageFullAttribute()
     {
         return $this->getFirstMediaUrl('image', '1K');
-    }
-
-    public function getThumbnailAttribute()
-    {
-        return $this->getFirstMediaUrl('image', 'SD');
     }
 
 

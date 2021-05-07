@@ -5,7 +5,6 @@ namespace App\Models;
 use App\Traits\HasStatuses;
 use Eloquent;
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Database\Query\Builder;
 use Illuminate\Support\Carbon;
 use Illuminate\Support\Str;
 
@@ -134,9 +133,9 @@ class Location extends Model
     ];
 
     protected $with = [
-        'country',
-        'region',
-        'city'
+//        'country',
+//        'region',
+//        'city'
     ];
 
     /**

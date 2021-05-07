@@ -106,7 +106,7 @@ class OldLocation extends OldModel
             'name' => 'name',
             'title' => 'alias',
             'kind' => 'kind',
-            'deleted_at' => 'deleted_at',
+//            'deleted_at' => 'deleted_at',
             'created_at' => 'created_at',
             'updated_at' => 'updated_at',
         ];

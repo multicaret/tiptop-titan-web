@@ -199,6 +199,11 @@
                                                 autocomplete="false"
                                                 required
                                             ></multiselect>
+                                            @error('categories')
+                                            <span class="text-danger">
+                                                    {{$message}}
+                                                </span>
+                                            @enderror
                                         </div>
                                     @else
                                         {{--                                        @{{product}}--}}
@@ -223,6 +228,11 @@
                                                 autocomplete="false"
                                                 required
                                             ></multiselect>
+                                            @error('master_category')
+                                            <span class="text-danger">
+                                                    {{$message}}
+                                                </span>
+                                            @enderror
                                         </div>
                                     @endif
                                 </div>
@@ -396,9 +406,7 @@
                                         @component('admin.components.form-group', ['name' => 'available_quantity', 'type' => 'number'])
                                             @slot('label', trans('strings.available_quantity'))
                                             @slot('attributes', ['placeholder' => '24'])
-                                            @if(! is_null($product->id))
-                                                @slot('value', $product->available_quantity)
-                                            @endif
+                                            @slot('value', $product->available_quantity)
                                         @endcomponent
                                     </div>
                                 @else
@@ -582,7 +590,8 @@
                 isEnableToStoreDate: false,
                 selectedStatus: @json($selectedStatus),
             },
-            beforeMount() {},
+            beforeMount() {
+            },
             mounted() {
                 this.selectSearchTags(this.product.search_tags ?? []);
             },

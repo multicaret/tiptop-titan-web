@@ -280,6 +280,9 @@ class OrderController extends BaseApiController
 
         DB::commit();
 
+        cache()->tags('products', 'orders', 'api-home')
+               ->flush();
+
         return $this->respond(new OrderResource($newOrder));
     }
 
