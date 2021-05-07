@@ -89,6 +89,10 @@ class ProductController extends Controller
         $product = new Product();
         $product->type = Product::getCorrectChannel($request->type);
         $data = $this->essentialData($request, $product);
+        if (count($data['units'])) {
+            $product->unit_id = $data['units'][0]['id'];
+        }
+        $product->load('unit');
 
         return view('admin.products.form', $data);
     }
@@ -128,11 +132,17 @@ class ProductController extends Controller
 
     public function edit(Request $request, Product $product)
     {
-        $product->load(['masterCategory']);
         $data = $this->essentialData($request, $product);
-        $data['product'] = $product;
-        $product->load(['unit']);
-        $product->load(['searchTags']);
+        $product->load([
+            'chain',
+            'branch',
+            'masterCategory',
+            'unit',
+            'searchTags',
+        ]);
+        if ($product->is_grocery) {
+            $product->load('categories');
+        }
 
 
         return view('admin.products.form', $data);
@@ -243,35 +253,25 @@ class ProductController extends Controller
     private function validationRules($request): array
     {
         $defaultLocale = localization()->getDefaultLocale();
-        $toValidateInGrocery = [];
-        if ($request->type == Product::getCorrectChannelName(Product::CHANNEL_GROCERY_OBJECT, 0)) {
-            $toValidateInGrocery = [
-                'categories' => 'required',
-            ];
+        $rules = [];
+        if ($request->type == Product::getCorrectChannelName(Product::CHANNEL_GROCERY_OBJECT, false)) {
+            $rules['categories'] = 'required';
         }
-        $toValidateInFood = [];
-        if ($request->type == Product::getCorrectChannelName(Product::CHANNEL_FOOD_OBJECT, 0)) {
-            $toValidateInFood = [
-                'master_category' => 'required',
-            ];
+        if ($request->type == Product::getCorrectChannelName(Product::CHANNEL_FOOD_OBJECT, false)) {
+            $rules['master_category'] = 'required';
         }
-        $toValidateDate = [];
         if ($request->has('is_enable_to_store_date')) {
-            $toValidateDate = [
-                'price_discount_began_at' => 'required|date',
-                'price_discount_finished_at' => 'required|date|after:price_discount_began_at',
-                'custom_banner_began_at' => 'required|date',
-                'custom_banner_ended_at' => 'required|date|after:custom_banner_began_at',
-            ];
+            $rules['price_discount_began_at'] = 'required|date';
+            $rules['price_discount_finished_at'] = 'required|date|after:price_discount_began_at';
+            $rules['custom_banner_began_at'] = 'required|date';
+            $rules['custom_banner_ended_at'] = 'required|date|after:custom_banner_began_at';
         }
 
-        $generalValidateItems = [
-            "{$defaultLocale}.title" => 'required',
-            'price' => 'required',
-            'type' => 'required',
-        ];
+        $rules["$defaultLocale.title"] = 'required';
+        $rules['price'] = 'required';
+        $rules['type'] = 'required';
 
-        return array_merge($toValidateInGrocery, $generalValidateItems, $toValidateInFood, $toValidateDate);
+        return $rules;
     }
 
     private function storeSaveLogic(Request $request, Product $product): void
@@ -330,6 +330,8 @@ class ProductController extends Controller
         }
         $product->push();
         DB::commit();
+
+        cache()->tags('productions', 'api-home')->flush();
 
         $this->handleSubmittedSingleMedia('cover', $request, $product);
         $this->handleSubmittedMedia($request, 'gallery', $product, 'gallery');

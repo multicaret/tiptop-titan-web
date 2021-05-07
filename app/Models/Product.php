@@ -193,14 +193,33 @@ class Product extends Model implements HasMedia
     public const CHANNEL_FOOD_OBJECT = 2;
 
     protected $with = [
-        'chain',
-        'branch',
+//        'chain',
+//        'branch',
         'translations',
-        'categories',
-        'category'
+//        'categories',
+//        'category'
     ];
 
-    protected $fillable = ['order_column'];
+    protected $fillable = [
+        'order_column',
+        'creator_id',
+        'editor_id',
+        'chain_id',
+        'branch_id',
+        'category_id',
+        'type',
+        'price',
+        'price_discount_amount',
+        'price_discount_by_percentage',
+        'price_discount_began_at',
+        'price_discount_finished_at',
+        'available_quantity',
+        'width',
+        'height',
+        'minimum_orderable_quantity',
+        'maximum_orderable_quantity',
+        'importer_id',
+    ];
 
     protected $translatedAttributes = [
         'title',
@@ -313,7 +332,17 @@ class Product extends Model implements HasMedia
                 'id' => self::STATUS_INACTIVE,
                 'title' => __('Inactive'),
                 'class' => 'danger',
-            ]
+            ],
+            self::STATUS_DRAFT => [
+                'id' => self::STATUS_DRAFT,
+                'title' => __('Draft'),
+                'class' => 'warning',
+            ],
+            self::STATUS_TRANSLATION_NOT_COMPLETED => [
+                'id' => self::STATUS_TRANSLATION_NOT_COMPLETED,
+                'title' => __('Translation Not Completed'),
+                'class' => 'warning',
+            ],
         ];
     }
 

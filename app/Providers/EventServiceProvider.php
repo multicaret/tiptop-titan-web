@@ -3,9 +3,12 @@
 namespace App\Providers;
 
 use App\Models\Order;
+use App\Models\ProductOption;
 use App\Models\TookanTeam;
 use App\Models\User;
 use App\Observers\OrderObserver;
+use App\Observers\ProductObserver;
+use App\Observers\ProductOptionObserver;
 use App\Observers\TookanTeamObserver;
 use App\Observers\UserObserver;
 use Illuminate\Auth\Events\Registered;
@@ -38,6 +41,7 @@ class EventServiceProvider extends ServiceProvider
     public function boot()
     {
         User::observe(UserObserver::class);
+        ProductOption::observe(ProductOptionObserver::class);
         Order::observe(OrderObserver::class);
         TookanTeam::observe(TookanTeamObserver::class);
     }

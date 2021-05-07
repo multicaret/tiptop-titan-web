@@ -9,7 +9,8 @@ Route::middleware('throttle:15')
          Route::get('/', 'HomeController@root');
          Route::get('home', 'HomeController@index');
 
-         Route::get('categories/{groceryCategory}/products', 'CategoryController@products');
+         Route::get('grocery/categories', 'CategoryController@index');
+         Route::get('grocery/categories/{groceryCategory}/products', 'CategoryController@products');
          Route::get('products/{id}', 'ProductController@show');
          Route::get('search', 'SearchController@index');
          Route::get('search/products', 'SearchController@searchProducts');

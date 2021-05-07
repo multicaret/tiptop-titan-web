@@ -381,7 +381,7 @@ class PermissionsGenerator
             'super' => [],
             'admin' => [],
             'supervisor' => [
-                'grocery_chain',
+                'grocery_chain_chains',
                 'slides',
                 'cities',
                 'tookan_teams',
@@ -402,7 +402,7 @@ class PermissionsGenerator
                 'deep_links'
             ],
             'agent' => [
-                'grocery_chain',
+                'grocery_chain_chains',
                 'slides',
                 'regions',
                 'cities',
@@ -431,7 +431,7 @@ class PermissionsGenerator
             ],
             'content_editor' => [
                 'orders',
-                'grocery_chain',
+                'grocery_chain_chains',
                 'slides',
                 'regions',
                 'cities',
@@ -465,12 +465,12 @@ class PermissionsGenerator
             ],
             'marketer' => [
                 'orders',
-                'grocery_chain',
-                'food_chain',
-                'grocery_branches',
-                'food_branches',
-                'grocery_products',
-                'food_products',
+                'grocery_chain_chains',
+                'food_chain_chains',
+                'grocery_branch_branches',
+                'food_branch_branches',
+                'grocery_product_products',
+                'food_product_products',
                 'rating_grocery_orders',
                 'regions',
                 'cities',
