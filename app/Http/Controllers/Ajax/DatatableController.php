@@ -154,7 +154,7 @@ class DatatableController extends AjaxController
                                      'url' => Controller::getDeepLink('market_food_category_show', $deepLinkParams)
                                  ];
                              }
-                             if($isMenuCategory){
+                             if ($isMenuCategory) {
                                  $deepLinkParams = [
                                      'uuid' => $taxonomy->uuid,
                                      'id' => $taxonomy->id,

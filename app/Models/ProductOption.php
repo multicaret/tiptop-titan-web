@@ -19,7 +19,7 @@ use Illuminate\Support\Carbon;
  * @property int $product_id
  * @property bool $is_based_on_ingredients
  * @property bool $is_required
- * @property int $type
+ * @property int $type 
  *                     1: Including,
  *                     2: Excluding,
  * @property int|null $max_number_of_selection
