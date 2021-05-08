@@ -125,7 +125,7 @@
                                 </form>
                                 <div class="d-inline-flex">
                                     <button class="btn btn-primary" @click="uploadFile()">
-                                        import from Excel
+                                        Import from Excel
                                     </button>
                                 </div>
                                 <div class="d-inline-flex">
