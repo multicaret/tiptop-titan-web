@@ -38,7 +38,8 @@ class PreferenceController extends Controller
         $callback = function ($item, $key) {
             $item['title'] = \Str::title(str_replace('_', ' ', $key));
             $item['key'] = $key;
-            $item['value'] = Preference::retrieveValue($key);
+            $item['value'] = str_replace('app.trytiptop.flutter',
+                Preference::retrieveValue('adjust_deep_link_uri_scheme'), Preference::retrieveValue($key));
             $item['deep_link'] = Preference::retrieveValue('adjust_deep_link_uri_scheme');
 
             return [$key => $item];
@@ -46,13 +47,15 @@ class PreferenceController extends Controller
 
         $adjustTrackers = collect(config('defaults.adjust_trackers'))
             ->except($exceptedKeys)->mapWithKeys($callback)->values();
-        $channelCallback = function ($item){
+
+        $channelCallback = function ($item) {
             return [
                 'key' => $item,
                 'title' => \Str::title($item),
             ];
         };
         $appChannels = collect(config('app.app-channels'))->map($channelCallback)->values();
+
         return view('admin.preferences.form', compact('adjustTrackers', 'appChannels'));
     }
 

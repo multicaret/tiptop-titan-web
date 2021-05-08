@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>Be right back.</title>
+    <title>503</title>
 
     <link href="https://fonts.googleapis.com/css?family=Lato:100" rel="stylesheet" type="text/css">
 
@@ -41,7 +41,7 @@
 <div class="container">
     <div class="content">
         <div class="title">
-            شوي ومنرجع منشغللكن السيرفر
+            503 Server Error
         </div>
     </div>
 </div>

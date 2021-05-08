@@ -7,12 +7,11 @@ namespace App\Imports\Worksheets;
 use App\Imports\productsImporter;
 use App\Imports\WorksheetImport;
 use App\Models\ProductOption;
+use Illuminate\Validation\Rule;
 use Maatwebsite\Excel\Row;
 
 class ProductOptionsWorksheet extends WorksheetImport
 {
-    private ProductsImporter $productsImporter;
-
     public function __construct(ProductsImporter $productsImporter)
     {
         $this->productsImporter = $productsImporter;
@@ -20,6 +19,12 @@ class ProductOptionsWorksheet extends WorksheetImport
 
     public function onRow(Row $row)
     {
+        if ($this->productsImporter->isChecking) {
+            $tempExcelId = $row->toArray()['excel_id'];
+            $this->productsImporter->setProductsOptionsIds($tempExcelId, $tempExcelId, $tempExcelId);
+
+            return null;
+        }
         $currentRowNumber = $this->getRowNumber();
         $rawData = ProductsImporter::getRowRawDataWithTranslations($row->toArray());
         $this->productsImporter->updateBooleanAttributes(new ProductOption(), $rawData);
@@ -78,4 +83,45 @@ class ProductOptionsWorksheet extends WorksheetImport
             $rawData['selection_type'] = ProductOption::SELECTION_TYPE_MULTIPLE_VALUE;
         }
     }
+
+    public function rules(): array
+    {
+        return [
+            'excel_id' => [
+                'required',
+                'integer',
+                function ($attribute, $value, $onFailure) {
+                    if ($this->productsImporter->getProductsOptionsIds()->has($value)) {
+                        $onFailure("The product option with Excel ID: {$value} already exists");
+                    }
+                }
+            ],
+            'product_id' => 'required|integer',
+            'is_based_on_ingredients' => ['nullable', Rule::in(['yes', 'no', 'YES', 'NO', 'Yes', 'No'])],
+            'is_required' => ['nullable', Rule::in(['yes', 'no', 'YES', 'NO', 'Yes', 'No'])],
+            'type' => ['nullable', Rule::in(['yes', 'no', 'YES', 'NO', 'Yes', 'No'])],
+            'max_number_of_selection' => 'nullable|integer',
+            'min_number_of_selection' => 'nullable|integer',
+            'input_type' => ['nullable', Rule::in('pill','radio','checkbox','select')],
+            'selection_type' => ['nullable', Rule::in(['yes', 'no', 'YES', 'NO', 'Yes', 'No'])],
+            'order_column' => 'nullable|integer',
+        ];
+    }
+
+    public function customValidationAttributes(): array
+    {
+        return [
+            'excel_id' => 'Excel ID',
+            'product_id' => 'Product ID',
+            'is_based_on_ingredients' => 'Is based on ingredients',
+            'is_required' => 'Is required',
+            'type' => 'Type',
+            'input_type' => 'Input type',
+            'selection_type' => 'Selection type',
+            'title_ar' => 'Arabic title',
+            'title_en' => 'English title',
+            'title_ku' => 'Kurdish title',
+        ];
+    }
+
 }

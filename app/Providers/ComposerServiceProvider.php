@@ -671,6 +671,10 @@ class ComposerServiceProvider extends ServiceProvider
         foreach ($sidenavItem as $index => $item) {
             if ($item['routeName'] != 'admin.index') {
                 $viewName = \Str::of($item['routeName'])->between('admin.', '.')->studly()->snake()->jsonSerialize();
+                // admin.reports.index
+                if ($viewName === 'reports') {
+                    $viewName = 'daily_report';
+                }
                 if (isset($item['params'])) {
                     $viewName = \Str::of(\Arr::first($item['params']))->studly()->snake()->append('_'.$viewName)->jsonSerialize();
                 }
