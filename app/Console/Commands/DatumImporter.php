@@ -935,6 +935,9 @@ class DatumImporter extends Command
 
     private function getHasTiptopDelivery(OldBranch $oldBranch): int
     {
+        if ($oldBranch->id === self::DEFAULT_BRANCH_ID) {
+            return 1;
+        }
         if (($oldBranch->app_minimun_order > 0 && $oldBranch->app_delivery_service === 0)) {
             return 1;
         } else {

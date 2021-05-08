@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Admin;
 
+use App\Exports\ProductsExport;
 use App\Http\Controllers\Controller;
 use App\Imports\ProductsImporter;
 use App\Models\Branch;
@@ -428,6 +429,7 @@ class BranchController extends Controller
                     'type' => 'Success',
                     'text' => 'Imported successfully',
                 ];
+
                 return redirect()->route('admin.branches.edit', [$branch, 'type' => $request->type])
                                  ->with('message', $messageData);
             } catch (\Maatwebsite\Excel\Validators\ValidationException $e) {
@@ -446,6 +448,7 @@ class BranchController extends Controller
                     'message' => implode('', $errors),
                 ];
             }
+
             return redirect()->route('admin.branches.edit', [$branch, 'type' => $request->type])
                              ->with('message-alert', $messageData);
         }
@@ -457,6 +460,18 @@ class BranchController extends Controller
 
         return redirect()->route('admin.branches.edit', [$branch, 'type' => $request->type])
                          ->with('message-alert', $messageData);
+    }
+
+    public function exportToExcel(Request $request, Branch $branch)
+    {
+        $filename = \Str::of('branch-products-')
+                               ->append($branch->uuid)
+                               ->append('-')
+                               ->append(\now()->timestamp)
+                               ->append('.xlsx')
+                               ->jsonSerialize();
+
+        return Excel::download(new ProductsExport($branch), $filename);
     }
 
 }
