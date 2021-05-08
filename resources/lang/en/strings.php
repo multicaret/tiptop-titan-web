@@ -291,4 +291,5 @@ return [
     'team' => 'Team',
     'kind' => 'Kind',
     'address_title' => 'Title of Address',
+    'ok_button' => 'OK',
 ];
