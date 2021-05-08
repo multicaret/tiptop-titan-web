@@ -15,7 +15,7 @@ use Maatwebsite\Excel\Concerns\SkipsUnknownSheets;
 use Maatwebsite\Excel\Concerns\WithConditionalSheets;
 use Maatwebsite\Excel\Concerns\WithMultipleSheets;
 
-class ProductsImporter implements WithMultipleSheets, SkipsUnknownSheets
+class ProductsImporter implements WithMultipleSheets/*, SkipsUnknownSheets*/
 {
     use WithConditionalSheets;
 

@@ -447,6 +447,12 @@ class BranchController extends Controller
                     'text' => 'Imported failed',
                     'message' => implode('', $errors),
                 ];
+            } catch(Exception $exception) {
+                $messageData = [
+                    'type' => 'Error',
+                    'text' => 'Imported failed',
+                    'message' => $exception->getMessage(),
+                ];
             }
 
             return redirect()->route('admin.branches.edit', [$branch, 'type' => $request->type])

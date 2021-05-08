@@ -293,4 +293,5 @@ return [
     'address_title' => 'Title of Address',
     'ok_button' => 'OK',
     'add_new_user_address' => 'Add New User Address',
+    'Error' => 'Error',
 ];
