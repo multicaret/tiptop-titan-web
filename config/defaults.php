@@ -284,7 +284,9 @@ return [
             'adgroup' => null,
             'creative' => null,
             'deep_link' => null,
-            ['key' => 'channel', 'value' => config('app.app-channels.grocery')]
+            'deep_link_params' => [
+                ['key' => 'channel', 'value' => config('app.app-channels.grocery')]
+            ],
         ],
         'home_screen_by_channel' => [
             'url' => 'https://app.adjust.com/wtk63gn',
@@ -308,7 +310,7 @@ return [
                 ['key' => 'parent_id', 'value' => 1],
             ],
         ],
-        'order_rating' => [
+        'order_rating_grocery' => [
             'url' => 'https://app.adjust.com/et3lk95',
             'campaign' => null,
             'adgroup' => null,
@@ -319,7 +321,18 @@ return [
                 ['key' => 'channel', 'value' => config('app.app-channels.grocery')],
             ],
         ],
-        'order_tracking' => [
+        'order_rating_food' => [
+            'url' => 'https://app.adjust.com/et3lk95',
+            'campaign' => null,
+            'adgroup' => null,
+            'creative' => null,
+            'deep_link' => null,
+            'deep_link_params' => [
+                ['key' => 'id', 'value' => 1],
+                ['key' => 'channel', 'value' => config('app.app-channels.food')],
+            ],
+        ],
+        'order_tracking_grocery' => [
             'url' => 'https://app.adjust.com/d3aoyg1',
             'campaign' => null,
             'adgroup' => null,
@@ -328,6 +341,17 @@ return [
             'deep_link_params' => [
                 ['key' => 'id', 'value' => 1],
                 ['key' => 'channel', 'value' => config('app.app-channels.grocery')],
+            ],
+        ],
+        'order_tracking_food' => [
+            'url' => 'https://app.adjust.com/d3aoyg1',
+            'campaign' => null,
+            'adgroup' => null,
+            'creative' => null,
+            'deep_link' => null,
+            'deep_link_params' => [
+                ['key' => 'id', 'value' => 1],
+                ['key' => 'channel', 'value' => config('app.app-channels.food')],
             ],
         ],
         /* 'payment_options' => [

@@ -102,7 +102,6 @@
                 selectedRegion: null,
             },
             mounted() {
-                console.log('this.adjustTrackers', this.adjustTrackers);
             },
             methods: {
                 updateValue: function (index) {
