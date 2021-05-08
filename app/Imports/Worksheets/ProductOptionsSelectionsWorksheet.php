@@ -12,8 +12,6 @@ use Maatwebsite\Excel\Row;
 
 class ProductOptionsSelectionsWorksheet extends WorksheetImport
 {
-    private ProductsImporter $productsImporter;
-
 
     public function __construct(ProductsImporter $productsImporter)
     {
@@ -22,6 +20,12 @@ class ProductOptionsSelectionsWorksheet extends WorksheetImport
 
     public function onRow(Row $row)
     {
+        if ($this->productsImporter->isChecking) {
+            $tempExcelId = $row->toArray()['excel_id'];
+            $this->productsImporter->setProductsOptionsSelectionsIds($tempExcelId, $tempExcelId);
+
+            return null;
+        }
         $productOptionSelection = null;
         $currentRowNumber = $this->getRowNumber();
         $rawData = ProductsImporter::getRowRawDataWithTranslations($row->toArray());
@@ -66,5 +70,20 @@ class ProductOptionsSelectionsWorksheet extends WorksheetImport
 
 
         return null;
+    }
+
+    public function rules(): array
+    {
+        return [
+            'excel_id' => [
+                'required',
+                'integer',
+                function ($attribute, $value, $onFailure) {
+                    if ($this->productsImporter->getProductsOptionsSelectionsIds()->has($value)) {
+                        $onFailure("The selection with Excel ID: {$value} already exists");
+                    }
+                }
+            ]
+        ];
     }
 }

@@ -50,6 +50,7 @@
             selectedRegion: null,
             isTipTopDelivery: @json($branch->has_tip_top_delivery),
             isRestaurantDelivery: @json($branch->has_restaurant_delivery),
+            excelFile: null,
         },
         watch: {
             branch: {
@@ -114,6 +115,14 @@
                 setTimeout(_ => {
                     this.formErrorMessage = null;
                 }, 2500);
+            },
+            autoSubmit() {
+                if (this.$refs.excelFile.value) {
+                    this.$refs.submitBtn.click();
+                }
+            },
+            uploadFile() {
+                this.$refs.excelFile.click();
             },
         },
     })

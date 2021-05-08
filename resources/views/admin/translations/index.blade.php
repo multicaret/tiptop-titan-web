@@ -124,7 +124,7 @@
             axios.get(urlValue)
                 .then((response) => {
                     // Todo: translate variables.
-                    const title = 'Response Message';
+                    const title = 'Loaded successfully';
                     const message = response.data.data.html;
                     const type = response.data.isSuccess ? 'info' : 'error';
                     showAlert(title, message, type);

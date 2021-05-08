@@ -5,21 +5,19 @@ namespace App\Imports;
 
 
 use Maatwebsite\Excel\Concerns\OnEachRow;
+use Maatwebsite\Excel\Concerns\RemembersChunkOffset;
 use Maatwebsite\Excel\Concerns\RemembersRowNumber;
-use Maatwebsite\Excel\Concerns\ToModel;
-use Maatwebsite\Excel\Concerns\WithBatchInserts;
 use Maatwebsite\Excel\Concerns\WithChunkReading;
 use Maatwebsite\Excel\Concerns\WithHeadingRow;
-use Maatwebsite\Excel\Concerns\WithUpserts;
+use Maatwebsite\Excel\Concerns\WithValidation;
 
-abstract class WorksheetImport  implements OnEachRow, WithHeadingRow, WithUpserts, WithBatchInserts, WithChunkReading
+abstract class WorksheetImport implements OnEachRow, WithHeadingRow, WithChunkReading, WithValidation
 {
     use RemembersRowNumber;
+    use RemembersChunkOffset;
 
-    public function batchSize(): int
-    {
-        return 50;
-    }
+    public ProductsImporter $productsImporter;
+    public ?int $currentRowNumber;
 
     public function chunkSize(): int
     {
@@ -29,11 +27,6 @@ abstract class WorksheetImport  implements OnEachRow, WithHeadingRow, WithUpsert
     public function headingRow(): int
     {
         return 3;
-    }
-
-    public function uniqueBy(): string
-    {
-        return 'excel_id';
     }
 
 }

@@ -217,6 +217,17 @@
             }
         })
     </script>
+@elseif(session()->has('message-alert'))
+    <script type="text/javascript">
+        swal.fire({
+            title: "@lang('strings.'. ucfirst(session('message-alert')['type']))",
+            text: "{!! session('message-alert')['text'] !!}",
+            type: "{{ strtolower(session('message-alert')['type']) }}",
+            confirmButtonText: "{{trans('strings.ok_button')}}",
+            html: "{!! session('message-alert')['message'] !!}",
+            showCancelButton: false,
+        }).then(console.log).catch(console.error);
+    </script>
 @elseif(session()->has('multiple-buttons-message'))
     <script type="text/javascript">
         let buttonsStr = '';

@@ -28,14 +28,24 @@ class ProductsImporter implements WithMultipleSheets, SkipsUnknownSheets
     protected CollectionAlias $menuCategoriesIds;
     protected CollectionAlias $productsIds;
     protected CollectionAlias $productsOptionsIds;
+    protected CollectionAlias $productsOptionsSelectionsIds;
+    public bool $isChecking = false;
 
     public function __construct(Chain $chain, Branch $branch)
     {
         $this->chain = $chain;
         $this->branch = $branch;
-        $this->menuCategoriesIds = collect([]);
-        $this->productsIds = collect([]);
-        $this->productsOptionsIds = collect([]);
+        $this->resetAllIdsAttributesValues();
+    }
+
+    public function getProductsOptionsSelectionsIds(): CollectionAlias
+    {
+        return $this->productsOptionsSelectionsIds;
+    }
+
+    public function setProductsOptionsSelectionsIds($excelId, $selectionId): void
+    {
+        $this->productsOptionsSelectionsIds->put($excelId, $selectionId);
     }
 
     public function getMenuCategoriesIds(): CollectionAlias
@@ -123,5 +133,23 @@ class ProductsImporter implements WithMultipleSheets, SkipsUnknownSheets
         }
 
         return null;
+    }
+
+    public static function getAllWorksheets(): array
+    {
+        return [
+            self::WORKSHEET_MENU_CATEGORIES,
+            self::WORKSHEET_PRODUCTS,
+            self::WORKSHEET_OPTIONS,
+            self::WORKSHEET_SELECTIONS,
+        ];
+    }
+
+    public function resetAllIdsAttributesValues(): void
+    {
+        $this->menuCategoriesIds = collect([]);
+        $this->productsIds = collect([]);
+        $this->productsOptionsIds = collect([]);
+        $this->productsOptionsSelectionsIds = collect([]);
     }
 }

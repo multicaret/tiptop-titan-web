@@ -13,18 +13,24 @@ class MenuCategoriesWorksheet extends WorksheetImport
 {
 
     protected Branch $branch;
-    private ProductsImporter $productsImport;
 
     public function __construct(Branch $branch, ProductsImporter $productsImport)
     {
         $this->branch = $branch;
-        $this->productsImport = $productsImport;
+        $this->productsImporter = $productsImport;
     }
 
-    public function onRow(Row $row): TaxonomyModel
+    public function onRow(Row $row): ?TaxonomyModel
     {
-        $currentRowNumber = $this->getRowNumber();
+        if ($this->productsImporter->isChecking) {
+            $this->productsImporter->setMenuCategoriesIds($row->toArray()['excel_id'], $row->toArray()['excel_id']);
+
+            return null;
+        }
+        $chunkOffset = $this->getChunkOffset();
+        $this->currentRowNumber = $this->getRowNumber();
         $rawData = ProductsImporter::getRowRawDataWithTranslations($row->toArray());
+
         return $this->createTaxonomy($rawData);
     }
 
@@ -47,7 +53,23 @@ class MenuCategoriesWorksheet extends WorksheetImport
             dd($e->getMessage(), $taxonomy);
         }
         $taxonomyId = $taxonomyModel->translations()->first()->taxonomy_id;
-        $this->productsImport->setMenuCategoriesIds($excelId , $taxonomyId);
+        $this->productsImporter->setMenuCategoriesIds($excelId, $taxonomyId);
+
         return $taxonomyModel;
+    }
+
+    public function rules(): array
+    {
+        return [
+            'excel_id' => [
+                'required',
+                'integer',
+                function ($attribute, $value, $onFailure) {
+                    if ($this->productsImporter->getMenuCategoriesIds()->has($value)) {
+                        $onFailure("The category with Excel ID: {$value} already exists");
+                    }
+                }
+            ]
+        ];
     }
 }

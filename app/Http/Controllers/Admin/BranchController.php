@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
+use App\Imports\ProductsImporter;
 use App\Models\Branch;
 use App\Models\Chain;
 use App\Models\Location;
@@ -16,6 +17,7 @@ use Illuminate\Contracts\View\Factory;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\View\View;
+use Maatwebsite\Excel\Facades\Excel;
 
 class BranchController extends Controller
 {
@@ -383,6 +385,78 @@ class BranchController extends Controller
 
         return redirect()->back()->with('message',
             ['type' => 'Success', 'text' => 'Working hours updated successfully',]);
+    }
+
+    public function importFromExcel(Request $request, Branch $branch): RedirectResponse
+    {
+        if ($request->has('excel-file')) {
+            $filename = \Str::of('branch-products-')
+                            ->append($branch->uuid)
+                            ->append('-')
+                            ->append(\now()->timestamp)
+                            ->append('.')
+                            ->append($request->file('excel-file')->clientExtension())
+                            ->jsonSerialize();
+            $request->file('excel-file')->storeAs(storage_path('/'), $filename);
+            $path = storage_path("{$filename}");
+            try {
+                $productsImporter = new ProductsImporter($branch->chain, $branch);
+                $productsImporter->isChecking = true;
+                // Work on validation data on all sheets
+                $productsImporter->onlySheets(ProductsImporter::getAllWorksheets());
+                Excel::import($productsImporter, $path);
+                $productsImporter->resetAllIdsAttributesValues();
+                // Start importing
+                $productsImporter->isChecking = false;
+                // Start importing menu categories
+                $productsImporter->onlySheets(ProductsImporter::WORKSHEET_MENU_CATEGORIES);
+                Excel::import($productsImporter, $path);
+
+                // Start importing branch products
+                $productsImporter->onlySheets(ProductsImporter::WORKSHEET_PRODUCTS);
+                Excel::import($productsImporter, $path);
+
+                // Start importing products options
+                $productsImporter->onlySheets(ProductsImporter::WORKSHEET_OPTIONS);
+                Excel::import($productsImporter, $path);
+
+                // Start importing products options selections
+                $productsImporter->onlySheets(ProductsImporter::WORKSHEET_SELECTIONS);
+                Excel::import($productsImporter, $path);
+
+                $messageData = [
+                    'type' => 'Success',
+                    'text' => 'Imported successfully',
+                ];
+                return redirect()->route('admin.branches.edit', [$branch, 'type' => $request->type])
+                                 ->with('message', $messageData);
+            } catch (\Maatwebsite\Excel\Validators\ValidationException $e) {
+                $failures = $e->failures();
+                $errors = [];
+                foreach ($failures as $failure) {
+                    $rowIndex = $failure->row();
+                    $fieldName = $failure->attribute();
+                    $errorMessage = implode(PHP_EOL, $failure->errors());
+                    $errors[] = "Error on Row index {$rowIndex} on field name: {$fieldName}. With Message: ".$errorMessage;
+                }
+
+                $messageData = [
+                    'type' => 'Error',
+                    'text' => 'Imported failed',
+                    'message' => implode('', $errors),
+                ];
+            }
+            return redirect()->route('admin.branches.edit', [$branch, 'type' => $request->type])
+                             ->with('message-alert', $messageData);
+        }
+        $messageData = [
+            'type' => 'Error',
+            'text' => 'Imported failed',
+            'message' => implode('', ['File not found']),
+        ];
+
+        return redirect()->route('admin.branches.edit', [$branch, 'type' => $request->type])
+                         ->with('message-alert', $messageData);
     }
 
 }
