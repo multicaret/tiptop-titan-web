@@ -40,6 +40,8 @@ class DatabaseSeeder extends Seeder
         /*'cities', 'city_translations', 'region_translations', 'regions'*/
     ];
 
+    public const defaultUriScheme = 'tiptop';
+
     /**
      * Seed the application's database.
      *
@@ -428,8 +430,7 @@ class DatabaseSeeder extends Seeder
 
     private function preferences($host)
     {
-        $defaultUriScheme = 'app.trytiptop.flutter';
-        $preferences = $this->getPreferences($host, $defaultUriScheme);
+        $preferences = $this->getPreferences($host, self::defaultUriScheme);
 
         echo PHP_EOL.'Inserting Preferences'.PHP_EOL;
         foreach ($preferences as $key => $data) {
@@ -444,7 +445,7 @@ class DatabaseSeeder extends Seeder
         echo PHP_EOL.'Inserting Adjust Trackers'.PHP_EOL;
         $adjustTrackers = config('defaults.adjust_trackers');
         foreach ($adjustTrackers as $key => $data) {
-            $this->createAdjustTrackerPreferenceItem($key, $data, $defaultUriScheme);
+            $this->createAdjustTrackerPreferenceItem($key, $data, self::defaultUriScheme);
         }
         echo PHP_EOL.'J\'ai fini 🤖 Préférences';
     }
@@ -667,7 +668,7 @@ class DatabaseSeeder extends Seeder
         $paymentMethod->addMediaFromUrl(asset('/images/payment-methods/mobile-gateway-payment.png'))->toMediaCollection('logo');
     }
 
-    private function createAdjustTrackerPreferenceItem($key, $data, $defaultUriScheme): void
+    private function createAdjustTrackerPreferenceItem($key, $data): void
     {
         $value = null;
         $translation = new Translation();
@@ -677,7 +678,7 @@ class DatabaseSeeder extends Seeder
         $preference->type = 'text';
 
         if (isset($data['url'])) {
-            $deepLinkUri = $defaultUriScheme.'//'.$key;
+            $deepLinkUri = self::defaultUriScheme.'://'.$key;
             if (isset($data['deep_link_params'])) {
                 $callback = function ($item) {
                     return [$item['key'] => $item['value']];
@@ -1917,7 +1918,7 @@ class DatabaseSeeder extends Seeder
     }
 
 
-    public static function getPreferences($host, $defaultUriScheme = 'app.trytiptop.flutter'): array
+    public static function getPreferences($host): array
     {
         return [
             'General Settings' => [
@@ -2058,7 +2059,7 @@ class DatabaseSeeder extends Seeder
                     ],
                     'adjust_deep_link_uri_scheme' => [
                         'type' => 'text',
-                        'value' => $defaultUriScheme,
+                        'value' => self::defaultUriScheme,
                         'notes' => 'Choose your custom URI scheme'
                     ],
                 ]

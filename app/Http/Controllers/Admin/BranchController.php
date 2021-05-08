@@ -268,9 +268,12 @@ class BranchController extends Controller
         $branch->latitude = $request->input('latitude');
         $branch->longitude = $request->input('longitude');
         $branch->full_address = $request->input('full_address');
-        $branch->has_tip_top_delivery = $request->input('has_tip_top_delivery') == 'on' ? 1 : 0;
-        $branch->has_restaurant_delivery = $request->input('has_restaurant_delivery') == 'on' ? 1 : 0;
-
+        if ($request->type == Branch::getCorrectChannelName(Branch::CHANNEL_FOOD_OBJECT, 0)) {
+            $branch->has_tip_top_delivery = $request->input('has_tip_top_delivery') == 'on' ? 1 : 0;
+            $branch->has_restaurant_delivery = $request->input('has_restaurant_delivery') == 'on' ? 1 : 0;
+        } else {
+            $branch->has_tip_top_delivery = 1;
+        }
         $inputs = [
             //tiptop inputs
             'minimum_order',

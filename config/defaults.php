@@ -254,7 +254,7 @@ return [
                 ['key' => 'id', 'value' => 1]
             ],
         ],
-        'campaign_index' => [
+        /*'campaign_index' => [
             'url' => 'https://app.adjust.com/tfnvbr8',
             'campaign' => null,
             'adgroup' => null,
@@ -270,13 +270,14 @@ return [
             'deep_link_params' => [
                 ['key' => 'id', 'value' => 1]
             ],
-        ],
-        'favorite_screen' => [
+        ],*/
+        'favorites' => [
             'url' => 'https://app.adjust.com/793c8og',
             'campaign' => null,
             'adgroup' => null,
             'creative' => null,
             'deep_link' => null,
+            ['key' => 'channel', 'value' => config('app.app-channels.grocery')]
         ],
         'home_screen_by_channel' => [
             'url' => 'https://app.adjust.com/wtk63gn',
@@ -296,11 +297,11 @@ return [
             'deep_link' => null,
             'deep_link_params' => [
                 ['key' => 'id', 'value' => 1],
-                ['key' => 'type', 'value' => 'food'],
+                ['key' => 'channel', 'value' => config('app.app-channels.grocery')],
                 ['key' => 'parent_id', 'value' => 1],
             ],
         ],
-        'my_addresses' => [
+        'addresses' => [
             'url' => 'https://app.adjust.com/vt24507',
             'campaign' => null,
             'adgroup' => null,
@@ -327,19 +328,22 @@ return [
                 ['key' => 'id', 'value' => 1]
             ],
         ],
-        'payment_options' => [
-            'url' => 'https://app.adjust.com/jlq8rsu',
-            'campaign' => null,
-            'adgroup' => null,
-            'creative' => null,
-            'deep_link' => null,
-        ],
+        /* 'payment_options' => [
+             'url' => 'https://app.adjust.com/jlq8rsu',
+             'campaign' => null,
+             'adgroup' => null,
+             'creative' => null,
+             'deep_link' => null,
+         ],*/
         'previous_orders' => [
             'url' => 'https://app.adjust.com/ivl1knb',
             'campaign' => null,
             'adgroup' => null,
             'creative' => null,
             'deep_link' => null,
+            'deep_link_params' => [
+                ['key' => 'channel', 'value' => config('app.app-channels.grocery')],
+            ],
         ],
         'product_show' => [
             'url' => 'https://app.adjust.com/8b7qe4e',
@@ -348,7 +352,8 @@ return [
             'creative' => null,
             'deep_link' => null,
             'deep_link_params' => [
-                ['key' => 'id', 'value' => 1]
+                ['key' => 'id', 'value' => 1],
+                ['key' => 'channel', 'value' => config('app.app-channels.grocery')],
             ],
         ]
     ],

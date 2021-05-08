@@ -11,7 +11,7 @@
                 <div class="m-3 btn-group">
                     <button type="button" class="btn btn-secondary dropdown-toggle"
                             data-toggle="dropdown">{{is_null(request('parent_id')) ? "All Groups": \App\Models\Taxonomy::find(request('parent_id'))->title}}</button>
-                    <div class="dropdown-menu">
+                    <div class="dropdown-menu" style="z-index: 9999999;">
                         @if(!is_null(request('parent_id')))
                             <a class="dropdown-item"
                                href="{{route("admin.taxonomies.index", [
