@@ -177,7 +177,16 @@
         </div>
         @if($role == \App\Models\User::ROLE_USER)
             <div class="card card-outline-inverse mb-4">
-                <h4 class="card-header">Addresses</h4>
+                <h4 class="d-flex justify-content-between align-items-center px-4 mt-3">
+                    Addresses
+                    <a href="{{ route('admin.users.addresses.create', ['user' => $user]) }}">
+                        <button type="button" class="btn btn-primary rounded-pill d-block">
+                            <span class="ion ion-md-add"></span>
+                            &nbsp;
+                            {{trans('strings.add')}}
+                        </button>
+                    </a>
+                </h4>
                 <div class="card-body">
                     <div class="row">
                         @if($user->addresses()->count())
