@@ -501,7 +501,7 @@ class Controller extends BaseController
             $defaultUriScheme = Preference::retrieveValue('adjust_deep_link_uri_scheme');// Load from db stored by seeder
             $value = Preference::retrieveValue($adjustTrackerKey);
             if (isset($adjustTracker['url'])) {
-                $deepLinkUri = $defaultUriScheme.'//'.$adjustTrackerKey;
+                $deepLinkUri = $defaultUriScheme.'://'.$adjustTrackerKey;
                 if (count($extraParams) > 0) {
                     $deepLinkUri .= '?'.http_build_query($extraParams);
                 }

@@ -254,6 +254,13 @@ return [
                 ['key' => 'id', 'value' => 1]
             ],
         ],
+        'addresses' => [
+            'url' => 'https://app.adjust.com/vt24507',
+            'campaign' => null,
+            'adgroup' => null,
+            'creative' => null,
+            'deep_link' => null,
+        ],
         /*'campaign_index' => [
             'url' => 'https://app.adjust.com/tfnvbr8',
             'campaign' => null,
@@ -301,13 +308,6 @@ return [
                 ['key' => 'parent_id', 'value' => 1],
             ],
         ],
-        'addresses' => [
-            'url' => 'https://app.adjust.com/vt24507',
-            'campaign' => null,
-            'adgroup' => null,
-            'creative' => null,
-            'deep_link' => null,
-        ],
         'order_rating' => [
             'url' => 'https://app.adjust.com/et3lk95',
             'campaign' => null,
@@ -315,7 +315,8 @@ return [
             'creative' => null,
             'deep_link' => null,
             'deep_link_params' => [
-                ['key' => 'id', 'value' => 1]
+                ['key' => 'id', 'value' => 1],
+                ['key' => 'channel', 'value' => config('app.app-channels.grocery')],
             ],
         ],
         'order_tracking' => [
@@ -325,7 +326,8 @@ return [
             'creative' => null,
             'deep_link' => null,
             'deep_link_params' => [
-                ['key' => 'id', 'value' => 1]
+                ['key' => 'id', 'value' => 1],
+                ['key' => 'channel', 'value' => config('app.app-channels.grocery')],
             ],
         ],
         /* 'payment_options' => [
