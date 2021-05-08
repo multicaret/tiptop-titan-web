@@ -22,6 +22,8 @@ Route::delete('users/{role}/{user}/delete', 'UserController@destroy')->name('use
 Route::get('users/{role}/create', 'UserController@create')->name('users.create');
 Route::post('users/{role}/store', 'UserController@store')->name('users.store');
 
+Route::get('users/{user}/addresses/create', 'UserController@createAddress')->name('users.addresses.create');
+Route::post('users/{user}/addresses/store', 'UserController@storeAddress')->name('users.addresses.store');
 Route::get('users/{user}/addresses/{address}/edit', 'UserController@editAddress')->name('users.addresses.edit');
 Route::put('users/{user}/addresses/{address}/update', 'UserController@updateAddress')->name('users.addresses.update');
 /*

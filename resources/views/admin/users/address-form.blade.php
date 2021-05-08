@@ -17,13 +17,13 @@
         @if(!is_null($address->id))
             <h5>Editing User Address - {{ $address->name }}</h5>
         @else
-            <h5>{{trans('strings.add_new_user_address')}} {{trans('strings.user_address')}}</h5>
+            <h5>{{trans('strings.add_new_user_address')}}</h5>
         @endif
     </div>
 
     <form method="POST" enctype="multipart/form-data"
           @if(is_null($address->id))
-          action="{{route('admin.users.addresses.store')}}"
+          action="{{route('admin.users.addresses.store', ['user' => $user])}}"
           @else
           action="{{route('admin.users.addresses.update', ['user' => $user, 'address' => $address])}}"
         @endif
@@ -31,6 +31,8 @@
         {{csrf_field()}}
         @if(!is_null($address->id))
             {{method_field('put')}}
+        @else
+            {{method_field('post')}}
         @endif
         <div class="row mb-4">
             <div class="col-md-12 mt-4">
@@ -232,7 +234,7 @@
             data: {
                 address: @json($address),
                 kinds: @json($kinds),
-                kind: @json($address->actualKind),
+                kind: @json(!is_null($address->kind) ? $address->actualKind : null),
                 regions: @json($regions),
                 cities: [],
             },
