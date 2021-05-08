@@ -18,7 +18,7 @@ use Spatie\MediaLibrary\MediaCollections\Models\Collections\MediaCollection;
  * @property string $locale
  * @property-read mixed $image
  * @property-read mixed $image_full
- * @property-read mixed $thumbnail
+ * @property-read mixed $image_thumbnail
  * @property-read MediaCollection|\Spatie\MediaLibrary\MediaCollections\Models\Media[] $media
  * @property-read int|null $media_count
  * @method static Builder|SlideTranslation newModelQuery()

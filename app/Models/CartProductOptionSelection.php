@@ -19,7 +19,7 @@ use Illuminate\Support\Carbon;
  * @property int|null $product_option_id
  * @property string $selectable_type
  * @property int $selectable_id
- * @property mixed|null $selectable_object
+ * @property array|null $selectable_object
  * @property Carbon|null $created_at
  * @property Carbon|null $updated_at
  * @property-read \App\Models\CartProduct $cartProduct

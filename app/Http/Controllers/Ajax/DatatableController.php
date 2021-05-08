@@ -142,12 +142,23 @@ class DatatableController extends AjaxController
                              ];
 
                              $isGroceryType = $correctType === Taxonomy::TYPE_GROCERY_CATEGORY;
-                             $isFoodType = $correctType === Taxonomy::TYPE_FOOD_CATEGORY;
-                             if ( ! is_null($taxonomy->parent_id) && ($isGroceryType || $isFoodType)) {
+                             $isMenuCategory = $correctType === Taxonomy::TYPE_MENU_CATEGORY;
+                             if ( ! is_null($taxonomy->parent_id) && $isGroceryType) {
                                  $deepLinkParams = [
                                      'uuid' => $taxonomy->uuid,
                                      'id' => $taxonomy->id,
                                      'parent_id' => $taxonomy->parent_id,
+                                     'type' => request('type')
+                                 ];
+                                 $data['deepLink'] = [
+                                     'url' => Controller::getDeepLink('market_food_category_show', $deepLinkParams)
+                                 ];
+                             }
+                             if ($isMenuCategory) {
+                                 $deepLinkParams = [
+                                     'uuid' => $taxonomy->uuid,
+                                     'id' => $taxonomy->id,
+                                     'parent_id' => $taxonomy->branch_id,
                                      'type' => request('type')
                                  ];
                                  $data['deepLink'] = [
