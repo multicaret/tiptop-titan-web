@@ -213,7 +213,7 @@ class TaxonomyController extends Controller
             $taxonomy->makeChildOf($parent);
         }
         \DB::commit();
-        cache()->tags('taxonomies', 'api-home')->flush();
+        cache()->tags('taxonomies')->flush();
 
 
         return redirect()
@@ -309,7 +309,7 @@ class TaxonomyController extends Controller
 
         $this->handleSubmittedSingleMedia('cover', $request, $taxonomy);
         \DB::commit();
-        cache()->tags('taxonomies', 'api-home')->flush();
+        cache()->tags('taxonomies')->flush();
 
         return redirect()
             ->route('admin.taxonomies.index', ['type' => $request->type])
@@ -329,6 +329,7 @@ class TaxonomyController extends Controller
      */
     public function destroy(Taxonomy $taxonomy)
     {
+        \DB::beginTransaction();
         if ($taxonomy->hasChildren()) {
             return back()->with('message', [
                 'type' => 'Error',
@@ -349,6 +350,8 @@ class TaxonomyController extends Controller
                 'text' => 'Successfully Deleted'
             ]);
         }
+        \DB::commit();
+        cache()->tags('taxonomies')->flush();
 
         return back()->with('message', [
             'type' => 'Error',

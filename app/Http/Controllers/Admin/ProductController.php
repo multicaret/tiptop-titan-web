@@ -183,6 +183,7 @@ class ProductController extends Controller
                     'text' => $e->getMessage(),
                 ]);
         }
+        cache()->tags('products')->flush();
 
         return back()->with('message', [
             'type' => 'Success',
@@ -331,7 +332,7 @@ class ProductController extends Controller
         $product->push();
         DB::commit();
 
-        cache()->tags('productions', 'api-home')->flush();
+        cache()->tags('productions')->flush();
 
         $this->handleSubmittedSingleMedia('cover', $request, $product);
         $this->handleSubmittedMedia($request, 'gallery', $product, 'gallery');
