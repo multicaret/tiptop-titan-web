@@ -54,11 +54,11 @@
                             </div>
                             <label class="col-form-label col-md-2 text-sm-right">Param Value</label>
                             <div class="col-sm-3">
-                                <input v-if="item.key !== 'home_screen_by_channel'" type="text" class="form-control"
+                                <input v-if="!getChannelStatus(item.key)" type="text" class="form-control"
                                        placeholder="value" :id="'value-element-' + index" @input="updateValue(index)"
                                        v-model="item.deep_link_params[0].value">
                                 <multiselect
-                                    v-if="item.key === 'home_screen_by_channel'"
+                                    v-if="getChannelStatus(item.key)"
                                     :options="appChannels"
                                     v-model="item.deep_link_params[0].value"
                                     track-by="key"
@@ -102,10 +102,14 @@
                 selectedRegion: null,
             },
             mounted() {
+                console.log('this.adjustTrackers', this.adjustTrackers);
             },
             methods: {
                 updateValue: function (index) {
                     this.adjustTrackers[index].value = this.getUpdateDeepLinkEncoded(this.adjustTrackers[index]);
+                },
+                getChannelStatus: function (itemKey) {
+                    return ['home_screen_by_channel', 'favorites', 'market_food_category_show', 'previous_orders', 'product_show'].indexOf(itemKey) !== -1;
                 },
                 getUpdateDeepLinkEncoded: function (trackerObject) {
                     let updatedParam = {};
