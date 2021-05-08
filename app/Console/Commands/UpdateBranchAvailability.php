@@ -2,8 +2,6 @@
 
 namespace App\Console\Commands;
 
-use App\Models\Branch;
-use App\Models\Currency;
 use Illuminate\Console\Command;
 use Illuminate\Support\Facades\DB;
 
@@ -40,7 +38,9 @@ class UpdateBranchAvailability extends Command
      */
     public function handle()
     {
-        DB::table('branches')->where('is_open_now', '=', 0)->update(array('is_open_now' => 1));
+        DB::table('branches')
+          ->where('is_open_now', 0)
+          ->update(['is_open_now' => 1]);
 
         $this->info(' branch-availability:update Done!. '.PHP_EOL);
 
