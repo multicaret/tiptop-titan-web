@@ -168,7 +168,7 @@ class HomeController extends BaseApiController
             $eta = '20-30';
         } else {
             $categories = cache()->rememberForever('all_food_categories', function () {
-                $categories = Taxonomy::active()->foodCategories()->get();
+                $categories = Taxonomy::active()->foodCategories()->orderBy('order_column')->get();
 
                 return FoodCategoryResource::collection($categories);
             });
