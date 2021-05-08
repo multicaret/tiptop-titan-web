@@ -41,7 +41,7 @@
 <div class="container">
     <div class="content">
         <div class="title">
-            شوي ومنرجع منشغللكن السيرفر
+            503 Server Error
         </div>
     </div>
 </div>
