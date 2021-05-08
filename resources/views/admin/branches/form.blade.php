@@ -109,11 +109,19 @@
                     @else
                         @if($branch->id)
                             <div class="d-flex justify-content-end mb-3" style="gap: 10px;">
-                                <form style="display: none;" id="upload-banner" enctype="multipart/form-data" method="post"
+                                <div class="d-inline-flex justify-self-start">
+                                    <a class="btn btn-primary" target="_blank"
+                                       href="{{route('admin.branch.export-to-excel', [ 'type'=> request()->type,$branch])}}">
+                                        Export to Excel
+                                    </a>
+                                </div>
+                                <form style="display: none;" id="upload-banner" enctype="multipart/form-data"
+                                      method="post"
                                       action="{{route('admin.branch.import-from-excel',[$branch, 'type'=> request('type')])}}">
                                     @csrf
-                                    <input id="excel-upload" name="excel-file" type="file" ref="excelFile" @change="autoSubmit()" />
-                                    <input type="submit" value="submit" ref="submitBtn" id="submit" />
+                                    <input id="excel-upload" name="excel-file" type="file" ref="excelFile"
+                                           @change="autoSubmit()"/>
+                                    <input type="submit" value="submit" ref="submitBtn" id="submit"/>
                                 </form>
                                 <div class="d-inline-flex">
                                     <button class="btn btn-primary" @click="uploadFile()">
