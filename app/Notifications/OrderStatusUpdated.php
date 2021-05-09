@@ -26,7 +26,6 @@ class OrderStatusUpdated extends Notification
 
         if ($roleName == 'super') {
             $roleName = 'admin';
-
         }
         if ($roleName == 'branch-owner') {
             $roleName = 'branch-manager';
@@ -61,7 +60,7 @@ class OrderStatusUpdated extends Notification
         }
 
         $via = [
-//            OneSignalChannel::class,
+            OneSignalChannel::class,
             'database',
 //            'mail',
         ];
