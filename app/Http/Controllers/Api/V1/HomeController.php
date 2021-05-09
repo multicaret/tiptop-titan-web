@@ -136,6 +136,7 @@ class HomeController extends BaseApiController
                                                                         ->groceryCategories()
                                                                         ->parents()
                                                                         ->orderBy('order_column')
+                                                                        ->whereHas('children')
                                                                         ->get();
 
                                      return GroceryCategoryParentResource::collection($groceryParentCategories);
