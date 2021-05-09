@@ -143,27 +143,26 @@ class DatatableController extends AjaxController
 
                              $isGroceryType = $correctType === Taxonomy::TYPE_GROCERY_CATEGORY;
                              $isMenuCategory = $correctType === Taxonomy::TYPE_MENU_CATEGORY;
+
+                             $deepLinkChannel = config('app.app-channels.grocery');
                              if ( ! is_null($taxonomy->parent_id) && $isGroceryType) {
-                                 $deepLinkParams = [
-                                     'uuid' => $taxonomy->uuid,
-                                     'id' => $taxonomy->id,
-                                     'parent_id' => $taxonomy->parent_id,
-                                     'type' => request('type')
-                                 ];
-                                 $data['deepLink'] = [
-                                     'url' => Controller::getDeepLink('market_food_category_show', $deepLinkParams)
-                                 ];
+                                 $parentId = $taxonomy->parent_id;
                              }
                              if ($isMenuCategory) {
-                                 $deepLinkParams = [
-                                     'uuid' => $taxonomy->uuid,
-                                     'id' => $taxonomy->id,
-                                     'parent_id' => $taxonomy->branch_id,
-                                     'type' => request('type')
-                                 ];
+                                 $parentId = $taxonomy->branch_id;
+                                 $deepLinkChannel = config('app.app-channels.food');
+                             }
+
+                             if (isset($parentId)) {
                                  $data['deepLink'] = [
-                                     'url' => Controller::getDeepLink('market_food_category_show', $deepLinkParams)
+                                     'url' => Controller::generateDeepLink('market_food_category_show', [
+                                         'id' => $taxonomy->id,
+                                         'parent_id' => $parentId,
+                                         'channel' => $deepLinkChannel
+                                     ])
                                  ];
+
+
                              }
 
                              return view('admin.components.datatables._row-actions', $data)->render();
@@ -247,13 +246,11 @@ class DatatableController extends AjaxController
                              ];
 
                              if (\request('type') === Post::getCorrectTypeName(Post::TYPE_ARTICLE, false)) {
-                                 $deepLinkParams = [
-                                     'uuid' => $post->uuid,
-                                     'id' => $post->id,
-                                     'type' => request('type')
-                                 ];
+
                                  $data['deepLink'] = [
-                                     'url' => Controller::getDeepLink('blog_show', $deepLinkParams)
+                                     'url' => Controller::generateDeepLink('blog_show', [
+                                         'id' => $post->id
+                                     ])
                                  ];
                              }
 
@@ -700,14 +697,16 @@ class DatatableController extends AjaxController
                                      'type' => request('type')
                                  ]),
                              ];
-                             $deepLinkParams = [
-                                 'uuid' => $branch->uuid,
-                                 'id' => $branch->id,
-                                 'type' => request('type')
-                             ];
-                             $data['deepLink'] = [
-                                 'url' => Controller::getDeepLink('market_food_category_show', $deepLinkParams)
-                             ];
+
+                             if (str_contains(request('type'), 'food')) {
+                                 $data['deepLink'] = [
+                                     'url' => Controller::generateDeepLink('market_food_category_show', [
+                                         'id' => $branch->id,
+                                         'channel' => config('app.app-channels.food')
+                                     ])
+                                 ];
+                             }
+
 
                              return view('admin.components.datatables._row-actions', $data)->render();
                          })
@@ -802,13 +801,16 @@ class DatatableController extends AjaxController
                                  ]),
                              ];
 
-                             $deepLinkParams = [
-                                 'uuid' => $product->uuid,
-                                 'id' => $product->id,
-                                 'type' => request('type')
-                             ];
+                             $deepLinkChannel = config('app.app-channels.grocery');
+                             if (str_contains(request('type'), 'food')) {
+                                 $deepLinkChannel = config('app.app-channels.food');
+                             }
+
                              $data['deepLink'] = [
-                                 'url' => Controller::getDeepLink('product_show', $deepLinkParams)
+                                 'url' => Controller::generateDeepLink('product_show', [
+                                     'id' => $product->id,
+                                     'channel' => $deepLinkChannel
+                                 ])
                              ];
 
                              return view('admin.components.datatables._row-actions', $data)->render();

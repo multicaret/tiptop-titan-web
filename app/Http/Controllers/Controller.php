@@ -34,6 +34,18 @@ class Controller extends BaseController
         return ACOS(SIN($point1latitude * PI() / 180) * sin($point2latitude * PI() / 180) + COS($point1latitude * PI() / 180) * COS($point2latitude * PI() / 180) * COS($point2longitude * PI() / 180 - $point1longitude * PI() / 180)) * 6371;
     }
 
+    public static function generateDeepLink($action, array $updatedParams = []): string
+    {
+        $params = config("defaults.adjust_trackers.$action.params");
+        if (count($updatedParams)) {
+            foreach ($updatedParams as $key => $value) {
+                $params[$key] = $value;
+            }
+        }
+
+        return Preference::retrieveValue('adjust_universal_deep_link_uri').'/'.$action.'?'.urldecode(http_build_query($params));
+    }
+
     /**
      * Handle The Submitted Media.
      *
@@ -493,27 +505,6 @@ class Controller extends BaseController
         return $arr;
     }
 
-    public static function getDeepLink($adjustTrackerKey, array $extraParams): string
-    {
-        $value = env('APP_URL');
-        try {
-            $adjustTracker = config('defaults.adjust_trackers')[$adjustTrackerKey];
-            $defaultUriScheme = Preference::retrieveValue('adjust_deep_link_uri_scheme');// Load from db stored by seeder
-            $value = Preference::retrieveValue($adjustTrackerKey);
-            if (isset($adjustTracker['url'])) {
-                $deepLinkUri = $defaultUriScheme.'://'.$adjustTrackerKey;
-                if (count($extraParams) > 0) {
-                    $deepLinkUri .= '?'.http_build_query($extraParams);
-                }
-                $value = $adjustTracker['url'].'?deep_link='.urlencode($deepLinkUri);
-            }
-        } catch (\Exception $e) {
-            info("Try to get key: $adjustTrackerKey");
-            info($e->getMessage());
-        }
-
-        return $value;
-    }
 
     public static function hasEmojis($string): bool
     {

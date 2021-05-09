@@ -18,7 +18,6 @@ use App\Models\Slide;
 use App\Models\SlideTranslation;
 use App\Models\Taxonomy;
 use App\Models\TaxonomyTranslation;
-use App\Models\Translation;
 use App\Models\User;
 use App\Models\WorkingHour;
 use App\Utilities\PermissionsGenerator;
@@ -39,8 +38,6 @@ class DatabaseSeeder extends Seeder
         // Disabled since we have them as JSON files
         /*'cities', 'city_translations', 'region_translations', 'regions'*/
     ];
-
-    public const defaultUriScheme = 'tiptop';
 
     /**
      * Seed the application's database.
@@ -430,7 +427,7 @@ class DatabaseSeeder extends Seeder
 
     private function preferences($host)
     {
-        $preferences = $this->getPreferences($host, self::defaultUriScheme);
+        $preferences = $this->getPreferences($host);
 
         echo PHP_EOL.'Inserting Preferences'.PHP_EOL;
         foreach ($preferences as $key => $data) {
@@ -442,11 +439,6 @@ class DatabaseSeeder extends Seeder
             }
         }
 
-        echo PHP_EOL.'Inserting Adjust Trackers'.PHP_EOL;
-        $adjustTrackers = config('defaults.adjust_trackers');
-        foreach ($adjustTrackers as $key => $data) {
-            $this->createAdjustTrackerPreferenceItem($key, $data, self::defaultUriScheme);
-        }
         echo PHP_EOL.'J\'ai fini 🤖 Préférences';
     }
 
@@ -666,37 +658,6 @@ class DatabaseSeeder extends Seeder
         $paymentMethod->translateOrNew('ar')->title = 'محفظة فاست باي';
         $paymentMethod->save();
         $paymentMethod->addMediaFromUrl(asset('/images/payment-methods/mobile-gateway-payment.png'))->toMediaCollection('logo');
-    }
-
-    private function createAdjustTrackerPreferenceItem($key, $data): void
-    {
-        $value = null;
-        $translation = new Translation();
-        $translation->key = $key;
-        $preference = new Preference;
-        $preference->key = $key;
-        $preference->type = 'text';
-
-        if (isset($data['url'])) {
-            $deepLinkUri = self::defaultUriScheme.'://'.$key;
-            if (isset($data['deep_link_params'])) {
-                $callback = function ($item) {
-                    return [$item['key'] => $item['value']];
-                };
-                $deepLinkParams = collect($data['deep_link_params'])->mapWithKeys($callback)->all();
-                $deepLinkUri .= '?'.http_build_query($deepLinkParams);
-            }
-            $value = $data['url'].'?deep_link='.urlencode($deepLinkUri);
-        }
-
-        if ( ! is_null($value)) {
-            $title = \Str::title(\Str::replaceArray('_', [' '], $key));
-            $translation->translateOrNew(app()->getLocale())->value = $title;
-            $preference->translateOrNew(app()->getLocale())->value = $value;
-        }
-        $translation->group = 'Integrations';
-        $translation->save();
-        $preference->save();
     }
 
     /**
@@ -2057,9 +2018,9 @@ class DatabaseSeeder extends Seeder
                         'value' => '',
                         'notes' => 'Google Analytics ID'
                     ],
-                    'adjust_deep_link_uri_scheme' => [
+                    'adjust_universal_deep_link_uri' => [
                         'type' => 'text',
-                        'value' => self::defaultUriScheme,
+                        'value' => env('UNIVERSAL_DEEEP_LINK', 'https://66dh.adj.st'),
                         'notes' => 'Choose your custom URI scheme'
                     ],
                 ]
