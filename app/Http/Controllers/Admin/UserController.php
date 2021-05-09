@@ -287,11 +287,11 @@ class UserController extends Controller
         $user->team_id = $request->team_id;
         $user->branch_id = $request->branch_id;
         $user->phone_number = $request->phone;
-        $user->save();
 
         if ( ! empty($request->password)) {
             $user->password = bcrypt($request->password);
         }
+        $user->save();
 
         /*if (is_null($address = Location::where('contactable_id', $user->id)
                                        ->where('contactable_role', User::class)
