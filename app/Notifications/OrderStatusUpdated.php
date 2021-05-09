@@ -2,6 +2,7 @@
 
 namespace App\Notifications;
 
+use App\Http\Controllers\Controller;
 use App\Models\Order;
 use App\Models\User;
 use Illuminate\Bus\Queueable;
@@ -23,7 +24,6 @@ class OrderStatusUpdated extends Notification
     public function __construct(Order $order, $roleName)
     {
         $this->order = $order;
-
         if ($roleName == 'super') {
             $roleName = 'admin';
         }
@@ -167,5 +167,37 @@ class OrderStatusUpdated extends Notification
         }
 
         return in_array($status, $availableStatuses);
+    }
+
+
+    /**
+     * Set the notification message.
+     *
+     * @return array|\Illuminate\Contracts\Translation\Translator|string|null
+     */
+    protected function getDeepLink($notifiable)
+    {
+        if ($notifiable->role_name != User::ROLE_USER) {
+            return null;
+        }
+        $deepLinkKey = null;
+        if (in_array($this->order->status, [
+            Order::STATUS_ON_THE_WAY,
+        ])) {
+            $deepLinkKey = 'order_tracking';
+        } elseif (in_array($this->order->status, [
+            Order::STATUS_DELIVERED,
+        ])) {
+            $deepLinkKey = 'order_rating';
+        }
+
+        if ( ! is_null($deepLinkKey)) {
+            return Controller::generateDeepLink($deepLinkKey, [
+                'id' => $this->order->id,
+                'channel' => $this->order->is_grocery ? config('app.app-channels.grocery') : config('app.app-channels.food')
+            ]);
+        }
+
+        return null;
     }
 }
