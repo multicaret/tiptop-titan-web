@@ -26,6 +26,8 @@ class CategoryController extends BaseApiController
                                            ->with('children.products')
                                            ->groceryCategories()
                                            ->parents()
+                                           ->orderBy('order_column')
+                                           ->whereHas('children')
                                            ->get();
 
         return $this->respond(GroceryCategoryParentWithChildrenResource::collection($groceryParentCategories));
