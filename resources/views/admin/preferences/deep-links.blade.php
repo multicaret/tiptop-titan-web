@@ -42,10 +42,10 @@
 
                             <div class="form-group" v-if="item.value.indexOf('channel=') != -1">
                                 <label>Channel</label>&nbsp;
-                                <select class="form-control" v-model="item.deep_link_params.channel"
+                                <select class="form-control" v-model="item.params.channel"
                                         @change="adjustChannel(index,item)">
                                     <option v-for="(channel,channelIndex) in appChannels" :value="channel.key"
-                                            :selected="item.deep_link_params.channel">
+                                            :selected="item.params.channel">
                                         @{{channel.title}}
                                     </option>
                                 </select>
@@ -87,7 +87,7 @@
                     this.adjustTrackers[index] = item;
                 },
                 adjustChannel: function (index, item) {
-                    item.value = item.value.replace(/channel=(grocery|food)/, 'channel=' + item.deep_link_params.channel);
+                    item.value = item.value.replace(/channel=(grocery|food)/, 'channel=' + item.params.channel);
                     this.adjustTrackers[index] = item;
                 },
             },

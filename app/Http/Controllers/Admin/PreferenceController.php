@@ -37,33 +37,16 @@ class PreferenceController extends Controller
 
         $callback = function ($item, $key) {
             $item['title'] = \Str::title(str_replace('_', ' ', $key));
-            $item['key'] = $key;
+//            $item['key'] = $key;
 //            $item['value'] = Preference::retrieveValue($key);
-//            $item['deep_link'] = Preference::retrieveValue('adjust_deep_link_uri_scheme');
-
-            $queryParams = $item['deep_link_params'];
-            if ($item['campaign']) {
-                $queryParams['campaign'] = $item['campaign'];
-            }
-            if ($item['adgroup']) {
-                $queryParams['adgroup'] = $item['adgroup'];
-            }
-            if ($item['creative']) {
-                $queryParams['creative'] = $item['creative'];
-            }
-            $link = $item['url'].'/'.$key.'?'.urldecode(http_build_query($queryParams));
-            $item['value'] = $link;
+//            $item['deep_link'] = Preference::retrieveValue('adjust_universal_deep_link_uri');
+            $item['value'] = Controller::generateDeepLink($key);
 
             return [$key => $item];
         };
 
         $adjustTrackers = collect(config('defaults.adjust_trackers'))
             ->except($exceptedKeys)->mapWithKeys($callback)->values();
-
-        /*$adjustTrackers->map(function ($foo) {
-            echo $foo['title'].'<br/>';
-            echo $foo['value'].'<br/>';
-        });*/
 
         $channelCallback = function ($item) {
             return [

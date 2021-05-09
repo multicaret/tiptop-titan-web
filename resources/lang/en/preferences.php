@@ -60,7 +60,7 @@ return [
     'support_number' => 'Support number',
 
 
-    'adjust_deep_link_uri_scheme' => 'Adjust Deep Link Uri Scheme',
+    'adjust_universal_deep_link_uri' => 'Adjust Deep Link Uri Scheme',
     'choose_your_custom_uri_scheme' => 'Choose Your Custom Uri Scheme',
     'tiptop_fixed_delivery_distance' => 'Tiptop fixed delivery distance',
     'restaurant_fixed_delivery_distance' => 'Restaurant fixed delivery distance',
