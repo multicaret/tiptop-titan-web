@@ -142,6 +142,7 @@ class DatumImporter extends Command
         if ( ! empty($this->modelName)) {
             $this->bar->finish();
             $this->info('Import '.$this->modelName.' is finished 🤪.');
+            $this->info('Finished at: '.now()->format(config('defaults.datetime.normal_format')));
             $this->newLine(2);
         }
     }

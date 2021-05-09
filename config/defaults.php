@@ -236,40 +236,200 @@ return [
         'string' => 'text',
         'text' => 'editor',
     ],
+    /*
+        adj_fallback=https%3A%2F%2Ftrytiptop.app
+        adj_redirect_macos=https%3A%2F%2Ftrytiptop.app
+         * */
     'adjust_trackers' => [
         'blog_index' => [
-            'url' => 'https://app.adjust.com/sek5use',
-            'campaign' => null,
-            'adgroup' => null,
-            'creative' => null,
-            'deep_link' => null,
-        ],
-        'blog_show' => [
-            'url' => 'https://app.adjust.com/6j6msza',
+            'url' => 'https://66dh.adj.st',
             'campaign' => null,
             'adgroup' => null,
             'creative' => null,
             'deep_link' => null,
             'deep_link_params' => [
-                ['key' => 'id', 'value' => 1]
+                'adj_t' => 'sek5use',
             ],
         ],
-        'addresses' => [
-            'url' => 'https://app.adjust.com/vt24507',
+        'blog_show' => [
+            'url' => 'https://66dh.adj.st',
             'campaign' => null,
             'adgroup' => null,
             'creative' => null,
             'deep_link' => null,
+            /*'deep_link_params' => [
+                ['key' => 'id', 'value' => 1],
+                ['key' => 'adj_t', 'value' => '6j6msza'],
+            ],*/
+            'deep_link_params' => [
+                'id' => '1',
+                'adj_t' => '6j6msza',
+            ],
         ],
+        'addresses' => [
+            'url' => 'https://66dh.adj.st',
+            'campaign' => null,
+            'adgroup' => null,
+            'creative' => null,
+            'deep_link' => null,
+            /*'deep_link_params' => [
+                ['key' => 'adj_t', 'value' => 'vt24507'],
+            ],*/
+            'deep_link_params' => [
+                'adj_t' => 'vt24507',
+            ],
+        ],
+        'favorites' => [
+            'url' => 'https://66dh.adj.st',
+            'campaign' => null,
+            'adgroup' => null,
+            'creative' => null,
+            'deep_link' => null,
+            /*'deep_link_params' => [
+                ['key' => 'channel', 'value' => config('app.app-channels.grocery')]
+            ],*/
+            'deep_link_params' => [
+                'channel' => config('app.app-channels.grocery'),
+                'adj_t' => '793c8og',
+            ],
+        ],
+        'home_screen_by_channel' => [
+            'url' => 'https://66dh.adj.st',
+            'campaign' => null,
+            'adgroup' => null,
+            'creative' => null,
+            'deep_link' => null,
+            /*'deep_link_params' => [
+                ['key' => 'channel', 'value' => config('app.app-channels.grocery')]
+            ],*/
+            'deep_link_params' => [
+                'channel' => config('app.app-channels.grocery'),
+                'adj_t' => 'wtk63gn',
+            ],
+        ],
+        'market_food_category_show' => [
+            'url' => 'https://66dh.adj.st',
+            'campaign' => null,
+            'adgroup' => null,
+            'creative' => null,
+            'deep_link' => null,
+            /*'deep_link_params' => [
+                ['key' => 'id', 'value' => 1],
+                ['key' => 'channel', 'value' => config('app.app-channels.grocery')],
+                ['key' => 'parent_id', 'value' => 1],
+            ],*/
+            'deep_link_params' => [
+                'adj_t' => '657i79u',
+                'channel' => config('app.app-channels.grocery'),
+                'parent_id' => 1,
+                'id' => 1,
+            ],
+        ],
+        'order_rating_grocery' => [
+            'url' => 'https://66dh.adj.st',
+            'campaign' => null,
+            'adgroup' => null,
+            'creative' => null,
+            'deep_link' => null,
+            /*'deep_link_params' => [
+                ['key' => 'id', 'value' => 1],
+                ['key' => 'channel', 'value' => config('app.app-channels.grocery')],
+            ],*/
+            'deep_link_params' => [
+                'adj_t' => 'et3lk95',
+                'channel' => config('app.app-channels.grocery'),
+                'id' => 1,
+            ],
+        ],
+        'order_rating_food' => [
+            'url' => 'https://66dh.adj.st',
+            'campaign' => null,
+            'adgroup' => null,
+            'creative' => null,
+            'deep_link' => null,
+            /*'deep_link_params' => [
+                ['key' => 'id', 'value' => 1],
+                ['key' => 'channel', 'value' => config('app.app-channels.food')],
+            ],*/
+            'deep_link_params' => [
+                'adj_t' => 'et3lk95',
+                'channel' => config('app.app-channels.food'),
+                'id' => 1,
+            ],
+        ],
+        'order_tracking_grocery' => [
+            'url' => 'https://66dh.adj.st',
+            'campaign' => null,
+            'adgroup' => null,
+            'creative' => null,
+            'deep_link' => null,
+            /*'deep_link_params' => [
+                ['key' => 'id', 'value' => 1],
+                ['key' => 'channel', 'value' => config('app.app-channels.grocery')],
+            ],*/
+            'deep_link_params' => [
+                'adj_t' => 'd3aoyg1',
+                'channel' => config('app.app-channels.grocery'),
+                'id' => 1,
+            ],
+        ],
+        'order_tracking_food' => [
+            'url' => 'https://66dh.adj.st',
+            'campaign' => null,
+            'adgroup' => null,
+            'creative' => null,
+            'deep_link' => null,
+            /*'deep_link_params' => [
+                ['key' => 'id', 'value' => 1],
+                ['key' => 'channel', 'value' => config('app.app-channels.food')],
+            ],*/
+            'deep_link_params' => [
+                'adj_t' => 'd3aoyg1',
+                'channel' => config('app.app-channels.food'),
+                'id' => 1,
+            ],
+        ],
+
+        'previous_orders' => [
+            'url' => 'https://66dh.adj.st',
+            'campaign' => null,
+            'adgroup' => null,
+            'creative' => null,
+            'deep_link' => null,
+            /*'deep_link_params' => [
+                ['key' => 'channel', 'value' => config('app.app-channels.grocery')],
+            ],*/
+            'deep_link_params' => [
+                'adj_t' => 'ivl1knb',
+                'channel' => config('app.app-channels.food'),
+            ],
+        ],
+        'product_show' => [
+            'url' => 'https://66dh.adj.st',
+            'campaign' => null,
+            'adgroup' => null,
+            'creative' => null,
+            'deep_link' => null,
+            /*'deep_link_params' => [
+                ['key' => 'id', 'value' => 1],
+                ['key' => 'channel', 'value' => config('app.app-channels.grocery')],
+            ],*/
+            'deep_link_params' => [
+                'adj_t' => '8b7qe4e',
+                'channel' => config('app.app-channels.food'),
+                'id' => 1,
+            ],
+        ]
+
         /*'campaign_index' => [
-            'url' => 'https://app.adjust.com/tfnvbr8',
+            'url' => 'https://66dh.adj.st/tfnvbr8',
             'campaign' => null,
             'adgroup' => null,
             'creative' => null,
             'deep_link' => null,
         ],
         'campaign_show' => [
-            'url' => 'https://app.adjust.com/5dsbxo9',
+            'url' => 'https://66dh.adj.st/5dsbxo9',
             'campaign' => null,
             'adgroup' => null,
             'creative' => null,
@@ -278,110 +438,13 @@ return [
                 ['key' => 'id', 'value' => 1]
             ],
         ],*/
-        'favorites' => [
-            'url' => 'https://app.adjust.com/793c8og',
-            'campaign' => null,
-            'adgroup' => null,
-            'creative' => null,
-            'deep_link' => null,
-            'deep_link_params' => [
-                ['key' => 'channel', 'value' => config('app.app-channels.grocery')]
-            ],
-        ],
-        'home_screen_by_channel' => [
-            'url' => 'https://app.adjust.com/wtk63gn',
-            'campaign' => null,
-            'adgroup' => null,
-            'creative' => null,
-            'deep_link' => null,
-            'deep_link_params' => [
-                ['key' => 'channel', 'value' => config('app.app-channels.grocery')]
-            ],
-        ],
-        'market_food_category_show' => [
-            'url' => 'https://app.adjust.com/657i79u',
-            'campaign' => null,
-            'adgroup' => null,
-            'creative' => null,
-            'deep_link' => null,
-            'deep_link_params' => [
-                ['key' => 'id', 'value' => 1],
-                ['key' => 'channel', 'value' => config('app.app-channels.grocery')],
-                ['key' => 'parent_id', 'value' => 1],
-            ],
-        ],
-        'order_rating_grocery' => [
-            'url' => 'https://app.adjust.com/et3lk95',
-            'campaign' => null,
-            'adgroup' => null,
-            'creative' => null,
-            'deep_link' => null,
-            'deep_link_params' => [
-                ['key' => 'id', 'value' => 1],
-                ['key' => 'channel', 'value' => config('app.app-channels.grocery')],
-            ],
-        ],
-        'order_rating_food' => [
-            'url' => 'https://app.adjust.com/et3lk95',
-            'campaign' => null,
-            'adgroup' => null,
-            'creative' => null,
-            'deep_link' => null,
-            'deep_link_params' => [
-                ['key' => 'id', 'value' => 1],
-                ['key' => 'channel', 'value' => config('app.app-channels.food')],
-            ],
-        ],
-        'order_tracking_grocery' => [
-            'url' => 'https://app.adjust.com/d3aoyg1',
-            'campaign' => null,
-            'adgroup' => null,
-            'creative' => null,
-            'deep_link' => null,
-            'deep_link_params' => [
-                ['key' => 'id', 'value' => 1],
-                ['key' => 'channel', 'value' => config('app.app-channels.grocery')],
-            ],
-        ],
-        'order_tracking_food' => [
-            'url' => 'https://app.adjust.com/d3aoyg1',
-            'campaign' => null,
-            'adgroup' => null,
-            'creative' => null,
-            'deep_link' => null,
-            'deep_link_params' => [
-                ['key' => 'id', 'value' => 1],
-                ['key' => 'channel', 'value' => config('app.app-channels.food')],
-            ],
-        ],
         /* 'payment_options' => [
-             'url' => 'https://app.adjust.com/jlq8rsu',
+             'url' => 'https://66dh.adj.st/jlq8rsu',
              'campaign' => null,
              'adgroup' => null,
              'creative' => null,
              'deep_link' => null,
          ],*/
-        'previous_orders' => [
-            'url' => 'https://app.adjust.com/ivl1knb',
-            'campaign' => null,
-            'adgroup' => null,
-            'creative' => null,
-            'deep_link' => null,
-            'deep_link_params' => [
-                ['key' => 'channel', 'value' => config('app.app-channels.grocery')],
-            ],
-        ],
-        'product_show' => [
-            'url' => 'https://app.adjust.com/8b7qe4e',
-            'campaign' => null,
-            'adgroup' => null,
-            'creative' => null,
-            'deep_link' => null,
-            'deep_link_params' => [
-                ['key' => 'id', 'value' => 1],
-                ['key' => 'channel', 'value' => config('app.app-channels.grocery')],
-            ],
-        ]
     ],
     'permissions' => [
         'grocery_chain_chains' => [
