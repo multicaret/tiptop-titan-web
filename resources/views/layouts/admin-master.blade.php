@@ -110,7 +110,7 @@
         ]) !!};
     </script>
 
-    @include('admin.notifications.onesignal-init')
+    @includeWhen(config('services.onesignal.app_id'),'admin.notifications.onesignal-init')
 
     @stack('styles')
 
