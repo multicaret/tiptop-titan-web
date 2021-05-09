@@ -38,15 +38,32 @@ class PreferenceController extends Controller
         $callback = function ($item, $key) {
             $item['title'] = \Str::title(str_replace('_', ' ', $key));
             $item['key'] = $key;
-            $item['value'] = str_replace('app.trytiptop.flutter',
-                Preference::retrieveValue('adjust_deep_link_uri_scheme'), Preference::retrieveValue($key));
-            $item['deep_link'] = Preference::retrieveValue('adjust_deep_link_uri_scheme');
+//            $item['value'] = Preference::retrieveValue($key);
+//            $item['deep_link'] = Preference::retrieveValue('adjust_deep_link_uri_scheme');
+
+            $queryParams = $item['deep_link_params'];
+            if ($item['campaign']) {
+                $queryParams['campaign'] = $item['campaign'];
+            }
+            if ($item['adgroup']) {
+                $queryParams['adgroup'] = $item['adgroup'];
+            }
+            if ($item['creative']) {
+                $queryParams['creative'] = $item['creative'];
+            }
+            $link = $item['url'].'/'.$key.'?'.urldecode(http_build_query($queryParams));
+            $item['value'] = $link;
 
             return [$key => $item];
         };
 
         $adjustTrackers = collect(config('defaults.adjust_trackers'))
             ->except($exceptedKeys)->mapWithKeys($callback)->values();
+
+        /*$adjustTrackers->map(function ($foo) {
+            echo $foo['title'].'<br/>';
+            echo $foo['value'].'<br/>';
+        });*/
 
         $channelCallback = function ($item) {
             return [
@@ -56,7 +73,8 @@ class PreferenceController extends Controller
         };
         $appChannels = collect(config('app.app-channels'))->map($channelCallback)->values();
 
-        return view('admin.preferences.form', compact('adjustTrackers', 'appChannels'));
+        return view('admin.preferences.deep-links', compact('adjustTrackers', 'appChannels'));
+//        return view('admin.preferences.form', compact('adjustTrackers', 'appChannels'));
     }
 
 
