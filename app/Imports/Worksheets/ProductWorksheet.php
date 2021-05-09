@@ -37,7 +37,11 @@ class ProductWorksheet extends WorksheetImport
         $this->productsImporter->updateBooleanAttributes(new Product(), $rawData);
         $this->updateTypeAttribute($rawData);
         $this->updateStatusAttribute($rawData);
-        $rawData['category_id'] = $this->productsImporter->getMenuCategoriesIds()->get($rawData['category_id']);
+        if ($rawData['type'] === Product::CHANNEL_GROCERY_OBJECT) {
+            $rawData['category_id'] = $categoryIds[0];
+        } else {
+            $rawData['category_id'] = $this->productsImporter->getMenuCategoriesIds()->get($rawData['category_id']);
+        }
         $rawData['importer_id'] = $rawData['excel_id'];
         $rawData['chain_id'] = $this->chain->id;
         $rawData['branch_id'] = $this->branch->id;
