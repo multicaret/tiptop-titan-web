@@ -172,7 +172,19 @@ class TaxonomyModel extends Model implements HasMedia, ShouldHaveTypes, Translat
     protected $table = 'taxonomies';
     public $translationForeignKey = 'taxonomy_id';
     public $translationModel = TaxonomyTranslation::class;
-    protected $fillable = ['creator_id', 'editor_id', 'title', 'description', 'parent_id', 'type', 'order_column', 'left', 'right', 'uuid'];
+    protected $fillable = [
+        'creator_id',
+        'editor_id',
+        'title',
+        'description',
+        'parent_id',
+        'type',
+        'order_column',
+        'left',
+        'right',
+        'uuid',
+        'branch_id',
+    ];
     protected $translatedAttributes = ['title', 'description'];
     protected $with = [
         'translations'
