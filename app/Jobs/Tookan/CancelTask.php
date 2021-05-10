@@ -45,16 +45,7 @@ class CancelTask implements ShouldQueue
             ]);
          //   $this->fail();
         }
-        $responseData = $response->json();
 
-        if ( ! $response->successful()) {
-            info('Tookan Request Error', [
-                'captain_id' => $this->order->id,
-                'response' => $responseData
-            ]);
-       //     $this->fail();
-
-        }
 
 
 

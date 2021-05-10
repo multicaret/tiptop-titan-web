@@ -37,10 +37,10 @@ class TookanClient
         return [
             'order_id' => $order->reference_code,
             'timezone' => '-180',
-            'team_id' => $order->type === Chain::CHANNEL_GROCERY_OBJECT ? $market_team_id : $food_team_id,
+            'team_id' => $order->type === Chain::CHANNEL_GROCERY_OBJECT ? (string) $market_team_id : (string) $food_team_id,
             'auto_assignment' => 1,
             'job_pickup_phone' => $order->branch->primary_phone_number,
-            'job_pickup_name' => $order->branch->contacts->first()->name,
+            'job_pickup_name' => $order->branch->contacts->first()->name .' - '.$order->branch->title,
             //      'job_pickup_email'        => $order->branch->contact_email,
             'job_pickup_address' => $order->branch->full_address,
             'job_pickup_latitude' => $order->branch->latitude,
