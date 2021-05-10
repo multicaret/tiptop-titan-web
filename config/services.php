@@ -34,6 +34,9 @@ return [
         'app_id' => env('ONESIGNAL_APP_ID'),
         'rest_api_key' => env('ONESIGNAL_REST_API_KEY'),
 
+        'dashboard_app_id' => env('ONESIGNAL_DASHBOARD_APP_ID'),
+        'dashboard_rest_api_key' => env('ONESIGNAL_DASHBOARD_REST_API_KEY'),
+
         'restaurant_app_id' => env('ONESIGNAL_RESTAURANT_APP_ID'),
         'restaurant_rest_api_key' => env('ONESIGNAL_RESTAURANT_REST_API_KEY'),
         'restaurant_app_android_channel_id' => env('ONESIGNAL_RESTAURANT_APP_ANDROID_CHANNEL_ID'),

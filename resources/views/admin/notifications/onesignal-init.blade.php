@@ -4,7 +4,7 @@
     window.OneSignal = window.OneSignal || [];
     OneSignal.push(function () {
         OneSignal.init({
-            appId: "{{config('services.onesignal.app_id')}}",
+            appId: "{{config('services.onesignal.dashboard_app_id')}}",
             notifyButton: {
                 enable: true,
             },
