@@ -40,12 +40,14 @@ class ChainController extends Controller
                 'name' => 'id',
                 'title' => trans('strings.id'),
                 'width' => '1',
+                'searchable' => false,
             ],
             [
                 'data' => 'title',
                 'name' => 'translations.title',
                 'title' => trans('strings.chain'),
                 'width' => '40',
+                'searchable' => false,
             ],
             [
                 'data' => 'region',
@@ -68,6 +70,7 @@ class ChainController extends Controller
                 'name' => 'created_at',
                 'title' => trans('strings.create_date'),
                 'width' => '10',
+                'searchable' => false,
             ],
         ];
 
