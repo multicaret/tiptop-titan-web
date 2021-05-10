@@ -36,7 +36,7 @@ Route::middleware('auth:sanctum')
              // Orders
              Route::get('orders', 'OrderController@index');
              Route::get('orders/{order}', 'OrderController@show');
-             Route::post('orders', 'OrderController@update');
+             Route::post('orders/{order}', 'OrderController@update');
          });
      });
 

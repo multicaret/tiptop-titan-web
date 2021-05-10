@@ -9,6 +9,7 @@ use App\Models\Chain;
 use App\Models\ChainTranslation;
 use App\Models\City;
 use App\Models\Location;
+use App\Models\Media;
 use App\Models\OldModels\OldBranch;
 use App\Models\OldModels\OldBranchTranslation;
 use App\Models\OldModels\OldCategory;
@@ -856,7 +857,14 @@ class DatumImporter extends Command
 
     private function importProductsImages(): void
     {
-        $products = Product::all();
+        $products = Product::where('id', '>',
+            Media::select('model_id')->whereModelType(Product::class)
+                 ->latest()
+                 ->limit(1)
+                 ->pluck('model_id')
+                 ->first()
+        )
+                           ->get();
         $this->bar = $this->output->createProgressBar($products->count());
         $this->bar->start();
         foreach ($products as $product) {

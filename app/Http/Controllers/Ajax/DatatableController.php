@@ -297,6 +297,10 @@ class DatatableController extends AjaxController
             $className::find($position['id'])->update([
                 'order_column' => $position['order_new_value']
             ]);
+            $cacheTag = Str::plural(strtolower($className));
+            if (in_array($cacheTag, ['taxonomies', 'products', 'posts'])) {
+                cache()->tags($cacheTag)->flush();
+            }
         }
     }
 
