@@ -28,15 +28,17 @@ class ProductOptionsSelectionsWorksheet extends WorksheetImport
         }
         $productOptionSelection = null;
         $currentRowNumber = $this->getRowNumber();
-        $rawData = ProductsImporter::getRowRawDataWithTranslations($row->toArray());
+        [$rawData, $translatedData] = ProductsImporter::getRowRawDataWithTranslations($row->toArray());
         $rawData['product_id'] = $this->productsImporter->getProductId($rawData);
         $rawData['product_option_id'] = $this->getProductOptionId($rawData);
         unset($rawData['excel_id']);
-        unset($rawData['id']);
         if ( ! is_null($rawData['product_option_id'])) {
             if ( ! is_null($rawData['ingredient_id'])) {
                 try {
-                    $productOptionSelection = ProductOptionIngredient::create([
+                    $productOptionSelection = ProductOptionIngredient::updateOrCreate([
+                        'product_option_id' => $rawData['product_option_id'],
+                        'ingredient_id' => $rawData['ingredient_id'],
+                    ], [
                         'product_option_id' => $rawData['product_option_id'],
                         'ingredient_id' => $rawData['ingredient_id'],
                         'price' => $rawData['price']
@@ -49,13 +51,22 @@ class ProductOptionsSelectionsWorksheet extends WorksheetImport
             if ( ! is_null($rawData['product_id']) && is_null($rawData['ingredient_id'])) {
                 unset($rawData['ingredient_id']);
                 try {
-                    $productOptionSelection = ProductOptionSelection::create($rawData);
+                    $productOptionSelection = ProductOptionSelection::updateOrCreate([
+                        'product_option_id' => $rawData['product_option_id'],
+                        'product_id' => $rawData['product_id'],
+                        'price' => $rawData['price']
+                    ],
+                        $rawData);
+                    $localesKeys = array_flip(localization()->getSupportedLocalesKeys());
+                    foreach ($localesKeys as $localeKey => $index) {
+                        $productOptionSelection->translateOrNew($localeKey)->fill($translatedData[$localeKey]);
+                    }
                 } catch (\Exception $e) {
                     dd('@ProductOptionSelection', $e->getMessage(), $rawData);
                 }
             }
         }
-
+        $productOptionSelection->save();
         return $productOptionSelection;
     }
 
