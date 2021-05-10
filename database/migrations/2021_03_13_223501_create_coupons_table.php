@@ -19,7 +19,7 @@ class CreateCouponsTable extends Migration
             $table->unsignedBigInteger('creator_id')->index();
             $table->unsignedBigInteger('editor_id');
             $table->unsignedBigInteger('currency_id')->default(config('defaults.currency.id'));
-            $table->unsignedTinyInteger('channel')->default(Coupon::TYPE_FOOD_AND_GROCERY_OBJECT)->comment('1:food and grocery, 2:grocery, 3:food');
+            $table->unsignedTinyInteger('channel')->default(Coupon::CHANNEL_FOOD_AND_GROCERY_OBJECT)->comment('0:food and grocery, 1:grocery, 2:food');
             $table->string('name');
             $table->text('description')->nullable();
             $table->unsignedDouble('discount_amount')->nullable();

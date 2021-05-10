@@ -262,6 +262,8 @@
                     <tr>
                         <th>Thumbnail</th>
                         <th>Name</th>
+                        <th>Description</th>
+                        <th>Unit</th>
                         <th>Price</th>
                         <th>Quantity</th>
                         <th>Total Price</th>
@@ -294,6 +296,15 @@
                                                 @endforeach
                                             </div>
                                         @endforeach
+                                    @endif
+                                </td>
+                                <td>
+                                    {{$orderProduct->product_object['description']}}
+                                </td>
+                                <td>
+                                    {{$orderProduct->product_object['unit_text']}}
+                                    @if($orderProduct->product_object['unit_id'])
+                                        {{ \App\Models\Taxonomy::find($orderProduct->product_object['unit_id'])->title }}
                                     @endif
                                 </td>
                                 <td>{!! \App\Models\Currency::formatHtml($orderProduct->product_object['price'] + $orderProduct->options_price) !!}</td>
