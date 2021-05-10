@@ -244,7 +244,7 @@ class OrderController extends BaseApiController
 
             [
                 $isExpirationDateAndUsageValid, $validationExpirationAndUsageMessage
-            ] = $coupon->validateExpirationDateAndUsageCount();
+            ] = $coupon->validateExpirationDateAndUsageCount($branch->type);
 
             // Here we are passing the car total and not the new order total, because we are calculating the coupon logic again
             [$isAmountValid, $totalDiscountedAmount] = $coupon->validateCouponDiscountAmount($activeCart->total);
@@ -302,7 +302,10 @@ class OrderController extends BaseApiController
         } elseif ($order->type === Order::CHANNEL_FOOD_OBJECT) {
             $response = [
                 ['key' => 'has_good_food_quality_rating', 'label' => ('strings.has_good_food_quality_rating')],
-                ['key' => 'has_good_packaging_quality_rating', 'label' => ('strings.has_good_packaging_quality_rating')],
+                [
+                    'key' => 'has_good_packaging_quality_rating',
+                    'label' => ('strings.has_good_packaging_quality_rating')
+                ],
                 ['key' => 'has_good_order_accuracy_rating', 'label' => ('strings.has_good_order_accuracy_rating')],
             ];
         }
