@@ -3,6 +3,7 @@
 namespace App\Http\Middleware;
 
 use App\Http\Controllers\Api\V1\Auth\AuthController;
+use App\Models\User;
 use Closure;
 use Illuminate\Http\Request;
 
@@ -18,6 +19,13 @@ class CheckSuspension
      */
     public function handle($request, Closure $next)
     {
+        if ( ! is_null($request->user()) && ($request->user()->status == User::STATUS_INACTIVE)) {
+            return response([
+                'isSuspended' => true,
+                'success' => false,
+            ]);
+        }
+
         $isSuspended = AuthController::isSuspended($request->user());
         if ($isSuspended['enabled']) {
             return response([

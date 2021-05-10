@@ -11,20 +11,6 @@ use Laravel\Socialite\Facades\Socialite;
 
 class LoginController extends Controller
 {
-
-
-    /**
-     * Show the application's login form.
-     *
-     * @return Response
-     */
-    public function showLoginForm()
-    {
-        session(['link' => url()->previous()]);
-
-        return view('admin.login');
-    }
-
     /*
     |--------------------------------------------------------------------------
     | Login Controller
@@ -53,6 +39,18 @@ class LoginController extends Controller
     public function __construct()
     {
         $this->middleware('guest')->except('logout');
+    }
+
+    /**
+     * Show the application's login form.
+     *
+     * @return Response
+     */
+    public function showLoginForm()
+    {
+        session(['link' => url()->previous()]);
+
+        return view('admin.login');
     }
 
     /**
@@ -116,7 +114,7 @@ class LoginController extends Controller
             $this->redirectTo = route('admin.index');
         } /*elseif ($user->is_owner) {
             $this->redirectTo = route('dashboard.home');
-        } */else {
+        } */ else {
             $this->redirectTo = session('link');
         }
     }
