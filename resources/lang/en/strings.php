@@ -294,4 +294,8 @@ return [
     'ok_button' => 'OK',
     'add_new_user_address' => 'Add New User Address',
     'Error' => 'Error',
+    'has_good_food_quality_rating' => 'Good Food Quality',
+    'has_good_packaging_quality_rating' => 'Good Packaging Quality',
+    'has_good_order_accuracy_rating' => 'Good Order Accuracy',
+    '' => '',
 ];
