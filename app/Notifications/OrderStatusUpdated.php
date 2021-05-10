@@ -5,6 +5,7 @@ namespace App\Notifications;
 use App\Http\Controllers\Controller;
 use App\Models\Order;
 use App\Models\User;
+use App\Notifications\Channels\OneSignalRestaurantChannel;
 use Illuminate\Bus\Queueable;
 use NotificationChannels\OneSignal\OneSignalChannel;
 
@@ -60,7 +61,9 @@ class OrderStatusUpdated extends Notification
         }
 
         $via = [
-            OneSignalChannel::class,
+            in_array($notifiable->role_name, [
+                User::ROLE_BRANCH_OWNER, User::ROLE_BRANCH_MANAGER
+            ]) ? OneSignalRestaurantChannel::class : OneSignalChannel::class,
             'database',
 //            'mail',
         ];
