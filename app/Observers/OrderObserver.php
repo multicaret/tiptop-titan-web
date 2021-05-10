@@ -45,6 +45,9 @@ class OrderObserver
             foreach (User::active()->managers()->get() as $admin) {
                 $admin->notify(new OrderStatusUpdated($order, $admin->role_name));
             }
+            foreach ($order->branch->owners()->active()->get() as $manager) {
+                $manager->notify(new OrderStatusUpdated($order, $manager->role_name));
+            }
             foreach ($order->branch->managers()->active()->get() as $manager) {
                 $manager->notify(new OrderStatusUpdated($order, $manager->role_name));
             }

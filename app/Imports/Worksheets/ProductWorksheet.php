@@ -32,7 +32,7 @@ class ProductWorksheet extends WorksheetImport
             return null;
         }
         $currentRowNumber = $this->getRowNumber();
-        $rawData = ProductsImporter::getRowRawDataWithTranslations($row->toArray());
+        [$rawData, $translatedData] = ProductsImporter::getRowRawDataWithTranslations($row->toArray());
         $categoryIds = $this->workOnCategoryIds($rawData);
         $this->productsImporter->updateBooleanAttributes(new Product(), $rawData);
         $this->updateTypeAttribute($rawData);
@@ -49,13 +49,18 @@ class ProductWorksheet extends WorksheetImport
         $rawData['editor_id'] = auth()->id();
         $excelId = $rawData['excel_id'];
         unset($rawData['excel_id']);
-        unset($rawData['id']);
         try {
-            $product = Product::create($rawData);
+            $product = Product::updateOrCreate(['branch_id' => $rawData['branch_id'], 'importer_id' => $rawData['importer_id']],
+                $rawData);
+            $localesKeys = array_flip(localization()->getSupportedLocalesKeys());
+            foreach ($localesKeys as $localeKey => $index) {
+                $product->translateOrNew($localeKey)->fill($translatedData[$localeKey]);
+            }
         } catch (\Exception $e) {
             dd($e->getMessage(), $rawData);
         }
         $product->categories()->sync($categoryIds);
+        $product->save();
         $this->productsImporter->setProductsIds($excelId, $product->translations()->first()->product_id);
 
         return $product;

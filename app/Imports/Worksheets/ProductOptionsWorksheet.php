@@ -26,7 +26,7 @@ class ProductOptionsWorksheet extends WorksheetImport
             return null;
         }
         $currentRowNumber = $this->getRowNumber();
-        $rawData = ProductsImporter::getRowRawDataWithTranslations($row->toArray());
+        [$rawData, $translatedData] = ProductsImporter::getRowRawDataWithTranslations($row->toArray());
         $this->productsImporter->updateBooleanAttributes(new ProductOption(), $rawData);
         $this->updateTypeAttribute($rawData);
         $this->updateInputTypeAttribute($rawData);
@@ -34,14 +34,20 @@ class ProductOptionsWorksheet extends WorksheetImport
         $rawData['product_id'] = $this->productsImporter->getProductId($rawData);
         $excelId = $rawData['excel_id'];
         unset($rawData['excel_id']);
-        unset($rawData['id']);
         try {
-            $productOption = ProductOption::create($rawData);
-            $optionId = $productOption->translations()->first()->product_option_id;
-            $this->productsImporter->setProductsOptionsIds($rawData['product_id'], $excelId, $optionId);
+            $productOption = ProductOption::updateOrCreate([
+                'product_id' => $rawData['product_id'], 'type' => $rawData['type']
+            ], $rawData);
+            $localesKeys = array_flip(localization()->getSupportedLocalesKeys());
+            foreach ($localesKeys as $localeKey => $index) {
+                $productOption->translateOrNew($localeKey)->fill($translatedData[$localeKey]);
+            }
         } catch (\Exception $e) {
             dd($rawData, $e->getMessage(), $this->productsImporter->getProductsIds());
         }
+        $productOption->save();
+        $optionId = $productOption->translations()->first()->product_option_id;
+        $this->productsImporter->setProductsOptionsIds($rawData['product_id'], $excelId, $optionId);
 
         return $productOption;
     }
@@ -102,7 +108,7 @@ class ProductOptionsWorksheet extends WorksheetImport
             'type' => ['nullable', Rule::in(['yes', 'no', 'YES', 'NO', 'Yes', 'No'])],
             'max_number_of_selection' => 'nullable|integer',
             'min_number_of_selection' => 'nullable|integer',
-            'input_type' => ['nullable', Rule::in('pill','radio','checkbox','select')],
+            'input_type' => ['nullable', Rule::in('pill', 'radio', 'checkbox', 'select')],
             'selection_type' => ['nullable', Rule::in(['yes', 'no', 'YES', 'NO', 'Yes', 'No'])],
             'order_column' => 'nullable|integer',
         ];

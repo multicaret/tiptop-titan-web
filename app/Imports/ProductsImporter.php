@@ -85,12 +85,20 @@ class ProductsImporter implements WithMultipleSheets/*, SkipsUnknownSheets*/
 
     public function conditionalSheets(): array
     {
-        return [
-            self::WORKSHEET_MENU_CATEGORIES => new MenuCategoriesWorksheet($this->branch, $this),
-            self::WORKSHEET_PRODUCTS => new ProductWorksheet($this->chain, $this->branch, $this),
-            self::WORKSHEET_OPTIONS => new ProductOptionsWorksheet($this),
-            self::WORKSHEET_SELECTIONS => new ProductOptionsSelectionsWorksheet($this),
-        ];
+        if ($this->branch->is_grocery) {
+            $allWorksheets = [
+                self::WORKSHEET_PRODUCTS => new ProductWorksheet($this->chain, $this->branch, $this),
+            ];
+        } else {
+            $allWorksheets = [
+                self::WORKSHEET_MENU_CATEGORIES => new MenuCategoriesWorksheet($this->branch, $this),
+                self::WORKSHEET_PRODUCTS => new ProductWorksheet($this->chain, $this->branch, $this),
+                self::WORKSHEET_OPTIONS => new ProductOptionsWorksheet($this),
+                self::WORKSHEET_SELECTIONS => new ProductOptionsSelectionsWorksheet($this),
+            ];
+        }
+
+        return $allWorksheets;
     }
 
     public function onUnknownSheet($sheetName)
@@ -113,7 +121,7 @@ class ProductsImporter implements WithMultipleSheets/*, SkipsUnknownSheets*/
             }
         }
 
-        return array_merge($row, $rowTranslations);
+        return [$row, $rowTranslations];
     }
 
     public function updateBooleanAttributes(Model $model, array &$rawData): void

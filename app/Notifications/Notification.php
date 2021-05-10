@@ -3,6 +3,7 @@
 namespace App\Notifications;
 
 use App\Models\User;
+use App\Notifications\Channels\OneSignalRestaurantChannel;
 use Illuminate\Notifications\Notification as BaseNotification;
 use NotificationChannels\OneSignal\OneSignalChannel;
 use NotificationChannels\OneSignal\OneSignalMessage;
@@ -27,7 +28,6 @@ class Notification extends BaseNotification
 //    protected $subTitle;
     protected $body;
 
-
     /* Web Navigation Related */
     protected $routeName;
     protected $routeVariables;
@@ -45,7 +45,9 @@ class Notification extends BaseNotification
         // Todo: send the notification based on the user preference, remember that we are using $this->tag for OneSignal related subscriptions
         // $notifiable->settings
         $via = [
-            OneSignalChannel::class,
+            in_array($notifiable->role_name, [
+                User::ROLE_BRANCH_OWNER, User::ROLE_BRANCH_MANAGER
+            ]) ? OneSignalRestaurantChannel::class : OneSignalChannel::class,
             'database',
 //            'mail',
         ];
@@ -102,6 +104,16 @@ class Notification extends BaseNotification
         return $this->title;
     }
 
+    /**
+     * Set the notification message.
+     *
+     * @return array|\Illuminate\Contracts\Translation\Translator|string|null
+     */
+    protected function getDeepLink($notifiable)
+    {
+        return null;
+    }
+
     public function toOneSignal($notifiable)
     {
         try {
@@ -126,6 +138,9 @@ class Notification extends BaseNotification
                                  ->setParameter('android_sound', 'new_notify');
             }
 
+            if ( ! is_null($this->getDeepLink($notifiable))) {
+                $oneSignalMessage->setData('deep_link', $this->getDeepLink($notifiable));
+            }
 
             /*if ($this->tag) {
                 $oneSignalMessage->setParameter('filters', [
