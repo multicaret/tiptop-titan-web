@@ -29,16 +29,15 @@ class MenuCategoriesWorksheet extends WorksheetImport
         }
         $chunkOffset = $this->getChunkOffset();
         $this->currentRowNumber = $this->getRowNumber();
-        $rawData = ProductsImporter::getRowRawDataWithTranslations($row->toArray());
+        [$rawData, $translatedData] = ProductsImporter::getRowRawDataWithTranslations($row->toArray());
 
-        return $this->createTaxonomy($rawData);
+        return $this->createTaxonomy(array_merge($rawData, $translatedData));
     }
 
 
     private function createTaxonomy(array $taxonomy): TaxonomyModel
     {
         $excelId = $taxonomy['excel_id'];
-        unset($taxonomy['id']);
         unset($taxonomy['excel_id']);
         $taxonomy['type'] = Taxonomy::TYPE_MENU_CATEGORY;
         $taxonomy['branch_id'] = $this->branch->id;
@@ -48,7 +47,12 @@ class MenuCategoriesWorksheet extends WorksheetImport
         $taxonomy['left'] = 1;
         $taxonomy['right'] = 1;
         try {
-            $taxonomyModel = TaxonomyModel::create($taxonomy);
+            if ( ! is_null($taxonomy['id'])) {
+                $taxonomyModel = TaxonomyModel::find($taxonomy['id']);
+                $taxonomyModel->update(\Arr::except($taxonomy, localization()->getSupportedLocalesKeys()));
+            } else {
+                $taxonomyModel = TaxonomyModel::create($taxonomy);
+            }
         } catch (\Exception $e) {
             dd($e->getMessage(), $taxonomy);
         }
