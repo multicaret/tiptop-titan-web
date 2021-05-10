@@ -20,10 +20,7 @@ class CheckSuspension
     public function handle($request, Closure $next)
     {
         if ( ! is_null($request->user()) && ($request->user()->status == User::STATUS_INACTIVE)) {
-            return response([
-                'isSuspended' => true,
-                'success' => false,
-            ]);
+            return redirect(route('home'));
         }
 
         $isSuspended = AuthController::isSuspended($request->user());
