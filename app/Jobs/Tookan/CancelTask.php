@@ -39,8 +39,7 @@ class CancelTask implements ShouldQueue
         $response = $client->cancelTask($this->order);
 
         if ( ! $response) {
-            info('Tookan Request Error', [
-                'captain_id' => $this->order->id,
+            info('Tookan delete task error', [
                 'response' => $response ?? 'empty'
             ]);
          //   $this->fail();
