@@ -111,6 +111,10 @@ return [
         'food-branch_permissions_edit' => 'Food Branch Edit',
         'food-branch_permissions_destroy' => 'Food Branch Destroy',
     ],
+    'restaurants' => [
+        'title' => 'Food Restaurants (Chain + Branch)',
+        'restaurants_permissions_create' => 'Food (Chain + Branch) Create',
+    ],
     'grocery_product_products' => [
         'title' => 'Grocery Products',
         'grocery-product_permissions_index' => 'Market Product Index',

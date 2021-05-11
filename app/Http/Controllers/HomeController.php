@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 
 use App\Http\Resources\ProductOptionResource;
 use App\Models\ProductOption;
+use App\Utilities\PermissionsGenerator;
 
 class HomeController extends Controller
 {
@@ -59,6 +60,9 @@ class HomeController extends Controller
 
     public function foo()
     {
+
+        dd(PermissionsGenerator::getAllRolesPermissions('super'));
+
         $object = ProductOption::first();
 
         return new ProductOptionResource($object);

@@ -171,6 +171,7 @@
                             <a class="text-primary pull-right"
                                target="_blank"
                                href="{{route('admin.branches.edit',[$order->branch->uuid,'type' => \App\Models\Branch::getCorrectChannelName($order->branch->type)])}}">
+                                {{optional($order->branch->city)->title}}
                                 {{$order->branch->title}}
                             </a>
                         </div>
@@ -302,10 +303,10 @@
                                     {{$orderProduct->product_object['description']}}
                                 </td>
                                 <td>
-                                    {{$orderProduct->product_object['unit_text']}}
                                     @if($orderProduct->product_object['unit_id'])
                                         {{ \App\Models\Taxonomy::find($orderProduct->product_object['unit_id'])->title }}
                                     @endif
+                                    &nbsp; - &nbsp;{{$orderProduct->product_object['unit_text']}}
                                 </td>
                                 <td>{!! \App\Models\Currency::formatHtml($orderProduct->product_object['price'] + $orderProduct->options_price) !!}</td>
                                 <td>{{$orderProduct->quantity}}</td>
