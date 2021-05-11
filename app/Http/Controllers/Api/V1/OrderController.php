@@ -262,12 +262,10 @@ class OrderController extends BaseApiController
 
         $deliveryFee = $branch->calculateDeliveryFee($newOrder->total, $isDeliveryTypeTipTop, $hasFreeDeliveryCoupon,
             $address->id);
-        $grandTotal = $cartTotalAfterDeductCouponDiscount + $deliveryFee;
-
         $newOrder->coupon_discount_amount = $totalDiscountedAmount;
         $newOrder->delivery_fee = $deliveryFee;
         $newOrder->total = $activeCart->total;
-        $newOrder->grand_total = $grandTotal;
+        $newOrder->grand_total = $activeCart->total - $totalDiscountedAmount + $deliveryFee;
         $newOrder->private_total = $newOrder->total;
         $newOrder->private_delivery_fee = $newOrder->delivery_fee;
         $newOrder->private_grand_total = $newOrder->grand_total;
