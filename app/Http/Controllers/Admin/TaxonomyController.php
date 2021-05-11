@@ -338,7 +338,7 @@ class TaxonomyController extends Controller
      */
     public function destroy(Taxonomy $taxonomy)
     {
-        \DB::beginTransaction();
+//        \DB::beginTransaction();
         if ($taxonomy->hasChildren()) {
             return back()->with('message', [
                 'type' => 'Error',
@@ -359,7 +359,7 @@ class TaxonomyController extends Controller
                 'text' => 'Successfully Deleted'
             ]);
         }
-        \DB::commit();
+//        \DB::commit();
         cache()->tags('taxonomies')->flush();
 
         return back()->with('message', [

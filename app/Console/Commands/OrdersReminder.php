@@ -18,7 +18,7 @@ class OrdersReminder extends Command
      */
     protected $signature = 'orders:remind {--minutes=} {--roles=*}';
 
-    protected $minutes;
+    protected $minutes = 3;
 
     /**
      * The console command description.
@@ -28,8 +28,8 @@ class OrdersReminder extends Command
     protected $description = 'Remind about a new orders';
 
 
-    protected bool $shouldSendToBranchOwnrsAndManegers = false;
     protected bool $shouldSendToSuperAdmins = false;
+    protected bool $shouldSendToBranchOwnersAndManagers = false;
 
     /**
      * Create a new command instance.
@@ -47,13 +47,12 @@ class OrdersReminder extends Command
         if ( ! is_null($this->option('minutes'))) {
             $this->minutes = $this->option('minutes');
         } else {
-            $this->minutes = 3;
             $this->warn("Using default value of minutes ({$this->minutes}m)");
         }
 
         $rolesOption = $this->option('roles');
         if (isset($rolesOption) && ! empty($rolesOption) && count($rolesOption)) {
-            $this->shouldSendToBranchOwnrsAndManegers = str_contains($rolesOption[0], 'branch');
+            $this->shouldSendToBranchOwnersAndManagers = str_contains($rolesOption[0], 'branch');
             $this->shouldSendToSuperAdmins = str_contains($rolesOption[0], 'admin');
         }
     }
@@ -71,14 +70,17 @@ class OrdersReminder extends Command
                                         ->where('created_at', '>=', now()->subMinutes($this->minutes))
                                         ->get();
 
+        $this->info("Running for {$ordersToBeRemindedAbout->count()}");
         foreach ($ordersToBeRemindedAbout as $order) {
             $minutesDelay = now()->diffInMinutes($order->created_at);
+            $this->info("Order ID: {$order->id} minutesDelay => $minutesDelay");
+
             if ($this->shouldSendToSuperAdmins) {
                 foreach (User::active()->managers()->get() as $admin) {
                     $admin->notify(new OrderStatusUpdated($order, $admin->role_name, $minutesDelay));
                 }
             }
-            if ($this->shouldSendToBranchOwnrsAndManegers) {
+            if ($this->shouldSendToBranchOwnersAndManagers) {
                 foreach ($order->branch->owners()->active()->get() as $manager) {
                     $manager->notify(new OrderStatusUpdated($order, $manager->role_name, $minutesDelay));
                 }
@@ -86,7 +88,7 @@ class OrdersReminder extends Command
                     $manager->notify(new OrderStatusUpdated($order, $manager->role_name, $minutesDelay));
                 }
             }
-
+            $this->info("Notifications sent for Order: {$ordersToBeRemindedAbout->count()}");
         }
 
         return 'Hi';
