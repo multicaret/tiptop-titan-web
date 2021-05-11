@@ -223,8 +223,8 @@ class OrderStatusUpdated extends Notification
      */
     private function getTitleMessage($roleName, $locale, $minutesDelay)
     {
-        if ($minutesDelay) {
-            trans("notifications.order_status_updated_for_user_{$roleName}_{$this->order->status}_minutes_delay",
+        if ($minutesDelay > 0) {
+            return trans("notifications.order_status_updated_for_user_{$roleName}_{$this->order->status}_minutes_delay",
                 [
                     'number' => ("({$this->order->reference_code})"),
                     'minutes' => $minutesDelay,
