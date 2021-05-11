@@ -59,7 +59,7 @@ class OrdersTable extends Component
 
         $shouldSearchByDate = false;
         if ( ! empty($this->referenceCode)) {
-            $orders = $orders->where('reference_code', $this->referenceCode);
+            $orders = $orders->where('reference_code', 'like', "%$this->referenceCode%");
         } elseif ( ! empty($this->customerName)) {
             $customerName = $this->customerName;
             $orders = $orders->whereHas('user', function ($query) use ($customerName) {

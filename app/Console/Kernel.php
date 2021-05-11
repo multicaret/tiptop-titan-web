@@ -30,6 +30,9 @@ class Kernel extends ConsoleKernel
 //        $schedule->command('backup:clean')->daily()->at('01:00');
 //        $schedule->command('backup:run')->daily()->at('02:00');
         $schedule->command('branch-availability:update')->daily()->at('03:56');
+
+        $schedule->command('orders:remind --minutes=3 --roles=branch,admin')->everyThreeMinutes();
+        $schedule->command('orders:remind --minutes=5 --roles=admin')->everyFiveMinutes();
     }
 
     /**

@@ -360,6 +360,9 @@ return [
             'edit' => 'food-branch.permissions.edit',
             'destroy' => 'food-branch.permissions.destroy',
         ],
+        'restaurants' => [
+            'create' => 'restaurants.permissions.create',
+        ],
         'grocery_product_products' => [
             'index' => 'grocery-product.permissions.index',
             'create' => 'grocery-product.permissions.create',

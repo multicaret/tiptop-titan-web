@@ -125,6 +125,7 @@
                             <a target="_blank" class="text-primary pull-right"
                                href="https://maps.google.com/?q={{optional($order->address)->latitude}},{{optional($order->address)->longitude}}">
                                 {{optional($order->address)->address1}}
+                                <i class="fas fa-external-link-alt"></i>
                             </a>
                         </div>
                         <div class="col-12 pt-3 pb-4">
@@ -171,6 +172,7 @@
                             <a class="text-primary pull-right"
                                target="_blank"
                                href="{{route('admin.branches.edit',[$order->branch->uuid,'type' => \App\Models\Branch::getCorrectChannelName($order->branch->type)])}}">
+                                {{optional($order->branch->city)->title}}
                                 {{$order->branch->title}}
                             </a>
                         </div>
@@ -262,6 +264,8 @@
                     <tr>
                         <th>Thumbnail</th>
                         <th>Name</th>
+                        <th>Description</th>
+                        <th>Unit</th>
                         <th>Price</th>
                         <th>Quantity</th>
                         <th>Total Price</th>
@@ -295,6 +299,15 @@
                                             </div>
                                         @endforeach
                                     @endif
+                                </td>
+                                <td>
+                                    {{$orderProduct->product_object['description']}}
+                                </td>
+                                <td>
+                                    @if($orderProduct->product_object['unit_id'])
+                                        {{ \App\Models\Taxonomy::find($orderProduct->product_object['unit_id'])->title }}
+                                    @endif
+                                    &nbsp; - &nbsp;{{$orderProduct->product_object['unit_text']}}
                                 </td>
                                 <td>{!! \App\Models\Currency::formatHtml($orderProduct->product_object['price'] + $orderProduct->options_price) !!}</td>
                                 <td>{{$orderProduct->quantity}}</td>

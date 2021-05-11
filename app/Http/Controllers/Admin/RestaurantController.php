@@ -4,9 +4,9 @@ namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
 use App\Models\Branch;
+use App\Models\Chain;
 use App\Models\Location;
 use App\Models\Region;
-use App\Models\Chain;
 use App\Models\Taxonomy;
 use DB;
 use Exception;
@@ -21,12 +21,7 @@ class RestaurantController extends Controller
 
     public function __construct()
     {
-
-        $branchType = request('type');
-        $this->middleware('permission:'.$branchType.'.permissions.index', ['only' => ['index', 'store']]);
-        $this->middleware('permission:'.$branchType.'.permissions.create', ['only' => ['create', 'store']]);
-        $this->middleware('permission:'.$branchType.'.permissions.edit', ['only' => ['edit', 'update']]);
-        $this->middleware('permission:'.$branchType.'.permissions.destroy', ['only' => ['destroy']]);
+        $this->middleware('permission:restaurants.permissions.create', ['only' => ['create', 'store']]);
     }
 
     /**

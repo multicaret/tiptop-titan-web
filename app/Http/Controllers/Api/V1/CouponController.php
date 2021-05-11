@@ -61,7 +61,7 @@ class CouponController extends BaseApiController
 
         [
             $isExpirationDateAndUsageValid, $validationExpirationAndUsageMessage
-        ] = $coupon->validateExpirationDateAndUsageCount();
+        ] = $coupon->validateExpirationDateAndUsageCount($branch->type);
 
         if ( ! $isExpirationDateAndUsageValid) {
             return $this->setStatusCode(Response::HTTP_BAD_REQUEST)->respond([

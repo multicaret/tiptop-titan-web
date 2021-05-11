@@ -90,9 +90,10 @@ class Coupon extends Model
     public const STATUS_ACTIVE = 2;
     public const STATUS_INACTIVE = 3;
 
-    public const TYPE_FOOD_AND_GROCERY_OBJECT = 1;
-    public const CHANNEL_GROCERY_OBJECT = 2;
-    public const CHANNEL_FOOD_OBJECT = 3;
+    public const CHANNEL_FOOD_AND_GROCERY_OBJECT = 0;
+    public const CHANNEL_GROCERY_OBJECT = 1;
+    public const CHANNEL_FOOD_OBJECT = 2;
+
 
     protected $casts = [
         'discount_amount' => 'double',
@@ -106,7 +107,7 @@ class Coupon extends Model
     public static function getCouponChannelsArray(): array
     {
         return [
-            self::TYPE_FOOD_AND_GROCERY_OBJECT => trans('strings.grocery_and_food'),
+            self::CHANNEL_FOOD_AND_GROCERY_OBJECT => trans('strings.grocery_and_food'),
             self::CHANNEL_GROCERY_OBJECT => trans('strings.grocery'),
             self::CHANNEL_FOOD_OBJECT => trans('strings.food'),
         ];
@@ -125,8 +126,8 @@ class Coupon extends Model
                 'title' => trans('strings.food'),
                 'class' => 'dark',
             ],
-            self::TYPE_FOOD_AND_GROCERY_OBJECT => [
-                'id' => self::TYPE_FOOD_AND_GROCERY_OBJECT,
+            self::CHANNEL_FOOD_AND_GROCERY_OBJECT => [
+                'id' => self::CHANNEL_FOOD_AND_GROCERY_OBJECT,
                 'title' => trans('strings.both'),
                 'class' => 'info',
             ],
@@ -144,14 +145,21 @@ class Coupon extends Model
      * @param  User|null  $user
      * @return array|string[]
      */
-    public function validateExpirationDateAndUsageCount(User $user = null): array
-    {
+    public function validateExpirationDateAndUsageCount(
+        $channel,
+        User $user = null
+    ): array {
+
         if (is_null($user)) {
             $user = auth()->user();
         }
 
         $isValid = false;
         $message = 'Coupon code is invalid';
+
+        if ($channel != $this->channel) {
+            return [$isValid, $message];
+        }
 
         if ( ! is_null($this->expired_at) && $this->expired_at->isPast()) {
             $message = 'Coupon is expired';
@@ -183,8 +191,9 @@ class Coupon extends Model
         $totalDiscountedAmount = Controller::calculateDiscountedAmount($amount, $this->discount_amount,
             $this->discount_by_percentage);
         if ($this->max_allowed_discount_amount < $totalDiscountedAmount) {
-            $message = 'Maximum allowed discount amount is less than your cart total';
-            $isValid = $isValid && true;
+//            $message = 'Maximum allowed discount amount is less than your cart total';
+            $isValid = /*$isValid &&*/
+                true;
             $totalDiscountedAmount = $this->max_allowed_discount_amount;
         }
 

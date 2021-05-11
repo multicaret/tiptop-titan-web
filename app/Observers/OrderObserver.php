@@ -19,7 +19,7 @@ class OrderObserver
      */
     public function creating(Order $order)
     {
-        $order->reference_code = time();
+        $order->reference_code = mt_rand(100, 100000);
     }
 
     /**
@@ -44,6 +44,9 @@ class OrderObserver
         if ($order->wasChanged('status')) {
             foreach (User::active()->managers()->get() as $admin) {
                 $admin->notify(new OrderStatusUpdated($order, $admin->role_name));
+            }
+            foreach ($order->branch->owners()->active()->get() as $manager) {
+                $manager->notify(new OrderStatusUpdated($order, $manager->role_name));
             }
             foreach ($order->branch->managers()->active()->get() as $manager) {
                 $manager->notify(new OrderStatusUpdated($order, $manager->role_name));

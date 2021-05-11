@@ -3,6 +3,7 @@
 namespace App\Notifications;
 
 use App\Models\User;
+use App\Notifications\Channels\OneSignalDashboardChannel;
 use App\Notifications\Channels\OneSignalRestaurantChannel;
 use Illuminate\Notifications\Notification as BaseNotification;
 use NotificationChannels\OneSignal\OneSignalChannel;
@@ -44,10 +45,25 @@ class Notification extends BaseNotification
     {
         // Todo: send the notification based on the user preference, remember that we are using $this->tag for OneSignal related subscriptions
         // $notifiable->settings
+        switch ($notifiable->role_name) {
+            case User::ROLE_SUPER:
+            case User::ROLE_ADMIN:
+            case User::ROLE_SUPERVISOR:
+            case User::ROLE_AGENT:
+            case User::ROLE_CONTENT_EDITOR:
+            case User::ROLE_MARKETER:
+            case User::ROLE_TRANSLATOR:
+                $oneSignalChannelClass = OneSignalDashboardChannel::class;
+                break;
+            case User::ROLE_BRANCH_OWNER:
+            case User::ROLE_BRANCH_MANAGER:
+                $oneSignalChannelClass = OneSignalRestaurantChannel::class;
+                break;
+            default:
+                $oneSignalChannelClass = OneSignalChannel::class;
+        }
         $via = [
-            in_array($notifiable->role_name, [
-                User::ROLE_BRANCH_OWNER, User::ROLE_BRANCH_MANAGER
-            ]) ? OneSignalRestaurantChannel::class : OneSignalChannel::class,
+            $oneSignalChannelClass,
             'database',
 //            'mail',
         ];

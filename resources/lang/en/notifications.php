@@ -2,6 +2,7 @@
 
 return [
     'order_status_updated_for_user_admin_2' => 'New Order From :branchName',
+    'order_status_updated_for_user_admin_2_minutes_delay' => 'Order :number Still Waiting :minutes minutes',
     'order_status_updated_for_user_admin_12' => 'Order :number Waiting Pickup',
     'order_status_updated_for_user_admin_0' => 'Order :number cancelled',
 
@@ -12,6 +13,7 @@ return [
     'order_status_updated_for_user_user_0' => 'Your Order :number has been cancelled!',
 
     'order_status_updated_for_user_branch_manager_2' => 'Tip Top: New order has been received',
+    'order_status_updated_for_user_branch_manager_2_minutes_delay' => 'Tip Top: Order :number still pending!',
     'order_status_updated_for_branch_manager_0' => 'Tip Top: Order :number is cancelled!',
 
 ];

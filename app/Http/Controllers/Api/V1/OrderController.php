@@ -244,7 +244,7 @@ class OrderController extends BaseApiController
 
             [
                 $isExpirationDateAndUsageValid, $validationExpirationAndUsageMessage
-            ] = $coupon->validateExpirationDateAndUsageCount();
+            ] = $coupon->validateExpirationDateAndUsageCount($branch->type);
 
             // Here we are passing the car total and not the new order total, because we are calculating the coupon logic again
             [$isAmountValid, $totalDiscountedAmount] = $coupon->validateCouponDiscountAmount($activeCart->total);
@@ -262,12 +262,10 @@ class OrderController extends BaseApiController
 
         $deliveryFee = $branch->calculateDeliveryFee($newOrder->total, $isDeliveryTypeTipTop, $hasFreeDeliveryCoupon,
             $address->id);
-        $grandTotal = $cartTotalAfterDeductCouponDiscount + $deliveryFee;
-
         $newOrder->coupon_discount_amount = $totalDiscountedAmount;
         $newOrder->delivery_fee = $deliveryFee;
         $newOrder->total = $activeCart->total;
-        $newOrder->grand_total = $grandTotal;
+        $newOrder->grand_total = $activeCart->total - $totalDiscountedAmount + $deliveryFee;
         $newOrder->private_total = $newOrder->total;
         $newOrder->private_delivery_fee = $newOrder->delivery_fee;
         $newOrder->private_grand_total = $newOrder->grand_total;
@@ -301,9 +299,12 @@ class OrderController extends BaseApiController
             ];
         } elseif ($order->type === Order::CHANNEL_FOOD_OBJECT) {
             $response = [
-                ['key' => 'has_good_food_quality_rating', 'label' => 'Good Food Quality'],
-                ['key' => 'has_good_packaging_quality_rating', 'label' => 'Good Packaging Quality'],
-                ['key' => 'has_good_order_accuracy_rating', 'label' => 'Good Order Accuracy'],
+                ['key' => 'has_good_food_quality_rating', 'label' => ('strings.has_good_food_quality_rating')],
+                [
+                    'key' => 'has_good_packaging_quality_rating',
+                    'label' => ('strings.has_good_packaging_quality_rating')
+                ],
+                ['key' => 'has_good_order_accuracy_rating', 'label' => ('strings.has_good_order_accuracy_rating')],
             ];
         }
 

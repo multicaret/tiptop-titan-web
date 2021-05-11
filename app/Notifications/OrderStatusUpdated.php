@@ -5,6 +5,7 @@ namespace App\Notifications;
 use App\Http\Controllers\Controller;
 use App\Models\Order;
 use App\Models\User;
+use App\Notifications\Channels\OneSignalDashboardChannel;
 use App\Notifications\Channels\OneSignalRestaurantChannel;
 use Illuminate\Bus\Queueable;
 use NotificationChannels\OneSignal\OneSignalChannel;
@@ -22,7 +23,7 @@ class OrderStatusUpdated extends Notification
      * @param  Order  $order
      * @return void
      */
-    public function __construct(Order $order, $roleName)
+    public function __construct(Order $order, $roleName, $minutesDelay = 0)
     {
         $this->order = $order;
         if ($roleName == 'super') {
@@ -37,11 +38,7 @@ class OrderStatusUpdated extends Notification
             if ($key == 'ku') {
                 $key = 'fa';
             }
-            $this->body[$key] = '🛵 '.trans("notifications.order_status_updated_for_user_{$roleName}_{$this->order->status}",
-                    [
-                        'number' => ("({$this->order->reference_code})"),
-                        'branchName' => optional($this->order->branch)->title,
-                    ], $key);
+            $this->body[$key] = '🛵 '.$this->getTitleMessage($roleName, $key, $minutesDelay);
 
         }
     }
@@ -60,10 +57,25 @@ class OrderStatusUpdated extends Notification
             return [];
         }
 
+        switch ($notifiable->role_name) {
+            case User::ROLE_SUPER:
+            case User::ROLE_ADMIN:
+            case User::ROLE_SUPERVISOR:
+            case User::ROLE_AGENT:
+            case User::ROLE_CONTENT_EDITOR:
+            case User::ROLE_MARKETER:
+            case User::ROLE_TRANSLATOR:
+                $oneSignalChannelClass = OneSignalDashboardChannel::class;
+                break;
+            case User::ROLE_BRANCH_OWNER:
+            case User::ROLE_BRANCH_MANAGER:
+                $oneSignalChannelClass = OneSignalRestaurantChannel::class;
+                break;
+            default:
+                $oneSignalChannelClass = OneSignalChannel::class;
+        }
         $via = [
-            in_array($notifiable->role_name, [
-                User::ROLE_BRANCH_OWNER, User::ROLE_BRANCH_MANAGER
-            ]) ? OneSignalRestaurantChannel::class : OneSignalChannel::class,
+            $oneSignalChannelClass,
             'database',
 //            'mail',
         ];
@@ -202,5 +214,27 @@ class OrderStatusUpdated extends Notification
         }
 
         return null;
+    }
+
+    /**
+     * @param $roleName
+     * @param $key
+     * @return array|\Illuminate\Contracts\Foundation\Application|\Illuminate\Contracts\Translation\Translator|string|null
+     */
+    private function getTitleMessage($roleName, $locale, $minutesDelay)
+    {
+        if ($minutesDelay) {
+            trans("notifications.order_status_updated_for_user_{$roleName}_{$this->order->status}_minutes_delay",
+                [
+                    'number' => ("({$this->order->reference_code})"),
+                    'minutes' => $minutesDelay,
+                ], $locale);
+        } else {
+            return trans("notifications.order_status_updated_for_user_{$roleName}_{$this->order->status}",
+                [
+                    'number' => ("({$this->order->reference_code})"),
+                    'branchName' => optional($this->order->branch)->title,
+                ], $locale);
+        }
     }
 }

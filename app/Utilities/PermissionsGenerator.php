@@ -469,6 +469,7 @@ class PermissionsGenerator
                 'food_chain_chains',
                 'grocery_branch_branches',
                 'food_branch_branches',
+                'restaurants',
                 'grocery_product_products',
                 'food_product_products',
                 'rating_grocery_orders',
