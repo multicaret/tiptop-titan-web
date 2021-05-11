@@ -38,7 +38,7 @@ class OrderStatusUpdated extends Notification
             if ($key == 'ku') {
                 $key = 'fa';
             }
-            $this->body[$key] = '🛵 '.$this->getTitleMessage($roleName, $key, $minutesDelay);
+            $this->body[$key] = $this->getTitleMessage($roleName, $key, $minutesDelay);
 
         }
     }
@@ -224,17 +224,17 @@ class OrderStatusUpdated extends Notification
     private function getTitleMessage($roleName, $locale, $minutesDelay)
     {
         if ($minutesDelay > 0) {
-            return trans("notifications.order_status_updated_for_user_{$roleName}_{$this->order->status}_minutes_delay",
-                [
-                    'number' => ("({$this->order->reference_code})"),
-                    'minutes' => $minutesDelay,
-                ], $locale);
+            return '🚨 '.trans("notifications.order_status_updated_for_user_{$roleName}_{$this->order->status}_minutes_delay",
+                    [
+                        'number' => ("({$this->order->reference_code})"),
+                        'minutes' => $minutesDelay,
+                    ], $locale);
         } else {
-            return trans("notifications.order_status_updated_for_user_{$roleName}_{$this->order->status}",
-                [
-                    'number' => ("({$this->order->reference_code})"),
-                    'branchName' => optional($this->order->branch)->title,
-                ], $locale);
+            return '🛵 '.trans("notifications.order_status_updated_for_user_{$roleName}_{$this->order->status}",
+                    [
+                        'number' => ("({$this->order->reference_code})"),
+                        'branchName' => optional($this->order->branch)->title,
+                    ], $locale);
         }
     }
 }
