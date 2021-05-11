@@ -18,10 +18,14 @@ class MenuCategoriesWorksheet extends WorksheetImport
     {
         $this->branch = $branch;
         $this->productsImporter = $productsImport;
+        $this->productsImporter->worksheetName = \Str::title(ProductsImporter::WORKSHEET_MENU_CATEGORIES);
     }
 
     public function onRow(Row $row): ?TaxonomyModel
     {
+        if (is_null($row->toArray()['excel_id'])) {
+            return null;
+        }
         if ($this->productsImporter->isChecking) {
             $this->productsImporter->setMenuCategoriesIds($row->toArray()['excel_id'], $row->toArray()['excel_id']);
 
@@ -66,7 +70,7 @@ class MenuCategoriesWorksheet extends WorksheetImport
     {
         return [
             'excel_id' => [
-                'required',
+                'nullable',
                 'integer',
                 function ($attribute, $value, $onFailure) {
                     if ($this->productsImporter->getMenuCategoriesIds()->has($value)) {

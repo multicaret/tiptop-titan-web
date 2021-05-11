@@ -30,6 +30,7 @@ class ProductsImporter implements WithMultipleSheets/*, SkipsUnknownSheets*/
     protected CollectionAlias $productsOptionsIds;
     protected CollectionAlias $productsOptionsSelectionsIds;
     public bool $isChecking = false;
+    public string $worksheetName;
 
     public function __construct(Chain $chain, Branch $branch)
     {

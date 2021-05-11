@@ -15,10 +15,14 @@ class ProductOptionsWorksheet extends WorksheetImport
     public function __construct(ProductsImporter $productsImporter)
     {
         $this->productsImporter = $productsImporter;
+        $this->productsImporter->worksheetName = \Str::title(ProductsImporter::WORKSHEET_OPTIONS);
     }
 
     public function onRow(Row $row)
     {
+        if (is_null($row->toArray()['excel_id'])) {
+            return null;
+        }
         if ($this->productsImporter->isChecking) {
             $tempExcelId = $row->toArray()['excel_id'];
             $this->productsImporter->setProductsOptionsIds($tempExcelId, $tempExcelId, $tempExcelId);
@@ -94,7 +98,7 @@ class ProductOptionsWorksheet extends WorksheetImport
     {
         return [
             'excel_id' => [
-                'required',
+                'nullable',
                 'integer',
                 function ($attribute, $value, $onFailure) {
                     if ($this->productsImporter->getProductsOptionsIds()->has($value)) {

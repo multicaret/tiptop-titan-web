@@ -22,10 +22,14 @@ class ProductWorksheet extends WorksheetImport
         $this->chain = $chain;
         $this->branch = $branch;
         $this->productsImporter = $productsImporter;
+        $this->productsImporter->worksheetName = \Str::title(ProductsImporter::WORKSHEET_PRODUCTS);
     }
 
     public function onRow(Row $row)
     {
+        if (is_null($row->toArray()['excel_id'])) {
+            return null;
+        }
         if ($this->productsImporter->isChecking) {
             $this->productsImporter->setProductsIds($row->toArray()['excel_id'], $row->toArray()['excel_id']);
 
@@ -103,7 +107,7 @@ class ProductWorksheet extends WorksheetImport
     {
         return [
             'excel_id' => [
-                'required',
+                'nullable',
                 'integer',
                 function ($attribute, $value, $onFailure) {
                     if ($this->productsImporter->getProductsIds()->has($value)) {
