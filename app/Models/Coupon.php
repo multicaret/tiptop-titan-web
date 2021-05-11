@@ -191,8 +191,9 @@ class Coupon extends Model
         $totalDiscountedAmount = Controller::calculateDiscountedAmount($amount, $this->discount_amount,
             $this->discount_by_percentage);
         if ($this->max_allowed_discount_amount < $totalDiscountedAmount) {
-            $message = 'Maximum allowed discount amount is less than your cart total';
-            $isValid = $isValid && true;
+//            $message = 'Maximum allowed discount amount is less than your cart total';
+            $isValid = /*$isValid &&*/
+                true;
             $totalDiscountedAmount = $this->max_allowed_discount_amount;
         }
 
