@@ -71,6 +71,7 @@ class OrdersReminder extends Command
                                         ->where('created_at', '>=', now()->subMinutes($this->minutes))
                                         ->get();
 
+        $this->info("Running for {$ordersToBeRemindedAbout->count()}");
         foreach ($ordersToBeRemindedAbout as $order) {
             $minutesDelay = now()->diffInMinutes($order->created_at);
             if ($this->shouldSendToSuperAdmins) {
@@ -86,7 +87,7 @@ class OrdersReminder extends Command
                     $manager->notify(new OrderStatusUpdated($order, $manager->role_name, $minutesDelay));
                 }
             }
-
+            $this->info("Notifications sent for Order: {$ordersToBeRemindedAbout->count()}");
         }
 
         return 'Hi';
