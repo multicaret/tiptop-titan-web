@@ -15,7 +15,6 @@ class ProductOptionsWorksheet extends WorksheetImport
     public function __construct(ProductsImporter $productsImporter)
     {
         $this->productsImporter = $productsImporter;
-        $this->productsImporter->worksheetName = \Str::title(ProductsImporter::WORKSHEET_OPTIONS);
     }
 
     public function onRow(Row $row)
@@ -106,15 +105,21 @@ class ProductOptionsWorksheet extends WorksheetImport
                     }
                 }
             ],
-            'product_id' => 'required|integer',
-            'is_based_on_ingredients' => ['nullable', Rule::in(['yes', 'no', 'YES', 'NO', 'Yes', 'No'])],
-            'is_required' => ['nullable', Rule::in(['yes', 'no', 'YES', 'NO', 'Yes', 'No'])],
-            'type' => ['nullable', Rule::in(['yes', 'no', 'YES', 'NO', 'Yes', 'No'])],
-            'max_number_of_selection' => 'nullable|integer',
-            'min_number_of_selection' => 'nullable|integer',
-            'input_type' => ['nullable', Rule::in('pill', 'radio', 'checkbox', 'select')],
-            'selection_type' => ['nullable', Rule::in(['yes', 'no', 'YES', 'NO', 'Yes', 'No'])],
-            'order_column' => 'nullable|integer',
+            'product_id' => 'exclude_if:excel_id,null|required|integer',
+            'is_based_on_ingredients' => [
+                'exclude_if:excel_id,null', 'nullable', Rule::in(['yes', 'no', 'YES', 'NO', 'Yes', 'No'])
+            ],
+            'is_required' => [
+                'exclude_if:excel_id,null', 'nullable', Rule::in(['yes', 'no', 'YES', 'NO', 'Yes', 'No'])
+            ],
+            'type' => ['exclude_if:excel_id,null', 'nullable', Rule::in(['yes', 'no', 'YES', 'NO', 'Yes', 'No'])],
+            'max_number_of_selection' => 'exclude_if:excel_id,null|nullable|integer',
+            'min_number_of_selection' => 'exclude_if:excel_id,null|nullable|integer',
+            'input_type' => ['exclude_if:excel_id,null', 'nullable', Rule::in('pill', 'radio', 'checkbox', 'select')],
+            'selection_type' => [
+                'exclude_if:excel_id,null', 'nullable', Rule::in(['yes', 'no', 'YES', 'NO', 'Yes', 'No'])
+            ],
+            'order_column' => 'exclude_if:excel_id,null|nullable|integer',
         ];
     }
 

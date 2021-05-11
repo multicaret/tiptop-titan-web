@@ -18,7 +18,6 @@ class MenuCategoriesWorksheet extends WorksheetImport
     {
         $this->branch = $branch;
         $this->productsImporter = $productsImport;
-        $this->productsImporter->worksheetName = \Str::title(ProductsImporter::WORKSHEET_MENU_CATEGORIES);
     }
 
     public function onRow(Row $row): ?TaxonomyModel
