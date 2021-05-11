@@ -49,7 +49,7 @@ class TookanClient
             'customer_email' => $order->user->email,
             'customer_username' => $order->user->first.' '.$order->user->last,
             'customer_phone' => $order->user->phone_number,
-            'customer_address' => $order->address->address1,
+            'customer_address' => $order->address->address1 ?? 'Not specified',
             'latitude' => $order->address->latitude,
             'longitude' => $order->address->longitude,
             'job_delivery_datetime' => now()->addMinutes(15)->toDateTimeString(),
@@ -111,6 +111,26 @@ class TookanClient
             return false;
         }
 
+    }
+
+    public function markTaskAsDelivered(Order $order)
+    {
+        if (empty(optional($order->tookanInfo)->job_pickup_id) || empty(optional($order->tookanInfo)->job_delivery_id))
+        {
+            return false;
+        }
+
+        $deliveredTaskData = $this->prepareDeliveredTaskData($order);
+
+        return $this->apiRequest('POST', 'update_task_status', $deliveredTaskData);
+
+    }
+
+    public function prepareDeliveredTaskData(Order $order){
+        return[
+            'job_id' =>  $order->tookanInfo->job_pickup_id .','.$order->tookanInfo->job_delivery_id,
+            'job_status' => 2
+        ];
     }
 
     public function cancelTask(Order $order)
