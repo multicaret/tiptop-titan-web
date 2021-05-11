@@ -11,7 +11,6 @@ use App\Models\Branch;
 use App\Models\Chain;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Collection as CollectionAlias;
-use Maatwebsite\Excel\Concerns\SkipsUnknownSheets;
 use Maatwebsite\Excel\Concerns\WithConditionalSheets;
 use Maatwebsite\Excel\Concerns\WithMultipleSheets;
 
@@ -30,7 +29,6 @@ class ProductsImporter implements WithMultipleSheets/*, SkipsUnknownSheets*/
     protected CollectionAlias $productsOptionsIds;
     protected CollectionAlias $productsOptionsSelectionsIds;
     public bool $isChecking = false;
-    public string $worksheetName;
 
     public function __construct(Chain $chain, Branch $branch)
     {
@@ -112,6 +110,10 @@ class ProductsImporter implements WithMultipleSheets/*, SkipsUnknownSheets*/
     {
         $rowTranslations = [];
         foreach ($row as $tempKey => $item) {
+            if (empty($tempKey)) {
+                unset($row[$tempKey]);
+                continue;
+            }
             foreach (localization()->getSupportedLocalesKeys() as $localesKey) {
                 if (\Str::afterLast($tempKey, '_') === $localesKey) {
                     $translatedKey = \Str::beforeLast($tempKey, '_');

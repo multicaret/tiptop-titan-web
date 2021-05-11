@@ -22,7 +22,6 @@ class ProductWorksheet extends WorksheetImport
         $this->chain = $chain;
         $this->branch = $branch;
         $this->productsImporter = $productsImporter;
-        $this->productsImporter->worksheetName = \Str::title(ProductsImporter::WORKSHEET_PRODUCTS);
     }
 
     public function onRow(Row $row)
@@ -54,7 +53,9 @@ class ProductWorksheet extends WorksheetImport
         $excelId = $rawData['excel_id'];
         unset($rawData['excel_id']);
         try {
-            $product = Product::updateOrCreate(['branch_id' => $rawData['branch_id'], 'importer_id' => $rawData['importer_id']],
+            $product = Product::updateOrCreate([
+                'branch_id' => $rawData['branch_id'], 'importer_id' => $rawData['importer_id']
+            ],
                 $rawData);
             $localesKeys = array_flip(localization()->getSupportedLocalesKeys());
             foreach ($localesKeys as $localeKey => $index) {
@@ -115,31 +116,35 @@ class ProductWorksheet extends WorksheetImport
                     }
                 }
             ],
-            'category_id' => 'nullable|integer|required_if:category_ids,==,null',
-            'category_ids' => 'nullable|required_if:category_id,==,null',
-            'price' => 'required|integer',
-            'price_discount_by_percentage' => ['required', Rule::in(['yes', 'no', 'YES', 'NO', 'Yes', 'No'])],
-            'price_discount_began_at' => 'nullable|date',
-            'price_discount_finished_at' => 'nullable|date',
-            'type' => ['required', Rule::in(['grocery', 'food'])],
-            'status' => ['nullable', Rule::in(['draft', 'inactive', 'active'])],
-            'is_storage_tracking_enabled' => ['required', Rule::in(['yes', 'no', 'YES', 'NO', 'Yes', 'No'])],
-            'available_quantity' => 'nullable|integer',
-            'minimum_orderable_quantity' => 'nullable|integer',
-            'maximum_orderable_quantity' => 'nullable|integer',
-            'width' => 'nullable|integer',
-            'height' => 'nullable|integer',
-            'depth' => 'nullable|integer',
-            'weight' => 'nullable|integer',
-            'title_ar' => 'nullable|string|required_if:title_en,==,null|required_if:title_ku,==,null',
-            'title_en' => 'nullable|string|required_if:title_ar,==,null|required_if:title_ku,==,null',
-            'title_ku' => 'nullable|string',
-            'description_ar' => 'nullable|string',
-            'description_en' => 'nullable|string',
-            'description_ku' => 'nullable|string',
-            'excerpt_ar' => 'nullable|string',
-            'excerpt_en' => 'nullable|string',
-            'excerpt_ku' => 'nullable|string',
+            'category_id' => 'exclude_if:excel_id,null|nullable|integer|required_if:category_ids,==,null',
+            'category_ids' => 'exclude_if:excel_id,null|nullable|required_if:category_id,==,null',
+            'price' => 'exclude_if:excel_id,null|required|integer',
+            'price_discount_by_percentage' => [
+                'exclude_if:excel_id,null', 'required', Rule::in(['yes', 'no', 'YES', 'NO', 'Yes', 'No'])
+            ],
+            'price_discount_began_at' => 'exclude_if:excel_id,null|nullable|date',
+            'price_discount_finished_at' => 'exclude_if:excel_id,null|nullable|date',
+            'type' => ['exclude_if:excel_id,null', 'required', Rule::in(['grocery', 'food'])],
+            'status' => ['exclude_if:excel_id,null', 'nullable', Rule::in(['draft', 'inactive', 'active'])],
+            'is_storage_tracking_enabled' => [
+                'exclude_if:excel_id,null', 'required', Rule::in(['yes', 'no', 'YES', 'NO', 'Yes', 'No'])
+            ],
+            'available_quantity' => 'exclude_if:excel_id,null|nullable|integer',
+            'minimum_orderable_quantity' => 'exclude_if:excel_id,null|nullable|integer',
+            'maximum_orderable_quantity' => 'exclude_if:excel_id,null|nullable|integer',
+            'width' => 'exclude_if:excel_id,null|nullable|integer',
+            'height' => 'exclude_if:excel_id,null|nullable|integer',
+            'depth' => 'exclude_if:excel_id,null|nullable|integer',
+            'weight' => 'exclude_if:excel_id,null|nullable|integer',
+            'title_ar' => 'exclude_if:excel_id,null|nullable|string|required_if:title_en,==,null|required_if:title_ku,==,null',
+            'title_en' => 'exclude_if:excel_id,null|nullable|string|required_if:title_ar,==,null|required_if:title_ku,==,null',
+            'title_ku' => 'exclude_if:excel_id,null|nullable|string',
+            'description_ar' => 'exclude_if:excel_id,null|nullable|string',
+            'description_en' => 'exclude_if:excel_id,null|nullable|string',
+            'description_ku' => 'exclude_if:excel_id,null|nullable|string',
+            'excerpt_ar' => 'exclude_if:excel_id,null|nullable|string',
+            'excerpt_en' => 'exclude_if:excel_id,null|nullable|string',
+            'excerpt_ku' => 'exclude_if:excel_id,null|nullable|string',
         ];
     }
 

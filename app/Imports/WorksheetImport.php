@@ -29,4 +29,9 @@ abstract class WorksheetImport implements OnEachRow, WithHeadingRow, WithChunkRe
         return 3;
     }
 
+    public function containsOnlyNull($input): bool
+    {
+        return empty(array_filter($input, function ($a) { return $a !== null;}));
+    }
+
 }
