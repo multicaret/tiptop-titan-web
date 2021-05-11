@@ -16,7 +16,6 @@ class ProductOptionsSelectionsWorksheet extends WorksheetImport
     public function __construct(ProductsImporter $productsImporter)
     {
         $this->productsImporter = $productsImporter;
-        $this->productsImporter->worksheetName = \Str::title(ProductsImporter::WORKSHEET_SELECTIONS);
     }
 
     public function onRow(Row $row)
