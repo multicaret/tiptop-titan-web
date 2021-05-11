@@ -31,13 +31,13 @@ class TookanClient
 
     public function prepareTaskData(Order $order)
     {
-        $food_team_id = TookanTeam::where('name', 'like', '%Food%')->first();
-        $market_team_id = TookanTeam::where('name', 'like', '%Market%')->first();
+        $food_team = TookanTeam::where('name', 'like', '%Food%')->first();
+        $market_team = TookanTeam::where('name', 'like', '%Market%')->first();
 
         return [
             'order_id' => $order->reference_code,
             'timezone' => '-180',
-            'team_id' => $order->type === Chain::CHANNEL_GROCERY_OBJECT ? (string) $market_team_id : (string) $food_team_id,
+            'team_id' => $order->type === Chain::CHANNEL_GROCERY_OBJECT ?  $market_team->tookan_id :  $food_team->tookan_id,
             'auto_assignment' => 1,
             'job_pickup_phone' => $order->branch->primary_phone_number,
             'job_pickup_name' => $order->branch->contacts->first()->name .' - '.$order->branch->title,
@@ -120,15 +120,25 @@ class TookanClient
             return false;
         }
 
-        $cancelOrderData = $this->prepareCancelOrderData($order);
+        $cancelPickupOrderData = $this->prepareCancelPickupOrderData($order);
 
-        return $this->apiRequest('POST', 'delete_task', $cancelOrderData);
+         $this->apiRequest('POST', 'delete_task', $cancelPickupOrderData);
+
+        $cancelDeliveryOrderData = $this->prepareCancelDeliveryOrderData($order);
+
+        return $this->apiRequest('POST', 'delete_task', $cancelDeliveryOrderData);
 
     }
 
-    public function prepareCancelOrderData(Order $order){
+    public function prepareCancelDeliveryOrderData(Order $order){
         return[
-            'job_id' => $order->tookanInfo->job_pickup_id . ',' . $order->tookanInfo->job_delivery_id
+            'job_id' =>  $order->tookanInfo->job_delivery_id
+        ];
+    }
+
+    public function prepareCancelPickupOrderData(Order $order){
+        return[
+            'job_id' => $order->tookanInfo->job_pickup_id
         ];
     }
     public function createCaptain(User $user)
