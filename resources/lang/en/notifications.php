@@ -14,6 +14,6 @@ return [
 
     'order_status_updated_for_user_branch_manager_2' => 'Tip Top: New order has been received',
     'order_status_updated_for_user_branch_manager_2_minutes_delay' => 'Tip Top: Order :number still pending!',
-    'order_status_updated_for_branch_manager_0' => 'Tip Top: Order :number is cancelled!',
+    'order_status_updated_for_user_branch_manager_0' => 'Tip Top: Order :number is cancelled!',
 
 ];
