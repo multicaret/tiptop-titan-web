@@ -172,6 +172,7 @@
                             <a class="text-primary pull-right"
                                target="_blank"
                                href="{{route('admin.branches.edit',[$order->branch->uuid,'type' => \App\Models\Branch::getCorrectChannelName($order->branch->type)])}}">
+                                {{optional($order->branch->region)->title}} -
                                 {{optional($order->branch->city)->title}}
                                 {{$order->branch->title}}
                             </a>
