@@ -59,6 +59,7 @@ class CreateUsersTable extends Migration
             $table->string('shift')->nullable(); //Restaurant Drivers Only
             $table->rememberToken();
             $table->timestamps();
+            $table->softDeletes();
 
             $table->unique(['phone_country_code', 'phone_number']);
         });

@@ -183,6 +183,7 @@ class TaxonomyModel extends Model implements HasMedia, ShouldHaveTypes, Translat
         'left',
         'right',
         'uuid',
+        'chain_id',
         'branch_id',
     ];
     protected $translatedAttributes = ['title', 'description'];
