@@ -3,6 +3,8 @@
 
     <!-- Brand -->
     <a href="{{ route('home') }}" class="navbar-brand">Front Office</a>
+    <span class="navbar-brand">-</span>
+    <a href="#!" class="navbar-brand">{{$_ENV['APP_ENV']}}</a>
 
     <!-- Navbar toggle -->
     <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#layout-navbar-collapse">
