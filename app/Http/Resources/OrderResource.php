@@ -63,7 +63,7 @@ class OrderResource extends JsonResource
             ],
             'status' => $this->status,
             'statusName' => $this->status_name,
-            'driverName' => optional($this->driver)->name,
+            'driverName' => optional($this->driver)->first,
             'driverAvatar' => optional($this->driver)->avatar,
             'trackingLink' => optional($this->tookanInfo)->delivery_tracking_link,
             'user' => new UserResource($this->user),
