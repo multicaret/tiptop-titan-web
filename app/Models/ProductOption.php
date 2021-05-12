@@ -19,7 +19,7 @@ use Illuminate\Support\Carbon;
  * @property int $product_id
  * @property bool $is_based_on_ingredients
  * @property bool $is_required
- * @property int $type 
+ * @property int $type
  *                     1: Including,
  *                     2: Excluding,
  * @property int|null $max_number_of_selection
@@ -129,8 +129,8 @@ class ProductOption extends Model
     {
         return [
             self::INPUT_TYPE_PILL => 'pill',
-            self::INPUT_TYPE_RADIO => 'radio',
             self::INPUT_TYPE_CHECKBOX => 'checkbox',
+            self::INPUT_TYPE_RADIO => 'radio',
             self::INPUT_TYPE_SELECT => 'select',
         ];
     }
@@ -150,12 +150,12 @@ class ProductOption extends Model
             ],
             self::SELECTION_TYPE_MULTIPLE_VALUE => [
                 [
-                    'id' => self::INPUT_TYPE_PILL,
-                    'title' => 'pill',
-                ],
-                [
                     'id' => self::INPUT_TYPE_CHECKBOX,
                     'title' => 'checkbox',
+                ],
+                [
+                    'id' => self::INPUT_TYPE_PILL,
+                    'title' => 'pill',
                 ],
             ]
         ];
