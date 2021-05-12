@@ -507,6 +507,16 @@ class ComposerServiceProvider extends ServiceProvider
                                 'routeName' => 'admin.taxonomies.index',
                             ],
                             [
+                                'title' => 'Rating issue',
+                                'icon' => 'fas fa-star-half-alt',
+                                'params' => [
+                                    'type' =>
+                                        \App\Models\Taxonomy::getCorrectTypeName(\App\Models\Taxonomy::TYPE_RATING_ISSUE,
+                                            false)
+                                ],
+                                'routeName' => 'admin.taxonomies.index',
+                            ],
+                            [
                                 'title' => 'Roles',
                                 'icon' => 'fas fa-user-cog',
                                 'routeName' => 'admin.roles.index'
