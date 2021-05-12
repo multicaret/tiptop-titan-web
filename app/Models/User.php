@@ -20,6 +20,7 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo as BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany as HasMany;
 use Illuminate\Database\Eloquent\Relations\MorphMany;
+use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\DatabaseNotification;
 use Illuminate\Notifications\DatabaseNotificationCollection;
@@ -223,6 +224,7 @@ class User extends Authenticatable implements HasMedia, MustVerifyEmail
     use HasAppTypes;
     use HasViewCount;
     use Notifiable;
+    use SoftDeletes;
 
     public const ROLE_SUPER = 'super';
     public const ROLE_ADMIN = 'admin';
