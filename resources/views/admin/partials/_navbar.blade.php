@@ -3,10 +3,12 @@
 
     <!-- Brand -->
     <a href="{{ route('home') }}" class="navbar-brand">Front Office</a>
-    <span class="navbar-brand">-</span>
-    <a href="#!" class="navbar-brand">{{$_ENV['APP_ENV']}}</a>
+    @if(env('APP_DEBUG',false))
+        <span class="navbar-brand">-</span>
+        <a href="#!" class="navbar-brand">{{env('APP_NAME','')}}</a>
+    @endif
 
-    <!-- Navbar toggle -->
+<!-- Navbar toggle -->
     <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#layout-navbar-collapse">
         <span class="navbar-toggler-icon"></span>
     </button>
@@ -161,38 +163,38 @@
                 </div>
             </div>--}}
             <livewire:navbar-notifications>
-            <!-- Divider -->
-            <div class="nav-item d-none d-lg-block text-big font-weight-light line-height-1 opacity-25 mr-3 ml-1">|
-            </div>
+                <!-- Divider -->
+                <div class="nav-item d-none d-lg-block text-big font-weight-light line-height-1 opacity-25 mr-3 ml-1">|
+                </div>
 
-            <div class="demo-navbar-user nav-item dropdown">
-                <a class="nav-link dropdown-toggle" href="#" data-toggle="dropdown">
+                <div class="demo-navbar-user nav-item dropdown">
+                    <a class="nav-link dropdown-toggle" href="#" data-toggle="dropdown">
                 <span class="d-inline-flex flex-lg-row-reverse align-items-center align-middle">
                   <img src="{{$auth->avatar}}" alt class="d-block ui-w-30 rounded-circle">
                   <span class="px-1 mr-lg-2 ml-2 ml-lg-0">{{$auth->name}}</span>
                 </span>
-                </a>
-                <div class="dropdown-menu dropdown-menu-right">
-                    {{--<a href="javascript:void(0)" class="dropdown-item"><i class="ion ion-ios-person text-lightest"></i>
-                        &nbsp; My profile</a>
-                    <a href="javascript:void(0)" class="dropdown-item"><i class="ion ion-ios-mail text-lightest"></i>
-                        &nbsp; Messages</a>--}}
-                    <a href="{{ route('admin.users.edit',['role' => Str::lower($auth->roles[0]->first()->name),'user' => $auth]) }}"
-                       class="dropdown-item"><i class="ion ion-md-settings text-lightest"></i>
-                        &nbsp; Account settings</a>
-                    <div class="dropdown-divider"></div>
-
-
-                    <a href="#!" class="dropdown-item"
-                       onclick="event.preventDefault();localStorage.clear();document.getElementById('logout-form').submit();">
-                        <i class="ion ion-ios-log-out text-danger"></i>&nbsp;&nbsp; @lang('strings.logout')
                     </a>
-                    <form id="logout-form" action="{{ localization()->localizeURL(route('logout')) }}"
-                          method="POST" class="hidden">
-                        @csrf
-                    </form>
+                    <div class="dropdown-menu dropdown-menu-right">
+                        {{--<a href="javascript:void(0)" class="dropdown-item"><i class="ion ion-ios-person text-lightest"></i>
+                            &nbsp; My profile</a>
+                        <a href="javascript:void(0)" class="dropdown-item"><i class="ion ion-ios-mail text-lightest"></i>
+                            &nbsp; Messages</a>--}}
+                        <a href="{{ route('admin.users.edit',['role' => Str::lower($auth->roles[0]->first()->name),'user' => $auth]) }}"
+                           class="dropdown-item"><i class="ion ion-md-settings text-lightest"></i>
+                            &nbsp; Account settings</a>
+                        <div class="dropdown-divider"></div>
+
+
+                        <a href="#!" class="dropdown-item"
+                           onclick="event.preventDefault();localStorage.clear();document.getElementById('logout-form').submit();">
+                            <i class="ion ion-ios-log-out text-danger"></i>&nbsp;&nbsp; @lang('strings.logout')
+                        </a>
+                        <form id="logout-form" action="{{ localization()->localizeURL(route('logout')) }}"
+                              method="POST" class="hidden">
+                            @csrf
+                        </form>
+                    </div>
                 </div>
-            </div>
         </div>
     </div>
 
