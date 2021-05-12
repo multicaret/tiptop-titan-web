@@ -2,6 +2,8 @@
 
 namespace App\Jobs\Tookan;
 
+use App\Integrations\Tookan\TookanClient;
+use App\Models\Order;
 use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldBeUnique;
 use Illuminate\Contracts\Queue\ShouldQueue;
@@ -13,14 +15,16 @@ class MarkTaskAsDelivered implements ShouldQueue
 {
     use Dispatchable, InteractsWithQueue, Queueable, SerializesModels;
 
+    public $order;
+
     /**
      * Create a new job instance.
      *
-     * @return void
+     * @param  Order  $order
      */
-    public function __construct()
+    public function __construct(Order $order)
     {
-        //
+        $this->order = $order;
     }
 
     /**
@@ -30,6 +34,19 @@ class MarkTaskAsDelivered implements ShouldQueue
      */
     public function handle()
     {
-        //
+        $client = new TookanClient();
+
+        $response = $client->markTaskAsDelivered($this->order);
+
+        if ( ! $response) {
+            info('Tookan delete task error', [
+                'response' => $response ?? 'empty'
+            ]);
+            //   $this->fail();
+        }
+
+
+
+
     }
 }

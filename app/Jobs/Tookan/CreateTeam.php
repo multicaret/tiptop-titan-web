@@ -44,8 +44,14 @@ class CreateTeam /*implements ShouldQueue*/
             $response = $client->updateTeam($this->team, $team_id);
 
         }
+        if ( ! $response){
+            return;
+
+        }
         if ( ! $response->successful()) {
-            $this->fail();
+         //   $this->fail();
+            return;
+
         }
         $responseData = $response->json();
         if (  $responseData['status'] == 100) {
@@ -54,6 +60,8 @@ class CreateTeam /*implements ShouldQueue*/
                 'response' => $response->json()
             ]);
             //    $this->fail();
+            return;
+
         }
         if (  $responseData['status'] == 201) {
             info('Tookan Request missing parameter', [
@@ -61,6 +69,7 @@ class CreateTeam /*implements ShouldQueue*/
                 'response' => $response->json()
             ]);
             //    $this->fail();
+            return;
 
         }
         if (isset($responseData['data']['team_id'])) {

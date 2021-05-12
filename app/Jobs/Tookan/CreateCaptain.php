@@ -48,6 +48,7 @@ class CreateCaptain /*implements ShouldQueue*/
                 'response' => $response ?? 'empty'
             ]);
         //    $this->fail();
+            return;
         }
         $responseData = $response->json();
 
@@ -57,6 +58,7 @@ class CreateCaptain /*implements ShouldQueue*/
                 'response' => $responseData
             ]);
           //  $this->fail();
+            return;
 
         }
         if ($responseData['status'] == 100) {
@@ -65,6 +67,8 @@ class CreateCaptain /*implements ShouldQueue*/
                 'response' => $responseData
             ]);
             //    $this->fail();
+            return;
+
         }
         if ($responseData['status'] == 201) {
             info('Tookan Request missing parameter', [
@@ -72,6 +76,7 @@ class CreateCaptain /*implements ShouldQueue*/
                 'response' => $responseData
             ]);
             //    $this->fail();
+            return;
 
         }
         if (isset($response['data']) && isset($response['data']['fleet_id'])) {
