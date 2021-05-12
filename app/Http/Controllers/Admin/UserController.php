@@ -346,8 +346,8 @@ class UserController extends Controller
     public function destroy($role, User $user)
     {
         if ($user->delete()) {
-            $user->email = 'deleted_'.$user->email;
-            $user->phone_number = '00000'.$user->phone_number;
+            $user->email = 'deleted_'.mt_rand(1, 999).'_'.$user->email;
+            $user->phone_number = '123'.mt_rand(1, 999).'321'.$user->phone_number;
             $user->save();
 
             return back()->with('message', [
