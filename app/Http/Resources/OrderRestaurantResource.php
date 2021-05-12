@@ -9,7 +9,7 @@ use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
 
 /** @mixin Order */
-class OrderResource extends JsonResource
+class OrderRestaurantResource extends JsonResource
 {
     /**
      * Transform the resource into an array.
@@ -63,7 +63,8 @@ class OrderResource extends JsonResource
             ],
             'status' => $this->status,
             'statusName' => $this->status_name,
-            'driverName' => optional($this->driver)->first,
+            'customerNotes' => $this->customer_notes,
+            'driverName' => optional($this->driver)->name,
             'driverAvatar' => optional($this->driver)->avatar,
             'trackingLink' => optional($this->tookanInfo)->delivery_tracking_link,
             'user' => new UserResource($this->user),

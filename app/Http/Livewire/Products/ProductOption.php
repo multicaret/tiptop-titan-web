@@ -164,7 +164,7 @@ class ProductOption extends Component
         } elseif ($this->option->max_number_of_selection > 1) {
             $this->option->selection_type = ProductOptionModel::SELECTION_TYPE_MULTIPLE_VALUE;
         }
-        $this->option->input_type = $this->setInputTypeBasedOnCurrentSelectionType();
+        $this->option->input_type = $this->setInputTypeBasedOnCurrentSelectionType($this->option->selection_type);
 
         if ($this->option->min_number_of_selection > $this->option->max_number_of_selection) {
             $this->option->min_number_of_selection = $this->option->max_number_of_selection - 1;
@@ -360,8 +360,8 @@ class ProductOption extends Component
         return $options;
     }
 
-    private function setInputTypeBasedOnCurrentSelectionType()
+    private function setInputTypeBasedOnCurrentSelectionType($selectionType)
     {
-        return Arr::first($this->option->getInputTypesArrayBasedOnSelectionType()[$this->option->selection_type])['id'];
+        return Arr::first($this->option->getInputTypesArrayBasedOnSelectionType()[$selectionType])['id'];
     }
 }

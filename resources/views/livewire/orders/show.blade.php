@@ -125,6 +125,7 @@
                             <a target="_blank" class="text-primary pull-right"
                                href="https://maps.google.com/?q={{optional($order->address)->latitude}},{{optional($order->address)->longitude}}">
                                 {{optional($order->address)->address1}}
+                                <i class="fas fa-external-link-alt"></i>
                             </a>
                         </div>
                         <div class="col-12 pt-3 pb-4">
@@ -171,7 +172,8 @@
                             <a class="text-primary pull-right"
                                target="_blank"
                                href="{{route('admin.branches.edit',[$order->branch->uuid,'type' => \App\Models\Branch::getCorrectChannelName($order->branch->type)])}}">
-                                {{optional($order->branch->city)->title}}
+                                {{optional($order->branch->region)->name}} -
+                                {{optional($order->branch->city)->name}}
                                 {{$order->branch->title}}
                             </a>
                         </div>

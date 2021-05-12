@@ -20,6 +20,9 @@ class ProductOptionsSelectionsWorksheet extends WorksheetImport
 
     public function onRow(Row $row)
     {
+        if (is_null($row->toArray()['excel_id'])) {
+            return null;
+        }
         if ($this->productsImporter->isChecking) {
             $tempExcelId = $row->toArray()['excel_id'];
             $this->productsImporter->setProductsOptionsSelectionsIds($tempExcelId, $tempExcelId);
@@ -87,7 +90,7 @@ class ProductOptionsSelectionsWorksheet extends WorksheetImport
     {
         return [
             'excel_id' => [
-                'required',
+                'nullable',
                 'integer',
                 function ($attribute, $value, $onFailure) {
                     if ($this->productsImporter->getProductsOptionsSelectionsIds()->has($value)) {

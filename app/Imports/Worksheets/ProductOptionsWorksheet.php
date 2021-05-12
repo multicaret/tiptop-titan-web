@@ -19,6 +19,9 @@ class ProductOptionsWorksheet extends WorksheetImport
 
     public function onRow(Row $row)
     {
+        if (is_null($row->toArray()['excel_id'])) {
+            return null;
+        }
         if ($this->productsImporter->isChecking) {
             $tempExcelId = $row->toArray()['excel_id'];
             $this->productsImporter->setProductsOptionsIds($tempExcelId, $tempExcelId, $tempExcelId);
@@ -94,7 +97,7 @@ class ProductOptionsWorksheet extends WorksheetImport
     {
         return [
             'excel_id' => [
-                'required',
+                'nullable',
                 'integer',
                 function ($attribute, $value, $onFailure) {
                     if ($this->productsImporter->getProductsOptionsIds()->has($value)) {
@@ -102,15 +105,21 @@ class ProductOptionsWorksheet extends WorksheetImport
                     }
                 }
             ],
-            'product_id' => 'required|integer',
-            'is_based_on_ingredients' => ['nullable', Rule::in(['yes', 'no', 'YES', 'NO', 'Yes', 'No'])],
-            'is_required' => ['nullable', Rule::in(['yes', 'no', 'YES', 'NO', 'Yes', 'No'])],
-            'type' => ['nullable', Rule::in(['yes', 'no', 'YES', 'NO', 'Yes', 'No'])],
-            'max_number_of_selection' => 'nullable|integer',
-            'min_number_of_selection' => 'nullable|integer',
-            'input_type' => ['nullable', Rule::in('pill', 'radio', 'checkbox', 'select')],
-            'selection_type' => ['nullable', Rule::in(['yes', 'no', 'YES', 'NO', 'Yes', 'No'])],
-            'order_column' => 'nullable|integer',
+            'product_id' => 'exclude_if:excel_id,null|required|integer',
+            'is_based_on_ingredients' => [
+                'exclude_if:excel_id,null', 'nullable', Rule::in(['yes', 'no', 'YES', 'NO', 'Yes', 'No'])
+            ],
+            'is_required' => [
+                'exclude_if:excel_id,null', 'nullable', Rule::in(['yes', 'no', 'YES', 'NO', 'Yes', 'No'])
+            ],
+            'type' => ['exclude_if:excel_id,null', 'nullable', Rule::in(['yes', 'no', 'YES', 'NO', 'Yes', 'No'])],
+            'max_number_of_selection' => 'exclude_if:excel_id,null|nullable|integer',
+            'min_number_of_selection' => 'exclude_if:excel_id,null|nullable|integer',
+            'input_type' => ['exclude_if:excel_id,null', 'nullable', Rule::in('pill', 'radio', 'checkbox', 'select')],
+            'selection_type' => [
+                'exclude_if:excel_id,null', 'nullable', Rule::in(['yes', 'no', 'YES', 'NO', 'Yes', 'No'])
+            ],
+            'order_column' => 'exclude_if:excel_id,null|nullable|integer',
         ];
     }
 

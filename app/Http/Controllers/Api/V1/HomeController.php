@@ -40,7 +40,6 @@ class HomeController extends BaseApiController
             return $this->respondValidationFails($validator->errors());
         }*/
 
-        $forceUpdateMethod = RemoteConfig::FORCE_UPDATE_METHOD_DISABLED;
         $buildNumber = $request->input('build_number');
         $platform = $request->input('platform');
 
@@ -48,7 +47,6 @@ class HomeController extends BaseApiController
                                           ->where('build_number', $buildNumber)
                                           ->first();
 
-//dd($bootConfigurations->data_translated);
         if ( ! is_null($bootConfigurations)) {
             return $this->respond([
                 'configs' => new RemoteConfigResource($bootConfigurations),

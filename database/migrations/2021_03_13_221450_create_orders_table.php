@@ -16,7 +16,7 @@ class CreateOrdersTable extends Migration
     {
         Schema::create('orders', function (Blueprint $table) {
             $table->id();
-            $table->unsignedBigInteger('reference_code')->unique();
+            $table->unsignedBigInteger('reference_code');
             $table->unsignedBigInteger('user_id')->index();
             $table->unsignedBigInteger('chain_id')->index();
             $table->unsignedBigInteger('branch_id')->index();
@@ -81,6 +81,8 @@ class CreateOrdersTable extends Migration
                   ');
             $table->timestamps();
             $table->softDeletes();
+
+            $table->unique(['reference_code', 'user_id']);
 
             $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
             $table->foreign('chain_id')->references('id')->on('chains')->onDelete('cascade');

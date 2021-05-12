@@ -341,11 +341,15 @@ class UserController extends Controller
      *
      * @param  User  $user
      *
-     * @return Response
+     * @return RedirectResponse
      */
     public function destroy($role, User $user)
     {
         if ($user->delete()) {
+            $user->email = 'deleted_'.mt_rand(1, 999).'_'.$user->email;
+            $user->phone_number = '123'.mt_rand(1, 999).'321'.$user->phone_number;
+            $user->save();
+
             return back()->with('message', [
                 'type' => 'Success',
                 'text' => 'The user has been deleted',

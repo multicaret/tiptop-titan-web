@@ -400,9 +400,9 @@ class BranchController extends Controller
                             ->jsonSerialize();
             $request->file('excel-file')->storeAs(storage_path('/'), $filename);
             $path = storage_path("{$filename}");
+            $productsImporter = new ProductsImporter($branch->chain, $branch);
+            $productsImporter->isChecking = true;
             try {
-                $productsImporter = new ProductsImporter($branch->chain, $branch);
-                $productsImporter->isChecking = true;
                 // Work on validation data on all sheets
                 $productsImporter->onlySheets(ProductsImporter::getAllWorksheets());
                 Excel::import($productsImporter, $path);
@@ -436,10 +436,11 @@ class BranchController extends Controller
                 $failures = $e->failures();
                 $errors = [];
                 foreach ($failures as $failure) {
+                    $sheetName = \Str::title($this->getWorksheetName($failure->values()));
                     $rowIndex = $failure->row();
                     $fieldName = $failure->attribute();
                     $errorMessage = implode(PHP_EOL, $failure->errors());
-                    $errors[] = "Error on Row index {$rowIndex} on field name: {$fieldName}. With Message: ".$errorMessage;
+                    $errors[] = "* Error on Row index <b>{$rowIndex}</b> on field name: {$fieldName} on Worksheet {$sheetName}. <br>Message: {$errorMessage}<br>";
                 }
 
                 $messageData = [
@@ -447,7 +448,7 @@ class BranchController extends Controller
                     'text' => 'Imported failed',
                     'message' => implode('', $errors),
                 ];
-            } catch(Exception $exception) {
+            } catch (Exception $exception) {
                 $messageData = [
                     'type' => 'Error',
                     'text' => 'Imported failed',
@@ -471,13 +472,28 @@ class BranchController extends Controller
     public function exportToExcel(Request $request, Branch $branch)
     {
         $filename = \Str::of('branch-products-')
-                               ->append($branch->uuid)
-                               ->append('-')
-                               ->append(\now()->timestamp)
-                               ->append('.xlsx')
-                               ->jsonSerialize();
+                        ->append($branch->uuid)
+                        ->append('-')
+                        ->append(\now()->timestamp)
+                        ->append('.xlsx')
+                        ->jsonSerialize();
 
         return Excel::download(new ProductsExport($branch), $filename);
+    }
+
+    private function getWorksheetName(array $values): string
+    {
+        if (array_key_exists('category_ids', $values)) {
+            return ProductsImporter::WORKSHEET_PRODUCTS;
+        }
+        if (array_key_exists('is_based_on_ingredients', $values)) {
+            return ProductsImporter::WORKSHEET_OPTIONS;
+        }
+        if (array_key_exists('product_option_id', $values)) {
+            return ProductsImporter::WORKSHEET_SELECTIONS;
+        }
+
+        return ProductsImporter::WORKSHEET_MENU_CATEGORIES;
     }
 
 }

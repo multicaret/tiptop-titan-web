@@ -299,12 +299,18 @@ class OrderController extends BaseApiController
             ];
         } elseif ($order->type === Order::CHANNEL_FOOD_OBJECT) {
             $response = [
-                ['key' => 'has_good_food_quality_rating', 'label' => ('strings.has_good_food_quality_rating')],
+                [
+                    'key' => 'has_good_food_quality_rating',
+                    'label' => trans('api.has_good_food_quality_rating')
+                ],
                 [
                     'key' => 'has_good_packaging_quality_rating',
-                    'label' => ('strings.has_good_packaging_quality_rating')
+                    'label' => trans('api.has_good_packaging_quality_rating')
                 ],
-                ['key' => 'has_good_order_accuracy_rating', 'label' => ('strings.has_good_order_accuracy_rating')],
+                [
+                    'key' => 'has_good_order_accuracy_rating',
+                    'label' => trans('api.has_good_order_accuracy_rating')
+                ],
             ];
         }
 

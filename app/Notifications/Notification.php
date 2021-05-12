@@ -142,9 +142,8 @@ class Notification extends BaseNotification
                 $oneSignalMessage->setBody($this->body);
             }
 
-            // Todo: TEST THIS ROLE thingy
             // Branch owners & managers
-            if ($notifiable->hasRole(User::ROLE_BRANCH_OWNER) || $notifiable->hasRole(User::ROLE_BRANCH_MANAGER)) {
+            if ($notifiable->role_name == User::ROLE_BRANCH_OWNER || $notifiable->role_name == User::ROLE_BRANCH_MANAGER) {
                 $oneSignalMessage->setParameter('android_channel_id',
                     config('services.onesignal.restaurant_app_android_channel_id'))
                                  ->setParameter('ios_sound', 'new_notify.wav')

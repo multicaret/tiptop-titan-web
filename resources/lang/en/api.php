@@ -12,4 +12,7 @@ return [
     'restaurant_removed_from_wishlist_successfully' => 'Restaurant removed from wishlist successfully',
     'branch_doesnt_has_restaurant_delivery' => 'Branch doesn\'t has restaurant delivery',
     'branch_doesnt_has_tip_top_delivery' => 'Branch doesn\'t has tip top delivery',
+    'has_good_food_quality_rating' => 'Has good food quality rating',
+    'has_good_packaging_quality_rating' => 'Has good packaging quality rating',
+    'has_good_order_accuracy_rating' => 'Has good order accuracy rating',
 ];

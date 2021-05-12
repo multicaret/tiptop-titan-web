@@ -137,11 +137,9 @@ class PermissionsGenerator
         $taxonomiesTypeBuilder = [
             'super' => [
                 Taxonomy::TYPE_POST_CATEGORY,
-                Taxonomy::TYPE_RATING_ISSUE,
             ],
             'admin' => [
                 Taxonomy::TYPE_POST_CATEGORY,
-                Taxonomy::TYPE_RATING_ISSUE,
             ],
             'supervisor' => [
                 Taxonomy::TYPE_POST_CATEGORY,
