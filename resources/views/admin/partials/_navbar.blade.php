@@ -3,10 +3,6 @@
 
     <!-- Brand -->
     <a href="{{ route('home') }}" class="navbar-brand">Front Office</a>
-    @if(env('APP_DEBUG',false))
-        <span class="navbar-brand">-</span>
-        <a href="#!" class="navbar-brand">{{env('APP_NAME','')}}</a>
-    @endif
 
 <!-- Navbar toggle -->
     <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#layout-navbar-collapse">
