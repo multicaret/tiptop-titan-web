@@ -136,7 +136,7 @@ class ProductController extends Controller
         $product->load([
             'chain',
             'branch',
-            'masterCategory',
+            'category',
             'unit',
             'searchTags',
         ]);
@@ -226,7 +226,7 @@ class ProductController extends Controller
                 $data['categories'] = [];
             }
         } else {
-            $product->categories->add($product->masterCategory);
+            $product->categories->add($product->category);
             $chains = Chain::foods()->get();
             $branches = Branch::whereChainId($chains->first()->id)->foods()->get();
             $data['chains'] = $chains->map($getIdTitle)->all();

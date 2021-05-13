@@ -11,16 +11,23 @@ class ProductRowEdit extends Component
     public $titleEn;
     public $titleKu;
     public $titleAr;
+    public $categoris;
 
     public function mount()
     {
         $this->titleEn = optional($this->product->translate('en'))->title;
         $this->titleKu = optional($this->product->translate('ku'))->title;
         $this->titleAr = optional($this->product->translate('ar'))->title;
+        $branch = $this->product->branch;
+        if ($this->product->is_food) {
+            $this->categoris = $branch->menuCategories()->with('translations')->get();
+        }
+
     }
 
     protected $rules = [
         'product.price' => 'required|numeric',
+        'product.category_id' => 'required|numeric',
         'product.order_column' => 'required|numeric',
         'product.price_discount_amount' => 'numeric',
         'product.price_discount_by_percentage' => 'boolean',
@@ -65,6 +72,21 @@ class ProductRowEdit extends Component
         $this->emit('showToast', [
             'icon' => 'success',
             'message' => 'Kurdish title has been changed',
+        ]);
+    }
+
+    public function updatedProductCategoryId($newValue)
+    {
+        $this->validate([
+            'product.category_id' => 'required|numeric',
+        ]);
+        $this->product->category_id = $newValue;
+        $this->product->save();
+        $this->product->load('category');
+
+        $this->emit('showToast', [
+            'icon' => 'success',
+            'message' => 'Category has been changed',
         ]);
     }
 

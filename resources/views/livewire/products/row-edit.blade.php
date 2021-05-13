@@ -1,4 +1,7 @@
-<tr>
+<tr
+    @if(!in_array($this->product->category_id,$categoris->pluck('id')->toArray()))
+    class="bg-warning"
+    @endif>
     <td style="width:10px">
         {{$product->id}}
     </td>
@@ -18,9 +21,35 @@
     </td>
     <td>
         @if($product->type == \App\Models\Product::CHANNEL_FOOD_OBJECT)
-            {{optional($product->category)->title}}
+            @if(!in_array($this->product->category_id,$categoris->pluck('id')->toArray()))
+                <span class="text-danger">
+                <i class="fas fa-info-circle"></i>
+                {{optional($product->category)->title}}
+            </span>
+            @else
+                {{optional($product->category)->title}}
+            @endif
         @else
             {{ implode(',',$product->categories->pluck('title')->toArray()) }}
+        @endif
+
+        @if($product->type == \App\Models\Branch::CHANNEL_FOOD_OBJECT)
+            <select wire:model="product.category_id" class="form-control">
+                @foreach($categoris as $category)
+                    <option value="{{ $category->id }}"
+                        {{ $product->category_id == $category->id ? 'selected':null }}
+                    >
+                        #{{ $category->id }} - {{ $category->title }}
+                    </option>
+                @endforeach
+            </select>
+            <br>
+            {{--@elseif($product->type == \App\Models\Branch::CHANNEL_GROCERY_OBJECT)
+                <select wire:model="product.category" class="form-control mb-2">
+                    @foreach($categoris as $category)
+                        <option value="{{ $category->id }}">{{ $category->title }}</option>
+                    @endforeach
+                </select>--}}
         @endif
     </td>
     <td>

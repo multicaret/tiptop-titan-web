@@ -72,7 +72,7 @@ class SearchController extends BaseApiController
                                   $query->where('title', 'like', '%'.$searchQuery.'%');
                               });
                           })
-                          ->orWhereHas('masterCategory', function ($query) use ($searchQuery) {
+                          ->orWhereHas('category', function ($query) use ($searchQuery) {
                               $query->whereHas('translations', function ($query) use ($searchQuery) {
                                   $query->where('title', 'like', '%'.$searchQuery.'%');
                               });
