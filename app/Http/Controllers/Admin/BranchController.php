@@ -2,8 +2,8 @@
 
 namespace App\Http\Controllers\Admin;
 
-use App\Exports\ProductsExport;
-use App\Exports\ProductsExportForImporting;
+use App\Exports\BranchProductsExport;
+use App\Exports\ProductsExportGeneral;
 use App\Http\Controllers\Controller;
 use App\Imports\ProductsImporter;
 use App\Models\Branch;
@@ -481,9 +481,9 @@ class BranchController extends Controller
 
         switch ($request->for) {
             case 'importing':
-                return Excel::download(new ProductsExportForImporting($branch), $filename);
+                return Excel::download(new BranchProductsExport($branch), $filename);
             default:
-                return Excel::download(new ProductsExport($branch), $filename);
+                return Excel::download(new ProductsExportGeneral($branch), $filename);
         }
 
 

@@ -9,7 +9,7 @@ use Maatwebsite\Excel\Concerns\ShouldAutoSize;
 use Maatwebsite\Excel\Concerns\WithHeadings;
 use Maatwebsite\Excel\Concerns\WithMapping;
 
-class ProductsExport implements FromCollection, WithMapping, WithHeadings, ShouldAutoSize
+class ProductsExportGeneral implements FromCollection, WithMapping, WithHeadings, ShouldAutoSize
 {
     protected Branch $branch;
 
