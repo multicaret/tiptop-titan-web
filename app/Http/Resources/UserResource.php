@@ -3,7 +3,6 @@
 namespace App\Http\Resources;
 
 use App\Http\Controllers\Controller;
-use App\Models\Product;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
@@ -26,7 +25,8 @@ class UserResource extends JsonResource
             'first' => $this->first,
             'last' => $this->last,
             'username' => $this->username,
-            'email' => $this->email,
+            'email' => ! str_contains($this->email,
+                config('defaults.user.default_otp_dummy_host')) ? $this->email : null,
             'phone' => $this->phone_number,
             'phoneCode' => $this->phone_country_code,
             'phoneInternational' => $this->international_phone,
