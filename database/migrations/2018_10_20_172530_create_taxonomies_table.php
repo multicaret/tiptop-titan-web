@@ -31,7 +31,6 @@ class CreateTaxonomiesTable extends Migration
             $table->integer('depth')->nullable();
             $table->decimal('step')->nullable();
             $table->unsignedBigInteger('order_column')->nullable();
-            $table->unsignedBigInteger('cloned_from_taxonomy_id')->nullable();
             $table->unsignedTinyInteger('status')->default(Taxonomy::STATUS_DRAFT)->comment('1:draft, 2:active, 3:Inactive, 4..n:CUSTOM');
             $table->timestamps();
             $table->softDeletes();
@@ -40,7 +39,6 @@ class CreateTaxonomiesTable extends Migration
             $table->foreign('editor_id')->references('id')->on('users');
             $table->foreign('parent_id')->references('id')->on('taxonomies');
             $table->foreign('ingredient_category_id')->references('id')->on('taxonomies');
-            $table->foreign('cloned_from_taxonomy_id')->references('id')->on('taxonomies');
         });
     }
 
