@@ -45,6 +45,8 @@ class CreateTask implements ShouldQueue
                 'response' => $response ?? 'empty'
             ]);
             //    $this->fail();
+            return;
+
         }
         $responseData = $response->json();
 
@@ -54,6 +56,7 @@ class CreateTask implements ShouldQueue
                 'response' => $responseData
             ]);
             //    $this->fail();
+            return;
 
         }
 
@@ -63,6 +66,8 @@ class CreateTask implements ShouldQueue
                 'response' => $responseData
             ]);
             //    $this->fail();
+            return;
+
         }
         if ($responseData['status'] == 201) {
             info('Create Tookan Task Request missing parameter', [
@@ -70,6 +75,8 @@ class CreateTask implements ShouldQueue
                 'response' => $responseData
             ]);
             //    $this->fail();
+            return;
+
         }
         if (isset($response['data']) && isset($response['data']['pickup_job_id']) && isset($response['data']['delivery_job_id'])) {
 

@@ -46,7 +46,9 @@ class ToggleCaptainStatus /*implements ShouldQueue*/
                 'captain_id' => $this->user->id,
                 'response' => $response ?? 'empty'
             ]);
-            $this->fail();
+        //    $this->fail();
+            return;
+
         }
 
         if ( ! $response->successful()) {
@@ -54,7 +56,8 @@ class ToggleCaptainStatus /*implements ShouldQueue*/
                 'captain_id' => $this->user->id,
                 'response' => $response
             ]);
-            $this->fail();
+       //     $this->fail();
+            return;
 
         }
 
@@ -65,6 +68,8 @@ class ToggleCaptainStatus /*implements ShouldQueue*/
                 'response' => $response->json()
             ]);
         //    $this->fail();
+            return;
+
         }
         if (  $responseData['status'] == 201) {
             info('Tookan Request missing parameter', [
@@ -72,6 +77,7 @@ class ToggleCaptainStatus /*implements ShouldQueue*/
                 'response' => $response->json()
             ]);
         //    $this->fail();
+            return;
 
         }
 

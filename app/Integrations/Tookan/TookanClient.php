@@ -231,7 +231,7 @@ class TookanClient
             return false;
         }
 
-        $captainStatusData = $this->prepareCaptainStatusData(($user->status != User::STATUS_ACTIVE || $deleteOperation) ? 0 : 1);
+        $captainStatusData = $this->prepareCaptainStatusData(($user->status != User::STATUS_ACTIVE || $deleteOperation || !empty($user->deleted_at)) ? 0 : 1);
 
         return $this->apiRequest('POST', 'block_and_unblock_fleet',
             array_merge(['fleet_id' => (string) $user->tookan_id], $captainStatusData));

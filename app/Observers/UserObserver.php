@@ -36,10 +36,13 @@ class UserObserver
         $tookan_status = config('services.tookan.status');
 
         if ($user->role_name == User::ROLE_TIPTOP_DRIVER && $tookan_status) {
-            CreateCaptain::dispatchSync($user);
-            if ($user->wasChanged('status')) {
+            if ($user->wasChanged('status') || $user->wasChanged('deleted_at')) {
                 ToggleCaptainStatus::dispatchSync($user);
             }
+            else{
+                CreateCaptain::dispatchSync($user);
+            }
+
         }
     }
 
