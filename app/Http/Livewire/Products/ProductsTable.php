@@ -39,7 +39,7 @@ class ProductsTable extends Component
             });
         }
         $products = $products->latest()
-                             ->paginate(10);
+                             ->paginate(30);
 
         return $products;
     }
