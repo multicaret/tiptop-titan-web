@@ -133,7 +133,7 @@ class OldUser extends OldModel
 
     public function __construct(array $attributes = [])
     {
-        $this->randomUserPin = mt_rand(100000, 999999);
+        $this->randomUserPin = mt_rand(10000, 999999999);
         parent::__construct($attributes);
     }
 
@@ -197,7 +197,7 @@ class OldUser extends OldModel
     public function getUpdatedEmailAttribute(): ?string
     {
         if (is_null($this->email)) {
-            return 'ancient_'.$this->randomUserPin.'@'.parse_url(env('APP_URL'), PHP_URL_HOST);
+            return 'ancient_'.$this->randomUserPin.'@example.com';
         }
 
         return $this->email;
