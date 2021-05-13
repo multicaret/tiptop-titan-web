@@ -90,7 +90,7 @@ class OldMedia extends MediaAlias
 
     public function getProductS3Url($id, $fileName): string
     {
-        $urlScheme = 'https://tiptop-backend-staging.s3.eu-central-1.amazonaws.com/media/dishes/%d/%s';
+        $urlScheme = 'https://'.env('OLD_AWS_BUCKET').'.s3.eu-central-1.amazonaws.com/media/dishes/%d/%s';
 
         return sprintf($urlScheme, $id, $fileName);
     }
@@ -106,10 +106,10 @@ class OldMedia extends MediaAlias
 
     public function getResizedDiskPathAttribute($conversion): string
     {
-        $urlScheme = "media/%s/%d/resized/%s";
+        $urlScheme = 'media/%s/%d/resized/%s';
         $extension = $this->getExtensionAttribute();
         $resizedFileName = \Str::of($this->file_name)->beforeLast('.')->append('-')
-                               ->append($conversion.'.'.$extension);
+                               ->append($conversion.'.'.$extension)->jsonSerialize();
 
         return sprintf($urlScheme, self::getModelTypes()[$this->model_type], $this->id, $resizedFileName);
     }
@@ -118,14 +118,52 @@ class OldMedia extends MediaAlias
     public function getImageUrlAttribute(): ?string
     {
         if ( ! \Storage::disk('old_s3')->exists($this->disk_path)) {
-            $urlScheme = 'https://tiptop-backend-staging.s3.eu-central-1.amazonaws.com/media/%s/%d/resized/%s';
+
+            $urlScheme = 'https://'.env('OLD_AWS_BUCKET').'.s3.eu-central-1.amazonaws.com/media/%s/%d/resized/%s';
             $extension = $this->getExtensionAttribute();
             $lastGeneratedConversion = $this->getGeneratedConversions()->keys()->last();
             $resizedDiskPathAttribute = $this->getResizedDiskPathAttribute($lastGeneratedConversion);
-            if( ! \Storage::disk('old_s3')->exists($resizedDiskPathAttribute)){
-                return null;
+//            if($this->id == 8767){
+//                dd($resizedDiskPathAttribute);
+//            }
+
+
+            $seemsNull = false;
+            if ( ! \Storage::disk('old_s3')->exists($resizedDiskPathAttribute)) {
+                $seemsNull = true;
+            }
+
+            if ($seemsNull) {
+                $resizedDiskPathAttribute = str_replace('.png', '.jpg', $resizedDiskPathAttribute);
+                if (\Storage::disk('old_s3')->exists($resizedDiskPathAttribute)) {
+                    $extension = 'jpg';
+                    $seemsNull = false;
+                }
+            }
+
+            if ($seemsNull) {
+                $resizedDiskPathAttribute = str_replace('.jpeg', '.jpg', $resizedDiskPathAttribute);
+                if (\Storage::disk('old_s3')->exists($resizedDiskPathAttribute)) {
+                    $extension = 'jpg';
+                    $seemsNull = false;
+                }
+            }
+
+            if (str_contains($this->file_name, '+')) {
+                $this->file_name = str_replace('+', '%2B', $this->file_name);
             }
             $finalUrl = sprintf($urlScheme, self::getModelTypes()[$this->model_type], $this->id, $this->file_name);
+
+
+//            if ($this->id == 8767) {
+//                dd('2 the plus thingy',
+//                    $finalUrl,
+//                "https://tiptop-backend-production.s3.eu-central-1.amazonaws.com/media/dishes/8767/resized/%D9%85%D8%A7%D8%B4-%D8%A8%D8%B7%D8%A7%D8%B7%D8%A7-%2B-%D8%AE%D8%B6%D8%A7%D8%B1-%D9%85%D8%B3%D9%84%D9%88%D9%82%D8%A9-1000x650.jpg"
+//                );
+//            }
+            if ($seemsNull) {
+                return null;
+            }
 
             return \Str::of($finalUrl)->beforeLast('.')
                        ->append('-')
@@ -134,7 +172,8 @@ class OldMedia extends MediaAlias
                        ->jsonSerialize();
         }
 
-        $urlScheme = 'https://tiptop-backend-staging.s3.eu-central-1.amazonaws.com/media/%s/%d/%s';
+        $urlScheme = 'https://'.env('OLD_AWS_BUCKET').'.s3.eu-central-1.amazonaws.com/media/%s/%d/%s';
+
         return sprintf($urlScheme, self::getModelTypes()[$this->model_type], $this->id, $this->file_name);
 
     }
