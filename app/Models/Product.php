@@ -218,6 +218,7 @@ class Product extends Model implements HasMedia
         'minimum_orderable_quantity',
         'maximum_orderable_quantity',
         'importer_id',
+        'status',
     ];
 
     protected $translatedAttributes = [
