@@ -106,7 +106,8 @@ class BranchController extends Controller
         $branch = new Branch();
         $regions = Region::whereCountryId(config('defaults.country.id'))->get();
         $chains = Chain::whereType($type)->get();
-        $branch->chain = Chain::whereType($type)->first();
+        $branch->chain_id = optional(Chain::whereType($type)->first())->id;
+        $branch->load('chain');
         $foodCategories = Taxonomy::foodCategories()->get();
         $workingHours = $branch->getWorkingHours();
 
