@@ -1,5 +1,5 @@
 <tr
-    @if(!in_array($this->product->category_id,$categoris->pluck('id')->toArray()))
+    @if(!is_null($categoris) && !in_array($this->product->category_id,$categoris->pluck('id')->toArray()))
     class="bg-warning"
     @endif>
     <td style="width:10px">
