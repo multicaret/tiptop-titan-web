@@ -298,7 +298,11 @@ class User extends Authenticatable implements HasMedia, MustVerifyEmail
         parent::boot();
 
         static::created(function (User $user) {
-            if (app()->environment() == 'production' && ! Str::contains($user->username, 'db-seeder-test-')) {
+            if (
+                app()->environment() == 'production' &&
+                ! Str::contains($user->username, config('defaults.user.default_otp_dummy_host')) &&
+                ! empty($user->email)
+            ) {
                 Mail::to($user)->send(new Welcome($user));
             }
         });

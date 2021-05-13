@@ -1,6 +1,7 @@
 <?php
 return [
     'user' => [
+        'default_otp_dummy_host' => 'otp.com',
         'mobile_app_details' => [
             'version' => '0.0.0',
             'buildNumber' => 0,
