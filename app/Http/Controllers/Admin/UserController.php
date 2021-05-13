@@ -46,7 +46,9 @@ class UserController extends Controller
             [
                 'data' => 'phone_number',
                 'name' => 'phone_number',
-                'visible' => false,
+                'title' => 'Phone number',
+                'visible' => true,
+                'searchable' => true,
             ],
             [
                 'data' => 'username',

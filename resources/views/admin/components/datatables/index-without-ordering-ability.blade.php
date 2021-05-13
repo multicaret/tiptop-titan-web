@@ -4,7 +4,7 @@
 
 <table class="datatable-table table table-striped table-bordered">
 
-    <tfoot>
+    {{--<tfoot>
     <tr>
         @foreach($columns as $column)
             <td>
@@ -17,7 +17,7 @@
         @endforeach
         <td></td>
     </tr>
-    </tfoot>
+    </tfoot>--}}
 </table>
 
 @push('scripts')
