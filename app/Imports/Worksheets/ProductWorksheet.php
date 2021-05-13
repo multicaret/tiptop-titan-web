@@ -111,7 +111,7 @@ class ProductWorksheet extends WorksheetImport
                 'nullable',
                 'integer',
                 function ($attribute, $value, $onFailure) {
-                    if ($this->productsImporter->getProductsIds()->has($value)) {
+                    if ($this->productsImporter->getProductsIds()->has((int)$value)) {
                         $onFailure("The product with Excel ID: {$value} already exists");
                     }
                 }
