@@ -857,22 +857,17 @@ class DatumImporter extends Command
 
     private function importProductsImages(): void
     {
-        $products = Product::where('id', '>',
-            Media::select('model_id')->whereModelType(Product::class)
-                 ->latest()
-                 ->limit(1)
-                 ->pluck('model_id')
-                 ->first()
-        )
-                           ->get();
+        $lastReachedMedia = Media::select('model_id')->whereModelType(Product::class)->latest()->limit(1)->pluck('model_id')->first();
+        if ( ! is_null($lastReachedMedia)) {
+            $products = Product::whereDoesntHave('media')
+                               ->whereNotnull('branch_id')
+                               ->where('id', '>', $lastReachedMedia)->get();
+        } else {
+            $products = Product::whereNotnull('branch_id')->get();
+        }
         $this->bar = $this->output->createProgressBar($products->count());
         $this->bar->start();
         foreach ($products as $product) {
-            // Do not import images of chains-only
-            if (is_null($product->branch_id)) {
-                continue;
-            }
-
             if ($product->type === Product::CHANNEL_GROCERY_OBJECT) {
                 $productId = $product->id;
                 $collectionTo = OldMedia::COLLECTION_GALLERY;
