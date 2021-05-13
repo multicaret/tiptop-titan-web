@@ -542,9 +542,9 @@ class UserController extends Controller
                                ->append(' - ')
                                ->append($item->title)
                                ->append(' (')
-                               ->append($item->region->english_name)
+                               ->append(optional($item->region)->english_name)
                                ->append(', ')
-                               ->append($item->city->english_name)
+                               ->append(optional($item->city)->english_name)
                                ->append(')')
                                ->jsonSerialize();
 
