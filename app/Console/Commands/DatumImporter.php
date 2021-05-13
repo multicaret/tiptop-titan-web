@@ -928,7 +928,7 @@ class DatumImporter extends Command
 
     private function importChainImages()
     {
-        $chains = Chain::all();
+        $chains = Chain::whereDoesntHave('media')->get();
         $this->bar = $this->output->createProgressBar($chains->count());
         $this->bar->start();
         foreach ($chains as $chain) {
