@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Exports\ProductsExport;
+use App\Exports\ProductsExportForImporting;
 use App\Http\Controllers\Controller;
 use App\Imports\ProductsImporter;
 use App\Models\Branch;
@@ -478,7 +479,14 @@ class BranchController extends Controller
                         ->append('.xlsx')
                         ->jsonSerialize();
 
-        return Excel::download(new ProductsExport($branch), $filename);
+        switch ($request->for) {
+            case 'importing':
+                return Excel::download(new ProductsExportForImporting($branch), $filename);
+            default:
+                return Excel::download(new ProductsExport($branch), $filename);
+        }
+
+
     }
 
     private function getWorksheetName(array $values): string

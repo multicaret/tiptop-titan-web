@@ -108,37 +108,51 @@
                         @include('admin.branches.partials._inaccessible')
                     @else
                         @if($branch->id)
-                            <div class="d-flex justify-content-end mb-3" style="gap: 10px;">
-                                <div class="d-inline-flex justify-self-start">
-                                    <a class="btn btn-primary" target="_blank"
-                                       href="{{route('admin.branch.export-to-excel', [ 'type'=> request()->type,$branch])}}">
-                                        Export to Excel
-                                    </a>
+                            <div class="d-flex justify-content-between mb-3" style="gap: 10px;">
+                                <div>
+                                    <div class="d-inline-flex justify-self-start">
+                                        <a class="btn btn-secondary btn-sm" target="_blank"
+                                           href="{{route('admin.branch.export-to-excel', [ 'type'=> request()->type,$branch])}}">
+                                            Export to Excel (General)
+                                        </a>
+                                    </div>
+                                    <div class="d-inline-flex justify-self-start">
+                                        <a class="btn btn-secondary btn-sm" target="_blank"
+                                           href="{{route('admin.branch.export-to-excel', [
+                                                'type'=> request()->type,
+                                                $branch,
+                                                'for' => 'importing',
+                                        ])}}">
+                                            Export to Excel (For Importing)
+                                        </a>
+                                    </div>
+                                    <form style="display: none;" id="upload-banner" enctype="multipart/form-data"
+                                          method="post"
+                                          action="{{route('admin.branch.import-from-excel',[$branch, 'type'=> request('type')])}}">
+                                        @csrf
+                                        <input id="excel-upload" name="excel-file" type="file" ref="excelFile"
+                                               @change="autoSubmit()"/>
+                                        <input type="submit" value="submit" ref="submitBtn" id="submit"/>
+                                    </form>
                                 </div>
-                                <form style="display: none;" id="upload-banner" enctype="multipart/form-data"
-                                      method="post"
-                                      action="{{route('admin.branch.import-from-excel',[$branch, 'type'=> request('type')])}}">
-                                    @csrf
-                                    <input id="excel-upload" name="excel-file" type="file" ref="excelFile"
-                                           @change="autoSubmit()"/>
-                                    <input type="submit" value="submit" ref="submitBtn" id="submit"/>
-                                </form>
-                                <div class="d-inline-flex">
-                                    <button class="btn btn-primary" @click="uploadFile()">
-                                        Import from Excel
-                                    </button>
-                                </div>
-                                <div class="d-inline-flex">
-                                    <a class="btn btn-primary" target="_blank"
-                                       href="{{route('admin.products.create', [
+                                <div>
+                                    <div class="d-inline-flex">
+                                        <button class="btn btn-warning btn-sm" @click="uploadFile()">
+                                            Import from Excel
+                                        </button>
+                                    </div>
+                                    <div class="d-inline-flex">
+                                        <a class="btn btn-success btn-sm" target="_blank"
+                                           href="{{route('admin.products.create', [
                                         'type'=> request()->type ==  $currentBranchChannel?
                                             $productChannels[\App\Models\Product::CHANNEL_GROCERY_OBJECT] :
                                             $productChannels[\App\Models\Product::CHANNEL_FOOD_OBJECT],
                                         'branch_id' => $branch->id,
                                         'chain_id' => optional($branch->chain)->id
                                    ])}}">
-                                        Add new product
-                                    </a>
+                                            Add new product
+                                        </a>
+                                    </div>
                                 </div>
                             </div>
                         @endif
