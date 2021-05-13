@@ -421,7 +421,12 @@ class TaxonomyController extends Controller
                               ->active()
                               ->get()
                               ->mapWithKeys(function ($item) {
-                                  return [$item['id'] => $item['chain']['title'].' - '.$item['title'].' ('.$item['region']['english_name'].', '.$item['city']['english_name'].')'];
+                                  $chainTitle = $item['chain']['title'];
+                                  $branchTitle = $item['title'];
+                                  $regionName = $item['region']['english_name'];
+                                  $cityName = $item['city']['english_name'];
+
+                                  return [$item['id'] => $chainTitle.' - '.$branchTitle.' ('.$regionName.', '.$cityName.')'];
                               });
         } else {
             $branches = [];
