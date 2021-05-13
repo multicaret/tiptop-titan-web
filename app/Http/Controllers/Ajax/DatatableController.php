@@ -293,11 +293,12 @@ class DatatableController extends AjaxController
     {
         foreach ($request->positions as $position) {
             $className = str_replace('-', '', Str::singular(Str::title($position['model_name'])));
+            $cacheTag = $className;
             $className = "App\\Models\\$className";
             $className::find($position['id'])->update([
                 'order_column' => $position['order_new_value']
             ]);
-            $cacheTag = Str::plural(strtolower($className));
+            $cacheTag = Str::plural(strtolower($cacheTag));
             if (in_array($cacheTag, ['taxonomies', 'products', 'posts'])) {
                 cache()->tags($cacheTag)->flush();
             }
