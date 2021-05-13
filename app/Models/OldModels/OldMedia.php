@@ -154,6 +154,9 @@ class OldMedia extends MediaAlias
             }
             $finalUrl = sprintf($urlScheme, self::getModelTypes()[$this->model_type], $this->id, $this->file_name);
 
+            $finalUrl = preg_replace_callback('/[اأإء-ي]/ui', function ($m) {
+                return urlencode($m[0]);
+            }, $finalUrl);
 
 //            if ($this->id == 8767) {
 //                dd('2 the plus thingy',

@@ -861,7 +861,7 @@ class DatumImporter extends Command
         if ( ! is_null($lastReachedMedia)) {
             $products = Product::whereDoesntHave('media')
                                ->whereNotnull('branch_id')
-                               ->where('id', '>', $lastReachedMedia)->get();
+                               ->get();
         } else {
             $products = Product::whereNotnull('branch_id')->get();
         }
