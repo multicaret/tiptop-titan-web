@@ -82,19 +82,19 @@ class DatumImporter extends Command
     private static function choicesArray(): array
     {
         return [
-            self::CHOICE_GROCERY_DEFAULT_BRANCH,
-            self::CHOICE_GROCERY_CATEGORIES,
-            self::CHOICE_GROCERY_PRODUCTS,
-            self::CHOICE_FOOD_CHAINS,
-            self::CHOICE_FOOD_PRODUCTS,
-            self::CHOICE_USERS,
-            self::CHOICE_ADDRESSES,
-            self::CHOICE_ORDERS,
-            self::CHOICE_TAXONOMIES,
-            self::CHOICE_CATEGORY_IMAGES,
+//            self::CHOICE_GROCERY_DEFAULT_BRANCH,
+//            self::CHOICE_GROCERY_CATEGORIES,
+//            self::CHOICE_GROCERY_PRODUCTS,
+//            self::CHOICE_FOOD_CHAINS,
+//            self::CHOICE_FOOD_PRODUCTS,
+//            self::CHOICE_USERS,
+//            self::CHOICE_ADDRESSES,
+//            self::CHOICE_ORDERS,
+//            self::CHOICE_TAXONOMIES,
+//            self::CHOICE_CATEGORY_IMAGES,
             self::CHOICE_PRODUCT_IMAGES,
-            self::CHOICE_CHAIN_IMAGES,
-            self::CHOICE_FOR_SERVER,
+//            self::CHOICE_CHAIN_IMAGES,
+//            self::CHOICE_FOR_SERVER,
         ];
     }
 
@@ -110,33 +110,33 @@ class DatumImporter extends Command
     {
         \DB::statement('SET FOREIGN_KEY_CHECKS=0;');
         if ($this->modelName === self::CHOICE_GROCERY_DEFAULT_BRANCH) {
-            $this->insertGroceryDefaultBranch();
+//            $this->insertGroceryDefaultBranch();
         } elseif ($this->modelName === self::CHOICE_GROCERY_PRODUCTS) {
-            $this->importGroceryProducts();
+//            $this->importGroceryProducts();
         } elseif ($this->modelName === self::CHOICE_FOOD_PRODUCTS) {
-            $this->importFoodProducts();
+//            $this->importFoodProducts();
         } elseif ($this->modelName === self::CHOICE_FOOD_CHAINS) {
-            $this->importFoodChains();
+//            $this->importFoodChains();
         } elseif ($this->modelName === self::CHOICE_GROCERY_CATEGORIES) {
-            $this->importGroceryCategories();
+//            $this->importGroceryCategories();
         } elseif ($this->modelName === self::CHOICE_CATEGORY_IMAGES) {
-            $this->importCategoriesImages();
+//            $this->importCategoriesImages();
         } elseif ($this->modelName === self::CHOICE_PRODUCT_IMAGES) {
             $this->importProductsImages();
         } elseif ($this->modelName === self::CHOICE_CHAIN_IMAGES) {
-            $this->importChainImages();
+//            $this->importChainImages();
         } elseif ($this->modelName === self::CHOICE_USERS) {
-            $this->importUsers();
+//            $this->importUsers();
         } elseif ($this->modelName === self::CHOICE_ADDRESSES) {
-            $this->importAddresses();
+//            $this->importAddresses();
         } elseif ($this->modelName === self::CHOICE_ORDERS) {
-            $this->importOrders();
+//            $this->importOrders();
         } elseif ($this->modelName === self::CHOICE_FOR_SERVER) {
-            $this->runServerCommands();
+//            $this->runServerCommands();
         } elseif ($this->modelName === self::CHOICE_TAXONOMIES) {
-            $this->importTaxonomies();
+//            $this->importTaxonomies();
         } elseif ($this->modelName === self::CHOICE_REGIONS_CITIES) {
-            $this->importRegionsCities();
+//            $this->importRegionsCities();
         }
         \DB::statement('SET FOREIGN_KEY_CHECKS=1;');
         $this->newLine(2);
