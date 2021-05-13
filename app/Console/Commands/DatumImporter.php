@@ -875,8 +875,10 @@ class DatumImporter extends Command
                 $productId = $product->cloned_from_product_id;
                 $collectionTo = OldMedia::COLLECTION_COVER;
             }
-            $collections = ['from' => OldMedia::COLLECTION_COVER, 'to' => $collectionTo];
-            $this->assignImageToModel($product, $productId, OldMedia::TYPE_DISH, $collections);
+            if ( ! is_null($productId)) {
+                $collections = ['from' => OldMedia::COLLECTION_COVER, 'to' => $collectionTo];
+                $this->assignImageToModel($product, $productId, OldMedia::TYPE_DISH, $collections);
+            }
             $this->bar->advance();
         }
     }
