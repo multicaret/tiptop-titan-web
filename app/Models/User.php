@@ -90,6 +90,7 @@ use Spatie\Permission\Traits\HasRoles;
  * @property string|null $remember_token
  * @property Carbon|null $created_at
  * @property Carbon|null $updated_at
+ * @property Carbon|null $deleted_at
  * @property-read Collection|\App\Models\Location[] $addresses
  * @property-read int|null $addresses_count
  * @property-read \App\Models\Branch|null $branch
@@ -156,6 +157,7 @@ use Spatie\Permission\Traits\HasRoles;
  * @method static Builder|User notActive()
  * @method static Builder|User notDraft()
  * @method static Builder|User notSuper()
+ * @method static \Illuminate\Database\Query\Builder|User onlyTrashed()
  * @method static Builder|User owners()
  * @method static Builder|User permission($permissions)
  * @method static Builder|User query()
@@ -169,6 +171,7 @@ use Spatie\Permission\Traits\HasRoles;
  * @method static Builder|User whereCountryId($value)
  * @method static Builder|User whereCreatedAt($value)
  * @method static Builder|User whereCurrencyId($value)
+ * @method static Builder|User whereDeletedAt($value)
  * @method static Builder|User whereDob($value)
  * @method static Builder|User whereEmail($value)
  * @method static Builder|User whereEmailVerifiedAt($value)
@@ -205,6 +208,8 @@ use Spatie\Permission\Traits\HasRoles;
  * @method static Builder|User whereViewCount($value)
  * @method static Builder|User whereWalletFreeTotal($value)
  * @method static Builder|User whereWalletReservedTotal($value)
+ * @method static \Illuminate\Database\Query\Builder|User withTrashed()
+ * @method static \Illuminate\Database\Query\Builder|User withoutTrashed()
  * @mixin Eloquent
  * @noinspection PhpFullyQualifiedNameUsageInspection
  * @noinspection PhpUnnecessaryFullyQualifiedNameInspection

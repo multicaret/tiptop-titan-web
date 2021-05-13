@@ -19,7 +19,7 @@ use Illuminate\Support\Carbon;
  * @property int $creator_id
  * @property int $editor_id
  * @property int $currency_id
- * @property int $channel 1:food and grocery, 2:grocery, 3:food
+ * @property int $channel 0:food and grocery, 1:grocery, 2:food
  * @property string $name
  * @property string|null $description
  * @property float|null $discount_amount

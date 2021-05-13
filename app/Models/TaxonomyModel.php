@@ -34,8 +34,8 @@ use Spatie\MediaLibrary\MediaCollections\Models\Media;
  * @property int $creator_id
  * @property int $editor_id
  * @property int|null $parent_id
- * @property int|null $branch_id
  * @property int|null $chain_id
+ * @property int|null $branch_id
  * @property int|null $ingredient_category_id
  * @property int $type 1:Category, 2: Tag, 3..n: CUSTOM
  * @property string|null $icon
@@ -43,8 +43,9 @@ use Spatie\MediaLibrary\MediaCollections\Models\Media;
  * @property int $left
  * @property int $right
  * @property int|null $depth
- * @property string $step
+ * @property string|null $step
  * @property int|null $order_column
+ * @property int|null $cloned_from_taxonomy_id
  * @property int $status 1:draft, 2:active, 3:Inactive, 4..n:CUSTOM
  * @property Carbon|null $created_at
  * @property Carbon|null $updated_at
@@ -116,6 +117,7 @@ use Spatie\MediaLibrary\MediaCollections\Models\Media;
  * @method static Builder|TaxonomyModel unitCategories()
  * @method static Builder|TaxonomyModel whereBranchId($value)
  * @method static Builder|TaxonomyModel whereChainId($value)
+ * @method static Builder|TaxonomyModel whereClonedFromTaxonomyId($value)
  * @method static Builder|TaxonomyModel whereCreatedAt($value)
  * @method static Builder|TaxonomyModel whereCreatorId($value)
  * @method static Builder|TaxonomyModel whereDeletedAt($value)

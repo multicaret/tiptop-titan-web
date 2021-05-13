@@ -13,7 +13,7 @@ use Illuminate\Support\Str;
  *
  * @property int $id
  * @property int $creator_id
- * @property int $editor_id
+ * @property int|null $editor_id
  * @property string|null $contactable_type
  * @property int|null $contactable_id
  * @property int|null $country_id
@@ -45,12 +45,11 @@ use Illuminate\Support\Str;
  * @property int $status 1:draft, 2:active, 3:Inactive, 4..n:CUSTOM
  * @property Carbon|null $created_at
  * @property Carbon|null $updated_at
- * @property string|null $deleted_at
  * @property-read \App\Models\City|null $city
  * @property-read Model|\Eloquent $contactable
  * @property-read \App\Models\Country|null $country
  * @property-read \App\Models\User $creator
- * @property-read \App\Models\User $editor
+ * @property-read \App\Models\User|null $editor
  * @property-read mixed $actual_kind
  * @property-read bool $is_active
  * @property-read bool $is_inactive
@@ -79,7 +78,6 @@ use Illuminate\Support\Str;
  * @method static \Illuminate\Database\Eloquent\Builder|Location whereCountryId($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Location whereCreatedAt($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Location whereCreatorId($value)
- * @method static \Illuminate\Database\Eloquent\Builder|Location whereDeletedAt($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Location whereEditorId($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Location whereEmails($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Location whereFloor($value)

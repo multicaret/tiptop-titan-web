@@ -94,7 +94,6 @@ use Spatie\MediaLibrary\MediaCollections\Models\Media;
  * @property-read bool $is_inactive
  * @property-read mixed $price_formatted
  * @property-read mixed $status_name
- * @property-read \App\Models\Taxonomy $masterCategory
  * @property-read MediaCollection|Media[] $media
  * @property-read int|null $media_count
  * @property-read Collection|\App\Models\ProductOption[] $options
@@ -273,11 +272,6 @@ class Product extends Model implements HasMedia
     public function branch(): BelongsTo
     {
         return $this->belongsTo(Branch::class, 'branch_id');
-    }
-
-    public function masterCategory(): BelongsTo
-    {
-        return $this->belongsTo(Taxonomy::class, 'category_id');
     }
 
     public function barcodes(): BelongsToMany
