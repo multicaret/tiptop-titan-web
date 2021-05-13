@@ -29,11 +29,13 @@ class ProductsImporter implements WithMultipleSheets/*, SkipsUnknownSheets*/
     protected CollectionAlias $productsOptionsIds;
     protected CollectionAlias $productsOptionsSelectionsIds;
     public bool $isChecking = false;
+    private bool $withOptions;
 
-    public function __construct(Chain $chain, Branch $branch)
+    public function __construct(Chain $chain, Branch $branch, bool $withOptions)
     {
         $this->chain = $chain;
         $this->branch = $branch;
+        $this->withOptions = $withOptions;
         $this->resetAllIdsAttributesValues();
     }
 
@@ -92,9 +94,11 @@ class ProductsImporter implements WithMultipleSheets/*, SkipsUnknownSheets*/
             $allWorksheets = [
                 self::WORKSHEET_MENU_CATEGORIES => new MenuCategoriesWorksheet($this->branch, $this),
                 self::WORKSHEET_PRODUCTS => new ProductWorksheet($this->chain, $this->branch, $this),
-                self::WORKSHEET_OPTIONS => new ProductOptionsWorksheet($this),
-                self::WORKSHEET_SELECTIONS => new ProductOptionsSelectionsWorksheet($this),
             ];
+            if ($this->withOptions) {
+                $allWorksheets[self::WORKSHEET_OPTIONS] = new ProductOptionsWorksheet($this);
+                $allWorksheets[self::WORKSHEET_SELECTIONS] = new ProductOptionsSelectionsWorksheet($this);
+            }
         }
 
         return $allWorksheets;

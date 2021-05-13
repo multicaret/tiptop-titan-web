@@ -130,6 +130,7 @@
                                           method="post"
                                           action="{{route('admin.branch.import-from-excel',[$branch, 'type'=> request('type')])}}">
                                         @csrf
+                                        <input name="with_options" type="hidden" :value="withOptions"/>
                                         <input id="excel-upload" name="excel-file" type="file" ref="excelFile"
                                                @change="autoSubmit()"/>
                                         <input type="submit" value="submit" ref="submitBtn" id="submit"/>
@@ -137,7 +138,12 @@
                                 </div>
                                 <div>
                                     <div class="d-inline-flex">
-                                        <button class="btn btn-warning btn-sm" @click="uploadFile()">
+                                        <button class="btn btn-warning btn-sm" @click="uploadFile(true)">
+                                            Import from Excel with options
+                                        </button>
+                                    </div>
+                                    <div class="d-inline-flex">
+                                        <button class="btn btn-warning btn-sm" @click="uploadFile(false)">
                                             Import from Excel
                                         </button>
                                     </div>

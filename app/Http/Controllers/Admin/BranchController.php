@@ -402,7 +402,8 @@ class BranchController extends Controller
                             ->jsonSerialize();
             $request->file('excel-file')->storeAs(storage_path('/'), $filename);
             $path = storage_path("{$filename}");
-            $productsImporter = new ProductsImporter($branch->chain, $branch);
+            $withOptions = $request->input('with_options') === 'true';
+            $productsImporter = new ProductsImporter($branch->chain, $branch, $withOptions);
             $productsImporter->isChecking = true;
             try {
                 // Work on validation data on all sheets

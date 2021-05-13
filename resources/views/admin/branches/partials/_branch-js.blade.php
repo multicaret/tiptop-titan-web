@@ -51,6 +51,7 @@
             isTipTopDelivery: @json($branch->has_tip_top_delivery),
             isRestaurantDelivery: @json($branch->has_restaurant_delivery),
             excelFile: null,
+            withOptions: false,
         },
         watch: {
             branch: {
@@ -121,7 +122,8 @@
                     this.$refs.submitBtn.click();
                 }
             },
-            uploadFile() {
+            uploadFile(withOptions) {
+                this.withOptions = withOptions;
                 this.$refs.excelFile.click();
             },
         },
