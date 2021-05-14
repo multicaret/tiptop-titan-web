@@ -4,6 +4,7 @@ namespace App\Http\Livewire\Products;
 
 use App\Models\Branch;
 use App\Models\Product;
+use App\Models\Taxonomy;
 use Livewire\Component;
 use Livewire\WithPagination;
 
@@ -17,9 +18,16 @@ class ProductsTable extends Component
     public $branchId;
     public $searchByCategoryForFood;
     public $searchByCategoryForGrocery;
+    public $categories;
 
     public function render()
     {
+        if ($this->branch->type == Branch::CHANNEL_FOOD_OBJECT) {
+            $this->categories = $this->branch->menuCategories()->with('translations')->get();
+        } else {
+            $this->categories = Taxonomy::groceryCategories()->where('chain_id', $this->branch->chain->id)->get();
+        }
+
         $products = $this->retrieveProducts();
 
         return view('livewire.products.table', compact('products'));
@@ -39,7 +47,7 @@ class ProductsTable extends Component
                 $query->where('category_id', $searchByCategoryForGrocery);
             });
         }
-        if ($this->branch->type == Branch::CHANNEL_GROCERY_OBJECT) {
+        if ($this->branch->is_food) {
             $products = $products->latest('id')->get();
         } else {
             $products = $products->latest()

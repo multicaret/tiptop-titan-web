@@ -3,7 +3,7 @@
         @if($branch->type == \App\Models\Branch::CHANNEL_FOOD_OBJECT)
             <select wire:model="searchByCategoryForFood" class="form-control">
                 <option value="all">All</option>
-                @foreach($branch->menuCategories()->with('translations')->get() as $category)
+                @foreach($categories as $category)
                     <option value="{{ $category->id }}">{{ $category->title }}</option>
                 @endforeach
             </select>
@@ -11,7 +11,7 @@
         @elseif($branch->type == \App\Models\Branch::CHANNEL_GROCERY_OBJECT)
             <select wire:model="searchByCategoryForGrocery" class="form-control mb-2">
                 <option value="all">All</option>
-                @foreach(\App\Models\Taxonomy::groceryCategories()->where('chain_id',$branch->chain->id)->get() as $category)
+                @foreach($categories as $category)
                     <option value="{{ $category->id }}">{{ $category->title }}</option>
                 @endforeach
             </select>
@@ -33,7 +33,10 @@
                 </thead>
                 <tbody {{--wire:poll.1s--}}>
                 @forelse($products as $product)
-                    <livewire:products.product-row-edit :product="$product" :key="'product-row-edit-'.$product->id">
+                    <livewire:products.product-row-edit :key="'product-row-edit-'.$product->id"
+                                                        :categories="$categories"
+                                                        :product="$product"
+                    >
                         @empty
                             <tr>
                                 <td colspan="9" class="text-center">
@@ -52,6 +55,13 @@
                 @endforelse
                 </tbody>
             </table>
+            @if($branch->is_grocery)
+                <div class="row">
+                    <div class="col-12 text-center">
+                        {{$products->links()}}
+                    </div>
+                </div>
+            @endif
         </div>
     </div>
 </div>

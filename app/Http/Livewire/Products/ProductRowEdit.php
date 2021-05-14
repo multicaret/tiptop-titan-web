@@ -11,17 +11,17 @@ class ProductRowEdit extends Component
     public $titleEn;
     public $titleKu;
     public $titleAr;
-    public $categoris;
+    public $categories;
 
     public function mount()
     {
         $this->titleEn = optional($this->product->translate('en'))->title;
         $this->titleKu = optional($this->product->translate('ku'))->title;
         $this->titleAr = optional($this->product->translate('ar'))->title;
-        $branch = $this->product->branch;
+        /*$branch = $this->product->branch;
         if ($this->product->is_food) {
-            $this->categoris = $branch->menuCategories()->with('translations')->get();
-        }
+            $this->categories = $branch->menuCategories()->with('translations')->get();
+        }*/
 
     }
 
