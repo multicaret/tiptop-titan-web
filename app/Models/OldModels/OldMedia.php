@@ -149,32 +149,11 @@ class OldMedia extends MediaAlias
                 }
             }
 
-            if (str_contains($this->file_name, '+')) {
-                $this->file_name = str_replace('+', '%2B', $this->file_name);
-            }
+            $this->encodeFileName();
+
             $finalUrl = sprintf($urlScheme, self::getModelTypes()[$this->model_type], $this->id, $this->file_name);
 
-            /*
-             * With these included:
-             گە
-            ی
-             * */
-            $finalUrl = preg_replace_callback('/[اأإء-ي]/ui', function ($m) {
-                return urlencode($m[0]);
-            }, $finalUrl);
-            $finalUrl = preg_replace_callback('/گ/ui', function ($m) {
-                return urlencode($m[0]);
-            }, $finalUrl);
-            $finalUrl = preg_replace_callback('/ى/ui', function ($m) {
-                return urlencode($m[0]);
-            }, $finalUrl);
 
-//            if ($this->id == 8767) {
-//                dd('2 the plus thingy',
-//                    $finalUrl,
-//                "https://tiptop-backend-production.s3.eu-central-1.amazonaws.com/media/dishes/8767/resized/%D9%85%D8%A7%D8%B4-%D8%A8%D8%B7%D8%A7%D8%B7%D8%A7-%2B-%D8%AE%D8%B6%D8%A7%D8%B1-%D9%85%D8%B3%D9%84%D9%88%D9%82%D8%A9-1000x650.jpg"
-//                );
-//            }
             if ($seemsNull) {
                 return null;
             }
@@ -187,6 +166,8 @@ class OldMedia extends MediaAlias
         }
 
         $urlScheme = 'https://'.env('OLD_AWS_BUCKET').'.s3.eu-central-1.amazonaws.com/media/%s/%d/%s';
+
+        $this->encodeFileName();
 
         return sprintf($urlScheme, self::getModelTypes()[$this->model_type], $this->id, $this->file_name);
 
@@ -206,6 +187,29 @@ class OldMedia extends MediaAlias
             self::TYPE_DISH => 'dishes',
             self::TYPE_RESTAURANT => 'restaurants',
         ];
+    }
+
+    private function encodeFileName(): void
+    {
+        if (str_contains($this->file_name, '+')) {
+            $this->file_name = str_replace('+', '%2B', $this->file_name);
+        }
+        $this->file_name = preg_replace_callback('/[اأإء-ي]/ui', function ($m) {
+            return urlencode($m[0]);
+        }, $this->file_name);
+
+        $this->file_name = preg_replace_callback('/[٠-٩]/ui', function ($m) {
+            return urlencode($m[0]);
+        }, $this->file_name);
+        /*
+         * With these included:
+         گە
+        ی
+         * */
+        $this->file_name = str_replace('گ', '%DA%AF', $this->file_name);
+        $this->file_name = str_replace('ی', '%DB%8C', $this->file_name);
+        $this->file_name = str_replace('،', '%D8%8C', $this->file_name);
+        $this->file_name = str_replace('ە', '%DB%95', $this->file_name);
     }
 
 }
