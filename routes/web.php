@@ -1,8 +1,6 @@
 <?php
 
-use App\Models\User;
 use Illuminate\Support\Facades\Route;
-use Illuminate\Support\Str;
 
 Auth::routes(['verify' => true]);
 Route::get('login/{provider}', 'Auth\LoginController@redirectToProvider')->name('social.redirect');
@@ -33,10 +31,5 @@ Route::view('support', 'frontend.support')->name('support');
 Route::get('static-map', 'HomeController@staticMap');
 
 Route::get('foo', 'HomeController@foo');
-
-Route::get('poo', function () {
-    $role = ucwords(str_replace('-', ' ', Str::title(User::ROLE_TIPTOP_DRIVER)));
-    dd(User::role($role)->get());
-    dd(auth()->user()->role_name);
-});
+Route::get('bar/{model}', 'HomeController@bar');
 

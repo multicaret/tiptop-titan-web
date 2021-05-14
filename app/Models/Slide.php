@@ -128,7 +128,16 @@ class Slide extends Model
         'image_thumbnail',
     ];
 
-    protected $fillable = ['title', 'description', 'link_value', 'link_type', 'begins_at', 'expires_at', 'status'];
+    protected $fillable = [
+        'title',
+        'description',
+        'link_value',
+        'link_type',
+        'begins_at',
+        'expires_at',
+        'status',
+        'order_column',
+    ];
 
     protected $casts = [
         'begins_at' => 'datetime',

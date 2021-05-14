@@ -525,5 +525,16 @@ class Controller extends BaseController
     {
         return $this->getIndex()->where('id', $id);
     }
+
+    public static function fillEmptyOrderColumnValues($className)
+    {
+        $maxOrderColumn = $className::max('order_column') + 1;
+        foreach ($className::whereNull('order_column')->get() as $index => $item) {
+            $item->order_column = $maxOrderColumn + $index;
+            $item->save();
+        }
+
+        return 'Done';
+    }
 }
 

@@ -81,7 +81,11 @@ class Region extends Model implements HasMedia
     public const STATUS_ACTIVE = 2;
     public const STATUS_INACTIVE = 3;
 
-    protected $fillable = ['name', 'slug'];
+    protected $fillable = [
+        'name',
+        'slug',
+        'order_column',
+    ];
     protected $with = ['translations'];
     protected $translatedAttributes = ['name', 'slug'];
     protected $appends = [

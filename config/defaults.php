@@ -485,4 +485,9 @@ return [
         'countries',
         'offers',
     ],
+    'order_column_models' => [
+        'cities',
+        'regions',
+        'slides',
+    ]
 ];

@@ -291,23 +291,27 @@ class DatatableController extends AjaxController
 
     public function reorder(Request $request)
     {
-        foreach ($request->positions as $position) {
-            $className = str_replace('-', '', Str::singular(Str::title($position['model_name'])));
-            $cacheTag = $className;
-            $className = "App\\Models\\$className";
+        $positions = $request->positions;
+        $className = str_replace('-', '', Str::singular(Str::title($positions[0]['model_name'])));
+        $cacheTag = $className;
+        $className = "App\\Models\\$className";
+        foreach ($positions as $position) {
             $className::find($position['id'])->update([
                 'order_column' => $position['order_new_value']
             ]);
-            $cacheTag = Str::plural(strtolower($cacheTag));
-            if (in_array($cacheTag, ['taxonomies', 'products', 'posts'])) {
-                cache()->tags($cacheTag)->flush();
-            }
+        }
+
+        $cacheTag = Str::plural(strtolower($cacheTag));
+        if (in_array($cacheTag, ['taxonomies', 'products', 'posts', 'slides'])) {
+            cache()->tags($cacheTag)->flush();
         }
     }
 
     public function cities(Request $request)
     {
-        $cities = City::selectRaw('cities.*')->with('translations', 'region.translations');
+        $cities = City::orderBy('order_column')
+                      ->selectRaw('cities.*')
+                      ->with('translations', 'region.translations');
 
         return DataTables::of($cities)
                          ->editColumn('action', function ($city) {
@@ -320,10 +324,10 @@ class DatatableController extends AjaxController
 
                              return view('admin.components.datatables._row-actions', $data)->render();
                          })
-                         ->editColumn('status', function ($post) {
-                             $currentStatus = Post::getAllStatusesRich()[$post->status];
+                         ->editColumn('status', function ($item) {
+                             $currentStatus = Post::getAllStatusesRich()[$item->status];
                              $data = [
-                                 'item' => $post,
+                                 'item' => $item,
                                  'currentStatus' => $currentStatus,
                              ];
 
@@ -335,10 +339,14 @@ class DatatableController extends AjaxController
                                  'date' => $item->created_at
                              ])->render();
                          })
+                         ->editColumn('order_column', function ($item) {
+                             return view('admin.components.datatables._row-reorder')->render();
+                         })
                          ->rawColumns([
                              'action',
                              'created_at',
                              'status',
+                             'order_column',
                          ])
                          ->setRowAttr([
                              'row-id' => function ($city) {
@@ -350,7 +358,9 @@ class DatatableController extends AjaxController
 
     public function regions(Request $request)
     {
-        $regions = Region::selectRaw('regions.*')->with('translations', 'country');
+        $regions = Region::orderBy('order_column')
+                         ->selectRaw('regions.*')
+                         ->with('translations', 'country.translations');
 
         return DataTables::of($regions)
                          ->editColumn('action', function ($region) {
@@ -378,10 +388,14 @@ class DatatableController extends AjaxController
                                  'date' => $item->created_at
                              ])->render();
                          })
+                         ->editColumn('order_column', function ($item) {
+                             return view('admin.components.datatables._row-reorder')->render();
+                         })
                          ->rawColumns([
                              'action',
                              'created_at',
                              'status',
+                             'order_column',
                          ])
                          ->setRowAttr([
                              'row-id' => function ($region) {
@@ -433,7 +447,8 @@ class DatatableController extends AjaxController
 
     public function slides(Request $request)
     {
-        $slides = Slide::selectRaw('slides.*')->latest();
+        $slides = Slide::orderBy('order_column')
+                       ->selectRaw('slides.*');
 
         return DataTables::of($slides)
                          ->editColumn('action', function ($slide) {
@@ -452,6 +467,9 @@ class DatatableController extends AjaxController
                                      'date' => $item->begins_at
                                  ])->render();
                              }
+                         })
+                         ->editColumn('order_column', function ($item) {
+                             return view('admin.components.datatables._row-reorder')->render();
                          })
                          ->editColumn('expires_at', function ($item) {
                              if ( ! is_null($item->expires_at)) {
@@ -575,6 +593,7 @@ class DatatableController extends AjaxController
                              'channel',
                              'time_left',
                              'thumbnail',
+                             'order_column',
                          ])
                          ->setRowAttr([
                              'row-id' => function ($slide) {

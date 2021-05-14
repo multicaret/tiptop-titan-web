@@ -61,6 +61,7 @@ class RouteServiceProvider extends ServiceProvider
             'auth:web',
             'force-locale',
             'check-suspension',
+            'fill-empty-order-column-values',
 //            'localization-session-redirect',
 //            'localization-redirect'
         ])

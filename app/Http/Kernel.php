@@ -75,5 +75,6 @@ class Kernel extends HttpKernel
         'check-suspension' => \App\Http\Middleware\CheckSuspension::class,
         'force-locale' => \App\Http\Middleware\ForceLocaleMiddleware::class,
         'store-ad-words-query-string' => \App\Http\Middleware\StoreAdWordsQueryStringMiddleware::class,
+        'fill-empty-order-column-values' => \App\Http\Middleware\FillEmptyOrderColumns::class,
     ];
 }
