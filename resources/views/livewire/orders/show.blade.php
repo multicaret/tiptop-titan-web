@@ -115,9 +115,9 @@
                         <div class="col-12 py-3 border-bottom">
                             <b>Phone</b>
                             <a class="text-primary pull-right"
-                               href="tel:{{$order->user->phone_number}}"
+                               href="tel:00{{$order->user->phone_country_code}}{{$order->user->phone_number}}"
                                target="_blank">
-                                {{$order->user->phone_number}}
+                                +{{$order->user->phone_country_code}}{{$order->user->phone_number}}
                             </a>
                         </div>
                         <div class="col-12 py-3 border-bottom">
