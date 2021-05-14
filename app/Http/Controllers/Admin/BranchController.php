@@ -104,8 +104,8 @@ class BranchController extends Controller
         $contacts = [];
         $searchTags = Branch::isFood() ? Taxonomy::searchTags()->get() : [];
         $branch = new Branch();
-        $regions = Region::whereCountryId(config('defaults.country.id'))->get();
-        $chains = Chain::whereType($type)->get();
+        $regions = Region::active()->whereCountryId(config('defaults.country.id'))->get();
+        $chains = Chain::active()->whereType($type)->get();
         $branch->chain_id = optional(Chain::whereType($type)->first())->id;
         $branch->load('chain');
         $foodCategories = Taxonomy::foodCategories()->get();
@@ -167,9 +167,9 @@ class BranchController extends Controller
             'phone' => $item->phones
         ]);
         $searchTags = Branch::isFood() ? Taxonomy::searchTags()->get() : [];
-        $regions = Region::whereCountryId(config('defaults.country.id'))->get();
+        $regions = Region::active()->whereCountryId(config('defaults.country.id'))->get();
         $branch->load(['region', 'city', 'chain']);
-        $chains = Chain::whereType($type)->get();
+        $chains = Chain::active()->whereType($type)->get();
         $foodCategories = Taxonomy::foodCategories()->get();
         $workingHours = $branch->getWorkingHours();
 
