@@ -135,8 +135,19 @@ class ComposerServiceProvider extends ServiceProvider
                                     'type' => Product::getCorrectChannelName(Product::CHANNEL_GROCERY_OBJECT, false)
                                 ],
                                 'routeName' => 'admin.products.index',
-                                'countPrimary' => Product::active()->groceries()->count(),
-                                'countDanger' => Product::inactive()->groceries()->count(),
+                                'countPrimary' => Product::active()->whereNotNull('branch_id')->groceries()->count(),
+                                'countDanger' => Product::inactive()->whereNotNull('branch_id')->groceries()->count(),
+                            ],
+                            [
+                                'title' => 'Chain Products',
+                                'icon' => 'fas fa-boxes',
+                                'params' => [
+                                    'type' => Product::getCorrectChannelName(Product::CHANNEL_GROCERY_OBJECT, false),
+                                    'only-for-chains' => true,
+                                ],
+                                'routeName' => 'admin.products.index',
+                                'countPrimary' => Product::active()->whereNull('branch_id')->groceries()->count(),
+                                'countDanger' => Product::inactive()->whereNull('branch_id')->groceries()->count(),
                             ],
                             [
                                 'title' => 'Market Categories',
@@ -205,8 +216,19 @@ class ComposerServiceProvider extends ServiceProvider
                                     'type' => Product::getCorrectChannelName(Product::CHANNEL_FOOD_OBJECT, false)
                                 ],
                                 'routeName' => 'admin.products.index',
-                                'countPrimary' => Product::active()->foods()->count(),
-                                'countDanger' => Product::inactive()->foods()->count(),
+                                'countPrimary' => Product::active()->whereNotNull('branch_id')->foods()->count(),
+                                'countDanger' => Product::inactive()->whereNotNull('branch_id')->foods()->count(),
+                            ],
+                            [
+                                'title' => 'Chain Products',
+                                'icon' => 'fas fa-boxes',
+                                'params' => [
+                                    'type' => Product::getCorrectChannelName(Product::CHANNEL_GROCERY_OBJECT, false),
+                                    'only-for-chains' => true,
+                                ],
+                                'routeName' => 'admin.products.index',
+                                'countPrimary' => Product::active()->whereNull('branch_id')->foods()->count(),
+                                'countDanger' => Product::inactive()->whereNull('branch_id')->foods()->count(),
                             ],
                             [
                                 'title' => 'Food Categories',
