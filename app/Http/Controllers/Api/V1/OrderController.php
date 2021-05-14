@@ -42,6 +42,11 @@ class OrderController extends BaseApiController
                                ->whereNotNull('completed_at')
                                ->latest()
                                ->get();
+
+        $previousOrders = $previousOrders->filter(function ($order) {
+            return Location::find($order->address_id) != null;
+        });
+
         if ( ! is_null($previousOrders)) {
             return $this->respond(OrderResource::collection($previousOrders));
         }
@@ -66,6 +71,11 @@ class OrderController extends BaseApiController
                                ->whereNotNull('completed_at')
                                ->latest()
                                ->get();
+
+        $previousOrders = $previousOrders->filter(function ($order) {
+            return Location::find($order->address_id) != null;
+        });
+
         if ( ! is_null($previousOrders)) {
             return $this->respond(OrderResource::collection($previousOrders));
         }
