@@ -239,7 +239,7 @@ class ProductController extends Controller
                                           ->get()
                                           ->map($getIdTitle)
                                           ->all();*/
-            $data['categories'] = $request->has('branch_id') ? Branch::find($request->input('branch_id'))->menuCategories : Taxonomy::menuCategories()->get();
+            $data['categories'] = $request->has('branch_id') ? Branch::find($request->input('branch_id'))->menuCategories : Branch::find($product->branch->id)->menuCategories()->get();
         }
         $data['searchTags'] = Taxonomy::searchTags()->get();
         if ( ! is_null($product->id)) {
