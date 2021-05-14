@@ -159,7 +159,13 @@ class OldMedia extends MediaAlias
              گە
             ی
              * */
-            $finalUrl = preg_replace_callback('/[اأإء-ييگە]/ui', function ($m) {
+            $finalUrl = preg_replace_callback('/[اأإء-ي]/ui', function ($m) {
+                return urlencode($m[0]);
+            }, $finalUrl);
+            $finalUrl = preg_replace_callback('/گ/ui', function ($m) {
+                return urlencode($m[0]);
+            }, $finalUrl);
+            $finalUrl = preg_replace_callback('/ى/ui', function ($m) {
                 return urlencode($m[0]);
             }, $finalUrl);
 
