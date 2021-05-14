@@ -215,10 +215,14 @@ class Product extends Model implements HasMedia
         'available_quantity',
         'width',
         'height',
+        'depth',
+        'weight',
         'minimum_orderable_quantity',
         'maximum_orderable_quantity',
         'importer_id',
         'status',
+        'order_column',
+        'is_storage_tracking_enabled',
     ];
 
     protected $translatedAttributes = [
