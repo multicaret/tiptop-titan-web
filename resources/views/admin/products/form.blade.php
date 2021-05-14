@@ -214,10 +214,10 @@
                                             </label>
                                             <multiselect
                                                 :options="categories"
-                                                v-model="product.master_category"
+                                                v-model="product.category"
                                                 track-by="id"
                                                 label="title"
-                                                name="master_category"
+                                                name="category"
                                                 :multiple="isGrocery"
                                                 :searchable="true"
                                                 :allow-empty="true"
@@ -228,7 +228,7 @@
                                                 autocomplete="false"
                                                 required
                                             ></multiselect>
-                                            @error('master_category')
+                                            @error('category')
                                             <span class="text-danger">
                                                     {{$message}}
                                                 </span>
@@ -557,7 +557,7 @@
             <input type="hidden" name="status" :value="selectedStatus.id">
             <input type="hidden" name="search_tags">
             <input type="hidden" name="categories" :value="JSON.stringify(product.categories)">
-            <input type="hidden" name="master_category" :value="JSON.stringify(product.master_category)">
+            <input type="hidden" name="category" :value="JSON.stringify(product.category)">
             <input type="hidden" name="unit_id" :value="JSON.stringify(product.unit)">
             <input type="hidden" name="unattached-media" class="deleted-file" value="">
             <button class="btn btn-success" type="submit">{{trans('strings.submit')}}</button>
@@ -608,7 +608,7 @@
                 },
                 selectBranch: function () {
                     this.categories = [];
-                    this.product.master_category = null;
+                    this.product.category = null;
                 },
                 getBranches: function () {
                     const branches = !!this.branches ? JSON.parse(JSON.stringify(this.branches)) : null;
@@ -642,7 +642,7 @@
                         axios.get(url).then((res) => {
                             this.categories = res.data.categories;
                             if (this.categories.length > 0) {
-                                this.product.master_category = this.categories[0];
+                                this.product.category = this.categories[0];
                             }
                             hasError = false;
                         }).catch(console.error).finally(() => {

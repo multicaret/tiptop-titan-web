@@ -259,7 +259,7 @@ class ProductController extends Controller
             $rules['categories'] = 'required';
         }
         if ($request->type == Product::getCorrectChannelName(Product::CHANNEL_FOOD_OBJECT, false)) {
-            $rules['master_category'] = 'required';
+            $rules['category'] = 'required';
         }
         if ($request->has('is_enable_to_store_date')) {
             $rules['price_discount_began_at'] = 'required|date';
@@ -310,7 +310,7 @@ class ProductController extends Controller
             $ids = Arr::pluck(json_decode($request->input('categories'), true), 'id');
             $product->category_id = $ids[0];
         } else {
-            $product->category_id = json_decode($request->input('master_category'))->id;
+            $product->category_id = json_decode($request->input('category'))->id;
         }
         $product->save();
 
