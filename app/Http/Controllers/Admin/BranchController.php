@@ -460,8 +460,9 @@ class BranchController extends Controller
             }
 
             return redirect()->route('admin.branches.edit', [$branch, 'type' => $request->type])
-                             ->with('message-alert', $messageData);
+                             ->with('message-alert', str_replace('"', '\'', $messageData));
         }
+
         $messageData = [
             'type' => 'Error',
             'text' => 'Imported failed',
@@ -469,7 +470,7 @@ class BranchController extends Controller
         ];
 
         return redirect()->route('admin.branches.edit', [$branch, 'type' => $request->type])
-                         ->with('message-alert', $messageData);
+                         ->with('message-alert', str_replace('"', '\'', $messageData));
     }
 
     public function exportToExcel(Request $request, Branch $branch)
