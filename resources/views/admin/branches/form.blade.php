@@ -163,7 +163,8 @@
                             </div>
                         @endif
 
-                        <livewire:products.products-table :branch="$branch" :branch-id="$branch->id"/>
+                        <livewire:products.products-table :branch="$branch" :branch-id="$branch->id"
+                                                          :key="'products-table-'.$branch->id"/>
                     @endif
                 </div>
             </div>
