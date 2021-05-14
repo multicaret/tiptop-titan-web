@@ -32,35 +32,26 @@
                 </tr>
                 </thead>
                 <tbody {{--wire:poll.1s--}}>
-                @if($products)
-                    @forelse($products as $product)
-                        <livewire:products.product-row-edit :product="$product" :key="'product-row-edit-'.$product->id">
-                            @empty
-                                <tr>
-                                    <td colspan="9" class="text-center">
-                                        <h4>
-                                            No items found!
-                                        </h4>
-                                        {{--<p>
-                                            <button
-                                                class="btn btn-link btn-outline-primary" --}}{{--wire:click="resetFilters"--}}{{-->
-                                                Reset
-                                                filters?
-                                            </button>
-                                        </p>--}}
-                                    </td>
-                                </tr>
-                    @endforelse
-                @endif
+                @forelse($products as $product)
+                    <livewire:products.product-row-edit :product="$product" :key="'product-row-edit-'.$product->id">
+                        @empty
+                            <tr>
+                                <td colspan="9" class="text-center">
+                                    <h4>
+                                        No items found!
+                                    </h4>
+                                    {{--<p>
+                                        <button
+                                            class="btn btn-link btn-outline-primary" --}}{{--wire:click="resetFilters"--}}{{-->
+                                            Reset
+                                            filters?
+                                        </button>
+                                    </p>--}}
+                                </td>
+                            </tr>
+                @endforelse
                 </tbody>
             </table>
-            <div class="row">
-                @if($products)
-                    <div class="col-12 text-center">
-                        {{$products->links()}}
-                    </div>
-                @endif
-            </div>
         </div>
     </div>
 </div>

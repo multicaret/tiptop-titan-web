@@ -2,6 +2,7 @@
 
 namespace App\Http\Livewire\Products;
 
+use App\Models\Branch;
 use App\Models\Product;
 use Livewire\Component;
 use Livewire\WithPagination;
@@ -38,8 +39,12 @@ class ProductsTable extends Component
                 $query->where('category_id', $searchByCategoryForGrocery);
             });
         }
-        $products = $products->latest()
-                             ->paginate(30);
+        if ($this->branch->type == Branch::CHANNEL_GROCERY_OBJECT) {
+            $products = $products->latest('id')->get();
+        } else {
+            $products = $products->latest()
+                                 ->paginate(30);
+        }
 
         return $products;
     }
