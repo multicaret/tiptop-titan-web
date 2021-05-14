@@ -154,7 +154,12 @@ class OldMedia extends MediaAlias
             }
             $finalUrl = sprintf($urlScheme, self::getModelTypes()[$this->model_type], $this->id, $this->file_name);
 
-            $finalUrl = preg_replace_callback('/[اأإء-ي]/ui', function ($m) {
+            /*
+             * With these included:
+             گە
+            ی
+             * */
+            $finalUrl = preg_replace_callback('/[اأإء-ييگە]/ui', function ($m) {
                 return urlencode($m[0]);
             }, $finalUrl);
 
