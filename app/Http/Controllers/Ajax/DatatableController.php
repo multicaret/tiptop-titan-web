@@ -601,9 +601,10 @@ class DatatableController extends AjaxController
                                      'type' => request('type')
                                  ]),
                              ];
-                             if ( ! $chain->is_synced) {
-                                 $data['syncAction'] = localization()->localizeURL(route('ajax.chains.sync', $chain));
-                             }
+//                             if ( ! $chain->is_synced) {
+                             $data['syncAction'] = route('admin.chains.sync', $chain);
+
+//                             }
 
                              return view('admin.components.datatables._row-actions', $data)->render();
                          })

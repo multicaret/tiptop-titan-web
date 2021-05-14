@@ -3,14 +3,15 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
-use App\Models\Region;
 use App\Models\Chain;
+use App\Models\Region;
 use DB;
 use Exception;
 use Illuminate\Contracts\Foundation\Application;
 use Illuminate\Contracts\View\Factory;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Artisan;
 use Illuminate\View\View;
 
 class ChainController extends Controller
@@ -218,4 +219,30 @@ class ChainController extends Controller
         DB::commit();
     }
 
+    public function sync(Chain $chain)
+    {
+        return view('admin.chains.sync', compact('chain'));
+    }
+
+    public function postSync(Chain $chain, Request $request)
+    {
+        $branchIds = $request->sync_branch_ids;
+        $chainsIds = [$chain->id];
+
+        try {
+            Artisan::call('datum:sync-chains', [
+                '--id' => $chainsIds,
+                '--branchIds' => $branchIds,
+            ]);
+            $outputMessage = Artisan::output();
+        } catch (Exception $e) {
+            $outputMessage = $e->getMessage();
+        }
+
+        return redirect(route('admin.index', $chain))
+            ->with('message', [
+                'type' => 'Success',
+                'text' => str_replace(PHP_EOL, '', $outputMessage),
+            ]);
+    }
 }

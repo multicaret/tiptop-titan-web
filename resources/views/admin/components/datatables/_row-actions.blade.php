@@ -1,15 +1,15 @@
 @isset($statusToggle))
-    <button type="button" data-status-toggle="{{ $statusToggleUrl }}"
-            class=" {{ ($statusToggle == 1) ? 'active' : '' }}"
-            data-toggle="button" aria-pressed="false"
-            data-loading-text="<i class='fa fa-spinner fa-spin '></i> Processing Order">
+<button type="button" data-status-toggle="{{ $statusToggleUrl }}"
+        class=" {{ ($statusToggle == 1) ? 'active' : '' }}"
+        data-toggle="button" aria-pressed="false"
+        data-loading-text="<i class='fa fa-spinner fa-spin '></i> Processing Order">
 
-        <i class="ti-check text-active" aria-hidden="true"></i>
-        <span class="text-active">{{ $activeStr }}</span>
+    <i class="ti-check text-active" aria-hidden="true"></i>
+    <span class="text-active">{{ $activeStr }}</span>
 
-        <i class="ti-close text" aria-hidden="true"></i>
-        <span class="text">{{ $inActiveStr }}</span>
-    </button>
+    <i class="ti-close text" aria-hidden="true"></i>
+    <span class="text">{{ $inActiveStr }}</span>
+</button>
 @endisset
 @isset($editAction)
     <a href="{{ $editAction }}"
@@ -37,14 +37,15 @@
 @endisset
 @isset($deepLink)
     <x-admin.add-copy-buttons :copyLabelIsBefore="true"
-        :copyContent="$deepLink['url']" :showAddButton="false" classes="medium-icon btn-link btn-lg p-0 m-0"
-        :copyButtonLabel="trans('strings.link')">
+                              :copyContent="$deepLink['url']" :showAddButton="false"
+                              classes="medium-icon btn-link btn-lg p-0 m-0"
+                              :copyButtonLabel="trans('strings.link')">
     </x-admin.add-copy-buttons>
 @endisset
 @isset($syncAction)
-    <button class="btn btn-link" id="{{$uuid}}" onclick="syncChain('{{$syncAction}}')"
-       data-toggle="tooltip"
+    <a class="btn btn-link" id="{{$uuid}}" href="{{$syncAction}}"
+       data-toggle="tooltip" target="_blank"
        title="@lang('strings.sync_chain')">
         &nbsp;<i class="fas fa-exchange-alt"></i>&nbsp;
-    </button>
+    </a>
 @endisset
