@@ -37,7 +37,7 @@ class OrderAgentNote extends Model
 {
     public function agent(): BelongsTo
     {
-        return $this->belongsTo(User::class);
+        return $this->belongsTo(User::class)->withTrashed();
     }
 
     public function order(): BelongsTo

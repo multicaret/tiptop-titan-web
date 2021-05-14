@@ -321,12 +321,12 @@ class Taxonomy extends Node implements HasMedia, ShouldHaveTypes, TranslatableCo
 
     public function creator(): BelongsTo
     {
-        return $this->belongsTo(User::class, 'creator_id');
+        return $this->belongsTo(User::class, 'creator_id')->withTrashed();
     }
 
     public function editor(): BelongsTo
     {
-        return $this->belongsTo(User::class, 'editor_id');
+        return $this->belongsTo(User::class, 'editor_id')->withTrashed();
     }
 
     public function chain(): BelongsTo

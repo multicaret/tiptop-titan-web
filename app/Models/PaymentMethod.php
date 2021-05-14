@@ -103,12 +103,12 @@ class PaymentMethod extends Model implements HasMedia
 
     public function creator()
     {
-        return $this->belongsTo(User::class, 'creator_id');
+        return $this->belongsTo(User::class, 'creator_id')->withTrashed();
     }
 
     public function editor()
     {
-        return $this->belongsTo(User::class, 'editor_id');
+        return $this->belongsTo(User::class, 'editor_id')->withTrashed();
     }
 
     public function registerMediaCollections(): void
