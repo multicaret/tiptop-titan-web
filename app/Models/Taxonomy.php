@@ -183,7 +183,16 @@ class Taxonomy extends Node implements HasMedia, ShouldHaveTypes, TranslatableCo
     public const TYPE_UNIT = 15;
     public const TYPE_ORDERS_CANCELLATION_REASONS = 16;
 
-    protected $fillable = ['creator_id', 'editor_id', 'title', 'description', 'parent_id', 'type', 'order_column'];
+    protected $fillable = [
+        'creator_id',
+        'editor_id',
+        'title',
+        'description',
+        'parent_id',
+        'type',
+        'order_column',
+        'status',
+    ];
     protected $translatedAttributes = ['title', 'description'];
     protected $with = [
         'translations',
