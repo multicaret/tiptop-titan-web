@@ -40,15 +40,39 @@ class OptionSelectionsExportForImporting extends WorkSheetExport
     public function headings(): array
     {
         return [
-            'Excel ID',
-            'Selection ID',
-            'Product ID',
-            'Product Option ID',
-            'Arabic title',
-            'English title',
-            'Kurdish title',
-            'Price',
-            'Ingredient ID',
+            [
+                'Excel ID',
+                'Selection ID',
+                'Product ID',
+                'Product Option ID',
+                'Arabic title',
+                'English title',
+                'Kurdish title',
+                'Price',
+                'Ingredient ID',
+            ],
+            [
+                'int',
+                'int',
+                'int',
+                'int',
+                'string',
+                'string',
+                'string',
+                'int',
+                'int',
+            ],
+            [
+                'excel_id',
+                'id',
+                'product_id',
+                'product_option_id',
+                'title_ar',
+                'title_en',
+                'title_ku',
+                'price',
+                'ingredient_id',
+            ],
         ];
     }
 

@@ -34,11 +34,27 @@ class MenuCategoriesExportForImporting extends WorkSheetExport
     public function headings(): array
     {
         return [
-            'Excel ID',
-            'Category ID',
-            'Arabic title',
-            'English title',
-            'Kurdish title',
+            [
+                'Excel ID',
+                'Category ID',
+                'Arabic title',
+                'English title',
+                'Kurdish title',
+            ],
+            [
+                'int',
+                'int',
+                'string',
+                'string',
+                'string',
+            ],
+            [
+                'excel_id',
+                'id',
+                'title_ar',
+                'title_en',
+                'title_ku',
+            ],
         ];
     }
 
