@@ -165,7 +165,7 @@
                                                 :clear-on-select="false"
                                                 :preselect-first="true"
                                                 @if(!$isGrocery)
-                                                @input="getCategories"
+                                                @input="getMenuCategories"
                                                 @select="selectBranch"
                                                 @endif
                                                 placeholder=""
@@ -582,7 +582,7 @@
                 product: @json($product),
                 chains: @json($chains),
                 branches: @json($branches),
-                categories: @json($categories),
+                categories: @json($categories??[]),
                 units: @json($units),
                 searchTags: @json($searchTags),
                 statuses: @json(array_values(\App\Models\Product::getAllStatusesRich())),
@@ -619,9 +619,8 @@
                         url = url.replaceAll('XMLSD', chain_id);
                         axios.get(url).then((res) => {
                             this.branches = res.data.branches;
-                            if (this.branches.length > 0) {
-                                this.product.branch = this.branches[0];
-                            }
+                            this.selectBranch();
+
                             hasError = false;
                         }).catch(console.error).finally(() => {
                             if (hasError) {
@@ -630,7 +629,7 @@
                         });
                     }
                 },
-                getCategories: function () {
+                getMenuCategories: function () {
                     const categories = !!this.categories ? JSON.parse(JSON.stringify(this.categories)) : null;
                     let hasError = true;
                     let url = true ? @json(localization()->localizeURL(route('ajax.category-by-branch', ['branch_id' => 'XMLKE']))) : '';

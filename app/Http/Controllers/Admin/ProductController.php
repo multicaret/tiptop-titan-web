@@ -193,7 +193,8 @@ class ProductController extends Controller
 
     private function essentialData(Request $request, $product): array
     {
-        if (is_null($product->id)) {
+        $isCreate = is_null($product->id);
+        if ($isCreate) {
             if ($product->type == Product::CHANNEL_GROCERY_OBJECT) {
                 $product->chain_id = optional(Chain::groceries()->first())->id;
             } else {
@@ -226,23 +227,32 @@ class ProductController extends Controller
                 $data['categories'] = [];
             }
         } else {
-            $product->categories->add($product->category);
             $chains = Chain::foods()->get();
-            $branches = Branch::whereChainId($chains->first()->id)->foods()->get();
             $data['chains'] = $chains->map($getIdTitle)->all();
-            if (is_null($product->branch_id)) {
-                $product->branch = $branches->first();
+
+            if ( ! $isCreate) {
+                $branches = Branch::whereChainId($product->chain_id)->foods()->get();
+            } else {
+                $branches = Branch::whereChainId($chains->first()->id)->foods()->get();
             }
             $data['branches'] = $branches->map($getIdTitle)->all();
-            /*$data['categories'] = Taxonomy::menuCategories()
-                                          ->where('branch_id', optional($product->branch)->id)
-                                          ->get()
-                                          ->map($getIdTitle)
-                                          ->all();*/
-            $data['categories'] = $request->has('branch_id') ? Branch::find($request->input('branch_id'))->menuCategories : Branch::find($product->branch->id)->menuCategories()->get();
+
+            if ($request->has('branch_id')) {
+                $data['categories'] = Branch::find($request->input('branch_id'))->menuCategories;
+            } elseif ( ! $isCreate) {
+                $data['categories'] = Branch::find($product->branch->id)->menuCategories()->get();
+            }
+
+            if ( ! $isCreate) {
+                $menuCategories = $data['categories']->pluck('id')->toArray();
+                if (count($menuCategories) && ! in_array($product->category_id, $menuCategories)) {
+                    $product->category_id = $menuCategories[0];
+                }
+            }
         }
+
         $data['searchTags'] = Taxonomy::searchTags()->get();
-        if ( ! is_null($product->id)) {
+        if ( ! $isCreate) {
             $data['selectedStatus'] = Product::getAllStatusesRich()[$product->status];
         } else {
             $data['selectedStatus'] = Product::getAllStatusesRich()[Product::STATUS_ACTIVE];
