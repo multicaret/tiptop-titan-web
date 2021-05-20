@@ -43,10 +43,10 @@ class ExportBranchesToZoho extends Command
     {
         $branches = Branch::all();
         foreach ($branches as $branch) {
-            Bus::dispatchChain(
+            Bus::chain(
                 [
-                    SyncBranchJob::dispatch($branch),
-                    CreateBranchAccountJob::dispatch($branch)
+                    new SyncBranchJob($branch),
+                    new CreateBranchAccountJob($branch)
                 ]
             );
         }
