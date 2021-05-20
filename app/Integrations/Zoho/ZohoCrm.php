@@ -19,31 +19,39 @@ class ZohoCrm
     public function createZohoClient(){
 
 
-            $phone = str_replace('+', '00', $this->user->international_phone);
 
-            $zoho_module = ZohoManager::useModule('Contacts');
+        $phone = str_replace('+', '00', $this->user->international_phone);
+        $first = empty($this->user->first) ? $this->user->first : 'N/A';
+        $last = empty($this->user->last) ? $this->user->last : 'N/A';
 
-            $record = $zoho_module->getRecordInstance();
+        $zoho_module = ZohoManager::useModule('Contacts');
 
+        if (!empty($this->user->zoho_crm_id)){
+
+            $record =  $zoho_module->getRecord($this->user->zoho_crm_id);
+
+        }
+        else{
+
+            $record =  $zoho_module->getRecordInstance();
+
+        }
             $record->setFieldValue('Phone', $phone);
 
-            $record->setFieldValue('First_Name', $this->user->first);
+            $record->setFieldValue('First_Name', $first);
 
-            $record->setFieldValue('Last_Name', $this->user->first);
-
-            $record->setFieldValue('Email', $this->user->email);
+            $record->setFieldValue('Last_Name', $last);
 
             $record->setFieldValue('Client_status', 'Active');
 
             $record->setFieldValue('Client_status', 'Pending activation');
 
-            $entity = $record->create();
 
-            if (empty($this->user->zoho_id)) {
+            if (empty($this->user->zoho_crm_id)) {
 
                 $entity = $record->create();
 
-                $this->user->zoho_id = $entity->getData()->getEntityId();
+                $this->user->zoho_crm_id = $entity->getData()->getEntityId();
 
                 $this->user->save();
 

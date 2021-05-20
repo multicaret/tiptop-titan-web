@@ -4,7 +4,7 @@ namespace App\Observers;
 
 use App\Jobs\Tookan\CreateCaptain;
 use App\Jobs\Tookan\ToggleCaptainStatus;
-use App\Jobs\Zoho\SyncCustomer;
+use App\Jobs\Zoho\SyncCustomerJob;
 use App\Models\User;
 
 class UserObserver
@@ -25,7 +25,7 @@ class UserObserver
             CreateCaptain::dispatchSync($user);
         }
         if ($user->role_name == User::ROLE_USER){
-            SyncCustomer::dispatchSync($user);
+            SyncCustomerJob::dispatchSync($user);
         }
     }
 

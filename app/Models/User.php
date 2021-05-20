@@ -229,7 +229,7 @@ class User extends Authenticatable implements HasMedia, MustVerifyEmail
     use HasAppTypes;
     use HasViewCount;
     use Notifiable;
-    use SoftDeletes;
+  //  use SoftDeletes;
 
     public const ROLE_SUPER = 'super';
     public const ROLE_ADMIN = 'admin';

@@ -5,6 +5,7 @@ namespace App\Integrations\Zoho;
 use Asciisd\Zoho\Zoho;
 use Illuminate\Support\Facades\Http;
 use zcrmsdk\crm\setup\restclient\ZCRMRestClient;
+use zcrmsdk\crm\utility\ZCRMConfigUtil;
 use zcrmsdk\oauth\ZohoOAuth;
 
 class ZohoBooksClient
@@ -43,15 +44,12 @@ class ZohoBooksClient
         $this->market_sales_account_id = config('services.zoho.market_sales_account');
         $this->market_costs_account_id = config('services.zoho.market_costs_account');;
         $this->access_token = $this->getAccessToken();
-
     }
 
     protected function getAccessToken()
     {
         ZCRMRestClient::initialize(Zoho::zohoOptions());
-        $oAuthClient = ZohoOAuth::getClientInstance();
-
-        return $oAuthClient->getAccessToken(config('services.zoho.current_user_email'));
+        return ZCRMConfigUtil::getAccessToken();
     }
 
     public function getRequest($endpoint, $data = [])
@@ -61,7 +59,7 @@ class ZohoBooksClient
 
             $url = $this->base_url.$endpoint;
             $response = Http::withHeaders([
-                'authorization' => 'Zoho-oauthtoken '.$this->token,
+                'authorization' => 'Zoho-oauthtoken '.$this->access_token,
                 'cache-control' => 'no-cache',
                 'content-type' => 'application/x-www-form-urlencoded',
                 'Connection' => 'keep-alive'
@@ -92,12 +90,12 @@ class ZohoBooksClient
     public function postRequest($endpoint, $data = [])
     {
 
-        try {
 
             $url = $this->base_url.$endpoint;
             $json = ! empty($data) ? json_encode($data) : [];
+
             $response = Http::withHeaders([
-                'authorization' => 'Zoho-oauthtoken '.$this->token,
+                'authorization' => 'Zoho-oauthtoken '.$this->access_token,
                 'cache-control' => 'no-cache',
                 'content-type' => 'application/x-www-form-urlencoded',
                 'Connection' => 'keep-alive'
@@ -107,13 +105,7 @@ class ZohoBooksClient
 
             return $response;
 
-        } catch (\Exception $ex) {
-            info('Zoho client exception',[
-                'error' => $ex->getMessage()
-            ]);
 
-            return false;
-        }
 
     }
 }

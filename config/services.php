@@ -75,7 +75,7 @@ return [
         'client_id' => env('ZOHO_BOOKS_CLIENT_ID', '1000.2IDUY9X7UD1RB8Q191ZA4QZJCGM3UX'),
         'client_secret' => env('ZOHO_BOOKS_CLIENT_SECRET', 'd3399403361830761210adce3065d92cb0051bb344'),
         'organization_id' => env('ZOHO_BOOKS_ORGANIZATION_ID', '738092866'),
-        'redirect_uri' => env('ZOHO_BOOKS_REDIRECT_URI', 'https://staging.trytiptop.app/zoho/books/oauth2callback'),
+        'redirect_uri' => env('ZOHO_REDIRECT_URI', 'https://staging.trytiptop.app/zoho/books/oauth2callback'),
         'current_user_email' => env('ZOHO_CURRENT_USER_EMAIL', 'mehmet@trytiptop.app'),
         'petty_cash_account' => '2511463000000930204',
         'restaurant_sales_account' => '2511463000001867001',

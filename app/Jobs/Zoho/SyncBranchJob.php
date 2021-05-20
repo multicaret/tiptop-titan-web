@@ -13,7 +13,7 @@ use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Queue\SerializesModels;
 use Illuminate\Support\Facades\Cache;
 
-class SyncBranch implements ShouldQueue
+class SyncBranchJob implements ShouldQueue
 {
     use Dispatchable, InteractsWithQueue, Queueable, SerializesModels;
 
@@ -57,7 +57,7 @@ class SyncBranch implements ShouldQueue
             $secondsRemaining = $branchResponse->header('Retry-After');
 
             if (empty($secondsRemaining)) {
-                $secondsRemaining = 60;
+                $secondsRemaining = 65;
             }
 
             Cache::put(
@@ -93,19 +93,6 @@ class SyncBranch implements ShouldQueue
             $this->branch->zoho_books_id = $zoho_books_id;
             $this->branch->save();
 
-            $branchAccountResponse = (new ZohoBooksBranches($this->branch))->createBranchAccount();
-
-
-            if (isset($branchAccountResponse['chart_of_account']) && isset($branchAccountResponse['chart_of_account']['account_id'])) {
-                $zoho_books_account_id = $branchAccountResponse['chart_of_account']['account_id'];
-                $this->branch->zoho_books_account_id = $zoho_books_account_id;
-                $this->branch->save();
-            } else {
-                info('zoho branch account response error', [
-                    'response' => $branchResponse->json()
-                ]);
-                $this->fail();
-            }
         } else {
             info('zoho branch response error', [
                 'response' => $branchResponse->json()
@@ -118,7 +105,7 @@ class SyncBranch implements ShouldQueue
 
     public function retryUntil()
     {
-        return now()->addHours(3);
+        return now()->addHours(1);
     }
 
     public function middleware()
