@@ -48,7 +48,7 @@ class ExportBranchesToZoho extends Command
                     new SyncBranchJob($branch),
                     new CreateBranchAccountJob($branch)
                 ]
-            );
+            )->dispatch();
         }
 
         return 'Jobs dispatched successfully';
