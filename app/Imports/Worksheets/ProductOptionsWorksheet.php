@@ -99,11 +99,11 @@ class ProductOptionsWorksheet extends WorksheetImport
             'excel_id' => [
                 'nullable',
                 'integer',
-                function ($attribute, $value, $onFailure) {
-                    if ($this->productsImporter->getProductsOptionsIds()->has((int)$value)) {
-                        $onFailure("The product option with Excel ID: {$value} already exists");
-                    }
-                }
+//                function ($attribute, $value, $onFailure) {
+//                    if ($this->productsImporter->getProductsOptionsIds()->count() > 0 && $this->productsImporter->getProductsOptionsIds()->has((int)$value)) {
+//                        $onFailure("The product option with Excel ID: {$value} already exists");
+//                    }
+//                }
             ],
             'product_id' => 'exclude_if:excel_id,null|required|integer',
             'is_based_on_ingredients' => [

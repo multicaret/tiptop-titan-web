@@ -43,7 +43,7 @@ class ProductWorksheet extends WorksheetImport
         if ($rawData['type'] === Product::CHANNEL_GROCERY_OBJECT) {
             $rawData['category_id'] = $categoryIds[0];
         } else {
-            $rawData['category_id'] = $this->productsImporter->getMenuCategoriesIds()->get($rawData['category_id']);
+            $rawData['category_id'] = $this->productsImporter->getMenuCategoriesIds()->get((int)$rawData['category_id']);
         }
         $rawData['importer_id'] = $rawData['excel_id'];
         $rawData['chain_id'] = $this->chain->id;
@@ -111,7 +111,7 @@ class ProductWorksheet extends WorksheetImport
                 'nullable',
                 'integer',
                 function ($attribute, $value, $onFailure) {
-                    if ($this->productsImporter->getProductsIds()->has((int)$value)) {
+                    if ($this->productsImporter->getProductsIds()->count() > 0 && $this->productsImporter->getProductsIds()->has((int)$value)) {
                         $onFailure("The product with Excel ID: {$value} already exists");
                     }
                 }

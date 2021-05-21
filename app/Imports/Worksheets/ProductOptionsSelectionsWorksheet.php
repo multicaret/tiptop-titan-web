@@ -24,6 +24,7 @@ class ProductOptionsSelectionsWorksheet extends WorksheetImport
             return null;
         }
         if ($this->productsImporter->isChecking) {
+            \Log::error('$row is: '.json_encode($row));
             $tempExcelId = $row->toArray()['excel_id'];
             $this->productsImporter->setProductsOptionsSelectionsIds($tempExcelId, $tempExcelId);
 
@@ -76,9 +77,9 @@ class ProductOptionsSelectionsWorksheet extends WorksheetImport
     private function getProductOptionId(?array $rawData)
     {
         $productsOptionsIds = $this->productsImporter->getProductsOptionsIds();
-        if ($productsOptionsIds->has($rawData['product_id'])) {
-            if (isset($productsOptionsIds->get($rawData['product_id'])[$rawData['product_option_id']])) {
-                return $productsOptionsIds->get($rawData['product_id'])[$rawData['product_option_id']];
+        if ($productsOptionsIds->count() > 0 && $productsOptionsIds->has((int) $rawData['product_id'])) {
+            if (isset($productsOptionsIds->get((int)$rawData['product_id'])[$rawData['product_option_id']])) {
+                return $productsOptionsIds->get((int) $rawData['product_id'])[$rawData['product_option_id']];
             }
         }
 
@@ -93,7 +94,7 @@ class ProductOptionsSelectionsWorksheet extends WorksheetImport
                 'nullable',
                 'integer',
                 function ($attribute, $value, $onFailure) {
-            if ($this->productsImporter->getProductsOptionsSelectionsIds()->has((int)$value)) {
+            if ($this->productsImporter->getProductsOptionsSelectionsIds()->count() > 0 && $this->productsImporter->getProductsOptionsSelectionsIds()->has((int)$value)) {
                         $onFailure("The selection with Excel ID: {$value} already exists");
                     }
                 }
