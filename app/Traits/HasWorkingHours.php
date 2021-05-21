@@ -14,7 +14,7 @@ trait HasWorkingHours
     public static function getDefaultWorkingHours()
     {
         $days = collect([]);
-        foreach (range(0, 6) as $dayNumber) {
+        foreach (range(1, 7) as $dayNumber) {
             $workingHour = new WorkingHour();
             $workingHour->workable_type = self::class;
             $workingHour->day = $dayNumber;
