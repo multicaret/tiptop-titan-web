@@ -41,16 +41,23 @@ class ExportBranchesToZoho extends Command
      */
     public function handle()
     {
+        if ( ! config('services.zoho.zoho_enabled')) {
+            $this->info('Zoho is not enabled in this environment');
+            return 0;
+        }
+
         $branches = Branch::all();
         foreach ($branches as $branch) {
             Bus::chain(
                 [
                     new SyncBranchJob($branch),
-                    new CreateBranchAccountJob($branch)
+                    new CreateBranchAccountJob($branch),
                 ]
             )->dispatch();
         }
 
-        return 'Jobs dispatched successfully';
+        $this->info('Jobs dispatched successfully');
+
+        return true;
     }
 }

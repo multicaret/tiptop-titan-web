@@ -39,12 +39,18 @@ class ExportProductsToZoho extends Command
      */
     public function handle()
     {
-        $products = Product::whereNotNull('branch_id')->take(4000)->get();
+        if ( ! config('services.zoho.zoho_enabled')) {
+            $this->info('Zoho is not enabled in this environment');
+            return 0;
+        }
+
+        $products = Product::whereNotNull('branch_id')->where('type',Product::CHANNEL_GROCERY_OBJECT)->get();
         foreach ($products as $product) {
             SyncProductJob::dispatch($product);
         }
 
+        $this->info('Jobs dispatched successfully');
 
-        return 'Jobs dispatched successfully';
+        return 0;
     }
 }

@@ -2,6 +2,7 @@
 
 namespace App\Integrations\Zoho;
 
+use App\Models\Branch;
 use App\Models\Product;
 
 class ZohoBooksProducts extends ZohoBooksClient
@@ -64,14 +65,4 @@ class ZohoBooksProducts extends ZohoBooksClient
     }
 
 
-
-    public function createDeliveryItem()
-    {
-
-    }
-
-    public function prepareDeliveryItemData()
-    {
-
-    }
 }

@@ -70,7 +70,7 @@ return [
         'default_team_id' => '890117',
     ],
     'zoho' => [
-        'status' => env('ZOHO_STATUS',false),
+        'zoho_enabled' => env('ZOHO_ENABLED',false),
         'base_url' => env('ZOHO_BOOKS_BASE_URL','https://books.zoho.com/api/v3/'),
         'client_id' => env('ZOHO_BOOKS_CLIENT_ID', '1000.2IDUY9X7UD1RB8Q191ZA4QZJCGM3UX'),
         'client_secret' => env('ZOHO_BOOKS_CLIENT_SECRET', 'd3399403361830761210adce3065d92cb0051bb344'),
