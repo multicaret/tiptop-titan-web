@@ -24,7 +24,6 @@ class ProductOptionsSelectionsWorksheet extends WorksheetImport
             return null;
         }
         if ($this->productsImporter->isChecking) {
-            \Log::error('$row is: '.json_encode($row));
             $tempExcelId = $row->toArray()['excel_id'];
             $this->productsImporter->setProductsOptionsSelectionsIds($tempExcelId, $tempExcelId);
 
