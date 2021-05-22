@@ -77,6 +77,7 @@ class ProductOption extends Component
         $this->option->type = $newValue;
         if ($this->option->type == ProductOptionModel::TYPE_EXCLUDING) {
             $this->option->max_number_of_selection = 0;
+            $this->option->selection_type = ProductOptionModel::SELECTION_TYPE_MULTIPLE_VALUE;
         }
         $this->option->save();
 

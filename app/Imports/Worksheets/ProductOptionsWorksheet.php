@@ -100,7 +100,7 @@ class ProductOptionsWorksheet extends WorksheetImport
                 'nullable',
                 'integer',
                 function ($attribute, $value, $onFailure) {
-                    if ($this->productsImporter->getProductsOptionsIds()->has((int)$value)) {
+                    if ($this->productsImporter->getProductsOptionsIds()->count() > 0 && $this->productsImporter->getProductsOptionsIds()->has((int)$value)) {
                         $onFailure("The product option with Excel ID: {$value} already exists");
                     }
                 }

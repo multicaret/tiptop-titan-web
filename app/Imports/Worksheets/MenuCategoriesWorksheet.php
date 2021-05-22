@@ -72,7 +72,7 @@ class MenuCategoriesWorksheet extends WorksheetImport
                 'nullable',
                 'integer',
                 function ($attribute, $value, $onFailure) {
-                    if ($this->productsImporter->getMenuCategoriesIds()->has((int) $value)) {
+                    if ($this->productsImporter->getMenuCategoriesIds()->count() > 0 && $this->productsImporter->getMenuCategoriesIds()->has((int) $value)) {
                         $onFailure("The category with Excel ID: {$value} already exists");
                     }
                 }

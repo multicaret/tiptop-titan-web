@@ -174,7 +174,7 @@ return [
     'workingHours' => [
         'opensAt' => '09:00',
         'closesAt' => '23:00',
-        'weekends' => [6, 0],
+        'weekends' => [6, 7],
     ],
     'colors' => [
         'chain_primary_color' => '#ffb200',

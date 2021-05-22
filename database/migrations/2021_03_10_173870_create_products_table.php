@@ -53,8 +53,8 @@ class CreateProductsTable extends Migration
             $table->timestamps();
             $table->softDeletes();
 
-            $table->unique(['branch_id', 'importer_id']);
-            
+//            $table->unique(['branch_id', 'importer_id']);
+
             $table->foreign('creator_id')->references('id')->on('users')->onDelete('cascade');
             $table->foreign('editor_id')->references('id')->on('users')->onDelete('cascade');
             $table->foreign('chain_id')->references('id')->on('chains')->onDelete('cascade');

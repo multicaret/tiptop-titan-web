@@ -167,7 +167,7 @@ class CouponController extends Controller
 
         return redirect()
             ->route('admin.coupons.index')
-            ->with('message', ['text' => 'Added successfully', 'type' => 'success']);
+            ->with('message', ['text' => 'Updated successfully', 'type' => 'success']);
     }
 
     /**

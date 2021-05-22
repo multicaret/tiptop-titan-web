@@ -76,7 +76,7 @@ class ProductsImporter implements WithMultipleSheets/*, SkipsUnknownSheets*/
 
     public function setProductsOptionsIds($productId, $optionExcelId, $optionId): void
     {
-        if ($this->productsOptionsIds->has($productId)) {
+        if ($this->productsOptionsIds->count() > 0 && $this->productsOptionsIds->has((int) $productId)) {
             $this->productsOptionsIds->get($productId)->put($optionExcelId, $optionId);
         } else {
             $this->productsOptionsIds->put($productId, collect([$optionExcelId => $optionId]));
