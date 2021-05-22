@@ -40,7 +40,7 @@
         "verifykit/verifykit-sdk-php": "^1.2",
         "yajra/laravel-datatables-oracle": "^9.15",
         "zohocrm/php-sdk": "3.0.3",
-        "mkwsra/zoho": "master"
+        "asciisd/zoho": "master"
     },
     "require-dev": {
         "facade/ignition": "^2.5",
@@ -91,7 +91,7 @@
         {
             "type": "package",
             "package": {
-                "name": "mkwsra/zoho",
+                "name": "asciisd/zoho",
                 "version": "master",
                 "source": {
                     "url": "https://github.com/mkwsra/zoho.git",
