@@ -161,10 +161,6 @@
                                     </div>
                                     <div class="col-6">
                                         @if(!$isForChainsOnly)
-
-                                            <pre>
-                                                {{ dd($product) }}
-                                            </pre>
                                             <div class="form-group">
                                                 <label class="control-label">
                                                     @lang('strings.branch') <b class="text-danger">*</b>
