@@ -18,8 +18,6 @@ class ZohoCrm
 
     public function createZohoClient(){
 
-
-
         $phone = str_replace('+', '00', $this->user->international_phone);
         $first = empty($this->user->first) ? $this->user->first : 'N/A';
         $last = empty($this->user->last) ? $this->user->last : 'N/A';
@@ -43,9 +41,6 @@ class ZohoCrm
             $record->setFieldValue('Last_Name', $last);
 
             $record->setFieldValue('Client_status', 'Active');
-
-            $record->setFieldValue('Client_status', 'Pending activation');
-
 
             if (empty($this->user->zoho_crm_id)) {
 

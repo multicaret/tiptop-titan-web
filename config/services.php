@@ -81,5 +81,6 @@ return [
         'restaurant_sales_account' => '2511463000001867001',
         'market_sales_account' => '2511463000001867005',
         'market_costs_account' => '2511463000001867013',
+        'items_inventory_account' => '2511463000000034001',
     ],
 ];
