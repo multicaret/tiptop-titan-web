@@ -11,6 +11,7 @@
         "php": "^7.4|^8.0",
         "arcanedev/localization": "^8.0",
         "arcanedev/log-viewer": "^8.0",
+        "asciisd/zoho": "^1.2",
         "astrotomic/laravel-translatable": "^11.9",
         "barryvdh/laravel-ide-helper": "^2.9",
         "doctrine/dbal": "^3.0",
@@ -20,6 +21,7 @@
         "jantinnerezo/livewire-alert": "^2.1",
         "laravel-notification-channels/onesignal": "^2.3",
         "laravel/framework": "^8.12",
+        "laravel/horizon": "^5.7",
         "laravel/legacy-factories": "^1.1",
         "laravel/sanctum": "^2.9",
         "laravel/socialite": "^5.1",
@@ -37,7 +39,8 @@
         "spatie/laravel-medialibrary": "^9.4",
         "spatie/laravel-permission": "^3.18",
         "verifykit/verifykit-sdk-php": "^1.2",
-        "yajra/laravel-datatables-oracle": "^9.15"
+        "yajra/laravel-datatables-oracle": "^9.15",
+        "zohocrm/php-sdk": "3.0.3"
     },
     "require-dev": {
         "facade/ignition": "^2.5",
