@@ -3,6 +3,7 @@
 namespace App\Http\Livewire\Taxonomies;
 
 use App\Http\Controllers\Controller;
+use App\Models\TaxonomyTranslation;
 use Livewire\Component;
 
 class TaxonomyRowEdit extends Component
@@ -28,8 +29,11 @@ class TaxonomyRowEdit extends Component
         $this->validate([
             'titleEn' => 'string',
         ]);
-        $this->taxonomy->translateOrNew('en')->title = $newValue;
-        $this->taxonomy->save();
+        TaxonomyTranslation::whereLocale('en')
+                           ->where('taxonomy_id', $this->taxonomy->id)
+                           ->update([
+                               'title' => $newValue
+                           ]);
 
         $this->emit('showToast', [
             'icon' => 'success',
@@ -42,8 +46,11 @@ class TaxonomyRowEdit extends Component
         $this->validate([
             'titleAr' => 'string',
         ]);
-        $this->taxonomy->translateOrNew('ar')->title = $newValue;
-        $this->taxonomy->save();
+        TaxonomyTranslation::whereLocale('ar')
+                           ->where('taxonomy_id', $this->taxonomy->id)
+                           ->update([
+                               'title' => $newValue
+                           ]);
 
         $this->emit('showToast', [
             'icon' => 'success',
@@ -56,8 +63,11 @@ class TaxonomyRowEdit extends Component
         $this->validate([
             'titleKu' => 'string',
         ]);
-        $this->taxonomy->translateOrNew('ku')->title = $newValue;
-        $this->taxonomy->save();
+        TaxonomyTranslation::whereLocale('ku')
+                           ->where('taxonomy_id', $this->taxonomy->id)
+                           ->update([
+                               'title' => $newValue
+                           ]);
 
         $this->emit('showToast', [
             'icon' => 'success',
