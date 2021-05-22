@@ -31,6 +31,7 @@
         "league/flysystem-aws-s3-v3": "^1.0",
         "livewire/livewire": "^2.4",
         "maatwebsite/excel": "^3.1",
+        "mkwsra/zoho": "^1.2",
         "multicaret/laravel-acquaintances": "^3.5.1",
         "predis/predis": "^1.1",
         "socialiteproviders/facebook": "^4.1",
@@ -39,8 +40,7 @@
         "spatie/laravel-permission": "^3.18",
         "verifykit/verifykit-sdk-php": "^1.2",
         "yajra/laravel-datatables-oracle": "^9.15",
-        "zohocrm/php-sdk": "3.0.3",
-        "asciisd/zoho": "master"
+        "zohocrm/php-sdk": "3.0.3"
     },
     "require-dev": {
         "facade/ignition": "^2.5",
@@ -86,19 +86,5 @@
         "post-create-project-cmd": [
             "@php artisan key:generate --ansi"
         ]
-    },
-    "repositories": [
-        {
-            "type": "package",
-            "package": {
-                "name": "asciisd/zoho",
-                "version": "master",
-                "source": {
-                    "url": "https://github.com/mkwsra/zoho.git",
-                    "type": "git",
-                    "reference": "master"
-                }
-            }
-        }
-    ]
+    }
 }
