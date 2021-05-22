@@ -1,5 +1,6 @@
 @php
-    $isGrocery = $product->type == \App\Models\Product::CHANNEL_GROCERY_OBJECT
+    $isGrocery = $product->type == \App\Models\Product::CHANNEL_GROCERY_OBJECT;
+    $isForChainsOnly = request()->input('only-for-chains');
 @endphp
 
 @extends('layouts.admin')
@@ -146,15 +147,24 @@
                                                 selected-label=""
                                                 deselect-label=""
                                                 placeholder=""
+                                                @if($isForChainsOnly)
+                                                @input="getMenuCategoriesForChain"
+                                                @select="selectBranch"
+                                                @else
                                                 @input="getBranches"
                                                 @select="selectChain"
+                                                @endif
                                                 autocomplete="false"
                                                 required
                                             ></multiselect>
                                         </div>
                                     </div>
                                     <div class="col-6">
-                                        @if(!request()->has('only-for-chains'))
+                                        @if(!$isForChainsOnly)
+
+                                            <pre>
+                                                {{ dd($product) }}
+                                            </pre>
                                             <div class="form-group">
                                                 <label class="control-label">
                                                     @lang('strings.branch') <b class="text-danger">*</b>
@@ -646,6 +656,28 @@
 
 
                         url = url.replaceAll('XMLKE', branch_id);
+                        axios.get(url).then((res) => {
+                            this.categories = res.data.categories;
+                            if (this.categories.length > 0) {
+                                this.product.category = this.categories[0];
+                            }
+                            hasError = false;
+                        }).catch(console.error).finally(() => {
+                            if (hasError) {
+                                this.categories = categories;
+                            }
+                        });
+                    }
+                },
+                getMenuCategoriesForChain: function () {
+                    const categories = !!this.categories ? JSON.parse(JSON.stringify(this.categories)) : null;
+                    let hasError = true;
+                    let url = true ? @json(localization()->localizeURL(route('ajax.category-by-chain', ['chain_id' => 'XMLKE']))) : '';
+                    if (!!this.product.chain && !!this.product.chain.id) {
+                        const chain_id = this.product.chain.id;
+
+
+                        url = url.replaceAll('XMLKE', chain_id);
                         axios.get(url).then((res) => {
                             this.categories = res.data.categories;
                             if (this.categories.length > 0) {

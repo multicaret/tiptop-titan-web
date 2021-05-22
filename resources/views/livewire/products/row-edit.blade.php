@@ -35,6 +35,7 @@
 
         @if($product->type == \App\Models\Branch::CHANNEL_FOOD_OBJECT)
             <select wire:model="product.category_id" class="form-control">
+                <option selected>Select a category</option>
                 @foreach($categories as $category)
                     <option value="{{ $category->id }}"
                         {{ $product->category_id == $category->id ? 'selected':null }}
