@@ -88,13 +88,13 @@ class CreateTipTopDeliveryItemJob implements ShouldQueue
         Cache::forget('zoho-failure');
 
 
-        if (isset($productResponse['item']) && isset($productResponse['item']['item_id'])) {
-            $zoho_books_account_id = $productResponse['item']['item_id'];
+        if (isset($response['item']) && isset($response['item']['item_id'])) {
+            $zoho_books_account_id = $response['item']['item_id'];
             $this->branch->zoho_books_tiptop_delivery_item_id = $zoho_books_account_id;
             $this->branch->save();
         } else {
-            info('zoho product response error', [
-                'response' => $productResponse->json()
+            info('zoho create tiptop delivery item response error', [
+                'response' => $response->json()
             ]);
             $this->fail();
         }

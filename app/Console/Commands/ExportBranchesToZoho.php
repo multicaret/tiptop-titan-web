@@ -3,6 +3,8 @@
 namespace App\Console\Commands;
 
 use App\Jobs\Zoho\CreateBranchAccountJob;
+use App\Jobs\Zoho\CreateDeliveryItemJob;
+use App\Jobs\Zoho\CreateTipTopDeliveryItemJob;
 use App\Jobs\Zoho\SyncBranchJob;
 use App\Models\Branch;
 use Illuminate\Console\Command;
@@ -52,6 +54,8 @@ class ExportBranchesToZoho extends Command
                 [
                     new SyncBranchJob($branch),
                     new CreateBranchAccountJob($branch),
+                    new CreateDeliveryItemJob($branch),
+                    new CreateTipTopDeliveryItemJob($branch)
                 ]
             )->dispatch();
         }

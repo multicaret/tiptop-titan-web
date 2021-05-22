@@ -19,6 +19,7 @@ class ZohoBooksProducts extends ZohoBooksClient
     {
         $productData = $this->prepareProductData();
 
+      //  info($productData);
         return $this->postRequest('items?organization_id='.$this->organization_id,$productData);
 
 
@@ -27,33 +28,34 @@ class ZohoBooksProducts extends ZohoBooksClient
     public function prepareProductData()
     {
         $categories = $this->product->categories;
-        $categories->load('translations');
         $categories = $this->product->type == Product::CHANNEL_GROCERY_OBJECT ? $categories->pluck('translations')->flatten(1)->where('locale','en')->pluck('title')->toArray() : '';
-        $purchaseAccount_id = $this->product->type == Product::CHANNEL_GROCERY_OBJECT ? '2511463000000034003' : ' ';
-        $itemAccountType = $this->product->type == Product::CHANNEL_GROCERY_OBJECT ?  'sales_and_purchases' : 'sales';
-        $branchZohoBooksId = $this->product->branch->zoho_books_id;
-        $productType = $this->product->type == Product::CHANNEL_GROCERY_OBJECT ? 'Market' : 'Restaurant';
-        $items_inventory_account_id = $this->product->type == Product::CHANNEL_GROCERY_OBJECT ? '2511463000000034001' : ' ';
-        $account_id = $this->product->type == Product::CHANNEL_GROCERY_OBJECT ? '2511463000001867005' : '2511463000001867001';
+        $purchase_account_id = $this->product->type == Product::CHANNEL_GROCERY_OBJECT ? $this->market_costs_account_id : ' ';
+        $item_account_type = $this->product->type == Product::CHANNEL_GROCERY_OBJECT ?  'sales_and_purchases' : 'sales';
+        $branch_zoho_books_id = $this->product->branch->zoho_books_id;
+        $product_type = $this->product->type == Product::CHANNEL_GROCERY_OBJECT ? 'Market' : 'Restaurant';
+        $items_inventory_account_id = $this->product->type == Product::CHANNEL_GROCERY_OBJECT ? $this->items_inventory_account_id : ' ';
+        $account_id = $this->product->type == Product::CHANNEL_GROCERY_OBJECT ? $this->market_sales_account_id : $this->restaurant_sales_account_id;
+        $product_title = $this->product->type == Product::CHANNEL_GROCERY_OBJECT ? $this->product->title .' '. $this->product->description : $this->product->title;
+
         return [
-            'name' => $this->product->title,
+            'name' => $product_title,
             'status' => 'Active',
             'unit' => 'item',
             'product_type' => $this->product->type == Product::CHANNEL_GROCERY_OBJECT ? 'goods' : 'service',
             'sku' => $this->product->id,
-            'purchase_account_id' => $purchaseAccount_id,
+            'purchase_account_id' => $purchase_account_id,
             'account_id' => $account_id,
             'inventory_account_id' => $items_inventory_account_id,
-            'item_type' => $itemAccountType,
-            'vendor_id' => $branchZohoBooksId,
+            'item_type' => $item_account_type,
+            'vendor_id' => $branch_zoho_books_id,
             'custom_fields' => [
                 [
                     'api_name' => 'cf_type_1',
-                    'value' => $productType
+                    'value' => $product_type
                 ],
                 [
                     'api_name' => 'cf_type',
-                    'value' => $branchZohoBooksId
+                    'value' => $branch_zoho_books_id
                 ],
                 [
                     'api_name' => 'cf_categories_test',

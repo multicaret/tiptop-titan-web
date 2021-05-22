@@ -16,9 +16,6 @@ class AddZohoBooksInfoToBranchesTable extends Migration
         Schema::table('branches', function (Blueprint $table) {
             $table->string('zoho_books_id')->nullable();
             $table->string('zoho_books_account_id')->nullable();
-            $table->string('zoho_delivery_item_id')->nullable();
-            $table->string('zoho_tiptop_delivery_item_id')->nullable();
-
         });
     }
 

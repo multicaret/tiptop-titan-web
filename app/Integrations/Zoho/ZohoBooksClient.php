@@ -32,6 +32,10 @@ class ZohoBooksClient
 
     public $market_costs_account_id;
 
+    public $purchase_account_id;
+
+    public $items_inventory_account_id;
+
     public function __construct()
     {
         $this->base_url = config('services.zoho.base_url');
@@ -42,7 +46,9 @@ class ZohoBooksClient
         $this->petty_cash_account_id = config('services.zoho.petty_cash_account');
         $this->restaurant_sales_account_id = config('services.zoho.restaurant_sales_account');
         $this->market_sales_account_id = config('services.zoho.market_sales_account');
-        $this->market_costs_account_id = config('services.zoho.market_costs_account');;
+        $this->market_costs_account_id = config('services.zoho.market_costs_account');
+        $this->purchase_account_id = config('services.zoho.purchase_account_id');
+        $this->items_inventory_account_id = config('services.zoho.items_inventory_account');
         $this->access_token = $this->getAccessToken();
     }
 

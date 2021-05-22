@@ -143,7 +143,7 @@ class ZohoBooksBranches extends ZohoBooksClient
             'status' => 'Active',
             'unit' => 'item',
             'product_type' => 'service',
-            'sku' => 'delivery-'.$this->branch->id,
+            'sku' => 'tiptop-delivery-'.$this->branch->id,
             'account_id' => $tiptop_delivery_item_account_id,
             'item_type' => 'sales',
             'cf_type' => $this->branch->zoho_books_id,
