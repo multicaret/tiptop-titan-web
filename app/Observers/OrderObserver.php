@@ -58,7 +58,7 @@ class OrderObserver
 
             if ($order->status == Order::STATUS_PREPARING && $order->is_delivery_by_tiptop && $tookan_status) {
                 CreateTask::dispatchSync($order);
-            } elseif ($order->status == Order::STATUS_CANCELLED && $order->is_delivery_by_tiptop && $tookan_status) {
+            } elseif ($order->status == Order::STATUS_CANCELLED && $order->is_delivery_by_tiptop && !empty(optional($order->tookanInfo)->job_pickup_id) && $tookan_status) {
                 CancelTask::dispatchSync($order);
             }
             /*        else if ($order->status == Order::STATUS_DELIVERED && $order->is_delivery_by_tiptop && $tookan_status)
