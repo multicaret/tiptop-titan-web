@@ -43,7 +43,7 @@ class ProductWorksheet extends WorksheetImport
         if ($rawData['type'] === Product::CHANNEL_GROCERY_OBJECT) {
             $rawData['category_id'] = $categoryIds[0];
         } else {
-            $rawData['category_id'] = $this->productsImporter->getMenuCategoriesIds()->get((int)$rawData['category_id']);
+            $rawData['category_id'] = $this->productsImporter->getMenuCategoriesIds()->get((int) $rawData['category_id']);
         }
         $rawData['importer_id'] = $rawData['excel_id'];
         $rawData['chain_id'] = $this->chain->id;
@@ -53,10 +53,15 @@ class ProductWorksheet extends WorksheetImport
         $excelId = $rawData['excel_id'];
         unset($rawData['excel_id']);
         try {
-            $product = Product::updateOrCreate([
-                'branch_id' => $rawData['branch_id'], 'importer_id' => $rawData['importer_id']
-            ],
-                $rawData);
+            if (is_null($rawData['id'])) {
+                $product = Product::updateOrCreate([
+                    'branch_id' => $rawData['branch_id'],
+                    'category_id' => $rawData['category_id']
+                ], $rawData);
+            } else {
+                $product = Product::find($rawData['id']);
+                $product->update($rawData);
+            }
             $localesKeys = array_flip(localization()->getSupportedLocalesKeys());
             foreach ($localesKeys as $localeKey => $index) {
                 $product->translateOrNew($localeKey)->fill($translatedData[$localeKey]);
@@ -111,7 +116,7 @@ class ProductWorksheet extends WorksheetImport
                 'nullable',
                 'integer',
                 function ($attribute, $value, $onFailure) {
-                    if ($this->productsImporter->getProductsIds()->count() > 0 && $this->productsImporter->getProductsIds()->has((int)$value)) {
+                    if ($this->productsImporter->getProductsIds()->count() > 0 && $this->productsImporter->getProductsIds()->has((int) $value)) {
                         $onFailure("The product with Excel ID: {$value} already exists");
                     }
                 }

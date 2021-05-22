@@ -34,4 +34,18 @@ abstract class WorksheetImport implements OnEachRow, WithHeadingRow, WithChunkRe
         return empty(array_filter($input, function ($a) { return $a !== null;}));
     }
 
+    public function prepareForValidation(array $data, $index): array
+    {
+        $collect = collect($data);
+        $collect->transform(function ($attribute) {
+            if (gettype($attribute) === 'double') {
+                return (int) $attribute;
+            }
+
+            return $attribute;
+        });
+
+        return $collect->all();
+    }
+
 }
