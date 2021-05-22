@@ -8,7 +8,10 @@
             Food Products
         @endif
         <x-admin.add-copy-buttons
-            :createRoute="route('admin.products.create',['type'=> request()->type])">
+            :createRoute="route('admin.products.create',[
+            'type'=> request()->type,
+            'only-for-chains' => request()->has('only-for-chains') && request()->input('only-for-chains'),
+            ])">
         </x-admin.add-copy-buttons>
     </h4>
 
@@ -16,7 +19,8 @@
         <div class="card-datatable table-responsive">
             @component('admin.components.datatables.index-without-ordering-ability')
                 @slot('columns', $columns)
-                @slot('ajax_route', route('ajax.datatables.products', request()->all()))
+                @slot('ajax_route', route('ajax.datatables.products'))
+                @slot('route_params', request()->all())
             @endcomponent
         </div>
     </div>

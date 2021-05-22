@@ -27,9 +27,15 @@
 
     <form method="post" enctype="multipart/form-data"
           @if(is_null($product->id))
-          action="{{route('admin.products.store',['type' => strtolower($typeName)])}}"
+          action="{{route('admin.products.store',[
+                'type' => strtolower($typeName),
+                'only-for-chains' => request()->has('only-for-chains') && request()->input('only-for-chains'),
+            ])}}"
           @else
-          action="{{route('admin.products.update', ['type' => strtolower($typeName),$product->uuid])}}"
+          action="{{route('admin.products.update', [
+                'type' => strtolower($typeName),$product->uuid,
+                'only-for-chains' => request()->has('only-for-chains') && request()->input('only-for-chains'),
+            ])}}"
         @endif
     >
         {{csrf_field()}}
@@ -148,31 +154,33 @@
                                         </div>
                                     </div>
                                     <div class="col-6">
-                                        <div class="form-group">
-                                            <label class="control-label">
-                                                @lang('strings.branch') <b class="text-danger">*</b>
-                                            </label>
-                                            <multiselect
-                                                :options="branches"
-                                                v-model="product.branch"
-                                                track-by="id"
-                                                label="title"
-                                                :searchable="true"
-                                                :allow-empty="true"
-                                                select-label=""
-                                                selected-label=""
-                                                deselect-label=""
-                                                :clear-on-select="false"
-                                                :preselect-first="true"
-                                                @if(!$isGrocery)
-                                                @input="getMenuCategories"
-                                                @select="selectBranch"
-                                                @endif
-                                                placeholder=""
-                                                autocomplete="false"
-                                                required
-                                            ></multiselect>
-                                        </div>
+                                        @if(!request()->has('only-for-chains'))
+                                            <div class="form-group">
+                                                <label class="control-label">
+                                                    @lang('strings.branch') <b class="text-danger">*</b>
+                                                </label>
+                                                <multiselect
+                                                    :options="branches"
+                                                    v-model="product.branch"
+                                                    track-by="id"
+                                                    label="title"
+                                                    :searchable="true"
+                                                    :allow-empty="true"
+                                                    select-label=""
+                                                    selected-label=""
+                                                    deselect-label=""
+                                                    :clear-on-select="false"
+                                                    :preselect-first="true"
+                                                    @if(!$isGrocery)
+                                                    @input="getMenuCategories"
+                                                    @select="selectBranch"
+                                                    @endif
+                                                    placeholder=""
+                                                    autocomplete="false"
+                                                    required
+                                                ></multiselect>
+                                            </div>
+                                        @endif
                                     </div>
                                 @endif
                                 <div

@@ -123,7 +123,10 @@ class ProductController extends Controller
         }
 
         return redirect()
-            ->route('admin.products.index', ['type' => $request->type])
+            ->route('admin.products.index', [
+                'type' => $request->type,
+                'only-for-chains' => $request->has('only-for-chains'),
+            ])
             ->with('message', [
                 'type' => 'Success',
                 'text' => 'Stored successfully',
@@ -164,7 +167,10 @@ class ProductController extends Controller
         }
 
         return redirect()
-            ->route('admin.products.index', ['type' => $request->type])
+            ->route('admin.products.index', [
+                'type' => $request->type,
+                'only-for-chains' => $request->has('only-for-chains'),
+            ])
             ->with('message', [
                 'type' => 'Success',
                 'text' => 'Updated successfully',
@@ -240,7 +246,14 @@ class ProductController extends Controller
             if ($request->has('branch_id')) {
                 $data['categories'] = Branch::find($request->input('branch_id'))->menuCategories;
             } elseif ( ! $isCreate) {
-                $data['categories'] = Branch::find($product->branch->id)->menuCategories()->get();
+                if ($product->branch) {
+                    $data['categories'] = Branch::find($product->branch->id)->menuCategories()->get();
+                } else {
+                    $data['categories'] = Taxonomy::menuCategories()
+                                                  ->whereNull('branch_id')
+                                                  ->where('chain_id', $product->chain->id)
+                                                  ->get();
+                }
             }
 
             if ( ! $isCreate) {
