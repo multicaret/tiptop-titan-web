@@ -149,7 +149,9 @@ class Notification extends BaseNotification
                                  ->setParameter('ios_sound', 'new_notify.wav')
                                  ->setParameter('android_sound', 'new_notify');
             } else {
-                $oneSignalMessage->setParameter('ios_sound', 'new_notify.wav')
+                $oneSignalMessage->setParameter('android_channel_id',
+                    config('services.onesignal.customer_app_android_channel_id'))
+                                 ->setParameter('ios_sound', 'new_notify.wav')
                                  ->setParameter('android_sound', 'new_notify');
             }
 
