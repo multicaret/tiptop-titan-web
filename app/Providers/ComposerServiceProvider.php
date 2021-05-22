@@ -223,7 +223,7 @@ class ComposerServiceProvider extends ServiceProvider
                                 'title' => 'Chain Products',
                                 'icon' => 'fas fa-boxes',
                                 'params' => [
-                                    'type' => Product::getCorrectChannelName(Product::CHANNEL_GROCERY_OBJECT, false),
+                                    'type' => Product::getCorrectChannelName(Product::CHANNEL_FOOD_OBJECT, false),
                                     'only-for-chains' => true,
                                 ],
                                 'routeName' => 'admin.products.index',
