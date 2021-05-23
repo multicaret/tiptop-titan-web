@@ -41,15 +41,15 @@ class TookanClient
                 $cartProduct->product->title.' - '.$cartProduct->product->description :
                 $cartProduct->product->title;
             $items = [
-                'item' => $product_title,
-                'quantity' => $cartProduct->quantity,
-                'price' => ((float)$cartProduct->product->price *  (float) $cartProduct->quantity) + $cartProduct->total_options_price,
+                ['item' => $product_title],
+                ['quantity' => $cartProduct->quantity],
+                ['price' => ((float)$cartProduct->product->price *  (float) $cartProduct->quantity) + $cartProduct->total_options_price],
             ];
         }
         return [
             'order_id' => $order->reference_code,
             'timezone' => '-180',
-            'team_id' => $order->type === Chain::CHANNEL_GROCERY_OBJECT ? $market_team->tookan_id : $food_team->tookan_id,
+            'team_id' => $order->type == Order::CHANNEL_GROCERY_OBJECT ? $market_team->tookan_team_id : $food_team->tookan_team_id,
             'auto_assignment' => 1,
             'job_pickup_phone' => $order->branch->primary_phone_number,
             'job_pickup_name' => $order->branch->contacts->first()->name.' - '.$order->branch->title,
