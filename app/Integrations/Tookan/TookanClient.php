@@ -38,13 +38,13 @@ class TookanClient
         $items = [];
         foreach ($order->cart->cartProducts as $cartProduct) {
             $product_title = $cartProduct->product->type == Product::CHANNEL_GROCERY_OBJECT ?
-                $cartProduct->product->title.' - '.$cartProduct->product->description :
-                $cartProduct->product->title;
+                $cartProduct->product->translate('ar')->title.' - '.$cartProduct->product->translate('ar')->description :
+                $cartProduct->product->translate('ar')->title;
             $price = ($cartProduct->product->price + $cartProduct->total_options_price) *  $cartProduct->quantity;
             $items[] = [
-                ['item' => $product_title],
-                ['quantity' => (string) $cartProduct->quantity],
-                ['price' => (string) $price]
+                 $product_title,
+                 (string) $cartProduct->quantity,
+                 (string) $price .' IQD'
             ];
         }
         return [
@@ -53,16 +53,16 @@ class TookanClient
             'team_id' => $order->type == Order::CHANNEL_GROCERY_OBJECT ? $market_team->tookan_team_id : $food_team->tookan_team_id,
             'auto_assignment' => 1,
             'job_pickup_phone' => $order->branch->primary_phone_number,
-            'job_pickup_name' => $order->branch->contacts->first()->name.' - '.$order->branch->title,
+            'job_pickup_name' => $order->branch->contacts->first()->name.' '.$order->branch->title,
             //      'job_pickup_email'        => $order->branch->contact_email,
-            'job_pickup_address' => $order->branch->full_address ?? 'Not specified',
+            'job_pickup_address' => empty($order->branch->full_address) ? 'Not specified' : $order->branch->full_address,
             'job_pickup_latitude' => $order->branch->latitude,
             'job_pickup_longitude' => $order->branch->longitude,
             'job_pickup_datetime' => now()->addMinutes(13)->toDateTimeString(),
             'customer_email' => $order->user->email,
             'customer_username' => $order->user->first.' '.$order->user->last,
             'customer_phone' => $order->user->phone_number,
-            'customer_address' => $order->address->address1 ?? 'Not specified',
+            'customer_address' => empty($order->address->address1) ? 'Not specified' : $order->address->address1,
             'latitude' => $order->address->latitude,
             'longitude' => $order->address->longitude,
             'job_delivery_datetime' => now()->addMinutes(15)->toDateTimeString(),
@@ -71,7 +71,14 @@ class TookanClient
             'layout_type' => 0,
             'tracking_link' => 1,
             'notify' => 1,
+            'pickup_custom_field_template' => 'template_1',
             'custom_field_template' => 'template_1',
+            'pickup_meta_data' => [
+                [
+                    'label' => 'items',
+                    'data' => $items
+                ]
+                ],
             'meta_data' => [
                 [
                     'label' => 'price',
