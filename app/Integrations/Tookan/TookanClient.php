@@ -2,8 +2,10 @@
 
 namespace App\Integrations\Tookan;
 
+use App\Models\CartProduct;
 use App\Models\Chain;
 use App\Models\Order;
+use App\Models\Product;
 use App\Models\TookanTeam;
 use App\Models\User;
 use Illuminate\Support\Facades\Http;
@@ -33,14 +35,24 @@ class TookanClient
     {
         $food_team = TookanTeam::where('name', 'like', '%Food%')->first();
         $market_team = TookanTeam::where('name', 'like', '%Market%')->first();
-
+        $items = [];
+        foreach ($order->cart->cartProducts as $cartProduct) {
+            $product_title = $cartProduct->product->type == Product::CHANNEL_GROCERY_OBJECT ?
+                $cartProduct->product->title.' - '.$cartProduct->product->description :
+                $cartProduct->product->title;
+            $items = [
+                'item' => $product_title,
+                'quantity' => $cartProduct->quantity,
+                'price' => ((float)$cartProduct->product->price *  (float) $cartProduct->quantity) + $cartProduct->total_options_price,
+            ];
+        }
         return [
             'order_id' => $order->reference_code,
             'timezone' => '-180',
-            'team_id' => $order->type === Chain::CHANNEL_GROCERY_OBJECT ?  $market_team->tookan_id :  $food_team->tookan_id,
+            'team_id' => $order->type === Chain::CHANNEL_GROCERY_OBJECT ? $market_team->tookan_id : $food_team->tookan_id,
             'auto_assignment' => 1,
             'job_pickup_phone' => $order->branch->primary_phone_number,
-            'job_pickup_name' => $order->branch->contacts->first()->name .' - '.$order->branch->title,
+            'job_pickup_name' => $order->branch->contacts->first()->name.' - '.$order->branch->title,
             //      'job_pickup_email'        => $order->branch->contact_email,
             'job_pickup_address' => $order->branch->full_address,
             'job_pickup_latitude' => $order->branch->latitude,
@@ -63,6 +75,10 @@ class TookanClient
                 [
                     'label' => 'price',
                     'data' => (string) $order->total
+                ],
+                [
+                    'label' => 'items',
+                    'data' => $items
                 ],
 //                [
 //                    'label' => 'payment_method',
@@ -115,8 +131,7 @@ class TookanClient
 
     public function markTaskAsDelivered(Order $order)
     {
-        if (empty(optional($order->tookanInfo)->job_pickup_id) || empty(optional($order->tookanInfo)->job_delivery_id))
-        {
+        if (empty(optional($order->tookanInfo)->job_pickup_id) || empty(optional($order->tookanInfo)->job_delivery_id)) {
             return false;
         }
 
@@ -126,23 +141,23 @@ class TookanClient
 
     }
 
-    public function prepareDeliveredTaskData(Order $order){
-        return[
-            'job_id' =>  $order->tookanInfo->job_pickup_id .','.$order->tookanInfo->job_delivery_id,
+    public function prepareDeliveredTaskData(Order $order)
+    {
+        return [
+            'job_id' => $order->tookanInfo->job_pickup_id.','.$order->tookanInfo->job_delivery_id,
             'job_status' => 2
         ];
     }
 
     public function cancelTask(Order $order)
     {
-        if (empty(optional($order->tookanInfo)->job_pickup_id) || empty(optional($order->tookanInfo)->job_delivery_id))
-        {
+        if (empty(optional($order->tookanInfo)->job_pickup_id) || empty(optional($order->tookanInfo)->job_delivery_id)) {
             return false;
         }
 
         $cancelPickupOrderData = $this->prepareCancelPickupOrderData($order);
 
-         $this->apiRequest('POST', 'delete_task', $cancelPickupOrderData);
+        $this->apiRequest('POST', 'delete_task', $cancelPickupOrderData);
 
         $cancelDeliveryOrderData = $this->prepareCancelDeliveryOrderData($order);
 
@@ -150,17 +165,20 @@ class TookanClient
 
     }
 
-    public function prepareCancelDeliveryOrderData(Order $order){
-        return[
-            'job_id' =>  $order->tookanInfo->job_delivery_id
-        ];
-    }
-
-    public function prepareCancelPickupOrderData(Order $order){
-        return[
+    public function prepareCancelPickupOrderData(Order $order)
+    {
+        return [
             'job_id' => $order->tookanInfo->job_pickup_id
         ];
     }
+
+    public function prepareCancelDeliveryOrderData(Order $order)
+    {
+        return [
+            'job_id' => $order->tookanInfo->job_delivery_id
+        ];
+    }
+
     public function createCaptain(User $user)
     {
 
@@ -231,7 +249,7 @@ class TookanClient
             return false;
         }
 
-        $captainStatusData = $this->prepareCaptainStatusData(($user->status != User::STATUS_ACTIVE || $deleteOperation || !empty($user->deleted_at)) ? 0 : 1);
+        $captainStatusData = $this->prepareCaptainStatusData(($user->status != User::STATUS_ACTIVE || $deleteOperation || ! empty($user->deleted_at)) ? 0 : 1);
 
         return $this->apiRequest('POST', 'block_and_unblock_fleet',
             array_merge(['fleet_id' => (string) $user->tookan_id], $captainStatusData));
