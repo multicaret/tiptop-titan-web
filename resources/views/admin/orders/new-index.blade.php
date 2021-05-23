@@ -193,7 +193,7 @@
                         .table-fixed-head {
                             overflow-y: auto;
                             {{--height: {{ ($orders->count() != 0? $orders->count() * 59 :100)+59 }}px;--}}
-                   height: 200vh;
+                     height: 200vh;
                         }
 
                         .table-fixed-head thead th {
@@ -312,7 +312,7 @@
 
                     <div class="row">
                         <div class="col-12 text-center">
-                            {{ $orders->links() }}
+                            {{ $orders->appends(request()->all())->links() }}
                         </div>
                     </div>
                 </div>
