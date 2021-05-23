@@ -19,8 +19,8 @@ class ZohoCrm
     public function createZohoClient(){
 
         $phone = str_replace('+', '00', $this->user->international_phone);
-        $first = empty($this->user->first) ? $this->user->first : 'N/A';
-        $last = empty($this->user->last) ? $this->user->last : 'N/A';
+        $first = !empty($this->user->first) ? $this->user->first : 'N/A';
+        $last = !empty($this->user->last) ? $this->user->last : 'N/A';
 
         $zoho_module = ZohoManager::useModule('Contacts');
 
