@@ -9,8 +9,10 @@ class NavbarNotifications extends Component
     public function render()
     {
         $user = auth()->user();
-        $unreadUserNotifications = $user->unreadNotifications()->latest()->get();
+        $unreadUserNotificationsCount = $user->unreadNotifications()->count();
+        $unreadUserNotifications = $user->unreadNotifications()->latest()->take(10)->get();
 
-        return view('livewire.notifications.navbar', compact('unreadUserNotifications'));
+        return view('livewire.notifications.navbar',
+            compact('unreadUserNotifications', 'unreadUserNotificationsCount'));
     }
 }

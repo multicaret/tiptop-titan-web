@@ -1,4 +1,1 @@
-<lottie-player
-    src="{{url('animations/marker.json')}}"
-    background="transparent" speed="1" style="width: 40px; height: 40px; margin: 0 auto;" loop
-    hover></lottie-player>
+<i class="fas fa-map-marker-alt fa-2x text-danger d-block"></i>

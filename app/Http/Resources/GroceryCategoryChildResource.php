@@ -24,7 +24,8 @@ class GroceryCategoryChildResource extends JsonResource
         $products = cache()
             ->tags('products', 'api-home')
             ->rememberForever('products_of_child_category_'.$this->id, function () use ($branchId, $categoryId) {
-                return Product::whereCategoryId($categoryId)
+                return Product::active()
+                              ->whereCategoryId($categoryId)
                               ->where('branch_id', $branchId)
                               ->where(function ($q) {
                                   $q->where('products.is_storage_tracking_enabled', false)

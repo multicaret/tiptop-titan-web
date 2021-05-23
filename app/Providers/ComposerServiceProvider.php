@@ -93,9 +93,20 @@ class ComposerServiceProvider extends ServiceProvider
             [
                 'children' => [
                     [
-                        'title' => 'Orders',
+                        'title' => 'Live Orders',
                         'icon' => 'fas fa-box-open',
                         'routeName' => 'admin.orders.index',
+                        'params' => [
+                            'type' => 'live',
+                        ]
+                    ],
+                    [
+                        'title' => 'All Orders',
+                        'icon' => 'fas fa-box',
+                        'routeName' => 'admin.orders.index',
+                        'params' => [
+                            'type' => 'all',
+                        ]
                     ],
                 ]
             ],
