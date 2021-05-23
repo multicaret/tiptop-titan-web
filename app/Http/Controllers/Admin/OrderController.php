@@ -24,7 +24,8 @@ class OrderController extends Controller
     public function index(Request $request)
     {
         if ($request->input('type') == 'all') {
-            $orders = Order::orderBy('created_at', 'desc')
+            $orders = Order::with('user', 'branch', 'paymentMethod')
+                           ->orderBy('created_at', 'desc')
                            ->orderBy('status')
                            ->paginate(30);
 
