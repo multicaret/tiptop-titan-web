@@ -40,10 +40,11 @@ class TookanClient
             $product_title = $cartProduct->product->type == Product::CHANNEL_GROCERY_OBJECT ?
                 $cartProduct->product->title.' - '.$cartProduct->product->description :
                 $cartProduct->product->title;
-            $items = [
+            $price = ($cartProduct->product->price + $cartProduct->total_options_price) *  $cartProduct->quantity;
+            $items[] = [
                 ['item' => $product_title],
-                ['quantity' => $cartProduct->quantity],
-                ['price' => ((float)$cartProduct->product->price *  (float) $cartProduct->quantity) + $cartProduct->total_options_price],
+                ['quantity' => (string) $cartProduct->quantity],
+                ['price' => (string) $price]
             ];
         }
         return [
@@ -54,7 +55,7 @@ class TookanClient
             'job_pickup_phone' => $order->branch->primary_phone_number,
             'job_pickup_name' => $order->branch->contacts->first()->name.' - '.$order->branch->title,
             //      'job_pickup_email'        => $order->branch->contact_email,
-            'job_pickup_address' => $order->branch->full_address,
+            'job_pickup_address' => $order->branch->full_address ?? 'Not specified',
             'job_pickup_latitude' => $order->branch->latitude,
             'job_pickup_longitude' => $order->branch->longitude,
             'job_pickup_datetime' => now()->addMinutes(13)->toDateTimeString(),
