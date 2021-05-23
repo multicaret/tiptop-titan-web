@@ -4,7 +4,7 @@
             .table-fixed-head {
                 overflow-y: auto;
                 {{--height: {{ ($orders->count() != 0? $orders->count() * 59 :100)+59 }}px;--}}
-                      height: 50vh;
+                       height: 50vh;
             }
 
             .table-fixed-head thead th {
@@ -87,7 +87,7 @@
                     <th>Payment</th>
                 </tr>
                 </thead>
-                <tbody>
+                <tbody wire:poll.20s>
                 @if($orders)
                     @forelse($orders as $order)
                         <tr class="cursor-pointer {{ $order->getLateCssBgClass()}}"

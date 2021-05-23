@@ -56,8 +56,7 @@ class OrdersTable extends Component
         }
         $orders = Order::with('user', 'branch', 'paymentMethod')
                        ->orderBy('created_at', 'desc')
-                       ->orderBy('status')
-                       ->whereNotIn('status', [Order::STATUS_DELIVERED, Order::STATUS_CANCELLED]);
+                       ->orderBy('status');
 
         $shouldSearchByDate = false;
         if ( ! empty($this->referenceCode)) {
