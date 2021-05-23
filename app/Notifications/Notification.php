@@ -142,15 +142,20 @@ class Notification extends BaseNotification
                 $oneSignalMessage->setBody($this->body);
             }
 
-            // Branch owners & managers
-            if ($notifiable->role_name == User::ROLE_BRANCH_OWNER || $notifiable->role_name == User::ROLE_BRANCH_MANAGER) {
-                $oneSignalMessage->setParameter('android_channel_id',
-                    config('services.onesignal.restaurant_app_android_channel_id'))
-                                 ->setParameter('ios_sound', 'new_notify.wav')
-                                 ->setParameter('android_sound', 'new_notify');
-            } else {
-                $oneSignalMessage->setParameter('ios_sound', 'new_notify.wav')
-                                 ->setParameter('android_sound', 'new_notify');
+            switch ($notifiable->role_name) {
+                case User::ROLE_USER:
+                    $oneSignalMessage->setParameter('android_channel_id',
+                        config('services.onesignal.customer_app_android_channel_id'))
+                                     ->setParameter('ios_sound', 'new_notify.wav')
+                                     ->setParameter('android_sound', 'new_notify');
+                    break;
+                case User::ROLE_BRANCH_OWNER:
+                case User::ROLE_BRANCH_MANAGER:
+                    $oneSignalMessage->setParameter('android_channel_id',
+                        config('services.onesignal.restaurant_app_android_channel_id'))
+                                     ->setParameter('ios_sound', 'new_notify.wav')
+                                     ->setParameter('android_sound', 'new_notify');
+                    break;
             }
 
             if ( ! is_null($this->getDeepLink($notifiable))) {
