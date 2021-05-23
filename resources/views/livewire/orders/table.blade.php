@@ -4,7 +4,7 @@
             .table-fixed-head {
                 overflow-y: auto;
                 {{--height: {{ ($orders->count() != 0? $orders->count() * 59 :100)+59 }}px;--}}
-                   height: 50vh;
+                      height: 50vh;
             }
 
             .table-fixed-head thead th {
@@ -87,7 +87,7 @@
                     <th>Payment</th>
                 </tr>
                 </thead>
-                <tbody wire:poll.1s>
+                <tbody>
                 @if($orders)
                     @forelse($orders as $order)
                         <tr class="cursor-pointer {{ $order->getLateCssBgClass()}}"
@@ -135,11 +135,6 @@
                                        data-placement="top"
                                        title="Restaurant"></i>
                                 @endif
-                                {{--<lottie-player
-                                    src="{{url('animations/motor.json')}}"
-                                    background="transparent" speed="2"
-                                    style="width: 25px; height: 25px;display: inline-block"
-                                    loop hover></lottie-player>--}}
                             </td>
                             <td>
                                 {{--                                {{dd($order->user_id)}}--}}
@@ -148,12 +143,9 @@
                                           title="This is their first order ever!"
                                           style="position: relative">
                                             <b>{{ $order->user->name }}</b>
-                                            <lottie-player
-                                                src="{{url('animations/new.json')}}"
-                                                background="transparent" speed="1"
-                                                style="width: 30px; height: 30px;display: inline-block; position: absolute;"
-                                                loop
-                                                autoplay></lottie-player>
+                                           <span class="badge badge-pill badge-warning">
+                                                NEW
+                                            </span>
                                     </span>
                                 @else
                                     {{ $order->user->name }}

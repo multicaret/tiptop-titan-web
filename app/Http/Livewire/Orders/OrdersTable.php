@@ -55,7 +55,8 @@ class OrdersTable extends Component
             $this->filterByDate = now()->format(config('defaults.date.short_format'));
         }
         $orders = Order::orderBy('created_at', 'desc')
-                       ->orderBy('status');
+                       ->orderBy('status')
+                       ->whereNotIn('status', [Order::STATUS_DELIVERED, Order::STATUS_CANCELLED]);
 
         $shouldSearchByDate = false;
         if ( ! empty($this->referenceCode)) {
