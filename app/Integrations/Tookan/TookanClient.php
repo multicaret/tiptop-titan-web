@@ -40,7 +40,7 @@ class TookanClient
             $product_title = $cartProduct->product->type == Product::CHANNEL_GROCERY_OBJECT ?
                 $cartProduct->product->translate('ar')->title.' - '.$cartProduct->product->translate('ar')->description :
                 $cartProduct->product->translate('ar')->title;
-            $price = ($cartProduct->product->price + $cartProduct->total_options_price) *  $cartProduct->quantity;
+            $price = ($cartProduct->product->discounted_price + $cartProduct->options_price) *  $cartProduct->quantity;
             $items[] = [
                  $product_title,
                  (string) $cartProduct->quantity,
