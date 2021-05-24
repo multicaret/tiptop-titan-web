@@ -1,1 +1,1 @@
-<i class="fas fa-spinner fa-2x fa-pulse text-light"></i>
+<i class="fas fa-mortar-pestle fa-2x text-light"></i>
