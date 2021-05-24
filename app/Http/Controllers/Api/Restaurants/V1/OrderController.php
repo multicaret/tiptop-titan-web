@@ -34,8 +34,7 @@ class OrderController extends BaseApiController
             $statuses = [$request->status];
         }
 
-        $orders = Order::foods()
-                       ->whereBranchId($restaurant->id)
+        $orders = Order::whereBranchId($restaurant->id)
                        ->whereIn('status', $statuses)
                        ->latest()
                        ->get();
@@ -43,24 +42,19 @@ class OrderController extends BaseApiController
         return $this->respond([
             'orders' => OrderRestaurantResource::collection($orders),
             'counts' => [
-                Order::STATUS_NEW => Order::foods()
-                                          ->whereBranchId($restaurant->id)
+                Order::STATUS_NEW => Order::whereBranchId($restaurant->id)
                                           ->where('status', Order::STATUS_NEW)
                                           ->count(),
-                Order::STATUS_PREPARING => Order::foods()
-                                                ->whereBranchId($restaurant->id)
+                Order::STATUS_PREPARING => Order::whereBranchId($restaurant->id)
                                                 ->where('status', Order::STATUS_PREPARING)
                                                 ->count(),
-                Order::STATUS_WAITING_COURIER => Order::foods()
-                                                      ->whereBranchId($restaurant->id)
+                Order::STATUS_WAITING_COURIER => Order::whereBranchId($restaurant->id)
                                                       ->where('status', Order::STATUS_WAITING_COURIER)
                                                       ->count(),
-                Order::STATUS_DELIVERED => Order::foods()
-                                                ->whereBranchId($restaurant->id)
+                Order::STATUS_DELIVERED => Order::whereBranchId($restaurant->id)
                                                 ->where('status', Order::STATUS_DELIVERED)
                                                 ->count(),
-                Order::STATUS_CANCELLED => Order::foods()
-                                                ->whereBranchId($restaurant->id)
+                Order::STATUS_CANCELLED => Order::whereBranchId($restaurant->id)
                                                 ->where('status', Order::STATUS_CANCELLED)
                                                 ->count(),
             ]

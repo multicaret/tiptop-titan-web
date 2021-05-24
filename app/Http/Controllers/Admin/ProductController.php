@@ -123,7 +123,10 @@ class ProductController extends Controller
         }
 
         return redirect()
-            ->route('admin.products.index', ['type' => $request->type])
+            ->route('admin.products.index', [
+                'type' => $request->type,
+                'only-for-chains' => $request->has('only-for-chains'),
+            ])
             ->with('message', [
                 'type' => 'Success',
                 'text' => 'Stored successfully',
@@ -164,7 +167,10 @@ class ProductController extends Controller
         }
 
         return redirect()
-            ->route('admin.products.index', ['type' => $request->type])
+            ->route('admin.products.index', [
+                'type' => $request->type,
+                'only-for-chains' => $request->has('only-for-chains'),
+            ])
             ->with('message', [
                 'type' => 'Success',
                 'text' => 'Updated successfully',
@@ -194,18 +200,6 @@ class ProductController extends Controller
     private function essentialData(Request $request, $product): array
     {
         $isCreate = is_null($product->id);
-        if ($isCreate) {
-            if ($product->type == Product::CHANNEL_GROCERY_OBJECT) {
-                $product->chain_id = optional(Chain::groceries()->first())->id;
-            } else {
-                $product->chain_id = optional(Chain::foods()->first())->id;
-            }
-            if ($request->has('branch_id') && ! is_null($request->input('branch_id'))) {
-                $product->branch_id = Branch::find($request->input('branch_id'))->id;
-            } else {
-                $product->branch_id = optional(Branch::whereChainId(optional($product->chain)->id)->first())->id;
-            }
-        }
         $data['product'] = $product;
         $tableName = $data['product']->getTable();
         $droppedColumns = array_merge(Product::getDroppedColumns(), $this->getDroppedColumnsByType());
@@ -240,7 +234,14 @@ class ProductController extends Controller
             if ($request->has('branch_id')) {
                 $data['categories'] = Branch::find($request->input('branch_id'))->menuCategories;
             } elseif ( ! $isCreate) {
-                $data['categories'] = Branch::find($product->branch->id)->menuCategories()->get();
+                if ($product->branch) {
+                    $data['categories'] = Branch::find($product->branch->id)->menuCategories()->get();
+                } else {
+                    $data['categories'] = Taxonomy::menuCategories()
+                                                  ->whereNull('branch_id')
+                                                  ->where('chain_id', $product->chain->id)
+                                                  ->get();
+                }
             }
 
             if ( ! $isCreate) {

@@ -1,5 +1,6 @@
 @php
-    $isGrocery = $product->type == \App\Models\Product::CHANNEL_GROCERY_OBJECT
+    $isGrocery = $product->type == \App\Models\Product::CHANNEL_GROCERY_OBJECT;
+    $isForChainsOnly = request()->input('only-for-chains');
 @endphp
 
 @extends('layouts.admin')
@@ -27,9 +28,15 @@
 
     <form method="post" enctype="multipart/form-data"
           @if(is_null($product->id))
-          action="{{route('admin.products.store',['type' => strtolower($typeName)])}}"
+          action="{{route('admin.products.store',[
+                'type' => strtolower($typeName),
+                'only-for-chains' => request()->has('only-for-chains') && request()->input('only-for-chains'),
+            ])}}"
           @else
-          action="{{route('admin.products.update', ['type' => strtolower($typeName),$product->uuid])}}"
+          action="{{route('admin.products.update', [
+                'type' => strtolower($typeName),$product->uuid,
+                'only-for-chains' => request()->has('only-for-chains') && request()->input('only-for-chains'),
+            ])}}"
         @endif
     >
         {{csrf_field()}}
@@ -140,39 +147,46 @@
                                                 selected-label=""
                                                 deselect-label=""
                                                 placeholder=""
+                                                @if($isForChainsOnly)
+                                                @input="getMenuCategoriesForChain"
+                                                @select="selectBranch"
+                                                @else
                                                 @input="getBranches"
                                                 @select="selectChain"
+                                                @endif
                                                 autocomplete="false"
                                                 required
                                             ></multiselect>
                                         </div>
                                     </div>
                                     <div class="col-6">
-                                        <div class="form-group">
-                                            <label class="control-label">
-                                                @lang('strings.branch') <b class="text-danger">*</b>
-                                            </label>
-                                            <multiselect
-                                                :options="branches"
-                                                v-model="product.branch"
-                                                track-by="id"
-                                                label="title"
-                                                :searchable="true"
-                                                :allow-empty="true"
-                                                select-label=""
-                                                selected-label=""
-                                                deselect-label=""
-                                                :clear-on-select="false"
-                                                :preselect-first="true"
-                                                @if(!$isGrocery)
-                                                @input="getMenuCategories"
-                                                @select="selectBranch"
-                                                @endif
-                                                placeholder=""
-                                                autocomplete="false"
-                                                required
-                                            ></multiselect>
-                                        </div>
+                                        @if(!$isForChainsOnly)
+                                            <div class="form-group">
+                                                <label class="control-label">
+                                                    @lang('strings.branch') <b class="text-danger">*</b>
+                                                </label>
+                                                <multiselect
+                                                    :options="branches"
+                                                    v-model="product.branch"
+                                                    track-by="id"
+                                                    label="title"
+                                                    :searchable="true"
+                                                    :allow-empty="true"
+                                                    select-label=""
+                                                    selected-label=""
+                                                    deselect-label=""
+                                                    :clear-on-select="false"
+                                                    :preselect-first="true"
+                                                    @if(!$isGrocery)
+                                                    @input="getMenuCategories"
+                                                    @select="selectBranch"
+                                                    @endif
+                                                    placeholder=""
+                                                    autocomplete="false"
+                                                    required
+                                                ></multiselect>
+                                            </div>
+                                        @endif
                                     </div>
                                 @endif
                                 <div
@@ -638,6 +652,28 @@
 
 
                         url = url.replaceAll('XMLKE', branch_id);
+                        axios.get(url).then((res) => {
+                            this.categories = res.data.categories;
+                            if (this.categories.length > 0) {
+                                this.product.category = this.categories[0];
+                            }
+                            hasError = false;
+                        }).catch(console.error).finally(() => {
+                            if (hasError) {
+                                this.categories = categories;
+                            }
+                        });
+                    }
+                },
+                getMenuCategoriesForChain: function () {
+                    const categories = !!this.categories ? JSON.parse(JSON.stringify(this.categories)) : null;
+                    let hasError = true;
+                    let url = true ? @json(localization()->localizeURL(route('ajax.category-by-chain', ['chain_id' => 'XMLKE']))) : '';
+                    if (!!this.product.chain && !!this.product.chain.id) {
+                        const chain_id = this.product.chain.id;
+
+
+                        url = url.replaceAll('XMLKE', chain_id);
                         axios.get(url).then((res) => {
                             this.categories = res.data.categories;
                             if (this.categories.length > 0) {

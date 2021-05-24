@@ -54,7 +54,8 @@ class OrdersTable extends Component
         if (is_null($this->filterByDate) && is_null($this->branchId)) {
             $this->filterByDate = now()->format(config('defaults.date.short_format'));
         }
-        $orders = Order::orderBy('created_at', 'desc')
+        $orders = Order::with('user', 'branch', 'paymentMethod')
+                       ->orderBy('created_at', 'desc')
                        ->orderBy('status');
 
         $shouldSearchByDate = false;

@@ -93,9 +93,20 @@ class ComposerServiceProvider extends ServiceProvider
             [
                 'children' => [
                     [
-                        'title' => 'Orders',
+                        'title' => 'Live Orders',
                         'icon' => 'fas fa-box-open',
                         'routeName' => 'admin.orders.index',
+                        'params' => [
+                            'type' => 'live',
+                        ]
+                    ],
+                    [
+                        'title' => 'All Orders',
+                        'icon' => 'fas fa-box',
+                        'routeName' => 'admin.orders.index',
+                        'params' => [
+                            'type' => 'all',
+                        ]
                     ],
                 ]
             ],
@@ -223,7 +234,7 @@ class ComposerServiceProvider extends ServiceProvider
                                 'title' => 'Chain Products',
                                 'icon' => 'fas fa-boxes',
                                 'params' => [
-                                    'type' => Product::getCorrectChannelName(Product::CHANNEL_GROCERY_OBJECT, false),
+                                    'type' => Product::getCorrectChannelName(Product::CHANNEL_FOOD_OBJECT, false),
                                     'only-for-chains' => true,
                                 ],
                                 'routeName' => 'admin.products.index',

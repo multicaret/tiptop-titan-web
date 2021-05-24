@@ -17,11 +17,21 @@ class OrderController extends Controller
     {
         $this->middleware('permission:order.permissions.show', ['only' => ['show']]);
         $ratingOrderType = request('type');
-        $this->middleware('permission:order.permissions.index|rating-'.$ratingOrderType.'.permissions.index', ['only' => ['index', 'store']]);
+        $this->middleware('permission:order.permissions.index|rating-'.$ratingOrderType.'.permissions.index',
+            ['only' => ['index', 'store']]);
     }
 
-    public function index()
+    public function index(Request $request)
     {
+        if ($request->input('type') == 'all') {
+            $orders = Order::with('user', 'branch', 'paymentMethod')
+                           ->orderBy('created_at', 'desc')
+                           ->orderBy('status')
+                           ->paginate(30);
+
+            return view('admin.orders.new-index', compact('orders'));
+        }
+
         return view('admin.orders.index');
     }
 

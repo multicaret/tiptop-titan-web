@@ -15,10 +15,8 @@ class RateLimited
      */
     public function handle($job, $next)
     {
-        Redis::funnel('tookan_syncing')
+        Redis::funnel('zoho_syncing')
              ->limit(1)
-             ->block(3)
-             ->releaseAfter(10)
              ->then(function () use ($job, $next) {
                  $next($job);
              }, function () use ($job) {

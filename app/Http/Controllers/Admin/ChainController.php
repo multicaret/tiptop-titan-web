@@ -48,7 +48,7 @@ class ChainController extends Controller
                 'name' => 'translations.title',
                 'title' => trans('strings.chain'),
                 'width' => '40',
-                'searchable' => false,
+                'searchable' => true,
             ],
             [
                 'data' => 'region',

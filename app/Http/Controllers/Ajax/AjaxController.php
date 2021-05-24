@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Models\Branch;
 use App\Models\Chain;
 use App\Models\Preference;
+use App\Models\Taxonomy;
 use Exception;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
@@ -240,9 +241,20 @@ class AjaxController extends Controller
         $branchId = $request->input('branch_id');
         $branch = Branch::find($branchId);
         $allCategories = [];
-        if ( count($branch->menuCategories)) {
+        if (count($branch->menuCategories)) {
             $allCategories = $branch->menuCategories;
         }
+
+        return $this->respond(['categories' => $allCategories]);
+    }
+
+    public function loadChainCategories(Request $request): JsonResponse
+    {
+        $chainId = $request->input('chain_id');
+        $allCategories = Taxonomy::menuCategories()
+                                 ->whereNull('branch_id')
+                                 ->where('chain_id', $chainId)
+                                 ->get();
 
         return $this->respond(['categories' => $allCategories]);
     }

@@ -605,7 +605,9 @@ class DatatableController extends AjaxController
 
     public function chains(Request $request)
     {
-        $chains = Chain::where('type', Chain::getCorrectChannel($request->type))->selectRaw('chains.*');
+        $chains = Chain::where('type', Chain::getCorrectChannel($request->type))
+                       ->orderByDesc('id')
+                       ->selectRaw('chains.*');
 
         return DataTables::of($chains)
                          ->editColumn('action', function ($chain) {
@@ -812,7 +814,8 @@ class DatatableController extends AjaxController
     public function products(Request $request)
     {
         $products = Product::whereType(Product::getCorrectChannel($request->type));
-        if ($request->has('only-for-chains')) {
+        $onlyForChains = $request->has('only-for-chains');
+        if ($onlyForChains && $request->input('only-for-chains')) {
             $products = $products->whereNull('branch_id');
         } else {
             $products = $products->whereNotNull('branch_id');
@@ -820,12 +823,14 @@ class DatatableController extends AjaxController
         $products = $products->orderByDesc('id')
                              ->selectRaw('products.*');
 
+
         return DataTables::of($products)
-                         ->editColumn('action', function ($product) {
+                         ->editColumn('action', function ($product) use ($onlyForChains) {
                              $data = [
                                  'editAction' => route('admin.products.edit', [
                                      $product->uuid,
-                                     'type' => request('type')
+                                     'type' => request('type'),
+                                     'only-for-chains' => $onlyForChains ? '1' : '0',
                                  ]),
                                  'deleteAction' => route('admin.products.destroy', [
                                      $product->uuid,

@@ -350,7 +350,7 @@ class BranchController extends Controller
         $branch->save();
         DB::commit();
 
-        cache()->tags('branches')->flush();
+        cache()->tags('branches','api-home')->flush();
     }
 
     /**

@@ -4,6 +4,7 @@ namespace App\Observers;
 
 use App\Jobs\Tookan\CreateCaptain;
 use App\Jobs\Tookan\ToggleCaptainStatus;
+use App\Jobs\Zoho\SyncCustomerJob;
 use App\Models\User;
 
 class UserObserver
@@ -34,6 +35,10 @@ class UserObserver
     public function updated(User $user)
     {
         $tookan_status = config('services.tookan.status');
+
+        if ($user->role_name == User::ROLE_USER){
+            SyncCustomerJob::dispatchSync($user);
+        }
 
         if ($user->role_name == User::ROLE_TIPTOP_DRIVER && $tookan_status) {
             if ($user->wasChanged('status') || $user->wasChanged('deleted_at')) {
