@@ -47,7 +47,7 @@ class ZohoBooksBranches extends ZohoBooksClient
             'cf_vendor_type' => ! $this->branch->type == Branch::CHANNEL_FOOD_OBJECT ? 'Restaurant' : 'Market',
             'phone' => $this->branch->primary_phone_number,
             'billing_address' => [
-                "attention" => $branch_contact,
+                "attention" => $first_name.' '. $last_name,
                 "address" => $this->branch->full_address,
                 "city" => empty(optional($this->branch->city)->name) ? 'erbil' : $this->branch->city->name,
                 "country" => empty(optional($this->branch->city)->country->name) ? 'Iraq' : $this->branch->city->country->name,
