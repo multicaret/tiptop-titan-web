@@ -143,9 +143,19 @@ class ZohoBooksInvoices extends ZohoBooksClient
         ];
     }
 
-    public function applyPaymentCredit($data, $invoice_id)
+    public function applyPaymentCredit()
     {
-        return $this->postRequest('invoices/'.$invoice_id.'/credits?organization_id='.$this->organization_id, $data);
+        $data = $this->prepareAppliedPaymentData();
+
+        return $this->postRequest('invoices/'.$this->order->zoho_books_invoice_id.'/credits?organization_id='.$this->organization_id, $data);
     }
 
+    public function prepareAppliedPaymentData()
+    {
+        return  [
+            'invoice_payments' => [
+                ['payment_id' => $this->order->zoho_books_payment_id, 'amount_applied' => $this->order->grand_total]
+            ]
+        ];
+    }
 }

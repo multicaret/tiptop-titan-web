@@ -90,24 +90,6 @@ class CreateInvoiceJob implements ShouldQueue
             $this->order->zoho_books_invoice_id = $zoho_books_invoice_id;
             $this->order->save();
 
-            $paymentResponse = (new ZohoBooksInvoices($this->order))->createPayment();
-
-            if (isset($paymentResponse['payment']) && isset($paymentResponse['payment']['payment_id'])) {
-                $zoho_books_payment_id = $paymentResponse['payment']['payment_id'];
-                $creditData = [
-                    'invoice_payments' => [
-                        ['payment_id'=> $zoho_books_payment_id, 'amount_applied' => $this->order->grand_total]
-                    ],
-                ];
-                (new ZohoBooksInvoices($this->order))->applyPaymentCredit($creditData,$zoho_books_invoice_id);
-
-            }
-            else{
-                info('zoho create payment response error', [
-                    'response' => $paymentResponse->json()
-                ]);
-                $this->fail();
-            }
 
             } else {
             info('zoho create invoice response error', [

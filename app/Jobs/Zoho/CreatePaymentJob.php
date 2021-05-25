@@ -43,7 +43,7 @@ class CreatePaymentJob implements ShouldQueue
                 $timestamp - time()
             );
         }
-        $response = (new ZohoBooksInvoices($this->order))->createInvoice();
+        $response = (new ZohoBooksInvoices($this->order))->createPayment();
 
         if ( ! $response) {
             $this->fail();
@@ -85,12 +85,12 @@ class CreatePaymentJob implements ShouldQueue
         Cache::forget('zoho-failure');
 
 
-        if (isset($response['invoice']) && isset($response['invoice']['invoice_id'])) {
-            $zoho_books_invoice_id = $response['invoice']['invoice_id'];
-            $this->order->zoho_books_invoice_id = $zoho_books_invoice_id;
+        if (isset($response['payment']) && isset($response['payment']['payment_id'])) {
+            $zoho_books_payment_id = $response['payment']['payment_id'];
+            $this->order->zoho_books_payment_id = $zoho_books_payment_id;
             $this->order->save();
         } else {
-            info('zoho create delivery item response error', [
+            info('zoho create payment response error', [
                 'response' => $response->json()
             ]);
             $this->fail();
