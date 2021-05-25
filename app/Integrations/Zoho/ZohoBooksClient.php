@@ -61,7 +61,6 @@ class ZohoBooksClient
     public function getRequest($endpoint, $data = [])
     {
 
-
             $url = $this->base_url.$endpoint;
             $response = Http::withHeaders([
                 'authorization' => 'Zoho-oauthtoken '.$this->access_token,

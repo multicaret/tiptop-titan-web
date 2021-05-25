@@ -30,7 +30,7 @@ class ZohoBooksProducts extends ZohoBooksClient
         $categories = $this->product->categories;
         $categories = $this->product->type == Product::CHANNEL_GROCERY_OBJECT ? $categories->pluck('translations')->flatten(1)->where('locale','en')->pluck('title')->toArray() : '';
         $purchase_account_id = $this->product->type == Product::CHANNEL_GROCERY_OBJECT ? $this->market_costs_account_id : ' ';
-        $item_account_type = $this->product->type == Product::CHANNEL_GROCERY_OBJECT ?  'sales_and_purchases' : 'sales';
+        $item_account_type = $this->product->type == Product::CHANNEL_GROCERY_OBJECT ?  'inventory' : 'sales';
         $branch_zoho_books_id = $this->product->branch->zoho_books_id;
         $product_type = $this->product->type == Product::CHANNEL_GROCERY_OBJECT ? 'Market' : 'Restaurant';
         $items_inventory_account_id = $this->product->type == Product::CHANNEL_GROCERY_OBJECT ? $this->items_inventory_account_id : ' ';
