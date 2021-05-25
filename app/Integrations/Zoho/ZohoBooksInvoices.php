@@ -29,15 +29,13 @@ class ZohoBooksInvoices extends ZohoBooksClient
     public function prepareInvoiceData()
     {
         $customer_id = $this->getCustomerByZohoCrmId();
-        if (!$customer_id)
-        {
+        if ( ! $customer_id) {
 
             return false;
         }
 
         $inline_items = [];
-        foreach ($this->order->cart->cartProducts as $cartProduct)
-        {
+        foreach ($this->order->cart->cartProducts as $cartProduct) {
             $price = $cartProduct->product->discounted_price + $cartProduct->options_price;
 
             $inline_items[] = [
@@ -47,6 +45,14 @@ class ZohoBooksInvoices extends ZohoBooksClient
                 'rate' => $price,
             ];
         }
+        if ( ! empty($this->order->branch->zoho_books_tiptop_delivery_item_id) && ! empty($this->order->branch->zoho_books_delivery_item_id)) {
+            $inline_items[] = [
+                'quantity' => 1,
+                'item_id' => $this->order->is_delivery_by_tiptop ? $this->order->branch->zoho_books_tiptop_delivery_item_id : $this->order->branch->zoho_books_delivery_item_id,
+                'rate' => $this->order->delivery_fee,
+            ];
+        }
+
         return [
             'customer_id' => $customer_id,
             'invoice_number' => $this->order->reference_code,
@@ -73,6 +79,25 @@ class ZohoBooksInvoices extends ZohoBooksClient
         ];
     }
 
+    public function getCustomerByZohoCrmId()
+    {
+
+        $customerRecord = $this->getRequest('contacts?organization_id='.$this->organization_id,
+            ['zcrm_contact_id' => $this->order->user->zoho_crm_id]);
+
+        if ( ! $customerRecord || ! isset($customerRecord['contacts'][0])) {
+            info('create zoho books invoice error', [
+                'user id' => $this->order->user->id,
+                'error' => 'zoho_crm_id not found',
+                'response' => $customerRecord->json()
+            ]);
+
+            return false;
+        }
+
+        return $customerRecord['contacts'][0]['contact_id'];
+
+    }
 
     public function createPayment()
     {
@@ -85,14 +110,15 @@ class ZohoBooksInvoices extends ZohoBooksClient
     public function preparePaymentData()
     {
         $customer_id = $this->getCustomerByZohoCrmId();
-        if (!$customer_id)
-        {
+        if ( ! $customer_id) {
             info('create zoho books invoice error', [
                 'user id' => $this->order->user->id,
                 'error' => 'zoho_crm_id not found'
             ]);
+
             return false;
         }
+
         return [
             'customer_id' => $customer_id,
             'currency_code' => 'iqd',
@@ -111,33 +137,15 @@ class ZohoBooksInvoices extends ZohoBooksClient
                 ],
                 [
                     'api_name' => 'cf_courier_name',
-                    'value' => !empty($this->order->driver->name) ? $this->order->driver->name : ''
+                    'value' => ! empty($this->order->driver->name) ? $this->order->driver->name : ''
                 ],
             ],
         ];
     }
 
-    public function applyPaymentCredit($data,$invoice_id)
+    public function applyPaymentCredit($data, $invoice_id)
     {
         return $this->postRequest('invoices/'.$invoice_id.'/credits?organization_id='.$this->organization_id, $data);
-    }
-
-    public function getCustomerByZohoCrmId()
-    {
-
-        $customerRecord = $this->getRequest('contacts?organization_id='.$this->organization_id, ['zcrm_contact_id' => $this->order->user->zoho_crm_id]);
-
-        if ( ! $customerRecord || ! isset($customerRecord['contacts'][0])) {
-            info('create zoho books invoice error', [
-                'user id' => $this->order->user->id,
-                'error' => 'zoho_crm_id not found',
-                'response' => $customerRecord->json()
-            ]);
-            return false;
-        }
-
-        return $customerRecord['contacts'][0]['contact_id'];
-
     }
 
 }
