@@ -54,10 +54,7 @@ class ProductWorksheet extends WorksheetImport
         unset($rawData['excel_id']);
         try {
             if (is_null($rawData['id'])) {
-                $product = Product::updateOrCreate([
-                    'branch_id' => $rawData['branch_id'],
-                    'category_id' => $rawData['category_id']
-                ], $rawData);
+                $product = Product::create($rawData);
             } else {
                 $product = Product::find($rawData['id']);
                 $product->update($rawData);
