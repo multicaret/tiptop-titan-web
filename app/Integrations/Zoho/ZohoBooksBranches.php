@@ -25,7 +25,7 @@ class ZohoBooksBranches extends ZohoBooksClient
 
     public function prepareBranchData()
     {
-        $branch_contact = explode(' ', $this->branch->contacts->first()->name);
+        $branch_contact = explode(' ', !empty($this->branch->contacts->first()) ? $this->branch->contacts->first()->name : 'N/A');
         $first_name = null;
         $last_name = null;
         if (count($branch_contact) == 1) {
@@ -49,8 +49,8 @@ class ZohoBooksBranches extends ZohoBooksClient
             'billing_address' => [
                 "attention" => $branch_contact,
                 "address" => $this->branch->full_address,
-                "city" => $this->branch->city->translate('en')->name,
-                "country" => $this->branch->city->country->translate('en')->name,
+                "city" => empty(optional($this->branch->city)->name) ? 'erbil' : $this->branch->city->name,
+                "country" => empty(optional($this->branch->city)->country->name) ? 'Iraq' : $this->branch->city->country->name,
                 "phone" => $this->branch->primary_phone_number
             ],
             'contact_persons' => [
