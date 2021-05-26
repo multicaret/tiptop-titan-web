@@ -38,14 +38,19 @@ class ProductOptionsSelectionsWorksheet extends WorksheetImport
         if ( ! is_null($rawData['product_option_id'])) {
             if ( ! is_null($rawData['ingredient_id'])) {
                 try {
-                    $productOptionSelection = ProductOptionIngredient::updateOrCreate([
-                        'product_option_id' => $rawData['product_option_id'],
-                        'ingredient_id' => $rawData['ingredient_id'],
-                    ], [
-                        'product_option_id' => $rawData['product_option_id'],
-                        'ingredient_id' => $rawData['ingredient_id'],
-                        'price' => $rawData['price']
-                    ]);
+                    if (is_null($rawData['id'])) {
+                        $productOptionSelection = ProductOptionIngredient::create([
+                            'product_option_id' => $rawData['product_option_id'],
+                            'ingredient_id' => $rawData['ingredient_id'],
+                            'price' => $rawData['price']
+                        ]);
+                    } else {
+                        $productOptionSelection = ProductOptionIngredient::update([
+                            'product_option_id' => $rawData['product_option_id'],
+                            'ingredient_id' => $rawData['ingredient_id'],
+                            'price' => $rawData['price']
+                        ]);
+                    }
                 } catch (\Exception $e) {
                     dd('@ProductOptionIngredient', $e->getMessage(), $rawData);
                 }
@@ -54,12 +59,11 @@ class ProductOptionsSelectionsWorksheet extends WorksheetImport
             if ( ! is_null($rawData['product_id']) && is_null($rawData['ingredient_id'])) {
                 unset($rawData['ingredient_id']);
                 try {
-                    $productOptionSelection = ProductOptionSelection::updateOrCreate([
-                        'product_option_id' => $rawData['product_option_id'],
-                        'product_id' => $rawData['product_id'],
-                        'price' => $rawData['price']
-                    ],
-                        $rawData);
+                    if (is_null($rawData['id'])) {
+                        $productOptionSelection = ProductOptionSelection::create($rawData);
+                    } else {
+                        $productOptionSelection = ProductOptionSelection::update($rawData);
+                    }
                     $localesKeys = array_flip(localization()->getSupportedLocalesKeys());
                     foreach ($localesKeys as $localeKey => $index) {
                         $productOptionSelection->translateOrNew($localeKey)->fill($translatedData[$localeKey]);
@@ -70,6 +74,7 @@ class ProductOptionsSelectionsWorksheet extends WorksheetImport
             }
         }
         $productOptionSelection->save();
+
         return $productOptionSelection;
     }
 
@@ -77,7 +82,7 @@ class ProductOptionsSelectionsWorksheet extends WorksheetImport
     {
         $productsOptionsIds = $this->productsImporter->getProductsOptionsIds();
         if ($productsOptionsIds->count() > 0 && $productsOptionsIds->has((int) $rawData['product_id'])) {
-            if (isset($productsOptionsIds->get((int)$rawData['product_id'])[$rawData['product_option_id']])) {
+            if (isset($productsOptionsIds->get((int) $rawData['product_id'])[$rawData['product_option_id']])) {
                 return $productsOptionsIds->get((int) $rawData['product_id'])[$rawData['product_option_id']];
             }
         }
@@ -93,7 +98,7 @@ class ProductOptionsSelectionsWorksheet extends WorksheetImport
                 'nullable',
                 'integer',
                 function ($attribute, $value, $onFailure) {
-            if ($this->productsImporter->getProductsOptionsSelectionsIds()->count() > 0 && $this->productsImporter->getProductsOptionsSelectionsIds()->has((int)$value)) {
+                    if ($this->productsImporter->getProductsOptionsSelectionsIds()->count() > 0 && $this->productsImporter->getProductsOptionsSelectionsIds()->has((int) $value)) {
                         $onFailure("The selection with Excel ID: {$value} already exists");
                     }
                 }
