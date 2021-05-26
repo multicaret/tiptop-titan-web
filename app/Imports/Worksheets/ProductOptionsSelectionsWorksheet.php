@@ -63,7 +63,8 @@ class ProductOptionsSelectionsWorksheet extends WorksheetImport
                     if (is_null($rawData['id'])) {
                         $productOptionSelection = ProductOptionSelection::create($rawData);
                     } else {
-                        $productOptionSelection = ProductOptionSelection::update($rawData);
+                        $productOptionSelection = ProductOptionSelection::find($rawData['id']);
+                        $productOptionSelection->update($rawData);
                     }
                     $localesKeys = array_flip(localization()->getSupportedLocalesKeys());
                     foreach ($localesKeys as $localeKey => $index) {
