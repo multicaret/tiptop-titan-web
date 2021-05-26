@@ -45,7 +45,8 @@ class ProductOptionsSelectionsWorksheet extends WorksheetImport
                             'price' => $rawData['price']
                         ]);
                     } else {
-                        $productOptionSelection = ProductOptionIngredient::update([
+                        $productOptionSelection = ProductOptionIngredient::find($rawData['id']);
+                        $productOptionSelection->update([
                             'product_option_id' => $rawData['product_option_id'],
                             'ingredient_id' => $rawData['ingredient_id'],
                             'price' => $rawData['price']
