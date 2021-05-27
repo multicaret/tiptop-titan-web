@@ -53,7 +53,7 @@ class TookanController extends Controller
         $order = Order::where('reference_code', $request->order_id)->firstOrFail();
 
         if ( ! in_array($order->status,
-            [Order::STATUS_ON_THE_WAY, Order::STATUS_PREPARING, Order::STATUS_AT_THE_ADDRESS])) {
+            [Order::STATUS_ON_THE_WAY, Order::STATUS_PREPARING, Order::STATUS_AT_THE_ADDRESS,Order::STATUS_WAITING_COURIER])) {
             return;
         }
 

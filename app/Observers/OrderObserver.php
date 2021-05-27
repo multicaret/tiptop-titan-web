@@ -62,7 +62,7 @@ class OrderObserver
             //dispatching tookan jobs based on changed order's status
             $tookan_status = config('services.tookan.status');
 
-            if ($order->status == Order::STATUS_PREPARING && $order->is_delivery_by_tiptop && $tookan_status) {
+            if ($order->status == Order::STATUS_PREPARING && $order->is_delivery_by_tiptop && empty($order->tookanInfo) && $tookan_status) {
                 CreateTask::dispatchSync($order);
             } elseif ($order->status == Order::STATUS_CANCELLED && $order->is_delivery_by_tiptop && ! empty(optional($order->tookanInfo)->job_pickup_id) && $tookan_status) {
                 CancelTask::dispatchSync($order);
