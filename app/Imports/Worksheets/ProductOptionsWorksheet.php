@@ -38,9 +38,12 @@ class ProductOptionsWorksheet extends WorksheetImport
         $excelId = $rawData['excel_id'];
         unset($rawData['excel_id']);
         try {
-            $productOption = ProductOption::updateOrCreate([
-                'product_id' => $rawData['product_id'], 'type' => $rawData['type']
-            ], $rawData);
+            if (is_null($rawData['id'])) {
+                $productOption = ProductOption::create($rawData);
+            } else {
+                $productOption = ProductOption::find($rawData['id']);
+                $productOption->update($rawData);
+            }
             $localesKeys = array_flip(localization()->getSupportedLocalesKeys());
             foreach ($localesKeys as $localeKey => $index) {
                 $productOption->translateOrNew($localeKey)->fill($translatedData[$localeKey]);
