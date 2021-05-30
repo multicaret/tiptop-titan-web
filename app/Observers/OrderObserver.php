@@ -19,7 +19,7 @@ class OrderObserver
      */
     public function creating(Order $order)
     {
-        $order->reference_code = mt_rand(100, 100000);
+        $order->reference_code = mt_rand(0, 99).substr(time(), 2);
     }
 
     /**
