@@ -28,6 +28,17 @@ class TookanController extends Controller
 
     public function pickupAgentArrived(Request $request)
     {
+        //  info('driverAssigned', ['Request Body', $request->all()]);
+        if (empty($request->order_id) || empty($request->fleet_id)) {
+            return;
+        }
+
+        $order = Order::where('reference_code', $request->order_id)->firstOrFail();
+        $driver = User::where('tookan_id', $request->fleet_id)->firstOrFail();
+
+        $order->driver_id = $driver->id;
+
+        $order->save();
 
     }
 
@@ -42,7 +53,7 @@ class TookanController extends Controller
         $order = Order::where('reference_code', $request->order_id)->firstOrFail();
 
         if ( ! in_array($order->status,
-            [Order::STATUS_ON_THE_WAY, Order::STATUS_PREPARING, Order::STATUS_AT_THE_ADDRESS])) {
+            [Order::STATUS_ON_THE_WAY, Order::STATUS_PREPARING, Order::STATUS_AT_THE_ADDRESS,Order::STATUS_WAITING_COURIER])) {
             return;
         }
 
@@ -73,17 +84,25 @@ class TookanController extends Controller
     {
         //   info('deliveryAgentStarted');
 
-        if (empty($request->job_id) || empty($request->order_id) || empty($request->fleet_id)) {
+        if ( empty($request->order_id) || empty($request->fleet_id)) {
             return;
         }
 
         $order = Order::where('reference_code', $request->order_id)->firstOrFail();
 
+        if (empty($order->driver_id))
+        {
+            $driver = User::where('tookan_id', $request->fleet_id)->firstOrFail();
+
+            $order->driver_id = $driver->id;
+
+        }
         if ( ! in_array($order->status, [Order::STATUS_PREPARING, Order::STATUS_WAITING_COURIER])) {
             return;
         }
 
         $order->status = Order::STATUS_ON_THE_WAY;
+
         $order->save();
 
 
@@ -107,7 +126,7 @@ class TookanController extends Controller
     public function driverAssigned(Request $request)
     {
         //  info('driverAssigned', ['Request Body', $request->all()]);
-        if (empty($request->job_id) || empty($request->order_id) || empty($request->fleet_id)) {
+        if (empty($request->order_id) || empty($request->fleet_id)) {
             return;
         }
 

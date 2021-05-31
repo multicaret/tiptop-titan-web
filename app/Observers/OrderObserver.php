@@ -23,7 +23,7 @@ class OrderObserver
      */
     public function creating(Order $order)
     {
-        $order->reference_code = mt_rand(100, 100000);
+        $order->reference_code = (int) (mt_rand(0, 99).substr(time(), 2));
     }
 
     /**
@@ -66,7 +66,7 @@ class OrderObserver
             //dispatching tookan jobs based on changed order's status
             $tookan_status = config('services.tookan.status');
 
-            if ($order->status == Order::STATUS_PREPARING && $order->is_delivery_by_tiptop && $tookan_status) {
+            if ($order->status == Order::STATUS_PREPARING && $order->is_delivery_by_tiptop && empty($order->tookanInfo) && $tookan_status) {
                 CreateTask::dispatchSync($order);
             } elseif ($order->status == Order::STATUS_CANCELLED && $order->is_delivery_by_tiptop && ! empty(optional($order->tookanInfo)->job_pickup_id) && $tookan_status) {
                 CancelTask::dispatchSync($order);
