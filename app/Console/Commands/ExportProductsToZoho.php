@@ -44,7 +44,7 @@ class ExportProductsToZoho extends Command
             return 0;
         }
 
-        foreach (Product::whereNotNull('branch_id')->whereIn('branch_id',[473,509])->cursor() as $product) {
+        foreach (Product::whereNotNull('branch_id')->whereNull('zoho_books_id')->cursor() as $product) {
             SyncProductJob::dispatch($product);
         }
 

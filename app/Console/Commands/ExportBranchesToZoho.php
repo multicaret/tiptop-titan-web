@@ -48,7 +48,7 @@ class ExportBranchesToZoho extends Command
             return 0;
         }
 
-        $branches = Branch::all();
+        $branches = Branch::whereNull('zoho_books_id')->all();
         foreach ($branches as $branch) {
             Bus::chain(
                 [
