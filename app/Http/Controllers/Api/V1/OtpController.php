@@ -342,7 +342,7 @@ class OtpController extends BaseApiController
         $user->assignRole('User');
 
         $accessToken = $user->createToken($deviceName, $mobileAppData)->plainTextToken;
-        event(new Registered($user));
+//        event(new Registered($user));
 
 //        Mail::to($user)->send(new Welcome($user));
 
