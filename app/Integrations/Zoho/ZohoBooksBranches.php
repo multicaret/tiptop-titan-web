@@ -102,7 +102,7 @@ class ZohoBooksBranches extends ZohoBooksClient
         $delivery_item_account_id = '2511463000002639051';
 
         return [
-            'name' => 'delivery',
+            'name' => 'delivery - '.$this->branch->title,
             'status' => 'Active',
             'unit' => 'item',
             'product_type' => 'service',
@@ -139,7 +139,7 @@ class ZohoBooksBranches extends ZohoBooksClient
         $tiptop_delivery_item_account_id = '2511463000002639009';
 
         return [
-            'name' => 'delivery',
+            'name' => 'TipTop Delivery - '.$this->branch->title,
             'status' => 'Active',
             'unit' => 'item',
             'product_type' => 'service',

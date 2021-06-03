@@ -71,13 +71,13 @@ class OrderObserver
             } elseif ($order->status == Order::STATUS_CANCELLED && $order->is_delivery_by_tiptop && ! empty(optional($order->tookanInfo)->job_pickup_id) && $tookan_status) {
                 CancelTask::dispatchSync($order);
             } else if ($order->status == Order::STATUS_DELIVERED ) {
-                Bus::chain(
-                    [
-                        new CreateInvoiceJob($order),
-                        new CreatePaymentJob($order),
-                        new ApplyPaymentCreditJob($order),
-                    ]
-                )->dispatch();
+//                Bus::chain(
+//                    [
+//                        new CreateInvoiceJob($order),
+//                        new CreatePaymentJob($order),
+//                        new ApplyPaymentCreditJob($order),
+//                    ]
+//                )->dispatch();
              }
         }
         elseif ($order->wasChanged('grand_total')){
