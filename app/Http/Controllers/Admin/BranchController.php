@@ -171,7 +171,7 @@ class BranchController extends Controller
         $branch->load(['region', 'city', 'chain']);
         $chains = Chain::active()->whereType($type)->get();
         $foodCategories = Taxonomy::foodCategories()->get();
-        $workingHours = $branch->getWorkingHours();
+        $workingHours = $branch->getWorkingHoursForJs();
 
         return view('admin.branches.form',
             compact('branch',
@@ -359,32 +359,42 @@ class BranchController extends Controller
      */
     public function storeWorkingHours(Request $request, Branch $branch): RedirectResponse
     {
-        if ( ! is_null($request->workingHours) && is_array($workingHours = json_decode($request->workingHours)) && count($workingHours)) {
-            foreach ($workingHours as $dayNumber => $day) {
-                if (is_null(
-                    $workingHour = WorkingHour::where('workable_id', $branch->id)
-                                              ->where('workable_type', Branch::class)
-                                              ->where('day', $dayNumber)
-                                              ->first()
-                )) {
-                    $workingHour = new WorkingHour();
-                    $workingHour->workable_id = $branch->id;
-                    $workingHour->workable_type = Branch::class;
-                }
-                $workingHour->day = $dayNumber;
-                if ($day->is_day_off) {
-                    $workingHour->is_day_off = true;
-                    $workingHour->opens_at = 0;
-                    $workingHour->closes_at = 0;
-                } else {
-                    $workingHour->is_day_off = false;
-                    $workingHour->opens_at = $day->opens_at;
-                    $workingHour->closes_at = $day->closes_at;
-                }
-                $workingHour->save();
-            }
+        $businessHours = $request->input('business_hours');
+        $workingHoursIdsWithDayNumberForDelete = [];
+        if ( ! is_null(json_decode($businessHours)) && is_array($days = json_decode($businessHours, true))) {
+            $workingHoursIdsWithDayNumberForDelete = WorkingHour::where('workable_id', $branch->id)
+                                                                ->where('workable_type', Branch::class)
+                                                                ->orderBy('day')
+                                                                ->get()
+                                                                ->groupBy('day')
+                                                                ->map(fn($v) => $v->pluck('id', 'id')->all())
+                                                                ->all();
+            foreach ($days as $dayNumber => $dayShifts) {
+                $dayNumber = WorkingHour::numberOfDays()[$dayNumber];
+                foreach ($dayShifts as $index => $dayShift) {
+//                    $dayShift['isOpen'] = ! is_null($dayShift['open']) && ! is_null($dayShift['close']);
+                    if (is_null($workingHour = WorkingHour::find($dayShift['id']))) {
+                        $workingHour = new WorkingHour();
+                        $workingHour->workable_id = $branch->id;
+                        $workingHour->workable_type = Branch::class;
+                    }
+                    $workingHour->day = $dayNumber;
+                    $workingHour->is_day_off = ! $dayShift['isOpen'];
+                    $workingHour->opens_at = WorkingHour::updateHourValue($dayShift, 'open');
+                    $workingHour->closes_at = WorkingHour::updateHourValue($dayShift, 'close');
+                    if ($index === 0) {
+                        $workingHour->save();
+                    } else {
+                        if ( ! (empty($dayShift['open']) || empty($dayShift['close']))) {
+                            $workingHour->save();
+                        }
+                    }
 
+                    unset($workingHoursIdsWithDayNumberForDelete[$dayNumber][$workingHour->id]);
+                }
+            }
         }
+        WorkingHour::whereIn('id', \Arr::flatten($workingHoursIdsWithDayNumberForDelete))->delete();
 
         return redirect()->back()->with('message',
             ['type' => 'Success', 'text' => 'Working hours updated successfully',]);

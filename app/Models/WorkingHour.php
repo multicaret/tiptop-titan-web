@@ -7,6 +7,7 @@ use Carbon\Carbon;
 use Eloquent;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Collection;
 
 /**
  * App\Models\WorkingHour
@@ -51,7 +52,7 @@ class WorkingHour extends Model
     public static function retrieve($object, Carbon $date = null)
     {
         if (is_null($date)) {
-            $dayNumber = now()->format('N');
+            $dayNumber = (int) now()->format('N');
         } else {
             $dayNumber = $date->format('N');
         }
@@ -62,19 +63,31 @@ class WorkingHour extends Model
             'closesAt' => null,
             'isOpen' => false,
         ];
-
+        $nowTime = now()->format('H:i:s');
         foreach ($object->workingHours as $workingHour) {
             if ($workingHour->is_day_off) {
                 $workingHours['offs'][] = trans('strings.working_day_'.$workingHour->day);
             } else {
-                if ($workingHour->day == $dayNumber) {
+                $todayShifts = $object->workingHours->sortBy('opens_at')->groupBy('day')->get($dayNumber);
+                $getOpenTimeShift = $todayShifts->where('opens_at', '<=', $nowTime)->where('closes_at', '>=', $nowTime)->first();
+                if ( ! empty($getOpenTimeShift)) {
                     if ( ! isset($workingHours['opensAt'])) {
-                        $workingHours['opensAt'] = Carbon::parse($workingHour->opens_at)->format('H:i');
+                        $workingHours['opensAt'] = '';
                     }
                     if ( ! isset($workingHours['closesAt'])) {
-                        $workingHours['closesAt'] = Carbon::parse($workingHour->closes_at)->format('H:i');
+                        $workingHours['closesAt'] = Carbon::parse($getOpenTimeShift->closes_at)->format('H:i');
+                    }
+                } else {
+                    $firstNextOpenShift = $todayShifts->where('opens_at', '>=', $nowTime)->first();
+                    if ( ! isset($workingHours['opensAt'])) {
+                        $workingHours['opensAt'] = Carbon::parse($firstNextOpenShift->opens_at)->format('H:i');;
+                    }
+                    if ( ! isset($workingHours['closesAt'])) {
+                        $workingHours['closesAt'] = '';
                     }
                 }
+
+
             }
         }
         $workingHours['offsRendered'] = implode(' - ', $workingHours['offs']);
@@ -108,10 +121,19 @@ class WorkingHour extends Model
                     $today_closes_at->addDays(1);
                 }
 
-                $workingHours['isOpen'] = $today_opens_at->eq($today_closes_at)/* if CARBON eq true, thus, this place is open 24Hours */
-                    || (Carbon::now()->gt($today_opens_at) && Carbon::now()->lt($today_closes_at));
+                $timeSlot = WorkingHour::where('day', $dayNumber)
+                                       ->whereWorkableId($object->id)
+                                       ->where('workable_type', get_class($object))
+                                       ->where('is_day_off', 0)
+                                       ->where(function ($query) use ($nowTime) {
+                                           $query->where('opens_at', '<=', $nowTime);
+                                           $query->where('closes_at', '>=', $nowTime);
+                                       })
+                                       ->first();
 
-                if ($todayWorkingHours->is_day_off) {
+                if ( ! is_null($timeSlot)) {
+                    $workingHours['isOpen'] = true;
+                } else {
                     $workingHours['isOpen'] = false;
                 }
             }
@@ -119,5 +141,41 @@ class WorkingHour extends Model
         $workingHours['schedule'] = WorkingHourResource::collection($object->workingHours);
 
         return $workingHours;
+    }
+
+    public static function numberOfDays(): Collection
+    {
+        $days = [
+            'monday' => 1,
+            'tuesday' => 2,
+            'wednesday' => 3,
+            'thursday' => 4,
+            'friday' => 5,
+            'saturday' => 6,
+            'sunday' => 7,
+        ];
+
+        return collect($days);
+    }
+
+    public static function updateHourValue($value, $key)
+    {
+        $hour = $value[$key];
+        if ( ! is_null($hour)) {
+            if ($hour === '24hrs' || $hour === '2400') {
+                return $key === 'open' ? '00:00' : '23:59';
+            }
+            if (empty($hour)) {
+                if ($key === 'open') {
+                    return config('defaults.workingHours.opensAt');
+                } else {
+                    return config('defaults.workingHours.closesAt');
+                }
+            }
+
+            return substr_replace($hour, ':', 2, 0);
+        } else {
+            return null;
+        }
     }
 }
