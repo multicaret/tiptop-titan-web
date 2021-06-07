@@ -5,9 +5,13 @@ namespace App\Observers;
 use App\Integrations\TookanClient;
 use App\Jobs\Tookan\CancelTask;
 use App\Jobs\Tookan\CreateTask;
+use App\Jobs\Zoho\ApplyPaymentCreditJob;
+use App\Jobs\Zoho\CreateInvoiceJob;
+use App\Jobs\Zoho\CreatePaymentJob;
 use App\Models\Order;
 use App\Models\User;
 use App\Notifications\OrderStatusUpdated;
+use Illuminate\Support\Facades\Bus;
 
 class OrderObserver
 {
@@ -66,11 +70,19 @@ class OrderObserver
                 CreateTask::dispatchSync($order);
             } elseif ($order->status == Order::STATUS_CANCELLED && $order->is_delivery_by_tiptop && ! empty(optional($order->tookanInfo)->job_pickup_id) && $tookan_status) {
                 CancelTask::dispatchSync($order);
-            }
-            /*        else if ($order->status == Order::STATUS_DELIVERED && $order->is_delivery_by_tiptop && $tookan_status)
-                      {
-                          MarkTaskAsDelivered::dispatch($order);
-                      }*/
+            } else if ($order->status == Order::STATUS_DELIVERED ) {
+//                Bus::chain(
+//                    [
+//                        new CreateInvoiceJob($order),
+//                        new CreatePaymentJob($order),
+//                        new ApplyPaymentCreditJob($order),
+//                    ]
+//                )->dispatch();
+             }
+        }
+        elseif ($order->wasChanged('grand_total')){
+           //create job for updating task
+            // UpdateTask::dispatchSync($order);
         }
         $order->recordActivity('updated');
     }
