@@ -95,8 +95,7 @@
                         <form method="post" enctype="multipart/form-data"
                               action="{{route('admin.branch.working-hours',[$branch->uuid])}}">
                             {{csrf_field()}}
-                            @include('admin.branches.partials._working-hours')
-                            <input type="hidden" name="workingHours" :value="JSON.stringify(workingHours)">
+                            @include('admin.partials._working-hours')
                             <button type="submit" class="btn btn-success">Submit</button>
                         </form>
                     @endif

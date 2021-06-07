@@ -172,8 +172,8 @@ return [
         'longitude' => 43.993914,
     ],
     'workingHours' => [
-        'opensAt' => '09:00',
-        'closesAt' => '23:00',
+        'opensAt' => '09:00:00',
+        'closesAt' => '23:00:00',
         'weekends' => [6, 7],
     ],
     'colors' => [
@@ -236,6 +236,7 @@ return [
         'integer' => 'number',
         'string' => 'text',
         'text' => 'editor',
+        'smallint' => 'number',
     ],
     /*
         adj_fallback=https%3A%2F%2Ftrytiptop.app

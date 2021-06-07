@@ -18,7 +18,9 @@ window.Vue = require('vue').default;
 // import VueCtkDateTimePicker from 'vue-ctk-date-time-picker';
 import Multiselect from 'vue-multiselect';
 import BootstrapVue from 'bootstrap-vue';
+import BusinessHours from 'vue-business-hours';
 
 Vue.component('multiselect', Multiselect);
 Vue.use(BootstrapVue);
+Vue.use(BusinessHours);
 // Vue.component('VueCtkDateTimePicker', VueCtkDateTimePicker);
