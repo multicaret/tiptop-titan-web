@@ -297,5 +297,6 @@ return [
     'has_good_food_quality_rating' => 'Good Food Quality',
     'has_good_packaging_quality_rating' => 'Good Packaging Quality',
     'has_good_order_accuracy_rating' => 'Good Order Accuracy',
+    'You have orders with this address you can not delete it' => 'You have orders with this address you can not delete it',
     '' => '',
 ];
