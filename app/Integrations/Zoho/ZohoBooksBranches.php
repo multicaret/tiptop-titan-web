@@ -102,7 +102,7 @@ class ZohoBooksBranches extends ZohoBooksClient
         $delivery_item_account_id = '2511463000002639051';
 
         return [
-            'name' => 'delivery - '.$this->branch->title,
+            'name' => 'Delivery - '.$this->branch->title,
             'status' => 'Active',
             'unit' => 'item',
             'product_type' => 'service',
