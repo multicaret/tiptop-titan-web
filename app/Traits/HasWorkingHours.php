@@ -57,7 +57,7 @@ trait HasWorkingHours
         $closesAtToday = null;
 
         $timeSlot = WorkingHour::whereType($workingHoursType)
-                               ->where('day', ((int)$dayNumber + 1))
+                               ->where('day', $dayNumber)
                                ->where('workable_type', get_class($object))
                                ->whereWorkableId($object->id)
                                ->where('is_day_off', 0)

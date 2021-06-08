@@ -10,6 +10,7 @@ use App\Http\Resources\RegionResource;
 use App\Models\Branch;
 use App\Models\City;
 use App\Models\Location;
+use App\Models\Order;
 use App\Models\Region;
 use App\Models\User;
 use DB;
@@ -109,12 +110,14 @@ class AddressController extends BaseApiController
         $address = Location::find($address);
         if (is_null($address)) {
             return $this->respondNotFound();
-        } elseif ($address->delete()) {
+        } elseif (Order::whereAddressId($address->id)->count()) {
+            return $this->respondWithMessage(__('strings.You have orders with this address you can not delete it'));
+        }elseif ($address->delete()) {
             return $this->respondWithMessage(__('strings.successfully_deleted'));
         }
 
         return $this->respondValidationFails([
-            '' => 'There seems to be a problem'
+            'address' => 'There seems to be a problem'
         ]);
     }
 

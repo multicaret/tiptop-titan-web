@@ -37,7 +37,7 @@ class OrderController extends BaseApiController
         $orders = Order::whereBranchId($restaurant->id)
                        ->whereIn('status', $statuses)
                        ->latest()
-                       ->get();
+                       ->paginate(25);
 
         return $this->respond([
             'orders' => OrderRestaurantResource::collection($orders),
