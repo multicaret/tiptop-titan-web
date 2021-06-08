@@ -3,6 +3,7 @@
 namespace App\Console\Commands;
 
 use App\Jobs\Zoho\SyncProductJob;
+use App\Models\Branch;
 use App\Models\Product;
 use Illuminate\Console\Command;
 
@@ -44,7 +45,11 @@ class ExportProductsToZoho extends Command
             return 0;
         }
 
-        foreach (Product::whereNotNull('branch_id')->whereNull('zoho_books_id')->cursor() as $product) {
+        foreach (Product::whereNotNull('branch_id')->whereHas('branch',function ($query){
+            $query->whereHas('translations', function ($query)  {
+                $query->where('title', 'not like', '%test%');
+            })->where('branches.status',Branch::STATUS_ACTIVE);
+        })->cursor() as $product) {
             SyncProductJob::dispatch($product);
         }
 
