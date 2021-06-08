@@ -55,9 +55,10 @@ class ExportBranchesToZoho extends Command
             Bus::chain(
                 [
                     new SyncBranchJob($branch),
-                    new CreateBranchAccountJob($branch),
                     new CreateDeliveryItemJob($branch),
-                    new CreateTipTopDeliveryItemJob($branch)
+                    new CreateTipTopDeliveryItemJob($branch),
+                    new CreateBranchAccountJob($branch),
+
                 ]
             )->dispatch();
         }

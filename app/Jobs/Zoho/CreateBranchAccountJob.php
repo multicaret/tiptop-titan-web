@@ -49,6 +49,10 @@ class CreateBranchAccountJob implements ShouldQueue
         $branchAccountResponse = (new ZohoBooksBranches($this->branch))->createBranchAccount();
 
         if ( ! $branchAccountResponse) {
+            info('zoho books http client error', [
+                'branch' => $this->branch->id,
+                'job' => 'create account'
+            ]);
             $this->fail();
         }
         //handling too many request response
@@ -82,6 +86,11 @@ class CreateBranchAccountJob implements ShouldQueue
         }
 
         if ($branchAccountResponse->failed()) {
+            info('zoho books http client fail', [
+                'branch' => $this->branch->id,
+                'job' => 'create account',
+                'response' => $branchAccountResponse->json()
+            ]);
             $this->fail();
         }
 
