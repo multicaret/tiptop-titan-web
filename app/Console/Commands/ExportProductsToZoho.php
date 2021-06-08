@@ -48,7 +48,7 @@ class ExportProductsToZoho extends Command
         foreach (Product::whereNotNull('branch_id')->whereHas('branch',function ($query){
             $query->whereHas('translations', function ($query)  {
                 $query->where('title', 'not like', '%test%');
-            })->where('branches.status',Branch::STATUS_ACTIVE);
+            })->where('branches.status',Branch::STATUS_ACTIVE)->whereNotNull('branches.zoho_books_id');
         })->cursor() as $product) {
             SyncProductJob::dispatch($product);
         }
