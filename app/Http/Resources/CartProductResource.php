@@ -21,12 +21,12 @@ class CartProductResource extends JsonResource
             'product' => new ProductResource($this->product),
             'quantity' => $this->quantity,
             'price' => [
-                'raw' => (double) $this->options_price + $this->product->discounted_price,
-                'formatted' => Currency::format($this->options_price + $this->product->discounted_price),
+                'raw' => (double) $this->options_price + optional($this->product)->discounted_price,
+                'formatted' => Currency::format($this->options_price + optional($this->product)->discounted_price),
             ],
             'totalPrice' => [
-                'raw' => (double) $this->total_options_price + ($this->product->discounted_price * $this->quantity),
-                'formatted' => Currency::format($this->total_options_price + ($this->product->discounted_price * $this->quantity)),
+                'raw' => (double) $this->total_options_price + (optional($this->product)->discounted_price * $this->quantity),
+                'formatted' => Currency::format($this->total_options_price + (optional($this->product)->discounted_price * $this->quantity)),
             ],
             'selectedOptions' => CartProductOptionResource::collection($this->cartProductOptions),
         ];

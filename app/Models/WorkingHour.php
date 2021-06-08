@@ -69,7 +69,8 @@ class WorkingHour extends Model
                 $workingHours['offs'][] = trans('strings.working_day_'.$workingHour->day);
             } else {
                 $todayShifts = $object->workingHours->sortBy('opens_at')->groupBy('day')->get($dayNumber);
-                $getOpenTimeShift = $todayShifts->where('opens_at', '<=', $nowTime)->where('closes_at', '>=', $nowTime)->first();
+                $getOpenTimeShift = $todayShifts->where('opens_at', '<=', $nowTime)->where('closes_at', '>=',
+                    $nowTime)->first();
                 if ( ! empty($getOpenTimeShift)) {
                     if ( ! isset($workingHours['opensAt'])) {
                         $workingHours['opensAt'] = '';
@@ -79,15 +80,15 @@ class WorkingHour extends Model
                     }
                 } else {
                     $firstNextOpenShift = $todayShifts->where('opens_at', '>=', $nowTime)->first();
-                    if ( ! isset($workingHours['opensAt'])) {
+                    if ( ! is_null($firstNextOpenShift) && ! isset($workingHours['opensAt'])) {
                         $workingHours['opensAt'] = Carbon::parse($firstNextOpenShift->opens_at)->format('H:i');;
+                    } else {
+                        $workingHours['opensAt'] = '';
                     }
                     if ( ! isset($workingHours['closesAt'])) {
                         $workingHours['closesAt'] = '';
                     }
                 }
-
-
             }
         }
         $workingHours['offsRendered'] = implode(' - ', $workingHours['offs']);
