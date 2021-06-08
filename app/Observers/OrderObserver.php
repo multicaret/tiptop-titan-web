@@ -12,6 +12,7 @@ use App\Models\Order;
 use App\Models\User;
 use App\Notifications\OrderStatusUpdated;
 use Illuminate\Support\Facades\Bus;
+use Illuminate\Support\Str;
 
 class OrderObserver
 {
@@ -70,14 +71,14 @@ class OrderObserver
                 CreateTask::dispatchSync($order);
             } elseif ($order->status == Order::STATUS_CANCELLED && $order->is_delivery_by_tiptop && ! empty(optional($order->tookanInfo)->job_pickup_id) && $tookan_status) {
                 CancelTask::dispatchSync($order);
-            } else if ($order->status == Order::STATUS_DELIVERED ) {
-//                Bus::chain(
-//                    [
-//                        new CreateInvoiceJob($order),
-//                        new CreatePaymentJob($order),
-//                        new ApplyPaymentCreditJob($order),
-//                    ]
-//                )->dispatch();
+            } else if ($order->status == Order::STATUS_DELIVERED  && !Str::contains($order->customer_notes,['test','Test'])) {
+                Bus::chain(
+                    [
+                        new CreateInvoiceJob($order),
+                        new CreatePaymentJob($order),
+                        new ApplyPaymentCreditJob($order),
+                    ]
+                )->dispatch();
              }
         }
         elseif ($order->wasChanged('grand_total')){
