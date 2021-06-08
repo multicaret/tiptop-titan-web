@@ -50,7 +50,7 @@ class ExportBranchesToZoho extends Command
 
         $branches = Branch::where('status',Branch::STATUS_ACTIVE)->whereHas('translations', function ($query)  {
             $query->where('title', 'not like', '%test%');
-        });
+        })->get();
         foreach ($branches as $branch) {
             Bus::chain(
                 [
