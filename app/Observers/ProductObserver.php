@@ -15,7 +15,10 @@ class ProductObserver
      */
     public function created(Product $product)
     {
-      //  SyncProductJob::dispatch($product);
+        if (!empty(optional($product->branch)->zoho_books_id))
+        {
+            SyncProductJob::dispatch($product);
+        }
 
     }
 

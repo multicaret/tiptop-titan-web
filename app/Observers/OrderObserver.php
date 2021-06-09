@@ -71,15 +71,7 @@ class OrderObserver
                 CreateTask::dispatchSync($order);
             } elseif ($order->status == Order::STATUS_CANCELLED && $order->is_delivery_by_tiptop && ! empty(optional($order->tookanInfo)->job_pickup_id) && $tookan_status) {
                 CancelTask::dispatchSync($order);
-            } else if ($order->status == Order::STATUS_DELIVERED  && !Str::contains($order->customer_notes,['test','Test'])) {
-                Bus::chain(
-                    [
-                        new CreateInvoiceJob($order),
-                        new CreatePaymentJob($order),
-                        new ApplyPaymentCreditJob($order),
-                    ]
-                )->dispatch();
-             }
+            }
         }
         elseif ($order->wasChanged('grand_total')){
            //create job for updating task

@@ -11,6 +11,8 @@ use Illuminate\Support\Facades\Bus;
 
 class BranchObserver
 {
+    public $afterCommit = true;
+
     /**
      * Handle the Branch "created" event.
      *
@@ -19,14 +21,14 @@ class BranchObserver
      */
     public function created(Branch $branch)
     {
-//        Bus::chain(
-//            [
-//                new SyncBranchJob($branch),
-//                new CreateBranchAccountJob($branch),
-//                new CreateDeliveryItemJob($branch),
-//                new CreateTipTopDeliveryItemJob($branch)
-//            ]
-//        )->dispatch();
+        Bus::chain(
+            [
+                new SyncBranchJob($branch),
+                new CreateDeliveryItemJob($branch),
+                new CreateTipTopDeliveryItemJob($branch),
+                new CreateBranchAccountJob($branch),
+            ]
+        )->dispatch();
     }
 
     /**

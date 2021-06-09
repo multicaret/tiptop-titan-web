@@ -2,6 +2,7 @@
 
 namespace App\Console;
 
+use App\Console\Commands\ExportOrdersToZoho;
 use App\Console\Commands\OrdersReminder;
 use App\Console\Commands\UpdateBranchAvailability;
 use Illuminate\Console\Scheduling\Schedule;
@@ -17,6 +18,7 @@ class Kernel extends ConsoleKernel
     protected $commands = [
         UpdateBranchAvailability::class,
         OrdersReminder::class,
+        ExportOrdersToZoho::class,
     ];
 
     /**
@@ -36,6 +38,8 @@ class Kernel extends ConsoleKernel
 
         $schedule->command('orders:remind --minutes=3 --roles=branch,admin')->everyThreeMinutes();
         $schedule->command('orders:remind --minutes=5 --roles=admin')->everyFiveMinutes();
+
+        $schedule->command('orders:export-to-zoho')->everyTwoHours();
     }
 
     /**

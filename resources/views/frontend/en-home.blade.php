@@ -33,7 +33,7 @@
     <link rel="stylesheet" href="/frontend-assets/vendor/aos/dist/aos.css">
 
     <!-- CSS Front Template -->
-    <link rel="stylesheet" href="/frontend-assets/css/theme-rtl.css?v=3">
+    <link rel="stylesheet" href="/frontend-assets/css/theme.css?v=3">
 
     <script>
         dataLayer = [];
@@ -183,6 +183,12 @@
                                 <a class="btn btn-sm btn-white btn-pill transition-3d-hover"
                                    href="{{ localized_route('home',[],'ku') }}">
                                     كوردى
+                                </a>
+                            </li>
+                            <li class="navbar-nav-last-item">
+                                <a class="btn btn-sm btn-white btn-pill transition-3d-hover"
+                                   href="{{ localized_route('home',[],'ar') }}">
+                                    عربي
                                 </a>
                             </li>
 
@@ -585,14 +591,14 @@
 
                             <div class="row">
                                 <div class="col-md-6">
-                                    <a class="btn btn-icon2 btn-indigo rounded-circle2 btn-block mb-1"
+                                    <a class="btn btn-icon2 btn-indigo rounded-circle2 btn-block mb-1 apple-store" target="_blank"
                                        href="https://apps.apple.com/tr/app/tip-top-%D8%AA%D9%8A%D8%A8-%D8%AA%D9%88%D8%A8/id1538884916">
                                         <i class="fab fa-apple"></i>&nbsp;
                                                                     Apple Store
                                     </a>
                                 </div>
                                 <div class="col-md-6">
-                                    <a class="btn btn-icon2 btn-indigo rounded-circle2 btn-block mb-1"
+                                    <a class="btn btn-icon2 btn-indigo rounded-circle2 btn-block mb-1 google-play" target="_blank"
                                        href="https://play.google.com/store/apps/details?id=app.trytiptop.customer">
                                         <i class="fab fa-google-play"></i>&nbsp;
                                                                           Play Store
@@ -897,6 +903,21 @@
             let goTo = new HSGoTo($(this)).init();
         });
 
+        $( ".google-play" ).on( "click", function() {
+            window.dataLayer = window.dataLayer || [];
+            window.dataLayer.push({
+                'event': 'StoreClick',
+                'store': 'google'
+            });
+        });
+
+        $( ".apple-store" ).on( "click", function() {
+            window.dataLayer = window.dataLayer || [];
+            window.dataLayer.push({
+                'event': 'StoreClick',
+                'store': 'apple'
+            });
+        });
 
         $('#utm_source').val(getUrlParameter('utm_source'));
         $('#utm_medium').val(getUrlParameter('utm_medium'));
