@@ -36,10 +36,14 @@ class Kernel extends ConsoleKernel
 //        $schedule->command('backup:run')->daily()->at('02:00');
         $schedule->command('branch-availability:update')->daily()->at('03:56');
 
-        $schedule->command('orders:remind --minutes=3 --roles=branch,admin')->everyThreeMinutes();
-        $schedule->command('orders:remind --minutes=5 --roles=admin')->everyFiveMinutes();
+        if (app()->environment('production')) {
+            $schedule->command('backup:clean')->twiceDaily(1, 13);
+            $schedule->command('backup:run')->twiceDaily(2, 14);
+            $schedule->command('orders:remind --minutes=3 --roles=branch,admin')->everyThreeMinutes();
+            $schedule->command('orders:remind --minutes=5 --roles=admin')->everyFiveMinutes();
+            $schedule->command('orders:export-to-zoho')->everyTwoHours();
 
-        $schedule->command('orders:export-to-zoho')->everyTwoHours();
+        }
     }
 
     /**
