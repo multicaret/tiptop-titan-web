@@ -39,7 +39,7 @@ class UserObserver
 
         if ($user->role_name == User::ROLE_USER){
             SyncCustomerJob::dispatchSync($user);
-//
+
 //            $record = OrderDailyReport::firstOrNew(['day' => today()->toDateString()]);
 //            $record->increment('registered_users_count');
 //            $record->country_id = 107;
