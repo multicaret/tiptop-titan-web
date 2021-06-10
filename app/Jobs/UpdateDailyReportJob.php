@@ -72,7 +72,7 @@ class UpdateDailyReportJob implements ShouldQueue
                 $range14 = Carbon::parse($todayDateString.' '.'08:59');
 
                 if ($this->order->type == Order::CHANNEL_GROCERY_OBJECT) {
-                    $record = OrderDailyReport::firstOrNew(['day' => today()->toDateString()]);
+                    $record = OrderDailyReport::firstOrCreate(['day' => today()->toDateString()]);
                     $record->increment('grocery_orders_count');
                     $record->grocery_orders_value = Order::whereDate('created_at', today()->toDateString())->where('type',
                         Order::CHANNEL_GROCERY_OBJECT)->sum('grand_total');
@@ -80,13 +80,12 @@ class UpdateDailyReportJob implements ShouldQueue
                         today()->toDateString())->where('type', Order::CHANNEL_GROCERY_OBJECT)->avg('grand_total');
 
                 } else {
-                    $record = OrderDailyReport::firstOrNew(['day' => today()->toDateString()]);
+                    $record = OrderDailyReport::firstOrCreate(['day' => today()->toDateString()]);
                     $record->increment('food_orders_count');
                     $record->food_orders_value = Order::whereDate('created_at', today()->toDateString())->where('type',
                         Order::CHANNEL_FOOD_OBJECT)->sum('grand_total');
                     $record->average_food_orders_value = Order::whereDate('created_at',
                         today()->toDateString())->where('type', Order::CHANNEL_FOOD_OBJECT)->avg('grand_total');
-
                 }
                 $record->increment('orders_count');
                 $record->orders_value = Order::whereDate('created_at', today()->toDateString())->sum('grand_total');

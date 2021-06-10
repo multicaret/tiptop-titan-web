@@ -40,11 +40,11 @@ class UserObserver
         if ($user->role_name == User::ROLE_USER){
             SyncCustomerJob::dispatchSync($user);
 
-//            $record = OrderDailyReport::firstOrNew(['day' => today()->toDateString()]);
-//            $record->increment('registered_users_count');
-//            $record->country_id = 107;
-//            $record->region_id = 6;
-//            $record->save();
+            $record = OrderDailyReport::firstOrCreate(['day' => today()->toDateString()]);
+            $record->increment('registered_users_count');
+            $record->country_id = 107;
+            $record->region_id = 6;
+            $record->save();
         }
 
         if ($user->role_name == User::ROLE_TIPTOP_DRIVER && $tookan_status) {

@@ -4,11 +4,13 @@ namespace App\Providers;
 
 use App\Models\Branch;
 use App\Models\Order;
+use App\Models\OrderDailyReport;
 use App\Models\Product;
 use App\Models\ProductOption;
 use App\Models\TookanTeam;
 use App\Models\User;
 use App\Observers\BranchObserver;
+use App\Observers\OrderDailyReportObserver;
 use App\Observers\OrderObserver;
 use App\Observers\ProductObserver;
 use App\Observers\ProductOptionObserver;
@@ -49,5 +51,6 @@ class EventServiceProvider extends ServiceProvider
         ProductOption::observe(ProductOptionObserver::class);
         Order::observe(OrderObserver::class);
         TookanTeam::observe(TookanTeamObserver::class);
+        OrderDailyReport::observe(OrderDailyReportObserver::class);
     }
 }

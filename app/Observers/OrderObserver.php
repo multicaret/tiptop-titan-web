@@ -41,7 +41,7 @@ class OrderObserver
         $order->recordActivity('created');
         if (!Str::contains($order->customer_notes, ['test', 'Test']))
         {
-            //UpdateDailyReportJob::dispatch($order,'order_created');
+            UpdateDailyReportJob::dispatch($order,'order_created');
         }
     }
 
@@ -56,13 +56,13 @@ class OrderObserver
         if ($order->wasChanged('status')) {
             try {
                 foreach (User::active()->managers()->get() as $admin) {
-                    $admin->notify(new OrderStatusUpdated($order, $admin->role_name));
+                 //   $admin->notify(new OrderStatusUpdated($order, $admin->role_name));
                 }
                 foreach ($order->branch->owners()->active()->get() as $manager) {
-                    $manager->notify(new OrderStatusUpdated($order, $manager->role_name));
+                 //   $manager->notify(new OrderStatusUpdated($order, $manager->role_name));
                 }
                 foreach ($order->branch->managers()->active()->get() as $manager) {
-                    $manager->notify(new OrderStatusUpdated($order, $manager->role_name));
+                 //   $manager->notify(new OrderStatusUpdated($order, $manager->role_name));
                 }
                 $order->user->notify(new OrderStatusUpdated($order, $order->user->role_name));
             } catch (\Exception $e) {
