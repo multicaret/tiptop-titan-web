@@ -114,6 +114,9 @@ class UpdateDailyReportJob implements ShouldQueue
                     $record->is_weekend = true;
                 else
                     $record->is_weekend = false;
+
+                $record->country_id = null;
+                $record->region_id = null;
                 $record->save();
             }
 
