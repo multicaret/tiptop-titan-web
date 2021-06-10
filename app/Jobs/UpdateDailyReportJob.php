@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Jobs\Zoho;
+namespace App\Jobs;
 
 use App\Integrations\Zoho\ZohoBooksProducts;
 use App\Jobs\Middleware\RateLimited;
@@ -106,12 +106,20 @@ class UpdateDailyReportJob implements ShouldQueue
                 } elseif ($this->order->created_at >= $range13 && $this->order->created_at <= $range14) {
                     $record->increment('orders_count_between_00_03');
                 }
+                if ($this->order->user->created_at->toDateString() == today() && $this->order->user->orders()->count() == 1)
+                {
+                    $record->increment('ordered_users_count');
+                }
+                if ($this->order->created_at->isFriday())
+                    $record->is_weekend = true;
+                else
+                    $record->is_weekend = false;
+
+                $record->country_id = 107;
+                $record->region_id = 6;
+                $record->save();
             }
-            if ($this->order->user->created_at->toDateString() == today() && $this->order->user->orders()->count() == 1)
-            {
-                $record->increment('ordered_users_count');
-            }
-            $record->save();
+
 
         }elseif ($this->type == 'order_status_updated'){
             if ($this->order->status == Order::STATUS_DELIVERED){
