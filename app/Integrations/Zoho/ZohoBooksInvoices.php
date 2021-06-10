@@ -53,6 +53,16 @@ class ZohoBooksInvoices extends ZohoBooksClient
             ];
         }
 
+        $adjustment = 0;
+        if ($this->order->grand_total_before_agent_manipulation > $this->order->grand_total)
+        {
+            $adjustment = -1 * $this->order->grand_total_before_agent_manipulation - $this->order->grand_total;
+        }
+        if ($this->order->grand_total_before_agent_manipulation > 0 && $this->order->grand_total_before_agent_manipulation < $this->order->grand_total)
+        {
+            $adjustment =  $this->order->grand_total - $this->order->grand_total_before_agent_manipulation;
+        }
+
         return [
             'customer_id' => $customer_id,
             'invoice_number' => $this->order->reference_code,
@@ -61,7 +71,7 @@ class ZohoBooksInvoices extends ZohoBooksClient
             'discount_type' => 'entity_level',
             'send' => true,
             'line_items' => $inline_items,
-//              'adjustment'        => empty($this->data['coupon_code']) ? '0' : '-'.$this->data['coupon_discount'],
+            'adjustment'   => $adjustment,
             'custom_fields' => [
                 [
                     'api_name' => 'cf_who_recieve_the_payment',

@@ -56,13 +56,13 @@ class OrderObserver
         if ($order->wasChanged('status')) {
             try {
                 foreach (User::active()->managers()->get() as $admin) {
-                 //   $admin->notify(new OrderStatusUpdated($order, $admin->role_name));
+                    $admin->notify(new OrderStatusUpdated($order, $admin->role_name));
                 }
                 foreach ($order->branch->owners()->active()->get() as $manager) {
-                 //   $manager->notify(new OrderStatusUpdated($order, $manager->role_name));
+                    $manager->notify(new OrderStatusUpdated($order, $manager->role_name));
                 }
                 foreach ($order->branch->managers()->active()->get() as $manager) {
-                 //   $manager->notify(new OrderStatusUpdated($order, $manager->role_name));
+                    $manager->notify(new OrderStatusUpdated($order, $manager->role_name));
                 }
                 $order->user->notify(new OrderStatusUpdated($order, $order->user->role_name));
             } catch (\Exception $e) {
@@ -81,7 +81,7 @@ class OrderObserver
             } elseif ($order->status == Order::STATUS_DELIVERED) {
                 if (!Str::contains($order->customer_notes, ['test', 'Test']))
                 {
-                    //UpdateDailyReportJob::dispatch($order,'order_status_updated');
+                    UpdateDailyReportJob::dispatch($order,'order_status_updated');
                 }
             }
         } elseif ($order->wasChanged('grand_total')) {
@@ -89,7 +89,7 @@ class OrderObserver
             // UpdateTask::dispatchSync($order);
             if (!Str::contains($order->customer_notes, ['test', 'Test']))
             {
-             //   UpdateDailyReportJob::dispatch($order,'order_grand_total_updated');
+                UpdateDailyReportJob::dispatch($order,'order_grand_total_updated');
             }
         }
         $order->recordActivity('updated');
