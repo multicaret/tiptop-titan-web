@@ -33,7 +33,7 @@
     <link rel="stylesheet" href="/frontend-assets/vendor/aos/dist/aos.css">
 
     <!-- CSS Front Template -->
-    <link rel="stylesheet" href="/frontend-assets/css/theme.css?v=3">
+    <link rel="stylesheet" href="/frontend-assets/css/theme-rtl.css?v=3">
 
     <script>
         dataLayer = [];
