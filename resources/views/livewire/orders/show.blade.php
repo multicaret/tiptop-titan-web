@@ -204,7 +204,7 @@
                 </div>
             </div>
 
-            @if($order->is_delivery_by_tiptop && !empty($order->driver))
+            @if($order->is_delivery_by_tiptop)
                 <div class="card mt-3">
                     <h5 class="card-header font-weight-bold">
                         <i class="fas fa-motorcycle"></i>&nbsp;
@@ -214,20 +214,40 @@
                         <div class="row">
                             <div class="col-12 pb-3 border-bottom">
                                 <b>Driver</b>
+                                @if(!empty($order->driver))
                                 <a target="_blank" class="text-primary pull-right"
                                    href="{{route('admin.users.edit', ['role' => $order->driver->role_name, 'user' => $order->driver])}}">
                                     {{$order->driver->name}}
                                 </a>
+                                @else
+                                    <p class="text-muted">Waiting Delivery information</p>
+                                @endif
                             </div>
                             <div class="col-12 py-3 border-bottom" style="padding-bottom: 1.3rem !important;">
                                 <b>Phone</b>
+                                @if(!empty($order->driver))
+
                                 <a class="text-primary pull-right"
                                    href="tel:{{$order->user->phone_number}}"
                                    target="_blank">
                                     {{$order->driver->phone_number}}
                                 </a>
+                                @endif
                             </div>
-                            @if(!in_array($order->status,[\App\Models\Order::STATUS_DELIVERED,\App\Models\Order::STATUS_CANCELLED]) && !empty($order->tookanInfo->pickup_tracking_link) && !empty($order->tookanInfo->delivery_tracking_link))
+
+                            @if(!empty($order->driver) && !in_array($order->status,[\App\Models\Order::STATUS_DELIVERED,\App\Models\Order::STATUS_CANCELLED]) && !empty($order->tookanInfo->pickup_tracking_link) && !empty($order->tookanInfo->delivery_tracking_link))
+                                <div class="col-12 py-3 border-bottom">
+                                    <b>Pickup Task ID</b>
+                                        <p >
+                                            {{$order->tookanInfo->job_pickup_id}}
+                                        </p>
+                                </div>
+                                <div class="col-12 py-3 border-bottom">
+                                    <b>Delivery Task ID</b>
+                                        <p>
+                                            {{$order->tookanInfo->job_delivery_id}}
+                                        </p>
+                                </div>
                                 <div class="col-12 py-3 border-bottom">
                                     <b>Pickup Tracking</b>
                                     <a class="text-primary pull-right" target="_blank"

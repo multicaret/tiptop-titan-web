@@ -84,9 +84,13 @@ class TookanClient
                     'data' => (string) $order->grand_total
                 ],
                 [
+                    'label' => 'customer_note',
+                    'data' => $order->customer_notes
+                ],
+                [
                     'label' => 'admin_note',
                     'data' => optional($order->agentNotes()->latest()->first())->message
-                ]
+                ],
             ],
             'meta_data' => [
                 [
@@ -102,9 +106,14 @@ class TookanClient
                     'data' => $order->paymentMethod->title
                 ],
                 [
+                    'label' => 'customer_note',
+                    'data' => $order->customer_notes
+                ],
+                [
                     'label' => 'admin_note',
                     'data' => optional($order->agentNotes()->latest()->first())->message
                 ],
+
 //                [
 //                    'label' => 'payment_status',
 //                    'data' => $this->order->payment_status == 'NOT_PAID' ? 'لم يتم الدفع' : 'تم الدفع'
@@ -113,10 +122,10 @@ class TookanClient
                     'label' => 'tiptop_order_number',
                     'data' => $order->reference_code
                 ],
-//                [
-//                    'label' => 'delivery_address_notes',
-//                    'data'  =>  $this->order->address->address_description
-//                ],
+                [
+                    'label' => 'delivery_address_notes',
+                    'data'  =>  $order->address->notes
+                ],
 //                [
 //                    'label' => 'customer_phone_number',
 //                    'data' =>  $this->order->customer->phone_number

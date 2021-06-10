@@ -14,6 +14,8 @@ use App\Models\Order;
 use Carbon\Carbon;
 use Illuminate\Console\Command;
 use Illuminate\Support\Facades\Bus;
+use Symfony\Component\Console\Input\InputInterface;
+use Symfony\Component\Console\Output\OutputInterface;
 
 class ExportOrdersToZoho extends Command
 {
@@ -22,7 +24,9 @@ class ExportOrdersToZoho extends Command
      *
      * @var string
      */
-    protected $signature = 'orders:export-to-zoho';
+    protected $signature = 'orders:export-to-zoho {--type=}';
+
+    protected $type = 'recent';
 
     /**
      * The console command description.
@@ -41,6 +45,16 @@ class ExportOrdersToZoho extends Command
         parent::__construct();
     }
 
+    public function initialize(InputInterface $input, OutputInterface $output)
+    {
+        if ( ! is_null($this->option('type')) && in_array($this->option('type'), ['all','recent'])) {
+            $this->type = $this->option('type');
+        }
+        else{
+            $this->type = 'recent';
+
+        }
+    }
     /**
      * Execute the console command.
      *
@@ -53,12 +67,21 @@ class ExportOrdersToZoho extends Command
             return 0;
         }
 
-        $orders = Order::where('status',Order::STATUS_DELIVERED)->whereDate('created_at',Carbon::today())
+        $from = now()->subHours(5)->toDateTimeString();
+        $to   = now()->subMinutes(125)->toDateTimeString();
+
+        $lastTwoDays = today()->subDays(2)->toDateString();
+
+        $orders = Order::where('status',Order::STATUS_DELIVERED)
                        ->whereNull('zoho_books_invoice_id')
                        ->where(function ($query){
-                           $query->where('customer_notes', 'not like', '%test%')->orWhere('customer_notes',NULL);
-                       })
-                       ->where('created_at','<=',Carbon::now()->subMinutes(125)->toDateTimeString())
+                           $query->where('customer_notes', 'not like', '%test%')
+                                 ->orWhere('customer_notes',NULL);
+                       })->when($this->type == 'recent', function ($query) use ($from,$to){
+                        $query->where('created_at','<=',$to)->where('created_at','>=',$from);
+                      })->when($this->type == 'all', function ($query) use($lastTwoDays){
+                        $query->whereDate('created_at','>=', $lastTwoDays);
+                      })
                        ->get();
         foreach ($orders as $order) {
             Bus::chain(
