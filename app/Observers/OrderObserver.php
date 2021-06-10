@@ -8,7 +8,7 @@ use App\Jobs\Tookan\CreateTask;
 use App\Jobs\Zoho\ApplyPaymentCreditJob;
 use App\Jobs\Zoho\CreateInvoiceJob;
 use App\Jobs\Zoho\CreatePaymentJob;
-use App\Jobs\Zoho\UpdateDailyReportJob;
+use App\Jobs\UpdateDailyReportJob;
 use App\Models\Order;
 use App\Models\OrderDailyReport;
 use App\Models\User;

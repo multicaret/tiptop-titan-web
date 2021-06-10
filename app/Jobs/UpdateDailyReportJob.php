@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Jobs\Zoho;
+namespace App\Jobs;
 
 use App\Integrations\Zoho\ZohoBooksProducts;
 use App\Jobs\Middleware\RateLimited;

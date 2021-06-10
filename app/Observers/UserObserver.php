@@ -5,7 +5,6 @@ namespace App\Observers;
 use App\Jobs\Tookan\CreateCaptain;
 use App\Jobs\Tookan\ToggleCaptainStatus;
 use App\Jobs\Zoho\SyncCustomerJob;
-use App\Jobs\Zoho\UpdateDailyReportJob;
 use App\Models\OrderDailyReport;
 use App\Models\User;
 
