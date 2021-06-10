@@ -238,13 +238,13 @@
                             @if(!empty($order->driver) && !in_array($order->status,[\App\Models\Order::STATUS_DELIVERED,\App\Models\Order::STATUS_CANCELLED]) && !empty($order->tookanInfo->pickup_tracking_link) && !empty($order->tookanInfo->delivery_tracking_link))
                                 <div class="col-12 py-3 border-bottom">
                                     <b>Pickup Task ID</b>
-                                        <p >
+                                        <p class="text-primary pull-right">
                                             {{$order->tookanInfo->job_pickup_id}}
                                         </p>
                                 </div>
                                 <div class="col-12 py-3 border-bottom">
                                     <b>Delivery Task ID</b>
-                                        <p>
+                                        <p class="text-primary pull-right">
                                             {{$order->tookanInfo->job_delivery_id}}
                                         </p>
                                 </div>
