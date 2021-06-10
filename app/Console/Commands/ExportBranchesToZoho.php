@@ -48,7 +48,7 @@ class ExportBranchesToZoho extends Command
             return 0;
         }
 
-        $branches = Branch::where('status',Branch::STATUS_ACTIVE)->whereHas('translations', function ($query)  {
+        $branches = Branch::where('status',Branch::STATUS_ACTIVE)->whereNull('zoho_books_id')->whereHas('translations', function ($query)  {
             $query->where('title', 'not like', '%test%');
         })->get();
         foreach ($branches as $branch) {

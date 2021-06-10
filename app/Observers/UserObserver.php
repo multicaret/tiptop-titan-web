@@ -5,6 +5,8 @@ namespace App\Observers;
 use App\Jobs\Tookan\CreateCaptain;
 use App\Jobs\Tookan\ToggleCaptainStatus;
 use App\Jobs\Zoho\SyncCustomerJob;
+use App\Jobs\Zoho\UpdateDailyReportJob;
+use App\Models\OrderDailyReport;
 use App\Models\User;
 
 class UserObserver
@@ -38,6 +40,10 @@ class UserObserver
 
         if ($user->role_name == User::ROLE_USER){
             SyncCustomerJob::dispatchSync($user);
+
+            $record = OrderDailyReport::firstOrNew(['day' => today()->toDateString()]);
+            $record->increment('registered_users_count');
+            $record->save();
         }
 
         if ($user->role_name == User::ROLE_TIPTOP_DRIVER && $tookan_status) {
