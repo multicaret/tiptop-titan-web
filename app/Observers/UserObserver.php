@@ -27,11 +27,16 @@ class UserObserver
         }
         if (!empty($user->phone_verified_at))
         {
-            $record = OrderDailyReport::firstOrCreate(['day' => today()->toDateString()]);
-            $record->increment('registered_users_count');
-            $record->country_id = 107;
-            $record->region_id = 6;
-            $record->save();
+            try {
+                $record = OrderDailyReport::firstOrCreate(['day' => today()->toDateString()]);
+                $record->increment('registered_users_count');
+                $record->country_id = 107;
+                $record->region_id = 6;
+                $record->save();
+            } catch (\Exception $e) {
+                info('Error while writing newly registered user in the daily report ' ,
+                    ['user' => $user]);
+            }
         }
 
     }
