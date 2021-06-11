@@ -19,6 +19,8 @@ use Illuminate\Support\Str;
 
 class OrderObserver
 {
+    public $afterCommit = true;
+
     /**
      * Handle the Order "created" event.
      *
