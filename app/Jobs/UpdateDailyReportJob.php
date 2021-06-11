@@ -74,10 +74,16 @@ class UpdateDailyReportJob implements ShouldQueue
                 if ($this->order->type == Order::CHANNEL_GROCERY_OBJECT) {
                     $record = OrderDailyReport::firstOrCreate(['day' => today()->toDateString()]);
                     $record->increment('grocery_orders_count');
-                    $record->grocery_orders_value = Order::whereDate('created_at', today()->toDateString())->where('type',
+                    $record->grocery_orders_value = Order::whereDate('created_at', today()->toDateString())->where(function ($query){
+                        $query->where('customer_notes', 'not like', '%test%')
+                              ->orWhere('customer_notes',NULL);
+                    })->where('type',
                         Order::CHANNEL_GROCERY_OBJECT)->sum('grand_total');
                     $record->average_grocery_orders_value = Order::whereDate('created_at',
-                        today()->toDateString())->where('type', Order::CHANNEL_GROCERY_OBJECT)->avg('grand_total');
+                        today()->toDateString())->where(function ($query){
+                        $query->where('customer_notes', 'not like', '%test%')
+                              ->orWhere('customer_notes',NULL);
+                    })->where('type', Order::CHANNEL_GROCERY_OBJECT)->avg('grand_total');
 
                 } else {
                     $record = OrderDailyReport::firstOrCreate(['day' => today()->toDateString()]);
@@ -85,11 +91,20 @@ class UpdateDailyReportJob implements ShouldQueue
                     $record->food_orders_value = Order::whereDate('created_at', today()->toDateString())->where('type',
                         Order::CHANNEL_FOOD_OBJECT)->sum('grand_total');
                     $record->average_food_orders_value = Order::whereDate('created_at',
-                        today()->toDateString())->where('type', Order::CHANNEL_FOOD_OBJECT)->avg('grand_total');
+                        today()->toDateString())->where(function ($query){
+                        $query->where('customer_notes', 'not like', '%test%')
+                              ->orWhere('customer_notes',NULL);
+                    })->where('type', Order::CHANNEL_FOOD_OBJECT)->avg('grand_total');
                 }
                 $record->increment('orders_count');
-                $record->orders_value = Order::whereDate('created_at', today()->toDateString())->sum('grand_total');
-                $record->average_orders_value = Order::whereDate('created_at', today()->toDateString())->avg('grand_total');
+                $record->orders_value = Order::whereDate('created_at', today()->toDateString())->where(function ($query){
+                    $query->where('customer_notes', 'not like', '%test%')
+                          ->orWhere('customer_notes',NULL);
+                })->sum('grand_total');
+                $record->average_orders_value = Order::whereDate('created_at', today()->toDateString())->where(function ($query){
+                    $query->where('customer_notes', 'not like', '%test%')
+                          ->orWhere('customer_notes',NULL);
+                })->avg('grand_total');
                 if ($this->order->created_at >= $range1 && $this->order->created_at <= $range2) {
                     $record->increment('orders_count_between_09_12');
                 } elseif ($this->order->created_at >= $range3 && $this->order->created_at <= $range4) {
@@ -120,28 +135,48 @@ class UpdateDailyReportJob implements ShouldQueue
             }
 
 
-        }elseif ($this->type == 'order_status_updated'){
+        }
+        elseif ($this->type == 'order_status_updated')
+        {
             if ($this->order->status == Order::STATUS_DELIVERED){
                 $record = OrderDailyReport::whereDate('day', today()->toDateString())->first();
                 if (empty($record)) $this->fail();
                 if ($this->order->type == Order::CHANNEL_GROCERY_OBJECT){
                     $record->increment('delivered_grocery_orders_count');
                     $record->delivered_grocery_orders_value = Order::whereDate('created_at',
-                        today()->toDateString())->where('type', Order::CHANNEL_GROCERY_OBJECT)->where('status', Order::STATUS_DELIVERED)->sum('grand_total');
+                        today()->toDateString())->where('type', Order::CHANNEL_GROCERY_OBJECT)->where('status', Order::STATUS_DELIVERED)->where(function ($query){
+                        $query->where('customer_notes', 'not like', '%test%')
+                              ->orWhere('customer_notes',NULL);
+                    })->sum('grand_total');
                     $record->average_grocery_delivered_orders_value = Order::whereDate('created_at',
-                        today()->toDateString())->where('type', Order::CHANNEL_GROCERY_OBJECT)->where('status', Order::STATUS_DELIVERED)->avg('grand_total');
+                        today()->toDateString())->where('type', Order::CHANNEL_GROCERY_OBJECT)->where('status', Order::STATUS_DELIVERED)->where(function ($query){
+                        $query->where('customer_notes', 'not like', '%test%')
+                              ->orWhere('customer_notes',NULL);
+                    })->avg('grand_total');
                 }else{
                     $record->increment('delivered_food_orders_count');
                     $record->delivered_food_orders_value = Order::whereDate('created_at',
-                        today()->toDateString())->where('type', Order::CHANNEL_FOOD_OBJECT)->where('status', Order::STATUS_DELIVERED)->sum('grand_total');
+                        today()->toDateString())->where('type', Order::CHANNEL_FOOD_OBJECT)->where('status', Order::STATUS_DELIVERED)->where(function ($query){
+                        $query->where('customer_notes', 'not like', '%test%')
+                              ->orWhere('customer_notes',NULL);
+                    })->sum('grand_total');
                     $record->average_food_delivered_orders_value = Order::whereDate('created_at',
-                        today()->toDateString())->where('type', Order::CHANNEL_FOOD_OBJECT)->where('status', Order::STATUS_DELIVERED)->avg('grand_total');
+                        today()->toDateString())->where('type', Order::CHANNEL_FOOD_OBJECT)->where('status', Order::STATUS_DELIVERED)->where(function ($query){
+                        $query->where('customer_notes', 'not like', '%test%')
+                              ->orWhere('customer_notes',NULL);
+                    })->avg('grand_total');
                 }
                 $record->increment('delivered_orders_count');
                 $record->delivered_orders_value = Order::whereDate('created_at',
-                    today()->toDateString())->where('type', Order::CHANNEL_FOOD_OBJECT)->where('status', Order::STATUS_DELIVERED)->sum('grand_total');
+                    today()->toDateString())->where('type', Order::CHANNEL_FOOD_OBJECT)->where('status', Order::STATUS_DELIVERED)->where(function ($query){
+                    $query->where('customer_notes', 'not like', '%test%')
+                          ->orWhere('customer_notes',NULL);
+                })->sum('grand_total');
                 $record->average_delivered_orders_value = Order::whereDate('created_at',
-                    today()->toDateString())->where('status', Order::STATUS_DELIVERED)->avg('grand_total');
+                    today()->toDateString())->where('status', Order::STATUS_DELIVERED)->where(function ($query){
+                    $query->where('customer_notes', 'not like', '%test%')
+                          ->orWhere('customer_notes',NULL);
+                })->avg('grand_total');
 
                 $sum_delivery_time = 0;
                 $count = 0;
@@ -162,17 +197,16 @@ class UpdateDailyReportJob implements ShouldQueue
                 $record->save();
             }
 
-        }elseif ($this->type == 'order_grand_total_updated'){
+        }
+        /*elseif ($this->type == 'order_grand_total_updated'){
             $record = OrderDailyReport::whereDate('day', today()->toDateString())->first();
             if (empty($record)) $this->fail();
             if ($this->order->type == Order::CHANNEL_GROCERY_OBJECT){
-                $record->increment('delivered_grocery_orders_count');
                 $record->delivered_grocery_orders_value = Order::whereDate('created_at',
                     today()->toDateString())->where('type', Order::CHANNEL_GROCERY_OBJECT)->where('status', Order::STATUS_DELIVERED)->sum('grand_total');
                 $record->average_grocery_delivered_orders_value = Order::whereDate('created_at',
                     today()->toDateString())->where('type', Order::CHANNEL_GROCERY_OBJECT)->where('status', Order::STATUS_DELIVERED)->avg('grand_total');
             }else{
-                $record->increment('delivered_food_orders_count');
                 $record->delivered_food_orders_value = Order::whereDate('created_at',
                     today()->toDateString())->where('type', Order::CHANNEL_FOOD_OBJECT)->where('status', Order::STATUS_DELIVERED)->sum('grand_total');
                 $record->average_food_delivered_orders_value = Order::whereDate('created_at',
@@ -180,7 +214,7 @@ class UpdateDailyReportJob implements ShouldQueue
             }
 
             $record->save();
-        }
+        }*/
 
     }
     /**
