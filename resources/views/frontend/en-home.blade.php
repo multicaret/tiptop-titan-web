@@ -115,7 +115,7 @@
             <!-- Nav -->
             <nav class="js-mega-menu navbar navbar-expand-lg" style="direction: ltr">
                 <!-- White Logo -->
-                <a class="navbar-brand navbar-brand-default" href="{{url('/')}}" aria-label="Front">
+                <a class="navbar-brand n" href="{{url('/')}}" aria-label="Front">
                     <img src="/frontend-assets/images/logo-white.png" alt="TipTop Logo">
                 </a>
                 <!-- End White Logo -->
