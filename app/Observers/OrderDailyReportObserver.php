@@ -16,7 +16,7 @@ class OrderDailyReportObserver
     public function creating(OrderDailyReport $orderDailyReport)
     {
         foreach (Schema::getColumnListing('order_daily_reports') as $col) {
-            if (in_array($col, ['id', 'region_id', 'country_id', 'is_weekend', 'created_at,updated_at', 'day'])) {
+            if (in_array($col, ['id', 'region_id', 'country_id', 'is_weekend', 'created_at','updated_at', 'day'])) {
                 continue;
             }
 
