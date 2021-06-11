@@ -28,7 +28,7 @@ class UpdateDailyReportJob implements ShouldQueue
     public $type;
 
 
-    public $tries = 2;
+    public $tries = 5;
 
     /**
      * Create a new job instance.
