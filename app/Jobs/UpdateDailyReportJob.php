@@ -17,6 +17,7 @@ use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Queue\SerializesModels;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Str;
+use Throwable;
 
 class UpdateDailyReportJob implements ShouldQueue
 {
@@ -27,7 +28,7 @@ class UpdateDailyReportJob implements ShouldQueue
     public $type;
 
 
-    public $tries = 1;
+    public $tries = 2;
 
     /**
      * Create a new job instance.
@@ -40,7 +41,6 @@ class UpdateDailyReportJob implements ShouldQueue
 
         $this->order = $order;
         $this->type = $type;
-
     }
 
     /**
@@ -105,7 +105,7 @@ class UpdateDailyReportJob implements ShouldQueue
                 } elseif ($this->order->created_at >= $range13 && $this->order->created_at <= $range14) {
                     $record->increment('orders_count_between_00_03');
                 }
-                if ($this->order->user->created_at->toDateString() == today() && $this->order->user->orders()->count() == 1)
+                if ($this->order->user->created_at->toDateString() == today()->toDateString() && $this->order->user->orders()->count() == 1)
                 {
                     $record->increment('ordered_users_count');
                 }
@@ -152,7 +152,7 @@ class UpdateDailyReportJob implements ShouldQueue
                         '20')->first();
 
                     if (!empty($to)){
-                        $sum_delivery_time = $sum_delivery_time + $to->diffInMinutes($from);
+                        $sum_delivery_time = $sum_delivery_time + $to->created_at->diffInMinutes($from);
                         $count++;
                     }
 
@@ -183,6 +183,19 @@ class UpdateDailyReportJob implements ShouldQueue
         }
 
     }
-
+    /**
+     * Handle a job failure.
+     *
+     * @param  \Throwable  $exception
+     * @return void
+     */
+    public function failed(Throwable $exception)
+    {
+        info('UpdateDailyRepostJob Error', [
+            'exception' => $exception,
+            'message' => $exception->getMessage(),
+            'trace' => $exception->getTraceAsString(),
+        ]);
+    }
 
 }
