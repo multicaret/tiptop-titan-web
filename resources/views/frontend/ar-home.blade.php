@@ -180,17 +180,17 @@
                             </li>
 
                             <li class="navbar-nav-last-item">
-                                <a class="btn btn-sm btn-white btn-pill transition-3d-hover"
+                                <a class="btn btn-xs btn-white btn-pill transition-3d-hover"
                                    href="{{ localized_route('home',[],'ku') }}">
                                     كوردى
                                 </a>
                             </li>
-{{--                            <li class="navbar-nav-last-item">--}}
-{{--                                <a class="btn btn-sm btn-white btn-pill transition-3d-hover"--}}
-{{--                                   href="{{ localized_route('home',[],'en') }}">--}}
-{{--                                    English--}}
-{{--                                </a>--}}
-{{--                            </li>--}}
+                            <li class="navbar-nav-last-item">
+                                <a class="btn btn-xs btn-white btn-pill transition-3d-hover"
+                                   href="{{ localized_route('home',[],'en') }}">
+                                    English
+                                </a>
+                            </li>
 
                         </ul>
                     </div>
