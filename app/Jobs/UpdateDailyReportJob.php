@@ -57,7 +57,7 @@ class UpdateDailyReportJob implements ShouldQueue
                   ->orWhere('customer_notes', null);
         });
 
-        $todayDateString = $this->order->created_at->toDateString();
+        $todayDateString = today()->toDateString();
         $range1 = Carbon::parse($todayDateString.' '.'09:00')->toDateTimeString();
         $range2 = Carbon::parse($todayDateString.' '.'11:59')->toDateTimeString();
         $range3 = Carbon::parse($todayDateString.' '.'12:00')->toDateTimeString();
@@ -137,19 +137,5 @@ class UpdateDailyReportJob implements ShouldQueue
         $record->save();
     }
 
-    /**
-     * Handle a job failure.
-     *
-     * @param  \Throwable  $exception
-     * @return void
-     */
-    public function failed(\Exception $exception)
-    {
-        info('UpdateDailyRepostJob Error', [
-            'exception' => $exception,
-            'message' => $exception->getMessage(),
-            'trace' => $exception->getTraceAsString(),
-        ]);
-    }
 
 }
