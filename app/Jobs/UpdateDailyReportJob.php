@@ -88,19 +88,19 @@ class UpdateDailyReportJob implements ShouldQueue
         $record->average_orders_value = (clone $ordersQuery)->avg('grand_total');
 
         $record->orders_count_between_09_12 = (clone $ordersQuery)->where('created_at', '>=',
-            $range1)->where('created_at', '<=', $range2);
+            $range1)->where('created_at', '<=', $range2)->count();
         $record->orders_count_between_12_15 = (clone $ordersQuery)->where('created_at', '>=',
-            $range3)->where('created_at', '<=', $range4);
+            $range3)->where('created_at', '<=', $range4)->count();
         $record->orders_count_between_15_18 = (clone $ordersQuery)->where('created_at', '>=',
-            $range5)->where('created_at', '<=', $range6);
+            $range5)->where('created_at', '<=', $range6)->count();
         $record->orders_count_between_18_21 = (clone $ordersQuery)->where('created_at', '>=',
-            $range7)->where('created_at', '<=', $range8);
+            $range7)->where('created_at', '<=', $range8)->count();
         $record->orders_count_between_21_00 = (clone $ordersQuery)->where('created_at', '>=',
-            $range9)->where('created_at', '<=', $range10);
+            $range9)->where('created_at', '<=', $range10)->count();
         $record->orders_count_between_00_03 = (clone $ordersQuery)->where('created_at', '>=',
-            $range11)->where('created_at', '<=', $range12);
+            $range11)->where('created_at', '<=', $range12)->count();
         $record->orders_count_between_03_09 = (clone $ordersQuery)->where('created_at', '>=',
-            $range13)->where('created_at', '<=', $range14);
+            $range13)->where('created_at', '<=', $range14)->count();
         $record->ordered_users_count = (clone $ordersQuery)->whereHas('user', function ($query) {
             $query->where('users.created_at', today()->toDateString());
         })->count();
