@@ -23,11 +23,6 @@ class UpdateDailyReportJob implements ShouldQueue
 {
     use Dispatchable, InteractsWithQueue, Queueable, SerializesModels;
 
-    public $order;
-
-    public $type;
-
-
     public $tries = 5;
 
     /**
@@ -36,11 +31,9 @@ class UpdateDailyReportJob implements ShouldQueue
      * @param  Order  $order
      * @param $type
      */
-    public function __construct(Order $order, $type)
+    public function __construct()
     {
 
-        $this->order = $order;
-        $this->type = $type;
     }
 
     /**
