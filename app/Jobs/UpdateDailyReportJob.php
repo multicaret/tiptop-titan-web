@@ -76,16 +76,16 @@ class UpdateDailyReportJob implements ShouldQueue
         $record->orders_count = (clone $ordersQuery)->count();
         $record->grocery_orders_count = (clone $ordersQuery)->where('type', Order::CHANNEL_GROCERY_OBJECT)->count();
         $record->food_orders_count = (clone $ordersQuery)->where('type', Order::CHANNEL_FOOD_OBJECT)->count();
-        $record->orders_value = (clone $ordersQuery)->sum('grand_total');
+        $record->orders_value = (clone $ordersQuery)->sum('grand_total') ?? 0;
         $record->grocery_orders_value = (clone $ordersQuery)->where('type',
-            Order::CHANNEL_GROCERY_OBJECT)->sum('grand_total');
+            Order::CHANNEL_GROCERY_OBJECT)->sum('grand_total') ?? 0;
         $record->food_orders_value = (clone $ordersQuery)->where('type',
-            Order::CHANNEL_FOOD_OBJECT)->sum('grand_total');
+            Order::CHANNEL_FOOD_OBJECT)->sum('grand_total') ?? 0;
         $record->average_grocery_orders_value = (clone $ordersQuery)->where('type',
-            Order::CHANNEL_GROCERY_OBJECT)->avg('grand_total');
+            Order::CHANNEL_GROCERY_OBJECT)->avg('grand_total') ?? 0;
         $record->average_food_orders_value = (clone $ordersQuery)->where('type',
-            Order::CHANNEL_FOOD_OBJECT)->avg('grand_total');
-        $record->average_orders_value = (clone $ordersQuery)->avg('grand_total');
+            Order::CHANNEL_FOOD_OBJECT)->avg('grand_total') ?? 0;
+        $record->average_orders_value = (clone $ordersQuery)->avg('grand_total') ?? 0;
 
         $record->orders_count_between_09_12 = (clone $ordersQuery)->where('created_at', '>=',
             $range1)->where('created_at', '<=', $range2)->count();
@@ -111,10 +111,10 @@ class UpdateDailyReportJob implements ShouldQueue
             Order::CHANNEL_FOOD_OBJECT)->where('status', Order::STATUS_DELIVERED)->count();
 
         $record->delivered_food_orders_value = (clone $ordersQuery)->where('type',
-            Order::CHANNEL_FOOD_OBJECT)->where('status', Order::STATUS_DELIVERED)->sum('grand_total');
+            Order::CHANNEL_FOOD_OBJECT)->where('status', Order::STATUS_DELIVERED)->sum('grand_total') ?? 0;
 
         $record->delivered_grocery_orders_value = (clone $ordersQuery)->where('type',
-            Order::CHANNEL_GROCERY_OBJECT)->where('status', Order::STATUS_DELIVERED)->sum('grand_total');
+            Order::CHANNEL_GROCERY_OBJECT)->where('status', Order::STATUS_DELIVERED)->sum('grand_total') ?? 0;
 
         $sum_delivery_time = 0;
         $count = 0;
