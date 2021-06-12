@@ -44,8 +44,8 @@ class UpdateDailyReportJob implements ShouldQueue
     public function handle()
     {
 
-        $record = OrderDailyReport::firstOrCreate(['day' => today()->toDateString()]);
-        $ordersQuery = Order::whereDate('created_at', today()->toDateString())->where(function ($query) {
+        $record = OrderDailyReport::firstOrCreate(['day' => today()]);
+        $ordersQuery = Order::whereDate('created_at', today())->where(function ($query) {
             $query->where('customer_notes', 'not like', '%test%')
                   ->orWhere('customer_notes', null);
         });
