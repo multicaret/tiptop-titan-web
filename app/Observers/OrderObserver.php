@@ -41,7 +41,7 @@ class OrderObserver
         $order->recordActivity('created');
         if (!Str::contains($order->customer_notes, ['test', 'Test']))
         {
-            UpdateDailyReportJob::dispatch();
+            UpdateDailyReportJob::dispatch()->delay(now()->addMinutes(2));
         }
     }
 
