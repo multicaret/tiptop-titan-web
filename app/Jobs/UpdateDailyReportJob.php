@@ -95,7 +95,7 @@ class UpdateDailyReportJob implements ShouldQueue
         $record->orders_count_between_03_09 = (clone $ordersQuery)->where('created_at', '>=',
             $range13)->where('created_at', '<=', $range14)->count();
         $record->ordered_users_count = (clone $ordersQuery)->whereHas('user', function ($query) {
-            $query->where('users.created_at', today());
+            $query->whereDate('users.created_at', today());
         })->count();
         $record->delivered_orders_count = (clone $ordersQuery)->where('status', Order::STATUS_DELIVERED)->count();
         $record->delivered_grocery_orders_count = (clone $ordersQuery)->where('type',
