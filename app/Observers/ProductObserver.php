@@ -17,7 +17,7 @@ class ProductObserver
     {
         if (!empty(optional($product->branch)->zoho_books_id))
         {
-            SyncProductJob::dispatch($product);
+            SyncProductJob::dispatch($product)->delay(now()->addMinutes(5));
         }
 
     }
