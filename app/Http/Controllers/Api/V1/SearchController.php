@@ -133,8 +133,8 @@ class SearchController extends BaseApiController
                          ->orWhereHas('products', function ($query) use ($searchQuery) {
                              $query->whereHas('translations', function ($translationQuery) use ($searchQuery) {
                                  $translationQuery->where('title', 'like', '%'.$searchQuery.'%');
-                             })->where('products.status','!=',Product::STATUS_DRAFT);
-                         })
+                             });
+                         })->where('products.status','!=',Product::STATUS_DRAFT)
                          ->active()
                          ->foods()
                          ->get();
