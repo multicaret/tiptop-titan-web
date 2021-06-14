@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Models\Branch;
 use App\Models\Currency;
 use App\Models\Place;
+use App\Models\Product;
 use App\Models\WorkingHour;
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
@@ -31,7 +32,7 @@ class FoodBranchResource extends JsonResource
         $searchQuery = request()->input('q');
 
         if ($searchQuery) {
-            $searchProducts = $this->products()
+            $searchProducts = $this->products()->where('status','!=',Product::STATUS_DRAFT)
                                    ->whereHas('translations', function ($productTranslationQuery) use (
                                        $searchQuery
                                    ) {
