@@ -66,14 +66,17 @@ class UpdateDailyReportJob implements ShouldQueue
         $range13 = Carbon::parse($todayDateString.' '.'03:00')->toDateTimeString();
         $range14 = Carbon::parse($todayDateString.' '.'08:59')->toDateTimeString();
 
-        $record->orders_count = (clone $ordersQuery)->count();
         $record->grocery_orders_count = (clone $ordersQuery)->where('type', Order::CHANNEL_GROCERY_OBJECT)->count();
         $record->food_orders_count = (clone $ordersQuery)->where('type', Order::CHANNEL_FOOD_OBJECT)->count();
-        $record->orders_value = (clone $ordersQuery)->sum('grand_total') ?? 0;
+        $record->orders_count = $record->food_orders_count + $record->grocery_orders_count;
+
         $record->grocery_orders_value = (clone $ordersQuery)->where('type',
             Order::CHANNEL_GROCERY_OBJECT)->sum('grand_total') ?? 0;
         $record->food_orders_value = (clone $ordersQuery)->where('type',
             Order::CHANNEL_FOOD_OBJECT)->sum('grand_total') ?? 0;
+
+        $record->orders_value = $record->food_orders_value + $record->grocery_orders_value;
+
         $record->average_grocery_orders_value = (clone $ordersQuery)->where('type',
             Order::CHANNEL_GROCERY_OBJECT)->avg('grand_total') ?? 0;
         $record->average_food_orders_value = (clone $ordersQuery)->where('type',
@@ -97,17 +100,20 @@ class UpdateDailyReportJob implements ShouldQueue
         $record->ordered_users_count = (clone $ordersQuery)->whereHas('user', function ($query) {
             $query->whereDate('users.created_at', today());
         })->count();
-        $record->delivered_orders_count = (clone $ordersQuery)->where('status', Order::STATUS_DELIVERED)->count();
         $record->delivered_grocery_orders_count = (clone $ordersQuery)->where('type',
             Order::CHANNEL_GROCERY_OBJECT)->where('status', Order::STATUS_DELIVERED)->count();
         $record->delivered_food_orders_count = (clone $ordersQuery)->where('type',
             Order::CHANNEL_FOOD_OBJECT)->where('status', Order::STATUS_DELIVERED)->count();
+
+        $record->delivered_orders_count = $record->delivered_food_orders_count + $record->delivered_grocery_orders_count;
 
         $record->delivered_food_orders_value = (clone $ordersQuery)->where('type',
             Order::CHANNEL_FOOD_OBJECT)->where('status', Order::STATUS_DELIVERED)->sum('grand_total') ?? 0;
 
         $record->delivered_grocery_orders_value = (clone $ordersQuery)->where('type',
             Order::CHANNEL_GROCERY_OBJECT)->where('status', Order::STATUS_DELIVERED)->sum('grand_total') ?? 0;
+
+        $record->delivered_orders_value = $record->delivered_food_orders_value + $record->delivered_grocery_orders_value;
 
         $sum_delivery_time = 0;
         $count = 0;
