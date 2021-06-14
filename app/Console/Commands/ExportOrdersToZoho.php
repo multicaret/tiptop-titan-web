@@ -70,7 +70,7 @@ class ExportOrdersToZoho extends Command
         $from = now()->subHours(5)->toDateTimeString();
         $to   = now()->subMinutes(125)->toDateTimeString();
 
-        $lastTwoDays = today()->subDays(2)->toDateString();
+        $lastTwoDays = today()->subDays(7)->toDateString();
 
         $orders = Order::where('status',Order::STATUS_DELIVERED)
                        ->whereNull('zoho_books_invoice_id')
