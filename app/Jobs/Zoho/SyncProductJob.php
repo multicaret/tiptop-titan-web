@@ -105,7 +105,7 @@ class SyncProductJob implements ShouldQueue
 
     public function retryUntil()
     {
-        return now()->addHours(1);
+        return now()->addHours(10);
     }
 
     public function middleware()

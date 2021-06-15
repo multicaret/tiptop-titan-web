@@ -40,13 +40,14 @@ class TookanClient
             $product_title = $cartProduct->product->type == Product::CHANNEL_GROCERY_OBJECT ?
                 $cartProduct->product->translate('ar')->title.' - '.$cartProduct->product->translate('ar')->description :
                 $cartProduct->product->translate('ar')->title;
-            $price = ($cartProduct->product->price + $cartProduct->total_options_price) *  $cartProduct->quantity;
+            $price = ($cartProduct->product->discounted_price + $cartProduct->options_price) * $cartProduct->quantity;
             $items[] = [
-                 $product_title,
-                 (string) $cartProduct->quantity,
-                 (string) $price .' IQD'
+                $product_title,
+                (string) $cartProduct->quantity,
+                (string) $price.' IQD'
             ];
         }
+
         return [
             'order_id' => $order->reference_code,
             'timezone' => '-180',
@@ -61,7 +62,7 @@ class TookanClient
             'job_pickup_datetime' => now()->addMinutes(3)->toDateTimeString(),
             'customer_email' => $order->user->email,
             'customer_username' => $order->user->first.' '.$order->user->last,
-            'customer_phone' => $order->user->phone_number,
+            'customer_phone' => '00'.$order->user->phone_country_code.$order->user->phone_number,
             'customer_address' => empty($order->address->address1) ? 'Not specified' : $order->address->address1,
             'latitude' => $order->address->latitude,
             'longitude' => $order->address->longitude,
@@ -77,33 +78,54 @@ class TookanClient
                 [
                     'label' => 'items',
                     'data' => $items
-                ]
                 ],
+                [
+                    'label' => 'price',
+                    'data' => (string) $order->grand_total
+                ],
+                [
+                    'label' => 'customer_note',
+                    'data' => $order->customer_notes
+                ],
+                [
+                    'label' => 'admin_note',
+                    'data' => optional($order->agentNotes()->latest()->first())->message
+                ],
+            ],
             'meta_data' => [
                 [
                     'label' => 'price',
-                    'data' => (string) $order->total
+                    'data' => (string) $order->grand_total
                 ],
                 [
                     'label' => 'items',
                     'data' => $items
                 ],
-//                [
-//                    'label' => 'payment_method',
-//                    'data' => (string) __('jo3aan::orders.payment_methods.' . $this->order->payment_method .'.label',[],'ar')
-//                ],
+                [
+                    'label' => 'payment_method',
+                    'data' => $order->paymentMethod->title
+                ],
+                [
+                    'label' => 'customer_note',
+                    'data' => $order->customer_notes
+                ],
+                [
+                    'label' => 'admin_note',
+                    'data' => optional($order->agentNotes()->latest()->first())->message
+                ],
+
 //                [
 //                    'label' => 'payment_status',
 //                    'data' => $this->order->payment_status == 'NOT_PAID' ? 'لم يتم الدفع' : 'تم الدفع'
 //                ],
-//                [
-//                    'label' => 'tiptop_order_number',
-//                    'data' => $this->order->code
-//                ],
-//                [
-//                    'label' => 'delivery_address_notes',
-//                    'data'  =>  $this->order->address->address_description
-//                ],
+                [
+                    'label' => 'tiptop_order_number',
+                    'data' => $order->reference_code
+                ],
+                [
+                    'label' => 'delivery_address_notes',
+                    'data'  =>  $order->address->notes
+                ],
 //                [
 //                    'label' => 'customer_phone_number',
 //                    'data' =>  $this->order->customer->phone_number
@@ -135,6 +157,78 @@ class TookanClient
             return false;
         }
 
+    }
+
+    public function updateTask(Order $order)
+    {
+        if (empty(optional($order->tookanInfo)->job_pickup_id) || empty(optional($order->tookanInfo)->job_delivery_id)) {
+            return false;
+        }
+
+        $deliveryTaskData = $this->prepareUpdatedDeliveryTaskData($order);
+
+        $this->apiRequest('POST', 'edit_task', $deliveryTaskData);
+
+        $pickupTaskData = $this->prepareUpdatedPickupTaskData($order);
+
+        return $this->apiRequest('POST', 'edit_task', $pickupTaskData);
+    }
+
+    public function prepareUpdatedDeliveryTaskData(Order $order)
+    {
+        return [
+            'job_id' => optional($order->tookanInfo)->job_delivery_id,
+            'pickup_meta_data' => [
+                [
+                    'label' => 'price',
+                    'data' => (string) $order->grand_total
+                ],
+                [
+                    'label' => 'admin_note',
+                    'data' => optional($order->agentNotes()->latest()->first())->message
+                ]
+            ],
+            'meta_data' => [
+                [
+                    'label' => 'price',
+                    'data' => (string) $order->grand_total
+                ],
+                [
+                    'label' => 'admin_note',
+                    'data' => optional($order->agentNotes()->latest()->first())->message
+                ]
+            ],
+
+        ];
+    }
+
+
+    public function prepareUpdatedPickupTaskData(Order $order)
+    {
+        return [
+            'job_id' => optional($order->tookanInfo)->job_pickup_id,
+            'pickup_meta_data' => [
+                [
+                    'label' => 'price',
+                    'data' => (string) $order->grand_total
+                ],
+                [
+                    'label' => 'admin_note',
+                    'data' => optional($order->agentNotes()->latest()->first())->message
+                ]
+            ],
+            'meta_data' => [
+                [
+                    'label' => 'price',
+                    'data' => (string) $order->grand_total
+                ],
+                [
+                    'label' => 'admin_note',
+                    'data' => optional($order->agentNotes()->latest()->first())->message
+                ]
+            ],
+
+        ];
     }
 
     public function markTaskAsDelivered(Order $order)

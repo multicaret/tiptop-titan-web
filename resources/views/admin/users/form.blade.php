@@ -149,6 +149,7 @@
                             </div>
                         @endif
                     @endif
+
                     <div class="col-md-6">
                         @component('admin.components.form-group', ['name' => 'status', 'type' => 'select'])
                             @slot('label', 'Status')
@@ -159,6 +160,18 @@
                             @slot('selected', $user->status)
                         @endcomponent
                     </div>
+                    @if(!is_null($user->id) && !in_array($role,['user','tiptop-driver','restaurant-driver','branch-owner','branch-manager']) && auth()->user()->role_name == \App\Models\User::ROLE_SUPER)
+                    <div class="col-md-6">
+                            @component('admin.components.form-group', ['name' => 'role', 'type' => 'select'])
+                                @slot('label', 'Role')
+                                @slot('options',collect(\App\Models\User::getAllRoles())->filter(function ($value,$key){
+                                        return !in_array($value, ['user','tiptop-driver','restaurant-driver','branch-owner','branch-manager']);
+                                    })->toArray())
+                                @slot('selected', $user->role_name)
+                            @endcomponent
+                    </div>
+                    @endif
+
                 </div>
                 <div class="col-12 col-lg-2">
                     <h5>Avatar</h5>

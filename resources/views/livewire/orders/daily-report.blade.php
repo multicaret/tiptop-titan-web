@@ -55,79 +55,79 @@
             <thead class="thead-dark">
             <tr>
                 <th>
-                    <i class="fas fa-calendar-alt"></i>&nbsp;
+                    <i class="fas0fa-calendar-alt"></i>&nbsp;
                                                        Day
                 </th>
                 <th>
-                    <i class="fas fa-box-open"></i>
+                    <i class="fas0fa-box-open"></i>
                     <small class="d-block"><sub>Orders</sub></small>
                 </th>
                 <th>
-                    <i class="fas fa-check-double"></i>
+                    <i class="fas0fa-check-double"></i>
                     <small class="d-block"><sub>Delivered</sub></small>
                 </th>
                 <th>
-                    <i class="fas fa-coins"></i>
+                    <i class="fas0fa-coins"></i>
                     <small class="d-block"><sub>Revenue</sub></small>
                 </th>
                 <th>
-                    <i class="fas fa-stopwatch"></i>
+                    <i class="fas0fa-stopwatch"></i>
                     <small class="d-block"><sub>Avg. Delivery</sub></small>
                 </th>
                 <th>
-                    <i class="fas fa-shopping-basket"></i>
+                    <i class="fas0fa-shopping-basket"></i>
                     <small class="d-block"><sub>Avg. Cart</sub></small>
                 </th>
                 <th class="bg-windows-darker">
-                    <i class="far fa-clock"></i>
+                    <i class="far0fa-clock"></i>
                     <small class="d-block"><sub>9-12</sub></small>
                 </th>
                 <th class="bg-windows-darker">
-                    <i class="far fa-clock"></i>
+                    <i class="far0fa-clock"></i>
                     <small class="d-block"><sub>12-15</sub></small>
                 </th>
                 <th class="bg-windows-darker">
-                    <i class="far fa-clock"></i>
+                    <i class="far0fa-clock"></i>
                     <small class="d-block"><sub>15-18</sub></small>
                 </th>
                 <th class="bg-windows-darker">
-                    <i class="far fa-clock"></i>
+                    <i class="far0fa-clock"></i>
                     <small class="d-block"><sub>18-21</sub></small>
                 </th>
                 <th class="bg-windows-darker">
-                    <i class="far fa-clock"></i>
+                    <i class="far0fa-clock"></i>
                     <small class="d-block"><sub>21-00</sub></small>
                 </th>
                 <th class="bg-windows-darker">
-                    <i class="far fa-clock"></i>
+                    <i class="far0fa-clock"></i>
                     <small class="d-block"><sub>00-03</sub></small>
                 </th>
                 <th class="bg-windows-darker">
-                    <i class="far fa-clock"></i>
+                    <i class="far0fa-clock"></i>
                     <small class="d-block"><sub>03-09</sub></small>
                 </th>
                 <th>
-                    <i class="fas fa-users"></i>
+                    <i class="fas0fa-users"></i>
                     <small class="d-block"><sub>T. USERS</sub></small>
                 </th>
                 <th>
-                    <i class="fas fa-user-check"></i>
+                    <i class="fas0fa-user-check"></i>
                     <small class="d-block"><sub>ORDERS</sub></small>
                 </th>
                 <th>
-                    <i class="fab fa-apple"></i>
+                    <i class="fab0fa-apple"></i>
                     <small class="d-block"><sub>iOS</sub></small>
                 </th>
                 <th>
-                    <i class="fab fa-android"></i>
+                    <i class="fab0fa-android"></i>
                     <small class="d-block"><sub>ANDROID</sub></small>
                 </th>
                 <th>
-                    <i class="fas fa-mobile-alt"></i>
+                    <i class="fas0fa-mobile-alt"></i>
                     <small class="d-block"><sub>T.MOBILE</sub></small>
                 </th>
                 <th>
-                    <i class="fas fa-desktop"></i>
+                    <i class="fas0fa-desktop"></i>
                     <small class="d-block"><sub>WEB</sub></small>
                 </th>
             </tr>
@@ -137,15 +137,16 @@
                 {{$report->adjustWeekend()}}
                 <tr>
                     <td>
-                        <small class="text-muted d-block">
-                            <sub>{{$report->day->format('l')}}</sub>
-                        </small>
+
                         @if($report->day->dayOfWeek === \Carbon\Carbon::FRIDAY)
                             <span class="badge badge-dot badge-primary"></span>
                         @else
                             <span class="badge badge-dot badge-success"></span>
                         @endif
                         {{$report->day->toDateString()}}
+                            <span class="text-muted">
+                                <sub>{{\Carbon\Carbon::parse($report->day)->shortDayName}}</sub>
+                           </span>
                     </td>
                     <td>
                         @php
@@ -277,79 +278,79 @@
             <thead class="hidden-thead">
             <tr>
                 <th>
-                    <i class="fas fa-calendar-alt"></i>&nbsp;
+                    <i class="fas0fa-calendar-alt"></i>&nbsp;
                                                        Day
                 </th>
                 <th>
-                    <i class="fas fa-box-open"></i>
+                    <i class="fas0fa-box-open"></i>
                     <small class="d-block"><sub>Orders</sub></small>
                 </th>
                 <th>
-                    <i class="fas fa-check-double"></i>
+                    <i class="fas0fa-check-double"></i>
                     <small class="d-block"><sub>Delivered</sub></small>
                 </th>
                 <th>
-                    <i class="fas fa-coins"></i>
+                    <i class="fas0fa-coins"></i>
                     <small class="d-block"><sub>Revenue</sub></small>
                 </th>
                 <th>
-                    <i class="fas fa-stopwatch"></i>
+                    <i class="fas0fa-stopwatch"></i>
                     <small class="d-block"><sub>Avg. Delivery</sub></small>
                 </th>
                 <th>
-                    <i class="fas fa-shopping-basket"></i>
+                    <i class="fas0fa-shopping-basket"></i>
                     <small class="d-block"><sub>Avg. Cart</sub></small>
                 </th>
                 <th>
-                    <i class="far fa-clock"></i>
+                    <i class="far0fa-clock"></i>
                     <small class="d-block"><sub>9-12</sub></small>
                 </th>
                 <th>
-                    <i class="far fa-clock"></i>
+                    <i class="far0fa-clock"></i>
                     <small class="d-block"><sub>12-15</sub></small>
                 </th>
                 <th>
-                    <i class="far fa-clock"></i>
+                    <i class="far0fa-clock"></i>
                     <small class="d-block"><sub>15-18</sub></small>
                 </th>
                 <th>
-                    <i class="far fa-clock"></i>
+                    <i class="far0fa-clock"></i>
                     <small class="d-block"><sub>18-21</sub></small>
                 </th>
                 <th>
-                    <i class="far fa-clock"></i>
+                    <i class="far0fa-clock"></i>
                     <small class="d-block"><sub>21-00</sub></small>
                 </th>
                 <th>
-                    <i class="far fa-clock"></i>
+                    <i class="far0fa-clock"></i>
                     <small class="d-block"><sub>00-03</sub></small>
                 </th>
                 <th>
-                    <i class="far fa-clock"></i>
+                    <i class="far0fa-clock"></i>
                     <small class="d-block"><sub>03-09</sub></small>
                 </th>
                 <th>
-                    <i class="fas fa-users"></i>
+                    <i class="fas0fa-users"></i>
                     <small class="d-block"><sub>T. USERS</sub></small>
                 </th>
                 <th>
-                    <i class="fas fa-user-check"></i>
+                    <i class="fas0fa-user-check"></i>
                     <small class="d-block"><sub>ORDERS</sub></small>
                 </th>
                 <th>
-                    <i class="fab fa-apple"></i>
+                    <i class="fab0fa-apple"></i>
                     <small class="d-block"><sub>iOS</sub></small>
                 </th>
                 <th>
-                    <i class="fab fa-android"></i>
+                    <i class="fab0fa-android"></i>
                     <small class="d-block"><sub>ANDROID</sub></small>
                 </th>
                 <th>
-                    <i class="fas fa-mobile-alt"></i>
+                    <i class="fas0fa-mobile-alt"></i>
                     <small class="d-block"><sub>T.MOBILE</sub></small>
                 </th>
                 <th>
-                    <i class="fas fa-desktop"></i>
+                    <i class="fas0fa-desktop"></i>
                     <small class="d-block"><sub>WEB</sub></small>
                 </th>
             </tr>

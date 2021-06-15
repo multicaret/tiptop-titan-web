@@ -123,6 +123,8 @@ class OrderDailyReport extends Model
         'is_nadir_this_year' => 'boolean',
     ];
 
+    protected $guarded = [];
+
     public function adjustWeekend()
     {
         if ($this->day->dayOfWeek === \Carbon\Carbon::FRIDAY && ! $this->is_weekend) {

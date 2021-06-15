@@ -25,7 +25,7 @@ class ZohoBooksBranches extends ZohoBooksClient
 
     public function prepareBranchData()
     {
-        $branch_contact = explode(' ', $this->branch->contacts->first()->name);
+        $branch_contact = explode(' ', !empty($this->branch->contacts->first()) ? $this->branch->contacts->first()->name : 'N/A');
         $first_name = null;
         $last_name = null;
         if (count($branch_contact) == 1) {
@@ -47,10 +47,10 @@ class ZohoBooksBranches extends ZohoBooksClient
             'cf_vendor_type' => ! $this->branch->type == Branch::CHANNEL_FOOD_OBJECT ? 'Restaurant' : 'Market',
             'phone' => $this->branch->primary_phone_number,
             'billing_address' => [
-                "attention" => $branch_contact,
+                "attention" => $first_name.' '. $last_name,
                 "address" => $this->branch->full_address,
-                "city" => $this->branch->city->translate('en')->name,
-                "country" => $this->branch->city->country->translate('en')->name,
+                "city" => empty(optional($this->branch->city)->name) ? 'erbil' : $this->branch->city->name,
+                "country" => empty(optional($this->branch->city)->country->name) ? 'Iraq' : $this->branch->city->country->name,
                 "phone" => $this->branch->primary_phone_number
             ],
             'contact_persons' => [
@@ -102,7 +102,7 @@ class ZohoBooksBranches extends ZohoBooksClient
         $delivery_item_account_id = '2511463000002639051';
 
         return [
-            'name' => 'delivery',
+            'name' => 'Delivery - '.$this->branch->title,
             'status' => 'Active',
             'unit' => 'item',
             'product_type' => 'service',
@@ -139,7 +139,7 @@ class ZohoBooksBranches extends ZohoBooksClient
         $tiptop_delivery_item_account_id = '2511463000002639009';
 
         return [
-            'name' => 'delivery',
+            'name' => 'TipTop Delivery - '.$this->branch->title,
             'status' => 'Active',
             'unit' => 'item',
             'product_type' => 'service',

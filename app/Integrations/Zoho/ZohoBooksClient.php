@@ -61,8 +61,6 @@ class ZohoBooksClient
     public function getRequest($endpoint, $data = [])
     {
 
-        try {
-
             $url = $this->base_url.$endpoint;
             $response = Http::withHeaders([
                 'authorization' => 'Zoho-oauthtoken '.$this->access_token,
@@ -71,26 +69,8 @@ class ZohoBooksClient
                 'Connection' => 'keep-alive'
             ])->get($url, $data);
 
-            if ( ! $response->successful()) {
-                $response->throw();
 
-                return false;
-            } else {
-                $fail = $response['code'];
-                if ($fail) {
-                    info($response['message']);
-                    info('validation|service error');
-
-                    return false;
-                }
-
-                return $response;
-            }
-        } catch (\Exception $ex) {
-
-            return false;
-        }
-
+            return $response;
     }
 
     public function postRequest($endpoint, $data = [])

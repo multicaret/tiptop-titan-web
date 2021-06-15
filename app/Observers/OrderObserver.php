@@ -5,9 +5,17 @@ namespace App\Observers;
 use App\Integrations\TookanClient;
 use App\Jobs\Tookan\CancelTask;
 use App\Jobs\Tookan\CreateTask;
+use App\Jobs\Zoho\ApplyPaymentCreditJob;
+use App\Jobs\Zoho\CreateInvoiceJob;
+use App\Jobs\Zoho\CreatePaymentJob;
+use App\Jobs\UpdateDailyReportJob;
 use App\Models\Order;
+use App\Models\OrderDailyReport;
 use App\Models\User;
 use App\Notifications\OrderStatusUpdated;
+use Carbon\Carbon;
+use Illuminate\Support\Facades\Bus;
+use Illuminate\Support\Str;
 
 class OrderObserver
 {
@@ -31,6 +39,10 @@ class OrderObserver
     public function created(Order $order)
     {
         $order->recordActivity('created');
+        if (!Str::contains($order->customer_notes, ['test', 'Test']))
+        {
+            UpdateDailyReportJob::dispatch()->delay(now()->addMinutes(2));
+        }
     }
 
     /**
@@ -66,11 +78,19 @@ class OrderObserver
                 CreateTask::dispatchSync($order);
             } elseif ($order->status == Order::STATUS_CANCELLED && $order->is_delivery_by_tiptop && ! empty(optional($order->tookanInfo)->job_pickup_id) && $tookan_status) {
                 CancelTask::dispatchSync($order);
+            } elseif ($order->status == Order::STATUS_DELIVERED) {
+                if (!Str::contains($order->customer_notes, ['test', 'Test']))
+                {
+                    UpdateDailyReportJob::dispatch();
+                }
             }
-            /*        else if ($order->status == Order::STATUS_DELIVERED && $order->is_delivery_by_tiptop && $tookan_status)
-                      {
-                          MarkTaskAsDelivered::dispatch($order);
-                      }*/
+        } elseif ($order->wasChanged('grand_total')) {
+            //create job for updating task
+            // UpdateTask::dispatchSync($order);
+            if (!Str::contains($order->customer_notes, ['test', 'Test']))
+            {
+                UpdateDailyReportJob::dispatch();
+            }
         }
         $order->recordActivity('updated');
     }
