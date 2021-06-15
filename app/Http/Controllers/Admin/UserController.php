@@ -34,6 +34,11 @@ class UserController extends Controller
         $this->roleValidation($role);
         $columns = [
             [
+                'data' => 'id',
+                'name' => 'id',
+                'title' => '#',
+            ],
+            [
                 'data' => 'first',
                 'name' => 'first',
                 'title' => trans('strings.first_name'),
