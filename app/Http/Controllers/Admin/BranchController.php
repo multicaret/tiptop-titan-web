@@ -59,8 +59,6 @@ class BranchController extends Controller
                 'data' => 'chain',
                 'name' => 'chain',
                 'title' => 'Chain',
-                'searchable' => false,
-                'bSortable' => false,
                 'width' => '10',
             ],
             [
@@ -77,6 +75,14 @@ class BranchController extends Controller
                 'title' => 'Neighborhood',
                 'searchable' => false,
                 'bSortable' => false,
+                'width' => '10',
+            ],
+            [
+                'data' => 'status',
+                'name' => 'status',
+                'searchable' => true,
+                'bSortable' => true,
+                'title' => trans('strings.status'),
                 'width' => '10',
             ],
             [

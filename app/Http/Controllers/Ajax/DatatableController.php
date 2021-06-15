@@ -746,6 +746,11 @@ class DatatableController extends AjaxController
                          ->editColumn('chain', function ($branch) {
                              return ! is_null($branch->chain) ? $branch->chain->title : '';
                          })
+                         ->editColumn('status', function ($branch) {
+                             return view('admin.components.datatables._status', [
+                                 'status' => $branch->status
+                             ])->render();
+                         })
                          ->editColumn('created_at', function ($branch) {
                              return view('admin.components.datatables._date', [
                                  'date' => $branch->created_at
