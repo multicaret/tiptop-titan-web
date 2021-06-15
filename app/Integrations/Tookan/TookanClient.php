@@ -62,7 +62,7 @@ class TookanClient
             'job_pickup_datetime' => now()->addMinutes(3)->toDateTimeString(),
             'customer_email' => $order->user->email,
             'customer_username' => $order->user->first.' '.$order->user->last,
-            'customer_phone' => $order->user->phone_number,
+            'customer_phone' => '00'.$order->user->phone_country_code.$order->user->phone_number,
             'customer_address' => empty($order->address->address1) ? 'Not specified' : $order->address->address1,
             'latitude' => $order->address->latitude,
             'longitude' => $order->address->longitude,
