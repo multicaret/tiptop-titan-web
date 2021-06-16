@@ -266,4 +266,5 @@ return [
     'order_status_16' => 'تشغيل',
     'order_status_18' => 'في',
     'order_status_20' => 'تم التوصيل',
+    'order_status_22' => 'بانتظار إسناد لسائق',
 ];

@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use App\Traits\HasAppTypes;
+use App\Traits\HasMediaTrait;
 use App\Traits\HasTypes;
 use App\Traits\RecordsActivity;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
@@ -11,17 +12,21 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Support\Carbon;
+use Spatie\Image\Manipulations;
+use Spatie\MediaLibrary\HasMedia;
+use Spatie\MediaLibrary\MediaCollections\Models\Media;
 
-class JetOrder extends Model
+class JetOrder extends Model implements HasMedia
 {
     use HasAppTypes;
     use HasTypes;
     use SoftDeletes;
     use RecordsActivity;
+    use HasMediaTrait;
 
     public const STATUS_CANCELLED = 0;
     public const STATUS_DRAFT = 1;
-    public const STATUS_NEW = 2; // Pending approval or rejection,
+    public const STATUS_ASSIGNING_COURIER = 22; // Pending approval or rejection,
     public const STATUS_WAITING_COURIER = 12; // Ready, this case is ignored when delivery is made by the branch itself
     public const STATUS_ON_THE_WAY = 16;
     public const STATUS_AT_THE_ADDRESS = 18;
@@ -134,7 +139,7 @@ class JetOrder extends Model
         if (is_null($statusesToSelectFrom)) {
             $statusesToSelectFrom = [
                 self::STATUS_DRAFT,
-                self::STATUS_NEW,
+                self::STATUS_ASSIGNING_COURIER,
                 self::STATUS_WAITING_COURIER,
                 self::STATUS_ON_THE_WAY,
                 self::STATUS_AT_THE_ADDRESS,
@@ -157,7 +162,7 @@ class JetOrder extends Model
     public function getPermittedStatus(): array
     {
         switch ($this->status) {
-            case self::STATUS_NEW:
+            case self::STATUS_ASSIGNING_COURIER:
                 return $this->getAllStatuses([
                     self::STATUS_WAITING_COURIER,
                     self::STATUS_CANCELLED,
@@ -201,7 +206,7 @@ class JetOrder extends Model
 
     public function getLateCssBgClass(): ?string
     {
-        if ($this->status == self::STATUS_NEW) {
+        if ($this->status == self::STATUS_ASSIGNING_COURIER) {
             $pastInMinutes = $this->created_at->diffInMinutes();
             if ($pastInMinutes > 7) {
                 return 'bg-danger-darker text-white';
@@ -289,6 +294,22 @@ class JetOrder extends Model
         }
 
         return false;
+    }
+
+    public function getGalleryAttribute()
+    {
+        return $this->getMediaForUploader('gallery', 'HD');
+    }
+
+    public function registerMediaCollections(): void
+    {
+        $this->addMediaCollection('gallery')
+             ->withResponsiveImages()
+             ->registerMediaConversions(function (Media $media) {
+                 $this->addMediaConversion('HD')
+                      ->width(1024)
+                      ->height(1024);
+             });
     }
 
     public function tookanInfo()

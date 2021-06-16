@@ -43,7 +43,7 @@ class CreateJetOrdersTable extends Migration
                   ->comment('This column is generic, for now it has the \'discount_method_id\' for orders with coupons from the old DB');
 
             $table->text('client_notes')->nullable();
-            $table->unsignedTinyInteger('status')->default(\App\Models\JetOrder::STATUS_NEW)
+            $table->unsignedTinyInteger('status')->default(\App\Models\JetOrder::STATUS_ASSIGNING_COURIER)
                   ->comment('
                     0: Cancelled,
                     1: Draft,

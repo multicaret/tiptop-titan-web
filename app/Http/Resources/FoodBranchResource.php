@@ -93,7 +93,7 @@ class FoodBranchResource extends JsonResource
                 'maxDeliveryMinutes' => $this->restaurant_max_delivery_minutes,
             ],
             'jetDelivery' => [
-                'isJetDeliveryEnabled' => $this->has_jet_delivery,
+                'isDeliveryEnabled' => $this->has_jet_delivery,
                 'minimumOrder' => [
                     'raw' => $this->jet_minimum_order,
                     'formatted' => Currency::format($this->jet_minimum_order),

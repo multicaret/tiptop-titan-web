@@ -25,12 +25,11 @@ class JetOrderController extends BaseApiController
 
         $branch = Branch::find($restaurant);
 
-        if (empty($branch))
-        {
+        if (empty($branch)) {
             return $this->respondNotFound();
         }
 
-        $previousOrders = JetOrder::where('branch_id',$branch->id)->latest()->get();
+        $previousOrders = JetOrder::where('branch_id', $branch->id)->latest()->get();
 
 
         if ( ! is_null($previousOrders)) {
@@ -106,7 +105,8 @@ class JetOrderController extends BaseApiController
 
         DB::beginTransaction();
 
-        $deliveryFee = $branch->calculateJetDeliveryFee($request->input('total'),$request->input('latitude'),$request->input('longitude'));
+        $deliveryFee = $branch->calculateJetDeliveryFee($request->input('total'), $request->input('latitude'),
+            $request->input('longitude'));
 
         $newOrder = new JetOrder();
         $newOrder->chain_id = $branch->chain_id;
@@ -124,8 +124,19 @@ class JetOrderController extends BaseApiController
 
 
         $newOrder->delivery_fee = $deliveryFee;
-        $newOrder->status = Order::STATUS_NEW;
+        $newOrder->status = JetOrder::STATUS_ASSIGNING_COURIER;
+
+
+        if ($request->has('images'))
+        {
+            $newOrder->addMultipleMediaFromRequest(['images'])
+                     ->each(function ($fileAdder) {
+                         $fileAdder->toMediaCollection('gallery');
+                     });
+        }
         $newOrder->save();
+
+
 
         DB::commit();
 

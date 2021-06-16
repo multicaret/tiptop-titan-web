@@ -42,6 +42,8 @@ class JetOrderResource extends JsonResource
             'driverAvatar' => optional($this->driver)->avatar,
             'trackingLink' => optional($this->tookanInfo)->delivery_tracking_link,
 //            'paymentMethod' => new PaymentMethodResource($this->paymentMethod),
+            'images' => $this->gallery,
+
         ];
     }
 }

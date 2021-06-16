@@ -55,8 +55,8 @@
                         <label for="branch-name">Status</label>
                         <select wire:model="searchByStatus" class="form-control">
                             <option value="">All</option>
-                            <option value="{{\App\Models\Order::STATUS_NEW}}">New</option>
-                            <option value="{{\App\Models\Order::STATUS_DELIVERED}}">Delivered</option>
+                            <option value="{{\App\Models\JetOrder::STATUS_ASSIGNING_COURIER}}">New</option>
+                            <option value="{{\App\Models\JetOrder::STATUS_DELIVERED}}">Delivered</option>
                         </select>
                     </div>
                 </div>
@@ -88,7 +88,7 @@
                             <td>
                                 <span data-toggle="tooltip" data-placement="top" title="{{$order->getStatusName()}}"
                                       key="{{$order->status}}">
-                                    @include('admin.orders._partials.statuses.'.$order->status)
+                                    @include('admin.jet-orders._partials.statuses.'.$order->status)
                                 </span>
                             </td>
                             <td>

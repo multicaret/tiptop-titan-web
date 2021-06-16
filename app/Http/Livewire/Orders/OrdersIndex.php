@@ -16,7 +16,7 @@ class OrdersIndex extends Component
     {
         $this->foodNewOrdersCount = Order::foods()->new()->count();
         $this->groceryNewOrdersCount = Order::groceries()->new()->count();
-        $this->jetOrdersCount = JetOrder::where('status',JetOrder::STATUS_NEW)->whereDate('created_at',today())->count();
+        $this->jetOrdersCount = JetOrder::where('status',JetOrder::STATUS_ASSIGNING_COURIER)->whereDate('created_at',today())->count();
 
         return view('livewire.orders.index');
     }

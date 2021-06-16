@@ -80,7 +80,7 @@
                 <div class="card-body">
                     <div class="row">
                         <div class="col">
-                            @include('admin.orders._partials.statuses.timeline')
+                            @include('admin.jet-orders._partials.statuses.timeline')
                         </div>
                     </div>
                 </div>
