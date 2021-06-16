@@ -82,6 +82,35 @@ class JetOrderController extends BaseApiController
             ]
         );
     }
+    public function getDeliveryFee(Request $request, $restaurant)
+    {
+
+        $branch = Branch::findOrFail($restaurant);
+
+        $validationRules = [
+            'latitude' => 'required',
+            'longitude' => 'required',
+            'total' => 'required|numeric',
+        ];
+
+
+        $validator = validator()->make($request->all(), $validationRules);
+        if ($validator->fails()) {
+            return $this->respondValidationFails($validator->errors());
+        }
+
+        $deliveryFees = $branch->calculateJetDeliveryFee($request->input('total'), $request->input('latitude'),
+            $request->input('longitude'));
+
+        return $this->respond(
+            [
+                'delivery_fees' =>  [
+                    'raw' => $deliveryFees,
+                    'formatted' => Currency::format($deliveryFees),
+                ]
+            ]
+        );
+    }
 
     public function store(Request $request, $restaurant)
     {

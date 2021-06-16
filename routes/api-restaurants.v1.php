@@ -41,6 +41,7 @@ Route::middleware('auth:sanctum')
              //Jet Orders
              Route::get('jet/orders', 'JetOrderController@index');
              Route::get('jet/orders/create', 'JetOrderController@create');
+             Route::post('jet/orders/delivery-fees', 'JetOrderController@getDeliveryFee');
              Route::get('jet/orders/{order}', 'JetOrderController@show');
              Route::post('jet/orders', 'JetOrderController@store');
 
