@@ -47,6 +47,7 @@ class CreateJetOrdersTable extends Migration
                   ->comment('
                     0: Cancelled,
                     1: Draft,
+                    22: Assigning driver,
                     6: Waiting Courier,
                     16: On the way,
                     18: At the address,
