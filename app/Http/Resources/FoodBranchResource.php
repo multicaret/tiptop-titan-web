@@ -92,6 +92,19 @@ class FoodBranchResource extends JsonResource
                 'minDeliveryMinutes' => $this->restaurant_min_delivery_minutes,
                 'maxDeliveryMinutes' => $this->restaurant_max_delivery_minutes,
             ],
+            'jetDelivery' => [
+                'isJetDeliveryEnabled' => $this->has_jet_delivery,
+                'minimumOrder' => [
+                    'raw' => $this->jet_minimum_order,
+                    'formatted' => Currency::format($this->jet_minimum_order),
+                ],
+                'fixedDeliveryFee' => [
+                    'raw' => $this->jet_fixed_delivery_fee,
+                    'formatted' => Currency::format($this->jet_fixed_delivery_fee),
+                ],
+                'extraFeesPerKm' => $this->jet_extra_delivery_fee_per_km,
+                'commissionRate' => $this->jet_delivery_commission_rate
+            ],
             'primaryPhoneNumber' => $this->primary_phone_number,
             'secondaryPhoneNumber' => $this->secondary_phone_number,
             'whatsappPhoneNumber' => $this->whatsapp_phone_number,

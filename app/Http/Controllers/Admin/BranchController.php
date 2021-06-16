@@ -252,6 +252,13 @@ class BranchController extends Controller
                 $toValidateInFood['restaurant_under_minimum_order_delivery_fee'] = 'required';
                 $toValidateInFood['restaurant_fixed_delivery_fee'] = 'required';
             }
+
+            if ($request->has('has_jet_delivery') && $request->has('has_jet_delivery') == 'on') {
+                $toValidateInFood['jet_fixed_delivery_fee'] = 'required';
+                $toValidateInFood['jet_delivery_commission_rate'] = 'required';
+                $toValidateInFood['jet_extra_delivery_fee_per_km'] = 'required';
+                $toValidateInFood['jet_minimum_order'] = 'required';
+            }
         }
 
         $generalValidateItems = [
@@ -280,6 +287,7 @@ class BranchController extends Controller
         if ($request->type == Branch::getCorrectChannelName(Branch::CHANNEL_FOOD_OBJECT, 0)) {
             $branch->has_tip_top_delivery = $request->input('has_tip_top_delivery') == 'on' ? 1 : 0;
             $branch->has_restaurant_delivery = $request->input('has_restaurant_delivery') == 'on' ? 1 : 0;
+            $branch->has_jet_delivery = $request->input('has_jet_delivery') == 'on' ? 1 : 0;
         } else {
             $branch->has_tip_top_delivery = 1;
         }
@@ -296,6 +304,11 @@ class BranchController extends Controller
             'restaurant_under_minimum_order_delivery_fee',
             'restaurant_free_delivery_threshold',
             'restaurant_extra_delivery_fee_per_km',
+            //jet inputs
+            'jet_minimum_order',
+            'jet_fixed_delivery_fee',
+            'jet_delivery_commission_rate',
+            'jet_extra_delivery_fee_per_km',
         ];
 
         foreach ($inputs as $input) {

@@ -245,10 +245,43 @@ class Branch extends Model implements HasMedia
         'featured_at' => 'datetime',
     ];
 
+    public static function getClosestAvailableBranch($latitude, $longitude): array
+    {
+        return cache()
+            ->tags('branches', 'api-home')
+            ->rememberForever('getClosestAvailableBranch_lat_'.$latitude.'_lng_'.$longitude, function () use (
+                $longitude,
+                $latitude
+            ) {
+                $distance = $branch = null;
+                $branchesOrderedByDistance = Branch::active()
+                                                   ->groceries()
+                                                   ->selectRaw('branches.id, DISTANCE_BETWEEN(latitude,longitude,?,?) as distance',
+                                                       [$latitude, $longitude])
+                                                   ->orderBy('distance')
+                                                   ->get();
+
+                foreach ($branchesOrderedByDistance as $branchOrderedByDistance) {
+                    $branch = Branch::find($branchOrderedByDistance->id);
+                    $branchWorkingHours = WorkingHour::retrieve($branch);
+                    if ($branchWorkingHours['isOpen']) {
+                        $distance = $branchOrderedByDistance->distance;
+                        break;
+                    }
+                }
+
+                return [$distance, $branch];
+            });
+    }
 
     public function chain(): BelongsTo
     {
         return $this->belongsTo(Chain::class, 'chain_id');
+    }
+
+    public function primaryManager()
+    {
+        return $this->managers()->wherePivot('is_primary', true)->first();
     }
 
     public function managers(): BelongsToMany
@@ -258,9 +291,9 @@ class Branch extends Model implements HasMedia
                     ->withTimestamps();
     }
 
-    public function primaryManager()
+    public function primaryOwner()
     {
-        return $this->managers()->wherePivot('is_primary', true)->first();
+        return $this->owners()->wherePivot('is_primary', true)->first();
     }
 
     public function owners(): BelongsToMany
@@ -270,16 +303,10 @@ class Branch extends Model implements HasMedia
                     ->withTimestamps();
     }
 
-    public function primaryOwner()
-    {
-        return $this->owners()->wherePivot('is_primary', true)->first();
-    }
-
     public function workingHours()
     {
         return $this->morphMany(WorkingHour::class, 'workable');
     }
-
 
     public function region(): BelongsTo
     {
@@ -344,35 +371,6 @@ class Branch extends Model implements HasMedia
     {
         return $this->morphToMany(Taxonomy::class, 'search_taggable')
                     ->withTimestamps();
-    }
-
-    public static function getClosestAvailableBranch($latitude, $longitude): array
-    {
-        return cache()
-            ->tags('branches', 'api-home')
-            ->rememberForever('getClosestAvailableBranch_lat_'.$latitude.'_lng_'.$longitude, function () use (
-                $longitude,
-                $latitude
-            ) {
-                $distance = $branch = null;
-                $branchesOrderedByDistance = Branch::active()
-                                                   ->groceries()
-                                                   ->selectRaw('branches.id, DISTANCE_BETWEEN(latitude,longitude,?,?) as distance',
-                                                       [$latitude, $longitude])
-                                                   ->orderBy('distance')
-                                                   ->get();
-
-                foreach ($branchesOrderedByDistance as $branchOrderedByDistance) {
-                    $branch = Branch::find($branchOrderedByDistance->id);
-                    $branchWorkingHours = WorkingHour::retrieve($branch);
-                    if ($branchWorkingHours['isOpen']) {
-                        $distance = $branchOrderedByDistance->distance;
-                        break;
-                    }
-                }
-
-                return [$distance, $branch];
-            });
     }
 
     public function getHasBeenRatedAttribute(): bool
@@ -476,6 +474,31 @@ class Branch extends Model implements HasMedia
             $deliveryFee += $underMinimumOrderDeliveryFee;
         }
 
+        return $deliveryFee;
+    }
+
+    public function calculateJetDeliveryFee(
+        $totalAmount,$latitude=null,$longitude=null
+    ): float {
+
+        $fixedDeliveryFee = $this->jet_fixed_delivery_fee;
+        $commission_rate = $this->jet_delivery_commission_rate;
+        $extraDeliveryFeePerKm= $this->jet_extra_delivery_fee_per_km;
+        $fixedDeliveryDistanceKeyName = 'restaurant_fixed_delivery_distance';
+
+        $deliveryFee = $fixedDeliveryFee;
+        if ($commission_rate > 0)
+        {
+            $deliveryFee += ($totalAmount * $commission_rate) / 100;
+        }
+
+        if ($this->jet_extra_delivery_fee_per_km > 0 && ! is_null($latitude) && ! is_null($longitude)) {
+            $distance = Controller::distanceBetween($this->latitude, $this->longitude, $latitude,
+                $longitude);
+            if ($distance != 0 && Preference::retrieveValue($fixedDeliveryDistanceKeyName) && $distance > Preference::retrieveValue($fixedDeliveryDistanceKeyName)) {
+                $deliveryFee += $extraDeliveryFeePerKm * $distance;
+            }
+        }
         return $deliveryFee;
     }
 }

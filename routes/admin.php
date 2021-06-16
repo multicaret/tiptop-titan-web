@@ -65,6 +65,9 @@ Route::get('ratings/orders', 'OrderController@orderRatings')->name('orders.ratin
 Route::get('orders', 'OrderController@index')->name('orders.index');
 Route::get('orders/{order}', 'OrderController@show')->name('orders.show');
 
+Route::get('jet/orders', 'JetOrderController@index')->name('jet.orders.index');
+Route::get('jet/orders/{order}', 'JetOrderController@show')->name('jet.orders.show');
+
 Route::get('reports/daily', 'OrderDailyReportController@index')->name('reports.index');
 Route::resource('coupons', 'CouponController')->except(['show']);
 Route::resource('payment-methods', 'PaymentMethodController')->only('index');

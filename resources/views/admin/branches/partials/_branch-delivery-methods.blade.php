@@ -1,6 +1,6 @@
 <h3 class="px-3 mb-0 mt-4 text-center">Delivery Methods</h3>
 <div class="row px-3">
-    <div class="{{$type == \App\Models\Branch::CHANNEL_FOOD_OBJECT ? 'col-md-6' : 'col-md-12' }} mt-2">
+    <div class="{{$type == \App\Models\Branch::CHANNEL_FOOD_OBJECT ? 'col-md-4' : 'col-md-12' }} mt-2">
         <div class="card card-outline-inverse">
             <h4 class="card-header">
                 Tiptop Delivery
@@ -63,7 +63,7 @@
         </div>
     </div>
     @if($type == \App\Models\Branch::CHANNEL_FOOD_OBJECT)
-        <div class="col-md-6 mt-2">
+        <div class="col-md-4 mt-2">
             <div class="card card-outline-inverse">
                 <h4 class="card-header">Restaurant Delivery
                     <label class="switcher switcher-primary m-3">
@@ -126,5 +126,61 @@
                 </div>
             </div>
         </div>
+        <div class="col-md-4 mt-2">
+            <div class="card card-outline-inverse">
+                <h4 class="card-header">Jet Delivery
+                    <label class="switcher switcher-primary m-3">
+                        <input type="checkbox" class="switcher-input"
+                               v-model="isJetDelivery"
+                               @change="isJetDelivery == false ? (isJetDelivery = true) : null"
+                               name="has_jet_delivery" {{$branch->has_jet_delivery ? 'checked' : ''}}>
+                        <span class="switcher-indicator">
+                                    <span class="switcher-yes">
+                                        <span class="ion ion-md-checkmark"></span>
+                                    </span>
+                                      <span class="switcher-no">
+                                        <span class="ion ion-md-close"></span>
+                                      </span>
+                                </span>
+                    </label>
+                </h4>
+                <div class="card-body">
+                    <div class="row">
+
+                        <div class="col-md-12">
+                            @component('admin.components.form-group', ['name' => 'jet_minimum_order', 'type' => 'number'])
+                                @slot('label', 'Minimum order')
+                                @slot('value', is_null($branch->jet_minimum_order) ? 0 : $branch->jet_minimum_order )
+                                @slot('attributes',['step'=>1,'min'=>0])
+                            @endcomponent
+                        </div>
+                        <div class="col-md-12">
+                            @component('admin.components.form-group', ['name' => 'jet_fixed_delivery_fee', 'type' => 'number'])
+                                @slot('label', 'Fixed delivery fee')
+                                @slot('value', is_null($branch->jet_fixed_delivery_fee) ? 0 : $branch->jet_fixed_delivery_fee)
+                                @slot('attributes',['step'=>1,'min'=>0])
+                            @endcomponent
+                        </div>
+                        <div class="col-md-12">
+                            @component('admin.components.form-group', ['name' => 'jet_delivery_commission_rate', 'type' => 'number'])
+                                @slot('label', 'Commission Rate ')
+                                @slot('value', is_null($branch->jet_delivery_commission_rate) ? 0 : $branch->jet_delivery_commission_rate)
+                                @slot('attributes',['step'=>1,'min'=>0])
+                            @endcomponent
+                        </div>
+
+                        <div class=" col-md-12">
+                            @component('admin.components.form-group', ['name' => 'jet_extra_delivery_fee_per_km', 'type' => 'number'])
+                                @slot('label', 'Extra delivery fee per KM')
+                                @slot('value', is_null($branch->jet_extra_delivery_fee_per_km) ? 0 : $branch->jet_extra_delivery_fee_per_km)
+                                @slot('attributes',['step'=>1,'min'=>0])
+                            @endcomponent
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
     @endif
+
 </div>

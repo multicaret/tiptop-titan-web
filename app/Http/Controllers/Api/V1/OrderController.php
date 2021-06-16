@@ -112,7 +112,7 @@ class OrderController extends BaseApiController
     }
 
 
-    public function create(Request $request): JsonResponse
+    public function create(Request $request)
     {
         $validationRules = [
             'chain_id' => 'required',
