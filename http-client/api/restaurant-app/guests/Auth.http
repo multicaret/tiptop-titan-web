@@ -4,8 +4,8 @@ Accept: application/json
 Content-Type: application/json
 
 {
-    "email": "owner@trytiptop.app",
-    "password": "secret"
+    "email": "{{emailRestaurant}}",
+    "password": "{{passwordRestaurant}}"
 }
 
 ### log out

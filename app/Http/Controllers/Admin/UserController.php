@@ -295,6 +295,8 @@ class UserController extends Controller
         }
         $user->save();
 
+        if ( !empty($request->role))
+            $user->assignRole($this->getRoleName($request->role));
         /*if (is_null($address = Location::where('contactable_id', $user->id)
                                        ->where('contactable_role', User::class)
                                        ->whereNull('alias')
@@ -408,7 +410,7 @@ class UserController extends Controller
 
     private function getRoleName($role)
     {
-        $tempRoleName = str_replace('-', ' ', $role);
+        $tempRoleName = str_replace(['-','_'], ' ', $role);
 
         return Role::findByName(ucwords($tempRoleName))->name;
     }

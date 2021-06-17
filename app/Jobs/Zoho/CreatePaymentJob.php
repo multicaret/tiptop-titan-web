@@ -3,8 +3,9 @@
 namespace App\Jobs\Zoho;
 
 use App\Integrations\Zoho\ZohoBooksBranches;
+use App\Integrations\Zoho\ZohoBooksInvoices;
 use App\Jobs\Middleware\RateLimited;
-use App\Models\Branch;
+use App\Models\Order;
 use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldBeUnique;
 use Illuminate\Contracts\Queue\ShouldQueue;
@@ -13,24 +14,20 @@ use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Queue\SerializesModels;
 use Illuminate\Support\Facades\Cache;
 
-class CreateBranchAccountJob implements ShouldQueue
+class CreatePaymentJob implements ShouldQueue
 {
     use Dispatchable, InteractsWithQueue, Queueable, SerializesModels;
 
-    public $branch;
-
-    public $tries = 0;
-
-    public $maxExceptions = 1;
+    public $order;
 
     /**
      * Create a new job instance.
      *
-     * @param  Branch  $branch
+     * @param  Order  $order
      */
-    public function __construct(Branch $branch)
+    public function __construct(Order $order)
     {
-        $this->branch = $branch;
+        $this->order = $order;
     }
 
     /**
@@ -46,18 +43,14 @@ class CreateBranchAccountJob implements ShouldQueue
                 $timestamp - time()
             );
         }
-        $branchAccountResponse = (new ZohoBooksBranches($this->branch))->createBranchAccount();
+        $response = (new ZohoBooksInvoices($this->order))->createPayment();
 
-        if ( ! $branchAccountResponse) {
-            info('zoho books http client error', [
-                'branch' => $this->branch->id,
-                'job' => 'create account'
-            ]);
+        if ( ! $response) {
             $this->fail();
         }
         //handling too many request response
-        if ($branchAccountResponse->status() == 429) {
-            $secondsRemaining = $branchAccountResponse->header('Retry-After');
+        if ($response->status() == 429) {
+            $secondsRemaining = $response->header('Retry-After');
 
             if (empty($secondsRemaining)) {
                 $secondsRemaining = 65;
@@ -75,7 +68,7 @@ class CreateBranchAccountJob implements ShouldQueue
         }
 
         //handling zoho outage (if happens)
-        if ($branchAccountResponse->serverError()) {
+        if ($response->serverError()) {
             if ( ! Cache::get('zoho-failure')) {
                 Cache::put('zoho-failure', 1, 60);
             } else {
@@ -85,25 +78,20 @@ class CreateBranchAccountJob implements ShouldQueue
             return $this->release(600);
         }
 
-        if ($branchAccountResponse->failed()) {
-            info('zoho books http client fail', [
-                'branch' => $this->branch->id,
-                'job' => 'create account',
-                'response' => $branchAccountResponse->json()
-            ]);
+        if ($response->failed()) {
             $this->fail();
         }
 
         Cache::forget('zoho-failure');
 
 
-        if (isset($branchAccountResponse['chart_of_account']) && isset($branchAccountResponse['chart_of_account']['account_id'])) {
-            $zoho_books_account_id = $branchAccountResponse['chart_of_account']['account_id'];
-            $this->branch->zoho_books_account_id = $zoho_books_account_id;
-            $this->branch->save();
+        if (isset($response['payment']) && isset($response['payment']['payment_id'])) {
+            $zoho_books_payment_id = $response['payment']['payment_id'];
+            $this->order->zoho_books_payment_id = $zoho_books_payment_id;
+            $this->order->save();
         } else {
-            info('zoho branch account response error', [
-                'response' => $branchAccountResponse->json()
+            info('zoho create payment response error', [
+                'response' => $response->json()
             ]);
             $this->fail();
         }

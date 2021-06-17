@@ -308,7 +308,7 @@ class User extends Authenticatable implements HasMedia, MustVerifyEmail
                 ! Str::contains($user->username, config('defaults.user.default_otp_dummy_host')) &&
                 ! empty($user->email)
             ) {
-                Mail::to($user)->send(new Welcome($user));
+//                Mail::to($user)->send(new Welcome($user));
             }
         });
         static::creating(function (User $user) {

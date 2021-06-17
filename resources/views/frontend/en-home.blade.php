@@ -3,7 +3,7 @@
 <head>
     <!-- Title -->
     <title>
-        اطلب من TipTop هسا واحصل على عروض وخصومات يومياً
+        Receive your order in minutes! Fast delivery, exclusive deals, countless choices and more. Order Now
     </title>
 
     <!-- Required Meta Tags Always Come First -->
@@ -11,11 +11,13 @@
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <meta name="google" content="notranslate">
 
-    <meta name="description" content="اطلب من TipTop هسا واحصل على عروض وخصومات يومياً">
+    <meta name="description" content="Receive your order in minutes! Fast delivery, exclusive deals, countless choices and more. Order Now
+ً">
     <!--	<meta name="keywords" content=".....">-->
 
-    <meta property="og:title" content="		اطلب من TipTop هسا واحصل على عروض وخصومات يومياً">
-    <meta property="og:description" content="اطلب من TipTop هسا واحصل على عروض وخصومات يومياً">
+    <meta property="og:title" content="		Receive your order in minutes! Fast delivery, exclusive deals, countless choices and more. Order Now">
+    <meta property="og:description" content="Receive your order in minutes! Fast delivery, exclusive deals, countless choices and more. Order Now
+ً">
     <meta property="og:type" content="landing page">
     <meta property="og:site_name" content="TipTop">
     <meta property="og:url" content="{{ url('/') }}">
@@ -33,7 +35,7 @@
     <link rel="stylesheet" href="/frontend-assets/vendor/aos/dist/aos.css">
 
     <!-- CSS Front Template -->
-    <link rel="stylesheet" href="/frontend-assets/css/theme-rtl.css?v=3">
+    <link rel="stylesheet" href="/frontend-assets/css/theme.css?v=3">
 
     <script>
         dataLayer = [];
@@ -111,9 +113,9 @@
 
         <div id="logoAndNav" class="container">
             <!-- Nav -->
-            <nav class="js-mega-menu navbar navbar-expand-lg">
+            <nav class="js-mega-menu navbar navbar-expand-lg" style="direction: ltr">
                 <!-- White Logo -->
-                <a class="navbar-brand navbar-brand-default" href="{{url('/')}}" aria-label="Front">
+                <a class="navbar-brand n" href="{{url('/')}}" aria-label="Front">
                     <img src="/frontend-assets/images/logo-white.png" alt="TipTop Logo">
                 </a>
                 <!-- End White Logo -->
@@ -163,26 +165,32 @@
                             </li>-->
                             <li class="header-nav-item">
                                 <a class="nav-link header-nav-link" href="#section1">
-                                    طريقة الاستخدام
+                                    How to use
                                 </a>
                             </li>
                             <li class="header-nav-item">
                                 <a class="nav-link header-nav-link" href="#section2">
-                                    صور من التطبيق
+                                    App Screenshots
                                 </a>
                             </li>
 
 
                             <li class="navbar-nav-last-item">
                                 <a class="btn btn-sm btn-indigo btn-pill transition-3d-hover" href="#lead-form-section">
-                                    حمل التطبيق هنا
+                                    Download App
                                 </a>
                             </li>
 
                             <li class="navbar-nav-last-item">
-                                <a class="btn btn-sm btn-white btn-pill transition-3d-hover"
+                                <a class="btn btn-xs btn-white btn-pill transition-3d-hover font-weight-light tex"
                                    href="{{ localized_route('home',[],'ku') }}">
                                     كوردى
+                                </a>
+                            </li>
+                            <li class="navbar-nav-last-item">
+                                <a class="btn btn-xs btn-white btn-pill transition-3d-hover"
+                                   href="{{ localized_route('home',[],'ar') }}">
+                                    عربي
                                 </a>
                             </li>
 
@@ -206,22 +214,22 @@
                 <div class="col-lg-5 mb-5 mb-lg-0">
                     <!-- Info -->
                     <div class="mb-6">
-                        <h1 class="text-white mb-3">
+                        <h1 class="text-white mb-3" style="direction: ltr">
                             TipTop
                             <span class="text-indigo font-weight-bold">
                   <span class="js-text-animation"></span>
                 </span>
                             <br>
-                            خدمة توصيل بالعراق
+                            Delivery Service in Iraq
                         </h1>
                         <p class="text-white-70">
-                            اطلب من TipTop واستمتع بعروض وخصومات يومياً
+                            Order from TipTop & enjoy our daily offers
                         </p>
                     </div>
 
                     <!--					<a class="btn btn-light btn-wide btn-pill shadow-soft transition-3d-hover mb-2 mb-sm-0 mr-4" href="#">Contact Sales</a>-->
                     <a class="btn btn-indigo btn-wide btn-pill transition-3d-hover mb-2 mb-sm-0" href="#lead-form-section">
-                        حمل التطبيق هسا
+                        Download App
                     </a>
                     <!-- End Info -->
                 </div>
@@ -294,19 +302,19 @@
         <div class="w-md-80 w-lg-50 text-center mx-md-auto mb-5 mb-md-9">
             <!--			<span class="d-block small font-weight-bold text-cap mb-2">Always improving</span>-->
             <h2>
-                طلبك واصل بثلاث خطوات
+                !Your Order is Delivered in 3 Steps
             </h2>
         </div>
         <!-- End Title -->
 
         <!-- Step -->
-        <ul class="step step-md step-centered">
+        <ul class="step step-md step-centered" style="direction: ltr">
             <li class="step-item">
                 <div class="step-content-wrapper">
                     <span class="step-icon step-icon-soft-indigo">1</span>
                     <div class="step-content">
                         <h3>
-                            سوي حساب جديد
+                            Create New Account
                         </h3>
                         <!--						<p>Lorem ipsum dolor sit amet, consectetur adipisicing elit.</p>-->
                     </div>
@@ -318,7 +326,7 @@
                     <span class="step-icon step-icon-soft-indigo">2</span>
                     <div class="step-content">
                         <h3>
-                            اختار الأكلة
+                            Choose Your Meal or Product
                         </h3>
                         <!--						<p>Lorem ipsum dolor sit amet, consectetur adipisicing elit.</p>-->
                     </div>
@@ -330,7 +338,7 @@
                     <span class="step-icon step-icon-soft-indigo">3</span>
                     <div class="step-content">
                         <h3>
-                            اطلب!
+                            Order!
                         </h3>
                         <!--						<p>Lorem ipsum dolor sit amet, consectetur adipisicing elit.</p>-->
                     </div>
@@ -346,15 +354,15 @@
             <div class="col-lg-5 mb-9 mb-lg-0">
                 <div class="mb-5">
                     <h2>
-                        اطلب واحنا نوصل
+                         Order & We Will Deliver in Minutes
                     </h2>
                     <p>
-                        كل اللي عليك تسجل رقمك وعنوانك وتطلب واحنا نوصلك وجبتك خلال دقايق.
+                        All you need to do is to add your Phone Number, Address, Order & you’ll get your meal in minutes
                     </p>
                 </div>
 
                 <a class="btn btn-sm btn-indigo btn-pill transition-3d-hover" href="#lead-form-section">
-                    حمل التطبيق هسا
+                    Download App
                 </a>
             </div>
 
@@ -387,16 +395,15 @@
             <div class="col-lg-5 order-lg-2 mb-9 mb-lg-0">
                 <div class="mb-5">
                     <h2>
-                        كل المطاعم قريبة عليك
+                        !All Restaurants are Nearby
                     </h2>
                     <p>
-                        استكشف المطاعم بمدينتك واختار شماتريد! عدنا مجموعة متنوعة من المطاعم والمأكولات والمشروبات وتگدر تضيف اكثر
-                        من عنوان واحد بحسابك! مكان البيت والعمل والأهل والأصدقاء! لأن ويا TipTop تگدر تضيف عناوين شگد ماتريد!
+                        Choose from a variety of restaurants & products in your city, TipTop will deliver it to you within minutes
                     </p>
                 </div>
 
                 <a class="btn btn-sm btn-indigo btn-pill transition-3d-hover" href="#lead-form-section">
-                    حمل التطبيق هسا
+                    Download App
                 </a>
             </div>
 
@@ -429,15 +436,15 @@
             <div class="col-lg-5 mb-9 mb-lg-0">
                 <div class="mb-5">
                     <h2>
-                        تابع حالة طلبك
+                        Track Your Order
                     </h2>
                     <p>
-                        تگدر اتابع وين صار الاكل وشوكت رح يوصلك دقيقة بدقيقة، كل اللي عليك تحمل التطبيق واستمتع بمميزات TipTop
+                        You may follow the status of your order live in our app
                     </p>
                 </div>
 
                 <a class="btn btn-sm btn-indigo btn-pill transition-3d-hover" href="#lead-form-section">
-                    حمل التطبيق هسا
+                    Download The App
                 </a>
             </div>
 
@@ -530,12 +537,12 @@
                 <div class="row justify-content-md-start align-items-md-center text-center text-md-left">
                     <div class="col-md-6 offset-md-3 mb-3 mb-md-0">
                         <h2 class="text-white mb-1">
-                            TipTop خليك واحنا نجيك
+                            Relax, TipTop Serves You Fast
                         </h2>
                     </div>
                     <div class="col-md-3 text-md-right">
                         <a class="btn btn-light btn-wide btn-pill transition-3d-hover mx-1 mb-2" href="#lead-form-section">
-                            حمل التطبيق هسا
+                            Download App Now
                         </a>
                     </div>
                 </div>
@@ -578,22 +585,22 @@
                         <div id="upon-lead-form-submit">
                             <div class="text-center mb-4">
                                 <h2>
-                                    تفضل حمل التطبيق
+                                    Download It Now
                                     😃
                                 </h2>
                             </div>
 
                             <div class="row">
                                 <div class="col-md-6">
-                                    <a class="btn btn-icon2 btn-indigo rounded-circle2 btn-block mb-1"
-                                       href="https://apps.apple.com/tr/app/tip-top-%D8%AA%D9%8A%D8%A8-%D8%AA%D9%88%D8%A8/id1538884916">
+                                    <a class="btn btn-icon2 btn-indigo rounded-circle2 btn-block mb-1 apple-store" target="_blank"
+                                       href="https://apps.apple.com/tr/app/tip-top-%D8%AA%D9%8A%D8%A8-%D8%AA%D9%88%D8%A8/id1538884916?utm_source=Landingpage&utm_medium=IOS&utm_campaign=V1">
                                         <i class="fab fa-apple"></i>&nbsp;
                                                                     Apple Store
                                     </a>
                                 </div>
                                 <div class="col-md-6">
-                                    <a class="btn btn-icon2 btn-indigo rounded-circle2 btn-block mb-1"
-                                       href="https://play.google.com/store/apps/details?id=app.trytiptop.customer">
+                                    <a class="btn btn-icon2 btn-indigo rounded-circle2 btn-block mb-1 google-play" target="_blank"
+                                       href="https://play.google.com/store/apps/details?id=app.trytiptop.customer&utm_source=Landingpage&utm_medium=Android&utm_campaign=V1">
                                         <i class="fab fa-google-play"></i>&nbsp;
                                                                           Play Store
                                     </a>
@@ -874,7 +881,7 @@
 
         // initialization of text animation (typing)
         let typed = new Typed(".js-text-animation", {
-            strings: ["أفضل", "أسرع", "أسهل"],
+            strings: ["Best", "Fastest", "Easiest"],
             typeSpeed: 60,
             loop: true,
             backSpeed: 25,
@@ -897,6 +904,21 @@
             let goTo = new HSGoTo($(this)).init();
         });
 
+        $( ".google-play" ).on( "click", function() {
+            window.dataLayer = window.dataLayer || [];
+            window.dataLayer.push({
+                'event': 'StoreClick',
+                'store': 'google'
+            });
+        });
+
+        $( ".apple-store" ).on( "click", function() {
+            window.dataLayer = window.dataLayer || [];
+            window.dataLayer.push({
+                'event': 'StoreClick',
+                'store': 'apple'
+            });
+        });
 
         $('#utm_source').val(getUrlParameter('utm_source'));
         $('#utm_medium').val(getUrlParameter('utm_medium'));

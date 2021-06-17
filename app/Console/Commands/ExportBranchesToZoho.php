@@ -48,14 +48,17 @@ class ExportBranchesToZoho extends Command
             return 0;
         }
 
-        $branches = Branch::all();
+        $branches = Branch::where('status',Branch::STATUS_ACTIVE)->whereNull('zoho_books_id')->whereHas('translations', function ($query)  {
+            $query->where('title', 'not like', '%test%');
+        })->get();
         foreach ($branches as $branch) {
             Bus::chain(
                 [
                     new SyncBranchJob($branch),
-                    new CreateBranchAccountJob($branch),
                     new CreateDeliveryItemJob($branch),
-                    new CreateTipTopDeliveryItemJob($branch)
+                    new CreateTipTopDeliveryItemJob($branch),
+                    new CreateBranchAccountJob($branch),
+
                 ]
             )->dispatch();
         }
