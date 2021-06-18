@@ -73,7 +73,7 @@ class WorkingHour extends Model
                     $nowTime)->first();
                 if ( ! empty($getOpenTimeShift)) {
                     if ( ! isset($workingHours['opensAt'])) {
-                        $workingHours['opensAt'] = '';
+                        $workingHours['opensAt'] = null;
                     }
                     if ( ! isset($workingHours['closesAt'])) {
                         $workingHours['closesAt'] = Carbon::parse($getOpenTimeShift->closes_at)->format('H:i');
@@ -81,12 +81,12 @@ class WorkingHour extends Model
                 } else {
                     $firstNextOpenShift = $todayShifts->where('opens_at', '>=', $nowTime)->first();
                     if ( ! is_null($firstNextOpenShift) && ! isset($workingHours['opensAt'])) {
-                        $workingHours['opensAt'] = Carbon::parse($firstNextOpenShift->opens_at)->format('H:i');;
+                        $workingHours['opensAt'] = Carbon::parse($firstNextOpenShift->opens_at)->format('H:i');
                     } else {
-                        $workingHours['opensAt'] = '';
+                        $workingHours['opensAt'] = null;
                     }
                     if ( ! isset($workingHours['closesAt'])) {
-                        $workingHours['closesAt'] = '';
+                        $workingHours['closesAt'] = null;
                     }
                 }
             }

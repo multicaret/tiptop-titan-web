@@ -46,7 +46,7 @@ class DatumImporter extends Command
     protected $signature = 'datum:importer {model? : The name of the model}';
     protected $description = 'Command to import old data';
     private string $modelName;// 'Product';
-    private const DEFAULT_BRANCH_ID = 473;
+    public const DEFAULT_BRANCH_ID = 473;
     public const DEFAULT_REGION = 2;
     public const DEFAULT_CITY = 1;
     private const CREATOR_EDITOR_ID = 1;

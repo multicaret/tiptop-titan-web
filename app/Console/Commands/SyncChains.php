@@ -78,8 +78,17 @@ class SyncChains extends Command
                 $newProduct->branch_id = $branchId;
                 $newProduct->cloned_from_product_id = $originalProduct->id;
                 $newProduct->push();
-                // Todo: check barcode relation.
                 $newProduct->categories()->sync($originalProduct->categories->pluck('id'));
+
+
+                $oldMediaItems = $originalProduct->getMedia('cover');
+                foreach ($oldMediaItems as $oldMedia) {
+                    $oldMedia->copy($newProduct, 'cover', 's3');
+                }
+                $oldMediaItems = $originalProduct->getMedia('gallery');
+                foreach ($oldMediaItems as $oldMedia) {
+                    $oldMedia->copy($newProduct, 'gallery', 's3');
+                }
             }
         } else {
             return '🚨 Trying to sync to a branch with already products 🚨';
