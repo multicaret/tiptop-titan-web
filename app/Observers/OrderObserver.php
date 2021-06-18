@@ -41,7 +41,7 @@ class OrderObserver
         $order->recordActivity('created');
         if (!Str::contains($order->customer_notes, ['test', 'Test']))
         {
-            UpdateDailyReportJob::dispatch()->delay(now()->addMinutes(2));
+            UpdateDailyReportJob::dispatch($order)->delay(now()->addMinutes(2));
         }
     }
 
@@ -81,7 +81,7 @@ class OrderObserver
             } elseif ($order->status == Order::STATUS_DELIVERED) {
                 if (!Str::contains($order->customer_notes, ['test', 'Test']))
                 {
-                    UpdateDailyReportJob::dispatch();
+                    UpdateDailyReportJob::dispatch($order);
                 }
             }
         } elseif ($order->wasChanged('grand_total')) {
@@ -89,7 +89,7 @@ class OrderObserver
             // UpdateTask::dispatchSync($order);
             if (!Str::contains($order->customer_notes, ['test', 'Test']))
             {
-                UpdateDailyReportJob::dispatch();
+                UpdateDailyReportJob::dispatch($order);
             }
         }
         $order->recordActivity('updated');

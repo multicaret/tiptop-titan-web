@@ -70,7 +70,7 @@ class ExportOrdersToZoho extends Command
         $from = now()->subHours(5)->toDateTimeString();
         $to   = now()->subMinutes(125)->toDateTimeString();
 
-        $lastTwoDays = today()->subDays(7)->toDateString();
+        $since = today()->subDays(30)->toDateString();
 
         $orders = Order::where('status',Order::STATUS_DELIVERED)
                        ->whereNull('zoho_books_invoice_id')
@@ -78,10 +78,10 @@ class ExportOrdersToZoho extends Command
                            $query->where('customer_notes', 'not like', '%test%')
                                  ->orWhere('customer_notes',NULL);
                        })->when($this->type == 'recent', function ($query) use ($from,$to){
-                        $query->where('created_at','<=',$to)->where('created_at','>=',$from);
-                      })->when($this->type == 'all', function ($query) use($lastTwoDays){
-                        $query->whereDate('created_at','>=', $lastTwoDays);
-                      })
+                $query->where('created_at','<=',$to)->where('created_at','>=',$from);
+            })->when($this->type == 'all', function ($query) use($since){
+                $query->whereDate('created_at','>=', $since);
+            })
                        ->get();
         foreach ($orders as $order) {
             Bus::chain(
