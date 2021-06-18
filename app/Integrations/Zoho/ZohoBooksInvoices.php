@@ -54,15 +54,16 @@ class ZohoBooksInvoices extends ZohoBooksClient
         }
 
 
+
         return [
             'customer_id' => $customer_id,
             'invoice_number' => $this->order->reference_code,
-            'date' => Carbon::now()->format('Y-m-d'),
+            'date' => $this->order->created_at->format('Y-m-d'),
             'discount' => $this->order->coupon_discount_amount,
             'discount_type' => 'entity_level',
             'send' => true,
             'line_items' => $inline_items,
-          //  'adjustment'   => $adjustment,
+            //  'adjustment'   => $adjustment,
             'custom_fields' => [
                 [
                     'api_name' => 'cf_who_recieve_the_payment',
@@ -128,7 +129,7 @@ class ZohoBooksInvoices extends ZohoBooksClient
             'payment_mode' => 'cash',
             'reference_number' => $this->order->reference_code,
             'invoice_id' => $this->order->zoho_books_invoice_id,
-            'date' => Carbon::now()->format('Y-m-d'),
+            'date' => $this->order->created_at->format('Y-m-d'),
             //todo: handle if online payment was made
             'account_id' => $this->order->is_delivery_by_tiptop ? $this->petty_cash_account_id : $this->order->branch->zoho_books_account_id,
             'custom_fields' => [

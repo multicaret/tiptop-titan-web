@@ -17,23 +17,22 @@ use Illuminate\Support\Facades\Bus;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 
-class ExportOrdersToZoho extends Command
+class CreateZohoBooksOrderPayment extends Command
 {
     /**
      * The name and signature of the console command.
      *
      * @var string
      */
-    protected $signature = 'orders:export-to-zoho {--type=}';
+    protected $signature = 'orders:make-payment';
 
-    protected $type = 'recent';
 
     /**
      * The console command description.
      *
      * @var string
      */
-    protected $description = 'Dispatches jobs to export orders to zoho books';
+    protected $description = '';
 
     /**
      * Create a new command instance.
@@ -45,16 +44,7 @@ class ExportOrdersToZoho extends Command
         parent::__construct();
     }
 
-    public function initialize(InputInterface $input, OutputInterface $output)
-    {
-        if ( ! is_null($this->option('type')) && in_array($this->option('type'), ['all','recent'])) {
-            $this->type = $this->option('type');
-        }
-        else{
-            $this->type = 'recent';
 
-        }
-    }
     /**
      * Execute the console command.
      *
@@ -67,26 +57,18 @@ class ExportOrdersToZoho extends Command
             return 0;
         }
 
-        $from = now()->subHours(5)->toDateTimeString();
-        $to   = now()->subMinutes(125)->toDateTimeString();
-
         $since = today()->subDays(30)->toDateString();
 
         $orders = Order::where('status',Order::STATUS_DELIVERED)
-                       ->whereNull('zoho_books_invoice_id')
+                       ->whereNotNull('zoho_books_invoice_id')
+                       ->whereNull('zoho_books_payment_id')
                        ->where(function ($query){
                            $query->where('customer_notes', 'not like', '%test%')
                                  ->orWhere('customer_notes',NULL);
-                       })->when($this->type == 'recent', function ($query) use ($from,$to){
-                $query->where('created_at','<=',$to)->where('created_at','>=',$from);
-            })->when($this->type == 'all', function ($query) use($since){
-                $query->whereDate('created_at','>=', $since);
-            })
-                       ->get();
+                       })->whereDate('created_at','>=', $since)->get();
         foreach ($orders as $order) {
             Bus::chain(
                 [
-                    new CreateInvoiceJob($order),
                     new CreatePaymentJob($order),
                     new ApplyPaymentCreditJob($order),
                 ]

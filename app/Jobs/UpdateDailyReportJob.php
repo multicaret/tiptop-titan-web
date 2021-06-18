@@ -25,15 +25,16 @@ class UpdateDailyReportJob implements ShouldQueue
 
     public $tries = 5;
 
+    public $order;
     /**
      * Create a new job instance.
      *
      * @param  Order  $order
      * @param $type
      */
-    public function __construct()
+    public function __construct(Order $order)
     {
-
+        $this->order = $order;
     }
 
     /**
@@ -44,13 +45,13 @@ class UpdateDailyReportJob implements ShouldQueue
     public function handle()
     {
 
-        $record = OrderDailyReport::firstOrCreate(['day' => today()]);
-        $ordersQuery = Order::whereDate('created_at', today())->where(function ($query) {
+        $record = OrderDailyReport::firstOrCreate(['day' => $this->order->created_at->toDateString()]);
+        $ordersQuery = Order::whereDate('created_at', $this->order->created_at->toDateString())->where(function ($query) {
             $query->where('customer_notes', 'not like', '%test%')
                   ->orWhere('customer_notes', null);
         });
 
-        $todayDateString = today()->toDateString();
+        $todayDateString = $this->order->created_at->toDateString();
         $range1 = Carbon::parse($todayDateString.' '.'09:00')->toDateTimeString();
         $range2 = Carbon::parse($todayDateString.' '.'11:59')->toDateTimeString();
         $range3 = Carbon::parse($todayDateString.' '.'12:00')->toDateTimeString();
@@ -71,16 +72,16 @@ class UpdateDailyReportJob implements ShouldQueue
         $record->orders_count = $record->food_orders_count + $record->grocery_orders_count;
 
         $record->grocery_orders_value = (clone $ordersQuery)->where('type',
-            Order::CHANNEL_GROCERY_OBJECT)->sum('grand_total') ?? 0;
+                Order::CHANNEL_GROCERY_OBJECT)->sum('grand_total') ?? 0;
         $record->food_orders_value = (clone $ordersQuery)->where('type',
-            Order::CHANNEL_FOOD_OBJECT)->sum('grand_total') ?? 0;
+                Order::CHANNEL_FOOD_OBJECT)->sum('grand_total') ?? 0;
 
         $record->orders_value = $record->food_orders_value + $record->grocery_orders_value;
 
         $record->average_grocery_orders_value = (clone $ordersQuery)->where('type',
-            Order::CHANNEL_GROCERY_OBJECT)->avg('grand_total') ?? 0;
+                Order::CHANNEL_GROCERY_OBJECT)->avg('grand_total') ?? 0;
         $record->average_food_orders_value = (clone $ordersQuery)->where('type',
-            Order::CHANNEL_FOOD_OBJECT)->avg('grand_total') ?? 0;
+                Order::CHANNEL_FOOD_OBJECT)->avg('grand_total') ?? 0;
         $record->average_orders_value = (clone $ordersQuery)->avg('grand_total') ?? 0;
 
         $record->orders_count_between_09_12 = (clone $ordersQuery)->where('created_at', '>=',
@@ -108,10 +109,10 @@ class UpdateDailyReportJob implements ShouldQueue
         $record->delivered_orders_count = $record->delivered_food_orders_count + $record->delivered_grocery_orders_count;
 
         $record->delivered_food_orders_value = (clone $ordersQuery)->where('type',
-            Order::CHANNEL_FOOD_OBJECT)->where('status', Order::STATUS_DELIVERED)->sum('grand_total') ?? 0;
+                Order::CHANNEL_FOOD_OBJECT)->where('status', Order::STATUS_DELIVERED)->sum('grand_total') ?? 0;
 
         $record->delivered_grocery_orders_value = (clone $ordersQuery)->where('type',
-            Order::CHANNEL_GROCERY_OBJECT)->where('status', Order::STATUS_DELIVERED)->sum('grand_total') ?? 0;
+                Order::CHANNEL_GROCERY_OBJECT)->where('status', Order::STATUS_DELIVERED)->sum('grand_total') ?? 0;
 
         $record->delivered_orders_value = $record->delivered_food_orders_value + $record->delivered_grocery_orders_value;
 
