@@ -44,6 +44,7 @@ class RouteServiceProvider extends ServiceProvider
         $this->mapAjaxRoutes();
         $this->mapWebRoutes();
         $this->mapTookanRoutes();
+        $this->mapZohoRoutes();
     }
 
 
@@ -178,6 +179,19 @@ class RouteServiceProvider extends ServiceProvider
              ->name('tookan.')
              ->namespace($this->namespace.'\Tookan')
              ->group(base_path('routes/tookan.php'));
+    }
+    /**
+     * Define the "zoho" routes.
+     *
+     *
+     * @return void
+     */
+    protected function mapZohoRoutes()
+    {
+        Route::prefix('zoho')
+             ->name('zoho.')
+             ->namespace($this->namespace.'\Zoho')
+             ->group(base_path('routes/zoho.php'));
     }
 
     /**
