@@ -4,11 +4,15 @@
         <li class="nav-item ">
             <a class="nav-link"  href="{{route('admin.orders.index')}}">
                 <i class="fas fa-edit"></i>&nbsp;TipTop Orders
-                <div class="pl-1 ml-auto  d-inline-block" style="font-size:14px;">
+                @if($tiptopOrdersCount > 0)
+
+                <div class="pl-1 ml-auto bounce d-inline-block" style="font-size:16px;">
                     <div class="badge badge-danger d-inline-block">
                         {{$tiptopOrdersCount}}
                     </div>
                 </div>
+                @endif
+
             </a>
         </li>
         <li class="nav-item">

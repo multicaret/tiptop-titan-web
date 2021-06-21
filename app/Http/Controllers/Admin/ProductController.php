@@ -275,8 +275,6 @@ class ProductController extends Controller
         if ($request->has('is_enable_to_store_date')) {
             $rules['price_discount_began_at'] = 'required|date';
             $rules['price_discount_finished_at'] = 'required|date|after:price_discount_began_at';
-            $rules['custom_banner_began_at'] = 'required|date';
-            $rules['custom_banner_ended_at'] = 'required|date|after:custom_banner_began_at';
         }
 
         $rules["$defaultLocale.title"] = 'required';

@@ -1,21 +1,23 @@
-
-
 <div class="nav-tabs-top nav-responsive-xl">
     <ul class="nav nav-tabs nav-justified">
         <li class="nav-item">
-            <a class="nav-link active"  href="">
+            <a class="nav-link active" href="">
                 <i class="fas fa-edit"></i>&nbsp;TipTop Orders
             </a>
         </li>
-        <li class="nav-item ">
-            <a class="nav-link "  href="{{route('admin.jet.orders.index')}}">
+        <li class="nav-item   ">
+            <a class="nav-link " href="{{route('admin.jet.orders.index')}}">
                 <i class="far fa-clock"></i>&nbsp;Jet Orders
 
-                <div class="pl-1 ml-auto  d-inline-block" style="font-size:14px;">
-                    <div class="badge badge-danger d-inline-block">
-                        {{$jetOrdersCount}}
+
+                @if($jetOrdersCount > 0)
+                    <div class="pl-1 ml-auto bounce d-inline-block" style="font-size:15px; ">
+
+                        <div class="badge badge-danger d-inline-block border border-dark">
+                             {{$jetOrdersCount}}
+                        </div>
                     </div>
-                </div>
+                @endif
             </a>
         </li>
     </ul>
@@ -120,8 +122,9 @@
 </div>
 @push('styles')
     <style>
-        .nav-link.active{
+        .nav-link.active {
             box-shadow: 0 1rem 3rem rgb(24 28 33 / 18%) !important
         }
+
     </style>
 @endpush

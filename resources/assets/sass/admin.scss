@@ -107,3 +107,20 @@
     border-radius: 6px;
     overflow: hidden;
 }
+
+.bounce {
+    display: inline-block;
+    position: relative;
+    -moz-animation: bounce 0.7s infinite linear;
+    -o-animation: bounce 0.7s infinite linear;
+    -webkit-animation: bounce 0.7s infinite linear;
+    animation: bounce 0.7s infinite linear;
+}
+
+@keyframes bounce {
+    0% { top: 0; transform: scale(1,1)}
+    20% { top: -0.3em; transform: scale(1.1,.9)}
+    50% { top: -0.5em; transform: scale(.9,1.1)}
+    70% { top: -0.6em; transform: scale(1.05,.95)}
+    100% { top: 0; transform: scale(1,1)}
+}
