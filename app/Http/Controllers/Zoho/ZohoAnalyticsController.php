@@ -14,7 +14,7 @@ class ZohoAnalyticsController extends Controller
 
         $dateCondition = ' ';
         if ( ! empty($request->date)) {
-            $dateCondition = 'AND o.created_at >'.$request->date;
+            $dateCondition = "AND o.created_at > '". $request->date ."'";
         }
 
         $data = DB::select("
