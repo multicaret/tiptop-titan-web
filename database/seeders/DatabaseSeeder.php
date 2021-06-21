@@ -522,8 +522,7 @@ class DatabaseSeeder extends Seeder
         exec('php artisan optimize:clear');
 
         echo PHP_EOL.PHP_EOL.'Use the following access token for '.$super->email.':'.PHP_EOL;
-        echo 'Bearer '.$super->createToken('DB seeder device',
-                config('defaults.user.mobile_app_details'))->plainTextToken.PHP_EOL.PHP_EOL;
+        echo 'Bearer '.$super->createToken('DB seeder device', config('defaults.user.mobile_app_details'))->plainTextToken.PHP_EOL.PHP_EOL;
 
         echo PHP_EOL.PHP_EOL.'Use the following access token for '.$admin->email.':'.PHP_EOL;
         echo 'Bearer '.$admin->createToken('DB seeder device',
