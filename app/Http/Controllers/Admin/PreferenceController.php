@@ -33,6 +33,7 @@ class PreferenceController extends Controller
             'blog_show',
             'market_food_category_show',
             'product_show',
+            'food_category_show',
         ];
 
         $callback = function ($item, $key) {

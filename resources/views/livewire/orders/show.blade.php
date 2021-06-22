@@ -301,7 +301,8 @@
                                          alt="Product cover" width="50">
                                 </td>
                                 <td>
-                                    <span class="d-block">{{$orderProduct->product_object['title']}}</span>
+                                    <span data-toggle="tooltip" data-placement="top" title="{{collect($orderProduct->product_object['translations'])->pluck('title','locale')->get('en')}}" class="d-block">{{$orderProduct->product_object['title']}}
+                                    </span>
                                     @if($orderProduct->cartProductOptions()->count())
                                         @foreach($orderProduct->cartProductOptions as $cartProductOption)
                                             <div class="d-block">
