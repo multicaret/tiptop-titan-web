@@ -22,7 +22,7 @@ class BranchController extends BaseApiController
 
         $extraDeliveryFeeTipTop = 0;
         $extraDeliveryFeeRestaurant = 0;
-        if ( ! is_null($user = auth()->user())) {
+        if ( ! is_null($user = auth('sanctum')->user())) {
             if ( ! is_null($address = Location::find($user->selected_address_id))) {
                 $extraDeliveryFeeTipTop = $restaurant->calculatePlainDeliveryFeeForAnAddress($address);
                 $extraDeliveryFeeRestaurant = $restaurant->calculatePlainDeliveryFeeForAnAddress($address, false);
