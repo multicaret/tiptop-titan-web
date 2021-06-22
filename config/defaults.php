@@ -297,6 +297,17 @@ return [
                 'id' => 1,
             ],
         ],
+        'food_category_show' => [
+            'params' => [
+//                'adj_t' => '657i79u',
+                'campaign' => null,
+                'adgroup' => null,
+                'creative' => null,
+                'channel' => config('app.app-channels.food'),
+//                'parent_id' => 1,
+                'id' => 1,
+            ],
+        ],
         'order_rating' => [
             'params' => [
                 'adj_t' => 'et3lk95',
