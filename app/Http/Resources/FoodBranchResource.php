@@ -46,10 +46,12 @@ class FoodBranchResource extends JsonResource
 
         $extraDeliveryFeeTipTop = 0;
         $extraDeliveryFeeRestaurant = 0;
+        $distance = 0;
         if ( ! is_null($user = auth('sanctum')->user())) {
             if ( ! is_null($address = Location::find($user->selected_address_id))) {
-                $extraDeliveryFeeTipTop = $this->calculatePlainDeliveryFeeForAnAddress($address);
-                $extraDeliveryFeeRestaurant = $this->calculatePlainDeliveryFeeForAnAddress($address, false);
+                [$extraDeliveryFeeTipTop, $distance] = $this->calculatePlainDeliveryFeeForAnAddress($address);
+                [$extraDeliveryFeeRestaurant, $distance] = $this->calculatePlainDeliveryFeeForAnAddress($address,
+                    false);
             }
         }
 
@@ -126,6 +128,7 @@ class FoodBranchResource extends JsonResource
                 'countRaw' => $this->rating_count,
                 'countFormatted' => Controller::numberToReadable($this->rating_count),
             ],
+            'distanceToCurrentAddress' => $distance,
             'workingHours' => $workingHours,
             'latitude' => (float) $this->latitude,
             'longitude' => (float) $this->longitude,
