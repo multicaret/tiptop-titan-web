@@ -20,17 +20,6 @@ class BranchController extends BaseApiController
             return $this->respondNotFound('Restaurants not found');
         }
 
-        $extraDeliveryFeeTipTop = 0;
-        $extraDeliveryFeeRestaurant = 0;
-        if ( ! is_null($user = auth('sanctum')->user())) {
-            if ( ! is_null($address = Location::find($user->selected_address_id))) {
-                $extraDeliveryFeeTipTop = $restaurant->calculatePlainDeliveryFeeForAnAddress($address);
-                $extraDeliveryFeeRestaurant = $restaurant->calculatePlainDeliveryFeeForAnAddress($address, false);
-            }
-        }
-        $restaurant->extraDeliveryFeeTipTop = $extraDeliveryFeeTipTop;
-        $restaurant->extraDeliveryFeeRestaurant = $extraDeliveryFeeRestaurant;
-
         return $this->respond(new FoodBranchResource($restaurant));
     }
 

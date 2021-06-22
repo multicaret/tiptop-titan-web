@@ -5,6 +5,7 @@ namespace App\Http\Resources;
 use App\Http\Controllers\Controller;
 use App\Models\Branch;
 use App\Models\Currency;
+use App\Models\Location;
 use App\Models\Place;
 use App\Models\Product;
 use App\Models\WorkingHour;
@@ -43,8 +44,14 @@ class FoodBranchResource extends JsonResource
                                    ->get();
         }
 
-        $extraDeliveryFeeTipTop = $this->extraDeliveryFeeTipTop ?? 0;
-        $extraDeliveryFeeRestaurant = $this->extraDeliveryFeeRestaurant ?? 0;
+        $extraDeliveryFeeTipTop = 0;
+        $extraDeliveryFeeRestaurant = 0;
+        if ( ! is_null($user = auth('sanctum')->user())) {
+            if ( ! is_null($address = Location::find($user->selected_address_id))) {
+                $extraDeliveryFeeTipTop = $this->calculatePlainDeliveryFeeForAnAddress($address);
+                $extraDeliveryFeeRestaurant = $this->calculatePlainDeliveryFeeForAnAddress($address, false);
+            }
+        }
 
         return [
             'id' => $this->id,
