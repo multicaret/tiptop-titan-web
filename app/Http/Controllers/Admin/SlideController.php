@@ -265,7 +265,7 @@ class SlideController extends Controller
             $slide->translateOrNew($key)->alt_tag = $request->input($key.'.alt_tag');
             $inputKey = $key.'.image';
             if ($request->has($inputKey)) {
-                $slideTranslation = SlideTranslation::whereSlideId($slide->id)
+                SlideTranslation::whereSlideId($slide->id)
                                                     ->where('locale', Str::beforeLast($key, '.'))
                                                     ->first();
 
@@ -285,8 +285,6 @@ class SlideController extends Controller
             }
 
         }
-//        dd($slide->toArray());
-//        $slide->???()->sync($request->???);
 
         DB::commit();
     }
