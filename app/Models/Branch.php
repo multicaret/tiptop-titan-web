@@ -470,8 +470,12 @@ class Branch extends Model implements HasMedia
         ) {
             $distance = Controller::distanceBetween($this->latitude, $this->longitude, $address->latitude,
                 $address->longitude);
-            if ($distance != 0 && Preference::retrieveValue($fixedDeliveryDistanceKeyName) && $distance > Preference::retrieveValue($fixedDeliveryDistanceKeyName)) {
-                $deliveryFee += $extraDeliveryFeePerKm * $distance;
+            $distanceOfFixedDeliveryFeeForKMs = Preference::retrieveValue($fixedDeliveryDistanceKeyName);
+            if ($distance != 0 && $distanceOfFixedDeliveryFeeForKMs && $distance > $distanceOfFixedDeliveryFeeForKMs) {
+                if ($distance > $distanceOfFixedDeliveryFeeForKMs) {
+                    $differenceInDistance = $distance - $distanceOfFixedDeliveryFeeForKMs;
+                    $deliveryFee += $extraDeliveryFeePerKm * $differenceInDistance;
+                }
             }
         }
 
