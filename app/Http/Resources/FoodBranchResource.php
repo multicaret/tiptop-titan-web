@@ -32,7 +32,7 @@ class FoodBranchResource extends JsonResource
         $searchQuery = request()->input('q');
 
         if ($searchQuery) {
-            $searchProducts = $this->products()->where('status','!=',Product::STATUS_DRAFT)
+            $searchProducts = $this->products()->where('status', '!=', Product::STATUS_DRAFT)
                                    ->whereHas('translations', function ($productTranslationQuery) use (
                                        $searchQuery
                                    ) {
@@ -42,6 +42,9 @@ class FoodBranchResource extends JsonResource
                                    ->take(3)
                                    ->get();
         }
+
+        $extraDeliveryFeeTipTop = $this->extraDeliveryFeeTipTop ?? 0;
+        $extraDeliveryFeeRestaurant = $this->extraDeliveryFeeRestaurant ?? 0;
 
         return [
             'id' => $this->id,
@@ -61,8 +64,8 @@ class FoodBranchResource extends JsonResource
                     'formatted' => Currency::format($this->under_minimum_order_delivery_fee),
                 ],
                 'fixedDeliveryFee' => [
-                    'raw' => $this->fixed_delivery_fee,
-                    'formatted' => Currency::format($this->fixed_delivery_fee),
+                    'raw' => $this->fixed_delivery_fee + $extraDeliveryFeeTipTop,
+                    'formatted' => Currency::format($this->fixed_delivery_fee + $extraDeliveryFeeTipTop),
                 ],
                 'freeDeliveryThreshold' => [
                     'raw' => $this->free_delivery_threshold,
@@ -82,8 +85,8 @@ class FoodBranchResource extends JsonResource
                     'formatted' => Currency::format($this->restaurant_under_minimum_order_delivery_fee),
                 ],
                 'fixedDeliveryFee' => [
-                    'raw' => $this->restaurant_fixed_delivery_fee,
-                    'formatted' => Currency::format($this->restaurant_fixed_delivery_fee),
+                    'raw' => $this->restaurant_fixed_delivery_fee + $extraDeliveryFeeRestaurant,
+                    'formatted' => Currency::format($this->restaurant_fixed_delivery_fee + $extraDeliveryFeeRestaurant),
                 ],
                 'freeDeliveryThreshold' => [
                     'raw' => $this->restaurant_free_delivery_threshold,

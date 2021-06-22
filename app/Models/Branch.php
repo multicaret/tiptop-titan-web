@@ -471,7 +471,7 @@ class Branch extends Model implements HasMedia
             $distance = Controller::distanceBetween($this->latitude, $this->longitude, $address->latitude,
                 $address->longitude);
             if ($distance != 0 && Preference::retrieveValue($fixedDeliveryDistanceKeyName) && $distance > Preference::retrieveValue($fixedDeliveryDistanceKeyName)) {
-                $deliveryFee = $extraDeliveryFeePerKm * $distance;
+                $deliveryFee += $extraDeliveryFeePerKm * $distance;
             }
         }
 
@@ -482,18 +482,55 @@ class Branch extends Model implements HasMedia
         return $deliveryFee;
     }
 
+
+    public function calculatePlainDeliveryFeeForAnAddress($address, $isTipTopDelivery = true): float
+    {
+
+        if ( ! $isTipTopDelivery) {
+            $fixedDeliveryFee = $this->restaurant_fixed_delivery_fee;
+            $extraDeliveryFeePerKm = $this->restaurant_extra_delivery_fee_per_km;
+            $fixedDeliveryDistanceKeyName = 'tiptop_fixed_delivery_distance';
+        } else {
+            $fixedDeliveryFee = $this->fixed_delivery_fee;
+            $extraDeliveryFeePerKm = $this->extra_delivery_fee_per_km;
+            $fixedDeliveryDistanceKeyName = 'restaurant_fixed_delivery_distance';
+        }
+
+        $deliveryFee = $fixedDeliveryFee;
+
+        // Calculating Delivery Fee Based on Distance
+        if (
+            ! is_null($address) &&
+            ! is_null($address->latitude) &&
+            ! is_null($address->longitude)
+        ) {
+            $distance = Controller::distanceBetween($this->latitude, $this->longitude, $address->latitude,
+                $address->longitude);
+            $distanceOfFixedDeliveryFeeForKMs = Preference::retrieveValue($fixedDeliveryDistanceKeyName);
+            if ($distance != 0 && $distanceOfFixedDeliveryFeeForKMs && $distance > $distanceOfFixedDeliveryFeeForKMs) {
+                if ($distance > $distanceOfFixedDeliveryFeeForKMs) {
+                    $differenceInDistance = $distance - $distanceOfFixedDeliveryFeeForKMs;
+                    $deliveryFee += $extraDeliveryFeePerKm * $differenceInDistance;
+                }
+            }
+        }
+
+        return $deliveryFee;
+    }
+
     public function calculateJetDeliveryFee(
-        $totalAmount,$latitude=null,$longitude=null
+        $totalAmount,
+        $latitude = null,
+        $longitude = null
     ): float {
 
         $fixedDeliveryFee = $this->jet_fixed_delivery_fee;
         $commission_rate = $this->jet_delivery_commission_rate;
-        $extraDeliveryFeePerKm= $this->jet_extra_delivery_fee_per_km;
+        $extraDeliveryFeePerKm = $this->jet_extra_delivery_fee_per_km;
         $fixedDeliveryDistanceKeyName = 'restaurant_fixed_delivery_distance';
 
         $deliveryFee = $fixedDeliveryFee;
-        if ($commission_rate > 0)
-        {
+        if ($commission_rate > 0) {
             $deliveryFee += ($totalAmount * $commission_rate) / 100;
         }
 
@@ -504,6 +541,7 @@ class Branch extends Model implements HasMedia
                 $deliveryFee += $extraDeliveryFeePerKm * $distance;
             }
         }
+
         return $deliveryFee;
     }
 }
