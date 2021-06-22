@@ -57,13 +57,13 @@ class BranchController extends Controller
             ],
             [
                 'data' => 'chain',
-                'name' => 'chain',
+                'name' => 'chain_id',
                 'title' => 'Chain',
                 'width' => '10',
             ],
             [
                 'data' => 'region',
-                'name' => 'region',
+                'name' => 'region_id',
                 'title' => 'City',
                 'searchable' => false,
                 'bSortable' => false,
@@ -71,7 +71,7 @@ class BranchController extends Controller
             ],
             [
                 'data' => 'city',
-                'name' => 'city',
+                'name' => 'city_id',
                 'title' => 'Neighborhood',
                 'searchable' => false,
                 'bSortable' => false,
@@ -369,7 +369,7 @@ class BranchController extends Controller
         $branch->save();
         DB::commit();
 
-        cache()->tags('branches','api-home')->flush();
+        cache()->tags('branches', 'api-home')->flush();
     }
 
     /**
