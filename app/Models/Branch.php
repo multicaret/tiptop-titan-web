@@ -487,7 +487,7 @@ class Branch extends Model implements HasMedia
     }
 
 
-    public function calculatePlainDeliveryFeeForAnAddress($address, $isTipTopDelivery = true): float
+    public function calculatePlainDeliveryFeeForAnAddress($address, $isTipTopDelivery = true): array
     {
 
         if ( ! $isTipTopDelivery) {
