@@ -108,11 +108,19 @@ class AddressController extends BaseApiController
     {
         //Todo: only if Super Admin or the owner of the address should be able to delete.
         $address = Location::find($address);
+        $user = auth()->user();
+        $hasMoreThanOneAddress = Location::whereContactableType(User::class)->whereContactableId($user->id)->count() > 1;
+        $canDeleteTheirAddress = $address->contactable_id == $user->id && $hasMoreThanOneAddress;
+        if ( ! $canDeleteTheirAddress) {
+            return $this->respondValidationFails([
+                'address' => __('strings.You can not delete this address, please add a new one before deleting this address')
+            ]);
+        }
         if (is_null($address)) {
             return $this->respondNotFound();
         } elseif (Order::whereAddressId($address->id)->count()) {
             return $this->respondWithMessage(__('strings.You have orders with this address you can not delete it'));
-        }elseif ($address->delete()) {
+        } elseif ($address->delete()) {
             return $this->respondWithMessage(__('strings.successfully_deleted'));
         }
 
