@@ -25,7 +25,7 @@ class UserResource extends JsonResource
             'first' => $this->first,
             'last' => $this->last,
             'username' => $this->username,
-            'email' => ! str_contains($this->email,
+            'email' => ! is_null($this->email) && ! str_contains($this->email,
                 config('defaults.user.default_otp_dummy_host')) ? $this->email : null,
             'phone' => $this->phone_number,
             'phoneCode' => $this->phone_country_code,
