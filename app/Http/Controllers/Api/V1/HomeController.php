@@ -23,6 +23,7 @@ use App\Models\Slide;
 use App\Models\Taxonomy;
 use App\Models\User;
 use App\Models\WorkingHour;
+use Carbon\Carbon;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\AnonymousResourceCollection;
@@ -171,7 +172,7 @@ class HomeController extends BaseApiController
                                                                   ->where('day', now()->addDay()->format('N'))
                                                                   ->first();
                     if ( ! is_null($workingHoursOfFirstMarketBranch)) {
-                        $time = $workingHoursOfFirstMarketBranch->closes_at;
+                        $time = Carbon::parse($workingHoursOfFirstMarketBranch->opens_at)->format('H:i');
                     }
                 }
 
