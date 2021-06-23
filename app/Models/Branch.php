@@ -546,6 +546,6 @@ class Branch extends Model implements HasMedia
             }
         }
 
-        return $deliveryFee;
+        return $deliveryFee ?? 0;
     }
 }
