@@ -262,10 +262,10 @@ class Branch extends Model implements HasMedia
                 $branchesOrderedByDistance = self::getBranchesOrderByDistance($latitude, $longitude);
 
                 foreach ($branchesOrderedByDistance as $branchOrderedByDistance) {
-                    $branch = $branchOrderedByDistance;
-                    $branchTodayWorkingHours = WorkingHour::retrieve($branch);
+                    $branchTodayWorkingHours = WorkingHour::retrieve($branchOrderedByDistance);
                     if ($branchTodayWorkingHours['isOpen']) {
                         $distance = $branchOrderedByDistance->distance;
+                        $branch = $branchOrderedByDistance;
                         break;
                     }
                 }
