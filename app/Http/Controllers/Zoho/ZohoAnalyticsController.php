@@ -62,10 +62,10 @@ class ZohoAnalyticsController extends Controller
 
 
         $data = DB::select("
-            select b.id as 'ID',date(b.created_at) as 'Create Date',bt.title as 'Branch Name',ct.title as 'Branch Name',regions.name as 'City',cities_trans.name as 'Neighborhood',
+            select b.id as 'ID',date(b.created_at) as 'Create Date',bt.title as 'Branch Name',ct.title as 'Chain Name',regions.name as 'City',cities_trans.name as 'Neighborhood',
             case when b.status = 2 then 'Active' else 'Inactive' end as 'Status' , b.longitude as 'Longitude',b.latitude as 'Latitude', GROUP_CONCAT(cat_trans.title SEPARATOR '  |  ') as 'Food Categories', case when b.has_tip_top_delivery = 1 then 'Yes' else 'No' end as 'Tiptop Delivery',b.management_commission_rate as 'Tiptop Delivery Commission Rate', b.minimum_order as 'Tiptop Delivery Minimum order', b.fixed_delivery_fee as 'Tiptop Delivery Fixed Delivery Fee', b.under_minimum_order_delivery_fee as 'Tiptop Under Minimum Order Delivery Fee', b.free_delivery_threshold as 'Tiptop Free Delivery Threshold', b.extra_delivery_fee_per_km as 'Tiptop Extra Delivery Fee Per KM'
             ,case when b.has_restaurant_delivery = 1 then 'Yes' else 'No' end as 'Restaurant Delivery',b.management_commission_rate as 'Restaurant Delivery Commission Rate', b.restaurant_minimum_order as 'Restaurant Delivery Minimum order', b.restaurant_fixed_delivery_fee as 'Restaurant Delivery Fixed Delivery Fee', b.restaurant_under_minimum_order_delivery_fee as 'Restaurant Under Minimum Order Delivery Fee', b.restaurant_free_delivery_threshold as 'Restaurant Free Delivery Threshold', b.restaurant_extra_delivery_fee_per_km as 'Restaurant Extra Delivery Fee Per KM',
-            case when b.has_jet_delivery = 1 then 'Yes' else 'No' end as 'Restaurant Delivery',b.jet_delivery_commission_rate as 'Jet Delivery Commission Rate', b.jet_minimum_order as 'Jet Delivery Minimum order', b.jet_fixed_delivery_fee as 'Jet Delivery Fixed Delivery Fee', b.jet_extra_delivery_fee_per_km as 'Jet Extra Delivery Fee Per KM',
+            case when b.has_jet_delivery = 1 then 'Yes' else 'No' end as 'Jet Delivery',b.jet_delivery_commission_rate as 'Jet Delivery Commission Rate', b.jet_minimum_order as 'Jet Delivery Minimum order', b.jet_fixed_delivery_fee as 'Jet Delivery Fixed Delivery Fee', b.jet_extra_delivery_fee_per_km as 'Jet Extra Delivery Fee Per KM',
 
             b.rating_count as 'N.Ratings',b.avg_rating as 'AVG Rating'
             from branches b
