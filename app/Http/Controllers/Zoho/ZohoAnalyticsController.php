@@ -25,6 +25,7 @@ class ZohoAnalyticsController extends Controller
              ct.name AS 'city',
              CASE WHEN o.type=1 THEN 'market' ELSE 'food' END AS 'order type',
              CASE WHEN o.is_delivery_by_tiptop=1 THEN 'tiptop' ELSE 'restaurant' END AS 'delivery type',
+             bt.branch_id AS 'branch ID',
              bt.title AS 'branch name',
              b.latitude AS 'branch latitude',
              b.longitude AS 'branch longitude',
@@ -47,7 +48,7 @@ class ZohoAnalyticsController extends Controller
             LEFT JOIN locations l ON l.id = o.address_id
             WHERE (o.customer_notes NOT LIKE '%test%' OR o.customer_notes IS NULL) ".$dateCondition."
             GROUP BY DATE(o.created_at), o.reference_code,bt.title,o.status,o.coupon_discount_amount,total_before,final_price,o.delivery_fee,driver,rt.name,ct.name,o.type,'delivery type',b.latitude,b.longitude
-             ,o.user_id,l.latitude,l.longitude");
+             ,o.user_id,l.latitude,l.longitude,bt.branch_id");
         $filename = "restaurant-sales.json";
         $handle = fopen($filename, 'w+');
         fputs($handle, json_encode($data));
