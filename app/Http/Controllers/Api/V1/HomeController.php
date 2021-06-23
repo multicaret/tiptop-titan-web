@@ -163,11 +163,16 @@ class HomeController extends BaseApiController
                 // It's too late no branch is open for now, so sorry
                 // No Branch
                 // No Cart
-                $time = '';
+                $time = trans('api.the_morning_tomorrow');
                 $allBranches = Branch::getBranchesOrderByDistance($latitude, $longitude);
                 if ($allBranches->count()) {
-                    $workingHoursOfFirstMarketBranch = WorkingHour::retrieve($allBranches->first(), now()->addDay());
-                    $time = $workingHoursOfFirstMarketBranch['opensAt'];
+                    $workingHoursOfFirstMarketBranch = WorkingHour::where('workable_id', $allBranches->first()->id)
+                                                                  ->where('workable_type', Branch::class)
+                                                                  ->where('day', now()->addDay()->format('N'))
+                                                                  ->first();
+                    if ( ! is_null($workingHoursOfFirstMarketBranch)) {
+                        $time = $workingHoursOfFirstMarketBranch->closes_at;
+                    }
                 }
 
                 $noAvailabilityMessage = trans('api.No Branch is available now, please check back again at :time', [

@@ -16,4 +16,5 @@ return [
     'has_good_packaging_quality_rating' => 'Has good packaging quality rating',
     'has_good_order_accuracy_rating' => 'Has good order accuracy rating',
     'No Branch is available now, please check back again at :time' => 'No Branch is available now, please check back again at :time',
+    'the_morning_tomorrow' => 'the morning tomorrow',
 ];
