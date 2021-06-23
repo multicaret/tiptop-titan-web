@@ -258,25 +258,35 @@ class Branch extends Model implements HasMedia
                 $longitude,
                 $latitude
             ) {
-                $distance = $branch = null;
-                $branchesOrderedByDistance = Branch::active()
-                                                   ->groceries()
-                                                   ->selectRaw('branches.id, DISTANCE_BETWEEN(latitude,longitude,?,?) as distance',
-                                                       [$latitude, $longitude])
-                                                   ->orderBy('distance')
-                                                   ->get();
+                $distance = $branch = $branchTodayWorkingHours = null;
+                $branchesOrderedByDistance = self::getBranchesOrderByDistance($latitude, $longitude);
 
                 foreach ($branchesOrderedByDistance as $branchOrderedByDistance) {
-                    $branch = Branch::find($branchOrderedByDistance->id);
-                    $branchWorkingHours = WorkingHour::retrieve($branch);
-                    if ($branchWorkingHours['isOpen']) {
+                    $branch = $branchOrderedByDistance;
+                    $branchTodayWorkingHours = WorkingHour::retrieve($branch);
+                    if ($branchTodayWorkingHours['isOpen']) {
                         $distance = $branchOrderedByDistance->distance;
                         break;
                     }
                 }
 
-                return [$distance, $branch];
+                return [$distance, $branch, $branchTodayWorkingHours];
             });
+    }
+
+    /**
+     * @param $latitude
+     * @param $longitude
+     * @return Builder[]|Collection|\Illuminate\Support\Collection
+     */
+    public static function getBranchesOrderByDistance($latitude, $longitude)
+    {
+        return Branch::active()
+                     ->groceries()
+                     ->selectRaw('branches.id, DISTANCE_BETWEEN(latitude,longitude,?,?) as distance',
+                         [$latitude, $longitude])
+                     ->orderBy('distance')
+                     ->get();
     }
 
     public function chain(): BelongsTo
@@ -519,7 +529,7 @@ class Branch extends Model implements HasMedia
             }
         }
 
-        return [$deliveryFee,$distance];
+        return [$deliveryFee, $distance];
     }
 
     public function calculateJetDeliveryFee(

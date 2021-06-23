@@ -119,7 +119,7 @@ class WorkingHour extends Model
                 $today_closes_at = Carbon::createFromFormat('H:i:s', $todayWorkingHours->closes_at);
 
                 if ($today_opens_at->gt($today_closes_at)) {
-                    $today_closes_at->addDays(1);
+                    $today_closes_at->addDays();
                 }
 
                 $timeSlot = WorkingHour::where('day', $dayNumber)

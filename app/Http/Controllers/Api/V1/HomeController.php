@@ -140,8 +140,8 @@ class HomeController extends BaseApiController
                                      return GroceryCategoryParentResource::collection($groceryParentCategories);
                                  });
 
-            [$distance, $branch] = Branch::getClosestAvailableBranch($latitude, $longitude);
-            if ( ! is_null($branch)) {
+            [$distance, $branch, $branchTodayWorkingHours] = Branch::getClosestAvailableBranch($latitude, $longitude);
+            if ( ! is_null($branch) || ( ! is_null($branchTodayWorkingHours) && ! $branchTodayWorkingHours['isOpen'])) {
                 if ( ! is_null($user)) {
                     $cart = Cart::retrieve($branch->chain_id, $branch->id, $user->id);
                     $activeOrders = Order::groceries()
