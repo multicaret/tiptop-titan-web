@@ -250,7 +250,7 @@ class Order extends Model
 
     public function address(): BelongsTo
     {
-        return $this->belongsTo(Location::class);
+        return $this->belongsTo(Location::class)->withTrashed();
     }
 
     public function coupon(): BelongsTo
