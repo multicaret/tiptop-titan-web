@@ -22,6 +22,7 @@ use App\Models\RemoteConfig;
 use App\Models\Slide;
 use App\Models\Taxonomy;
 use App\Models\User;
+use App\Models\WorkingHour;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\AnonymousResourceCollection;
@@ -141,7 +142,9 @@ class HomeController extends BaseApiController
                                  });
 
             [$distance, $branch, $branchTodayWorkingHours] = Branch::getClosestAvailableBranch($latitude, $longitude);
-            if ( ! is_null($branch) || ( ! is_null($branchTodayWorkingHours) && ! $branchTodayWorkingHours['isOpen'])) {
+            if ( ! is_null($branch) &&
+                ( ! is_null($branchTodayWorkingHours) && ! $branchTodayWorkingHours['isOpen'])
+            ) {
                 if ( ! is_null($user)) {
                     $cart = Cart::retrieve($branch->chain_id, $branch->id, $user->id);
                     $activeOrders = Order::groceries()
@@ -160,7 +163,16 @@ class HomeController extends BaseApiController
                 // It's too late no branch is open for now, so sorry
                 // No Branch
                 // No Cart
-                $noAvailabilityMessage = 'No Branch is not available, please check back again at 08:00 am';
+                $time = '';
+                $allBranches = Branch::getBranchesOrderByDistance($latitude, $longitude);
+                if ($allBranches->count()) {
+                    $workingHoursOfFirstMarketBranch = WorkingHour::retrieve($allBranches->first(), now()->addDay());
+                    $time = $workingHoursOfFirstMarketBranch['opensAt'];
+                }
+
+                $noAvailabilityMessage = trans('api.No Branch is available now, please check back again at :time', [
+                    'time' => $time,
+                ]);
             }
 
             // Always in grocery the EA is 20-30, for dynamic values use "->distance" attribute from above.
