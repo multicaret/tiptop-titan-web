@@ -17,7 +17,7 @@ class ZohoAnalyticsController extends Controller
             $dateCondition = "AND DATE(o.created_at) = DATE('".$request->date."')";
         }
 
-        info('zoho analytics syncing request',[$request->all()]);
+        info('zoho analytics syncing request',[\Request::header()]);
         $data = DB::select("
           SELECT  DATE(o.created_at) AS 'order creation date',
              TIME_FORMAT(o.created_at, '%H:%i') AS 'order creation time',
