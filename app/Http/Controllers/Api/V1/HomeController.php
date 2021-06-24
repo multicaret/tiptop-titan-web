@@ -176,7 +176,7 @@ class HomeController extends BaseApiController
                     }
                 }
 
-                $noAvailabilityMessage = trans('api.No Branch is available now, please check back again at :time', [
+                $noAvailabilityMessage = trans('api.No Branch is available in your area now! please check again at :time', [
                     'time' => $time,
                 ]);
             }
