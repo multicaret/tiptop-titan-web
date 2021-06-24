@@ -42,7 +42,10 @@ class JetOrderObserver
     public function created(JetOrder $order)
     {
         $order->recordActivity('created');
-        if (!Str::contains($order->client_notes, ['test', 'Test']))
+
+        $tookan_status = config('services.tookan.status');
+
+        if (!Str::contains($order->client_notes, ['test', 'Test']) && $order->has_jet_delivery && empty($order->tookanInfo) && $tookan_status)
         {
             CreateJetTask::dispatchSync($order);
         }
