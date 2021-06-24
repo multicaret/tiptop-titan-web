@@ -4,6 +4,7 @@ namespace App\Observers;
 
 use App\Integrations\TookanClient;
 use App\Jobs\Tookan\CancelTask;
+use App\Jobs\Tookan\CreateJetTask;
 use App\Jobs\Tookan\CreateTask;
 use App\Jobs\Zoho\ApplyPaymentCreditJob;
 use App\Jobs\Zoho\CreateInvoiceJob;
@@ -41,9 +42,12 @@ class JetOrderObserver
     public function created(JetOrder $order)
     {
         $order->recordActivity('created');
-        if (!Str::contains($order->client_notes, ['test', 'Test']))
+
+        $tookan_status = config('services.tookan.status');
+
+        if (!Str::contains($order->client_notes, ['test', 'Test']) && $order->has_jet_delivery && empty($order->tookanInfo) && $tookan_status)
         {
-          //  UpdateDailyReportJob::dispatch()->delay(now()->addMinutes(2));
+            CreateJetTask::dispatchSync($order);
         }
     }
 
