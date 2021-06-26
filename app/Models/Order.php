@@ -73,6 +73,8 @@ use Illuminate\Support\Carbon;
  * @property Carbon|null $created_at
  * @property Carbon|null $updated_at
  * @property Carbon|null $deleted_at
+ * @property string|null $zoho_books_invoice_id
+ * @property string|null $zoho_books_payment_id
  * @property-read Collection|\App\Models\Activity[] $activity
  * @property-read int|null $activity_count
  * @property-read \App\Models\Location $address
@@ -155,6 +157,8 @@ use Illuminate\Support\Carbon;
  * @method static \Illuminate\Database\Eloquent\Builder|Order whereType($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Order whereUpdatedAt($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Order whereUserId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Order whereZohoBooksInvoiceId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Order whereZohoBooksPaymentId($value)
  * @method static Builder|Order withTrashed()
  * @method static Builder|Order withoutTrashed()
  * @mixin Eloquent

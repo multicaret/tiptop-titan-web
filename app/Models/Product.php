@@ -66,6 +66,7 @@ use Spatie\MediaLibrary\MediaCollections\Models\Media;
  * @property Carbon|null $created_at
  * @property Carbon|null $updated_at
  * @property Carbon|null $deleted_at
+ * @property string|null $zoho_books_id
  * @property-read Collection|\App\Models\Barcode[] $barcodes
  * @property-read int|null $barcodes_count
  * @property-read \App\Models\Branch|null $branch
@@ -163,6 +164,7 @@ use Spatie\MediaLibrary\MediaCollections\Models\Media;
  * @method static Builder|Product whereViewCount($value)
  * @method static Builder|Product whereWeight($value)
  * @method static Builder|Product whereWidth($value)
+ * @method static Builder|Product whereZohoBooksId($value)
  * @method static Builder|Product withTranslation()
  * @method static \Illuminate\Database\Query\Builder|Product withTrashed()
  * @method static \Illuminate\Database\Query\Builder|Product withoutTrashed()

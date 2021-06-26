@@ -89,6 +89,7 @@ use Spatie\Permission\Traits\HasRoles;
  * @property Carbon|null $created_at
  * @property Carbon|null $updated_at
  * @property Carbon|null $deleted_at
+ * @property string|null $zoho_crm_id
  * @property-read Collection|\App\Models\Location[] $addresses
  * @property-read int|null $addresses_count
  * @property-read \App\Models\Branch|null $branch
@@ -206,6 +207,7 @@ use Spatie\Permission\Traits\HasRoles;
  * @method static Builder|User whereViewCount($value)
  * @method static Builder|User whereWalletFreeTotal($value)
  * @method static Builder|User whereWalletReservedTotal($value)
+ * @method static Builder|User whereZohoCrmId($value)
  * @method static \Illuminate\Database\Query\Builder|User withTrashed()
  * @method static \Illuminate\Database\Query\Builder|User withoutTrashed()
  * @mixin Eloquent
