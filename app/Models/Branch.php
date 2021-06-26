@@ -472,14 +472,14 @@ class Branch extends Model implements HasMedia
             $underMinimumOrderDeliveryFee = $this->restaurant_under_minimum_order_delivery_fee;
             $freeDeliveryThreshold = $this->restaurant_free_delivery_threshold;
             $extraDeliveryFeePerKm = $this->restaurant_extra_delivery_fee_per_km;
-            $fixedDeliveryDistanceKeyName = 'tiptop_fixed_delivery_distance';
+            $fixedDeliveryDistanceKeyName = 'restaurant_fixed_delivery_distance';
         } else {
             $minimumOrder = $this->minimum_order;
             $fixedDeliveryFee = $this->fixed_delivery_fee;
             $underMinimumOrderDeliveryFee = $this->under_minimum_order_delivery_fee;
             $freeDeliveryThreshold = $this->free_delivery_threshold;
             $extraDeliveryFeePerKm = $this->extra_delivery_fee_per_km;
-            $fixedDeliveryDistanceKeyName = 'restaurant_fixed_delivery_distance';
+            $fixedDeliveryDistanceKeyName = 'tiptop_fixed_delivery_distance';
         }
 
         if ( ! is_null($freeDeliveryThreshold) &&
@@ -519,11 +519,11 @@ class Branch extends Model implements HasMedia
         if ( ! $isTipTopDelivery) {
             $fixedDeliveryFee = $this->restaurant_fixed_delivery_fee;
             $extraDeliveryFeePerKm = $this->restaurant_extra_delivery_fee_per_km;
-            $fixedDeliveryDistanceKeyName = 'tiptop_fixed_delivery_distance';
+            $fixedDeliveryDistanceKeyName = 'restaurant_fixed_delivery_distance';
         } else {
             $fixedDeliveryFee = $this->fixed_delivery_fee;
             $extraDeliveryFeePerKm = $this->extra_delivery_fee_per_km;
-            $fixedDeliveryDistanceKeyName = 'restaurant_fixed_delivery_distance';
+            $fixedDeliveryDistanceKeyName = 'tiptop_fixed_delivery_distance';
         }
 
         $deliveryFee = $fixedDeliveryFee;
