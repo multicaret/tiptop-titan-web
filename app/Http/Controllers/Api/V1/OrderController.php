@@ -244,7 +244,6 @@ class OrderController extends BaseApiController
 
 
         $hasFreeDeliveryCoupon = false;
-        $cartTotalAfterDeductCouponDiscount = $activeCart->total;
         $totalDiscountedAmount = 0;
         if ( ! is_null($couponRedeemCode = $request->input('coupon_redeem_code'))) {
             $coupon = Coupon::where('redeem_code', $couponRedeemCode)->first();
@@ -262,7 +261,6 @@ class OrderController extends BaseApiController
             $hasFreeDeliveryCoupon = $coupon->has_free_delivery;
 
             if ($isExpirationDateAndUsageValid && $isAmountValid) {
-                $cartTotalAfterDeductCouponDiscount -= $totalDiscountedAmount;
                 $newOrder->coupon_id = $coupon->id;
 
                 CouponUsage::storeCouponUsage($totalDiscountedAmount, $coupon, $activeCart->id, $user->id,
