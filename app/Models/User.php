@@ -3,7 +3,6 @@
 namespace App\Models;
 
 use App\Http\Controllers\Controller;
-use App\Mail\Welcome;
 use App\Notifications\ResetPassword;
 use App\Traits\HasAppTypes;
 use App\Traits\HasGender;
@@ -26,7 +25,6 @@ use Illuminate\Notifications\DatabaseNotification;
 use Illuminate\Notifications\DatabaseNotificationCollection;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Support\Carbon;
-use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Str;
 use Laravel\Sanctum\HasApiTokens;
 use Laravel\Sanctum\NewAccessToken;
@@ -765,4 +763,18 @@ class User extends Authenticatable implements HasMedia, MustVerifyEmail
         return Cart::getCurrentlyActiveCart($this->id, $branchId);
     }
 
+    public function getDeliveredOrdersValue()
+    {
+        $value = $this->orders()->where('status', Order::STATUS_DELIVERED)->sum('grand_total');
+
+        return Currency::formatHtml($value);
+    }
+
+    public function getNumberOfUserCouponsAndItsValue(): array
+    {
+        $usedCoupons = $this->couponUsages();
+        $value = Currency::formatHtml($this->couponUsages()->sum('discounted_amount'));
+
+        return [$usedCoupons->count(), $value];
+    }
 }
