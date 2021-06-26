@@ -71,6 +71,15 @@ use Spatie\MediaLibrary\MediaCollections\Models\Collections\MediaCollection;
  * @property Carbon|null $created_at
  * @property Carbon|null $updated_at
  * @property string|null $deleted_at
+ * @property string|null $zoho_books_id
+ * @property string|null $zoho_books_account_id
+ * @property string|null $zoho_books_tiptop_delivery_item_id
+ * @property string|null $zoho_books_delivery_item_id
+ * @property bool $has_jet_delivery
+ * @property float $jet_minimum_order
+ * @property float $jet_fixed_delivery_fee
+ * @property float $jet_delivery_commission_rate
+ * @property float $jet_extra_delivery_fee_per_km
  * @property-read Collection|\App\Models\Location[] $addresses
  * @property-read int|null $addresses_count
  * @property-read \App\Models\Chain $chain
@@ -154,10 +163,15 @@ use Spatie\MediaLibrary\MediaCollections\Models\Collections\MediaCollection;
  * @method static Builder|Branch whereFixedDeliveryFee($value)
  * @method static Builder|Branch whereFreeDeliveryThreshold($value)
  * @method static Builder|Branch whereFullAddress($value)
+ * @method static Builder|Branch whereHasJetDelivery($value)
  * @method static Builder|Branch whereHasRestaurantDelivery($value)
  * @method static Builder|Branch whereHasTipTopDelivery($value)
  * @method static Builder|Branch whereId($value)
  * @method static Builder|Branch whereIsOpenNow($value)
+ * @method static Builder|Branch whereJetDeliveryCommissionRate($value)
+ * @method static Builder|Branch whereJetExtraDeliveryFeePerKm($value)
+ * @method static Builder|Branch whereJetFixedDeliveryFee($value)
+ * @method static Builder|Branch whereJetMinimumOrder($value)
  * @method static Builder|Branch whereLatitude($value)
  * @method static Builder|Branch whereLongitude($value)
  * @method static Builder|Branch whereManagementCommissionRate($value)
@@ -186,6 +200,10 @@ use Spatie\MediaLibrary\MediaCollections\Models\Collections\MediaCollection;
  * @method static Builder|Branch whereUuid($value)
  * @method static Builder|Branch whereViewCount($value)
  * @method static Builder|Branch whereWhatsappPhoneNumber($value)
+ * @method static Builder|Branch whereZohoBooksAccountId($value)
+ * @method static Builder|Branch whereZohoBooksDeliveryItemId($value)
+ * @method static Builder|Branch whereZohoBooksId($value)
+ * @method static Builder|Branch whereZohoBooksTiptopDeliveryItemId($value)
  * @method static Builder|Branch withTranslation()
  * @mixin Eloquent
  * @noinspection PhpFullyQualifiedNameUsageInspection
@@ -498,7 +516,6 @@ class Branch extends Model implements HasMedia
 
     public function calculatePlainDeliveryFeeForAnAddress($address, $isTipTopDelivery = true): array
     {
-
         if ( ! $isTipTopDelivery) {
             $fixedDeliveryFee = $this->restaurant_fixed_delivery_fee;
             $extraDeliveryFeePerKm = $this->restaurant_extra_delivery_fee_per_km;
