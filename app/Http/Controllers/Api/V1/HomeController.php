@@ -196,15 +196,15 @@ class HomeController extends BaseApiController
                 $foodBranches = Branch::active()
                                       ->foods()
                                       ->latest('published_at')
-                                      ->paginate(10);
-                $foodBranchesCollection = new BranchCollection($foodBranches);
+                                      ->take(10)
+                                      ->get();
             } else {
                 $foodBranches = Branch::active()
                                       ->foods()
                                       ->latest('published_at')
                                       ->get();
-                $foodBranchesCollection = BranchResource::collection($foodBranches);
             }
+            $foodBranchesCollection = BranchResource::collection($foodBranches);
 
             if ( ! is_null($user)) {
                 $cart = Cart::retrieve(
