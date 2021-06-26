@@ -6,6 +6,7 @@ use App\Http\Controllers\Api\BaseApiController;
 use App\Http\Resources\OrderRestaurantResource;
 use App\Models\Branch;
 use App\Models\Order;
+use Carbon\Carbon;
 use DB;
 use Illuminate\Http\Request;
 
@@ -35,9 +36,18 @@ class OrderController extends BaseApiController
         }
 
         $orders = Order::whereBranchId($restaurant->id)
-                       ->whereIn('status', $statuses)
-                       ->latest()
-                       ->paginate(25);
+                       ->whereIn('status', $statuses);
+
+        $hasDeliveredOrCancelledStatus = in_array(Order::STATUS_DELIVERED, $statuses) ||
+            in_array(Order::STATUS_CANCELLED, $statuses);
+        if ($hasDeliveredOrCancelledStatus) {
+            $orders = $orders->where(function ($query) {
+                $query->where('created_at', Carbon::today())
+                      ->where('created_at', Carbon::yesterday(), 'or');
+            });
+        }
+        $orders = $orders->latest()
+                         ->get();
 
         return $this->respond([
             'orders' => OrderRestaurantResource::collection($orders),
