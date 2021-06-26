@@ -170,7 +170,7 @@ class OrderController extends BaseApiController
     }
 
 
-    public function store(Request $request): JsonResponse
+    public function store(Request $request)
     {
         $validationRules = [
             'chain_id' => 'required',
@@ -181,6 +181,8 @@ class OrderController extends BaseApiController
         ];
 
         $user = auth()->user();
+        $mobileAppDetails = json_decode($user->currentAccessToken()->mobile_app_details, true);
+
         $activeCart = Cart::with('branch')
                           ->whereId($request->input('cart_id'))
                           ->first();
@@ -217,6 +219,8 @@ class OrderController extends BaseApiController
         $newOrder->payment_method_id = $request->input('payment_method_id');
         $newOrder->address_id = $address->id;
         $newOrder->city_id = $address->city_id;
+        $newOrder->agent_device = $mobileAppDetails['device']['manufacturer'] ?: null;
+        $newOrder->agent_os = $mobileAppDetails['device']['model'] ?: null;
         $newOrder->customer_notes = $request->input('notes');
         $newOrder->type = $branch->type;
         $newOrder->save();

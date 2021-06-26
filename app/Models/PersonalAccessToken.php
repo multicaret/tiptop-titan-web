@@ -54,4 +54,8 @@ class PersonalAccessToken extends PersonalAccessTokenAlias
         'mobile_app_details',
     ];
 
+    protected $casts = [
+      'mobile_app_details' => 'object'
+    ];
+
 }
