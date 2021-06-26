@@ -448,7 +448,6 @@ class Branch extends Model implements HasMedia
         if ($hasCouponWithFreeDelivery) {
             return 0;
         }
-
         if ( ! $isTipTopDelivery) {
             $minimumOrder = $this->restaurant_minimum_order;
             $fixedDeliveryFee = $this->restaurant_fixed_delivery_fee;
@@ -465,7 +464,9 @@ class Branch extends Model implements HasMedia
             $fixedDeliveryDistanceKeyName = 'restaurant_fixed_delivery_distance';
         }
 
-        if ($totalAmount >= $freeDeliveryThreshold) {
+        if ( ! is_null($freeDeliveryThreshold) &&
+            $freeDeliveryThreshold != 0 &&
+            $totalAmount >= $freeDeliveryThreshold) {
             return 0;
         }
 
@@ -474,17 +475,16 @@ class Branch extends Model implements HasMedia
         // Calculating Delivery Fee Based on Distance
         if (
             ! is_null($addressId) &&
-            ! is_null($address = Location::active()->where('id', $addressId)->first()) &&
+            ! is_null($address = Location::where('id', $addressId)->first()) &&
             ! is_null($address->latitude) &&
             ! is_null($address->longitude)
         ) {
             $distance = Controller::distanceBetween($this->latitude, $this->longitude, $address->latitude,
                 $address->longitude);
             $distanceOfFixedDeliveryFeeForKMs = Preference::retrieveValue($fixedDeliveryDistanceKeyName);
-            dd($distanceOfFixedDeliveryFeeForKMs);
             if ($distance != 0 && $distanceOfFixedDeliveryFeeForKMs && $distance > $distanceOfFixedDeliveryFeeForKMs) {
                 $differenceInDistance = $distance - $distanceOfFixedDeliveryFeeForKMs;
-                $deliveryFee += $extraDeliveryFeePerKm * $differenceInDistance;
+                $deliveryFee = round($deliveryFee + ($extraDeliveryFeePerKm * $differenceInDistance));
             }
         }
 
@@ -522,7 +522,7 @@ class Branch extends Model implements HasMedia
             $distanceOfFixedDeliveryFeeForKMs = Preference::retrieveValue($fixedDeliveryDistanceKeyName);
             if ($distance != 0 && $distanceOfFixedDeliveryFeeForKMs && $distance > $distanceOfFixedDeliveryFeeForKMs) {
                 $differenceInDistance = $distance - $distanceOfFixedDeliveryFeeForKMs;
-                $deliveryFee += $extraDeliveryFeePerKm * $differenceInDistance;
+                $deliveryFee = round($deliveryFee + ($extraDeliveryFeePerKm * $differenceInDistance));
             }
         }
 
