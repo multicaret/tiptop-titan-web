@@ -559,32 +559,4 @@ class Order extends Model
     {
         return $this->morphOne(TookanInfo::class, 'tookanable');
     }
-
-    public static function validateAndGetDeliveryFee(Branch $branch, $userCart, $isDeliveryByTiptop, $distance)
-    {
-        $deliveryType = 'tiptop';
-        if (
-            $branch->type == Branch::CHANNEL_FOOD_OBJECT &&
-            ! $isDeliveryByTiptop &&
-            $branch->has_restaurant_delivery
-        ) {
-            $deliveryType = 'restaurant';
-        }
-
-        if ($deliveryType == 'tiptop') {
-            $minimumOrder = $branch->minimum_order;
-            $underMinimumOrderDeliveryFee = $branch->under_minimum_order_delivery_fee;
-            $fixedDeliveryFee = $branch->fixed_delivery_fee;
-            $freeDeliveryThreshold = $branch->free_delivery_threshold;
-            $extraDeliveryFeePerKm = $branch->extra_delivery_fee_per_km;
-        } else {
-            $minimumOrder = $branch->restaurant_minimum_order;
-            $underMinimumOrderDeliveryFee = $branch->restaurant_under_minimum_order_delivery_fee;
-            $fixedDeliveryFee = $branch->restaurant_fixed_delivery_fee;
-            $freeDeliveryThreshold = $branch->restaurant_free_delivery_threshold;
-            $extraDeliveryFeePerKm = $branch->restaurant_extra_delivery_fee_per_km;
-        }
-
-        // coupon
-    }
 }
