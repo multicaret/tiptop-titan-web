@@ -517,16 +517,14 @@ class Branch extends Model implements HasMedia
     public function calculatePlainDeliveryFeeForAnAddress($address, $isTipTopDelivery = true): array
     {
         if ( ! $isTipTopDelivery) {
-            $fixedDeliveryFee = $this->restaurant_fixed_delivery_fee;
             $extraDeliveryFeePerKm = $this->restaurant_extra_delivery_fee_per_km;
             $fixedDeliveryDistanceKeyName = 'restaurant_fixed_delivery_distance';
         } else {
-            $fixedDeliveryFee = $this->fixed_delivery_fee;
             $extraDeliveryFeePerKm = $this->extra_delivery_fee_per_km;
             $fixedDeliveryDistanceKeyName = 'tiptop_fixed_delivery_distance';
         }
 
-        $deliveryFee = $fixedDeliveryFee;
+        $deliveryFee = $distance = 0;
 
         // Calculating Delivery Fee Based on Distance
         if (
@@ -539,7 +537,7 @@ class Branch extends Model implements HasMedia
             $distanceOfFixedDeliveryFeeForKMs = Preference::retrieveValue($fixedDeliveryDistanceKeyName);
             if ($distance != 0 && $distanceOfFixedDeliveryFeeForKMs && $distance > $distanceOfFixedDeliveryFeeForKMs) {
                 $differenceInDistance = $distance - $distanceOfFixedDeliveryFeeForKMs;
-                $deliveryFee = round($deliveryFee + ($extraDeliveryFeePerKm * $differenceInDistance));
+                $deliveryFee = round($extraDeliveryFeePerKm * $differenceInDistance);
             }
         }
 
