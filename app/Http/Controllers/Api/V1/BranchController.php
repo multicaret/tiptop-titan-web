@@ -87,7 +87,23 @@ class BranchController extends BaseApiController
         }
 
         if ($request->has('autoscroll_for_food_branches')) {
-            $branches = $branches->paginate(20);
+            // Get Lat & Lng
+            $latitude = $request->input('latitude', config('defaults.geolocation.latitude'));
+            $longitude = $request->input('latitude', config('defaults.geolocation.longitude'));
+            if ($user = auth('sanctum')->user()) {
+                $latitude = $user->latitude;
+                $longitude = $user->longitude;
+                if ($user->selected_address_id && ! is_null($address = Location::find($user->selected_address_id))) {
+                    $latitude = $address->latitude;
+                    $longitude = $address->longitude;
+                }
+            }
+
+            $branches = $branches->selectRaw('branches.*, DISTANCE_BETWEEN(latitude,longitude,?,?) as distance',
+                [$latitude, $longitude])
+                                 ->having('distance', '<',
+                                     config('defaults.geolocation.max_distance_for_food_branches_to_order_from_in_erbil'))
+                                 ->paginate(20);
             $branchesCollection = new FoodBranchCollection($branches);
         } else {
             $branches = $branches->get();
