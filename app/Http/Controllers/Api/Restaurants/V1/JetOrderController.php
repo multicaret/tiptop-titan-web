@@ -149,11 +149,11 @@ class JetOrderController extends BaseApiController
         $newOrder->destination_latitude = $request->input('latitude');
         $newOrder->destination_longitude = $request->input('longitude');
         $newOrder->client_notes = $request->input('notes');
-        $newOrder->save();
 
 
         $newOrder->delivery_fee = $deliveryFee;
         $newOrder->status = JetOrder::STATUS_ASSIGNING_COURIER;
+
 
 
         if ($request->has('images'))

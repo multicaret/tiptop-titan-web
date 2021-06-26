@@ -248,7 +248,6 @@ class OrderController extends BaseApiController
 
 
         $hasFreeDeliveryCoupon = false;
-        $cartTotalAfterDeductCouponDiscount = $activeCart->total;
         $totalDiscountedAmount = 0;
         if ( ! is_null($couponRedeemCode = $request->input('coupon_redeem_code'))) {
             $coupon = Coupon::where('redeem_code', $couponRedeemCode)->first();
@@ -266,7 +265,6 @@ class OrderController extends BaseApiController
             $hasFreeDeliveryCoupon = $coupon->has_free_delivery;
 
             if ($isExpirationDateAndUsageValid && $isAmountValid) {
-                $cartTotalAfterDeductCouponDiscount -= $totalDiscountedAmount;
                 $newOrder->coupon_id = $coupon->id;
 
                 CouponUsage::storeCouponUsage($totalDiscountedAmount, $coupon, $activeCart->id, $user->id,
@@ -288,7 +286,6 @@ class OrderController extends BaseApiController
         $newOrder->save();
 
         $user->increment('total_number_of_orders');
-        $user->save();
 
         DB::commit();
 
@@ -342,7 +339,7 @@ class OrderController extends BaseApiController
         $order->driver_rating_value = $driverRatingValue;
 //      Todo: Remember to increase Driver avg rating
         $driver->avg_rating = $driver->average_rating;
-        $driver->increment('rating_count');
+        $driver->rating_count = $driver->rating_count++;
         $driver->save();
 
         $order->driver_rating_comment = $request->input('comment');
@@ -354,8 +351,6 @@ class OrderController extends BaseApiController
 
 //        todo: calculate driver's average rating properly
 //        $driver->avg_rating = $driver->average_rating;
-        $driver->increment('rating_count');
-        $driver->save();
         DB::commit();
 
         return $this->respondWithMessage(trans('strings.successfully_done'));
@@ -392,7 +387,7 @@ class OrderController extends BaseApiController
         auth()->user()->rate($branch, $branchRatingValue);
 
         $branch->avg_rating = $branch->average_rating;
-        $branch->increment('rating_count');
+        $branch->rating_count = $branch->rating_count++;
         $branch->save();
         DB::commit();
 

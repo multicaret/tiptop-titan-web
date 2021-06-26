@@ -21,7 +21,12 @@ class GroceryCategoryParentWithChildrenResource extends JsonResource
         $children = cache()
             ->tags('taxonomies', 'api-home')
             ->rememberForever('children_categories_of_parent_'.$this->id, function () {
-                return GroceryCategoryChildResource::collection($this->children);
+                $children = $this
+                    ->children()
+                    ->orderBy('order_column')
+                    ->get();
+
+                return GroceryCategoryChildResource::collection($children);
             });
 
 

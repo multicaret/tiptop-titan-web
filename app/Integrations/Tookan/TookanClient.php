@@ -4,6 +4,7 @@ namespace App\Integrations\Tookan;
 
 use App\Models\CartProduct;
 use App\Models\Chain;
+use App\Models\JetOrder;
 use App\Models\Order;
 use App\Models\Product;
 use App\Models\TookanTeam;
@@ -130,6 +131,80 @@ class TookanClient
 //                    'label' => 'customer_phone_number',
 //                    'data' =>  $this->order->customer->phone_number
 //                ],
+            ],
+
+        ];
+    }
+
+    public function createJetTask(JetOrder $order)
+    {
+        $taskData = $this->prepareJetTaskData($order);
+
+        return $this->apiRequest('POST', 'create_task', $taskData);
+    }
+
+    public function prepareJetTaskData(JetOrder $order)
+    {
+        $jet_team = TookanTeam::where('name', 'like', '%Jet%')->first();
+
+        return [
+            'order_id' => $order->reference_code,
+            'timezone' => '-180',
+            'team_id' =>  $jet_team->tookan_team_id,
+            'auto_assignment' => 1,
+            'job_pickup_phone' => $order->branch->primary_phone_number,
+            'job_pickup_name' => $order->branch->contacts->first()->name.' '.$order->branch->title,
+            //      'job_pickup_email'        => $order->branch->contact_email,
+            'job_pickup_address' => empty($order->branch->full_address) ? 'Not specified' : $order->branch->full_address,
+            'job_pickup_latitude' => $order->branch->latitude,
+            'job_pickup_longitude' => $order->branch->longitude,
+            'job_pickup_datetime' => now()->addMinutes(15)->toDateTimeString(),
+            'customer_username' => $order->destination_full_name,
+            'customer_phone' => $order->destination_phone,
+            'customer_address' => empty($order->destination_address) ? 'Not specified' : $order->destination_address,
+            'latitude' => $order->destination_latitude,
+            'longitude' => $order->destination_longitude,
+            'job_delivery_datetime' => now()->addMinutes(40)->toDateTimeString(),
+            'has_pickup' => 1,
+            'has_delivery' => 1,
+            'layout_type' => 0,
+            'tracking_link' => 1,
+            'notify' => 1,
+            'pickup_custom_field_template' => 'jet_template',
+            'custom_field_template' => 'jet_template',
+            'pickup_meta_data' => [
+                [
+                    'label' => 'price',
+                    'data' => (string) $order->grand_total
+                ],
+                [
+                    'label' => 'notes',
+                    'data' => $order->client_notes
+                ],
+
+                [
+                    'label' => 'order_number',
+                    'data' => $order->reference_code
+                ],
+            ],
+            'meta_data' => [
+                [
+                    'label' => 'price',
+                    'data' => (string) $order->grand_total
+                ],
+                [
+                    'label' => 'notes',
+                    'data' => $order->client_notes
+                ],
+                [
+                    'label' => 'order_number',
+                    'data' => $order->reference_code
+                ],
+                [
+                    'label' => 'destination_phone',
+                    'data' => $order->destination_phone
+                ],
+
             ],
 
         ];

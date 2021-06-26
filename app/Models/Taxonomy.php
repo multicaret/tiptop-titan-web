@@ -12,6 +12,8 @@ use Astrotomic\Translatable\Contracts\Translatable as TranslatableContract;
 use Astrotomic\Translatable\Translatable;
 use Baum\Node;
 use Eloquent;
+use Illuminate\Contracts\Foundation\Application;
+use Illuminate\Contracts\Routing\UrlGenerator;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
@@ -45,7 +47,6 @@ use Spatie\MediaLibrary\MediaCollections\Models\Media;
  * @property int|null $depth
  * @property string|null $step
  * @property int|null $order_column
- * @property int|null $cloned_from_taxonomy_id
  * @property int $status 1:draft, 2:active, 3:Inactive, 4..n:CUSTOM
  * @property Carbon|null $created_at
  * @property Carbon|null $updated_at
@@ -125,7 +126,6 @@ use Spatie\MediaLibrary\MediaCollections\Models\Media;
  * @method static Builder|Taxonomy unitCategories()
  * @method static Builder|Taxonomy whereBranchId($value)
  * @method static Builder|Taxonomy whereChainId($value)
- * @method static Builder|Taxonomy whereClonedFromTaxonomyId($value)
  * @method static Builder|Taxonomy whereCreatedAt($value)
  * @method static Builder|Taxonomy whereCreatorId($value)
  * @method static Builder|Taxonomy whereDeletedAt($value)
@@ -643,7 +643,7 @@ class Taxonomy extends Node implements HasMedia, ShouldHaveTypes, TranslatableCo
     }
 
     /**
-     * @return \Illuminate\Contracts\Foundation\Application|\Illuminate\Contracts\Routing\UrlGenerator|string
+     * @return Application|UrlGenerator|string
      */
     private function getDefaultCoverImageBasedOnType()
     {

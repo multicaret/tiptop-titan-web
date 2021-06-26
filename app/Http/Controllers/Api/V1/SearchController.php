@@ -101,10 +101,10 @@ class SearchController extends BaseApiController
             $search->chain_id = $chainId;
             $search->branch_id = $branchId;
             $search->term = $searchQuery;
+            $search->save();
         } else {
             $search->increment('count');
         }
-        $search->save();
 
         return $this->respond(ProductResource::collection($results));
     }
@@ -156,7 +156,6 @@ class SearchController extends BaseApiController
             $search->save();
         } else {
             $search->increment('count');
-            $search->save();
         }
 
         return $this->respond(FoodBranchResource::collection($results));

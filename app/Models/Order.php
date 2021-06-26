@@ -73,6 +73,8 @@ use Illuminate\Support\Carbon;
  * @property Carbon|null $created_at
  * @property Carbon|null $updated_at
  * @property Carbon|null $deleted_at
+ * @property string|null $zoho_books_invoice_id
+ * @property string|null $zoho_books_payment_id
  * @property-read Collection|\App\Models\Activity[] $activity
  * @property-read int|null $activity_count
  * @property-read \App\Models\Location $address
@@ -155,6 +157,8 @@ use Illuminate\Support\Carbon;
  * @method static \Illuminate\Database\Eloquent\Builder|Order whereType($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Order whereUpdatedAt($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Order whereUserId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Order whereZohoBooksInvoiceId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Order whereZohoBooksPaymentId($value)
  * @method static Builder|Order withTrashed()
  * @method static Builder|Order withoutTrashed()
  * @mixin Eloquent
@@ -554,33 +558,5 @@ class Order extends Model
     public function tookanInfo()
     {
         return $this->morphOne(TookanInfo::class, 'tookanable');
-    }
-
-    public static function validateAndGetDeliveryFee(Branch $branch, $userCart, $isDeliveryByTiptop, $distance)
-    {
-        $deliveryType = 'tiptop';
-        if (
-            $branch->type == Branch::CHANNEL_FOOD_OBJECT &&
-            ! $isDeliveryByTiptop &&
-            $branch->has_restaurant_delivery
-        ) {
-            $deliveryType = 'restaurant';
-        }
-
-        if ($deliveryType == 'tiptop') {
-            $minimumOrder = $branch->minimum_order;
-            $underMinimumOrderDeliveryFee = $branch->under_minimum_order_delivery_fee;
-            $fixedDeliveryFee = $branch->fixed_delivery_fee;
-            $freeDeliveryThreshold = $branch->free_delivery_threshold;
-            $extraDeliveryFeePerKm = $branch->extra_delivery_fee_per_km;
-        } else {
-            $minimumOrder = $branch->restaurant_minimum_order;
-            $underMinimumOrderDeliveryFee = $branch->restaurant_under_minimum_order_delivery_fee;
-            $fixedDeliveryFee = $branch->restaurant_fixed_delivery_fee;
-            $freeDeliveryThreshold = $branch->restaurant_free_delivery_threshold;
-            $extraDeliveryFeePerKm = $branch->restaurant_extra_delivery_fee_per_km;
-        }
-
-        // coupon
     }
 }

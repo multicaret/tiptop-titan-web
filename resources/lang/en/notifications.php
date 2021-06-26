@@ -12,7 +12,7 @@ return [
     'order_status_updated_for_user_user_20' => 'Your order :number has been delivered, feel free to rate us now!',
     'order_status_updated_for_user_user_0' => 'Your Order :number has been cancelled!',
 
-    'order_status_updated_for_user_branch_manager_2' => 'Tip Top: New order has been received',
+    'order_status_updated_for_user_branch_manager_2' => 'Tip Top: New order has been received :number',
     'order_status_updated_for_user_branch_manager_2_minutes_delay' => 'Tip Top: Order :number still pending!',
     'order_status_updated_for_user_branch_manager_0' => 'Tip Top: Order :number is cancelled!',
 

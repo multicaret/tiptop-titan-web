@@ -12,7 +12,7 @@ return [
     'order_status_updated_for_user_user_20' => 'تم توصیل طلبك رقم :number ، لا تنسى تقییم الطلب الان!',
     'order_status_updated_for_user_user_0' => 'نعتذر، تم الغاء طلبك رقم :number',
 
-    'order_status_updated_for_user_branch_manager_2' => 'تیب توب: لدیك طلب جدید!',
+    'order_status_updated_for_user_branch_manager_2' => ' :number تیب توب: لدیك طلب جدید!',
     'order_status_updated_for_user_branch_manager_2_minutes_delay' => 'تيب توب: الطلب رقم :number ما زال في الانتظار',
     'order_status_updated_for_user_branch_manager_0' => 'تیب توب: تم الغاء الطلب رقم :number',
 ];

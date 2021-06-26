@@ -41,7 +41,7 @@ class AddressController extends BaseApiController
 //        $latitude = $request->input('latitude');
 //        $longitude = $request->input('longitude');
 
-        $regions = Region::where('id', config('defaults.region.id'))->get();
+        $regions = Region::active()->where('id', config('defaults.region.id'))->get();
         $cities = City::active()->whereRegionId(config('defaults.region.id'))->get();
 
 

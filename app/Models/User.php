@@ -3,7 +3,6 @@
 namespace App\Models;
 
 use App\Http\Controllers\Controller;
-use App\Mail\Welcome;
 use App\Notifications\ResetPassword;
 use App\Traits\HasAppTypes;
 use App\Traits\HasGender;
@@ -26,7 +25,6 @@ use Illuminate\Notifications\DatabaseNotification;
 use Illuminate\Notifications\DatabaseNotificationCollection;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Support\Carbon;
-use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Str;
 use Laravel\Sanctum\HasApiTokens;
 use Laravel\Sanctum\NewAccessToken;
@@ -91,6 +89,7 @@ use Spatie\Permission\Traits\HasRoles;
  * @property Carbon|null $created_at
  * @property Carbon|null $updated_at
  * @property Carbon|null $deleted_at
+ * @property string|null $zoho_crm_id
  * @property-read Collection|\App\Models\Location[] $addresses
  * @property-read int|null $addresses_count
  * @property-read \App\Models\Branch|null $branch
@@ -208,6 +207,7 @@ use Spatie\Permission\Traits\HasRoles;
  * @method static Builder|User whereViewCount($value)
  * @method static Builder|User whereWalletFreeTotal($value)
  * @method static Builder|User whereWalletReservedTotal($value)
+ * @method static Builder|User whereZohoCrmId($value)
  * @method static \Illuminate\Database\Query\Builder|User withTrashed()
  * @method static \Illuminate\Database\Query\Builder|User withoutTrashed()
  * @mixin Eloquent
@@ -765,4 +765,18 @@ class User extends Authenticatable implements HasMedia, MustVerifyEmail
         return Cart::getCurrentlyActiveCart($this->id, $branchId);
     }
 
+    public function getDeliveredOrdersValue()
+    {
+        $value = $this->orders()->where('status', Order::STATUS_DELIVERED)->sum('grand_total');
+
+        return Currency::formatHtml($value);
+    }
+
+    public function getNumberOfUserCouponsAndItsValue(): array
+    {
+        $usedCoupons = $this->couponUsages();
+        $value = Currency::formatHtml($this->couponUsages()->sum('discounted_amount'));
+
+        return [$usedCoupons->count(), $value];
+    }
 }

@@ -338,6 +338,35 @@
                 @endif
             </div>
         </div>
+
+        @if($user->role_name == \App\Models\User::ROLE_USER)
+            <div class="card card-outline-inverse mb-4">
+                <h4 class="card-header">
+                    Extra Details
+                </h4>
+
+                <ul class="list-group list-group-flush col-5">
+                    <li class="list-group-item d-flex justify-content-between">
+                        <b>Number of Orders:</b>
+                        <span>{{ $user->orders_count }}</span>
+                    </li>
+                    <li class="list-group-item d-flex justify-content-between">
+                        <b>Delivered Orders Value:</b>
+                        <span>{!! $user->getDeliveredOrdersValue() !!}</span>
+                    </li>
+                    @php([$usedCouponsCount,$usedCouponsValue] = $user->getNumberOfUserCouponsAndItsValue())
+                    <li class="list-group-item d-flex justify-content-between">
+                        <b>Used Coupons Count:</b>
+                        <span>{{$usedCouponsCount}}</span>
+                    </li>
+                    <li class="list-group-item d-flex justify-content-between">
+                        <b>Used Coupons Value:</b>
+                        <span>{!! $usedCouponsValue !!}</span>
+                    </li>
+                </ul>
+            </div>
+        @endif
+
         <div class="ml-1">
             @if(is_null($user->id))
                 @component('admin.components.form-group', ['name' => 'send_notification', 'type' => 'checkbox'])
