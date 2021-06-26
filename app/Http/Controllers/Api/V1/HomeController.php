@@ -93,8 +93,8 @@ class HomeController extends BaseApiController
         $noAvailabilityMessage = '';
 
         // Grocery Related Initializers
-        $distance = 0;
-        $branch = null;
+        $distanceForClosesMarketBranch = 0;
+        $marketBranch = null;
         // Food Related Initializers
         $foodBranches = [];
         $foodBranchesCollection = null;
@@ -144,19 +144,21 @@ class HomeController extends BaseApiController
                                      return GroceryCategoryParentResource::collection($groceryParentCategories);
                                  });
 
-            [$distance, $branch, $branchTodayWorkingHours] = Branch::getClosestAvailableBranch($latitude, $longitude);
-            if ( ! is_null($branch) &&
+            [
+                $distanceForClosesMarketBranch, $marketBranch, $branchTodayWorkingHours
+            ] = Branch::getClosestAvailableBranch($latitude, $longitude);
+            if ( ! is_null($marketBranch) &&
                 ( ! is_null($branchTodayWorkingHours) && ! $branchTodayWorkingHours['isOpen'])
             ) {
                 if ( ! is_null($user)) {
-                    $cart = Cart::retrieve($branch->chain_id, $branch->id, $user->id);
+                    $cart = Cart::retrieve($marketBranch->chain_id, $marketBranch->id, $user->id);
                     $activeOrders = Order::groceries()
                                          ->whereUserId($user->id)
                                          ->whereNotIn('status', [
                                              Order::STATUS_CANCELLED,
                                              Order::STATUS_DELIVERED,
                                          ])
-                                         ->whereChainId($branch->chain_id)
+                                         ->whereChainId($marketBranch->chain_id)
                                          ->latest();
                     $activeOrdersCount = $activeOrders->count();
                     $activeOrders = OrderResource::collection($activeOrders->take(4)->get());
@@ -193,10 +195,14 @@ class HomeController extends BaseApiController
                 return FoodCategoryResource::collection($categories);
             });
             if ($request->has('autoscroll_for_food_branches')) {
-                $foodBranches = Branch::active()
+                $foodBranches = Branch::selectRaw('branches.*, DISTANCE_BETWEEN(latitude,longitude,?,?) as distance',
+                    [$latitude, $longitude])
+                                      ->active()
                                       ->foods()
                                       ->latest('published_at')
                                       ->take(10)
+                                      ->having('distance', '<=',
+                                          config('defaults.geolocation.max_distance_for_food_branches_to_order_from_in_erbil'))
                                       ->get();
             } else {
                 $foodBranches = Branch::active()
@@ -252,8 +258,8 @@ class HomeController extends BaseApiController
             'currentCurrency' => $currencyResource,
             'noAvailabilityMessage' => $noAvailabilityMessage,
             // Grocery Related
-            'branch' => is_null($branch) ? null : new BranchResource($branch),
-            'distance' => $distance,
+            'branch' => is_null($marketBranch) ? null : new BranchResource($marketBranch),
+            'distance' => $distanceForClosesMarketBranch,
             // Food Related
             'restaurants' => $foodBranchesCollection,
         ]);
