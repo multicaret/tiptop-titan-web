@@ -495,8 +495,18 @@ class Product extends Model implements HasMedia
 
     public function getDiscountedPriceAttribute()
     {
-        return Controller::getAmountAfterApplyingDiscount($this->price, $this->price_discount_amount,
-            $this->price_discount_by_percentage);
+        $priceDiscounted = $this->price;
+        if (
+            ! is_null($this->price_discount_began_at) &&
+            ! is_null($this->price_discount_finished_at) &&
+            now()->gte($this->price_discount_began_at) &&
+            now()->lte($this->price_discount_finished_at)
+        ) {
+            $priceDiscounted = Controller::getAmountAfterApplyingDiscount($this->price, $this->price_discount_amount,
+                $this->price_discount_by_percentage);
+        }
+
+        return $priceDiscounted;
     }
 
     public function getDiscountedPriceFormattedAttribute(): string

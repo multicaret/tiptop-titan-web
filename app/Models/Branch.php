@@ -481,11 +481,10 @@ class Branch extends Model implements HasMedia
             $distance = Controller::distanceBetween($this->latitude, $this->longitude, $address->latitude,
                 $address->longitude);
             $distanceOfFixedDeliveryFeeForKMs = Preference::retrieveValue($fixedDeliveryDistanceKeyName);
+            dd($distanceOfFixedDeliveryFeeForKMs);
             if ($distance != 0 && $distanceOfFixedDeliveryFeeForKMs && $distance > $distanceOfFixedDeliveryFeeForKMs) {
-                if ($distance > $distanceOfFixedDeliveryFeeForKMs) {
-                    $differenceInDistance = $distance - $distanceOfFixedDeliveryFeeForKMs;
-                    $deliveryFee += $extraDeliveryFeePerKm * $differenceInDistance;
-                }
+                $differenceInDistance = $distance - $distanceOfFixedDeliveryFeeForKMs;
+                $deliveryFee += $extraDeliveryFeePerKm * $differenceInDistance;
             }
         }
 
@@ -522,10 +521,8 @@ class Branch extends Model implements HasMedia
                 $address->longitude);
             $distanceOfFixedDeliveryFeeForKMs = Preference::retrieveValue($fixedDeliveryDistanceKeyName);
             if ($distance != 0 && $distanceOfFixedDeliveryFeeForKMs && $distance > $distanceOfFixedDeliveryFeeForKMs) {
-                if ($distance > $distanceOfFixedDeliveryFeeForKMs) {
-                    $differenceInDistance = $distance - $distanceOfFixedDeliveryFeeForKMs;
-                    $deliveryFee += $extraDeliveryFeePerKm * $differenceInDistance;
-                }
+                $differenceInDistance = $distance - $distanceOfFixedDeliveryFeeForKMs;
+                $deliveryFee += $extraDeliveryFeePerKm * $differenceInDistance;
             }
         }
 
