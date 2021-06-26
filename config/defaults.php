@@ -170,6 +170,7 @@ return [
     'geolocation' => [
         'latitude' => 36.195238,
         'longitude' => 43.993914,
+        'max_distance_for_food_branches_to_order_from_in_erbil' => 22,
     ],
     'workingHours' => [
         'opensAt' => '09:00:00',
