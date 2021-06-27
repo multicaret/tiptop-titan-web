@@ -324,6 +324,7 @@ class BranchController extends Controller
 //        $branch->whatsapp_phone_number = $request->input('whatsapp_phone_number');
         $branch->type = Branch::getCorrectChannel($request->type);
         $branch->status = $request->input('status');
+        $branch->is_open_now = ! $request->has('is_closed_now');
 
         if (is_null($branch->published_at) && $request->input('status') == Branch::STATUS_ACTIVE) {
             $branch->published_at = now();
