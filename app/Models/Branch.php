@@ -570,4 +570,15 @@ class Branch extends Model implements HasMedia
 
         return $deliveryFee ?? 0;
     }
+
+
+    public static function getStatusesArray(): array
+    {
+        // Manipulation of these states as requested in this task: https://app.clickup.com/t/2609896/DEV-1424
+        return [
+            self::STATUS_DRAFT => 'Inactive',
+            self::STATUS_ACTIVE => 'Active',
+//            self::STATUS_INACTIVE => 'Inactive',
+        ];
+    }
 }

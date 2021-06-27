@@ -263,6 +263,7 @@
                             </div>
 
                             <div class="col-6">
+                                <h5 class="mb-0">Operational Status</h5>
                                 Is as closed by restaurant owner?
                                 <label class="switcher switcher-secondary m-3  switcher-lg">
                                     <input type="checkbox" class="switcher-input"

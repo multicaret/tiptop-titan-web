@@ -179,6 +179,13 @@ class BranchController extends Controller
         $foodCategories = Taxonomy::foodCategories()->get();
         $workingHours = $branch->getWorkingHoursForJs();
 
+        // To apply to this task requirements:
+        // https://app.clickup.com/t/2609896/DEV-1424
+        if ($branch->status == Branch::STATUS_INACTIVE) {
+            $branch->status = Branch::STATUS_DRAFT;
+        }
+
+
         return view('admin.branches.form',
             compact('branch',
                 'regions',
