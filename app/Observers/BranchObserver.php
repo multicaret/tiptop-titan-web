@@ -11,7 +11,9 @@ use Illuminate\Support\Facades\Bus;
 
 class BranchObserver
 {
-    public $afterCommit = true;
+    // Dear Noor, we had to make this as false for our "updated" activity
+    // however, we added a delay of 1 minute
+    public $afterCommit = false;
 
     /**
      * Handle the Branch "created" event.
@@ -28,7 +30,9 @@ class BranchObserver
                 new CreateTipTopDeliveryItemJob($branch),
                 new CreateBranchAccountJob($branch),
             ]
-        )->dispatch();
+        )
+           ->dispatch()
+           ->delay(now()->addMinute());
     }
 
     /**
@@ -39,7 +43,7 @@ class BranchObserver
      */
     public function updated(Branch $branch)
     {
-        //
+        $branch->recordActivity('updated');
     }
 
     /**
@@ -50,7 +54,7 @@ class BranchObserver
      */
     public function deleted(Branch $branch)
     {
-        //
+        $branch->recordActivity('deleted');
     }
 
     /**

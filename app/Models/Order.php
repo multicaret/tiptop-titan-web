@@ -529,10 +529,6 @@ class Order extends Model
                 'title' => 'Status',
                 'type' => 'trans',
             ],
-            'updated_at' => [
-                'title' => 'Update',
-                'type' => 'datetime-normal',
-            ],
         ];
 
         if (array_key_exists($columnName, $visibleColumns)) {
@@ -540,19 +536,6 @@ class Order extends Model
         }
 
         return null;
-    }
-
-    public static function getActivityLogDifference($columnName, $value)
-    {
-        $activityLogDifferenceItem = self::getVisibleColumnsInActivityLogDifference($columnName);
-        if ( ! is_null($activityLogDifferenceItem)) {
-            $activityLogDifferenceItem['value'] = self::getFormattedActivityLogDifferenceItem($activityLogDifferenceItem,
-                $columnName, $value);
-
-            return $activityLogDifferenceItem;
-        }
-
-        return false;
     }
 
     public function tookanInfo()

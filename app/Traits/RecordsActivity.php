@@ -108,4 +108,17 @@ trait RecordsActivity
 
         return "{$event}_{$type}";
     }
+
+    public static function getActivityLogDifference($columnName, $value)
+    {
+        $activityLogDifferenceItem = self::getVisibleColumnsInActivityLogDifference($columnName);
+        if ( ! is_null($activityLogDifferenceItem)) {
+            $activityLogDifferenceItem['value'] = self::getFormattedActivityLogDifferenceItem($activityLogDifferenceItem,
+                $columnName, $value);
+
+            return $activityLogDifferenceItem;
+        }
+
+        return false;
+    }
 }

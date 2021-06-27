@@ -301,7 +301,9 @@
                                          alt="Product cover" width="50">
                                 </td>
                                 <td>
-                                    <span data-toggle="tooltip" data-placement="top" title="{{collect($orderProduct->product_object['translations'])->pluck('title','locale')->get('en')}}" class="d-block">{{$orderProduct->product_object['title']}}
+                                    <span data-toggle="tooltip" data-placement="top"
+                                          title="{{collect($orderProduct->product_object['translations'])->pluck('title','locale')->get('en')}}"
+                                          class="d-block">{{$orderProduct->product_object['title']}}
                                     </span>
                                     @if($orderProduct->cartProductOptions()->count())
                                         @foreach($orderProduct->cartProductOptions as $cartProductOption)
@@ -454,7 +456,7 @@
                     &nbsp;Activity Log
                 </h4>
                 <div class="card-body p-0 pl-2">
-                    @include('admin.orders._partials.order-activity-log')
+                    @include('admin.partials.activity-logs',['object' => $order])
                 </div>
             </div>
         </div>
