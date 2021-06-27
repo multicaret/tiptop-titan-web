@@ -41,9 +41,13 @@ class AddressController extends BaseApiController
 //        $latitude = $request->input('latitude');
 //        $longitude = $request->input('longitude');
 
-        $regions = Region::where('id', config('defaults.region.id'))->get();
-        $cities = City::active()->whereRegionId(config('defaults.region.id'))->get();
-
+        $regions = Region::where('regions.id', config('defaults.region.id'))
+                         ->orderByTranslation('name')
+                         ->get();
+        $cities = City::active()
+                      ->whereRegionId(config('defaults.region.id'))
+                      ->orderByTranslation('name')
+                      ->get();
 
         $selectedRegion = Region::find(config('defaults.region.id'));
         $selectedCity = City::whereRegionId($selectedRegion->id)->first();
@@ -112,7 +116,7 @@ class AddressController extends BaseApiController
             return $this->respondNotFound();
         } elseif (Order::whereAddressId($address->id)->count()) {
             return $this->respondWithMessage(__('strings.You have orders with this address you can not delete it'));
-        }elseif ($address->delete()) {
+        } elseif ($address->delete()) {
             return $this->respondWithMessage(__('strings.successfully_deleted'));
         }
 
