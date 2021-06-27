@@ -5,16 +5,10 @@ namespace App\Observers;
 use App\Integrations\TookanClient;
 use App\Jobs\Tookan\CancelTask;
 use App\Jobs\Tookan\CreateTask;
-use App\Jobs\Zoho\ApplyPaymentCreditJob;
-use App\Jobs\Zoho\CreateInvoiceJob;
-use App\Jobs\Zoho\CreatePaymentJob;
 use App\Jobs\UpdateDailyReportJob;
 use App\Models\Order;
-use App\Models\OrderDailyReport;
 use App\Models\User;
 use App\Notifications\OrderStatusUpdated;
-use Carbon\Carbon;
-use Illuminate\Support\Facades\Bus;
 use Illuminate\Support\Str;
 
 class OrderObserver
@@ -87,7 +81,7 @@ class OrderObserver
         } elseif ($order->wasChanged('grand_total')) {
             //create job for updating task
             // UpdateTask::dispatchSync($order);
-            if (!Str::contains($order->customer_notes, ['test', 'Test']))
+            if (!Str::contains($order->customer_notes, ['test', 'Test', ' تست ', ' تستت ', ' تتست ']))
             {
                 UpdateDailyReportJob::dispatch($order);
             }
