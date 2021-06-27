@@ -20,6 +20,7 @@
 
         </div>
     </h4>--}}
+    @php([$statusesIntervals,$total] = $order->getStatusesIntervals())
     <div class="row mb-3">
         <div class="col-md-12">
             <div class="card">
@@ -40,6 +41,12 @@
                                     @endforeach
                                 </select>
                             </div>
+                            <small class="ml-3">
+                                <span class="text-muted">Order Lifespan</span>
+                                <span>
+                                    {{\Carbon\CarbonInterval::seconds($total)->cascade()->forHumans()}}
+                                </span>
+                            </small>
                         </div>
                         @if($isCancellationFormShown)
                             <div class="col-12 mt-2">
