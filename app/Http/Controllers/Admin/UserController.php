@@ -383,9 +383,9 @@ class UserController extends Controller
             //This piece of code fetches different queries if the user is for a specific branch
             //and a specific channel or just a general user
             if (isset($branchChannel)) {
-                $branches = Branch::whereType($branchChannel)->active();
+                $branches = Branch::whereType($branchChannel);
             } else {
-                $branches = Branch::active();
+                $branches = Branch::orderBy('id');
             }
             $branches = $branches->get()->mapWithKeys($this->getBranchSelectorOptions());
         }
