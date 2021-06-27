@@ -46,16 +46,17 @@ class WorkingHour extends Model
 
     private static function getNextWorkingDayNumber(int $dayNumber, $workingHours): int
     {
-        $workingDaysNumber = $workingHours->pluck('is_day_off','day')->filter(fn($v) => !$v);
+        $workingDaysNumber = $workingHours->pluck('is_day_off', 'day')->filter(fn($v) => ! $v);
         $workingDaysNumber->forget($dayNumber);
         $tempDayNumber = $dayNumber;
         if ($tempDayNumber == 7) {
             $tempDayNumber = 1;
         }
 
-        if(!$workingDaysNumber->has($tempDayNumber)){
+        if ( ! $workingDaysNumber->has($tempDayNumber)) {
             $tempDayNumber = self::getNextWorkingDayNumber($tempDayNumber + 1, $workingHours);
         }
+
         return $tempDayNumber;
 
     }
@@ -102,30 +103,36 @@ class WorkingHour extends Model
             }
         }
         foreach ($object->workingHours as $workingHour) {
-            if ($workingHour->is_day_off) {
+            if ($workingHour->is_day_off == 1) {
                 $workingHours['offs'][] = trans('strings.working_day_'.$workingHour->day);
             } else {
                 // set opens at or closes at value from today shifts
-                $daysShifts = $object->workingHours->where('is_day_off', 0)->sortBy('opens_at');
+                $daysShifts = $object->workingHours()->where('day', $dayNumber)->where('is_day_off',
+                    0)->orderBy('opens_at')->get();
                 $dayShifts = $daysShifts->groupBy('day')->get($dayNumber);
-                $getOpenTimeShift = $dayShifts->where('opens_at', '<=', $selectTime)->where('closes_at', '>=',
-                    $selectTime)->first();
-                if ( ! empty($getOpenTimeShift)) {
-                    if (is_null($workingHours['closesAt'])) {
-                        $workingHours['closesAt'] = Carbon::parse($getOpenTimeShift->closes_at)->format('H:i');
+
+
+                if (!is_null($dayShifts)) {
+                    $getOpenTimeShift = $dayShifts->where('opens_at', '<=', $selectTime)->where('closes_at', '>=',
+                        $selectTime)->first();
+                    if ( ! empty($getOpenTimeShift)) {
+                        if (is_null($workingHours['closesAt'])) {
+                            $workingHours['closesAt'] = Carbon::parse($getOpenTimeShift->closes_at)->format('H:i');
+                        }
+                    } else {
+                        $firstNextOpenShift = $dayShifts->where('opens_at', '>=', $selectTime)->first();
+                        if ( ! is_null($firstNextOpenShift) && is_null($workingHours['opensAt'])) {
+                            $workingHours['opensAt'] = Carbon::parse($firstNextOpenShift->opens_at)->format('H:i');
+                        }
                     }
-                } else {
-                    $firstNextOpenShift = $dayShifts->where('opens_at', '>=', $selectTime)->first();
-                    if ( ! is_null($firstNextOpenShift) && is_null($workingHours['opensAt'])) {
-                        $workingHours['opensAt'] = Carbon::parse($firstNextOpenShift->opens_at)->format('H:i');
-                    }
-                }
-                // find next working day and set opens at value
-                if (is_null($workingHours['opensAt']) && is_null($workingHours['closesAt'])) {
-                    $nextWorkingDayNumber = self::getNextWorkingDayNumber($dayNumber, $object->workingHours);
-                    $nextDayShifts = $daysShifts->groupBy('day')->get($nextWorkingDayNumber);
-                    if ( ! is_null($nextDayShifts->first()) && is_null($workingHours['opensAt'])) {
-                        $workingHours['opensAt'] = Carbon::parse($nextDayShifts->first()->opens_at)->format('H:i');
+
+                    // find next working day and set opens at value
+                    if (is_null($workingHours['opensAt']) && is_null($workingHours['closesAt'])) {
+                        $nextWorkingDayNumber = self::getNextWorkingDayNumber($dayNumber, $object->workingHours);
+                        $nextDayShifts = $daysShifts->groupBy('day')->get($nextWorkingDayNumber);
+                        if ( ! is_null($nextDayShifts->first()) && is_null($workingHours['opensAt'])) {
+                            $workingHours['opensAt'] = Carbon::parse($nextDayShifts->first()->opens_at)->format('H:i');
+                        }
                     }
                 }
             }
