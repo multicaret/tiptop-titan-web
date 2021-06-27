@@ -10,6 +10,7 @@ use App\Traits\HasTypes;
 use App\Traits\HasUuid;
 use App\Traits\HasViewCount;
 use App\Traits\HasWorkingHours;
+use App\Traits\RecordsActivity;
 use Astrotomic\Translatable\Translatable;
 use Eloquent;
 use Illuminate\Database\Eloquent\Builder;
@@ -221,6 +222,7 @@ class Branch extends Model implements HasMedia
     use HasWorkingHours;
     use Translatable;
     use CanBeFavorited;
+    use RecordsActivity;
 
 
     public const STATUS_DRAFT = 1;
@@ -569,5 +571,180 @@ class Branch extends Model implements HasMedia
         }
 
         return $deliveryFee ?? 0;
+    }
+
+
+    public static function getStatusesArray(): array
+    {
+        // Manipulation of these states as requested in this task: https://app.clickup.com/t/2609896/DEV-1424
+        return [
+            self::STATUS_DRAFT => 'Inactive',
+            self::STATUS_ACTIVE => 'Active',
+//            self::STATUS_INACTIVE => 'Inactive',
+        ];
+    }
+
+    private static function getFormattedActivityLogDifferenceItem(
+        ?array $activityLogDifferenceItem,
+        $columnName,
+        $value
+    ) {
+        switch ($activityLogDifferenceItem['type']) {
+            case 'yes-no':
+                return $value ? 'Yes' : 'No';
+            case 'trans':
+                return trans('strings.order_'.$columnName.'_'.$value);
+            case 'currency-formatted':
+                return Currency::formatHtml($value);
+            case 'datetime-normal':
+                return Carbon::parse($value)->format(config('defaults.datetime.normal_format'));
+            case null:
+            default:
+                return $value;
+        }
+    }
+
+    /**
+     * @param $value
+     * @return array|null
+     */
+    private static function getVisibleColumnsInActivityLogDifference($columnName): ?array
+    {
+        $visibleColumns = [
+            'chain_id' => [
+                'title' => 'Chain id',
+                'type' => null,
+            ],
+            'creator_id' => [
+                'title' => 'Creator id',
+                'type' => null,
+            ],
+            'editor_id' => [
+                'title' => 'Editor id',
+                'type' => null,
+            ],
+            'region_id' => [
+                'title' => 'Region id',
+                'type' => null,
+            ],
+            'city_id' => [
+                'title' => 'City id',
+                'type' => null,
+            ],
+            'has_tip_top_delivery' => [
+                'title' => 'Has TipTop Delivery',
+                'type' => 'yes-no',
+            ],
+            'minimum_order' => [
+                'title' => 'Minimum Order',
+                'type' => 'currency-formatted',
+            ],
+            'under_minimum_order_delivery_fee' => [
+                'title' => 'Under minimum order delivery fee',
+                'type' => 'currency-formatted',
+            ],
+            'fixed_delivery_fee' => [
+                'title' => 'Fixed delivery fee',
+                'type' => 'currency-formatted',
+            ],
+            'min_delivery_minutes' => [
+                'title' => 'Min delivery minutes',
+                'type' => null,
+            ],
+            'max_delivery_minutes' => [
+                'title' => 'Max delivery minutes',
+                'type' => null,
+            ],
+            'free_delivery_threshold' => [
+                'title' => 'Free delivery threshold',
+                'type' => 'currency-formatted',
+            ],
+            'extra_delivery_fee_per_km' => [
+                'title' => 'Extra delivery fee per KM',
+                'type' => null,
+            ],
+            'has_restaurant_delivery' => [
+                'title' => 'Has Restaurant Delivery',
+                'type' => 'yes-no',
+            ],
+            'restaurant_minimum_order' => [
+                'title' => 'Restaurant minimum Order',
+                'type' => 'currency-formatted',
+            ],
+            'restaurant_under_minimum_order_delivery_fee' => [
+                'title' => 'Restaurant under minimum order delivery fee',
+                'type' => 'currency-formatted',
+            ],
+            'restaurant_fixed_delivery_fee' => [
+                'title' => 'Restaurant fixed delivery fee',
+                'type' => 'currency-formatted',
+            ],
+            'restaurant_min_delivery_minutes' => [
+                'title' => 'Restaurant min delivery minutes',
+                'type' => null,
+            ],
+            'restaurant_max_delivery_minutes' => [
+                'title' => 'Restaurant max delivery minutes',
+                'type' => null,
+            ],
+            'restaurant_free_delivery_threshold' => [
+                'title' => 'Restaurant free delivery threshold',
+                'type' => 'currency-formatted',
+            ],
+            'restaurant_extra_delivery_fee_per_km' => [
+                'title' => 'Restaurant extra delivery fee per KM',
+                'type' => null,
+            ],
+            'management_commission_rate' => [
+                'title' => 'Management commission rate',
+                'type' => null,
+            ],
+            'is_open_now' => [
+                'title' => 'Is Open Now (default is true)',
+                'type' => 'yes-no',
+            ],
+            'primary_phone_number' => [
+                'title' => 'Primary phone number',
+                'type' => null,
+            ],
+            'secondary_phone_number' => [
+                'title' => 'Secondary phone number',
+                'type' => null,
+            ],
+            'whatsapp_phone_number' => [
+                'title' => 'Whatsapp phone number',
+                'type' => null,
+            ],
+            'full_address' => [
+                'title' => 'Full address',
+                'type' => null,
+            ],
+            'latitude' => [
+                'title' => 'Latitude',
+                'type' => null,
+            ],
+            'longitude' => [
+                'title' => 'Longitude',
+                'type' => null,
+            ],
+            'avg_rating' => [
+                'title' => 'Average rating',
+                'type' => null,
+            ],
+            'published_at' => [
+                'title' => 'publishing date',
+                'type' => 'datetime-normal',
+            ],
+            'featured_at' => [
+                'title' => 'featuring date',
+                'type' => 'datetime-normal',
+            ],
+        ];
+
+        if (array_key_exists($columnName, $visibleColumns)) {
+            return $visibleColumns[$columnName];
+        }
+
+        return null;
     }
 }

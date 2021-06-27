@@ -1,11 +1,11 @@
 <?php
 
 return [
-    'updating_order' => 'Updating',
-    'updated_order' => 'Updated',
-    'created_order' => 'Created',
-    'deleting_order' => 'Deleting',
-    'deleted_order' => 'Deleted',
+    'updating' => 'Record Updating',
+    'updated' => 'Record Updated',
+    'created' => 'Record Created',
+    'deleting' => 'Record Deleting',
+    'deleted' => 'Record Deleted',
     'note_order' => 'Noted',
     'note_created_order' => 'Note created',
 ];

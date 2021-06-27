@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Api\V1;
 
 
 use App\Http\Controllers\Api\BaseApiController;
+use App\Http\Controllers\Controller;
 use App\Http\Resources\BranchCollection;
 use App\Http\Resources\BranchResource;
 use App\Http\Resources\CartResource;
@@ -97,7 +98,6 @@ class HomeController extends BaseApiController
         $marketBranch = null;
         // Food Related Initializers
         $foodBranches = [];
-        $foodBranchesCollection = null;
 
         // GeoLocation handling
         $latitude = $request->input('latitude');
@@ -194,43 +194,46 @@ class HomeController extends BaseApiController
 
                 return FoodCategoryResource::collection($categories);
             });
-            if ($request->has('autoscroll_for_food_branches')) {
-                $foodBranches = Branch::selectRaw('branches.*, DISTANCE_BETWEEN(latitude,longitude,?,?) as distance',
-                    [$latitude, $longitude])
-                                      ->active()
-                                      ->foods()
-                                      ->latest('published_at')
-                                      ->take(10)
-                                      ->having('distance', '<=',
-                                          config('defaults.geolocation.max_distance_for_food_branches_to_order_from_in_erbil'))
-                                      ->get();
+            if (Controller::distanceBetween(
+                    config('defaults.geolocation.latitude'), config('defaults.geolocation.longitude'),
+                    $latitude, $longitude)
+                >= config('defaults.geolocation.max_distance_for_food_branches_to_order_from_in_erbil')
+            ) {
+                $noAvailabilityMessage = trans('api.Sorry, we do not deliver to your area now!');
             } else {
-                $foodBranches = Branch::active()
-                                      ->foods()
-                                      ->latest('published_at')
-                                      ->get();
+                if ($request->has('autoscroll_for_food_branches')) {
+                    $foodBranches = Branch::active()
+                                          ->foods()
+                                          ->latest('published_at')
+                                          ->take(10)
+                                          ->get();
+                } else {
+                    $foodBranches = Branch::active()
+                                          ->foods()
+                                          ->latest('published_at')
+                                          ->get();
+                }
+                if (is_null($foodBranches)) {
+                    $noAvailabilityMessage = 'No Restaurants are open right now, please check back again later';
+                }
             }
-            $foodBranchesCollection = BranchResource::collection($foodBranches);
-
             if ( ! is_null($user)) {
                 $cart = Cart::retrieve(
                     $request->input('selected_food_chain_id'),
                     $request->input('selected_food_branch_id'),
                     $user->id
                 );
-                $activeOrders = Order::foods()->whereUserId($user->id)
+                $activeOrders = Order::with('address', 'user', 'cart', 'paymentMethod')
+                                     ->foods()
+                                     ->whereUserId($user->id)
                                      ->whereNotIn('status', [
                                          Order::STATUS_CANCELLED,
                                          Order::STATUS_DELIVERED,
                                      ])
-                                     ->where('type', Order::CHANNEL_FOOD_OBJECT)
                                      ->latest();
                 $activeOrdersCount = $activeOrders->count();
                 $activeOrders = OrderResource::collection($activeOrders->take(4)->get());
                 $totalActiveOrders = $activeOrdersCount;
-            }
-            if (is_null($foodBranches)) {
-                $noAvailabilityMessage = 'No Restaurants is are now open, please check back again at 08:00 am';
             }
         }
 
@@ -261,7 +264,7 @@ class HomeController extends BaseApiController
             'branch' => is_null($marketBranch) ? null : new BranchResource($marketBranch),
             'distance' => $distanceForClosesMarketBranch,
             // Food Related
-            'restaurants' => $foodBranchesCollection,
+            'restaurants' => BranchResource::collection($foodBranches),
         ]);
     }
 

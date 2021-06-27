@@ -15,6 +15,12 @@
 @push('styles')
     <link rel="stylesheet" href="/admin-assets/libs/quill/typography.css">
     <link rel="stylesheet" href="/admin-assets/libs/quill/editor.css">
+    <style>
+        .nav-link {
+            padding-right: 10px !important;
+            padding-left: 10px !important;
+        }
+    </style>
     {{--    @livewireStyles--}}
 @endpush
 
@@ -78,6 +84,12 @@
                                             $orderChannels[\App\Models\Order::CHANNEL_FOOD_OBJECT],
                                             'branch-id' => $branch->id])}}">
                     <i class="fas fa-star"></i>&nbsp;Ratings
+                </a>
+            </li>
+
+            <li class="nav-item">
+                <a class="nav-link" data-toggle="tab" href="#activity-logs-tab">
+                    <i class="far fa-chart-bar"></i>&nbsp;Acitivity Logs
                 </a>
             </li>
         </ul>
@@ -228,6 +240,13 @@
                             @include('admin.branches.partials._users_table', ['users' => $users[0]])
                         @endforeach
                     @endif
+                </div>
+            </div>
+
+
+            <div class="tab-pane fade" id="activity-logs-tab">
+                <div class="card-body">
+                    @include('admin.partials.activity-logs',['object' => $branch])
                 </div>
             </div>
         </div>

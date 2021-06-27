@@ -529,10 +529,6 @@ class Order extends Model
                 'title' => 'Status',
                 'type' => 'trans',
             ],
-            'updated_at' => [
-                'title' => 'Update',
-                'type' => 'datetime-normal',
-            ],
         ];
 
         if (array_key_exists($columnName, $visibleColumns)) {
@@ -542,21 +538,26 @@ class Order extends Model
         return null;
     }
 
-    public static function getActivityLogDifference($columnName, $value)
-    {
-        $activityLogDifferenceItem = self::getVisibleColumnsInActivityLogDifference($columnName);
-        if ( ! is_null($activityLogDifferenceItem)) {
-            $activityLogDifferenceItem['value'] = self::getFormattedActivityLogDifferenceItem($activityLogDifferenceItem,
-                $columnName, $value);
-
-            return $activityLogDifferenceItem;
-        }
-
-        return false;
-    }
-
     public function tookanInfo()
     {
         return $this->morphOne(TookanInfo::class, 'tookanable');
+    }
+
+    public function getStatusesIntervals()
+    {
+        $total = 0;
+        $statusesIntervals = [];
+        $lastActivity = $this->created_at;
+        foreach ($this->activity as $activity) {
+            if (isset($activity->differences->status) && $activity->differences->status != Order::STATUS_NEW) {
+                $time = $activity->created_at->diffInSeconds($lastActivity);
+                $total += $time;
+                $statusesIntervals[$activity->differences->status] = $time;
+//                $times[$activity->differences->status] = CarbonInterval::seconds($time)->cascade()->forHumans();
+                $lastActivity = $activity->created_at;
+            }
+        }
+
+        return [$statusesIntervals, $total];
     }
 }

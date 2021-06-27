@@ -179,6 +179,13 @@ class BranchController extends Controller
         $foodCategories = Taxonomy::foodCategories()->get();
         $workingHours = $branch->getWorkingHoursForJs();
 
+        // To apply to this task requirements:
+        // https://app.clickup.com/t/2609896/DEV-1424
+        if ($branch->status == Branch::STATUS_INACTIVE) {
+            $branch->status = Branch::STATUS_DRAFT;
+        }
+
+
         return view('admin.branches.form',
             compact('branch',
                 'regions',
@@ -324,6 +331,7 @@ class BranchController extends Controller
 //        $branch->whatsapp_phone_number = $request->input('whatsapp_phone_number');
         $branch->type = Branch::getCorrectChannel($request->type);
         $branch->status = $request->input('status');
+        $branch->is_open_now = ! $request->has('is_closed_now');
 
         if (is_null($branch->published_at) && $request->input('status') == Branch::STATUS_ACTIVE) {
             $branch->published_at = now();

@@ -45,7 +45,7 @@ class ProductController extends Controller
             ],
             [
                 'data' => 'title',
-                'name' => 'translations.title',
+                'name' => 'title',
                 'title' => trans('strings.title'),
                 'width' => '150',
             ],
