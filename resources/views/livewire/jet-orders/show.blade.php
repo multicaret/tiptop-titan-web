@@ -180,7 +180,6 @@
                 </div>
             </div>
 
-            @if($order->is_delivery_by_tiptop)
                 <div class="card mt-3">
                     <h5 class="card-header font-weight-bold">
                         <i class="fas fa-motorcycle"></i>&nbsp;
@@ -204,9 +203,9 @@
                                 @if(!empty($order->driver))
 
                                     <a class="text-primary pull-right"
-                                       href="tel:{{$order->user->phone_number}}"
+                                       href="tel:{{$order->destination_phone}}"
                                        target="_blank">
-                                        {{$order->driver->phone_number}}
+                                        {{$order->destination_phone}}
                                     </a>
                                 @endif
                             </div>
@@ -242,7 +241,6 @@
                         </div>
                     </div>
                 </div>
-            @endif
         </div>
     </div>
 

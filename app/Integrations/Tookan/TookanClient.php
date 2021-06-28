@@ -147,6 +147,11 @@ class TookanClient
     {
         $jet_team = TookanTeam::where('name', 'like', '%Jet%')->first();
 
+        $images = [];
+        foreach ($order->gallery as $image)
+        {
+            $images[] = $image['file'];
+        }
         return [
             'order_id' => $order->reference_code,
             'timezone' => '-180',
@@ -172,6 +177,7 @@ class TookanClient
             'notify' => 1,
             'pickup_custom_field_template' => 'jet_template',
             'custom_field_template' => 'jet_template',
+
             'pickup_meta_data' => [
                 [
                     'label' => 'price',
@@ -181,11 +187,15 @@ class TookanClient
                     'label' => 'notes',
                     'data' => $order->client_notes
                 ],
-
                 [
                     'label' => 'order_number',
                     'data' => $order->reference_code
                 ],
+                [
+                    'label' => 'image',
+                    'data' => $images
+                ],
+
             ],
             'meta_data' => [
                 [
@@ -204,6 +214,7 @@ class TookanClient
                     'label' => 'destination_phone',
                     'data' => $order->destination_phone
                 ],
+
 
             ],
 
