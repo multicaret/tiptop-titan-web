@@ -152,7 +152,8 @@ class HomeController extends BaseApiController
             ) {
                 if ( ! is_null($user)) {
                     $cart = Cart::retrieve($marketBranch->chain_id, $marketBranch->id, $user->id);
-                    $activeOrders = Order::groceries()
+                    $activeOrders = Order::with('address', 'user', 'cart', 'paymentMethod')
+                                         ->groceries()
                                          ->whereUserId($user->id)
                                          ->whereNotIn('status', [
                                              Order::STATUS_CANCELLED,

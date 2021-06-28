@@ -36,7 +36,8 @@ class OrderController extends BaseApiController
         $user = auth()->user();
         $chainId = $request->input('chain_id');
 
-        $previousOrders = Order::groceries()
+        $previousOrders = Order::with('address', 'user', 'cart', 'paymentMethod')
+                               ->groceries()
                                ->whereUserId($user->id)
                                ->whereChainId($chainId)
                                ->whereNotNull('completed_at')
@@ -66,7 +67,8 @@ class OrderController extends BaseApiController
         }*/
 
         $user = auth()->user();
-        $previousOrders = Order::foods()
+        $previousOrders = Order::with('address', 'user', 'cart', 'paymentMethod')
+                               ->foods()
                                ->whereUserId($user->id)
                                ->whereNotNull('completed_at')
                                ->latest()
