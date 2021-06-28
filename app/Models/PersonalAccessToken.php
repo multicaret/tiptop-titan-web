@@ -55,7 +55,9 @@ class PersonalAccessToken extends PersonalAccessTokenAlias
     ];
 
     protected $casts = [
-      'mobile_app_details' => 'object'
+        'abilities' => 'json',
+        'last_used_at' => 'datetime',
+        'mobile_app_details' => 'object'
     ];
 
 }
