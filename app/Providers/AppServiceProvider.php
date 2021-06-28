@@ -2,6 +2,7 @@
 
 namespace App\Providers;
 
+use App\Models\PersonalAccessToken;
 use Barryvdh\LaravelIdeHelper\IdeHelperServiceProvider;
 use Carbon\Carbon;
 use Illuminate\Pagination\Paginator;
@@ -20,6 +21,7 @@ class AppServiceProvider extends ServiceProvider
     public function boot()
     {
         Paginator::useBootstrap();
+        Sanctum::usePersonalAccessTokenModel(PersonalAccessToken::class);
         Validator::extend('recaptcha', 'App\Rules\ReCaptcha@passes');
     }
 
