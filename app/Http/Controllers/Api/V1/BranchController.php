@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Api\V1;
 
 use App\Http\Controllers\Api\BaseApiController;
 use App\Http\Resources\BranchResource;
+use App\Http\Resources\FoodBranchCollection;
 use App\Http\Resources\FoodBranchResource;
 use App\Http\Resources\FoodCategoryResource;
 use App\Models\Branch;
@@ -85,9 +86,31 @@ class BranchController extends BaseApiController
                 $branches = $branches->latest('published_at');
         }
 
-        $branches = $branches->get();
+        if ($request->has('autoscroll_for_food_branches')) {
+            // Get Lat & Lng
+            $latitude = $request->input('latitude', config('defaults.geolocation.latitude'));
+            $longitude = $request->input('latitude', config('defaults.geolocation.longitude'));
+            if ($user = auth('sanctum')->user()) {
+                $latitude = $user->latitude;
+                $longitude = $user->longitude;
+                if ($user->selected_address_id && ! is_null($address = Location::find($user->selected_address_id))) {
+                    $latitude = $address->latitude;
+                    $longitude = $address->longitude;
+                }
+            }
 
-        return $this->respond(BranchResource::collection($branches));
+            $branches = $branches->selectRaw('branches.*, DISTANCE_BETWEEN(latitude,longitude,?,?) as distance',
+                [$latitude, $longitude])
+                                 ->having('distance', '<',
+                                     config('defaults.geolocation.max_distance_for_food_branches_to_order_from_in_erbil'))
+                                 ->paginate(20);
+            $branchesCollection = new FoodBranchCollection($branches);
+        } else {
+            $branches = $branches->get();
+            $branchesCollection = BranchResource::collection($branches);
+        }
+
+        return $this->respond($branchesCollection);
     }
 
     /**

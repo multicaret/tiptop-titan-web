@@ -130,7 +130,7 @@
                     <div class="row">
                         <div class="col-12 py-3 border-2bottom">
                             @if($order->client_notes)
-                                    {{$order->client_notes}}
+                                {{$order->client_notes}}
                             @else
                                 <i class="text-muted">
                                     NO NOTE
@@ -252,9 +252,9 @@
                     <i class="far fa-clipboard"></i>
                     &nbsp;Notes
                 </h4>
-{{--
-                @include('admin.orders._partials.order-agent-notes')
---}}
+                {{--
+                                @include('admin.orders._partials.order-agent-notes')
+                --}}
             </div>
         </div>
         <div class="col-6">
@@ -264,7 +264,7 @@
                     &nbsp;Activity Log
                 </h4>
                 <div class="card-body p-0 pl-2">
-                    @include('admin.orders._partials.order-activity-log')
+                    @include('admin.partials.activity-logs',['object' => $order])
                 </div>
             </div>
         </div>

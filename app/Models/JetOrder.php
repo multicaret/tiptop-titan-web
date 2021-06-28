@@ -6,16 +6,108 @@ use App\Traits\HasAppTypes;
 use App\Traits\HasMediaTrait;
 use App\Traits\HasTypes;
 use App\Traits\RecordsActivity;
-use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Support\Carbon;
-use Spatie\Image\Manipulations;
 use Spatie\MediaLibrary\HasMedia;
 use Spatie\MediaLibrary\MediaCollections\Models\Media;
 
+/**
+ * App\Models\JetOrder
+ *
+ * @property int $id
+ * @property string $reference_code
+ * @property int $chain_id
+ * @property int $branch_id
+ * @property int $city_id
+ * @property string $destination_full_name
+ * @property string $destination_phone
+ * @property string $destination_address
+ * @property string|null $destination_latitude
+ * @property string|null $destination_longitude
+ * @property int|null $driver_id
+ * @property float $total
+ * @property float $delivery_fee
+ * @property float $grand_total
+ * @property float $grand_total_before_agent_manipulation
+ * @property int|null $cancellation_reason_id
+ * @property string|null $cancellation_reason_note
+ * @property int|null $delivery_time
+ * @property string|null $restaurant_notes
+ * @property string|null $private_notes This column is generic, for now it has the 'discount_method_id' for orders with coupons from the old DB
+ * @property string|null $client_notes
+ * @property int $status 
+ *                     0: Cancelled,
+ *                     1: Draft,
+ *                     22: Assigning driver,
+ *                     6: Waiting Courier,
+ *                     16: On the way,
+ *                     18: At the address,
+ *                     20: Delivered,
+ * @property Carbon|null $created_at
+ * @property Carbon|null $updated_at
+ * @property Carbon|null $deleted_at
+ * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\Activity[] $activity
+ * @property-read int|null $activity_count
+ * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\OrderAgentNote[] $agentNotes
+ * @property-read int|null $agent_notes_count
+ * @property-read \App\Models\Branch $branch
+ * @property-read \App\Models\Taxonomy|null $cancellationReason
+ * @property-read \App\Models\Chain $chain
+ * @property-read \App\Models\User|null $driver
+ * @property-read mixed $gallery
+ * @property-read bool $is_food
+ * @property-read bool $is_grocery
+ * @property-read mixed $status_name
+ * @property-read \Spatie\MediaLibrary\MediaCollections\Models\Collections\MediaCollection|Media[] $media
+ * @property-read int|null $media_count
+ * @property-read \App\Models\PaymentMethod $paymentMethod
+ * @property-read \App\Models\TookanInfo|null $tookanInfo
+ * @method static \Illuminate\Database\Eloquent\Builder|JetOrder atTheAddress()
+ * @method static \Illuminate\Database\Eloquent\Builder|JetOrder cancelled()
+ * @method static \Illuminate\Database\Eloquent\Builder|JetOrder delivered()
+ * @method static \Illuminate\Database\Eloquent\Builder|JetOrder draft()
+ * @method static \Illuminate\Database\Eloquent\Builder|JetOrder foods()
+ * @method static \Illuminate\Database\Eloquent\Builder|JetOrder groceries()
+ * @method static \Illuminate\Database\Eloquent\Builder|JetOrder newModelQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder|JetOrder newQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder|JetOrder onTheWay()
+ * @method static \Illuminate\Database\Query\Builder|JetOrder onlyTrashed()
+ * @method static \Illuminate\Database\Eloquent\Builder|JetOrder query()
+ * @method static \Illuminate\Database\Eloquent\Builder|JetOrder waitingCourier()
+ * @method static \Illuminate\Database\Eloquent\Builder|JetOrder whereBranchId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|JetOrder whereCancellationReasonId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|JetOrder whereCancellationReasonNote($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|JetOrder whereChainId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|JetOrder whereCityId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|JetOrder whereClientNotes($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|JetOrder whereCreatedAt($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|JetOrder whereDeletedAt($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|JetOrder whereDeliveryFee($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|JetOrder whereDeliveryTime($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|JetOrder whereDestinationAddress($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|JetOrder whereDestinationFullName($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|JetOrder whereDestinationLatitude($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|JetOrder whereDestinationLongitude($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|JetOrder whereDestinationPhone($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|JetOrder whereDriverId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|JetOrder whereGrandTotal($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|JetOrder whereGrandTotalBeforeAgentManipulation($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|JetOrder whereId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|JetOrder wherePrivateNotes($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|JetOrder whereReferenceCode($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|JetOrder whereRestaurantNotes($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|JetOrder whereStatus($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|JetOrder whereTotal($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|JetOrder whereUpdatedAt($value)
+ * @method static \Illuminate\Database\Query\Builder|JetOrder withTrashed()
+ * @method static \Illuminate\Database\Query\Builder|JetOrder withoutTrashed()
+ * @mixin \Eloquent
+ * @noinspection PhpFullyQualifiedNameUsageInspection
+ * @noinspection PhpUnnecessaryFullyQualifiedNameInspection
+ */
 class JetOrder extends Model implements HasMedia
 {
     use HasAppTypes;

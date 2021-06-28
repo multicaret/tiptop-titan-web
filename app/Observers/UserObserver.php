@@ -29,7 +29,7 @@ class UserObserver
         {
             try {
                 $record = OrderDailyReport::firstOrCreate(['day' => today()->toDateString()]);
-                $record->increment('registered_users_count');
+                $record->registered_users_count = $record->registered_users_count++;
                 $record->country_id = 107;
                 $record->region_id = 6;
                 $record->save();

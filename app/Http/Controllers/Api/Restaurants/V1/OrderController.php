@@ -3,9 +3,11 @@
 namespace App\Http\Controllers\Api\Restaurants\V1;
 
 use App\Http\Controllers\Api\BaseApiController;
-use App\Http\Resources\OrderRestaurantResource;
+use App\Http\Resources\OrderMiniResource;
+use App\Http\Resources\OrderResource;
 use App\Models\Branch;
 use App\Models\Order;
+use Carbon\Carbon;
 use DB;
 use Illuminate\Http\Request;
 
@@ -35,12 +37,27 @@ class OrderController extends BaseApiController
         }
 
         $orders = Order::whereBranchId($restaurant->id)
-                       ->whereIn('status', $statuses)
-                       ->latest()
-                       ->paginate(25);
+                       ->whereIn('status', $statuses);
+
+        $hasDeliveredOrCancelledStatus = in_array(Order::STATUS_DELIVERED, $statuses) ||
+            in_array(Order::STATUS_CANCELLED, $statuses);
+        if ($hasDeliveredOrCancelledStatus) {
+            $orders = $orders->where(function ($query) {
+                $query->where('created_at', Carbon::today())
+                      ->where('created_at', Carbon::yesterday(), 'or');
+            });
+        }
+        $orders = $orders->latest()
+                         ->get();
+
+        if ($request->has('use_mini_order')) {
+            $ordersCollection = OrderMiniResource::collection($orders);
+        } else {
+            $ordersCollection = OrderResource::collection($orders);
+        }
 
         return $this->respond([
-            'orders' => OrderRestaurantResource::collection($orders),
+            'orders' => $ordersCollection,
             'counts' => [
                 Order::STATUS_NEW => Order::whereBranchId($restaurant->id)
                                           ->where('status', Order::STATUS_NEW)
@@ -69,7 +86,7 @@ class OrderController extends BaseApiController
             return $this->respondNotFound();
         }
 
-        return $this->respond(new OrderRestaurantResource($order));
+        return $this->respond(new OrderResource($order));
     }
 
     public function update(Request $request, $restaurant, $order)
@@ -102,7 +119,7 @@ class OrderController extends BaseApiController
         ]);
 
         /*return $this->respond([
-            'order' => new OrderRestaurantResource($restaurant)
+            'order' => new OrderResource($restaurant)
         ]);*/
     }
 

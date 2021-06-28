@@ -3,6 +3,7 @@
 namespace App\Models\OldModels;
 
 
+use App\Http\Controllers\Controller;
 use App\Models\Region;
 use App\Models\User;
 use Eloquent;
@@ -53,6 +54,8 @@ use Illuminate\Support\Carbon;
  * @property string|null $locale
  * @property mixed|null $tokens
  * @property int $orders_count
+ * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\OldModels\OldLocation[] $addresses
+ * @property-read int|null $addresses_count
  * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\OldModels\OldFirebaseUsersTokens[] $firebaseUser
  * @property-read int|null $firebase_user_count
  * @property-read \App\Models\OldModels\OldFirebaseUsersTokens|null $firebase_data
@@ -255,13 +258,13 @@ class OldUser extends OldModel
     private function getSplitName(): array
     {
         $stringable = \Str::of($this->name);
-        $faker = \Faker\Factory::create();
+//        $faker = \Faker\Factory::create();
         if ($stringable->isEmpty()) {
-            return [$faker->firstName, $faker->lastName];
+            return [Controller::uuid(), Controller::uuid()];
         }
-        if ( ! $stringable->contains(' ')) {
-            return [$this->name, $faker->lastName];
-        }
+//        if ( ! $stringable->contains(' ')) {
+//            return [$this->name, $faker->lastName];
+//        }
 
         return [$stringable->beforeLast(' ')->jsonSerialize(), $stringable->afterLast(' ')->jsonSerialize()];
     }
@@ -356,5 +359,10 @@ class OldUser extends OldModel
                 'version' => '',
             ],
         ];
+    }
+
+    public function addresses(): HasMany
+    {
+        return $this->hasMany(OldLocation::class, 'user_id');
     }
 }

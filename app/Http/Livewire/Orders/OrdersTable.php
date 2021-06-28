@@ -51,12 +51,13 @@ class OrdersTable extends Component
 
     private function retrieveOrders()
     {
-        if (is_null($this->filterByDate) && is_null($this->branchId)) {
-            $this->filterByDate = now()->format(config('defaults.date.short_format'));
-        }
         $orders = Order::with('user', 'branch', 'paymentMethod')
                        ->orderBy('created_at', 'desc')
                        ->orderBy('status');
+        if (is_null($this->filterByDate) && is_null($this->branchId)) {
+            $this->filterByDate = now()->format(config('defaults.date.short_format'));
+            $orders = $orders->where('status', '!=', Order::STATUS_DELIVERED);
+        }
 
         $shouldSearchByDate = false;
         if ( ! empty($this->referenceCode)) {

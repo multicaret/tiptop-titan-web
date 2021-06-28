@@ -74,12 +74,14 @@ return [
         'address_home_icon' => '/images/address-home-icon.png',
         'address_home_marker_icon' => '/images/address-home-marker-icon.png',
         'address_home_marker_icon_small' => '/images/address-home-marker-icon-sm.png',
+        'address_home_marker_icon_tiny' => '/images/address-home-marker-icon-tiny.png',
         'address_work_icon' => '/images/address-work-icon.png',
         'address_work_marker_icon_small' => '/images/address-work-marker-icon-sm.png',
         'address_other_icon' => '/images/address-other-icon.png',
         'address_other_marker_icon_small' => '/images/address-other-marker-icon-sm.png',
         'tiptop_marker_icon' => '/images/tiptop-marker-icon.png',
         'tiptop_marker_icon_small' => '/images/tiptop-marker-icon-sm.png',
+        'tiptop_marker_icon_tiny' => '/images/tiptop-marker-icon-tiny.png',
     ],
     'product_gallery' => [
         "/images/potato.jpeg",
@@ -170,6 +172,7 @@ return [
     'geolocation' => [
         'latitude' => 36.195238,
         'longitude' => 43.993914,
+        'max_distance_for_food_branches_to_order_from_in_erbil' => 22,
     ],
     'workingHours' => [
         'opensAt' => '09:00:00',

@@ -41,9 +41,14 @@ class AddressController extends BaseApiController
 //        $latitude = $request->input('latitude');
 //        $longitude = $request->input('longitude');
 
-        $regions = Region::active()->where('id', config('defaults.region.id'))->get();
-        $cities = City::active()->whereRegionId(config('defaults.region.id'))->get();
-
+        $regions = Region::active()
+                         ->where('regions.id', config('defaults.region.id'))
+                         ->orderByTranslation('name')
+                         ->get();
+        $cities = City::active()
+                      ->whereRegionId(config('defaults.region.id'))
+                      ->orderByTranslation('name')
+                      ->get();
 
         $selectedRegion = Region::find(config('defaults.region.id'));
         $selectedCity = City::whereRegionId($selectedRegion->id)->first();
@@ -106,7 +111,6 @@ class AddressController extends BaseApiController
 
     public function destroy($address)
     {
-        //Todo: only if Super Admin or the owner of the address should be able to delete.
         $address = Location::find($address);
         $user = auth()->user();
         $hasMoreThanOneAddress = Location::whereContactableType(User::class)->whereContactableId($user->id)->count() > 1;

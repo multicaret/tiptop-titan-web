@@ -262,6 +262,23 @@
                                 @endcomponent
                             </div>
 
+                            <div class="col-6">
+                                <h5 class="mb-0">Operational Status</h5>
+                                Is as closed by restaurant owner?
+                                <label class="switcher switcher-secondary m-3  switcher-lg">
+                                    <input type="checkbox" class="switcher-input"
+                                           name="is_closed_now" {{!$branch->is_open_now ? 'checked' : ''}}>
+                                    <span class="switcher-indicator">
+                                        <span class="switcher-yes">
+                                            Yes
+                                        </span>
+                                        <span class="switcher-no">
+                                            No
+                                        </span>
+                                    </span>
+                                </label>
+                            </div>
+
                             <div class="col-md-6 {{$type == \App\Models\Branch::CHANNEL_FOOD_OBJECT ? '':'mt-3'}}">
                                 @component('admin.components.form-group', ['name' => 'primary_phone_number', 'type' => 'tel'])
                                     @slot('label', 'Primary phone number')

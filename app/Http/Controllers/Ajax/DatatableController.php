@@ -836,8 +836,12 @@ class DatatableController extends AjaxController
         } else {
             $products = $products->whereNotNull('branch_id');
         }
-        $products = $products->orderByDesc('id')
-                             ->selectRaw('products.*');
+        $products = $products->selectRaw('products.*,product_translations.title,product_translations.locale')
+                             ->leftJoin('product_translations', function ($join) {
+                                 $join->on('products.id', '=', 'product_translations.product_id');
+                             })
+                             ->where('product_translations.locale', 'en')
+                             ->orderBy('title');
 
 
         return DataTables::of($products)
@@ -890,6 +894,9 @@ class DatatableController extends AjaxController
                              return view('admin.components.datatables._date', [
                                  'date' => $product->created_at
                              ])->render();
+                         })
+                         ->orderColumn('title', function ($sql, $bindings) {
+                             $sql->orderBy('title', $bindings);
                          })
                          ->rawColumns([
                              'action',

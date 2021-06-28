@@ -20,6 +20,7 @@
 
         </div>
     </h4>--}}
+    @php([$statusesIntervals,$total] = $order->getStatusesIntervals())
     <div class="row mb-3">
         <div class="col-md-12">
             <div class="card">
@@ -40,6 +41,12 @@
                                     @endforeach
                                 </select>
                             </div>
+                            <small class="ml-3">
+                                <span class="text-muted">Order Lifespan</span>
+                                <span>
+                                    {{\Carbon\CarbonInterval::seconds($total)->cascade()->forHumans()}}
+                                </span>
+                            </small>
                         </div>
                         @if($isCancellationFormShown)
                             <div class="col-12 mt-2">
@@ -301,7 +308,9 @@
                                          alt="Product cover" width="50">
                                 </td>
                                 <td>
-                                    <span data-toggle="tooltip" data-placement="top" title="{{collect($orderProduct->product_object['translations'])->pluck('title','locale')->get('en')}}" class="d-block">{{$orderProduct->product_object['title']}}
+                                    <span data-toggle="tooltip" data-placement="top"
+                                          title="{{collect($orderProduct->product_object['translations'])->pluck('title','locale')->get('en')}}"
+                                          class="d-block">{{$orderProduct->product_object['title']}}
                                     </span>
                                     @if($orderProduct->cartProductOptions()->count())
                                         @foreach($orderProduct->cartProductOptions as $cartProductOption)
@@ -331,9 +340,9 @@
                                     @endif
                                     &nbsp; - &nbsp;{{$orderProduct->product_object['unit_text']}}
                                 </td>
-                                <td>{!! \App\Models\Currency::formatHtml($orderProduct->product_object['price'] + $orderProduct->options_price) !!}</td>
+                                <td>{!! \App\Models\Currency::formatHtml($orderProduct->product_object['discounted_price'] + $orderProduct->options_price) !!}</td>
                                 <td>{{$orderProduct->quantity}}</td>
-                                <td>{!! \App\Models\Currency::formatHtml(($orderProduct->product_object['price'] * $orderProduct->quantity) + $orderProduct->total_options_price) !!}</td>
+                                <td>{!! \App\Models\Currency::formatHtml(($orderProduct->product_object['discounted_price'] * $orderProduct->quantity) + $orderProduct->total_options_price) !!}</td>
                             </tr>
                         @endforeach
                         </tbody>
@@ -454,7 +463,7 @@
                     &nbsp;Activity Log
                 </h4>
                 <div class="card-body p-0 pl-2">
-                    @include('admin.orders._partials.order-activity-log')
+                    @include('admin.partials.activity-logs',['object' => $order])
                 </div>
             </div>
         </div>

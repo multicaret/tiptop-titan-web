@@ -62,7 +62,7 @@ use Illuminate\Support\Carbon;
  * @property string|null $private_notes This column is generic, for now it has the 'discount_method_id' for orders with coupons from the old DB
  * @property Carbon|null $completed_at
  * @property string|null $customer_notes
- * @property int $status
+ * @property int $status 
  *                     0: Cancelled,
  *                     1: Draft,
  *                     6: Waiting Courier,
@@ -73,6 +73,8 @@ use Illuminate\Support\Carbon;
  * @property Carbon|null $created_at
  * @property Carbon|null $updated_at
  * @property Carbon|null $deleted_at
+ * @property string|null $zoho_books_invoice_id
+ * @property string|null $zoho_books_payment_id
  * @property-read Collection|\App\Models\Activity[] $activity
  * @property-read int|null $activity_count
  * @property-read \App\Models\Location $address
@@ -155,6 +157,8 @@ use Illuminate\Support\Carbon;
  * @method static \Illuminate\Database\Eloquent\Builder|Order whereType($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Order whereUpdatedAt($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Order whereUserId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Order whereZohoBooksInvoiceId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Order whereZohoBooksPaymentId($value)
  * @method static Builder|Order withTrashed()
  * @method static Builder|Order withoutTrashed()
  * @mixin Eloquent
@@ -525,10 +529,6 @@ class Order extends Model
                 'title' => 'Status',
                 'type' => 'trans',
             ],
-            'updated_at' => [
-                'title' => 'Update',
-                'type' => 'datetime-normal',
-            ],
         ];
 
         if (array_key_exists($columnName, $visibleColumns)) {
@@ -538,49 +538,26 @@ class Order extends Model
         return null;
     }
 
-    public static function getActivityLogDifference($columnName, $value)
-    {
-        $activityLogDifferenceItem = self::getVisibleColumnsInActivityLogDifference($columnName);
-        if ( ! is_null($activityLogDifferenceItem)) {
-            $activityLogDifferenceItem['value'] = self::getFormattedActivityLogDifferenceItem($activityLogDifferenceItem,
-                $columnName, $value);
-
-            return $activityLogDifferenceItem;
-        }
-
-        return false;
-    }
-
     public function tookanInfo()
     {
         return $this->morphOne(TookanInfo::class, 'tookanable');
     }
 
-    public static function validateAndGetDeliveryFee(Branch $branch, $userCart, $isDeliveryByTiptop, $distance)
+    public function getStatusesIntervals()
     {
-        $deliveryType = 'tiptop';
-        if (
-            $branch->type == Branch::CHANNEL_FOOD_OBJECT &&
-            ! $isDeliveryByTiptop &&
-            $branch->has_restaurant_delivery
-        ) {
-            $deliveryType = 'restaurant';
+        $total = 0;
+        $statusesIntervals = [];
+        $lastActivity = $this->created_at;
+        foreach ($this->activity as $activity) {
+            if (isset($activity->differences->status) && $activity->differences->status != Order::STATUS_NEW) {
+                $time = $activity->created_at->diffInSeconds($lastActivity);
+                $total += $time;
+                $statusesIntervals[$activity->differences->status] = $time;
+//                $times[$activity->differences->status] = CarbonInterval::seconds($time)->cascade()->forHumans();
+                $lastActivity = $activity->created_at;
+            }
         }
 
-        if ($deliveryType == 'tiptop') {
-            $minimumOrder = $branch->minimum_order;
-            $underMinimumOrderDeliveryFee = $branch->under_minimum_order_delivery_fee;
-            $fixedDeliveryFee = $branch->fixed_delivery_fee;
-            $freeDeliveryThreshold = $branch->free_delivery_threshold;
-            $extraDeliveryFeePerKm = $branch->extra_delivery_fee_per_km;
-        } else {
-            $minimumOrder = $branch->restaurant_minimum_order;
-            $underMinimumOrderDeliveryFee = $branch->restaurant_under_minimum_order_delivery_fee;
-            $fixedDeliveryFee = $branch->restaurant_fixed_delivery_fee;
-            $freeDeliveryThreshold = $branch->restaurant_free_delivery_threshold;
-            $extraDeliveryFeePerKm = $branch->restaurant_extra_delivery_fee_per_km;
-        }
-
-        // coupon
+        return [$statusesIntervals, $total];
     }
 }
