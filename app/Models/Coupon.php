@@ -157,7 +157,10 @@ class Coupon extends Model
         $isValid = false;
         $message = 'Coupon code is invalid';
 
-        if ($channel != $this->channel) {
+        if (
+            $this->channel != self::CHANNEL_FOOD_AND_GROCERY_OBJECT &&
+            $channel != $this->channel
+        ) {
             return [$isValid, $message];
         }
 
