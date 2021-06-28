@@ -750,7 +750,7 @@ class User extends Authenticatable implements HasMedia, MustVerifyEmail
             'name' => $name,
             'token' => hash('sha256', $plainTextToken = Str::random(40)),
             'abilities' => $abilities,
-            'mobile_app_details' => json_encode($deviceDetails),
+            'mobile_app_details' => $deviceDetails,
         ]);
 
         return new NewAccessToken($token, $token->getKey().'|'.$plainTextToken);

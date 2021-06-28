@@ -11,6 +11,7 @@ use App\Http\Resources\CartResource;
 use App\Http\Resources\CurrencyResource;
 use App\Http\Resources\FoodCategoryResource;
 use App\Http\Resources\GroceryCategoryParentResource;
+use App\Http\Resources\OrderMiniResource;
 use App\Http\Resources\OrderResource;
 use App\Http\Resources\RemoteConfigResource;
 use App\Http\Resources\SlideResource;
@@ -152,7 +153,8 @@ class HomeController extends BaseApiController
             ) {
                 if ( ! is_null($user)) {
                     $cart = Cart::retrieve($marketBranch->chain_id, $marketBranch->id, $user->id);
-                    $activeOrders = Order::groceries()
+                    $activeOrders = Order::with('address', 'user', 'cart', 'paymentMethod')
+                                         ->groceries()
                                          ->whereUserId($user->id)
                                          ->whereNotIn('status', [
                                              Order::STATUS_CANCELLED,
@@ -161,7 +163,11 @@ class HomeController extends BaseApiController
                                          ->whereChainId($marketBranch->chain_id)
                                          ->latest();
                     $activeOrdersCount = $activeOrders->count();
-                    $activeOrders = OrderResource::collection($activeOrders->take(4)->get());
+                    if ($request->has('use_mini_order')) {
+                        $activeOrders = OrderMiniResource::collection($activeOrders->take(4)->get());
+                    } else {
+                        $activeOrders = OrderResource::collection($activeOrders->take(4)->get());
+                    }
                     $totalActiveOrders = $activeOrdersCount;
                 }
             } else {
@@ -232,7 +238,11 @@ class HomeController extends BaseApiController
                                      ])
                                      ->latest();
                 $activeOrdersCount = $activeOrders->count();
-                $activeOrders = OrderResource::collection($activeOrders->take(4)->get());
+                if ($request->has('use_mini_order')) {
+                    $activeOrders = OrderMiniResource::collection($activeOrders->take(4)->get());
+                } else {
+                    $activeOrders = OrderResource::collection($activeOrders->take(4)->get());
+                }
                 $totalActiveOrders = $activeOrdersCount;
             }
         }

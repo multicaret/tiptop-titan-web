@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Api\V1;
 
 use App\Http\Controllers\Api\BaseApiController;
+use App\Http\Resources\OrderMiniResource;
 use App\Http\Resources\OrderResource;
 use App\Models\Branch;
 use App\Models\Cart;
@@ -36,7 +37,8 @@ class OrderController extends BaseApiController
         $user = auth()->user();
         $chainId = $request->input('chain_id');
 
-        $previousOrders = Order::groceries()
+        $previousOrders = Order::with('address', 'user', 'cart', 'paymentMethod')
+                               ->groceries()
                                ->whereUserId($user->id)
                                ->whereChainId($chainId)
                                ->whereNotNull('completed_at')
@@ -48,7 +50,13 @@ class OrderController extends BaseApiController
         });
 
         if ( ! is_null($previousOrders)) {
-            return $this->respond(OrderResource::collection($previousOrders));
+            if ($request->has('use_mini_order')) {
+                $ordersCollection = OrderMiniResource::collection($previousOrders);
+            } else {
+                $ordersCollection = OrderResource::collection($previousOrders);
+            }
+
+            return $this->respond($ordersCollection);
         }
 
         return $this->respondNotFound();
@@ -66,7 +74,8 @@ class OrderController extends BaseApiController
         }*/
 
         $user = auth()->user();
-        $previousOrders = Order::foods()
+        $previousOrders = Order::with('address', 'user', 'cart', 'paymentMethod')
+                               ->foods()
                                ->whereUserId($user->id)
                                ->whereNotNull('completed_at')
                                ->latest()
@@ -77,7 +86,13 @@ class OrderController extends BaseApiController
         });
 
         if ( ! is_null($previousOrders)) {
-            return $this->respond(OrderResource::collection($previousOrders));
+            if ($request->has('use_mini_order')) {
+                $ordersCollection = OrderMiniResource::collection($previousOrders);
+            } else {
+                $ordersCollection = OrderResource::collection($previousOrders);
+            }
+
+            return $this->respond($ordersCollection);
         }
 
         return $this->respondNotFound();

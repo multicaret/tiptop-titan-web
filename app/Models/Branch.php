@@ -81,6 +81,8 @@ use Spatie\MediaLibrary\MediaCollections\Models\Collections\MediaCollection;
  * @property float $jet_fixed_delivery_fee
  * @property float $jet_delivery_commission_rate
  * @property float $jet_extra_delivery_fee_per_km
+ * @property-read Collection|\App\Models\Activity[] $activity
+ * @property-read int|null $activity_count
  * @property-read Collection|\App\Models\Location[] $addresses
  * @property-read int|null $addresses_count
  * @property-read \App\Models\Chain $chain
