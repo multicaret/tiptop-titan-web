@@ -146,10 +146,16 @@ class HomeController extends BaseApiController
                                  });
 
             [
-                $distanceForClosesMarketBranch, $marketBranch, $branchTodayWorkingHours
+                $distanceForClosesMarketBranch,
+                $marketBranch,
+                $branchTodayWorkingHours
             ] = Branch::getClosestAvailableBranch($latitude, $longitude);
-            if ( ! is_null($marketBranch) &&
-                ( ! is_null($branchTodayWorkingHours) && ! $branchTodayWorkingHours['isOpen'])
+            if (
+                ! is_null($marketBranch) &&
+                (
+                    ! is_null($branchTodayWorkingHours) &&
+                    $branchTodayWorkingHours['isOpen']
+                )
             ) {
                 if ( ! is_null($user)) {
                     $cart = Cart::retrieve($marketBranch->chain_id, $marketBranch->id, $user->id);
@@ -174,7 +180,7 @@ class HomeController extends BaseApiController
                 // It's too late no branch is open for now, so sorry
                 // No Branch
                 // No Cart
-                $time = trans('api.the_morning_tomorrow');
+                $time = trans('api.the_morning');
                 $allBranches = Branch::getBranchesOrderByDistance($latitude, $longitude);
                 if ($allBranches->count()) {
                     $workingHoursOfFirstMarketBranch = WorkingHour::where('workable_id', $allBranches->first()->id)
