@@ -33,7 +33,9 @@ class FoodBranchResource extends JsonResource
         $searchQuery = request()->input('q');
 
         if ($searchQuery) {
-            $searchProducts = $this->products()->where('status', '!=', Product::STATUS_DRAFT)
+            $searchProducts = $this->products()
+                                   ->active()
+                                   ->where('status', '!=', Product::STATUS_DRAFT)
                                    ->whereHas('translations', function ($productTranslationQuery) use (
                                        $searchQuery
                                    ) {
