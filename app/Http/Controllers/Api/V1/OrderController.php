@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Api\V1;
 
 use App\Http\Controllers\Api\BaseApiController;
+use App\Http\Resources\OrderMiniResource;
 use App\Http\Resources\OrderResource;
 use App\Models\Branch;
 use App\Models\Cart;
@@ -49,7 +50,13 @@ class OrderController extends BaseApiController
         });
 
         if ( ! is_null($previousOrders)) {
-            return $this->respond(OrderResource::collection($previousOrders));
+            if ($request->has('use_mini_resource')) {
+                $ordersCollection = OrderMiniResource::collection($previousOrders);
+            } else {
+                $ordersCollection = OrderResource::collection($previousOrders);
+            }
+
+            return $this->respond($ordersCollection);
         }
 
         return $this->respondNotFound();
@@ -79,7 +86,13 @@ class OrderController extends BaseApiController
         });
 
         if ( ! is_null($previousOrders)) {
-            return $this->respond(OrderResource::collection($previousOrders));
+            if ($request->has('use_mini_resource')) {
+                $ordersCollection = OrderMiniResource::collection($previousOrders);
+            } else {
+                $ordersCollection = OrderResource::collection($previousOrders);
+            }
+
+            return $this->respond($ordersCollection);
         }
 
         return $this->respondNotFound();
