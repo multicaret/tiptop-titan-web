@@ -50,7 +50,7 @@ class OrderController extends BaseApiController
         });
 
         if ( ! is_null($previousOrders)) {
-            if ($request->has('use_mini_resource')) {
+            if ($request->has('use_mini_order')) {
                 $ordersCollection = OrderMiniResource::collection($previousOrders);
             } else {
                 $ordersCollection = OrderResource::collection($previousOrders);
@@ -86,7 +86,7 @@ class OrderController extends BaseApiController
         });
 
         if ( ! is_null($previousOrders)) {
-            if ($request->has('use_mini_resource')) {
+            if ($request->has('use_mini_order')) {
                 $ordersCollection = OrderMiniResource::collection($previousOrders);
             } else {
                 $ordersCollection = OrderResource::collection($previousOrders);

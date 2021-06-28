@@ -50,7 +50,7 @@ class OrderController extends BaseApiController
         $orders = $orders->latest()
                          ->get();
 
-        if ($request->has('use_mini_resource')) {
+        if ($request->has('use_mini_order')) {
             $ordersCollection = OrderMiniResource::collection($orders);
         } else {
             $ordersCollection = OrderResource::collection($orders);
