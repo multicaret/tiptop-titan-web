@@ -111,7 +111,6 @@ class AddressController extends BaseApiController
 
     public function destroy($address)
     {
-        //Todo: only if Super Admin or the owner of the address should be able to delete.
         $address = Location::find($address);
         $user = auth()->user();
         $hasMoreThanOneAddress = Location::whereContactableType(User::class)->whereContactableId($user->id)->count() > 1;
