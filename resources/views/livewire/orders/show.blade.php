@@ -211,7 +211,6 @@
                 </div>
             </div>
 
-            @if($order->is_delivery_by_tiptop)
                 <div class="card mt-3">
                     <h5 class="card-header font-weight-bold">
                         <i class="fas fa-motorcycle"></i>&nbsp;
@@ -220,6 +219,11 @@
                     <div class="card-body pb-0">
                         <div class="row">
                             <div class="col-12 pb-3 border-bottom">
+                                <b>Delivery Type</b>
+
+                                    <p class="text-muted  pull-right">{{$order->is_delivery_by_tiptop ? 'TipTop' : 'Restaurant'}}</p>
+                            </div>
+                            <div class="col-12 pb-3 border-bottom">
                                 <b>Driver</b>
                                 @if(!empty($order->driver))
                                     <a target="_blank" class="text-primary pull-right"
@@ -227,7 +231,7 @@
                                         {{$order->driver->name}}
                                     </a>
                                 @else
-                                    <p class="text-muted">Waiting Delivery information</p>
+                                    <p class="text-muted  pull-right">Waiting Delivery information</p>
                                 @endif
                             </div>
                             <div class="col-12 py-3 border-bottom" style="padding-bottom: 1.3rem !important;">
@@ -273,7 +277,6 @@
                         </div>
                     </div>
                 </div>
-            @endif
         </div>
     </div>
     <div class="row mt-3">
