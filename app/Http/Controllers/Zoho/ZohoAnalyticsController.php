@@ -13,7 +13,7 @@ class ZohoAnalyticsController extends Controller
     {
         $dateCondition = ' ';
         if ( ! empty($request->date)) {
-            $dateCondition = "AND DATE(o.created_at) = DATE('".$request->date."')";
+            $dateCondition = "AND DATETIME(o.created_at) >= DATETIME('".$request->date."')";
         }
 
         $data = DB::select("
@@ -56,8 +56,8 @@ class ZohoAnalyticsController extends Controller
             LEFT JOIN taxonomies t ON t.id = o.cancellation_reason_id
             LEFT JOIN taxonomy_translations tt ON tt.taxonomy_id = t.id and tt.locale = 'en'
             LEFT JOIN activities new on new.subject_id = o.id and new.type='created_order'
-            LEFT JOIN activities preparing on preparing.subject_id = o.id and preparing.type='updated_order' and JSON_EXTRACT(preparing.differences, '$.status') = \"10\"
-            LEFT JOIN activities courier_waiting on courier_waiting.subject_id = o.id and courier_waiting.type='updated_order' and JSON_EXTRACT(courier_waiting.differences, '$.status') = \"12\"
+            LEFT JOIN activities preparing on preparing.subject_id = o.id and preparing.type='updated_order' and JSON_EXTRACT(preparing.differences, '$.status') = '10'
+            LEFT JOIN activities courier_waiting on courier_waiting.subject_id = o.id and courier_waiting.type='updated_order' and JSON_EXTRACT(courier_waiting.differences, '$.status') = '12'
             LEFT JOIN activities delivering on delivering.subject_id = o.id and delivering.type='updated_order' and JSON_EXTRACT(delivering.differences, '$.status') = 16
             LEFT JOIN activities arrived on arrived.subject_id = o.id and arrived.type='updated_order' and JSON_EXTRACT(arrived.differences, '$.status') = 18
             LEFT JOIN activities delivered on delivered.subject_id = o.id and delivered.type='updated_order' and JSON_EXTRACT(delivered.differences, '$.status') = 20
