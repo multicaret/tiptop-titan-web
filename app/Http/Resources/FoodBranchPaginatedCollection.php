@@ -6,7 +6,7 @@ namespace App\Http\Resources;
 use Illuminate\Http\Resources\Json\ResourceCollection;
 
 
-class FoodBranchCollection extends ResourceCollection
+class FoodBranchPaginatedCollection extends ResourceCollection
 {
     public function toArray($request)
     {
