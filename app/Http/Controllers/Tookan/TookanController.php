@@ -165,6 +165,7 @@ class TookanController extends Controller
         {
 
             $order = JetOrder::where('reference_code', $request->order_id)->firstOrFail();
+            $order->status = Order::STATUS_WAITING_COURIER;
 
         }
         else{
@@ -173,7 +174,6 @@ class TookanController extends Controller
         $driver = User::where('tookan_id', $request->fleet_id)->firstOrFail();
 
         $order->driver_id = $driver->id;
-        $order->status = Order::STATUS_WAITING_COURIER;
 
 
         $order->save();
