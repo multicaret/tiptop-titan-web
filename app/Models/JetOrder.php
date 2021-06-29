@@ -134,6 +134,7 @@ class JetOrder extends Model implements HasMedia
         'completed_at' => 'datetime',
     ];
 
+    protected $guarded = [];
     private static function getFormattedActivityLogDifferenceItem(
         ?array $activityLogDifferenceItem,
         $columnName,
@@ -390,7 +391,7 @@ class JetOrder extends Model implements HasMedia
 
     public function getGalleryAttribute()
     {
-        return $this->getMediaForUploader('gallery', 'HD');
+        return $this->getMediaForUploader('gallery');
     }
 
     public function registerMediaCollections(): void

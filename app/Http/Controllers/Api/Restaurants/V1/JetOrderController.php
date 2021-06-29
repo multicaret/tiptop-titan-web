@@ -122,6 +122,7 @@ class JetOrderController extends BaseApiController
             'total' => 'required|numeric',
             'phone' => 'required|numeric|digits_between:7,15',
             'full_name' => 'required|min:3',
+            'images.*' => 'sometimes|image|mimes:jpeg,png,jpg|max:5000'
         ];
 
         $branch = Branch::findOrFail($restaurant);
@@ -152,20 +153,20 @@ class JetOrderController extends BaseApiController
 
 
         $newOrder->delivery_fee = $deliveryFee;
-        $newOrder->status = JetOrder::STATUS_ASSIGNING_COURIER;
-
-
-
-        if ($request->has('images'))
-        {
-            $newOrder->addMultipleMediaFromRequest(['images'])
-                     ->each(function ($fileAdder) {
-                         $fileAdder->toMediaCollection('gallery');
-                     });
-        }
+        $newOrder->status = JetOrder::STATUS_DRAFT;
         $newOrder->save();
 
+        if ($request->has('images')) {
+            $images = $request->file('images');
+            foreach ($images as $image) {
+                $newOrder->addMedia($image)->toMediaCollection('gallery');
 
+            }
+
+        }
+
+        $newOrder->status = JetOrder::STATUS_ASSIGNING_COURIER;
+        $newOrder->save();
 
         DB::commit();
 

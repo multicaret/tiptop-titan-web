@@ -29,7 +29,7 @@ class JetOrderObserver
      */
     public function creating(JetOrder $order)
     {
-        $order->reference_code = 'JET' . mt_rand(0, 99).substr(time(), 5);
+        $order->reference_code = 'JET'.mt_rand(0, 99).substr(time(), 5);
     }
 
     /**
@@ -45,10 +45,7 @@ class JetOrderObserver
 
         $tookan_status = config('services.tookan.status');
 
-        if (!Str::contains($order->client_notes, ['test', 'Test']) && $order->has_jet_delivery && empty($order->tookanInfo) && $tookan_status)
-        {
-            CreateJetTask::dispatchSync($order);
-        }
+
     }
 
     /**
@@ -76,27 +73,15 @@ class JetOrderObserver
                     'exception' => $e,
                 ]);
             }
-//            //dispatching tookan jobs based on changed order's status
-//            $tookan_status = config('services.tookan.status');
-//
-//            if ($order->status == Order::STATUS_PREPARING && $order->is_delivery_by_tiptop && empty($order->tookanInfo) && $tookan_status) {
-//                CreateTask::dispatchSync($order);
-//            } elseif ($order->status == Order::STATUS_CANCELLED && $order->is_delivery_by_tiptop && ! empty(optional($order->tookanInfo)->job_pickup_id) && $tookan_status) {
-//                CancelTask::dispatchSync($order);
-//            } elseif ($order->status == Order::STATUS_DELIVERED) {
-//                if (!Str::contains($order->customer_notes, ['test', 'Test']))
-//                {
-//                    UpdateDailyReportJob::dispatch();
-//                }
-//            }
-//        }
-//        elseif ($order->wasChanged('grand_total')) {
-//            //create job for updating task
-//            // UpdateTask::dispatchSync($order);
-//            if (!Str::contains($order->customer_notes, ['test', 'Test']))
-//            {
-//                UpdateDailyReportJob::dispatch();
-//            }
+            //dispatching tookan job
+            $tookan_status = config('services.tookan.status');
+            if ($order->status == JetOrder::STATUS_ASSIGNING_COURIER) {
+                if ( ! Str::contains($order->client_notes,
+                        ['test', 'Test']) && empty($order->tookanInfo) && $tookan_status) {
+                    CreateJetTask::dispatchSync($order);
+
+                }
+            }
         }
         $order->recordActivity('updated');
     }

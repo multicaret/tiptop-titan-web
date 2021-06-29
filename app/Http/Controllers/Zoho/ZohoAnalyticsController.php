@@ -42,7 +42,8 @@ class ZohoAnalyticsController extends Controller
              TIMESTAMPDIFF(MINUTE, delivering.created_at, arrived.created_at) as 'on the way => at the address',
              TIMESTAMPDIFF(MINUTE, arrived.created_at, delivered.created_at) as 'at the address => delivered',
              TIMESTAMPDIFF(MINUTE, new.created_at, delivered.created_at) as 'total delivery time',
-             GROUP_CONCAT(ogn.message SEPARATOR '  |  ') AS notes
+             GROUP_CONCAT(ogn.message SEPARATOR '  |  ') AS notes,
+             tt.title AS 'cancellation reason'
             FROM orders o
             LEFT JOIN branches b ON o.branch_id = b.id
             LEFT JOIN branch_translations bt ON bt.branch_id = b.id AND bt.locale='en'
@@ -52,6 +53,8 @@ class ZohoAnalyticsController extends Controller
             LEFT JOIN region_translations rt ON rt.region_id = c.region_id AND rt.locale = 'en'
             LEFT JOIN order_agent_notes ogn ON ogn.order_id = o.id
             LEFT JOIN locations l ON l.id = o.address_id
+            LEFT JOIN taxonomies t ON t.id = o.cancellation_reason_id
+            LEFT JOIN taxonomy_translations tt ON tt.taxonomy_id = t.id and tt.locale = 'en'
             LEFT JOIN activities new on new.subject_id = o.id and new.type='created_order'
             LEFT JOIN activities preparing on preparing.subject_id = o.id and preparing.type='updated_order' and JSON_EXTRACT(preparing.differences, '$.status') = \"10\"
             LEFT JOIN activities courier_waiting on courier_waiting.subject_id = o.id and courier_waiting.type='updated_order' and JSON_EXTRACT(courier_waiting.differences, '$.status') = \"12\"
