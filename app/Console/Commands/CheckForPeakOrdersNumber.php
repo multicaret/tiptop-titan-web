@@ -45,7 +45,7 @@ class CheckForPeakOrdersNumber extends Command
         $max = OrderDailyReport::whereDate('day', '<', today())->max('orders_count');
 
         if ($todayReportRecord->orders_count > $max) {
-            Mail::to('nour@trytiptop.app')->send(new NewRecord($todayReportRecord,
+            Mail::to(['nour@trytiptop.app','management@trytiptop.app','mehmet@trytiptop.app'])->send(new NewRecord($todayReportRecord,
                 OrderDailyReport::whereDate('day', '<', today())->latest('orders_count')->first()));
         }
 

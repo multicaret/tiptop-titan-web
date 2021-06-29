@@ -13,7 +13,7 @@
                 @if($jetOrdersCount > 0)
                     <div class="pl-1 ml-auto bounce d-inline-block" style="font-size:15px; ">
 
-                        <div class="badge badge-danger d-inline-block border border-dark">
+                        <div class="badge badge-danger d-inline-block">
                              {{$jetOrdersCount}}
                         </div>
                     </div>
