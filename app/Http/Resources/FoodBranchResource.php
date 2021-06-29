@@ -6,7 +6,6 @@ use App\Http\Controllers\Controller;
 use App\Models\Branch;
 use App\Models\Currency;
 use App\Models\Location;
-use App\Models\Place;
 use App\Models\Product;
 use App\Models\WorkingHour;
 use Illuminate\Http\Request;

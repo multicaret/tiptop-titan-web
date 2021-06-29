@@ -196,7 +196,7 @@ class OrderController extends BaseApiController
         ];
 
         $user = auth()->user();
-        $mobileAppDetails = json_decode($user->currentAccessToken()->mobile_app_details, true);
+        $mobileAppDetails = $user->currentAccessToken()->mobile_app_details;
 
         $activeCart = Cart::with('branch')
                           ->whereId($request->input('cart_id'))
@@ -234,8 +234,8 @@ class OrderController extends BaseApiController
         $newOrder->payment_method_id = $request->input('payment_method_id');
         $newOrder->address_id = $address->id;
         $newOrder->city_id = $address->city_id;
-        $newOrder->agent_device = $mobileAppDetails['device']['manufacturer'] ?: null;
-        $newOrder->agent_os = $mobileAppDetails['device']['model'] ?: null;
+        $newOrder->agent_device = $mobileAppDetails && $mobileAppDetails->device ? $mobileAppDetails->device->manufacturer : null;
+        $newOrder->agent_os = $mobileAppDetails && $mobileAppDetails->device ? $mobileAppDetails->device->model : null;
         $newOrder->customer_notes = $request->input('notes');
         $newOrder->type = $branch->type;
         $newOrder->save();
