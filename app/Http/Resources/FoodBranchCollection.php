@@ -13,11 +13,11 @@ class FoodBranchCollection extends ResourceCollection
         return [
             'restaurants' => $this->collection,
             'pagination' => [
-//                'total' => $this->total(),
+                'total' => $this->total(),
 //                'count' => $this->count(),
-                'per_page' => $this->perPage(),
-                'current_page' => $this->currentPage(),
-                'total_pages' => $this->lastPage()
+                'perPage' => $this->perPage(),
+                'currentPage' => $this->currentPage(),
+                'totalPages' => $this->lastPage()
             ],
         ];
     }
