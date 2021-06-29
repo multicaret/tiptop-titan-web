@@ -17,7 +17,7 @@ class ZohoAnalyticsController extends Controller
         }
 
         $data = DB::select("
-          SELECT  DATE(o.created_at) AS 'order creation date',
+          SELECT  DATE_FORMAT(o.created_at,'%Y-%m-%d %H:%i:%s') AS 'order creation date',
              TIME_FORMAT(o.created_at, '%H:%i') AS 'order creation time',
              o.reference_code AS 'order id' ,
              CASE WHEN o.status=20 THEN 'Delivered' ELSE 'Canceled' END AS 'status',
@@ -62,7 +62,7 @@ class ZohoAnalyticsController extends Controller
             LEFT JOIN activities arrived on arrived.subject_id = o.id and arrived.type='updated_order' and JSON_EXTRACT(arrived.differences, '$.status') = 18
             LEFT JOIN activities delivered on delivered.subject_id = o.id and delivered.type='updated_order' and JSON_EXTRACT(delivered.differences, '$.status') = 20
             WHERE (o.customer_notes NOT LIKE '%test%' OR o.customer_notes IS NULL)  ".$dateCondition."
-            GROUP BY DATE(o.created_at), o.reference_code,bt.title,o.status,o.coupon_discount_amount,total_before,final_price,o.delivery_fee,driver,rt.name,ct.name,o.type,'delivery type',b.latitude,b.longitude
+            GROUP BY o.created_at, o.reference_code,bt.title,o.status,o.coupon_discount_amount,total_before,final_price,o.delivery_fee,driver,rt.name,ct.name,o.type,'delivery type',b.latitude,b.longitude
              ,o.user_id,l.latitude,l.longitude,bt.branch_id,new.created_at,preparing.created_at,courier_waiting.created_at,delivering.created_at,arrived.created_at,delivered.created_at
              ");
         $filename = "restaurant-sales.json";
