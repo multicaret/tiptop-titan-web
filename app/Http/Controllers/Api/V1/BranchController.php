@@ -4,7 +4,7 @@ namespace App\Http\Controllers\Api\V1;
 
 use App\Http\Controllers\Api\BaseApiController;
 use App\Http\Resources\BranchResource;
-use App\Http\Resources\FoodBranchCollection;
+use App\Http\Resources\FoodBranchPaginatedCollection;
 use App\Http\Resources\FoodBranchResource;
 use App\Http\Resources\FoodCategoryResource;
 use App\Models\Branch;
@@ -101,10 +101,10 @@ class BranchController extends BaseApiController
 
             $branches = $branches->selectRaw('branches.*, DISTANCE_BETWEEN(latitude,longitude,?,?) as distance',
                 [$latitude, $longitude])
-                                 ->having('distance', '<',
-                                     config('defaults.geolocation.max_distance_for_food_branches_to_order_from_in_erbil'))
+//                                 ->having('distance', '<',
+//                                     config('defaults.geolocation.max_distance_for_food_branches_to_order_from_in_erbil'))
                                  ->paginate(20);
-            $branchesCollection = new FoodBranchCollection($branches);
+            $branchesCollection = new FoodBranchPaginatedCollection($branches);
         } else {
             $branches = $branches->get();
             $branchesCollection = BranchResource::collection($branches);
