@@ -112,7 +112,7 @@ class WorkingHour extends Model
                 $dayShifts = $daysShifts->groupBy('day')->get($dayNumber);
 
 
-                if (!is_null($dayShifts)) {
+                if ( ! is_null($dayShifts)) {
                     $getOpenTimeShift = $dayShifts->where('opens_at', '<=', $selectTime)->where('closes_at', '>=',
                         $selectTime)->first();
                     if ( ! empty($getOpenTimeShift)) {
@@ -130,7 +130,7 @@ class WorkingHour extends Model
                     if (is_null($workingHours['opensAt']) && is_null($workingHours['closesAt'])) {
                         $nextWorkingDayNumber = self::getNextWorkingDayNumber($dayNumber, $object->workingHours);
                         $nextDayShifts = $daysShifts->groupBy('day')->get($nextWorkingDayNumber);
-                        if ( ! is_null($nextDayShifts->first()) && is_null($workingHours['opensAt'])) {
+                        if ( ! is_null($nextDayShifts) && ! is_null($nextDayShifts->first()) && is_null($workingHours['opensAt'])) {
                             $workingHours['opensAt'] = Carbon::parse($nextDayShifts->first()->opens_at)->format('H:i');
                         }
                     }
