@@ -65,12 +65,14 @@ class TookanController extends Controller
         }
         else{
             $order = Order::where('reference_code', $request->order_id)->firstOrFail();
+
+            if ( ! in_array($order->status,
+                [Order::STATUS_ON_THE_WAY, Order::STATUS_PREPARING, Order::STATUS_AT_THE_ADDRESS,Order::STATUS_WAITING_COURIER])) {
+                return;
+            }
         }
 
-        if ( ! in_array($order->status,
-            [Order::STATUS_ON_THE_WAY, Order::STATUS_PREPARING, Order::STATUS_AT_THE_ADDRESS,Order::STATUS_WAITING_COURIER])) {
-            return;
-        }
+
 
         $order->status = Order::STATUS_DELIVERED;
 
@@ -109,6 +111,10 @@ class TookanController extends Controller
         }
         else{
             $order = Order::where('reference_code', $request->order_id)->firstOrFail();
+
+            if ( ! in_array($order->status, [Order::STATUS_PREPARING, Order::STATUS_WAITING_COURIER])) {
+                return;
+            }
         }
         if (empty($order->driver_id))
         {
@@ -117,9 +123,7 @@ class TookanController extends Controller
             $order->driver_id = $driver->id;
 
         }
-        if ( ! in_array($order->status, [Order::STATUS_PREPARING, Order::STATUS_WAITING_COURIER])) {
-            return;
-        }
+
 
         $order->status = Order::STATUS_ON_THE_WAY;
 
@@ -137,12 +141,14 @@ class TookanController extends Controller
         }
         else{
             $order = Order::where('reference_code', $request->order_id)->firstOrFail();
+
+            if ( ! in_array($order->status,
+                [Order::STATUS_PREPARING, Order::STATUS_WAITING_COURIER, Order::STATUS_ON_THE_WAY])) {
+                return;
+            }
         }
 
-        if ( ! in_array($order->status,
-            [Order::STATUS_PREPARING, Order::STATUS_WAITING_COURIER, Order::STATUS_ON_THE_WAY])) {
-            return;
-        }
+
 
         $order->status = Order::STATUS_AT_THE_ADDRESS;
 
