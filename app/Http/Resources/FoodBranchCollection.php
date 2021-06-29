@@ -11,7 +11,7 @@ class FoodBranchCollection extends ResourceCollection
     public function toArray($request)
     {
         return [
-            'restaurants' => $this->collection,
+            'restaurants' => FoodBranchWithoutCategoriesResource::collection($this->collection),
             'pagination' => [
                 'total' => $this->total(),
 //                'count' => $this->count(),
