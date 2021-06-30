@@ -267,4 +267,10 @@ return [
     'order_status_18' => 'في',
     'order_status_20' => 'تم التوصيل',
     'order_status_22' => 'بانتظار إسناد لسائق',
+    //posts
+    'related_posts' => 'مواضيع أخرى',
+    'how_to_use' => 'طريقة الاستخدام',
+    'app_screenshots' => 'صور من التطبيق',
+    'download_app' => 'حمل التطبيق هنا',
+
 ];

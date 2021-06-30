@@ -183,7 +183,11 @@
                                     وێنه‌ له‌ ئه‌پڵیكه‌یشنه‌كه‌وه‌
                                 </a>
                             </li>
-
+                            <li class="header-nav-item">
+                                <a class="nav-link header-nav-link" href="{{route('blog.index')}}">
+                                    {{__('strings.Blog')}}
+                                </a>
+                            </li>
 
                             <li class="navbar-nav-last-item">
                                 <a class="btn btn-sm btn-indigo btn-pill transition-3d-hover" href="#lead-form-section">

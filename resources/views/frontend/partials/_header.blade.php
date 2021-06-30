@@ -94,28 +94,47 @@
                             </li>-->
                             <li class="header-nav-item">
                                 <a class="nav-link header-nav-link" href="#section1">
-                                    طريقة الاستخدام
+                                    {{(__('strings.how_to_use'))}}
                                 </a>
                             </li>
                             <li class="header-nav-item">
                                 <a class="nav-link header-nav-link" href="#section2">
-                                    صور من التطبيق
+                                    {{(__('strings.app_screenshots'))}}
                                 </a>
                             </li>
 
 
                             <li class="navbar-nav-last-item">
                                 <a class="btn btn-sm btn-indigo btn-pill transition-3d-hover" href="#lead-form-section">
-                                    حمل التطبيق هنا
+                                    {{(__('strings.download_app'))}}
                                 </a>
                             </li>
+                            @if(app()->getLocale() != 'ku')
+                                <li class="navbar-nav-last-item">
+                                    <a class="btn btn-sm btn-white btn-pill transition-3d-hover"
+                                       href="{{ localized_route('home',[],'ku') }}">
+                                        كوردى
+                                    </a>
+                                </li>
+                            @endif
+                            @if(app()->getLocale() != 'en')
+                                <li class="navbar-nav-last-item">
+                                    <a class="btn btn-sm btn-white btn-pill transition-3d-hover"
+                                       href="{{ localized_route('home',[],'en') }}">
+                                        English
+                                    </a>
+                                </li>
+                            @endif
+                            @if(app()->getLocale() != 'ar')
+                                <li class="navbar-nav-last-item">
+                                    <a class="btn btn-sm btn-white btn-pill transition-3d-hover"
+                                       href="{{ localized_route('home',[],'ar') }}">
+                                        العربية
+                                    </a>
+                                </li>
+                            @endif
 
-                            <li class="navbar-nav-last-item">
-                                <a class="btn btn-sm btn-white btn-pill transition-3d-hover"
-                                   href="{{ localized_route('home',[],'ku') }}">
-                                    كوردى
-                                </a>
-                            </li>
+
 
                         </ul>
                     </div>
