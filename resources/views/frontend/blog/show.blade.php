@@ -49,10 +49,11 @@
     <!-- Blog Card Section -->
     <div class="container">
         <div class="w-lg-75 border-top space-2 mx-lg-auto">
+            @if(!empty($previous) || !empty($next))
             <div class="mb-3 mb-sm-5">
                 <h3>{{__('strings.related_posts')}}</h3>
             </div>
-
+            @endif
             <div class="row">
                 @if(!empty($previous))
                 <div class="col-md-4">
