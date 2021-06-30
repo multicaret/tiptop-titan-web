@@ -90,8 +90,8 @@
 
 <!-- Hero Section -->
 <div class="bg-primary bg-img-hero" style="background-image: url(/frontend-assets/images/abstract-shapes-2.svg);">
-    <div class="container space-2 space-lg-3">
-        <div class="w-lg-65 text-center mx-lg-auto">
+    <div class="container pt-8 ">
+        <div class="w-lg-65 text-center mx-lg-auto space-1 space-lg-1">
 
             <h1 class="text-white mb-0">@yield('title')</h1>
         </div>

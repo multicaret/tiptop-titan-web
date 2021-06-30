@@ -102,8 +102,11 @@
                                     {{(__('strings.app_screenshots'))}}
                                 </a>
                             </li>
-
-
+                            <li class="header-nav-item">
+                                <a class="nav-link header-nav-link" href="{{route('blog.index')}}">
+                                    {{__('strings.blog')}}
+                                </a>
+                            </li>
                             <li class="navbar-nav-last-item">
                                 <a class="btn btn-sm btn-indigo btn-pill transition-3d-hover" href="#lead-form-section">
                                     {{(__('strings.download_app'))}}

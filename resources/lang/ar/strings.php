@@ -92,7 +92,7 @@ return [
     'Delete' => 'حذف',
     'Full Name' => 'الاسم الكامل',
     'Accounts' => 'الحسابات',
-    'Blog' => 'المدونة',
+    'Blog' => 'أخبار ومدونة',
     'Subtitle' => 'العنوان الفرعي',
     'Preferences' => 'الإعدادات',
     'Site Preferences' => 'إعدادات الموقع',

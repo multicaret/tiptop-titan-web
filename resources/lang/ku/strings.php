@@ -301,7 +301,7 @@ return [
     'You have orders with this address you can not delete it' => 'You have orders with this address you can not delete it',
     'You can not delete this address, please add a new one before deleting this address' => 'You can not delete this address, please add a new one before deleting this address',
     //posts
-    'Blog' => 'Blog',
+    'blog' => 'هەواڵ و بلۆگی',
     'related_posts' => 'بابەتی تر',
     'how_to_use' => 'چۆنیه‌تی به‌كارهێنان',
     'app_screenshots' => 'وێنه‌ له‌ ئه‌پڵیكه‌یشنه‌كه‌وه‌',

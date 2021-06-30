@@ -1,5 +1,5 @@
 @extends('layouts.frontend')
-@section('title',__('Blog'))
+@section('title',__('strings.blog'))
 @section('content')
     <div class="container space-top-2 space-bottom-2">
 

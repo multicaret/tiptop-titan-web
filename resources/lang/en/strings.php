@@ -302,7 +302,7 @@ return [
     'You can not delete this address, please add a new one before deleting this address' => 'You can not delete this address, please add a new one before deleting this address',
     //posts
     'related_posts' => 'You May Like To Read',
-    'blog' => 'Blog',
+    'blog' => 'News & Blog',
     'how_to_use' => 'How to use',
     'app_screenshots' => 'App Screenshots',
     'download_app' => 'Download App',

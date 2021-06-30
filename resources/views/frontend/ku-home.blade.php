@@ -185,7 +185,7 @@
                             </li>
                             <li class="header-nav-item">
                                 <a class="nav-link header-nav-link" href="{{route('blog.index')}}">
-                                    {{__('strings.Blog')}}
+                                    {{__('strings.blog')}}
                                 </a>
                             </li>
 
