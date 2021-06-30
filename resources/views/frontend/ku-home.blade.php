@@ -523,13 +523,6 @@
                              alt="Image Description">
                         <!--                        <img class="img-fluid shadow rounded" src="/frontend-assets//frontend-assets/assets/img/407x472/img3.jpg" alt="Image Description">-->
                     </div>
-                    <div class="col-3 col-md px-2"
-                         data-parallaxanimation='[{property: "transform", value:" translate3d(0,@{{val}}rem,0)", initial:"-7", mid:"0", final:"7"}]'>
-                        <img class="img-fluid shadow rounded mb-3 mb-lg-5"
-                             src="/frontend-assets/images/screenshots-ku/orderconfirm.png"
-                             alt="Image Description">
-                        <!--                        <img class="img-fluid shadow rounded" src="/frontend-assets//frontend-assets/assets/img/407x535/img1.jpg" alt="Image Description">-->
-                    </div>
                     <div class="d-none d-md-inline-block col-md px-2">
                         <img class="img-fluid shadow rounded mb-3 mb-lg-5"
                              src="/frontend-assets/images/screenshots-ku/Checkout.png"

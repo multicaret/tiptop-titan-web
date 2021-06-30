@@ -102,7 +102,11 @@
                                     {{(__('strings.app_screenshots'))}}
                                 </a>
                             </li>
+                            @php
+                                $thisUrl = url()->current().'/';
+                            @endphp
                             <li class="header-nav-item">
+
                                 <a class="nav-link header-nav-link" href="{{route('blog.index')}}">
                                     {{__('strings.blog')}}
                                 </a>
@@ -113,25 +117,34 @@
                                 </a>
                             </li>
                             @if(app()->getLocale() != 'ku')
+                                @php
+                                    $newUrl  = str_replace('/'.app()->getLocale(), '/ku', $thisUrl);
+                                @endphp
                                 <li class="navbar-nav-last-item">
                                     <a class="btn btn-sm btn-white btn-pill transition-3d-hover"
-                                       href="{{ localized_route('home',[],'ku') }}">
+                                       href="{{ $newUrl}}">
                                         كوردى
                                     </a>
                                 </li>
                             @endif
                             @if(app()->getLocale() != 'en')
+                                @php
+                                    $newUrl  = str_replace('/'.app()->getLocale(), '/en', $thisUrl);
+                                @endphp
                                 <li class="navbar-nav-last-item">
                                     <a class="btn btn-sm btn-white btn-pill transition-3d-hover"
-                                       href="{{ localized_route('home',[],'en') }}">
+                                       href="{{ $newUrl }}">
                                         English
                                     </a>
                                 </li>
                             @endif
                             @if(app()->getLocale() != 'ar')
+                                @php
+                                    $newUrl  = str_replace('/'.app()->getLocale(), '/ar', $thisUrl);
+                                @endphp
                                 <li class="navbar-nav-last-item">
                                     <a class="btn btn-sm btn-white btn-pill transition-3d-hover"
-                                       href="{{ localized_route('home',[],'ar') }}">
+                                       href="{{$newUrl}}">
                                         العربية
                                     </a>
                                 </li>

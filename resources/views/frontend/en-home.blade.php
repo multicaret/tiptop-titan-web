@@ -250,7 +250,7 @@
                             <div class="device-wrapper ">
                                 <div class="device device-iphone-x">
                                     <img class="device-iphone-x-frame" src="/frontend-assets/images/iphone-x.svg" alt="iPhone Frame">
-                                    <img class="device-iphone-x-screen" src="/frontend-assets/images/screenshots-ar/1.png" alt="TipTop Screenshot">
+                                    <img class="device-iphone-x-screen" src="/frontend-assets/images/screenshots-en/1.png" alt="TipTop Screenshot">
                                 </div>
                             </div>
                         </div>
@@ -376,7 +376,7 @@
                     <div class="device device-iphone-x w-75 mx-auto">
                         <img class="device-iphone-x-frame" src="/frontend-assets/images/iphone-x.svg"
                              alt="Image Description">
-                        <img class="device-iphone-x-screen" src="/frontend-assets/images/screenshots-ar/Home.png"
+                        <img class="device-iphone-x-screen" src="/frontend-assets/images/screenshots-en/Home.png"
                              alt="Image Description">
                     </div>
                     <!-- End Device Mockup -->
@@ -417,7 +417,7 @@
                     <div class="device device-iphone-x w-75 mx-auto">
                         <img class="device-iphone-x-frame" src="/frontend-assets/images/iphone-x.svg"
                              alt="Image Description">
-                        <img class="device-iphone-x-screen" src="/frontend-assets/images/screenshots-ar/RestauratnsList.png"
+                        <img class="device-iphone-x-screen" src="/frontend-assets/images/screenshots-en/RestauratnsList.png"
                              alt="Image Description">
                     </div>
                     <!-- End Device Mockup -->
@@ -458,7 +458,7 @@
                     <div class="device device-iphone-x w-75 mx-auto">
                         <img class="device-iphone-x-frame" src="/frontend-assets/images/iphone-x.svg"
                              alt="Image Description">
-                        <img class="device-iphone-x-screen" src="/frontend-assets/images/screenshots-ar/Checkout.png"
+                        <img class="device-iphone-x-screen" src="/frontend-assets/images/screenshots-en/Checkout.png"
                              alt="Image Description">
                     </div>
                     <!-- End Device Mockup -->
@@ -482,29 +482,29 @@
             <div class="container-fluid px-lg-9">
                 <div class="row justify-content-md-center align-items-center mx-n2">
                     <div class="d-none d-md-inline-block col-md px-2">
-                        <img class="img-fluid shadow rounded mb-3 mb-lg-5" src="/frontend-assets/images/screenshots-ar/Home.png"
+                        <img class="img-fluid shadow rounded mb-3 mb-lg-5" src="/frontend-assets/images/screenshots-en/Home.png"
                              alt="Image Description">
                         <!--                        <img class="img-fluid shadow rounded" src="../../../../assets/img/407x115/img1.jpg" alt="Image Description">-->
                     </div>
                     <div class="col-3 col-md px-2"
                          data-parallaxanimation='[{property: "transform", value:" translate3d(0,@{{val}}rem,0)", initial:"7", mid:"0", final:"-7"}]'>
-                        <img class="img-fluid shadow rounded mb-3 mb-lg-5" src="/frontend-assets/images/screenshots-ar/RestauratnsList.png"
+                        <img class="img-fluid shadow rounded mb-3 mb-lg-5" src="/frontend-assets/images/screenshots-en/RestauratnsList.png"
                              alt="Image Description">
                         <!--                        <img class="img-fluid shadow rounded" src="../../../../assets/img/407x283/img1.jpg" alt="Image Description">-->
                     </div>
                     <div class="col-6 col-md px-2">
-                        <img class="img-fluid shadow rounded mb-3 mb-lg-5" src="/frontend-assets/images/screenshots-ar/menu.png"
+                        <img class="img-fluid shadow rounded mb-3 mb-lg-5" src="/frontend-assets/images/screenshots-en/menu.png"
                              alt="Image Description">
                         <!--                        <img class="img-fluid shadow rounded" src="../../../../assets/img/407x472/img3.jpg" alt="Image Description">-->
                     </div>
                     <div class="col-3 col-md px-2"
                          data-parallaxanimation='[{property: "transform", value:" translate3d(0,@{{val}}rem,0)", initial:"-7", mid:"0", final:"7"}]'>
-                        <img class="img-fluid shadow rounded mb-3 mb-lg-5" src="/frontend-assets/images/screenshots-ar/orderconfirm.png"
+                        <img class="img-fluid shadow rounded mb-3 mb-lg-5" src="/frontend-assets/images/screenshots-en/orderconfirm.png"
                              alt="Image Description">
                         <!--                        <img class="img-fluid shadow rounded" src="../../../../assets/img/407x535/img1.jpg" alt="Image Description">-->
                     </div>
                     <div class="d-none d-md-inline-block col-md px-2">
-                        <img class="img-fluid shadow rounded mb-3 mb-lg-5" src="/frontend-assets/images/screenshots-ar/Checkout.png"
+                        <img class="img-fluid shadow rounded mb-3 mb-lg-5" src="/frontend-assets/images/screenshots-en/Checkout.png"
                              alt="Image Description">
                         <!--                        <img class="img-fluid shadow rounded" src="../../../../assets/img/407x472/img2.jpg" alt="Image Description">-->
                     </div>
