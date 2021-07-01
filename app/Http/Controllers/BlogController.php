@@ -21,7 +21,7 @@ class BlogController extends Controller
      */
     public function index(Request $request)
     {
-        $posts = Post::articles()->paginate(8);
+        $posts = Post::articles()->active()->paginate(8);
 
         return view('frontend.blog.index', compact('posts'));
     }
@@ -37,11 +37,11 @@ class BlogController extends Controller
     public function show(Post $post)
     {
         $post->viewed();
-        $previous = Post::articles()
+        $previous = Post::articles()->active()
                         ->where('id', '<', $post->id)
                         ->orderBy('id', 'asc')
                         ->first();
-        $next = Post::articles()
+        $next = Post::articles()->active()
                     ->where('id', '>', $post->id)
                     ->orderBy('id', 'asc')
                     ->first();

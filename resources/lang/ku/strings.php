@@ -301,9 +301,9 @@ return [
     'You have orders with this address you can not delete it' => 'You have orders with this address you can not delete it',
     'You can not delete this address, please add a new one before deleting this address' => 'You can not delete this address, please add a new one before deleting this address',
     //posts
-    'related_posts' => 'You May Like To Read',
-    'blog' => 'News & Blog',
-    'how_to_use' => 'How to use',
-    'app_screenshots' => 'App Screenshots',
-    'download_app' => 'Download App',
+    'blog' => 'هەواڵ و بلۆگی',
+    'related_posts' => 'بابەتی تر',
+    'how_to_use' => 'چۆنیه‌تی به‌كارهێنان',
+    'app_screenshots' => 'وێنه‌ له‌ ئه‌پڵیكه‌یشنه‌كه‌وه‌',
+    'download_app' => 'ئه‌پڵیكه‌یشنه‌كه‌ داببه‌زێنه‌ لێره‌',
 ];

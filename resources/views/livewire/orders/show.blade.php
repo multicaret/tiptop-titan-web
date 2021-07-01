@@ -110,6 +110,14 @@
                             <a target="_blank" class="text-primary pull-right"
                                href="{{route('admin.users.edit', ['role' => $order->user->role_name, 'user' => $order->user])}}">
                                 {{$order->user->name}}
+
+                                @if($order->user->orders()->count() == 1)
+                                <div class="pl-1 ml-auto bounce d-inline-block" style="font-size:16px;">
+                                    <div class="badge badge-danger d-inline-block">
+                                        New
+                                    </div>
+                                </div>
+                                @endif
                             </a>
                         </div>
                         <div class="col-12 py-3 border-bottom">
