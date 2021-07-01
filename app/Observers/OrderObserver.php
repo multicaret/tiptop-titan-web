@@ -13,6 +13,8 @@ use Illuminate\Support\Str;
 
 class OrderObserver
 {
+    private $testNotes = ['test', 'Test', ' تست ', ' تستت ', ' تتست '];
+
     /**
      * Handle the Order "created" event.
      *
@@ -33,8 +35,7 @@ class OrderObserver
     public function created(Order $order)
     {
         $order->recordActivity('created');
-        if (!Str::contains($order->customer_notes, ['test', 'Test']))
-        {
+        if ( ! Str::contains($order->customer_notes, $this->testNotes)) {
             UpdateDailyReportJob::dispatch($order)->delay(now()->addMinutes(2));
         }
     }
@@ -73,16 +74,14 @@ class OrderObserver
             } elseif ($order->status == Order::STATUS_CANCELLED && $order->is_delivery_by_tiptop && ! empty(optional($order->tookanInfo)->job_pickup_id) && $tookan_status) {
                 CancelTask::dispatchSync($order);
             } elseif ($order->status == Order::STATUS_DELIVERED) {
-                if (!Str::contains($order->customer_notes, ['test', 'Test']))
-                {
+                if ( ! Str::contains($order->customer_notes, $this->testNotes)) {
                     UpdateDailyReportJob::dispatch($order);
                 }
             }
         } elseif ($order->wasChanged('grand_total')) {
             //create job for updating task
             // UpdateTask::dispatchSync($order);
-            if (!Str::contains($order->customer_notes, ['test', 'Test', ' تست ', ' تستت ', ' تتست ']))
-            {
+            if ( ! Str::contains($order->customer_notes, $this->testNotes)) {
                 UpdateDailyReportJob::dispatch($order);
             }
         }
