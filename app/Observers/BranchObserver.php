@@ -2,19 +2,10 @@
 
 namespace App\Observers;
 
-use App\Jobs\Zoho\CreateBranchAccountJob;
-use App\Jobs\Zoho\CreateDeliveryItemJob;
-use App\Jobs\Zoho\CreateTipTopDeliveryItemJob;
-use App\Jobs\Zoho\SyncBranchJob;
 use App\Models\Branch;
-use Illuminate\Support\Facades\Bus;
 
 class BranchObserver
 {
-    // Dear Noor, we had to make this as false for our "updated" activity
-    // however, we added a delay of 1 minute
-    public $afterCommit = false;
-
     /**
      * Handle the Branch "created" event.
      *
@@ -23,16 +14,7 @@ class BranchObserver
      */
     public function created(Branch $branch)
     {
-        Bus::chain(
-            [
-                new SyncBranchJob($branch),
-                new CreateDeliveryItemJob($branch),
-                new CreateTipTopDeliveryItemJob($branch),
-                new CreateBranchAccountJob($branch),
-            ]
-        )
-           ->dispatch()
-           ->delay(now()->addMinute());
+        $branch->recordActivity('created');
     }
 
     /**

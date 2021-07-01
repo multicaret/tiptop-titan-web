@@ -6,6 +6,10 @@ use App\Exports\BranchProductsExport;
 use App\Exports\ProductsExportGeneral;
 use App\Http\Controllers\Controller;
 use App\Imports\ProductsImporter;
+use App\Jobs\Zoho\CreateBranchAccountJob;
+use App\Jobs\Zoho\CreateDeliveryItemJob;
+use App\Jobs\Zoho\CreateTipTopDeliveryItemJob;
+use App\Jobs\Zoho\SyncBranchJob;
 use App\Models\Branch;
 use App\Models\Chain;
 use App\Models\Location;
@@ -18,6 +22,7 @@ use Illuminate\Contracts\Foundation\Application;
 use Illuminate\Contracts\View\Factory;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Bus;
 use Illuminate\View\View;
 use Maatwebsite\Excel\Facades\Excel;
 
@@ -143,6 +148,15 @@ class BranchController extends Controller
         $branch = new Branch();
         $branch->creator_id = $branch->editor_id = auth()->id();
         $this->storeUpdateLogic($request, $branch);
+
+        Bus::chain(
+            [
+                new SyncBranchJob($branch),
+                new CreateDeliveryItemJob($branch),
+                new CreateTipTopDeliveryItemJob($branch),
+                new CreateBranchAccountJob($branch),
+            ]
+        );
 
         return redirect()
             ->route('admin.branches.edit', ['type' => $request->type, $branch->uuid])
