@@ -32,8 +32,7 @@ class Kernel extends ConsoleKernel
         // $schedule->command('inspire')->hourly();
 //        $schedule->command(UpdateCurrencyExchangeRate::class)->hourly();
 
-//        $schedule->command('backup:clean')->daily()->at('01:00');
-//        $schedule->command('backup:run')->daily()->at('02:00');
+        $schedule->command('horizon:snapshot')->everyFiveMinutes();
         $schedule->command('branch-availability:update')->daily()->at('03:56');
 
         if (app()->environment('production')) {
