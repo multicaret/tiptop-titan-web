@@ -47,14 +47,14 @@ class CloneChainProductToBranch implements ShouldQueue
                 $newProduct->push();
                 $newProduct->categories()->sync($this->originalProduct->categories->pluck('id'));
 
-                $oldMediaItems = $this->originalProduct->getMedia('cover');
+                /*$oldMediaItems = $this->originalProduct->getMedia('cover');
                 foreach ($oldMediaItems as $oldMedia) {
                     $oldMedia->copy($newProduct, 'cover', 's3');
                 }
                 $oldMediaItems = $this->originalProduct->getMedia('gallery');
                 foreach ($oldMediaItems as $oldMedia) {
                     $oldMedia->copy($newProduct, 'gallery', 's3');
-                }
+                }*/
                 \DB::commit();
             } catch (\Exception $e) {
                 \DB::rollBack();
