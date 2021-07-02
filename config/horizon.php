@@ -81,6 +81,16 @@ return [
             ],
         ],
 
+        'staging' => [
+            'supervisor-1' => [
+                'connection' => 'redis',
+                'queue' => ['default'],
+                'balance' => 'simple',
+                'processes' => 7,
+                'tries' => 3,
+            ],
+        ],
+
         'local' => [
             'supervisor-1' => [
                 'connection' => 'redis',
