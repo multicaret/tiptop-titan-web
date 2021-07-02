@@ -58,7 +58,7 @@ class CloneChainProductToBranch implements ShouldQueue
                 \DB::commit();
             } catch (\Exception $e) {
                 \DB::rollBack();
-                error_log('Exception while handle@', [
+                \Log::error('Exception while handle@', [
                     'message' => $e->getMessage(),
                     'exception' => $e,
                 ]);
