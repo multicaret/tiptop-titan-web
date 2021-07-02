@@ -13,11 +13,11 @@ class ZohoAnalyticsController extends Controller
     {
         $dateCondition = ' ';
         if ( ! empty($request->date)) {
-            $dateCondition = "AND DATE(o.created_at) = DATE('".$request->date."')";
+            $dateCondition = "AND o.created_at >= STR_TO_DATE('".$request->date."','%Y-%m-%d %H:%i:%s')";
         }
 
         $data = DB::select("
-          SELECT  DATE(o.created_at) AS 'order creation date',
+          SELECT  DATE_FORMAT(o.created_at,'%Y-%m-%d %H:%i:%s') AS 'order creation date',
              TIME_FORMAT(o.created_at, '%H:%i') AS 'order creation time',
              o.reference_code AS 'order id' ,
              CASE WHEN o.status=20 THEN 'Delivered' ELSE 'Canceled' END AS 'status',
@@ -56,13 +56,13 @@ class ZohoAnalyticsController extends Controller
             LEFT JOIN taxonomies t ON t.id = o.cancellation_reason_id
             LEFT JOIN taxonomy_translations tt ON tt.taxonomy_id = t.id and tt.locale = 'en'
             LEFT JOIN activities new on new.subject_id = o.id and new.type='created_order'
-            LEFT JOIN activities preparing on preparing.subject_id = o.id and preparing.type='updated_order' and JSON_EXTRACT(preparing.differences, '$.status') = \"10\"
-            LEFT JOIN activities courier_waiting on courier_waiting.subject_id = o.id and courier_waiting.type='updated_order' and JSON_EXTRACT(courier_waiting.differences, '$.status') = \"12\"
+            LEFT JOIN activities preparing on preparing.subject_id = o.id and preparing.type='updated_order' and JSON_EXTRACT(preparing.differences, '$.status') = '10'
+            LEFT JOIN activities courier_waiting on courier_waiting.subject_id = o.id and courier_waiting.type='updated_order' and JSON_EXTRACT(courier_waiting.differences, '$.status') = '12'
             LEFT JOIN activities delivering on delivering.subject_id = o.id and delivering.type='updated_order' and JSON_EXTRACT(delivering.differences, '$.status') = 16
             LEFT JOIN activities arrived on arrived.subject_id = o.id and arrived.type='updated_order' and JSON_EXTRACT(arrived.differences, '$.status') = 18
             LEFT JOIN activities delivered on delivered.subject_id = o.id and delivered.type='updated_order' and JSON_EXTRACT(delivered.differences, '$.status') = 20
             WHERE (o.customer_notes NOT LIKE '%test%' OR o.customer_notes IS NULL)  ".$dateCondition."
-            GROUP BY DATE(o.created_at), o.reference_code,bt.title,o.status,o.coupon_discount_amount,total_before,final_price,o.delivery_fee,driver,rt.name,ct.name,o.type,'delivery type',b.latitude,b.longitude
+            GROUP BY o.created_at, o.reference_code,bt.title,o.status,o.coupon_discount_amount,total_before,final_price,o.delivery_fee,driver,rt.name,ct.name,o.type,'delivery type',b.latitude,b.longitude
              ,o.user_id,l.latitude,l.longitude,bt.branch_id,new.created_at,preparing.created_at,courier_waiting.created_at,delivering.created_at,arrived.created_at,delivered.created_at
              ");
         $filename = "restaurant-sales.json";
