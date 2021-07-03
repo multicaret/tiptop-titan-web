@@ -40,22 +40,22 @@ class CloneChainProductToBranch implements ShouldQueue
 
         if ( ! $syncedBefore) {
 //            try {
-                \DB::beginTransaction();
-                $newProduct = $this->originalProduct->replicateWithTranslations();
-                $newProduct->branch_id = $this->branchId;
-                $newProduct->cloned_from_product_id = $this->originalProduct->id;
-                $newProduct->push();
-                $newProduct->categories()->sync($this->originalProduct->categories->pluck('id'));
+            \DB::beginTransaction();
+            $newProduct = $this->originalProduct->replicateWithTranslations();
+            $newProduct->branch_id = $this->branchId;
+            $newProduct->cloned_from_product_id = $this->originalProduct->id;
+            $newProduct->push();
+            $newProduct->categories()->sync($this->originalProduct->categories->pluck('id'));
 
-                /*$oldMediaItems = $this->originalProduct->getMedia('cover');
-                foreach ($oldMediaItems as $oldMedia) {
-                    $oldMedia->copy($newProduct, 'cover', 's3');
-                }
-                $oldMediaItems = $this->originalProduct->getMedia('gallery');
-                foreach ($oldMediaItems as $oldMedia) {
-                    $oldMedia->copy($newProduct, 'gallery', 's3');
-                }*/
-                \DB::commit();
+            $oldMediaItems = $this->originalProduct->getMedia('cover');
+            foreach ($oldMediaItems as $oldMedia) {
+                $oldMedia->copy($newProduct, 'cover', 's3');
+            }
+            $oldMediaItems = $this->originalProduct->getMedia('gallery');
+            foreach ($oldMediaItems as $oldMedia) {
+                $oldMedia->copy($newProduct, 'gallery', 's3');
+            }
+            \DB::commit();
             /*} catch (\Exception $e) {
                 \DB::rollBack();
                 \Log::error('Exception while handle@', [
