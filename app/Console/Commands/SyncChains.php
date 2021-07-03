@@ -2,8 +2,8 @@
 
 namespace App\Console\Commands;
 
+use App\Jobs\CloneChainProductToBranch;
 use App\Models\Branch;
-use App\Models\Chain;
 use App\Models\Product;
 use Illuminate\Console\Command;
 use Symfony\Component\Console\Input\InputInterface;
@@ -48,17 +48,13 @@ class SyncChains extends Command
                 } else {
                     $branchesIds = $this->branchIds;
                 }
+                $chainProducts = Product::whereChainId($chainId)
+                                        ->whereNull('branch_id')
+                                        ->get();
                 foreach ($branchesIds as $chainBranchId) {
-                    $chainProducts = Product::whereChainId($chainId)
-                                            ->whereNull('branch_id')
-                                            ->get();
-                    try {
-                        $syncProductsStatus = $this->cloneChainProducts($chainProducts, $chainBranchId);
-                        $this->updateChainSyncStatus($chainId);
-                    } catch (\Exception $e) {
-                        $this->error($e->getMessage());
-                    }
+                    $this->cloneChainProducts($chainProducts, $chainBranchId);
                 }
+//                $this->updateChainSyncStatus($chainId);
             }
         } else {
             $this->warn('Select chain id first 🚧');
@@ -72,35 +68,17 @@ class SyncChains extends Command
 
     private function cloneChainProducts($chainProducts, $branchId)
     {
-        if (Product::where('branch_id', $branchId)->count() == 0) {
-            foreach ($chainProducts as $originalProduct) {
-                $newProduct = $originalProduct->replicateWithTranslations();
-                $newProduct->branch_id = $branchId;
-                $newProduct->cloned_from_product_id = $originalProduct->id;
-                $newProduct->push();
-                $newProduct->categories()->sync($originalProduct->categories->pluck('id'));
-
-
-                $oldMediaItems = $originalProduct->getMedia('cover');
-                foreach ($oldMediaItems as $oldMedia) {
-                    $oldMedia->copy($newProduct, 'cover', 's3');
-                }
-                $oldMediaItems = $originalProduct->getMedia('gallery');
-                foreach ($oldMediaItems as $oldMedia) {
-                    $oldMedia->copy($newProduct, 'gallery', 's3');
-                }
-            }
-        } else {
-            return '🚨 Trying to sync to a branch with already products 🚨';
+        foreach ($chainProducts as $originalProduct) {
+            CloneChainProductToBranch::dispatch($originalProduct, $branchId);
         }
     }
 
-    private function updateChainSyncStatus($chainId)
+    /*private function updateChainSyncStatus($chainId)
     {
         $chain = Chain::whereId($chainId)->first();
         if ( ! $chain->is_synced) {
             $chain->is_synced = 1;
             $chain->save();
         }
-    }
+    }*/
 }
