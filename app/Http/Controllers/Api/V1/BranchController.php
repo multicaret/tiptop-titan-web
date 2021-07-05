@@ -97,8 +97,8 @@ class BranchController extends BaseApiController
     private function sortBranchesByDistance(\Illuminate\Database\Eloquent\Builder $branches, $request)
     {
         $user = auth('sanctum')->user();
-        $latitude = number_format($request->input('latitude'), 5);
-        $longitude = number_format($request->input('longitude'), 5);
+        $latitude = number_format((float) $request->input('latitude'), 5);
+        $longitude = number_format((float) $request->input('longitude'), 5);
 
         if ( ! is_null($user) && ! is_null($selectedAddress = $request->input('selected_address_id'))) {
             $selectedAddress = Location::find($selectedAddress);
