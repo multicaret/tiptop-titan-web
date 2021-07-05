@@ -348,8 +348,8 @@ class Branch extends Model implements HasMedia
 
     public static function getClosestAvailableBranch($latitude, $longitude): array
     {
-        $longitude = number_format($longitude, 5);
-        $latitude = number_format($latitude, 5);
+        $longitude = number_format((float) $longitude, 5);
+        $latitude = number_format((float) $latitude, 5);
 
         return cache()
             ->tags('branches', 'api-home')
