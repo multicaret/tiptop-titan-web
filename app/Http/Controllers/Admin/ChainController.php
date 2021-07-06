@@ -283,7 +283,7 @@ class ChainController extends Controller
                 $failures = $e->failures();
                 $errors = [];
                 foreach ($failures as $failure) {
-                    $sheetName = \Str::title($this->getWorksheetName($failure->values()));
+                    $sheetName = 'Products';
                     $rowIndex = $failure->row();
                     $fieldName = $failure->attribute();
                     $errorMessage = implode(PHP_EOL, $failure->errors());
