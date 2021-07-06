@@ -127,16 +127,18 @@
                                             Export to Excel (General)
                                         </a>
                                     </div>
-                                    <div class="d-inline-flex justify-self-start">
-                                        <a class="btn btn-secondary btn-sm" target="_blank"
-                                           href="{{route('admin.branch.export-to-excel', [
+                                    @if($branch->isFood())
+                                        <div class="d-inline-flex justify-self-start">
+                                            <a class="btn btn-secondary btn-sm" target="_blank"
+                                               href="{{route('admin.branch.export-to-excel', [
                                                 'type'=> request()->type,
                                                 $branch,
                                                 'for' => 'importing',
                                         ])}}">
-                                            Export to Excel (For Importing)
-                                        </a>
-                                    </div>
+                                                Export to Excel (For Importing)
+                                            </a>
+                                        </div>
+                                    @endif
                                     <form style="display: none;" id="upload-banner" enctype="multipart/form-data"
                                           method="post"
                                           action="{{route('admin.branch.import-from-excel',[$branch, 'type'=> request('type')])}}">
@@ -148,11 +150,13 @@
                                     </form>
                                 </div>
                                 <div>
-                                    <div class="d-inline-flex">
-                                        <button class="btn btn-warning btn-sm" @click="uploadFile(true)">
-                                            Import from Excel with options
-                                        </button>
-                                    </div>
+                                    @if($branch->isFood())
+                                        <div class="d-inline-flex">
+                                            <button class="btn btn-warning btn-sm" @click="uploadFile(true)">
+                                                Import from Excel with options
+                                            </button>
+                                        </div>
+                                    @endif
                                     <div class="d-inline-flex">
                                         <button class="btn btn-warning btn-sm" @click="uploadFile(false)">
                                             Import from Excel
