@@ -3,6 +3,8 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
+use App\Imports\ChainProductsImporter;
+use App\Imports\ProductsImporter;
 use App\Models\Chain;
 use App\Models\Region;
 use DB;
@@ -13,6 +15,7 @@ use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Artisan;
 use Illuminate\View\View;
+use Maatwebsite\Excel\Facades\Excel;
 
 class ChainController extends Controller
 {
@@ -244,5 +247,73 @@ class ChainController extends Controller
                 'type' => 'Success',
                 'text' => str_replace(PHP_EOL, '', $outputMessage),
             ]);
+    }
+
+
+    public function productsExcelImporter(Request $request, $chain): RedirectResponse
+    {
+//        Artisan::call('cache:clear');
+        $chain = Chain::whereUuid($chain)->first();
+        if ($request->has('excel-file')) {
+            $filename = \Str::of('chain-products-')
+                            ->append($chain->uuid)
+                            ->append('-')
+                            ->append(\now()->timestamp)
+                            ->append('.')
+                            ->append($request->file('excel-file')->clientExtension())
+                            ->jsonSerialize();
+            $request->file('excel-file')->storeAs(storage_path('/'), $filename);
+            $path = storage_path("{$filename}");
+            $productsImporter = new ChainProductsImporter($chain);
+            $productsImporter->isChecking = true;
+            try {
+                // Start importing branch products
+                $productsImporter->onlySheets(ProductsImporter::WORKSHEET_PRODUCTS);
+                Excel::import($productsImporter, $path);
+
+                $messageData = [
+                    'type' => 'Success',
+                    'text' => 'Imported successfully',
+                ];
+
+
+                return redirect()->route('admin.chains.edit', [$chain, 'type' => $request->type])
+                                 ->with('message', $messageData);
+            } catch (\Maatwebsite\Excel\Validators\ValidationException $e) {
+                $failures = $e->failures();
+                $errors = [];
+                foreach ($failures as $failure) {
+                    $sheetName = \Str::title($this->getWorksheetName($failure->values()));
+                    $rowIndex = $failure->row();
+                    $fieldName = $failure->attribute();
+                    $errorMessage = implode(PHP_EOL, $failure->errors());
+                    $errors[] = "* Error on Row index <b>{$rowIndex}</b> on field name: {$fieldName} on Worksheet {$sheetName}. <br>Message: {$errorMessage}<br>";
+                }
+
+                $messageData = [
+                    'type' => 'Error',
+                    'text' => 'Imported failed',
+                    'message' => implode('', $errors),
+                ];
+            } catch (Exception $exception) {
+                $messageData = [
+                    'type' => 'Error',
+                    'text' => 'Imported failed',
+                    'message' => $exception->getMessage(),
+                ];
+            }
+
+            return redirect()->route('admin.chains.edit', [$chain, 'type' => $request->type])
+                             ->with('message-alert', str_replace('"', '\'', $messageData));
+        }
+
+        $messageData = [
+            'type' => 'Error',
+            'text' => 'Imported failed',
+            'message' => implode('', ['File not found']),
+        ];
+
+        return redirect()->route('admin.chains.edit', [$chain, 'type' => $request->type])
+                         ->with('message-alert', str_replace('"', '\'', $messageData));
     }
 }

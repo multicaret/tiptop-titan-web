@@ -48,6 +48,9 @@ Route::resource('slides', 'SlideController')->except(['show']);
 Route::get('chains/{chain}/sync', 'ChainController@sync')->name('chains.sync');
 Route::post('chains/{chain}/sync', 'ChainController@postSync');
 Route::resource('chains', 'ChainController')->except(['show']);
+Route::post('chains/{chains}/products/import-excel-file', 'ChainController@productsExcelImporter')
+     ->name('chains.products.import-from-excel');
+
 Route::get('branches/{branch}/export-to-excel', 'BranchController@exportToExcel')->name('branch.export-to-excel');
 Route::post('branches/{branch}/import-excel-file',
     'BranchController@importFromExcel')->name('branch.import-from-excel');
