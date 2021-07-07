@@ -13,13 +13,29 @@
 
 @section('content')
 
-    <div class="mb-4">
+    <div class="d-inline-flex">
         @if(!is_null($chain->id))
             <h5>Editing Chain - {{ $chain->title }}</h5>
         @else
             <h5>{{trans('strings.add_new')}} Chain</h5>
         @endif
     </div>
+
+
+    {{--Excel Importer--}}
+    <div class="ml-5 d-inline-flex">
+        <button class="btn btn-warning btn-sm" @click="uploadFile(false)">
+            Excel Products Importer
+        </button>
+    </div>
+    <form style="display: none;" id="upload-banner" enctype="multipart/form-data"
+          method="post"
+          action="{{route('admin.chains.products.import-from-excel',[$chain, 'type'=> request('type')])}}">
+        @csrf
+        <input id="excel-upload" name="excel-file" type="file" ref="excelFile"
+               @change="autoSubmit()"/>
+        <input type="submit" value="submit" ref="submitBtn" id="submit"/>
+    </form>
 
     <form method="post" enctype="multipart/form-data"
           @if(is_null($chain->id))
@@ -284,7 +300,8 @@
                 chain: @json($chain),
                 regions: @json($regions),
                 cities: [],
-                selectedRegion: null
+                selectedRegion: null,
+                excelFile: null,
             },
             watch: {
                 chain: {
@@ -305,6 +322,15 @@
                         .then((res) => {
                             this.cities = res.data;
                         });
+                },
+                autoSubmit() {
+                    if (this.$refs.excelFile.value) {
+                        this.$refs.submitBtn.click();
+                    }
+                },
+                uploadFile(withOptions) {
+                    this.withOptions = withOptions;
+                    this.$refs.excelFile.click();
                 },
             },
         })
