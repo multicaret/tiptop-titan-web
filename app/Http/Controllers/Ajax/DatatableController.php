@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Ajax;
 
 use App\Http\Controllers\Controller;
 use App\Models\Branch;
+use App\Models\Brand;
 use App\Models\Chain;
 use App\Models\City;
 use App\Models\Coupon;
@@ -1021,6 +1022,61 @@ class DatatableController extends AjaxController
                          ->setRowAttr([
                              'row-id' => function ($paymentMethod) {
                                  return $paymentMethod->id;
+                             }
+                         ])
+                         ->make(true);
+    }
+
+    /**
+     * @param  Request  $request
+     *
+     * @return mixed
+     * @throws Exception
+     */
+    public function brands(Request $request)
+    {
+        $brands = Brand::selectRaw('brands.*');
+
+        return DataTables::of($brands)
+                         ->editColumn('action', function ($brand) {
+                             $data = [
+                                 'editAction' => route('admin.brands.edit', [
+                                     $brand->id
+                                 ]),
+                                 'deleteAction' => route('admin.brands.destroy', [
+                                     $brand->id
+                                 ]),
+                             ];
+
+                             return view('admin.components.datatables._row-actions', $data)->render();
+                         })
+                         ->editColumn('image', function ($brand) {
+                             return view('admin.components.datatables._thumbnails', [
+                                 'id' => $brand->id,
+                                 'imageUrl' => $brand->cover,
+                                 'imageUrlLarge' => $brand->cover_full,
+                                 'tooltip' => $brand->title,
+                                 'style' => 'height:120px',
+                             ])->render();
+                         })
+                         ->editColumn('status', function ($brand) {
+                             $currentStatus = Brand::getAllStatusesRich()[$brand->status];
+                             $data = [
+                                 'item' => $brand,
+                                 'currentStatus' => $currentStatus,
+                             ];
+
+                             return view('admin.components.datatables._row-actions-status', $data)
+                                 ->render();
+                         })
+                         ->rawColumns([
+                             'action',
+                             'status',
+                             'image'
+                         ])
+                         ->setRowAttr([
+                             'row-id' => function ($brand) {
+                                 return $brand->id;
                              }
                          ])
                          ->make(true);

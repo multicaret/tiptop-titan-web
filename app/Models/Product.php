@@ -281,6 +281,11 @@ class Product extends Model implements HasMedia
         return $this->belongsTo(Branch::class, 'branch_id');
     }
 
+    public function brand(): BelongsTo
+    {
+        return $this->belongsTo(Brand::class, 'brand_id');
+    }
+
     public function barcodes(): BelongsToMany
     {
         return $this->belongsToMany(Barcode::class, 'barcode_product', 'product_id', 'barcode_id');
