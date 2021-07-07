@@ -41,6 +41,13 @@ class BrandController extends Controller
                 'width' => '100',
             ],
             [
+                'data' => 'image',
+                'title' => 'Logo',
+                'width' => '150',
+                'searchable' => false,
+                'bSortable' => false,
+            ],
+            [
                 'data' => 'title',
                 'name' => 'translations.title',
                 'title' => 'Title',
@@ -55,7 +62,9 @@ class BrandController extends Controller
                 'searchable' => false
             ],
 
+
         ];
+
         return view('admin.brands.index', compact('columns'));
 
     }

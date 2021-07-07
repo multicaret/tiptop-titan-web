@@ -1050,6 +1050,15 @@ class DatatableController extends AjaxController
 
                              return view('admin.components.datatables._row-actions', $data)->render();
                          })
+                         ->editColumn('image', function ($brand) {
+                             return view('admin.components.datatables._thumbnails', [
+                                 'id' => $brand->id,
+                                 'imageUrl' => $brand->cover,
+                                 'imageUrlLarge' => $brand->cover_full,
+                                 'tooltip' => $brand->title,
+                                 'style' => 'height:120px',
+                             ])->render();
+                         })
                          ->editColumn('status', function ($brand) {
                              $currentStatus = Brand::getAllStatusesRich()[$brand->status];
                              $data = [
@@ -1060,10 +1069,10 @@ class DatatableController extends AjaxController
                              return view('admin.components.datatables._row-actions-status', $data)
                                  ->render();
                          })
-
                          ->rawColumns([
                              'action',
                              'status',
+                             'image'
                          ])
                          ->setRowAttr([
                              'row-id' => function ($brand) {
