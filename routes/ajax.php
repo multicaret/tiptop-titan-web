@@ -39,6 +39,7 @@ Route::prefix('datatables')->name('datatables.')->group(function () {
     Route::get('orders/ratings', 'DatatableController@orderRatings')->name('orders.ratings');
     Route::get('coupons', 'DatatableController@coupons')->name('coupons');
     Route::get('payment-methods', 'DatatableController@paymentMethods')->name('payment-methods');
+    Route::get('brands', 'DatatableController@brands')->name('brands');
 });
 
 Route::post('change-status', 'AjaxController@statusChange')->name('statuses.change');

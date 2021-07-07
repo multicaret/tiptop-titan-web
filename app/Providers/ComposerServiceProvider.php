@@ -181,6 +181,12 @@ class ComposerServiceProvider extends ServiceProvider
                                 'routeName' => 'admin.taxonomies.index',
                             ],
                             [
+                                'title' => 'Brands',
+                                'icon' => 'fas fa-bold',
+                                'params' => ['type' => 'collapse'],
+                                'routeName' => 'admin.brands.index',
+                            ],
+                            [
                                 'title' => 'Ratings',
                                 'icon' => 'fas fa-star',
                                 'params' => [
