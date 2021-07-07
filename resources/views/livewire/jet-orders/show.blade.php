@@ -1,3 +1,4 @@
+
 <div>
 
     <style>
@@ -140,6 +141,22 @@
                     </div>
                 </div>
             </div>
+            <div class="card mt-3">
+                <h5 class="card-header font-weight-bold">
+                    <i class="fas fa-sticky-note"></i>&nbsp;
+                       Attachments
+                </h5>
+                <div class="card-body">
+                    <div class="row">
+                        @foreach($order->gallery as $item)
+                        <div class="col-4">
+                            <img src="{{$item['file']}}"
+                                 class="d-block img-fluid order-image">
+                        </div>
+                        @endforeach
+                    </div>
+                </div>
+            </div>
         </div>
 
         <div class="col-md-6">
@@ -270,3 +287,10 @@
         </div>
     </div>
 </div>
+
+<div id="image-viewer">
+    <span class="close">&times;</span>
+    <img class="modal-content" id="full-image">
+</div>
+
+
