@@ -1,5 +1,5 @@
 @extends('layouts.admin')
-@section('title', trans('strings.captain_teams'))
+@section('title', 'Brands')
 @section('content')
     <h4 class="d-flex justify-content-between align-items-center w-100 font-weight-bold py-3 mb-4">
         {{trans('strings.captain_teams')}}
