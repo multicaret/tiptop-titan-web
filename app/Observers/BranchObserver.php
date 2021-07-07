@@ -2,17 +2,10 @@
 
 namespace App\Observers;
 
-use App\Jobs\Zoho\CreateBranchAccountJob;
-use App\Jobs\Zoho\CreateDeliveryItemJob;
-use App\Jobs\Zoho\CreateTipTopDeliveryItemJob;
-use App\Jobs\Zoho\SyncBranchJob;
 use App\Models\Branch;
-use Illuminate\Support\Facades\Bus;
 
 class BranchObserver
 {
-    public $afterCommit = true;
-
     /**
      * Handle the Branch "created" event.
      *
@@ -21,14 +14,7 @@ class BranchObserver
      */
     public function created(Branch $branch)
     {
-        Bus::chain(
-            [
-                new SyncBranchJob($branch),
-                new CreateDeliveryItemJob($branch),
-                new CreateTipTopDeliveryItemJob($branch),
-                new CreateBranchAccountJob($branch),
-            ]
-        )->dispatch();
+        $branch->recordActivity('created');
     }
 
     /**
@@ -39,7 +25,7 @@ class BranchObserver
      */
     public function updated(Branch $branch)
     {
-        //
+        $branch->recordActivity('updated');
     }
 
     /**
@@ -50,7 +36,7 @@ class BranchObserver
      */
     public function deleted(Branch $branch)
     {
-        //
+        $branch->recordActivity('deleted');
     }
 
     /**

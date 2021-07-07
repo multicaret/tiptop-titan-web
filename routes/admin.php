@@ -48,6 +48,9 @@ Route::resource('slides', 'SlideController')->except(['show']);
 Route::get('chains/{chain}/sync', 'ChainController@sync')->name('chains.sync');
 Route::post('chains/{chain}/sync', 'ChainController@postSync');
 Route::resource('chains', 'ChainController')->except(['show']);
+Route::post('chains/{chains}/products/import-excel-file', 'ChainController@productsExcelImporter')
+     ->name('chains.products.import-from-excel');
+
 Route::get('branches/{branch}/export-to-excel', 'BranchController@exportToExcel')->name('branch.export-to-excel');
 Route::post('branches/{branch}/import-excel-file',
     'BranchController@importFromExcel')->name('branch.import-from-excel');
@@ -64,6 +67,9 @@ Route::get('ratings/orders', 'OrderController@orderRatings')->name('orders.ratin
 
 Route::get('orders', 'OrderController@index')->name('orders.index');
 Route::get('orders/{order}', 'OrderController@show')->name('orders.show');
+
+Route::get('jet/orders', 'JetOrderController@index')->name('jet.orders.index');
+Route::get('jet/orders/{order}', 'JetOrderController@show')->name('jet.orders.show');
 
 Route::get('reports/daily', 'OrderDailyReportController@index')->name('reports.index');
 Route::resource('coupons', 'CouponController')->except(['show']);

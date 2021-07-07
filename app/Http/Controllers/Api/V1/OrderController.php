@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Api\V1;
 
 use App\Http\Controllers\Api\BaseApiController;
+use App\Http\Resources\OrderMiniResource;
 use App\Http\Resources\OrderResource;
 use App\Models\Branch;
 use App\Models\Cart;
@@ -36,7 +37,8 @@ class OrderController extends BaseApiController
         $user = auth()->user();
         $chainId = $request->input('chain_id');
 
-        $previousOrders = Order::groceries()
+        $previousOrders = Order::with('address', 'user', 'cart', 'paymentMethod')
+                               ->groceries()
                                ->whereUserId($user->id)
                                ->whereChainId($chainId)
                                ->whereNotNull('completed_at')
@@ -48,7 +50,13 @@ class OrderController extends BaseApiController
         });
 
         if ( ! is_null($previousOrders)) {
-            return $this->respond(OrderResource::collection($previousOrders));
+            if ($request->has('use_mini_order')) {
+                $ordersCollection = OrderMiniResource::collection($previousOrders);
+            } else {
+                $ordersCollection = OrderResource::collection($previousOrders);
+            }
+
+            return $this->respond($ordersCollection);
         }
 
         return $this->respondNotFound();
@@ -66,7 +74,8 @@ class OrderController extends BaseApiController
         }*/
 
         $user = auth()->user();
-        $previousOrders = Order::foods()
+        $previousOrders = Order::with('address', 'user', 'cart', 'paymentMethod')
+                               ->foods()
                                ->whereUserId($user->id)
                                ->whereNotNull('completed_at')
                                ->latest()
@@ -77,7 +86,13 @@ class OrderController extends BaseApiController
         });
 
         if ( ! is_null($previousOrders)) {
-            return $this->respond(OrderResource::collection($previousOrders));
+            if ($request->has('use_mini_order')) {
+                $ordersCollection = OrderMiniResource::collection($previousOrders);
+            } else {
+                $ordersCollection = OrderResource::collection($previousOrders);
+            }
+
+            return $this->respond($ordersCollection);
         }
 
         return $this->respondNotFound();
@@ -112,7 +127,7 @@ class OrderController extends BaseApiController
     }
 
 
-    public function create(Request $request): JsonResponse
+    public function create(Request $request)
     {
         $validationRules = [
             'chain_id' => 'required',
@@ -170,7 +185,7 @@ class OrderController extends BaseApiController
     }
 
 
-    public function store(Request $request): JsonResponse
+    public function store(Request $request)
     {
         $validationRules = [
             'chain_id' => 'required',
@@ -181,6 +196,8 @@ class OrderController extends BaseApiController
         ];
 
         $user = auth()->user();
+        $mobileAppDetails = $user->currentAccessToken()->mobile_app_details;
+
         $activeCart = Cart::with('branch')
                           ->whereId($request->input('cart_id'))
                           ->first();
@@ -217,6 +234,8 @@ class OrderController extends BaseApiController
         $newOrder->payment_method_id = $request->input('payment_method_id');
         $newOrder->address_id = $address->id;
         $newOrder->city_id = $address->city_id;
+        $newOrder->agent_device = $mobileAppDetails && $mobileAppDetails->device ? $mobileAppDetails->device->manufacturer : null;
+        $newOrder->agent_os = $mobileAppDetails && $mobileAppDetails->device ? $mobileAppDetails->device->model : null;
         $newOrder->customer_notes = $request->input('notes');
         $newOrder->type = $branch->type;
         $newOrder->save();
@@ -244,7 +263,6 @@ class OrderController extends BaseApiController
 
 
         $hasFreeDeliveryCoupon = false;
-        $cartTotalAfterDeductCouponDiscount = $activeCart->total;
         $totalDiscountedAmount = 0;
         if ( ! is_null($couponRedeemCode = $request->input('coupon_redeem_code'))) {
             $coupon = Coupon::where('redeem_code', $couponRedeemCode)->first();
@@ -262,7 +280,6 @@ class OrderController extends BaseApiController
             $hasFreeDeliveryCoupon = $coupon->has_free_delivery;
 
             if ($isExpirationDateAndUsageValid && $isAmountValid) {
-                $cartTotalAfterDeductCouponDiscount -= $totalDiscountedAmount;
                 $newOrder->coupon_id = $coupon->id;
 
                 CouponUsage::storeCouponUsage($totalDiscountedAmount, $coupon, $activeCart->id, $user->id,
@@ -284,7 +301,6 @@ class OrderController extends BaseApiController
         $newOrder->save();
 
         $user->increment('total_number_of_orders');
-        $user->save();
 
         DB::commit();
 
@@ -338,7 +354,7 @@ class OrderController extends BaseApiController
         $order->driver_rating_value = $driverRatingValue;
 //      Todo: Remember to increase Driver avg rating
         $driver->avg_rating = $driver->average_rating;
-        $driver->increment('rating_count');
+        $driver->rating_count = $driver->rating_count++;
         $driver->save();
 
         $order->driver_rating_comment = $request->input('comment');
@@ -350,8 +366,6 @@ class OrderController extends BaseApiController
 
 //        todo: calculate driver's average rating properly
 //        $driver->avg_rating = $driver->average_rating;
-        $driver->increment('rating_count');
-        $driver->save();
         DB::commit();
 
         return $this->respondWithMessage(trans('strings.successfully_done'));
@@ -388,7 +402,7 @@ class OrderController extends BaseApiController
         auth()->user()->rate($branch, $branchRatingValue);
 
         $branch->avg_rating = $branch->average_rating;
-        $branch->increment('rating_count');
+        $branch->rating_count = $branch->rating_count++;
         $branch->save();
         DB::commit();
 

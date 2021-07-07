@@ -141,7 +141,7 @@
                                 @slot('label', 'Begins At')
                                 @slot('value', \Carbon\Carbon::parse($slide->begins_at))
                                 @slot('attributes',[
-                                    'min' => now()->format('Y-m-d'),
+                                    'min' => is_null($slide->begins_at)? now()->format('Y-m-d'): null,
                                 ])
                             @endcomponent
                         </div>
@@ -150,7 +150,7 @@
                                 @slot('label', 'Expires At')
                                 @slot('value', \Carbon\Carbon::parse($slide->expires_at))
                                 @slot('attributes',[
-                                    'min' => now()->addDay()->format('Y-m-d'),
+                                    'min' => is_null($slide->expires_at) ? now()->addDay()->format('Y-m-d'): null,
                                 ])
                             @endcomponent
                         </div>

@@ -183,7 +183,11 @@
                                     وێنه‌ له‌ ئه‌پڵیكه‌یشنه‌كه‌وه‌
                                 </a>
                             </li>
-
+                            <li class="header-nav-item">
+                                <a class="nav-link header-nav-link" href="{{route('blog.index')}}">
+                                    {{__('strings.blog')}}
+                                </a>
+                            </li>
 
                             <li class="navbar-nav-last-item">
                                 <a class="btn btn-sm btn-indigo btn-pill transition-3d-hover" href="#lead-form-section">
@@ -518,13 +522,6 @@
                              src="/frontend-assets/images/screenshots-ku/menu.png"
                              alt="Image Description">
                         <!--                        <img class="img-fluid shadow rounded" src="/frontend-assets//frontend-assets/assets/img/407x472/img3.jpg" alt="Image Description">-->
-                    </div>
-                    <div class="col-3 col-md px-2"
-                         data-parallaxanimation='[{property: "transform", value:" translate3d(0,@{{val}}rem,0)", initial:"-7", mid:"0", final:"7"}]'>
-                        <img class="img-fluid shadow rounded mb-3 mb-lg-5"
-                             src="/frontend-assets/images/screenshots-ku/orderconfirm.png"
-                             alt="Image Description">
-                        <!--                        <img class="img-fluid shadow rounded" src="/frontend-assets//frontend-assets/assets/img/407x535/img1.jpg" alt="Image Description">-->
                     </div>
                     <div class="d-none d-md-inline-block col-md px-2">
                         <img class="img-fluid shadow rounded mb-3 mb-lg-5"

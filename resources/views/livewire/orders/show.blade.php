@@ -20,6 +20,7 @@
 
         </div>
     </h4>--}}
+    @php([$statusesIntervals,$total] = $order->getStatusesIntervals())
     <div class="row mb-3">
         <div class="col-md-12">
             <div class="card">
@@ -40,6 +41,12 @@
                                     @endforeach
                                 </select>
                             </div>
+                            <small class="ml-3">
+                                <span class="text-muted">Order Lifespan</span>
+                                <span>
+                                    {{\Carbon\CarbonInterval::seconds($total)->cascade()->forHumans()}}
+                                </span>
+                            </small>
                         </div>
                         @if($isCancellationFormShown)
                             <div class="col-12 mt-2">
@@ -103,6 +110,14 @@
                             <a target="_blank" class="text-primary pull-right"
                                href="{{route('admin.users.edit', ['role' => $order->user->role_name, 'user' => $order->user])}}">
                                 {{$order->user->name}}
+
+                                @if($order->user->orders()->count() == 1)
+                                <div class="pl-1 ml-auto bounce d-inline-block" style="font-size:16px;">
+                                    <div class="badge badge-danger d-inline-block">
+                                        New
+                                    </div>
+                                </div>
+                                @endif
                             </a>
                         </div>
                         <div class="col-12 py-3 border-bottom">
@@ -204,7 +219,6 @@
                 </div>
             </div>
 
-            @if($order->is_delivery_by_tiptop)
                 <div class="card mt-3">
                     <h5 class="card-header font-weight-bold">
                         <i class="fas fa-motorcycle"></i>&nbsp;
@@ -213,6 +227,11 @@
                     <div class="card-body pb-0">
                         <div class="row">
                             <div class="col-12 pb-3 border-bottom">
+                                <b>Delivery Type</b>
+
+                                    <p class="text-muted  pull-right">{{$order->is_delivery_by_tiptop ? 'TipTop' : 'Restaurant'}}</p>
+                            </div>
+                            <div class="col-12 pb-3 border-bottom">
                                 <b>Driver</b>
                                 @if(!empty($order->driver))
                                     <a target="_blank" class="text-primary pull-right"
@@ -220,7 +239,7 @@
                                         {{$order->driver->name}}
                                     </a>
                                 @else
-                                    <p class="text-muted">Waiting Delivery information</p>
+                                    <p class="text-muted  pull-right">Waiting Delivery information</p>
                                 @endif
                             </div>
                             <div class="col-12 py-3 border-bottom" style="padding-bottom: 1.3rem !important;">
@@ -266,7 +285,6 @@
                         </div>
                     </div>
                 </div>
-            @endif
         </div>
     </div>
     <div class="row mt-3">
@@ -301,7 +319,9 @@
                                          alt="Product cover" width="50">
                                 </td>
                                 <td>
-                                    <span data-toggle="tooltip" data-placement="top" title="{{collect($orderProduct->product_object['translations'])->pluck('title','locale')->get('en')}}" class="d-block">{{$orderProduct->product_object['title']}}
+                                    <span data-toggle="tooltip" data-placement="top"
+                                          title="{{collect($orderProduct->product_object['translations'])->pluck('title','locale')->get('en')}}"
+                                          class="d-block">{{$orderProduct->product_object['title']}}
                                     </span>
                                     @if($orderProduct->cartProductOptions()->count())
                                         @foreach($orderProduct->cartProductOptions as $cartProductOption)
@@ -331,9 +351,9 @@
                                     @endif
                                     &nbsp; - &nbsp;{{$orderProduct->product_object['unit_text']}}
                                 </td>
-                                <td>{!! \App\Models\Currency::formatHtml($orderProduct->product_object['price'] + $orderProduct->options_price) !!}</td>
+                                <td>{!! \App\Models\Currency::formatHtml($orderProduct->product_object['discounted_price'] + $orderProduct->options_price) !!}</td>
                                 <td>{{$orderProduct->quantity}}</td>
-                                <td>{!! \App\Models\Currency::formatHtml(($orderProduct->product_object['price'] * $orderProduct->quantity) + $orderProduct->total_options_price) !!}</td>
+                                <td>{!! \App\Models\Currency::formatHtml(($orderProduct->product_object['discounted_price'] * $orderProduct->quantity) + $orderProduct->total_options_price) !!}</td>
                             </tr>
                         @endforeach
                         </tbody>
@@ -454,7 +474,7 @@
                     &nbsp;Activity Log
                 </h4>
                 <div class="card-body p-0 pl-2">
-                    @include('admin.orders._partials.order-activity-log')
+                    @include('admin.partials.activity-logs',['object' => $order])
                 </div>
             </div>
         </div>

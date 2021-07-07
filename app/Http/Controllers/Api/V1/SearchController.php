@@ -63,8 +63,10 @@ class SearchController extends BaseApiController
         }
 
         $searchQuery = $request->input('q');
+        $chainId = $request->input('chain_id');
+        $branchId = $request->input('branch_id');
 
-        $results = Product::where('status','!=',Product::STATUS_DRAFT)->whereHas('translations', function ($query) use ($searchQuery) {
+        $results = Product::whereHas('translations', function ($query) use ($searchQuery) {
             $query->where('title', 'like', '%'.$searchQuery.'%');
         })
                           ->orWhereHas('searchTags', function ($query) use ($searchQuery) {
@@ -77,15 +79,15 @@ class SearchController extends BaseApiController
                                   $query->where('title', 'like', '%'.$searchQuery.'%');
                               });
                           })
+                          ->active()
                           ->groceries()
+                          ->where('branch_id', $branchId)
                           ->get();
 
         if ($results->count() == 0) {
             return $this->respondWithMessage('No results for your search');
         }
 
-        $chainId = $request->input('chain_id');
-        $branchId = $request->input('branch_id');
         // Storing the search term.
         if (is_null($search = Search::whereLocale(localization()->getCurrentLocale())
                                     ->whereType(Search::CHANNEL_GROCERY_OBJECT)
@@ -102,7 +104,6 @@ class SearchController extends BaseApiController
             $search->save();
         } else {
             $search->increment('count');
-            $search->save();
         }
 
         return $this->respond(ProductResource::collection($results));
@@ -133,7 +134,7 @@ class SearchController extends BaseApiController
                          ->orWhereHas('products', function ($query) use ($searchQuery) {
                              $query->whereHas('translations', function ($translationQuery) use ($searchQuery) {
                                  $translationQuery->where('title', 'like', '%'.$searchQuery.'%');
-                             })->where('status','!=',Product::STATUS_DRAFT);
+                             })->where('status', '!=', Product::STATUS_DRAFT);
                          })
                          ->active()
                          ->foods()
@@ -155,7 +156,6 @@ class SearchController extends BaseApiController
             $search->save();
         } else {
             $search->increment('count');
-            $search->save();
         }
 
         return $this->respond(FoodBranchResource::collection($results));

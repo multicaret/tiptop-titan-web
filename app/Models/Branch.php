@@ -10,6 +10,7 @@ use App\Traits\HasTypes;
 use App\Traits\HasUuid;
 use App\Traits\HasViewCount;
 use App\Traits\HasWorkingHours;
+use App\Traits\RecordsActivity;
 use Astrotomic\Translatable\Translatable;
 use Eloquent;
 use Illuminate\Database\Eloquent\Builder;
@@ -71,6 +72,17 @@ use Spatie\MediaLibrary\MediaCollections\Models\Collections\MediaCollection;
  * @property Carbon|null $created_at
  * @property Carbon|null $updated_at
  * @property string|null $deleted_at
+ * @property string|null $zoho_books_id
+ * @property string|null $zoho_books_account_id
+ * @property string|null $zoho_books_tiptop_delivery_item_id
+ * @property string|null $zoho_books_delivery_item_id
+ * @property bool $has_jet_delivery
+ * @property float $jet_minimum_order
+ * @property float $jet_fixed_delivery_fee
+ * @property float $jet_delivery_commission_rate
+ * @property float $jet_extra_delivery_fee_per_km
+ * @property-read Collection|\App\Models\Activity[] $activity
+ * @property-read int|null $activity_count
  * @property-read Collection|\App\Models\Location[] $addresses
  * @property-read int|null $addresses_count
  * @property-read \App\Models\Chain $chain
@@ -154,10 +166,15 @@ use Spatie\MediaLibrary\MediaCollections\Models\Collections\MediaCollection;
  * @method static Builder|Branch whereFixedDeliveryFee($value)
  * @method static Builder|Branch whereFreeDeliveryThreshold($value)
  * @method static Builder|Branch whereFullAddress($value)
+ * @method static Builder|Branch whereHasJetDelivery($value)
  * @method static Builder|Branch whereHasRestaurantDelivery($value)
  * @method static Builder|Branch whereHasTipTopDelivery($value)
  * @method static Builder|Branch whereId($value)
  * @method static Builder|Branch whereIsOpenNow($value)
+ * @method static Builder|Branch whereJetDeliveryCommissionRate($value)
+ * @method static Builder|Branch whereJetExtraDeliveryFeePerKm($value)
+ * @method static Builder|Branch whereJetFixedDeliveryFee($value)
+ * @method static Builder|Branch whereJetMinimumOrder($value)
  * @method static Builder|Branch whereLatitude($value)
  * @method static Builder|Branch whereLongitude($value)
  * @method static Builder|Branch whereManagementCommissionRate($value)
@@ -186,6 +203,10 @@ use Spatie\MediaLibrary\MediaCollections\Models\Collections\MediaCollection;
  * @method static Builder|Branch whereUuid($value)
  * @method static Builder|Branch whereViewCount($value)
  * @method static Builder|Branch whereWhatsappPhoneNumber($value)
+ * @method static Builder|Branch whereZohoBooksAccountId($value)
+ * @method static Builder|Branch whereZohoBooksDeliveryItemId($value)
+ * @method static Builder|Branch whereZohoBooksId($value)
+ * @method static Builder|Branch whereZohoBooksTiptopDeliveryItemId($value)
  * @method static Builder|Branch withTranslation()
  * @mixin Eloquent
  * @noinspection PhpFullyQualifiedNameUsageInspection
@@ -203,6 +224,7 @@ class Branch extends Model implements HasMedia
     use HasWorkingHours;
     use Translatable;
     use CanBeFavorited;
+    use RecordsActivity;
 
 
     public const STATUS_DRAFT = 1;
@@ -232,6 +254,7 @@ class Branch extends Model implements HasMedia
     protected $casts = [
         'has_tip_top_delivery' => 'boolean',
         'has_restaurant_delivery' => 'boolean',
+        'has_jet_delivery' => 'boolean',
         'is_open_now' => 'boolean',
 
         'minimum_order' => 'double',
@@ -240,15 +263,65 @@ class Branch extends Model implements HasMedia
         'restaurant_minimum_order' => 'double',
         'restaurant_under_minimum_order_delivery_fee' => 'double',
         'restaurant_fixed_delivery_fee' => 'double',
+        'jet_fixed_delivery_fee' => 'double',
+        'jet_minimum_order' => 'double',
+        'jet_delivery_commission_rate' => 'double',
+        'jet_extra_delivery_fee_per_km' => 'double',
 
         'published_at' => 'datetime',
         'featured_at' => 'datetime',
     ];
 
+    public static function getClosestAvailableBranch($latitude, $longitude): array
+    {
+        $longitude = number_format((float) $longitude, 5);
+        $latitude = number_format((float) $latitude, 5);
+
+        return cache()
+            ->tags('branches', 'api-home')
+            ->rememberForever('getClosestAvailableBranch_lat_'.$latitude.'_lng_'.$longitude, function () use (
+                $longitude,
+                $latitude
+            ) {
+                $distance = $branch = $branchTodayWorkingHours = null;
+                $branchesOrderedByDistance = self::getBranchesOrderByDistance($latitude, $longitude);
+
+                foreach ($branchesOrderedByDistance as $branchOrderedByDistance) {
+                    $branchTodayWorkingHours = WorkingHour::retrieve($branchOrderedByDistance);
+                    if ($branchTodayWorkingHours['isOpen']) {
+                        $branch = Branch::find($branchOrderedByDistance->id);
+                        $distance = $branchOrderedByDistance->distance;
+                        break;
+                    }
+                }
+
+                return [$distance, $branch, $branchTodayWorkingHours];
+            });
+    }
+
+    /**
+     * @param $latitude
+     * @param $longitude
+     * @return Builder[]|Collection|\Illuminate\Support\Collection
+     */
+    public static function getBranchesOrderByDistance($latitude, $longitude)
+    {
+        return Branch::active()
+                     ->groceries()
+                     ->selectRaw('branches.id, DISTANCE_BETWEEN(latitude,longitude,?,?) as distance',
+                         [$latitude, $longitude])
+                     ->orderBy('distance')
+                     ->get();
+    }
 
     public function chain(): BelongsTo
     {
         return $this->belongsTo(Chain::class, 'chain_id');
+    }
+
+    public function primaryManager()
+    {
+        return $this->managers()->wherePivot('is_primary', true)->first();
     }
 
     public function managers(): BelongsToMany
@@ -258,9 +331,9 @@ class Branch extends Model implements HasMedia
                     ->withTimestamps();
     }
 
-    public function primaryManager()
+    public function primaryOwner()
     {
-        return $this->managers()->wherePivot('is_primary', true)->first();
+        return $this->owners()->wherePivot('is_primary', true)->first();
     }
 
     public function owners(): BelongsToMany
@@ -270,16 +343,10 @@ class Branch extends Model implements HasMedia
                     ->withTimestamps();
     }
 
-    public function primaryOwner()
-    {
-        return $this->owners()->wherePivot('is_primary', true)->first();
-    }
-
     public function workingHours()
     {
         return $this->morphMany(WorkingHour::class, 'workable');
     }
-
 
     public function region(): BelongsTo
     {
@@ -346,38 +413,6 @@ class Branch extends Model implements HasMedia
                     ->withTimestamps();
     }
 
-    public static function getClosestAvailableBranch($latitude, $longitude): array
-    {
-        $longitude = number_format((float) $longitude, 5);
-        $latitude = number_format((float) $latitude, 5);
-
-        return cache()
-            ->tags('branches', 'api-home')
-            ->rememberForever('getClosestAvailableBranch_lat_'.$latitude.'_lng_'.$longitude, function () use (
-                $longitude,
-                $latitude
-            ) {
-                $distance = $branch = null;
-                $branchesOrderedByDistance = Branch::active()
-                                                   ->groceries()
-                                                   ->selectRaw('branches.id, DISTANCE_BETWEEN(latitude,longitude,?,?) as distance',
-                                                       [$latitude, $longitude])
-                                                   ->orderBy('distance')
-                                                   ->get();
-
-                foreach ($branchesOrderedByDistance as $branchOrderedByDistance) {
-                    $branch = Branch::find($branchOrderedByDistance->id);
-                    $branchWorkingHours = WorkingHour::retrieve($branch);
-                    if ($branchWorkingHours['isOpen']) {
-                        $distance = $branchOrderedByDistance->distance;
-                        break;
-                    }
-                }
-
-                return [$distance, $branch];
-            });
-    }
-
     public function getHasBeenRatedAttribute(): bool
     {
         return $this->raters->count() > 0;
@@ -438,24 +473,25 @@ class Branch extends Model implements HasMedia
         if ($hasCouponWithFreeDelivery) {
             return 0;
         }
-
         if ( ! $isTipTopDelivery) {
             $minimumOrder = $this->restaurant_minimum_order;
             $fixedDeliveryFee = $this->restaurant_fixed_delivery_fee;
             $underMinimumOrderDeliveryFee = $this->restaurant_under_minimum_order_delivery_fee;
             $freeDeliveryThreshold = $this->restaurant_free_delivery_threshold;
             $extraDeliveryFeePerKm = $this->restaurant_extra_delivery_fee_per_km;
-            $fixedDeliveryDistanceKeyName = 'tiptop_fixed_delivery_distance';
+            $fixedDeliveryDistanceKeyName = 'restaurant_fixed_delivery_distance';
         } else {
             $minimumOrder = $this->minimum_order;
             $fixedDeliveryFee = $this->fixed_delivery_fee;
             $underMinimumOrderDeliveryFee = $this->under_minimum_order_delivery_fee;
             $freeDeliveryThreshold = $this->free_delivery_threshold;
             $extraDeliveryFeePerKm = $this->extra_delivery_fee_per_km;
-            $fixedDeliveryDistanceKeyName = 'restaurant_fixed_delivery_distance';
+            $fixedDeliveryDistanceKeyName = 'tiptop_fixed_delivery_distance';
         }
 
-        if ($totalAmount >= $freeDeliveryThreshold) {
+        if ( ! is_null($freeDeliveryThreshold) &&
+            $freeDeliveryThreshold != 0 &&
+            $totalAmount >= $freeDeliveryThreshold) {
             return 0;
         }
 
@@ -464,14 +500,16 @@ class Branch extends Model implements HasMedia
         // Calculating Delivery Fee Based on Distance
         if (
             ! is_null($addressId) &&
-            ! is_null($address = Location::active()->where('id', $addressId)->first()) &&
+            ! is_null($address = Location::where('id', $addressId)->first()) &&
             ! is_null($address->latitude) &&
             ! is_null($address->longitude)
         ) {
             $distance = Controller::distanceBetween($this->latitude, $this->longitude, $address->latitude,
                 $address->longitude);
-            if ($distance != 0 && Preference::retrieveValue($fixedDeliveryDistanceKeyName) && $distance > Preference::retrieveValue($fixedDeliveryDistanceKeyName)) {
-                $deliveryFee = $extraDeliveryFeePerKm * $distance;
+            $distanceOfFixedDeliveryFeeForKMs = Preference::retrieveValue($fixedDeliveryDistanceKeyName);
+            if ($distance != 0 && $distanceOfFixedDeliveryFeeForKMs && $distance > $distanceOfFixedDeliveryFeeForKMs) {
+                $differenceInDistance = $distance - $distanceOfFixedDeliveryFeeForKMs;
+                $deliveryFee = round($deliveryFee + ($extraDeliveryFeePerKm * $differenceInDistance));
             }
         }
 
@@ -480,5 +518,238 @@ class Branch extends Model implements HasMedia
         }
 
         return $deliveryFee;
+    }
+
+
+    public function calculatePlainDeliveryFeeForAnAddress($address, $isTipTopDelivery = true): array
+    {
+        if ( ! $isTipTopDelivery) {
+            $extraDeliveryFeePerKm = $this->restaurant_extra_delivery_fee_per_km;
+            $fixedDeliveryDistanceKeyName = 'restaurant_fixed_delivery_distance';
+        } else {
+            $extraDeliveryFeePerKm = $this->extra_delivery_fee_per_km;
+            $fixedDeliveryDistanceKeyName = 'tiptop_fixed_delivery_distance';
+        }
+
+        $deliveryFee = $distance = 0;
+
+        // Calculating Delivery Fee Based on Distance
+        if (
+            ! is_null($address) &&
+            ! is_null($address->latitude) &&
+            ! is_null($address->longitude)
+        ) {
+            $distance = Controller::distanceBetween($this->latitude, $this->longitude, $address->latitude,
+                $address->longitude);
+            $distanceOfFixedDeliveryFeeForKMs = Preference::retrieveValue($fixedDeliveryDistanceKeyName);
+            if ($distance != 0 && $distanceOfFixedDeliveryFeeForKMs && $distance > $distanceOfFixedDeliveryFeeForKMs) {
+                $differenceInDistance = $distance - $distanceOfFixedDeliveryFeeForKMs;
+                $deliveryFee = round($extraDeliveryFeePerKm * $differenceInDistance);
+            }
+        }
+
+        return [$deliveryFee, $distance];
+    }
+
+    public function calculateJetDeliveryFee(
+        $totalAmount,
+        $latitude = null,
+        $longitude = null
+    ): float {
+
+        $fixedDeliveryFee = $this->jet_fixed_delivery_fee;
+        $commission_rate = $this->jet_delivery_commission_rate;
+        $extraDeliveryFeePerKm = $this->jet_extra_delivery_fee_per_km;
+        $fixedDeliveryDistanceKeyName = 'restaurant_fixed_delivery_distance';
+
+        $deliveryFee = $fixedDeliveryFee;
+        if ($commission_rate > 0) {
+            $deliveryFee += ($totalAmount * $commission_rate) / 100;
+        }
+
+        if ($this->jet_extra_delivery_fee_per_km > 0 && ! is_null($latitude) && ! is_null($longitude)) {
+            $distance = Controller::distanceBetween($this->latitude, $this->longitude, $latitude,
+                $longitude);
+            if ($distance != 0 && Preference::retrieveValue($fixedDeliveryDistanceKeyName) && $distance > Preference::retrieveValue($fixedDeliveryDistanceKeyName)) {
+                $deliveryFee += $extraDeliveryFeePerKm * $distance;
+            }
+        }
+
+        return $deliveryFee ?? 0;
+    }
+
+
+    public static function getStatusesArray(): array
+    {
+        // Manipulation of these states as requested in this task: https://app.clickup.com/t/2609896/DEV-1424
+        return [
+            self::STATUS_DRAFT => 'Inactive',
+            self::STATUS_ACTIVE => 'Active',
+//            self::STATUS_INACTIVE => 'Inactive',
+        ];
+    }
+
+    private static function getFormattedActivityLogDifferenceItem(
+        ?array $activityLogDifferenceItem,
+        $columnName,
+        $value
+    ) {
+        switch ($activityLogDifferenceItem['type']) {
+            case 'yes-no':
+                return $value ? 'Yes' : 'No';
+            case 'trans':
+                return trans('strings.order_'.$columnName.'_'.$value);
+            case 'currency-formatted':
+                return Currency::formatHtml($value);
+            case 'datetime-normal':
+                return Carbon::parse($value)->format(config('defaults.datetime.normal_format'));
+            case null:
+            default:
+                return $value;
+        }
+    }
+
+    /**
+     * @param $value
+     * @return array|null
+     */
+    private static function getVisibleColumnsInActivityLogDifference($columnName): ?array
+    {
+        $visibleColumns = [
+            'chain_id' => [
+                'title' => 'Chain id',
+                'type' => null,
+            ],
+            'creator_id' => [
+                'title' => 'Creator id',
+                'type' => null,
+            ],
+            'editor_id' => [
+                'title' => 'Editor id',
+                'type' => null,
+            ],
+            'region_id' => [
+                'title' => 'Region id',
+                'type' => null,
+            ],
+            'city_id' => [
+                'title' => 'City id',
+                'type' => null,
+            ],
+            'has_tip_top_delivery' => [
+                'title' => 'Has TipTop Delivery',
+                'type' => 'yes-no',
+            ],
+            'minimum_order' => [
+                'title' => 'Minimum Order',
+                'type' => 'currency-formatted',
+            ],
+            'under_minimum_order_delivery_fee' => [
+                'title' => 'Under minimum order delivery fee',
+                'type' => 'currency-formatted',
+            ],
+            'fixed_delivery_fee' => [
+                'title' => 'Fixed delivery fee',
+                'type' => 'currency-formatted',
+            ],
+            'min_delivery_minutes' => [
+                'title' => 'Min delivery minutes',
+                'type' => null,
+            ],
+            'max_delivery_minutes' => [
+                'title' => 'Max delivery minutes',
+                'type' => null,
+            ],
+            'free_delivery_threshold' => [
+                'title' => 'Free delivery threshold',
+                'type' => 'currency-formatted',
+            ],
+            'extra_delivery_fee_per_km' => [
+                'title' => 'Extra delivery fee per KM',
+                'type' => null,
+            ],
+            'has_restaurant_delivery' => [
+                'title' => 'Has Restaurant Delivery',
+                'type' => 'yes-no',
+            ],
+            'restaurant_minimum_order' => [
+                'title' => 'Restaurant minimum Order',
+                'type' => 'currency-formatted',
+            ],
+            'restaurant_under_minimum_order_delivery_fee' => [
+                'title' => 'Restaurant under minimum order delivery fee',
+                'type' => 'currency-formatted',
+            ],
+            'restaurant_fixed_delivery_fee' => [
+                'title' => 'Restaurant fixed delivery fee',
+                'type' => 'currency-formatted',
+            ],
+            'restaurant_min_delivery_minutes' => [
+                'title' => 'Restaurant min delivery minutes',
+                'type' => null,
+            ],
+            'restaurant_max_delivery_minutes' => [
+                'title' => 'Restaurant max delivery minutes',
+                'type' => null,
+            ],
+            'restaurant_free_delivery_threshold' => [
+                'title' => 'Restaurant free delivery threshold',
+                'type' => 'currency-formatted',
+            ],
+            'restaurant_extra_delivery_fee_per_km' => [
+                'title' => 'Restaurant extra delivery fee per KM',
+                'type' => null,
+            ],
+            'management_commission_rate' => [
+                'title' => 'Management commission rate',
+                'type' => null,
+            ],
+            'is_open_now' => [
+                'title' => 'Is Open Now (default is true)',
+                'type' => 'yes-no',
+            ],
+            'primary_phone_number' => [
+                'title' => 'Primary phone number',
+                'type' => null,
+            ],
+            'secondary_phone_number' => [
+                'title' => 'Secondary phone number',
+                'type' => null,
+            ],
+            'whatsapp_phone_number' => [
+                'title' => 'Whatsapp phone number',
+                'type' => null,
+            ],
+            'full_address' => [
+                'title' => 'Full address',
+                'type' => null,
+            ],
+            'latitude' => [
+                'title' => 'Latitude',
+                'type' => null,
+            ],
+            'longitude' => [
+                'title' => 'Longitude',
+                'type' => null,
+            ],
+            'avg_rating' => [
+                'title' => 'Average rating',
+                'type' => null,
+            ],
+            'published_at' => [
+                'title' => 'publishing date',
+                'type' => 'datetime-normal',
+            ],
+            'featured_at' => [
+                'title' => 'featuring date',
+                'type' => 'datetime-normal',
+            ],
+        ];
+
+        if (array_key_exists($columnName, $visibleColumns)) {
+            return $visibleColumns[$columnName];
+        }
+
+        return null;
     }
 }

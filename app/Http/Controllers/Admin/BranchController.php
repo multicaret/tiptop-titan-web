@@ -6,6 +6,10 @@ use App\Exports\BranchProductsExport;
 use App\Exports\ProductsExportGeneral;
 use App\Http\Controllers\Controller;
 use App\Imports\ProductsImporter;
+use App\Jobs\Zoho\CreateBranchAccountJob;
+use App\Jobs\Zoho\CreateDeliveryItemJob;
+use App\Jobs\Zoho\CreateTipTopDeliveryItemJob;
+use App\Jobs\Zoho\SyncBranchJob;
 use App\Models\Branch;
 use App\Models\Chain;
 use App\Models\Location;
@@ -18,6 +22,7 @@ use Illuminate\Contracts\Foundation\Application;
 use Illuminate\Contracts\View\Factory;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Bus;
 use Illuminate\View\View;
 use Maatwebsite\Excel\Facades\Excel;
 
@@ -57,15 +62,13 @@ class BranchController extends Controller
             ],
             [
                 'data' => 'chain',
-                'name' => 'chain',
+                'name' => 'chain_id',
                 'title' => 'Chain',
-                'searchable' => false,
-                'bSortable' => false,
                 'width' => '10',
             ],
             [
                 'data' => 'region',
-                'name' => 'region',
+                'name' => 'region_id',
                 'title' => 'City',
                 'searchable' => false,
                 'bSortable' => false,
@@ -73,10 +76,18 @@ class BranchController extends Controller
             ],
             [
                 'data' => 'city',
-                'name' => 'city',
+                'name' => 'city_id',
                 'title' => 'Neighborhood',
                 'searchable' => false,
                 'bSortable' => false,
+                'width' => '10',
+            ],
+            [
+                'data' => 'status',
+                'name' => 'status',
+                'searchable' => true,
+                'bSortable' => true,
+                'title' => trans('strings.status'),
                 'width' => '10',
             ],
             [
@@ -138,6 +149,15 @@ class BranchController extends Controller
         $branch->creator_id = $branch->editor_id = auth()->id();
         $this->storeUpdateLogic($request, $branch);
 
+        Bus::chain(
+            [
+                new SyncBranchJob($branch),
+                new CreateDeliveryItemJob($branch),
+                new CreateTipTopDeliveryItemJob($branch),
+                new CreateBranchAccountJob($branch),
+            ]
+        );
+
         return redirect()
             ->route('admin.branches.edit', ['type' => $request->type, $branch->uuid])
             ->with('message', [
@@ -172,6 +192,13 @@ class BranchController extends Controller
         $chains = Chain::active()->whereType($type)->get();
         $foodCategories = Taxonomy::foodCategories()->get();
         $workingHours = $branch->getWorkingHoursForJs();
+
+        // To apply to this task requirements:
+        // https://app.clickup.com/t/2609896/DEV-1424
+        if ($branch->status == Branch::STATUS_INACTIVE) {
+            $branch->status = Branch::STATUS_DRAFT;
+        }
+
 
         return view('admin.branches.form',
             compact('branch',
@@ -246,6 +273,13 @@ class BranchController extends Controller
                 $toValidateInFood['restaurant_under_minimum_order_delivery_fee'] = 'required';
                 $toValidateInFood['restaurant_fixed_delivery_fee'] = 'required';
             }
+
+            if ($request->has('has_jet_delivery') && $request->has('has_jet_delivery') == 'on') {
+                $toValidateInFood['jet_fixed_delivery_fee'] = 'required';
+                $toValidateInFood['jet_delivery_commission_rate'] = 'required';
+                $toValidateInFood['jet_extra_delivery_fee_per_km'] = 'required';
+                $toValidateInFood['jet_minimum_order'] = 'required';
+            }
         }
 
         $generalValidateItems = [
@@ -274,6 +308,7 @@ class BranchController extends Controller
         if ($request->type == Branch::getCorrectChannelName(Branch::CHANNEL_FOOD_OBJECT, 0)) {
             $branch->has_tip_top_delivery = $request->input('has_tip_top_delivery') == 'on' ? 1 : 0;
             $branch->has_restaurant_delivery = $request->input('has_restaurant_delivery') == 'on' ? 1 : 0;
+            $branch->has_jet_delivery = $request->input('has_jet_delivery') == 'on' ? 1 : 0;
         } else {
             $branch->has_tip_top_delivery = 1;
         }
@@ -290,6 +325,11 @@ class BranchController extends Controller
             'restaurant_under_minimum_order_delivery_fee',
             'restaurant_free_delivery_threshold',
             'restaurant_extra_delivery_fee_per_km',
+            //jet inputs
+            'jet_minimum_order',
+            'jet_fixed_delivery_fee',
+            'jet_delivery_commission_rate',
+            'jet_extra_delivery_fee_per_km',
         ];
 
         foreach ($inputs as $input) {
@@ -305,6 +345,7 @@ class BranchController extends Controller
 //        $branch->whatsapp_phone_number = $request->input('whatsapp_phone_number');
         $branch->type = Branch::getCorrectChannel($request->type);
         $branch->status = $request->input('status');
+        $branch->is_open_now = ! $request->has('is_closed_now');
 
         if (is_null($branch->published_at) && $request->input('status') == Branch::STATUS_ACTIVE) {
             $branch->published_at = now();
@@ -350,7 +391,7 @@ class BranchController extends Controller
         $branch->save();
         DB::commit();
 
-        cache()->tags('branches','api-home')->flush();
+        cache()->tags('branches', 'api-home')->flush();
     }
 
     /**

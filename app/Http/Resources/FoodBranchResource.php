@@ -5,7 +5,7 @@ namespace App\Http\Resources;
 use App\Http\Controllers\Controller;
 use App\Models\Branch;
 use App\Models\Currency;
-use App\Models\Place;
+use App\Models\Location;
 use App\Models\Product;
 use App\Models\WorkingHour;
 use Illuminate\Http\Request;
@@ -32,7 +32,9 @@ class FoodBranchResource extends JsonResource
         $searchQuery = request()->input('q');
 
         if ($searchQuery) {
-            $searchProducts = $this->products()->where('status','!=',Product::STATUS_DRAFT)
+            $searchProducts = $this->products()
+                                   ->active()
+                                   ->where('status', '!=', Product::STATUS_DRAFT)
                                    ->whereHas('translations', function ($productTranslationQuery) use (
                                        $searchQuery
                                    ) {
@@ -41,6 +43,17 @@ class FoodBranchResource extends JsonResource
                                    })
                                    ->take(3)
                                    ->get();
+        }
+
+        $extraDeliveryFeeTipTop = 0;
+        $extraDeliveryFeeRestaurant = 0;
+        $distance = 0;
+        if ( ! is_null($user = auth('sanctum')->user())) {
+            if ( ! is_null($address = Location::find($user->selected_address_id))) {
+                [$extraDeliveryFeeTipTop, $distance] = $this->calculatePlainDeliveryFeeForAnAddress($address);
+                [$extraDeliveryFeeRestaurant, $distance] = $this->calculatePlainDeliveryFeeForAnAddress($address,
+                    false);
+            }
         }
 
         return [
@@ -61,8 +74,8 @@ class FoodBranchResource extends JsonResource
                     'formatted' => Currency::format($this->under_minimum_order_delivery_fee),
                 ],
                 'fixedDeliveryFee' => [
-                    'raw' => $this->fixed_delivery_fee,
-                    'formatted' => Currency::format($this->fixed_delivery_fee),
+                    'raw' => $this->fixed_delivery_fee + $extraDeliveryFeeTipTop,
+                    'formatted' => Currency::format($this->fixed_delivery_fee + $extraDeliveryFeeTipTop),
                 ],
                 'freeDeliveryThreshold' => [
                     'raw' => $this->free_delivery_threshold,
@@ -82,8 +95,8 @@ class FoodBranchResource extends JsonResource
                     'formatted' => Currency::format($this->restaurant_under_minimum_order_delivery_fee),
                 ],
                 'fixedDeliveryFee' => [
-                    'raw' => $this->restaurant_fixed_delivery_fee,
-                    'formatted' => Currency::format($this->restaurant_fixed_delivery_fee),
+                    'raw' => $this->restaurant_fixed_delivery_fee + $extraDeliveryFeeRestaurant,
+                    'formatted' => Currency::format($this->restaurant_fixed_delivery_fee + $extraDeliveryFeeRestaurant),
                 ],
                 'freeDeliveryThreshold' => [
                     'raw' => $this->restaurant_free_delivery_threshold,
@@ -91,6 +104,19 @@ class FoodBranchResource extends JsonResource
                 ],
                 'minDeliveryMinutes' => $this->restaurant_min_delivery_minutes,
                 'maxDeliveryMinutes' => $this->restaurant_max_delivery_minutes,
+            ],
+            'jetDelivery' => [
+                'isDeliveryEnabled' => $this->has_jet_delivery,
+                'minimumOrder' => [
+                    'raw' => $this->jet_minimum_order,
+                    'formatted' => Currency::format($this->jet_minimum_order),
+                ],
+                'fixedDeliveryFee' => [
+                    'raw' => $this->jet_fixed_delivery_fee,
+                    'formatted' => Currency::format($this->jet_fixed_delivery_fee),
+                ],
+                'extraFeesPerKm' => $this->jet_extra_delivery_fee_per_km,
+                'commissionRate' => $this->jet_delivery_commission_rate
             ],
             'primaryPhoneNumber' => $this->primary_phone_number,
             'secondaryPhoneNumber' => $this->secondary_phone_number,
@@ -103,6 +129,7 @@ class FoodBranchResource extends JsonResource
                 'countRaw' => $this->rating_count,
                 'countFormatted' => Controller::numberToReadable($this->rating_count),
             ],
+            'distanceToCurrentAddress' => $distance,
             'workingHours' => $workingHours,
             'latitude' => (float) $this->latitude,
             'longitude' => (float) $this->longitude,

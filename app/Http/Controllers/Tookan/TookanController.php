@@ -4,9 +4,11 @@ namespace App\Http\Controllers\Tookan;
 
 
 use App\Http\Controllers\Controller;
+use App\Models\JetOrder;
 use App\Models\Order;
 use App\Models\User;
 use Illuminate\Http\Request;
+use Illuminate\Support\Str;
 
 class TookanController extends Controller
 {
@@ -33,7 +35,14 @@ class TookanController extends Controller
             return;
         }
 
-        $order = Order::where('reference_code', $request->order_id)->firstOrFail();
+        if (Str::contains($request->order_id, ['JET', 'JT','jet']))
+        {
+            $order = JetOrder::where('reference_code', $request->order_id)->firstOrFail();
+        }
+        else{
+            $order = Order::where('reference_code', $request->order_id)->firstOrFail();
+        }
+
         $driver = User::where('tookan_id', $request->fleet_id)->firstOrFail();
 
         $order->driver_id = $driver->id;
@@ -50,12 +59,20 @@ class TookanController extends Controller
             return;
         }
 
-        $order = Order::where('reference_code', $request->order_id)->firstOrFail();
-
-        if ( ! in_array($order->status,
-            [Order::STATUS_ON_THE_WAY, Order::STATUS_PREPARING, Order::STATUS_AT_THE_ADDRESS,Order::STATUS_WAITING_COURIER])) {
-            return;
+        if (Str::contains($request->order_id, ['JET', 'JT','jet']))
+        {
+            $order = JetOrder::where('reference_code', $request->order_id)->firstOrFail();
         }
+        else{
+            $order = Order::where('reference_code', $request->order_id)->firstOrFail();
+
+            if ( ! in_array($order->status,
+                [Order::STATUS_ON_THE_WAY, Order::STATUS_PREPARING, Order::STATUS_AT_THE_ADDRESS,Order::STATUS_WAITING_COURIER])) {
+                return;
+            }
+        }
+
+
 
         $order->status = Order::STATUS_DELIVERED;
 
@@ -88,8 +105,17 @@ class TookanController extends Controller
             return;
         }
 
-        $order = Order::where('reference_code', $request->order_id)->firstOrFail();
+        if (Str::contains($request->order_id, ['JET', 'JT','jet']))
+        {
+            $order = JetOrder::where('reference_code', $request->order_id)->firstOrFail();
+        }
+        else{
+            $order = Order::where('reference_code', $request->order_id)->firstOrFail();
 
+            if ( ! in_array($order->status, [Order::STATUS_PREPARING, Order::STATUS_WAITING_COURIER])) {
+                return;
+            }
+        }
         if (empty($order->driver_id))
         {
             $driver = User::where('tookan_id', $request->fleet_id)->firstOrFail();
@@ -97,9 +123,7 @@ class TookanController extends Controller
             $order->driver_id = $driver->id;
 
         }
-        if ( ! in_array($order->status, [Order::STATUS_PREPARING, Order::STATUS_WAITING_COURIER])) {
-            return;
-        }
+
 
         $order->status = Order::STATUS_ON_THE_WAY;
 
@@ -111,12 +135,20 @@ class TookanController extends Controller
     public function deliveryAgentArrived(Request $request)
     {
         // info('deliveryAgentArrived', ['Request Body', $request->all()]);
-        $order = Order::where('reference_code', $request->order_id)->firstOrFail();
-
-        if ( ! in_array($order->status,
-            [Order::STATUS_PREPARING, Order::STATUS_WAITING_COURIER, Order::STATUS_ON_THE_WAY])) {
-            return;
+        if (Str::contains($request->order_id, ['JET', 'JT','jet']))
+        {
+            $order = JetOrder::where('reference_code', $request->order_id)->firstOrFail();
         }
+        else{
+            $order = Order::where('reference_code', $request->order_id)->firstOrFail();
+
+            if ( ! in_array($order->status,
+                [Order::STATUS_PREPARING, Order::STATUS_WAITING_COURIER, Order::STATUS_ON_THE_WAY])) {
+                return;
+            }
+        }
+
+
 
         $order->status = Order::STATUS_AT_THE_ADDRESS;
 
@@ -125,15 +157,24 @@ class TookanController extends Controller
 
     public function driverAssigned(Request $request)
     {
-        //  info('driverAssigned', ['Request Body', $request->all()]);
         if (empty($request->order_id) || empty($request->fleet_id)) {
             return;
         }
 
-        $order = Order::where('reference_code', $request->order_id)->firstOrFail();
+        if (Str::contains($request->order_id, ['JET', 'JT','jet']))
+        {
+
+            $order = JetOrder::where('reference_code', $request->order_id)->firstOrFail();
+            $order->status = Order::STATUS_WAITING_COURIER;
+
+        }
+        else{
+            $order = Order::where('reference_code', $request->order_id)->firstOrFail();
+        }
         $driver = User::where('tookan_id', $request->fleet_id)->firstOrFail();
 
         $order->driver_id = $driver->id;
+
 
         $order->save();
 

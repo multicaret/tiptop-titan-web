@@ -44,101 +44,101 @@ class WorkingHour extends Model
         'is_day_off' => 'boolean',
     ];
 
+    private static function getNextWorkingDayNumber(int $dayNumber, $workingHours): int
+    {
+        $workingDaysNumber = $workingHours->pluck('is_day_off', 'day')->filter(fn($v) => ! $v);
+        $workingDaysNumber->forget($dayNumber);
+        $tempDayNumber = $dayNumber;
+        if ($tempDayNumber == 7) {
+            $tempDayNumber = 1;
+        }
+
+        if ( ! $workingDaysNumber->has($tempDayNumber)) {
+            $tempDayNumber = self::getNextWorkingDayNumber($tempDayNumber + 1, $workingHours);
+        }
+
+        return $tempDayNumber;
+
+    }
+
     public function workable()
     {
         return $this->morphTo();
     }
 
-    public static function retrieve($object, Carbon $date = null)
+    public static function retrieve($object, Carbon $dateTime = null)
     {
-        if (is_null($date)) {
+        if (is_null($dateTime)) {
             $dayNumber = (int) now()->format('N');
+            $selectTime = now()->format('H:i:s');
         } else {
-            $dayNumber = $date->format('N');
+            $dayNumber = $dateTime->format('N');
+            $selectTime = $dateTime->format('H:i:s');
         }
         $workingHours = [
             'offs' => [],
             'offsRendered' => '-',
             'opensAt' => null,
             'closesAt' => null,
+            'schedule' => null,
             'isOpen' => false,
         ];
-        $nowTime = now()->format('H:i:s');
+        if ($object->workingHours->isEmpty()) {
+            $object->workingHours = $object->getWorkingHours();
+        } else {
+            $timeSlot = WorkingHour::where('day', $dayNumber)
+                                   ->whereWorkableId($object->id)
+                                   ->where('workable_type', get_class($object))
+                                   ->where('is_day_off', 0)
+                                   ->where(function ($query) use ($selectTime) {
+                                       $query->where('opens_at', '<=', $selectTime);
+                                       $query->where('closes_at', '>=', $selectTime);
+                                   })
+                                   ->first();
+
+            if ( ! is_null($timeSlot)) {
+                $workingHours['isOpen'] = true;
+            } else {
+                $workingHours['isOpen'] = false;
+            }
+        }
         foreach ($object->workingHours as $workingHour) {
-            if ($workingHour->is_day_off) {
+            if ($workingHour->is_day_off == 1) {
                 $workingHours['offs'][] = trans('strings.working_day_'.$workingHour->day);
             } else {
-                $todayShifts = $object->workingHours->sortBy('opens_at')->groupBy('day')->get($dayNumber);
-                $getOpenTimeShift = $todayShifts->where('opens_at', '<=', $nowTime)->where('closes_at', '>=',
-                    $nowTime)->first();
-                if ( ! empty($getOpenTimeShift)) {
-                    if ( ! isset($workingHours['opensAt'])) {
-                        $workingHours['opensAt'] = null;
-                    }
-                    if ( ! isset($workingHours['closesAt'])) {
-                        $workingHours['closesAt'] = Carbon::parse($getOpenTimeShift->closes_at)->format('H:i');
-                    }
-                } else {
-                    $firstNextOpenShift = $todayShifts->where('opens_at', '>=', $nowTime)->first();
-                    if ( ! is_null($firstNextOpenShift) && ! isset($workingHours['opensAt'])) {
-                        $workingHours['opensAt'] = Carbon::parse($firstNextOpenShift->opens_at)->format('H:i');
+                // set opens at or closes at value from today shifts
+                $daysShifts = $object->workingHours()->where('day', $dayNumber)->where('is_day_off',
+                    0)->orderBy('opens_at')->get();
+                $dayShifts = $daysShifts->groupBy('day')->get($dayNumber);
+
+
+                if ( ! is_null($dayShifts)) {
+                    $getOpenTimeShift = $dayShifts->where('opens_at', '<=', $selectTime)->where('closes_at', '>=',
+                        $selectTime)->first();
+                    if ( ! empty($getOpenTimeShift)) {
+                        if (is_null($workingHours['closesAt'])) {
+                            $workingHours['closesAt'] = Carbon::parse($getOpenTimeShift->closes_at)->format('H:i');
+                        }
                     } else {
-                        $workingHours['opensAt'] = null;
+                        $firstNextOpenShift = $dayShifts->where('opens_at', '>=', $selectTime)->first();
+                        if ( ! is_null($firstNextOpenShift) && is_null($workingHours['opensAt'])) {
+                            $workingHours['opensAt'] = Carbon::parse($firstNextOpenShift->opens_at)->format('H:i');
+                        }
                     }
-                    if ( ! isset($workingHours['closesAt'])) {
-                        $workingHours['closesAt'] = null;
+
+                    // find next working day and set opens at value
+                    if (is_null($workingHours['opensAt']) && is_null($workingHours['closesAt'])) {
+                        $nextWorkingDayNumber = self::getNextWorkingDayNumber($dayNumber, $object->workingHours);
+                        $nextDayShifts = $daysShifts->groupBy('day')->get($nextWorkingDayNumber);
+                        if ( ! is_null($nextDayShifts) && ! is_null($nextDayShifts->first()) && is_null($workingHours['opensAt'])) {
+                            $workingHours['opensAt'] = Carbon::parse($nextDayShifts->first()->opens_at)->format('H:i');
+                        }
                     }
                 }
             }
         }
         $workingHours['offsRendered'] = implode(' - ', $workingHours['offs']);
 
-        $todayWorkingHours = WorkingHour::where('workable_id', $object->id)
-                                        ->where('workable_type', get_class($object))
-                                        ->where('day', $dayNumber)
-                                        ->first();
-        if ($todayWorkingHours) {
-            if (is_null($todayWorkingHours->opens_at)) {
-                $yesterdayWorkingHours = WorkingHour::where('workable_id', $object->id)
-                                                    ->where('workable_type', get_class($object))
-                                                    ->where('day', Carbon::yesterday()->format('N'))
-                                                    ->first();
-                if ($yesterdayWorkingHours) {
-                    if (is_null($yesterdayWorkingHours->opens_at)) {
-                        $workingHours['isOpen'] = false;
-                    } else {
-                        $yesterday_opens_at = Carbon::createFromFormat('H:i:s', $yesterdayWorkingHours->opens_at);
-                        $yesterday_closes_at = Carbon::createFromFormat('H:i:s', $yesterdayWorkingHours->closes_at);
-                        if ($yesterday_opens_at->gt($yesterday_closes_at)) {
-                            $workingHours['isOpen'] = Carbon::now()->lt($yesterday_closes_at);
-                        }
-                    }
-                }
-            } else {
-                $today_opens_at = Carbon::createFromFormat('H:i:s', $todayWorkingHours->opens_at);
-                $today_closes_at = Carbon::createFromFormat('H:i:s', $todayWorkingHours->closes_at);
-
-                if ($today_opens_at->gt($today_closes_at)) {
-                    $today_closes_at->addDays(1);
-                }
-
-                $timeSlot = WorkingHour::where('day', $dayNumber)
-                                       ->whereWorkableId($object->id)
-                                       ->where('workable_type', get_class($object))
-                                       ->where('is_day_off', 0)
-                                       ->where(function ($query) use ($nowTime) {
-                                           $query->where('opens_at', '<=', $nowTime);
-                                           $query->where('closes_at', '>=', $nowTime);
-                                       })
-                                       ->first();
-
-                if ( ! is_null($timeSlot)) {
-                    $workingHours['isOpen'] = true;
-                } else {
-                    $workingHours['isOpen'] = false;
-                }
-            }
-        }
         $workingHours['schedule'] = WorkingHourResource::collection($object->workingHours);
 
         return $workingHours;

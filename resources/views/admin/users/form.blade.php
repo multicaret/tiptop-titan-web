@@ -161,7 +161,7 @@
                         @endcomponent
                     </div>
                     @if(!is_null($user->id) && !in_array($role,['user','tiptop-driver','restaurant-driver','branch-owner','branch-manager']) && auth()->user()->role_name == \App\Models\User::ROLE_SUPER)
-                    <div class="col-md-6">
+                        <div class="col-md-6">
                             @component('admin.components.form-group', ['name' => 'role', 'type' => 'select'])
                                 @slot('label', 'Role')
                                 @slot('options',collect(\App\Models\User::getAllRoles())->filter(function ($value,$key){
@@ -169,7 +169,7 @@
                                     })->toArray())
                                 @slot('selected', $user->role_name)
                             @endcomponent
-                    </div>
+                        </div>
                     @endif
 
                 </div>
@@ -256,6 +256,54 @@
                 </div>
             </div>
         @endif
+        @if($user->addresses()->onlyTrashed()->count())
+            <div class="card card-outline-inverse mb-4">
+                <h4 class="d-flex justify-content-between align-items-center px-4 mt-4">
+                    Archived Addresses
+                </h4>
+                <div class="card-body">
+                    <div class="row">
+                        @foreach($user->addresses()->onlyTrashed()->get() as $address)
+                            <div class="col-4">
+                                <div class="card mb-3 border-light">
+                                    <div class="card-body">
+                                        <div class="">
+                                            <h4 class="card-title d-inline">{{is_null($address->alias) ? 'Empty' : $address->alias}}</h4>
+                                            <div class="text-muted d-inline float-right">
+                                                <img
+                                                    src="{{\App\Models\Location::getKindsForMaps()[$address->kind]['icon']}}"
+                                                    alt="kind"
+                                                    width="30px">
+                                            </div>
+                                            <hr>
+                                        </div>
+                                        @php
+                                            $empty = '<p class="card-text text-muted d-inline">Empty</p>'
+                                        @endphp
+                                        @foreach([
+                                                'City'=> optional($address->region)->name,
+                                                'Neighborhood'=>optional($address->city)->name,
+                                                'Address'=>$address->address1,
+                                                'Directions'=>$address->notes,
+                                                //todo: this may not be a proper way to handle phones. Please examine it further
+                                                'Phone'=> is_array($address->phones) && count($address->phones) ? $address->phones[0]: $address->phones,
+                                                'Latitude'=>$address->latitude,
+                                                'Longitude'=>$address->longitude
+                                        ]
+                                                as $name => $var)
+                                            <div class="card-text mb-2">
+                                                {{$name}}
+                                                : {!!empty($var) ? $empty : $var!!}
+                                            </div>
+                                        @endforeach
+                                    </div>
+                                </div>
+                            </div>
+                        @endforeach
+                    </div>
+                </div>
+            </div>
+        @endif
         <div class="card card-outline-inverse mb-4">
             <h4 class="card-header">
                 Login Details
@@ -290,6 +338,35 @@
                 @endif
             </div>
         </div>
+
+        @if($user->role_name == \App\Models\User::ROLE_USER)
+            <div class="card card-outline-inverse mb-4">
+                <h4 class="card-header">
+                    Extra Details
+                </h4>
+
+                <ul class="list-group list-group-flush col-5">
+                    <li class="list-group-item d-flex justify-content-between">
+                        <b>Number of Orders:</b>
+                        <span>{{ $user->orders_count }}</span>
+                    </li>
+                    <li class="list-group-item d-flex justify-content-between">
+                        <b>Delivered Orders Value:</b>
+                        <span>{!! $user->getDeliveredOrdersValue() !!}</span>
+                    </li>
+                    @php([$usedCouponsCount,$usedCouponsValue] = $user->getNumberOfUserCouponsAndItsValue())
+                    <li class="list-group-item d-flex justify-content-between">
+                        <b>Used Coupons Count:</b>
+                        <span>{{$usedCouponsCount}}</span>
+                    </li>
+                    <li class="list-group-item d-flex justify-content-between">
+                        <b>Used Coupons Value:</b>
+                        <span>{!! $usedCouponsValue !!}</span>
+                    </li>
+                </ul>
+            </div>
+        @endif
+
         <div class="ml-1">
             @if(is_null($user->id))
                 @component('admin.components.form-group', ['name' => 'send_notification', 'type' => 'checkbox'])

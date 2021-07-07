@@ -4,11 +4,14 @@ namespace App\Http\Controllers\Api\V1;
 
 
 use App\Http\Controllers\Api\BaseApiController;
+use App\Http\Controllers\Controller;
+use App\Http\Resources\BranchCollection;
 use App\Http\Resources\BranchResource;
 use App\Http\Resources\CartResource;
 use App\Http\Resources\CurrencyResource;
 use App\Http\Resources\FoodCategoryResource;
 use App\Http\Resources\GroceryCategoryParentResource;
+use App\Http\Resources\OrderMiniResource;
 use App\Http\Resources\OrderResource;
 use App\Http\Resources\RemoteConfigResource;
 use App\Http\Resources\SlideResource;
@@ -22,6 +25,8 @@ use App\Models\RemoteConfig;
 use App\Models\Slide;
 use App\Models\Taxonomy;
 use App\Models\User;
+use App\Models\WorkingHour;
+use Carbon\Carbon;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\AnonymousResourceCollection;
@@ -90,8 +95,8 @@ class HomeController extends BaseApiController
         $noAvailabilityMessage = '';
 
         // Grocery Related Initializers
-        $distance = 0;
-        $branch = null;
+        $distanceForClosesMarketBranch = 0;
+        $marketBranch = null;
         // Food Related Initializers
         $foodBranches = [];
 
@@ -140,27 +145,57 @@ class HomeController extends BaseApiController
                                      return GroceryCategoryParentResource::collection($groceryParentCategories);
                                  });
 
-            [$distance, $branch] = Branch::getClosestAvailableBranch($latitude, $longitude);
-            if ( ! is_null($branch)) {
+            [
+                $distanceForClosesMarketBranch,
+                $marketBranch,
+                $branchTodayWorkingHours
+            ] = Branch::getClosestAvailableBranch($latitude, $longitude);
+            if (
+                ! is_null($marketBranch) &&
+                (
+                    ! is_null($branchTodayWorkingHours) &&
+                    $branchTodayWorkingHours['isOpen']
+                )
+            ) {
                 if ( ! is_null($user)) {
-                    $cart = Cart::retrieve($branch->chain_id, $branch->id, $user->id);
-                    $activeOrders = Order::groceries()
+                    $cart = Cart::retrieve($marketBranch->chain_id, $marketBranch->id, $user->id);
+                    $activeOrders = Order::with('address', 'user', 'cart', 'paymentMethod')
+                                         ->groceries()
                                          ->whereUserId($user->id)
                                          ->whereNotIn('status', [
                                              Order::STATUS_CANCELLED,
                                              Order::STATUS_DELIVERED,
                                          ])
-                                         ->whereChainId($branch->chain_id)
+                                         ->whereChainId($marketBranch->chain_id)
                                          ->latest();
                     $activeOrdersCount = $activeOrders->count();
-                    $activeOrders = OrderResource::collection($activeOrders->take(4)->get());
+                    if ($request->has('use_mini_order')) {
+                        $activeOrders = OrderMiniResource::collection($activeOrders->take(4)->get());
+                    } else {
+                        $activeOrders = OrderResource::collection($activeOrders->take(4)->get());
+                    }
                     $totalActiveOrders = $activeOrdersCount;
                 }
             } else {
                 // It's too late no branch is open for now, so sorry
                 // No Branch
                 // No Cart
-                $noAvailabilityMessage = 'No Branch is not available, please check back again at 08:00 am';
+                $time = trans('api.the_morning');
+                $allBranches = Branch::getBranchesOrderByDistance($latitude, $longitude);
+                if ($allBranches->count()) {
+                    $workingHoursOfFirstMarketBranch = WorkingHour::where('workable_id', $allBranches->first()->id)
+                                                                  ->where('workable_type', Branch::class)
+                                                                  ->where('day', now()->addDay()->format('N'))
+                                                                  ->first();
+                    if ( ! is_null($workingHoursOfFirstMarketBranch)) {
+                        $time = Carbon::parse($workingHoursOfFirstMarketBranch->opens_at)->format('H:i');
+                    }
+                }
+
+                $noAvailabilityMessage = trans('api.No Branch is available in your area now! please check again at :time',
+                    [
+                        'time' => $time,
+                    ]);
             }
 
             // Always in grocery the EA is 20-30, for dynamic values use "->distance" attribute from above.
@@ -171,30 +206,50 @@ class HomeController extends BaseApiController
 
                 return FoodCategoryResource::collection($categories);
             });
-            $foodBranches = Branch::active()
-                                  ->foods()
-                                  ->latest('published_at')
-                                  ->get();
-
+            if (Controller::distanceBetween(
+                    config('defaults.geolocation.latitude'), config('defaults.geolocation.longitude'),
+                    $latitude, $longitude)
+                >= config('defaults.geolocation.max_distance_for_food_branches_to_order_from_in_erbil')
+            ) {
+                $noAvailabilityMessage = trans('api.Sorry, we do not deliver to your area now!');
+            } else {
+                if ($request->has('autoscroll_for_food_branches')) {
+                    $foodBranches = Branch::active()
+                                          ->foods()
+                                          ->latest('published_at')
+                                          ->take(10)
+                                          ->get();
+                } else {
+                    $foodBranches = Branch::active()
+                                          ->foods()
+                                          ->latest('published_at')
+                                          ->get();
+                }
+                if (is_null($foodBranches)) {
+                    $noAvailabilityMessage = 'No Restaurants are open right now, please check back again later';
+                }
+            }
             if ( ! is_null($user)) {
                 $cart = Cart::retrieve(
                     $request->input('selected_food_chain_id'),
                     $request->input('selected_food_branch_id'),
                     $user->id
                 );
-                $activeOrders = Order::foods()->whereUserId($user->id)
+                $activeOrders = Order::with('address', 'user', 'cart', 'paymentMethod')
+                                     ->foods()
+                                     ->whereUserId($user->id)
                                      ->whereNotIn('status', [
                                          Order::STATUS_CANCELLED,
                                          Order::STATUS_DELIVERED,
                                      ])
-                                     ->where('type', Order::CHANNEL_FOOD_OBJECT)
                                      ->latest();
                 $activeOrdersCount = $activeOrders->count();
-                $activeOrders = OrderResource::collection($activeOrders->take(4)->get());
+                if ($request->has('use_mini_order')) {
+                    $activeOrders = OrderMiniResource::collection($activeOrders->take(4)->get());
+                } else {
+                    $activeOrders = OrderResource::collection($activeOrders->take(4)->get());
+                }
                 $totalActiveOrders = $activeOrdersCount;
-            }
-            if (is_null($foodBranches)) {
-                $noAvailabilityMessage = 'No Restaurants is are now open, please check back again at 08:00 am';
             }
         }
 
@@ -222,10 +277,10 @@ class HomeController extends BaseApiController
             'currentCurrency' => $currencyResource,
             'noAvailabilityMessage' => $noAvailabilityMessage,
             // Grocery Related
-            'branch' => is_null($branch) ? null : new BranchResource($branch),
-            'distance' => $distance,
+            'branch' => is_null($marketBranch) ? null : new BranchResource($marketBranch),
+            'distance' => $distanceForClosesMarketBranch,
             // Food Related
-            'restaurants' => is_null($foodBranches) ? null : BranchResource::collection($foodBranches),
+            'restaurants' => BranchResource::collection($foodBranches),
         ]);
     }
 

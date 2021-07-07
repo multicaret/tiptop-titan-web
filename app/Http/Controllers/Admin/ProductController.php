@@ -45,7 +45,7 @@ class ProductController extends Controller
             ],
             [
                 'data' => 'title',
-                'name' => 'translations.title',
+                'name' => 'title',
                 'title' => trans('strings.title'),
                 'width' => '150',
             ],
@@ -275,8 +275,6 @@ class ProductController extends Controller
         if ($request->has('is_enable_to_store_date')) {
             $rules['price_discount_began_at'] = 'required|date';
             $rules['price_discount_finished_at'] = 'required|date|after:price_discount_began_at';
-            $rules['custom_banner_began_at'] = 'required|date';
-            $rules['custom_banner_ended_at'] = 'required|date|after:custom_banner_began_at';
         }
 
         $rules["$defaultLocale.title"] = 'required';
@@ -343,7 +341,7 @@ class ProductController extends Controller
         $product->push();
         DB::commit();
 
-        cache()->tags('productions')->flush();
+        cache()->tags('products')->flush();
 
         $this->handleSubmittedSingleMedia('cover', $request, $product);
         $this->handleSubmittedMedia($request, 'gallery', $product, 'gallery');

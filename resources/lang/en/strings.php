@@ -244,6 +244,7 @@ return [
     'order_status_16' => 'On the way',
     'order_status_18' => 'At the address',
     'order_status_20' => 'Delivered',
+    'order_status_22' => 'Waiting to be assigned',
     'grocery_and_food' => 'Grocery And Food',
     'both' => 'Both',
     'grocery' => 'Grocery',
@@ -298,5 +299,11 @@ return [
     'has_good_packaging_quality_rating' => 'Good Packaging Quality',
     'has_good_order_accuracy_rating' => 'Good Order Accuracy',
     'You have orders with this address you can not delete it' => 'You have orders with this address you can not delete it',
-    '' => '',
+    'You can not delete this address, please add a new one before deleting this address' => 'You can not delete this address, please add a new one before deleting this address',
+    //posts
+    'related_posts' => 'You May Like To Read',
+    'blog' => 'News & Blog',
+    'how_to_use' => 'How to use',
+    'app_screenshots' => 'App Screenshots',
+    'download_app' => 'Download App',
 ];

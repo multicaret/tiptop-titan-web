@@ -50,6 +50,7 @@
             selectedRegion: null,
             isTipTopDelivery: @json($branch->has_tip_top_delivery),
             isRestaurantDelivery: @json($branch->has_restaurant_delivery),
+            isJetDelivery: @json($branch->has_jet_delivery),
             excelFile: null,
             withOptions: false,
         },

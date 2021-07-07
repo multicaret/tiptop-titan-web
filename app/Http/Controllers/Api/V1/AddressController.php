@@ -41,7 +41,8 @@ class AddressController extends BaseApiController
 //        $latitude = $request->input('latitude');
 //        $longitude = $request->input('longitude');
 
-        $regions = Region::where('regions.id', config('defaults.region.id'))
+        $regions = Region::active()
+                         ->where('regions.id', config('defaults.region.id'))
                          ->orderByTranslation('name')
                          ->get();
         $cities = City::active()
@@ -110,8 +111,15 @@ class AddressController extends BaseApiController
 
     public function destroy($address)
     {
-        //Todo: only if Super Admin or the owner of the address should be able to delete.
         $address = Location::find($address);
+        $user = auth()->user();
+        $hasMoreThanOneAddress = Location::whereContactableType(User::class)->whereContactableId($user->id)->count() > 1;
+        $canDeleteTheirAddress = $address->contactable_id == $user->id && $hasMoreThanOneAddress;
+        if ( ! $canDeleteTheirAddress) {
+            return $this->respondValidationFails([
+                'address' => __('strings.You can not delete this address, please add a new one before deleting this address')
+            ]);
+        }
         if (is_null($address)) {
             return $this->respondNotFound();
         } elseif (Order::whereAddressId($address->id)->count()) {

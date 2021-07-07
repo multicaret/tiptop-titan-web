@@ -62,6 +62,8 @@
         {!! $appPreferences['custom_css_head'] !!}
     </style>
     {!! $appPreferences['custom_code_head'] !!}
+
+    @stack('styles')
 </head>
 <body>
 

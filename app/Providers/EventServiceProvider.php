@@ -3,6 +3,7 @@
 namespace App\Providers;
 
 use App\Models\Branch;
+use App\Models\JetOrder;
 use App\Models\Order;
 use App\Models\OrderDailyReport;
 use App\Models\Product;
@@ -10,6 +11,7 @@ use App\Models\ProductOption;
 use App\Models\TookanTeam;
 use App\Models\User;
 use App\Observers\BranchObserver;
+use App\Observers\JetOrderObserver;
 use App\Observers\OrderDailyReportObserver;
 use App\Observers\OrderObserver;
 use App\Observers\ProductObserver;
@@ -50,6 +52,7 @@ class EventServiceProvider extends ServiceProvider
         Product::observe(ProductObserver::class);
         ProductOption::observe(ProductOptionObserver::class);
         Order::observe(OrderObserver::class);
+        JetOrder::observe(JetOrderObserver::class);
         TookanTeam::observe(TookanTeamObserver::class);
         OrderDailyReport::observe(OrderDailyReportObserver::class);
     }

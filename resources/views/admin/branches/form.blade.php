@@ -15,6 +15,12 @@
 @push('styles')
     <link rel="stylesheet" href="/admin-assets/libs/quill/typography.css">
     <link rel="stylesheet" href="/admin-assets/libs/quill/editor.css">
+    <style>
+        .nav-link {
+            padding-right: 10px !important;
+            padding-left: 10px !important;
+        }
+    </style>
     {{--    @livewireStyles--}}
 @endpush
 
@@ -80,6 +86,12 @@
                     <i class="fas fa-star"></i>&nbsp;Ratings
                 </a>
             </li>
+
+            <li class="nav-item">
+                <a class="nav-link" data-toggle="tab" href="#activity-logs-tab">
+                    <i class="far fa-chart-bar"></i>&nbsp;Acitivity Logs
+                </a>
+            </li>
         </ul>
         <div class="tab-content">
             <div class="tab-pane fade active show" id="settings-tab">
@@ -115,16 +127,18 @@
                                             Export to Excel (General)
                                         </a>
                                     </div>
-                                    <div class="d-inline-flex justify-self-start">
-                                        <a class="btn btn-secondary btn-sm" target="_blank"
-                                           href="{{route('admin.branch.export-to-excel', [
+                                    @if($branch->isFood())
+                                        <div class="d-inline-flex justify-self-start">
+                                            <a class="btn btn-secondary btn-sm" target="_blank"
+                                               href="{{route('admin.branch.export-to-excel', [
                                                 'type'=> request()->type,
                                                 $branch,
                                                 'for' => 'importing',
                                         ])}}">
-                                            Export to Excel (For Importing)
-                                        </a>
-                                    </div>
+                                                Export to Excel (For Importing)
+                                            </a>
+                                        </div>
+                                    @endif
                                     <form style="display: none;" id="upload-banner" enctype="multipart/form-data"
                                           method="post"
                                           action="{{route('admin.branch.import-from-excel',[$branch, 'type'=> request('type')])}}">
@@ -136,11 +150,13 @@
                                     </form>
                                 </div>
                                 <div>
-                                    <div class="d-inline-flex">
-                                        <button class="btn btn-warning btn-sm" @click="uploadFile(true)">
-                                            Import from Excel with options
-                                        </button>
-                                    </div>
+                                    @if($branch->isFood())
+                                        <div class="d-inline-flex">
+                                            <button class="btn btn-warning btn-sm" @click="uploadFile(true)">
+                                                Import from Excel with options
+                                            </button>
+                                        </div>
+                                    @endif
                                     <div class="d-inline-flex">
                                         <button class="btn btn-warning btn-sm" @click="uploadFile(false)">
                                             Import from Excel
@@ -228,6 +244,13 @@
                             @include('admin.branches.partials._users_table', ['users' => $users[0]])
                         @endforeach
                     @endif
+                </div>
+            </div>
+
+
+            <div class="tab-pane fade" id="activity-logs-tab">
+                <div class="card-body">
+                    @include('admin.partials.activity-logs',['object' => $branch])
                 </div>
             </div>
         </div>

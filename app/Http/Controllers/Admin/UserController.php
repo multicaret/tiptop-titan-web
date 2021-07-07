@@ -34,6 +34,11 @@ class UserController extends Controller
         $this->roleValidation($role);
         $columns = [
             [
+                'data' => 'id',
+                'name' => 'id',
+                'title' => '#',
+            ],
+            [
                 'data' => 'first',
                 'name' => 'first',
                 'title' => trans('strings.first_name'),
@@ -235,11 +240,16 @@ class UserController extends Controller
      *
      * @return Response
      */
-    public function edit($role, User $user, Request $request)
+    public function edit($role, $user, Request $request)
     {
+        $user = User::where('id', $user)
+                    ->with('country', 'region', 'city')
+                    ->withCount('orders')
+                    ->first();
+
         $role = Str::kebab($user->role_name);
         $data = $this->essentialData($role);
-        $user->load(['country', 'region', 'city']);
+
         $data['user'] = $user;
         $data['role'] = $role;
         $data['roleName'] = $user->role_name;
@@ -295,8 +305,9 @@ class UserController extends Controller
         }
         $user->save();
 
-        if ( !empty($request->role))
+        if ( ! empty($request->role)) {
             $user->assignRole($this->getRoleName($request->role));
+        }
         /*if (is_null($address = Location::where('contactable_id', $user->id)
                                        ->where('contactable_role', User::class)
                                        ->whereNull('alias')
@@ -385,7 +396,7 @@ class UserController extends Controller
             if (isset($branchChannel)) {
                 $branches = Branch::whereType($branchChannel);
             } else {
-                $branches = Branch::orderBy('id');
+                $branches = Branch::query();
             }
             $branches = $branches->get()->mapWithKeys($this->getBranchSelectorOptions());
         }
@@ -410,7 +421,7 @@ class UserController extends Controller
 
     private function getRoleName($role)
     {
-        $tempRoleName = str_replace(['-','_'], ' ', $role);
+        $tempRoleName = str_replace(['-', '_'], ' ', $role);
 
         return Role::findByName(ucwords($tempRoleName))->name;
     }
