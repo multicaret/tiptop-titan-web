@@ -187,7 +187,7 @@ class City extends Model implements HasMedia
         return cache()->tags('cities')
                       ->rememberForever('cities_of_region_'.$regionId,
                           function () use ($regionId) {
-                              return City::whereRegionId($regionId)->get();
+                              return City::active()->whereRegionId($regionId)->get();
                           }
                       );
     }
