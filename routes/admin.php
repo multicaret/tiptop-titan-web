@@ -40,6 +40,7 @@ Route::resource('branch-owners', 'UserController')->except(['show']);
 Route::resource('branch-managers', 'UserController')->except(['show']);*/
 
 Route::resource('posts', 'PostController')->except(['show']);
+Route::resource('brands', 'BrandController')->except(['show']);
 Route::resource('cities', 'CityController')->except(['show']);
 Route::resource('regions', 'RegionController')->except(['show']);
 

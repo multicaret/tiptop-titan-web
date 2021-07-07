@@ -273,7 +273,30 @@
                                             ></multiselect>
                                         </div>
                                     </div>
+                                    <div class="col-6">
+                                        <div class="form-group">
+                                            <label class="control-label">
+                                                Brand
+                                            </label>
+                                            <multiselect
+                                                :options="brands"
+                                                v-model="product.brand"
+                                                track-by="id"
+                                                label="title"
+                                                name="brand"
+                                                multiple="false"
+                                                :searchable="true"
+                                                :allow-empty="true"
+                                                select-label=""
+                                                selected-label=""
+                                                deselect-label=""
+                                                placeholder=""
+                                                autocomplete="false"
+                                            ></multiselect>
+                                        </div>
+                                    </div>
                                 @endif
+
                                 <div class="col-md-12">
                                     <span class="">
                                         <label class="switcher switcher-primary mr-3 my-2">
@@ -573,6 +596,7 @@
             <input type="hidden" name="categories" :value="JSON.stringify(product.categories)">
             <input type="hidden" name="category" :value="JSON.stringify(product.category)">
             <input type="hidden" name="unit_id" :value="JSON.stringify(product.unit)">
+            <input type="hidden" name="brand_id" :value="JSON.stringify(product.brand)">
             <input type="hidden" name="unattached-media" class="deleted-file" value="">
             <button class="btn btn-success" type="submit">{{trans('strings.submit')}}</button>
             @if($product->id && $product->is_food)
@@ -598,6 +622,7 @@
                 branches: @json($branches),
                 categories: @json($categories??[]),
                 units: @json($units),
+                brands: @json($brands??[]),
                 searchTags: @json($searchTags),
                 statuses: @json(array_values(\App\Models\Product::getAllStatusesRich())),
                 isGrocery: @json($isGrocery),
