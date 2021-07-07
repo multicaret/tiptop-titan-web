@@ -180,22 +180,27 @@ class HomeController extends BaseApiController
                 // It's too late no branch is open for now, so sorry
                 // No Branch
                 // No Cart
-                $time = trans('api.the_morning');
+                $noAvailabilityMessage = trans('api.Sorry, we do not deliver to your area now!');
                 $allBranches = Branch::getBranchesOrderByDistance($latitude, $longitude);
                 if ($allBranches->count()) {
-                    $workingHoursOfFirstMarketBranch = WorkingHour::where('workable_id', $allBranches->first()->id)
-                                                                  ->where('workable_type', Branch::class)
-                                                                  ->where('day', now()->addDay()->format('N'))
-                                                                  ->first();
-                    if ( ! is_null($workingHoursOfFirstMarketBranch)) {
-                        $time = Carbon::parse($workingHoursOfFirstMarketBranch->opens_at)->format('H:i');
+                    $firstMarketBranch = $allBranches->first();
+                    $maxDistance = config('defaults.geolocation.max_distance_for_food_branches_to_order_from_in_erbil');
+                    if ($firstMarketBranch < $maxDistance) {
+                        $workingHoursOfFirstMarketBranch = WorkingHour::where('workable_id', $firstMarketBranch->id)
+                                                                      ->where('workable_type', Branch::class)
+                                                                      ->where('day', now()->addDay()->format('N'))
+                                                                      ->first();
+                        $time = trans('api.the_morning');
+                        if ( ! is_null($workingHoursOfFirstMarketBranch)) {
+                            $time = Carbon::parse($workingHoursOfFirstMarketBranch->opens_at)->format('H:i');
+                        }
+                        $noAvailabilityMessage = trans('api.No Branch is available in your area now! please check again at :time',
+                            [
+                                'time' => $time,
+                            ]);
                     }
                 }
 
-                $noAvailabilityMessage = trans('api.No Branch is available in your area now! please check again at :time',
-                    [
-                        'time' => $time,
-                    ]);
             }
 
             // Always in grocery the EA is 20-30, for dynamic values use "->distance" attribute from above.
