@@ -288,7 +288,8 @@ class Branch extends Model implements HasMedia
 
                 foreach ($branchesOrderedByDistance as $branchOrderedByDistance) {
                     $branchTodayWorkingHours = WorkingHour::retrieve($branchOrderedByDistance);
-                    if ($branchTodayWorkingHours['isOpen']) {
+                    $maxDistance = config('defaults.geolocation.max_distance_for_food_branches_to_order_from_in_erbil');
+                    if ($branchTodayWorkingHours['isOpen'] && $branchOrderedByDistance->distance <= $maxDistance) {
                         $branch = Branch::find($branchOrderedByDistance->id);
                         $distance = $branchOrderedByDistance->distance;
                         break;
