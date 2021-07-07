@@ -185,7 +185,7 @@ class HomeController extends BaseApiController
                 if ($allBranches->count()) {
                     $firstMarketBranch = $allBranches->first();
                     $maxDistance = config('defaults.geolocation.max_distance_for_food_branches_to_order_from_in_erbil');
-                    if ($firstMarketBranch < $maxDistance) {
+                    if ($firstMarketBranch->distance < $maxDistance) {
                         $workingHoursOfFirstMarketBranch = WorkingHour::where('workable_id', $firstMarketBranch->id)
                                                                       ->where('workable_type', Branch::class)
                                                                       ->where('day', now()->addDay()->format('N'))
