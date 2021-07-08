@@ -128,11 +128,11 @@ class TaxonomyController extends Controller
             ]);
             $columns = array_merge($columns, [
                 [
-                    'data' => 'branch_title',
-                    'name' => 'branch_title',
+                    'data' => 'branch_translations.title',
+                    'name' => 'branch_translations.title',
                     'title' => trans('strings.branch'),
                     'orderable' => false,
-                    'searchable' => false
+                    'searchable' => true
                 ]
             ]);
         }

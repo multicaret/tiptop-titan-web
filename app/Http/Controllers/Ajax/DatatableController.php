@@ -120,13 +120,22 @@ class DatatableController extends AjaxController
         $correctType = Taxonomy::getCorrectType($request->type);
         $taxonomies = Taxonomy::orderBy('order_column')
                               ->with('parent', 'chain', 'branches', 'branch')
-                              ->where('type', $correctType);
+                              ->where('taxonomies.type', $correctType);
         if ($correctType == Taxonomy::TYPE_GROCERY_CATEGORY) {
             if ( ! is_null($parentId)) {
                 $taxonomies = $taxonomies->where('parent_id', $parentId);
             } else {
                 $taxonomies = $taxonomies->where('parent_id', null);
             }
+        } elseif ($correctType == Taxonomy::TYPE_MENU_CATEGORY) {
+            $taxonomies = $taxonomies->selectRaw('taxonomies.*,branch_translations.title')
+                                     ->leftJoin('branches', function ($join) {
+                                         $join->on('branches.id', '=', 'taxonomies.branch_id');
+                                         $join->leftJoin('branch_translations', function ($join) {
+                                             $join->on('branches.id', '=', 'branch_translations.branch_id');
+                                         });
+                                     });
+
         }
 
         return DataTables::of($taxonomies)
@@ -185,7 +194,7 @@ class DatatableController extends AjaxController
                          ->editColumn('chain', function ($item) {
                              return $item->chain ? $item->chain->title : null;
                          })
-                         ->editColumn('branch_title', function ($item) {
+                         ->editColumn('branch_translations.title', function ($item) {
                              return $item->branch ? $item->branch->title : '';
                          })
                          ->editColumn('branches', function ($item) use ($correctType) {
