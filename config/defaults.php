@@ -289,6 +289,7 @@ return [
                 'channel' => config('app.app-channels.grocery'),
             ],
         ],
+        /* For food this is "menu category"*/
         'market_food_category_show' => [
             'params' => [
                 'adj_t' => '657i79u',
@@ -300,6 +301,7 @@ return [
                 'id' => 1,
             ],
         ],
+        /* This is the main Food category*/
         'food_category_show' => [
             'params' => [
 //                'adj_t' => '657i79u',

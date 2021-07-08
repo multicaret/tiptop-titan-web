@@ -737,16 +737,6 @@ class DatatableController extends AjaxController
                                  ]),
                              ];
 
-                             if (str_contains(request('type'), 'food')) {
-                                 $data['deepLink'] = [
-                                     'url' => Controller::generateDeepLink('market_food_category_show', [
-                                         'id' => $branch->id,
-                                         'channel' => config('app.app-channels.food')
-                                     ])
-                                 ];
-                             }
-
-
                              return view('admin.components.datatables._row-actions', $data)->render();
                          })
                          ->editColumn('region', function ($branch) {
