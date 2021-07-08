@@ -63,7 +63,7 @@
                             <div
                                 class="chat-message-left mb-4">
 
-                                <div class="flex-shrink-1 bg-lighter rounded py-2 px-3 mr-3">
+                                <div class=" bg-lighter rounded py-2 px-3 mr-3">
 
                                     <p>
                                         {{ $note }}

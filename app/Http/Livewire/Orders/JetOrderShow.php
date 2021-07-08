@@ -90,18 +90,7 @@ class JetOrderShow extends Component
 
     public function addNewNote()
     {
-        $this->validate();
-        $previousNote = OrderAgentNote::whereAgentId(auth()->id())
-                                      ->whereOrderId($this->order->id)
-                                      ->latest()
-                                      ->first();
-        $hasBeenSentBefore = ! is_null($previousNote) && ($previousNote->message == $this->note);
-        if ($hasBeenSentBefore) {
-            $this->emit('showToast', [
-                'icon' => 'error',
-                'message' => 'This message has been sent before',
-            ]);
-        } else {
+
             $this->createNote($this->note);
 
             $this->note = null;
@@ -109,7 +98,6 @@ class JetOrderShow extends Component
                 'icon' => 'success',
                 'message' => 'Note saved successfully',
             ]);
-        }
 
     }
 
@@ -148,10 +136,9 @@ class JetOrderShow extends Component
         $this->order->recordActivity('note_created', [
             'agent_note' => $message,
         ]);
-        $orderAgentNote = new OrderAgentNote();
-        $orderAgentNote->message = $message;
-        $orderAgentNote->order_id = $this->order->id;
-        $orderAgentNote->agent_id = auth()->id();
-        $orderAgentNote->save();
+        $orderAgentNotes = $this->order->agent_notes;
+        $orderAgentNotes[] = $message;
+        $this->order->agent_notes = $orderAgentNotes;
+        $this->order->save();
     }
 }
