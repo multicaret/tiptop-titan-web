@@ -71,7 +71,7 @@ class ZohoAnalyticsController extends Controller
         fclose($handle);
         $headers = ['Content-type' => 'application/json'];
 
-        return response()->download($filename, 'restaurant-sales.json', $headers);
+        return response()->download($filename, 'restaurant-sales.json', $headers)->deleteFileAfterSend(true);
     }
 
     public function branchesJsonImport(Request $request)
@@ -104,7 +104,7 @@ class ZohoAnalyticsController extends Controller
         fclose($handle);
         $headers = ['Content-type' => 'application/json'];
 
-        return response()->download($filename, 'branches.json', $headers);
+        return response()->download($filename, 'branches.json', $headers)->deleteFileAfterSend(true);
     }
 
 }
