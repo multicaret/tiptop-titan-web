@@ -45,6 +45,7 @@ class CloneChainProductToBranch implements ShouldQueue
             $newProduct->cloned_from_product_id = $this->originalProduct->id;
             $newProduct->push();
             $newProduct->categories()->sync($this->originalProduct->categories->pluck('id'));
+            \DB::commit();
 
             $oldMediaItems = $this->originalProduct->getMedia('cover');
             foreach ($oldMediaItems as $oldMedia) {
@@ -54,8 +55,9 @@ class CloneChainProductToBranch implements ShouldQueue
             foreach ($oldMediaItems as $oldMedia) {
                 $oldMedia->copy($newProduct, 'gallery', 's3');
             }
-            \DB::commit();
+
         } else {
+            \DB::beginTransaction();
             $product->brand_id = $this->originalProduct->brand_id;
             $product->unit_id = $this->originalProduct->unit_id;
             $product->status = $this->originalProduct->status;
@@ -72,6 +74,7 @@ class CloneChainProductToBranch implements ShouldQueue
                 $product->translateOrNew($key)->description = $this->originalProduct->translate($key)->description;
             }
             $product->save();
+            \DB::commit();
 
             $product->categories()->sync($this->originalProduct->categories);
             $product->searchTags()->sync($this->originalProduct->searchTags);
@@ -85,5 +88,6 @@ class CloneChainProductToBranch implements ShouldQueue
                 $oldMedia->copy($product, 'gallery', 's3');
             }
         }
+
     }
 }
