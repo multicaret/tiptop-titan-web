@@ -149,9 +149,9 @@
                 <div class="card-body">
                     <div class="row">
                         @foreach($order->gallery as $item)
-                        <div class="col-4">
-                            <img src="{{$item['file']}}"
-                                 class="d-block img-fluid order-image">
+                        <div class="col-3">
+                            <img src="{{$item['file']}}" width="150" height="100"
+                                 class="d-block  order-image">
                         </div>
                         @endforeach
                     </div>
@@ -163,7 +163,7 @@
             <div class="card">
                 <h5 class="card-header font-weight-bold">
                     <i class="fas fa-code-branch"></i>&nbsp;
-                                                      Branch details
+                              Branch details
                 </h5>
                 <div class="card-body">
                     <div class="row">
@@ -269,9 +269,7 @@
                     <i class="far fa-clipboard"></i>
                     &nbsp;Notes
                 </h4>
-                {{--
-                                @include('admin.orders._partials.order-agent-notes')
-                --}}
+                     @include('admin.jet-orders._partials.order-agent-notes')
             </div>
         </div>
         <div class="col-6">
