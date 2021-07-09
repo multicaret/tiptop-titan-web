@@ -43,8 +43,7 @@ class OrderController extends BaseApiController
             in_array(Order::STATUS_CANCELLED, $statuses);
         if ($hasDeliveredOrCancelledStatus) {
             $orders = $orders->where(function ($query) {
-                $query->where('created_at', Carbon::today())
-                      ->where('created_at', Carbon::yesterday(), 'or');
+                $query->whereDate('created_at', '>=', Carbon::yesterday(), 'or');
             });
         }
         $orders = $orders->latest()
