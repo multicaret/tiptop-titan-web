@@ -274,6 +274,9 @@ class Branch extends Model implements HasMedia
 
     public static function getClosestAvailableBranch($latitude, $longitude): array
     {
+        $longitude = number_format((float) $longitude, 5);
+        $latitude = number_format((float) $latitude, 5);
+
         return cache()
             ->tags('branches', 'api-home')
             ->rememberForever('getClosestAvailableBranch_lat_'.$latitude.'_lng_'.$longitude, function () use (
@@ -285,7 +288,8 @@ class Branch extends Model implements HasMedia
 
                 foreach ($branchesOrderedByDistance as $branchOrderedByDistance) {
                     $branchTodayWorkingHours = WorkingHour::retrieve($branchOrderedByDistance);
-                    if ($branchTodayWorkingHours['isOpen']) {
+                    $maxDistance = config('defaults.geolocation.max_distance_for_food_branches_to_order_from_in_erbil');
+                    if ($branchTodayWorkingHours['isOpen'] && $branchOrderedByDistance->distance <= $maxDistance) {
                         $branch = Branch::find($branchOrderedByDistance->id);
                         $distance = $branchOrderedByDistance->distance;
                         break;

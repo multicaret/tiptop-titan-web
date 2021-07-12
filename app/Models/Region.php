@@ -180,7 +180,7 @@ class Region extends Model implements HasMedia
         return cache()->tags('regions')
                       ->rememberForever('regions_of_country_'.$countryId,
                           function () use ($countryId) {
-                              return Region::whereCountryId($countryId)->get();
+                              return Region::active()->whereCountryId($countryId)->get();
                           }
                       );
     }
