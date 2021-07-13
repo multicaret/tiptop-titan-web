@@ -40,8 +40,13 @@
                         @if(array_key_exists('countPrimary',$link) || array_key_exists('countDanger',$link))
                             <div class="pl-1 ml-auto" style="font-size:12px;">
                                 @if(array_key_exists('countDanger',$link) && $link['countDanger'])
-                                    <div class="badge badge-danger opacity-50">
+                                    <div class="badge badge-danger">
                                         {{$link['countDanger']}}
+                                    </div>
+                                @endif
+                                @if(array_key_exists('countSuccess',$link) && $link['countSuccess'])
+                                    <div class="badge badge-success">
+                                        {{$link['countSuccess']}}
                                     </div>
                                 @endif
                                 @if(array_key_exists('countPrimary',$link) && $link['countPrimary'])
@@ -49,6 +54,12 @@
                                         {{$link['countPrimary']}}
                                     </div>
                                 @endif
+                                @if(array_key_exists('countWarning',$link) && $link['countWarning'])
+                                    <div class="badge badge-warning">
+                                        {{$link['countWarning']}}
+                                    </div>
+                                @endif
+
                             </div>
                         @endif
                     </a>
