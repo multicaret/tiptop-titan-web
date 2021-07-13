@@ -98,11 +98,7 @@ class ComposerServiceProvider extends ServiceProvider
                         'routeName' => 'admin.orders.index',
                         'params' => [
                             'type' => 'live',
-                        ],
-                        'countPrimary' => Order::where('status',Order::STATUS_NEW)->whereDate('created_at',today())->count(),
-                        'countSuccess' =>  Order::where('status',Order::STATUS_PREPARING)->whereDate('created_at',today())->count(),
-                        'countDanger' =>  Order::where('status',Order::STATUS_ON_THE_WAY)->whereDate('created_at',today())->count(),
-                        'countWarning' =>  Order::where('status',Order::STATUS_WAITING_COURIER)->whereDate('created_at',today())->count(),
+                        ]
                     ],
                     [
                         'title' => 'All Orders',

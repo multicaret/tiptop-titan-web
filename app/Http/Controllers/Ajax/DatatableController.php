@@ -898,7 +898,14 @@ class DatatableController extends AjaxController
             ->editColumn('parent_Category', function ($product) {
                 return optional($product->category->parent)->title;
             })->editColumn('child_category', function ($product) {
-                return optional($product->category)->title;
+                $cats = '';
+                    if(!empty($product->categories))
+                    {
+                        $product->categories->map(function ($item) use (&$cats){
+                           $cats = $item->title .$cats . ' ';
+                        });
+                    }
+                return $cats;
             })
             ->editColumn('created_at', function ($product) {
                 return view('admin.components.datatables._date', [

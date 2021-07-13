@@ -14,7 +14,7 @@
                     <div class="pl-1 ml-auto bounce d-inline-block" style="font-size:15px; ">
 
                         <div class="badge badge-danger d-inline-block">
-                             {{$jetOrdersCount}}
+                            {{$jetOrdersCount}}
                         </div>
                     </div>
                 @endif
@@ -28,17 +28,17 @@
                     <div class="card">
                         <div class="card-body shadow px-4 py-3 rounded-lg">
                             <h4 class="card-title text-secondary">
-                                Food New Orders
+                                New
                                 {{--<span wire:loading wire:target="foodNewOrdersCount">
                                       <i class="fas fa-sync fa-spin"></i>
                                 </span>--}}
                             </h4>
                             <div class="card-text">
                                 <div class="d-flex align-items-center">
-                                    <i class="fas fa-concierge-bell fa-3x text-primary"></i>
+                                    <i class="fas fa-concierge-bell fa-2x text-primary"></i>
                                     <div class="media-body ml-4 text-secondary align-self-center">
                                         <h3 class="m-0" {{--wire:poll.1m--}}>
-                                            {{$foodNewOrdersCount}}
+                                            {{$newOrders}}
                                         </h3>
                                     </div>
                                 </div>
@@ -51,7 +51,7 @@
                     <div class="card">
                         <div class="card-body shadow px-4 py-3 rounded-lg">
                             <h4 class="card-title text-secondary">
-                                Grocery New Orders
+                                Canceled
                                 {{--<span wire:loading wire:target="groceryNewOrdersCount">
                                       <i class="fas fa-sync fa-spin"></i>
                                 </span>--}}
@@ -60,10 +60,10 @@
                                 <div class="media align-items-center">
                                     {{--<img src="/images/icons/food-delivery-186/svg/021-food delivery.svg"
                                          alt="Grocery Orders" class="d-block ui-w-50">--}}
-                                    <i class="fas fa-shopping-basket fa-3x text-primary"></i>
+                                    <i class="fas fa-times fa-2x text-primary"></i>
                                     <div class="media-body ml-4 text-secondary">
                                         <h3 class="m-0" {{--wire:poll.1m--}}>
-                                            {{$groceryNewOrdersCount}}
+                                            {{$canceledOrders}}
                                         </h3>
                                     </div>
                                 </div>
@@ -76,15 +76,15 @@
                     <div class="card">
                         <div class="card-body shadow px-4 py-3 rounded-lg">
                             <h4 class="card-title text-secondary">
-                                Current Time
+                                Waiting Courier
                             </h4>
                             <div class="card-text">
                                 <div class="media align-items-center">
                                     {{--<img src="/images/icons/svg/clock.svg" alt="Clock"
                                          class="d-block ui-w-50">--}}
-                                    <i class="far fa-clock fa-3x text-primary"></i>
+                                    <i class="far fa-clock fa-2x text-primary"></i>
                                     <div class="media-body ml-4 text-secondary">
-                                        <span>{{ now()->format(config('defaults.defaults.datetime.normal_format')) }}</span>
+                                        <h3 class="m-0"> {{$waitingForCourierOrders}} </h3>
                                     </div>
                                 </div>
                             </div>
@@ -95,14 +95,15 @@
                     <div class="card">
                         <div class="card-body shadow px-4 py-3 rounded-lg">
                             <h4 class="card-title text-secondary">
-                                {{ $auth->name }}
+                                On The Way
                             </h4>
                             <div class="card-text">
                                 <div class="media align-items-center">
-                                    <img src="{{ $auth->avatar }}" alt="{{ $auth->name }}"
-                                         class="d-block ui-w-40 rounded-circle">
+                                    {{--<img src="/images/icons/svg/clock.svg" alt="Clock"
+                                         class="d-block ui-w-50">--}}
+                                    <i class="fa fa-road fa-2x text-primary"></i>
                                     <div class="media-body ml-4 text-secondary">
-                                        <div class="text-muted mb-2">{{ $auth->email }}</div>
+                                        <h3 class="m-0"> {{$onTheWayOrders}} </h3>
                                     </div>
                                 </div>
                             </div>
@@ -110,6 +111,7 @@
                     </div>
                 </div>
             </div>
+            <div class="row mb-3"></div>
             <livewire:orders.orders-table/>
         </div>
         <div class="tab-pane fade" id="working-hours-tab">
