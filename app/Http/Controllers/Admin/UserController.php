@@ -449,7 +449,7 @@ class UserController extends Controller
             return abort(Response::HTTP_NOT_FOUND);
         }
         $address = new Location();
-        $regions = Region::whereCountryId(config('defaults.country.id'))->get();
+        $regions = Region::active()->whereCountryId(config('defaults.country.id'))->get();
         $kinds = array_values(Location::getKindsForMaps());
 
         return view('admin.users.address-form', compact(['user', 'address', 'regions', 'kinds']));
@@ -502,7 +502,7 @@ class UserController extends Controller
         if ($role != User::ROLE_USER || $address->contactable_id != $user->id) {
             return abort(Response::HTTP_NOT_FOUND);
         }
-        $regions = Region::whereCountryId(config('defaults.country.id'))->get();
+        $regions = Region::active()->whereCountryId(config('defaults.country.id'))->get();
         $kinds = array_values(Location::getKindsForMaps());
         $address->load(['region', 'city']);
 
