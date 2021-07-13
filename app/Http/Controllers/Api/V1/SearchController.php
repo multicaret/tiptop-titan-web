@@ -91,16 +91,18 @@ class SearchController extends BaseApiController
                                     ->whereBranchId($branchId)
                                     ->whereTerm($searchQuery)
                                     ->first())) {
-            $search = new Search();
-            $search->locale = localization()->getCurrentLocale();
-            $search->type = Search::CHANNEL_GROCERY_OBJECT;
-            $search->chain_id = $chainId;
-            $search->branch_id = $branchId;
-            $search->term = $searchQuery;
-            $search->save();
+
         } else {
             $search->increment('count');
         }
+
+        $search = new Search();
+        $search->locale = localization()->getCurrentLocale();
+        $search->type = Search::CHANNEL_GROCERY_OBJECT;
+        $search->chain_id = $chainId;
+        $search->branch_id = $branchId;
+        $search->term = $searchQuery;
+        $search->save();
 
         if ($results->count() == 0) {
             return $this->respondWithMessage('No results for your search');
