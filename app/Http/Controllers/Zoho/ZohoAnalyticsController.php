@@ -112,9 +112,8 @@ class ZohoAnalyticsController extends Controller
 
 
         $data = DB::select("
-        select s.term as 'term',count(id) as 'count'
+        select s.term as 'term',count, locale
         from searches s
-        GROUP by s.term
         ");
         $filename = "search_terms.json";
         $handle = fopen($filename, 'w+');
