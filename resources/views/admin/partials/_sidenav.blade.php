@@ -37,6 +37,20 @@
                        class="sidenav-link {{isset($link['subChildren']) ? 'sidenav-toggle': ''}}">
                         <i class="sidenav-icon text-primary {{ $link['icon'] }} fa-fw" style="font-size:1.4em"></i>
                         &nbsp;<div class="font-weight-bold">{{ $link['title'] }}</div>
+                        @if(array_key_exists('countPrimary',$link) || array_key_exists('countDanger',$link))
+                            <div class="pl-1 ml-auto" style="font-size:12px;">
+                                @if(array_key_exists('countDanger',$link) && $link['countDanger'])
+                                    <div class="badge badge-danger opacity-50">
+                                        {{$link['countDanger']}}
+                                    </div>
+                                @endif
+                                @if(array_key_exists('countPrimary',$link) && $link['countPrimary'])
+                                    <div class="badge badge-primary">
+                                        {{$link['countPrimary']}}
+                                    </div>
+                                @endif
+                            </div>
+                        @endif
                     </a>
                     @if(isset($link['subChildren']))
                         <ul class="sidenav-menu">

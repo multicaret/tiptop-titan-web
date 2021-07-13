@@ -844,75 +844,87 @@ class DatatableController extends AjaxController
                              ->orderBy('title');
 
 
-        return DataTables::of($products)
-                         ->editColumn('action', function ($product) use ($onlyForChains) {
-                             $data = [
-                                 'editAction' => route('admin.products.edit', [
-                                     $product->uuid,
-                                     'type' => request('type'),
-                                     'only-for-chains' => $onlyForChains ? '1' : '0',
-                                 ]),
-                                 'deleteAction' => route('admin.products.destroy', [
-                                     $product->uuid,
-                                     'type' => request('type')
-                                 ]),
-                             ];
+        $dataTables = DataTables::of($products);
+        if ($request->type == 'grocery-product') {
 
-                             $deepLinkChannel = config('app.app-channels.grocery');
-                             if (str_contains(request('type'), 'food')) {
-                                 $deepLinkChannel = config('app.app-channels.food');
-                             }
+        }
 
-                             $data['deepLink'] = [
-                                 'url' => Controller::generateDeepLink('product_show', [
-                                     'id' => $product->id,
-                                     'channel' => $deepLinkChannel
-                                 ])
-                             ];
+        return $dataTables
+            ->editColumn('action', function ($product) use ($onlyForChains) {
+                $data = [
+                    'editAction' => route('admin.products.edit', [
+                        $product->uuid,
+                        'type' => request('type'),
+                        'only-for-chains' => $onlyForChains ? '1' : '0',
+                    ]),
+                    'deleteAction' => route('admin.products.destroy', [
+                        $product->uuid,
+                        'type' => request('type')
+                    ]),
+                ];
 
-                             return view('admin.components.datatables._row-actions', $data)->render();
-                         })
-                         ->editColumn('image', function ($product) {
-                             return view('admin.components.datatables._thumbnails', [
-                                 'id' => $product->id,
-                                 'imageUrl' => $product->cover,
-                                 'imageUrlLarge' => $product->cover_full,
-                                 'tooltip' => $product->title,
-                                 'style' => 'height:120px',
-                             ])->render();
-                         })
-                         ->editColumn('chain', function ($product) {
-                             return ! is_null($product->chain) ? $product->chain->title : '';
-                         })
-                         ->editColumn('branch', function ($product) {
-                             return ! is_null($product->branch) ? $product->branch->title : '';
-                         })
-                         ->editColumn('price', function ($product) {
-                             return ! is_null($product->price) ? $product->price_formatted : '';
-                         })
-                         ->editColumn('created_at', function ($product) {
-                             return view('admin.components.datatables._date', [
-                                 'date' => $product->created_at
-                             ])->render();
-                         })
-                         ->orderColumn('title', function ($sql, $bindings) {
-                             $sql->orderBy('title', $bindings);
-                         })
-                         ->rawColumns([
-                             'action',
-                             'image',
-                             'chain',
-                             'branch',
-                             'price',
-                             'created_at',
-                             'product_deep_link',
-                         ])
-                         ->setRowAttr([
-                             'row-id' => function ($branch) {
-                                 return $branch->id;
-                             }
-                         ])
-                         ->make(true);
+                $deepLinkChannel = config('app.app-channels.grocery');
+                if (str_contains(request('type'), 'food')) {
+                    $deepLinkChannel = config('app.app-channels.food');
+                }
+
+                $data['deepLink'] = [
+                    'url' => Controller::generateDeepLink('product_show', [
+                        'id' => $product->id,
+                        'channel' => $deepLinkChannel
+                    ])
+                ];
+
+                return view('admin.components.datatables._row-actions', $data)->render();
+            })
+            ->editColumn('image', function ($product) {
+                return view('admin.components.datatables._thumbnails', [
+                    'id' => $product->id,
+                    'imageUrl' => $product->cover,
+                    'imageUrlLarge' => $product->cover_full,
+                    'tooltip' => $product->title,
+                    'style' => 'height:120px',
+                ])->render();
+            })
+            ->editColumn('chain', function ($product) {
+                return ! is_null($product->chain) ? $product->chain->title : '';
+            })
+            ->editColumn('branch', function ($product) {
+                return ! is_null($product->branch) ? $product->branch->title : '';
+            })
+            ->editColumn('price', function ($product) {
+                return ! is_null($product->price) ? $product->price_formatted : '';
+            })
+            ->editColumn('parent_Category', function ($product) {
+                return optional($product->category->parent)->title;
+            })->editColumn('child_category', function ($product) {
+                return optional($product->category)->title;
+            })
+            ->editColumn('created_at', function ($product) {
+                return view('admin.components.datatables._date', [
+                    'date' => $product->created_at
+                ])->render();
+            })
+            ->orderColumn('title', function ($sql, $bindings) {
+                $sql->orderBy('title', $bindings);
+            })
+            ->rawColumns([
+                'action',
+                'image',
+                'chain',
+                'branch',
+                'category',
+                'child_categories',
+                'price',
+                'created_at',
+                'product_deep_link',
+            ])
+            ->setRowAttr([
+                'row-id' => function ($branch) {
+                    return $branch->id;
+                }
+            ])
+            ->make(true);
     }
 
     public function orderRatings(Request $request)

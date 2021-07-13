@@ -409,6 +409,10 @@ class Taxonomy extends Node implements HasMedia, ShouldHaveTypes, TranslatableCo
         return $this->children()->count() > 0;
     }
 
+    public function parent()
+    {
+        return $this->belongsTo(Taxonomy::class,'parent_id');
+    }
     public static function typesHaving($index): array
     {
         $typeVariations = [

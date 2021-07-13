@@ -75,6 +75,22 @@ class ProductController extends Controller
                 'width' => '70',
             ],
             [
+                'data' => 'parent_Category',
+                'name' => 'parent_Category',
+                'title' => 'Category',
+                'searchable' => false,
+                'bSortable' => false,
+                'width' => '70',
+            ],
+            [
+                'data' => 'child_category',
+                'name' => 'child_category',
+                'title' => 'Child Category',
+                'searchable' => false,
+                'bSortable' => false,
+                'width' => '70',
+            ],
+            [
                 'data' => 'created_at',
                 'name' => 'created_at',
                 'title' => trans('strings.create_date'),

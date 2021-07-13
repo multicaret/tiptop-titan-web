@@ -98,7 +98,9 @@ class ComposerServiceProvider extends ServiceProvider
                         'routeName' => 'admin.orders.index',
                         'params' => [
                             'type' => 'live',
-                        ]
+                        ],
+                        'countPrimary' => Order::count(),
+                        'countDanger' =>  Order::whereNotIn('status',[20,0,1])->count(),
                     ],
                     [
                         'title' => 'All Orders',

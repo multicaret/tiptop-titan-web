@@ -305,6 +305,7 @@
                         <th>Name</th>
                         <th>Description</th>
                         <th>Unit</th>
+                        <th>Original Price</th>
                         <th>Price</th>
                         <th>Quantity</th>
                         <th>Total Price</th>
@@ -351,6 +352,7 @@
                                     @endif
                                     &nbsp; - &nbsp;{{$orderProduct->product_object['unit_text']}}
                                 </td>
+                                <td>{!! \App\Models\Currency::formatHtml($orderProduct->product_object['price'] + $orderProduct->options_price) !!}</td>
                                 <td>{!! \App\Models\Currency::formatHtml($orderProduct->product_object['discounted_price'] + $orderProduct->options_price) !!}</td>
                                 <td>{{$orderProduct->quantity}}</td>
                                 <td>{!! \App\Models\Currency::formatHtml(($orderProduct->product_object['discounted_price'] * $orderProduct->quantity) + $orderProduct->total_options_price) !!}</td>
