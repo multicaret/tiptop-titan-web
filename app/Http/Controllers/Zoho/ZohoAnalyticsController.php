@@ -107,4 +107,21 @@ class ZohoAnalyticsController extends Controller
         return response()->download($filename, 'branches.json', $headers)->deleteFileAfterSend(true);
     }
 
+    public function searchTermsJsonImport(Request $request)
+    {
+
+
+        $data = DB::select("
+        select s.term as 'term',count, locale,branch_id
+        from searches s
+        ");
+        $filename = "search_terms.json";
+        $handle = fopen($filename, 'w+');
+        fputs($handle, json_encode($data));
+        fclose($handle);
+        $headers = ['Content-type' => 'application/json'];
+
+        return response()->download($filename, 'search_terms.json', $headers)->deleteFileAfterSend(true);
+    }
+
 }
