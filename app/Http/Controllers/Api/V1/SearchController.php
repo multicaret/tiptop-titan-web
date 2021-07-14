@@ -140,10 +140,6 @@ class SearchController extends BaseApiController
                          ->foods()
                          ->get();
 
-        if ($results->count() == 0) {
-            return $this->respondWithMessage('No results for your search');
-        }
-
         // Storing the search term.
         if (is_null($search = Search::whereLocale(localization()->getCurrentLocale())
                                     ->whereType(Search::CHANNEL_FOOD_OBJECT)
@@ -157,6 +153,12 @@ class SearchController extends BaseApiController
         } else {
             $search->increment('count');
         }
+
+        if ($results->count() == 0) {
+            return $this->respondWithMessage('No results for your search');
+        }
+
+
 
         return $this->respond(FoodBranchResource::collection($results));
     }
