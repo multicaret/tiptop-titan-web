@@ -520,7 +520,7 @@ class User extends Authenticatable implements HasMedia, MustVerifyEmail
      */
     public function scopeManagers($query)
     {
-        return $query->role([self::ROLE_ADMIN, self::ROLE_SUPER]);
+        return $query->role([self::ROLE_ADMIN, self::ROLE_SUPER, self::ROLE_AGENT]);
     }
 
     public function getTranslatorAttribute()
