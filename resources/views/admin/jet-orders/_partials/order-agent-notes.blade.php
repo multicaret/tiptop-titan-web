@@ -59,27 +59,14 @@
                 <div class="flex-grow-1 position-relative">
                     <!-- Remove `.chat-scroll` and add `.flex-grow-1` if you don't need scroll -->
                     <div class="chat-messages chat-scroll p-4 ps" wire:poll.1s>
-                        @forelse($order->agentNotes()->get() as $note)
+                        @forelse($order->agent_notes as $note)
                             <div
-                                class="{{$note->agent->id == $auth->id?'chat-message-right':'chat-message-left'}} mb-4">
-                                <div>
-                                    <img src="{{$note->agent->avatar}}" class="ui-w-40 rounded-circle"
-                                         alt="{{$note->agent->name}}">
-                                    <div class="text-muted small text-nowrap mt-2">
-                                        {{ $note->created_at->format(config('defaults.time.normal_format')) }}
-                                    </div>
-                                </div>
-                                <div class="flex-shrink-1 bg-lighter rounded py-2 px-3 mr-3">
-                                    <div class="font-weight-semibold mb-1">
-                                        @if($note->agent->id == $auth->id)
-                                            You
-                                        @else
-                                            {{$note->agent->name}}
-                                        @endif
+                                class="chat-message-left mb-4">
 
-                                    </div>
-                                    <p class="{{$note->isMessageEmojies() ?'h2':''}}">
-                                        {!! $note->message !!}
+                                <div class=" bg-lighter rounded py-2 px-3 mr-3">
+
+                                    <p>
+                                        {{ $note }}
                                     </p>
                                 </div>
                             </div>

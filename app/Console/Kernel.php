@@ -41,6 +41,7 @@ class Kernel extends ConsoleKernel
             $schedule->command('orders:remind --minutes=3 --roles=branch,admin')->everyThreeMinutes();
             $schedule->command('orders:remind --minutes=5 --roles=admin')->everyFiveMinutes();
             $schedule->command('orders:export-to-zoho')->everyTwoHours();
+            $schedule->command('orders:check-is-peak')->dailyAt('00:03');
 
         }
     }

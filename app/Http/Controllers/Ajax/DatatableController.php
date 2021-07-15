@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Ajax;
 
 use App\Http\Controllers\Controller;
 use App\Models\Branch;
+use App\Models\Brand;
 use App\Models\Chain;
 use App\Models\City;
 use App\Models\Coupon;
@@ -119,13 +120,22 @@ class DatatableController extends AjaxController
         $correctType = Taxonomy::getCorrectType($request->type);
         $taxonomies = Taxonomy::orderBy('order_column')
                               ->with('parent', 'chain', 'branches', 'branch')
-                              ->where('type', $correctType);
+                              ->where('taxonomies.type', $correctType);
         if ($correctType == Taxonomy::TYPE_GROCERY_CATEGORY) {
             if ( ! is_null($parentId)) {
                 $taxonomies = $taxonomies->where('parent_id', $parentId);
             } else {
                 $taxonomies = $taxonomies->where('parent_id', null);
             }
+        } elseif ($correctType == Taxonomy::TYPE_MENU_CATEGORY) {
+            $taxonomies = $taxonomies->selectRaw('taxonomies.*,branch_translations.title')
+                                     ->leftJoin('branches', function ($join) {
+                                         $join->on('branches.id', '=', 'taxonomies.branch_id');
+                                         $join->leftJoin('branch_translations', function ($join) {
+                                             $join->on('branches.id', '=', 'branch_translations.branch_id');
+                                         });
+                                     });
+
         }
 
         return DataTables::of($taxonomies)
@@ -184,7 +194,7 @@ class DatatableController extends AjaxController
                          ->editColumn('chain', function ($item) {
                              return $item->chain ? $item->chain->title : null;
                          })
-                         ->editColumn('branch_title', function ($item) {
+                         ->editColumn('branch_translations.title', function ($item) {
                              return $item->branch ? $item->branch->title : '';
                          })
                          ->editColumn('branches', function ($item) use ($correctType) {
@@ -736,16 +746,6 @@ class DatatableController extends AjaxController
                                  ]),
                              ];
 
-                             if (str_contains(request('type'), 'food')) {
-                                 $data['deepLink'] = [
-                                     'url' => Controller::generateDeepLink('market_food_category_show', [
-                                         'id' => $branch->id,
-                                         'channel' => config('app.app-channels.food')
-                                     ])
-                                 ];
-                             }
-
-
                              return view('admin.components.datatables._row-actions', $data)->render();
                          })
                          ->editColumn('region', function ($branch) {
@@ -844,75 +844,94 @@ class DatatableController extends AjaxController
                              ->orderBy('title');
 
 
-        return DataTables::of($products)
-                         ->editColumn('action', function ($product) use ($onlyForChains) {
-                             $data = [
-                                 'editAction' => route('admin.products.edit', [
-                                     $product->uuid,
-                                     'type' => request('type'),
-                                     'only-for-chains' => $onlyForChains ? '1' : '0',
-                                 ]),
-                                 'deleteAction' => route('admin.products.destroy', [
-                                     $product->uuid,
-                                     'type' => request('type')
-                                 ]),
-                             ];
+        $dataTables = DataTables::of($products);
+        if ($request->type == 'grocery-product') {
 
-                             $deepLinkChannel = config('app.app-channels.grocery');
-                             if (str_contains(request('type'), 'food')) {
-                                 $deepLinkChannel = config('app.app-channels.food');
-                             }
+        }
 
-                             $data['deepLink'] = [
-                                 'url' => Controller::generateDeepLink('product_show', [
-                                     'id' => $product->id,
-                                     'channel' => $deepLinkChannel
-                                 ])
-                             ];
+        return $dataTables
+            ->editColumn('action', function ($product) use ($onlyForChains) {
+                $data = [
+                    'editAction' => route('admin.products.edit', [
+                        $product->uuid,
+                        'type' => request('type'),
+                        'only-for-chains' => $onlyForChains ? '1' : '0',
+                    ]),
+                    'deleteAction' => route('admin.products.destroy', [
+                        $product->uuid,
+                        'type' => request('type')
+                    ]),
+                ];
 
-                             return view('admin.components.datatables._row-actions', $data)->render();
-                         })
-                         ->editColumn('image', function ($product) {
-                             return view('admin.components.datatables._thumbnails', [
-                                 'id' => $product->id,
-                                 'imageUrl' => $product->cover,
-                                 'imageUrlLarge' => $product->cover_full,
-                                 'tooltip' => $product->title,
-                                 'style' => 'height:120px',
-                             ])->render();
-                         })
-                         ->editColumn('chain', function ($product) {
-                             return ! is_null($product->chain) ? $product->chain->title : '';
-                         })
-                         ->editColumn('branch', function ($product) {
-                             return ! is_null($product->branch) ? $product->branch->title : '';
-                         })
-                         ->editColumn('price', function ($product) {
-                             return ! is_null($product->price) ? $product->price_formatted : '';
-                         })
-                         ->editColumn('created_at', function ($product) {
-                             return view('admin.components.datatables._date', [
-                                 'date' => $product->created_at
-                             ])->render();
-                         })
-                         ->orderColumn('title', function ($sql, $bindings) {
-                             $sql->orderBy('title', $bindings);
-                         })
-                         ->rawColumns([
-                             'action',
-                             'image',
-                             'chain',
-                             'branch',
-                             'price',
-                             'created_at',
-                             'product_deep_link',
-                         ])
-                         ->setRowAttr([
-                             'row-id' => function ($branch) {
-                                 return $branch->id;
-                             }
-                         ])
-                         ->make(true);
+                $deepLinkChannel = config('app.app-channels.grocery');
+                if (str_contains(request('type'), 'food')) {
+                    $deepLinkChannel = config('app.app-channels.food');
+                }
+
+                $data['deepLink'] = [
+                    'url' => Controller::generateDeepLink('product_show', [
+                        'id' => $product->id,
+                        'channel' => $deepLinkChannel
+                    ])
+                ];
+
+                return view('admin.components.datatables._row-actions', $data)->render();
+            })
+            ->editColumn('image', function ($product) {
+                return view('admin.components.datatables._thumbnails', [
+                    'id' => $product->id,
+                    'imageUrl' => $product->cover,
+                    'imageUrlLarge' => $product->cover_full,
+                    'tooltip' => $product->title,
+                    'style' => 'height:120px',
+                ])->render();
+            })
+            ->editColumn('chain', function ($product) {
+                return ! is_null($product->chain) ? $product->chain->title : '';
+            })
+            ->editColumn('branch', function ($product) {
+                return ! is_null($product->branch) ? $product->branch->title : '';
+            })
+            ->editColumn('price', function ($product) {
+                return ! is_null($product->price) ? $product->price_formatted : '';
+            })
+            ->editColumn('parent_Category', function ($product) {
+                return optional($product->category->parent)->title;
+            })->editColumn('child_category', function ($product) {
+                $cats = '';
+                    if(!empty($product->categories))
+                    {
+                        $product->categories->map(function ($item) use (&$cats){
+                           $cats = $item->title .$cats . ' ';
+                        });
+                    }
+                return $cats;
+            })
+            ->editColumn('created_at', function ($product) {
+                return view('admin.components.datatables._date', [
+                    'date' => $product->created_at
+                ])->render();
+            })
+            ->orderColumn('title', function ($sql, $bindings) {
+                $sql->orderBy('title', $bindings);
+            })
+            ->rawColumns([
+                'action',
+                'image',
+                'chain',
+                'branch',
+                'category',
+                'child_categories',
+                'price',
+                'created_at',
+                'product_deep_link',
+            ])
+            ->setRowAttr([
+                'row-id' => function ($branch) {
+                    return $branch->id;
+                }
+            ])
+            ->make(true);
     }
 
     public function orderRatings(Request $request)
@@ -1021,6 +1040,61 @@ class DatatableController extends AjaxController
                          ->setRowAttr([
                              'row-id' => function ($paymentMethod) {
                                  return $paymentMethod->id;
+                             }
+                         ])
+                         ->make(true);
+    }
+
+    /**
+     * @param  Request  $request
+     *
+     * @return mixed
+     * @throws Exception
+     */
+    public function brands(Request $request)
+    {
+        $brands = Brand::selectRaw('brands.*');
+
+        return DataTables::of($brands)
+                         ->editColumn('action', function ($brand) {
+                             $data = [
+                                 'editAction' => route('admin.brands.edit', [
+                                     $brand->id
+                                 ]),
+                                 'deleteAction' => route('admin.brands.destroy', [
+                                     $brand->id
+                                 ]),
+                             ];
+
+                             return view('admin.components.datatables._row-actions', $data)->render();
+                         })
+                         ->editColumn('image', function ($brand) {
+                             return view('admin.components.datatables._thumbnails', [
+                                 'id' => $brand->id,
+                                 'imageUrl' => $brand->cover,
+                                 'imageUrlLarge' => $brand->cover_full,
+                                 'tooltip' => $brand->title,
+                                 'style' => 'height:120px',
+                             ])->render();
+                         })
+                         ->editColumn('status', function ($brand) {
+                             $currentStatus = Brand::getAllStatusesRich()[$brand->status];
+                             $data = [
+                                 'item' => $brand,
+                                 'currentStatus' => $currentStatus,
+                             ];
+
+                             return view('admin.components.datatables._row-actions-status', $data)
+                                 ->render();
+                         })
+                         ->rawColumns([
+                             'action',
+                             'status',
+                             'image'
+                         ])
+                         ->setRowAttr([
+                             'row-id' => function ($brand) {
+                                 return $brand->id;
                              }
                          ])
                          ->make(true);

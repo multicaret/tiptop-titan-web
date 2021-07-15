@@ -34,35 +34,60 @@ class CloneChainProductToBranch implements ShouldQueue
      */
     public function handle()
     {
-        $syncedBefore = Product::where('branch_id', $this->branchId)
-                               ->where('cloned_from_product_id', $this->originalProduct->id)
-                               ->exists();
+        $product = Product::where('branch_id', $this->branchId)
+                          ->where('cloned_from_product_id', $this->originalProduct->id)
+                          ->first();
 
-        if ( ! $syncedBefore) {
-            try {
-                \DB::beginTransaction();
-                $newProduct = $this->originalProduct->replicateWithTranslations();
-                $newProduct->branch_id = $this->branchId;
-                $newProduct->cloned_from_product_id = $this->originalProduct->id;
-                $newProduct->push();
-                $newProduct->categories()->sync($this->originalProduct->categories->pluck('id'));
+        if (is_null($product)) {
+            \DB::beginTransaction();
+            $newProduct = $this->originalProduct->replicateWithTranslations();
+            $newProduct->branch_id = $this->branchId;
+            $newProduct->cloned_from_product_id = $this->originalProduct->id;
+            $newProduct->push();
+            $newProduct->categories()->sync($this->originalProduct->categories->pluck('id'));
+            \DB::commit();
 
-                /*$oldMediaItems = $this->originalProduct->getMedia('cover');
-                foreach ($oldMediaItems as $oldMedia) {
-                    $oldMedia->copy($newProduct, 'cover', 's3');
-                }
-                $oldMediaItems = $this->originalProduct->getMedia('gallery');
-                foreach ($oldMediaItems as $oldMedia) {
-                    $oldMedia->copy($newProduct, 'gallery', 's3');
-                }*/
-                \DB::commit();
-            } catch (\Exception $e) {
-                \DB::rollBack();
-                \Log::error('Exception while handle@', [
-                    'message' => $e->getMessage(),
-                    'exception' => $e,
-                ]);
+            $oldMediaItems = $this->originalProduct->getMedia('cover');
+            foreach ($oldMediaItems as $oldMedia) {
+                $oldMedia->copy($newProduct, 'cover', 's3');
+            }
+            $oldMediaItems = $this->originalProduct->getMedia('gallery');
+            foreach ($oldMediaItems as $oldMedia) {
+                $oldMedia->copy($newProduct, 'gallery', 's3');
+            }
+
+        } else {
+            \DB::beginTransaction();
+            $product->brand_id = $this->originalProduct->brand_id;
+            $product->unit_id = $this->originalProduct->unit_id;
+            $product->status = $this->originalProduct->status;
+            $product->price = $this->originalProduct->price;
+            $product->price_discount_finished_at = $this->originalProduct->price_discount_finished_at;
+            $product->price_discount_began_at = $this->originalProduct->price_discount_began_at;
+            $product->price_discount_by_percentage = $this->originalProduct->price_discount_by_percentage;
+            $product->price_discount_amount = $this->originalProduct->price_discount_amount;
+            $product->category_id = $this->originalProduct->category_id;
+            $product->save();
+
+            foreach (localization()->getSupportedLocales() as $key => $value) {
+                $product->translateOrNew($key)->title = $this->originalProduct->translate($key)->title;
+                $product->translateOrNew($key)->description = $this->originalProduct->translate($key)->description;
+            }
+            $product->save();
+            \DB::commit();
+
+            $product->categories()->sync($this->originalProduct->categories);
+            $product->searchTags()->sync($this->originalProduct->searchTags);
+
+            $oldMediaItems = $this->originalProduct->getMedia('cover');
+            foreach ($oldMediaItems as $oldMedia) {
+                $oldMedia->copy($product, 'cover', 's3');
+            }
+            $oldMediaItems = $this->originalProduct->getMedia('gallery');
+            foreach ($oldMediaItems as $oldMedia) {
+                $oldMedia->copy($product, 'gallery', 's3');
             }
         }
+
     }
 }

@@ -30,6 +30,10 @@ class JetOrderObserver
     public function creating(JetOrder $order)
     {
         $order->reference_code = 'JET'.mt_rand(0, 99).substr(time(), 5);
+
+        if (empty($order->agent_notes)) {
+            $order->agent_notes = [];  // set empty json array
+        }
     }
 
     /**

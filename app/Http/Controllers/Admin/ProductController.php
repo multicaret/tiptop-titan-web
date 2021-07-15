@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
 use App\Models\Branch;
+use App\Models\Brand;
 use App\Models\Chain;
 use App\Models\Product;
 use App\Models\Taxonomy;
@@ -69,6 +70,22 @@ class ProductController extends Controller
                 'data' => 'price',
                 'name' => 'price',
                 'title' => 'Price',
+                'searchable' => false,
+                'bSortable' => false,
+                'width' => '70',
+            ],
+            [
+                'data' => 'parent_Category',
+                'name' => 'parent_Category',
+                'title' => 'Category',
+                'searchable' => false,
+                'bSortable' => false,
+                'width' => '70',
+            ],
+            [
+                'data' => 'child_category',
+                'name' => 'child_category',
+                'title' => 'Child Category',
                 'searchable' => false,
                 'bSortable' => false,
                 'width' => '70',
@@ -142,6 +159,7 @@ class ProductController extends Controller
             'category',
             'unit',
             'searchTags',
+            'brand',
         ]);
         if ($product->is_grocery) {
             $product->load('categories');
@@ -211,6 +229,7 @@ class ProductController extends Controller
             return ['id' => $item->id, 'title' => $item->title];
         };
         $data['units'] = Taxonomy::unitCategories()->get()->map($getIdTitle)->all();
+        $data['brands'] = Brand::where('status',Brand::STATUS_ACTIVE)->get();
         if (Product::isGrocery()) {
             $data['chains'] = Chain::groceries()->get()->map($getIdTitle)->all();
             $groceryBranches = Branch::groceries();
@@ -300,7 +319,14 @@ class ProductController extends Controller
             $product->branch_id = optional(json_decode($request->input('branch')))->id;
         }
 
+        $brand = json_decode($request->input('brand_id'));
+        $brand_id = null;
+        if (!empty($brand) && isset($brand[0]))
+        {
+            $brand_id = $brand[0]->id;
+        }
         $product->unit_id = optional(json_decode($request->input('unit_id')))->id;
+        $product->brand_id = $brand_id;
         $product->price = $request->input('price');
         $product->price_discount_amount = $request->input('price_discount_amount');
         $product->available_quantity = $request->input('available_quantity');
@@ -366,6 +392,9 @@ class ProductController extends Controller
         ]);
         $request->merge([
             'categories' => $request->categories === 'null' ? null : $request->categories
+        ]);
+        $request->merge([
+            'brand_id' => $request->brand_id === 'null' ? null : $request->brand_id
         ]);
     }
 }

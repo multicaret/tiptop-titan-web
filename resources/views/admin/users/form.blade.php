@@ -345,7 +345,7 @@
                     Extra Details
                 </h4>
 
-                <ul class="list-group list-group-flush col-5">
+                <ul class="list-group list-group-flush col-6">
                     <li class="list-group-item d-flex justify-content-between">
                         <b>Number of Orders:</b>
                         <span>{{ $user->orders_count }}</span>
@@ -354,6 +354,14 @@
                         <b>Delivered Orders Value:</b>
                         <span>{!! $user->getDeliveredOrdersValue() !!}</span>
                     </li>
+                </ul>
+            </div>
+            <div class="card card-outline-inverse mb-4">
+                <h4 class="card-header">
+                    Coupon Usage
+                </h4>
+
+                <ul class="list-group list-group-flush col-6">
                     @php([$usedCouponsCount,$usedCouponsValue] = $user->getNumberOfUserCouponsAndItsValue())
                     <li class="list-group-item d-flex justify-content-between">
                         <b>Used Coupons Count:</b>
@@ -364,7 +372,44 @@
                         <span>{!! $usedCouponsValue !!}</span>
                     </li>
                 </ul>
+
+                <table class="table card-table">
+                    <thead class="thead-light">
+                    <tr>
+                        <th>Usage Date</th>
+                        <th>Coupon</th>
+                        <th>Discount Amount</th>
+                        <th>Order</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    @foreach($user->couponUsages as $couponUsage)
+                        <tr>
+                            <td>
+                                {{$couponUsage->created_at->toDateString()}}
+                            </td>
+                            <td>
+                                {{$couponUsage->coupon->name}}
+                            </td>
+                            <td>
+                                {{$couponUsage->discounted_amount}}
+                            </td>
+                            <td>
+                                <a class="text-primary"
+                                   href="{{route('admin.orders.show',[$couponUsage->order_id])}}"
+                                   target="_blank">
+                                    <i class="fas fa-external-link-alt"></i>
+                                </a>
+                            </td>
+                        </tr>
+                    @endforeach
+                    </tbody>
+
+                </table>
+
+
             </div>
+
         @endif
 
         <div class="ml-1">
