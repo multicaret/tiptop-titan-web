@@ -307,6 +307,9 @@ class Branch extends Model implements HasMedia
      */
     public static function getBranchesOrderByDistance($latitude, $longitude)
     {
+        $latitude = number_format((float) $latitude, 5);
+        $longitude = number_format((float) $longitude, 5);
+
         return Branch::active()
                      ->groceries()
                      ->selectRaw('branches.id, DISTANCE_BETWEEN(latitude,longitude,?,?) as distance',
