@@ -457,7 +457,7 @@ class Product extends Model implements HasMedia
         $this->addMediaCollection('cover')
              ->useFallbackUrl(url($fallBackImageUrl))
              ->singleFile()
-             ->withResponsiveImages()
+//             ->withResponsiveImages()
              ->registerMediaConversions(function (Media $media) use ($isGrocery) {
                  if ($isGrocery) {
                      foreach (config('defaults.image_conversions.product_grocery_cover') as $conversionName => $dimensions) {
@@ -476,7 +476,7 @@ class Product extends Model implements HasMedia
 
 
         $this->addMediaCollection('gallery')
-             ->withResponsiveImages()
+//             ->withResponsiveImages()
              ->registerMediaConversions(function (Media $media) use ($isGrocery) {
                  if ($isGrocery) {
                      foreach (config('defaults.image_conversions.product_grocery_cover') as $conversionName => $dimensions) {
