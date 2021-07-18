@@ -23,7 +23,7 @@ class GroceryCategoryChildResource extends JsonResource
         $branchId = $request->branch_id;
         $products = cache()
             ->tags('products', 'api-home')
-            ->rememberForever('products_of_child_category_'.$this->id, function () use ($branchId, $categoryId) {
+            ->rememberForever('products_of_child_category_'.$categoryId, function () use ($branchId, $categoryId) {
                 return Product::active()
                               ->whereCategoryId($categoryId)
                               ->where('branch_id', $branchId)
