@@ -38,7 +38,8 @@ class OrderStatusUpdated extends Notification
             if ($key == 'ku') {
                 $key = 'fa';
             }
-            $this->body[$key] = $this->getTitleMessage($roleName, $key, $minutesDelay);
+            $this->title[$key] = $this->getTitleText($key);
+            $this->body[$key] = $this->getBodyText($roleName, $key, $minutesDelay);
 
         }
     }
@@ -221,7 +222,7 @@ class OrderStatusUpdated extends Notification
      * @param $key
      * @return array|\Illuminate\Contracts\Foundation\Application|\Illuminate\Contracts\Translation\Translator|string|null
      */
-    private function getTitleMessage($roleName, $locale, $minutesDelay)
+    private function getBodyText($roleName, $locale, $minutesDelay)
     {
         if ($minutesDelay > 0) {
             return '🚨 '.trans("notifications.order_status_updated_for_user_{$roleName}_{$this->order->status}_minutes_delay",
@@ -236,5 +237,22 @@ class OrderStatusUpdated extends Notification
                         'branchName' => optional($this->order->branch)->title,
                     ], $locale);
         }
+    }
+
+    private function getTitleText($locale)
+    {
+        if ($this->order->type === Order::CHANNEL_GROCERY_OBJECT) {
+            $emojies = ['🍓', '🍫', '🍎', '🍍', '🧀', '🥩', '🥝', '🍞', '🥬', '🥑', '🍌', '🍋', '🥫'];
+        } else/*if ($this->order->type === Order::CHANNEL_FOOD_OBJECT)*/ {
+            $emojies = ['🍔', '🍕', '🌭', '🌮', '🌯', '🥙', '🥗', '🍔', '🥪', '🍕', '🍟', '🍖', '🍗', '🍔', '🍲', '🍕'];
+        }
+        $randomEmoji = $emojies[mt_rand(0, count($emojies) - 1)];
+        $text = $randomEmoji.' ';
+
+        if ( ! is_null($this->order->chain)) {
+            $text .= $this->order->chain->title;
+        }
+
+        return $text;
     }
 }

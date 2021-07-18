@@ -167,7 +167,7 @@ class JetOrder extends Model implements HasMedia
     {
         return $this->belongsTo(Branch::class);
     }
-    
+
     public function paymentMethod(): BelongsTo
     {
         return $this->belongsTo(PaymentMethod::class);

@@ -108,7 +108,7 @@ class Notification extends BaseNotification
      *
      * @return array|\Illuminate\Contracts\Translation\Translator|string|null
      */
-    protected function getTitle()
+    /*protected function getTitle()
     {
         if ( ! $this->title) {
             $this->title = trans('strings.notifications_related.'.$this->getClassName().'.message', [
@@ -118,7 +118,7 @@ class Notification extends BaseNotification
         }
 
         return $this->title;
-    }
+    }*/
 
     /**
      * Set the notification message.
