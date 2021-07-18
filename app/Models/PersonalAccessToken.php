@@ -17,9 +17,9 @@ use Laravel\Sanctum\PersonalAccessToken as PersonalAccessTokenAlias;
  * @property int $tokenable_id
  * @property string $name
  * @property string $token
- * @property string|null $abilities
+ * @property array|null $abilities
  * @property object|null $mobile_app_details
- * @property string|null $last_used_at
+ * @property Carbon|null $last_used_at
  * @property Carbon|null $created_at
  * @property Carbon|null $updated_at
  * @property-read Model|\Eloquent $tokenable

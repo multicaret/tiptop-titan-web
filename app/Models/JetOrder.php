@@ -136,6 +136,7 @@ class JetOrder extends Model implements HasMedia
     ];
 
     protected $guarded = [];
+
     private static function getFormattedActivityLogDifferenceItem(
         ?array $activityLogDifferenceItem,
         $columnName,
@@ -166,8 +167,7 @@ class JetOrder extends Model implements HasMedia
     {
         return $this->belongsTo(Branch::class);
     }
-
-
+    
     public function paymentMethod(): BelongsTo
     {
         return $this->belongsTo(PaymentMethod::class);

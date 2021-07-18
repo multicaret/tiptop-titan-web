@@ -23,7 +23,7 @@ use Illuminate\Support\Carbon;
  * @property int|null $region_id
  * @property int|null $city_id
  * @property string $uuid
- * @property string $title
+ * @property string|null $title
  * @property string|null $description
  * @property int $link_type
  * @property string|null $link_value
