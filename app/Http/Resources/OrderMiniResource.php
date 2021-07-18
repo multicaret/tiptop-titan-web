@@ -36,8 +36,8 @@ class OrderMiniResource extends JsonResource
                 'raw' => (double) $this->grand_total,
                 'formatted' => Currency::format($this->grand_total),
             ],
-            'branchName' => $this->cart->branch->title,
-            'branchLogo' => $this->cart->chain->logo,
+            'branchName' => optional($this->cart->branch)->title,
+            'branchLogo' => optional($this->cart->chain)->logo,
         ];
     }
 }
