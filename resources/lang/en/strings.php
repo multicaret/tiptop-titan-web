@@ -235,6 +235,7 @@ return [
     'date' => 'date',
     'issues' => 'Issues',
     'comment' => 'Comment',
+    'rated_at' => 'Rated At',
     'has_been_authenticated' => 'Has Been Authenticated',
     'order_status_0' => 'Cancelled',
     'order_status_1' => 'Draft',
