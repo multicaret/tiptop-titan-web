@@ -35,6 +35,7 @@ use Spatie\MediaLibrary\MediaCollections\Models\Media;
  * @property int $chain_id
  * @property int|null $branch_id
  * @property int $category_id
+ * @property int|null $brand_id
  * @property int|null $unit_id
  * @property float|null $price
  * @property float|null $price_discount_amount
@@ -70,6 +71,7 @@ use Spatie\MediaLibrary\MediaCollections\Models\Media;
  * @property-read Collection|\App\Models\Barcode[] $barcodes
  * @property-read int|null $barcodes_count
  * @property-read \App\Models\Branch|null $branch
+ * @property-read \App\Models\Brand|null $brand
  * @property-read Collection|\App\Models\Cart[] $carts
  * @property-read int|null $carts_count
  * @property-read Collection|\App\Models\Taxonomy[] $categories
@@ -127,6 +129,7 @@ use Spatie\MediaLibrary\MediaCollections\Models\Media;
  * @method static Builder|Product whereAvailableQuantity($value)
  * @method static Builder|Product whereAvgRating($value)
  * @method static Builder|Product whereBranchId($value)
+ * @method static Builder|Product whereBrandId($value)
  * @method static Builder|Product whereCategoryId($value)
  * @method static Builder|Product whereChainId($value)
  * @method static Builder|Product whereClonedFromProductId($value)
@@ -457,41 +460,41 @@ class Product extends Model implements HasMedia
         $this->addMediaCollection('cover')
              ->useFallbackUrl(url($fallBackImageUrl))
              ->singleFile()
-             ->withResponsiveImages()
+//             ->withResponsiveImages()
              ->registerMediaConversions(function (Media $media) use ($isGrocery) {
-                 if ($isGrocery) {
-                     foreach (config('defaults.image_conversions.product_grocery_cover') as $conversionName => $dimensions) {
-                         $this->addMediaConversion($conversionName)
-                              ->width($dimensions['width'])
-                              ->height($dimensions['height']);
-                     }
-                 } else {
-                     foreach (config('defaults.image_conversions.generic_cover') as $conversionName => $dimensions) {
-                         $this->addMediaConversion($conversionName)
-                              ->width($dimensions['width'])
-                              ->height($dimensions['height']);
-                     }
-                 }
-             });
+                if ($isGrocery) {
+                    foreach (config('defaults.image_conversions.product_grocery_cover') as $conversionName => $dimensions) {
+                        $this->addMediaConversion($conversionName)
+                             ->width($dimensions['width'])
+                             ->height($dimensions['height']);
+                    }
+                } else {
+                    foreach (config('defaults.image_conversions.generic_cover') as $conversionName => $dimensions) {
+                        $this->addMediaConversion($conversionName)
+                             ->width($dimensions['width'])
+                             ->height($dimensions['height']);
+                    }
+                }
+            });
 
 
         $this->addMediaCollection('gallery')
-             ->withResponsiveImages()
+//             ->withResponsiveImages()
              ->registerMediaConversions(function (Media $media) use ($isGrocery) {
-                 if ($isGrocery) {
-                     foreach (config('defaults.image_conversions.product_grocery_cover') as $conversionName => $dimensions) {
-                         $this->addMediaConversion($conversionName)
-                              ->width($dimensions['width'])
-                              ->height($dimensions['height']);
-                     }
-                 } else {
-                     foreach (config('defaults.image_conversions.generic_cover') as $conversionName => $dimensions) {
-                         $this->addMediaConversion($conversionName)
-                              ->width($dimensions['width'])
-                              ->height($dimensions['height']);
-                     }
-                 }
-             });
+                if ($isGrocery) {
+                    foreach (config('defaults.image_conversions.product_grocery_cover') as $conversionName => $dimensions) {
+                        $this->addMediaConversion($conversionName)
+                             ->width($dimensions['width'])
+                             ->height($dimensions['height']);
+                    }
+                } else {
+                    foreach (config('defaults.image_conversions.generic_cover') as $conversionName => $dimensions) {
+                        $this->addMediaConversion($conversionName)
+                             ->width($dimensions['width'])
+                             ->height($dimensions['height']);
+                    }
+                }
+            });
 
     }
 

@@ -69,7 +69,8 @@ class SyncChains extends Command
     private function cloneChainProducts($chainProducts, $branchId)
     {
         foreach ($chainProducts as $originalProduct) {
-            CloneChainProductToBranch::dispatch($originalProduct, $branchId);
+            CloneChainProductToBranch::dispatch($originalProduct, $branchId)
+                                     ->delay(now()->addSeconds(3));
         }
     }
 

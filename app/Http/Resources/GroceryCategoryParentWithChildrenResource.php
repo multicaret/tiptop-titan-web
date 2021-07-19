@@ -20,7 +20,7 @@ class GroceryCategoryParentWithChildrenResource extends JsonResource
     {
         $children = cache()
             ->tags('taxonomies', 'api-home')
-            ->rememberForever('children_categories_of_parent_'.$this->id, function () {
+            ->remember('children_categories_of_parent_'.$this->id, 60 * 60 * 24, function () {
                 $children = $this
                     ->children()
                     ->orderBy('order_column')

@@ -31,6 +31,11 @@ class Controller extends BaseController
 
     public static function distanceBetween($point1latitude, $point1longitude, $point2latitude, $point2longitude)
     {
+        $point1latitude = (float) $point1latitude;
+        $point1longitude = (float) $point1longitude;
+        $point2latitude = (float) $point2latitude;
+        $point2longitude = (float) $point2longitude;
+
         return ACOS(SIN($point1latitude * PI() / 180) * sin($point2latitude * PI() / 180) + COS($point1latitude * PI() / 180) * COS($point2latitude * PI() / 180) * COS($point2longitude * PI() / 180 - $point1longitude * PI() / 180)) * 6371;
     }
 
