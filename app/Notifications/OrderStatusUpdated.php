@@ -34,13 +34,13 @@ class OrderStatusUpdated extends Notification
         }
         $this->roleName = $roleName;
         $roleName = str_replace('-', '_', $roleName);
+
+        $this->title = $this->getTitleText();
         foreach (localization()->getSupportedLocalesKeys() as $key) {
             if ($key == 'ku') {
                 $key = 'fa';
             }
-            $this->title[$key] = $this->getTitleText($key);
             $this->body[$key] = $this->getBodyText($roleName, $key, $minutesDelay);
-
         }
     }
 
@@ -107,7 +107,7 @@ class OrderStatusUpdated extends Notification
     {
         return [
             /* View Related */
-//            'title' => $this->title,
+            'title' => $this->title,
             'body' => $this->body,
             'subject_id' => $notifiable->id,
             'subject_title' => $notifiable->name,
@@ -239,7 +239,7 @@ class OrderStatusUpdated extends Notification
         }
     }
 
-    private function getTitleText($locale)
+    private function getTitleText()
     {
         if ($this->order->type === Order::CHANNEL_GROCERY_OBJECT) {
             $emojies = ['🍓', '🍫', '🍎', '🍍', '🧀', '🥩', '🥝', '🍞', '🥬', '🥑', '🍌', '🍋', '🥫'];
