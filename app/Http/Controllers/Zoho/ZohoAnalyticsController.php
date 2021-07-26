@@ -129,7 +129,7 @@ class ZohoAnalyticsController extends Controller
 
         $data = DB::select("
         select o.reference_code, DATE_FORMAT(o.created_at, '%Y-%m-%d %H:%i') AS o_date,case when o.`type` = 1 then 'Grocery' else 'Restaurant' end
-        ,o.branch_id,bt.title,pt.product_id,pt.title,p.price,JSON_EXTRACT(cp.product_object,'$.discounted_price'),cp.quantity,o.grand_total
+        ,o.branch_id,bt.title,pt.product_id,pt.title,p.price,JSON_EXTRACT(cp.product_object,'$.discounted_price'),cp.quantity,(JSON_EXTRACT(cp.product_object,'$.discounted_price') + cp.options_price) * cp.quantity
         from orders o
         left join cart_product cp on cp.cart_id = o.cart_id
         left join products p on p.id = cp.product_id
