@@ -932,7 +932,14 @@ class DatatableController extends AjaxController
 
     public function orderRatings(Request $request)
     {
-        $orders = Order::whereType(Order::getCorrectChannel($request->type))->selectRaw('orders.*');
+        $orders = Order::whereType(Order::getCorrectChannel($request->type))
+                       ->with([
+                           'branch.translations',
+                           'ratingIssue.translations',
+                           'user',
+                       ])
+                       ->whereNotNull('rated_at')
+                       ->selectRaw('orders.*');
 
         return DataTables::of($orders)
                          ->editColumn('action', function ($order) {
@@ -947,7 +954,6 @@ class DatatableController extends AjaxController
                              return view('admin.components.datatables._link', [
                                  'text' => $order->reference_code,
                                  'link' => route('admin.orders.show', [$order->id]),
-
                              ])->render();
                          })
                          ->editColumn('comment', function ($order) {
