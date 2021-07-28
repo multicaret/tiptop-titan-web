@@ -68,6 +68,7 @@ use Spatie\MediaLibrary\MediaCollections\Models\Media;
  * @property Carbon|null $updated_at
  * @property Carbon|null $deleted_at
  * @property string|null $zoho_books_id
+ * @property float|null $restaurant_price_discount_amount Restaurant is offering this discount
  * @property-read Collection|\App\Models\Barcode[] $barcodes
  * @property-read int|null $barcodes_count
  * @property-read \App\Models\Branch|null $branch
@@ -154,6 +155,7 @@ use Spatie\MediaLibrary\MediaCollections\Models\Media;
  * @method static Builder|Product wherePriceDiscountByPercentage($value)
  * @method static Builder|Product wherePriceDiscountFinishedAt($value)
  * @method static Builder|Product whereRatingCount($value)
+ * @method static Builder|Product whereRestaurantPriceDiscountAmount($value)
  * @method static Builder|Product whereSearchCount($value)
  * @method static Builder|Product whereSku($value)
  * @method static Builder|Product whereStatus($value)
@@ -507,11 +509,13 @@ class Product extends Model implements HasMedia
     {
         $priceDiscounted = $this->price;
         if (
+            ! is_null($this->price_discount_amount) &&
             ! is_null($this->price_discount_began_at) &&
             ! is_null($this->price_discount_finished_at) &&
             now()->gte($this->price_discount_began_at) &&
             now()->lte($this->price_discount_finished_at)
         ) {
+            $this->price_discount_amount += is_null($this->restaurant_price_discount_amount) ? 0 : $this->restaurant_price_discount_amount;
             $priceDiscounted = Controller::getAmountAfterApplyingDiscount($this->price, $this->price_discount_amount,
                 $this->price_discount_by_percentage);
         }
