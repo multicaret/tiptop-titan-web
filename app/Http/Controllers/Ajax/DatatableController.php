@@ -836,12 +836,11 @@ class DatatableController extends AjaxController
         } else {
             $products = $products->whereNotNull('branch_id');
         }
-        $products = $products->selectRaw('products.*,product_translations.title,product_translations.locale')
+        $products = $products->selectRaw('products.*')
                              ->leftJoin('product_translations', function ($join) {
                                  $join->on('products.id', '=', 'product_translations.product_id');
                              })
-                             ->where('product_translations.locale', 'en')
-                             ->orderBy('title');
+                             ->groupBy('products.id');
 
 
         $dataTables = DataTables::of($products);
@@ -899,21 +898,18 @@ class DatatableController extends AjaxController
                 return optional($product->category->parent)->title;
             })->editColumn('child_category', function ($product) {
                 $cats = '';
-                    if(!empty($product->categories))
-                    {
-                        $product->categories->map(function ($item) use (&$cats){
-                           $cats = $item->title .$cats . ' ';
-                        });
-                    }
+                if ( ! empty($product->categories)) {
+                    $product->categories->map(function ($item) use (&$cats) {
+                        $cats = $item->title.$cats.' ';
+                    });
+                }
+
                 return $cats;
             })
             ->editColumn('created_at', function ($product) {
                 return view('admin.components.datatables._date', [
                     'date' => $product->created_at
                 ])->render();
-            })
-            ->orderColumn('title', function ($sql, $bindings) {
-                $sql->orderBy('title', $bindings);
             })
             ->rawColumns([
                 'action',
