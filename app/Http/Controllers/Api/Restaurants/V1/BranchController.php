@@ -3,7 +3,7 @@
 namespace App\Http\Controllers\Api\Restaurants\V1;
 
 use App\Http\Controllers\Api\BaseApiController;
-use App\Http\Resources\FoodBranchResource;
+use App\Http\Resources\RestaurantApp\RestaurantFoodBranchResource;
 use App\Models\Branch;
 use DB;
 use Illuminate\Http\Request;
@@ -17,7 +17,7 @@ class BranchController extends BaseApiController
             return $this->respondNotFound('Restaurants not found');
         }
 
-        return $this->respond(new FoodBranchResource($restaurant));
+        return $this->respond(new RestaurantFoodBranchResource($restaurant));
     }
 
     public function edit($restaurant)
@@ -30,7 +30,7 @@ class BranchController extends BaseApiController
 
         return $this->respond(
             [
-                'restaurant' => new FoodBranchResource($restaurant),
+                'restaurant' => new RestaurantFoodBranchResource($restaurant),
             ]
         );
     }
@@ -75,10 +75,6 @@ class BranchController extends BaseApiController
             'success' => true,
             'message' => 'Successfully Updated',
         ]);
-
-        /*return $this->respond([
-            'restaurant' => new FoodBranchResource($restaurant)
-        ]);*/
     }
 
     public function toggleStatus($restaurant, Request $request)
