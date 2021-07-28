@@ -156,24 +156,24 @@
                                                 Import from Excel with options
                                             </button>
                                         </div>
-                                    @endif
-                                    <div class="d-inline-flex">
-                                        <button class="btn btn-warning btn-sm" @click="uploadFile(false)">
-                                            Import from Excel
-                                        </button>
-                                    </div>
-                                    <div class="d-inline-flex">
-                                        <a class="btn btn-success btn-sm" target="_blank"
-                                           href="{{route('admin.products.create', [
+                                        <div class="d-inline-flex">
+                                            <button class="btn btn-warning btn-sm" @click="uploadFile(false)">
+                                                Import from Excel
+                                            </button>
+                                        </div>
+                                        <div class="d-inline-flex">
+                                            <a class="btn btn-success btn-sm" target="_blank"
+                                               href="{{route('admin.products.create', [
                                         'type'=> request()->type ==  $currentBranchChannel?
                                             $productChannels[\App\Models\Product::CHANNEL_GROCERY_OBJECT] :
                                             $productChannels[\App\Models\Product::CHANNEL_FOOD_OBJECT],
                                         'branch_id' => $branch->id,
                                         'chain_id' => optional($branch->chain)->id
                                    ])}}">
-                                            Add new product
-                                        </a>
-                                    </div>
+                                                Add new product
+                                            </a>
+                                        </div>
+                                    @endif
                                 </div>
                             </div>
                         @endif
