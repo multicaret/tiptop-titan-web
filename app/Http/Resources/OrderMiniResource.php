@@ -36,6 +36,8 @@ class OrderMiniResource extends JsonResource
                 'raw' => (double) $this->grand_total,
                 'formatted' => Currency::format($this->grand_total),
             ],
+            'deliveryType' => $this->is_delivery_by_tiptop ? 'tiptop' : 'restaurant',
+            'userFullName' => $this->user->name,
             'branchName' => optional($this->cart->branch)->title,
             'branchLogo' => optional($this->cart->chain)->logo,
         ];
