@@ -147,4 +147,22 @@ class ZohoAnalyticsController extends Controller
         return response()->download($filename, 'orders_products_details.json', $headers)->deleteFileAfterSend(true);
     }
 
+    public function ordersRatesImport(Request $request)
+    {
+
+        $data = DB::select("
+          select o.reference_code,o.branch_rating_value
+          from orders o
+          where o.status = 20 and o.deleted_at is null and (o.customer_notes NOT LIKE '%test%'
+              OR o.customer_notes IS NULL) and o.branch_rating_value is not null
+       ");
+        $filename = "orders_ratings.json";
+        $handle = fopen($filename, 'w+');
+        fputs($handle, json_encode($data));
+        fclose($handle);
+        $headers = ['Content-type' => 'application/json'];
+
+        return response()->download($filename, 'orders_ratings.json', $headers)->deleteFileAfterSend(true);
+    }
+
 }
