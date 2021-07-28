@@ -337,6 +337,7 @@ class ProductController extends Controller
         $product->brand_id = $brand_id;
         $product->price = $request->input('price');
         $product->price_discount_amount = $request->input('price_discount_amount');
+        $product->restaurant_price_discount_amount = $request->input('restaurant_price_discount_amount');
         $product->available_quantity = $request->input('available_quantity');
         $product->minimum_orderable_quantity = $request->input('minimum_orderable_quantity');
         $product->maximum_orderable_quantity = $request->input('maximum_orderable_quantity');

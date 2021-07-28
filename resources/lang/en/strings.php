@@ -223,6 +223,7 @@ return [
     'banner_begins_at' => 'Banner Begins At',
     'banner_ends_at' => 'Banner Ends At',
     'discount_amount' => 'Price Discount Amount',
+    'restaurant_discount_amount' => 'Restaurant Price Discount Amount',
     'ingredients' => 'Ingredients',
     'ingredient-categories' => 'Ingredient Categories',
     'menu-category' => 'Menu Category',
