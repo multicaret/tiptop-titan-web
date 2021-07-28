@@ -41,10 +41,18 @@ class OrderController extends BaseApiController
 
         $hasDeliveredOrCancelledStatus = in_array(Order::STATUS_DELIVERED, $statuses) ||
             in_array(Order::STATUS_CANCELLED, $statuses);
+
         if ($hasDeliveredOrCancelledStatus) {
             $orders = $orders->where(function ($query) {
                 $query->whereDate('created_at', '>=', Carbon::yesterday(), 'or');
             });
+            $deliveredOrdersCount = $orders->where(function ($query) {
+                $query->whereDate('created_at', '>=', Carbon::yesterday(), 'or');
+            });
+        } else {
+            $deliveredOrdersCount = Order::whereBranchId($restaurant->id)
+                                         ->where('status', Order::STATUS_DELIVERED)
+                                         ->count();
         }
         $orders = $orders->latest()
                          ->get();
@@ -67,9 +75,7 @@ class OrderController extends BaseApiController
                 Order::STATUS_WAITING_COURIER => Order::whereBranchId($restaurant->id)
                                                       ->where('status', Order::STATUS_WAITING_COURIER)
                                                       ->count(),
-                Order::STATUS_DELIVERED => Order::whereBranchId($restaurant->id)
-                                                ->where('status', Order::STATUS_DELIVERED)
-                                                ->count(),
+                Order::STATUS_DELIVERED => $deliveredOrdersCount,
                 Order::STATUS_CANCELLED => Order::whereBranchId($restaurant->id)
                                                 ->where('status', Order::STATUS_CANCELLED)
                                                 ->count(),
