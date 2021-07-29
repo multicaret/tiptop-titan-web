@@ -55,7 +55,7 @@ class ProductsTable extends Component
             $products = $products->latest('id')->get();
         } else {
             $products = $products->latest()
-                                 ->paginate(30);
+                                 ->paginate(20);
         }
 
         return $products;
