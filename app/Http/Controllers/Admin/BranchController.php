@@ -179,6 +179,12 @@ class BranchController extends Controller
     {
         $typeName = Branch::getCorrectChannelName($request->type, false);
         $type = Branch::getCorrectChannel($request->type);
+        $branch->load([
+            'region',
+            'city',
+            'chain',
+            'locations',
+        ]);
         $contacts = $branch->locations()->get()->map(fn($item) => [
             'id' => $item->id,
             'name' => $item->name,
@@ -188,7 +194,6 @@ class BranchController extends Controller
         ]);
         $searchTags = Branch::isFood() ? Taxonomy::searchTags()->get() : [];
         $regions = Region::active()->whereCountryId(config('defaults.country.id'))->get();
-        $branch->load(['region', 'city', 'chain']);
         $chains = Chain::active()->whereType($type)->get();
         $foodCategories = Taxonomy::foodCategories()->get();
         $workingHours = $branch->getWorkingHoursForJs();
