@@ -91,6 +91,20 @@ trait HasStatuses
         }
     }
 
+    public function getStatusClassAttribute()
+    {
+        switch ($this->status) {
+            case self::STATUS_DRAFT:
+                return 'warning';
+            case self::STATUS_ACTIVE:
+                return 'danger';
+            case self::STATUS_INACTIVE:
+                return 'primary';
+            default:
+                return null;
+        }
+    }
+
     public static function getStatusesArray(): array
     {
         return [
