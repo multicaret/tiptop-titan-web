@@ -376,8 +376,6 @@ class ProductController extends Controller
         $product->push();
         DB::commit();
 
-        cache()->tags('products')->flush();
-
         $this->handleSubmittedSingleMedia('cover', $request, $product);
         $this->handleSubmittedMedia($request, 'gallery', $product, 'gallery');
     }
