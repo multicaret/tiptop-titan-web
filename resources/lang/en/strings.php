@@ -231,6 +231,7 @@ return [
     'units' => 'Units',
     'misc' => 'Miscellaneous',
     'search-tags' => 'Search Tags',
+    'end-user-tags' => 'End Users Tags',
     'order_number' => 'Order #',
     'rating' => 'Rating',
     'date' => 'date',
