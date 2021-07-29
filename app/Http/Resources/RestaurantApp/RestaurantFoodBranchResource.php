@@ -60,8 +60,8 @@ class RestaurantFoodBranchResource extends JsonResource
                     'formatted' => Currency::format($this->restaurant_under_minimum_order_delivery_fee),
                 ],
                 'fixedDeliveryFee' => [
-                    'raw' => $this->restaurant_fixed_delivery_fee + $extraDeliveryFeeRestaurant,
-                    'formatted' => Currency::format($this->restaurant_fixed_delivery_fee + $extraDeliveryFeeRestaurant),
+                    'raw' => $this->restaurant_fixed_delivery_fee,
+                    'formatted' => Currency::format($this->restaurant_fixed_delivery_fee),
                 ],
                 'freeDeliveryThreshold' => [
                     'raw' => $this->restaurant_free_delivery_threshold,
