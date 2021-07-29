@@ -71,7 +71,7 @@
                      @else
                      id="pagination-wrapper-category-{{$searchByCategoryForGrocery}}"
                     @endif>
-                    <div class="col-12 text-center">
+                    <div class="col-12 d-flex justify-content-center">
                         {{$products->links()}}
                     </div>
                 </div>
