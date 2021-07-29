@@ -8,6 +8,7 @@ use App\Traits\HasAppTypes;
 use App\Traits\HasGender;
 use App\Traits\HasMediaTrait;
 use App\Traits\HasStatuses;
+use App\Traits\HasTags;
 use App\Traits\HasViewCount;
 use Eloquent;
 use Illuminate\Auth\Passwords\CanResetPassword;
@@ -230,6 +231,7 @@ class User extends Authenticatable implements HasMedia, MustVerifyEmail
     use HasViewCount;
     use Notifiable;
     use SoftDeletes;
+    use HasTags;
 
     public const ROLE_SUPER = 'super';
     public const ROLE_ADMIN = 'admin';

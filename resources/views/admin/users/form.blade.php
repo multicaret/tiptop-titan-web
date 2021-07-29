@@ -191,6 +191,22 @@
         @if($role == \App\Models\User::ROLE_USER)
             <div class="card card-outline-inverse mb-4">
                 <h4 class="d-flex justify-content-between align-items-center px-4 mt-3">
+                    Tags
+                </h4>
+                <div class="card-body">
+                    @component('admin.components.form-group', ['name' => 'tags[]', 'type' => 'select'])
+                        @slot('label', 'Tags')
+                        @slot('options', $tags->pluck('title', 'id'))
+                        @slot('attributes', [
+                            'multiple',
+                            'class' => 'select2-demo m-b-10 w-100',
+                        ])
+                        @slot('selected',$user->tags)
+                    @endcomponent
+                </div>
+            </div>
+            <div class="card card-outline-inverse mb-4">
+                <h4 class="d-flex justify-content-between align-items-center px-4 mt-3">
                     Addresses
                     <a href="{{ route('admin.users.addresses.create', ['user' => $user]) }}">
                         <button type="button" class="btn btn-primary rounded-pill d-block">
@@ -434,6 +450,10 @@
 
 
 @push('scripts')
+    @push('styles')
+        <link rel="stylesheet" href="/admin-assets/libs/bootstrap-select/bootstrap-select.css">
+        <link rel="stylesheet" href="/admin-assets/libs/select2/select2.css">
+    @endpush
     <script>
         $('input:radio').change(
             function () {
@@ -469,7 +489,18 @@
         });
     </script>
     <script src="/admin-assets/libs/select2/select2.js"></script>
+
     <script>
+        $(function () {
+            $('.select2-demo').each(function () {
+                $(this)
+                    .wrap('<div class="position-relative"></div>')
+                    .select2({
+                        placeholder: 'Select a tag',
+                        dropdownParent: $(this).parent()
+                    });
+            })
+        });
         $(function () {
             $('.select2-branches').select2({
                 placeholder: 'Select Branch',

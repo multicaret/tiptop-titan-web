@@ -583,7 +583,17 @@ class ComposerServiceProvider extends ServiceProvider
                                             false),
                                 ],
                                 'routeName' => 'admin.taxonomies.index',
+                            ],                        [
+                                'title' => 'Users Tags',
+                                'icon' => 'fas fa-users',
+                                'params' => [
+                                    'type' =>
+                                        Taxonomy::getCorrectTypeName(Taxonomy::TYPE_END_USER_TAGS,
+                                            false),
+                                ],
+                                'routeName' => 'admin.taxonomies.index',
                             ],
+
 
                         ]
                     ]
