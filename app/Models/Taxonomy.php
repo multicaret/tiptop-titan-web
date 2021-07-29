@@ -196,13 +196,6 @@ class Taxonomy extends Node implements HasMedia, ShouldHaveTypes, TranslatableCo
     protected $translatedAttributes = ['title', 'description'];
     protected $with = [
         'translations',
-//        'chain',
-//        'branches'
-    ];
-
-    protected $appends = [
-        'cover',
-        'cover_small',
     ];
 
 

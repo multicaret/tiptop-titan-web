@@ -191,11 +191,6 @@ class TaxonomyModel extends Model implements HasMedia, ShouldHaveTypes, Translat
         'translations'
     ];
 
-    protected $appends = [
-        'cover',
-        'cover_small',
-    ];
-
 
     /**
      * Scope a query to only include only parents.

@@ -171,10 +171,6 @@ class Post extends Model implements HasMedia, ShouldHaveTypes
 
     protected $translatedAttributes = ['title', 'content', 'excerpt', 'notes'];
 
-    protected $appends = [
-        'cover',
-        'gallery',
-    ];
     /**
      * The attributes that should be casted to native types.
      *

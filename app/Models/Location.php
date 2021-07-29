@@ -139,12 +139,6 @@ class Location extends Model
         'is_default' => 'boolean',
     ];
 
-    protected $with = [
-//        'country',
-//        'region',
-//        'city'
-    ];
-
     /**
      * @param $query
      *

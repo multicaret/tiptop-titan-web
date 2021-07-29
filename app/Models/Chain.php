@@ -137,12 +137,6 @@ class Chain extends Model implements HasMedia
     protected $fillable = ['title', 'description'];
     protected $with = ['translations'];
     protected $translatedAttributes = ['title', 'description'];
-    protected $appends = [
-        'logo',
-        'cover',
-        'gallery',
-    ];
-
 
     public function branches(): HasMany
     {

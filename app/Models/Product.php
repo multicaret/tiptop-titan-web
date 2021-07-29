@@ -199,11 +199,7 @@ class Product extends Model implements HasMedia
     public const CHANNEL_FOOD_OBJECT = 2;
 
     protected $with = [
-//        'chain',
-//        'branch',
         'translations',
-//        'categories',
-//        'category'
     ];
 
     protected $fillable = [
@@ -242,10 +238,6 @@ class Product extends Model implements HasMedia
     ];
 
     protected $appends = [
-        'cover_thumbnail',
-        'cover_full',
-        'cover',
-        'gallery',
         'price_formatted',
         'discounted_price',
         'discounted_price_formatted',
