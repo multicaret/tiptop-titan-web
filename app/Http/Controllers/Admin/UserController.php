@@ -2,12 +2,14 @@
 
 namespace App\Http\Controllers\Admin;
 
+use App\Exports\TaggedUsersExport;
 use App\Http\Controllers\Controller;
 use App\Models\Branch;
 use App\Models\City;
 use App\Models\Country;
 use App\Models\Location;
 use App\Models\Region;
+use App\Models\Taxonomy;
 use App\Models\TookanTeam;
 use App\Models\User;
 use DB;
@@ -15,6 +17,7 @@ use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use Illuminate\Support\Str;
+use Maatwebsite\Excel\Facades\Excel;
 use Spatie\Permission\Models\Role;
 
 class UserController extends Controller
@@ -191,8 +194,9 @@ class UserController extends Controller
         $user->phone_country_code = '964';
         $user->phone_number = $request->phone;
         $user->approved_at = now();
-
         $user->save();
+
+        $user->tags()->sync($request->tags);
 
         /*$address = new Location();
         $address->creator_id = $user->id;
@@ -254,6 +258,8 @@ class UserController extends Controller
         $data['role'] = $role;
         $data['roleName'] = $user->role_name;
         $data['permissions'] = config('defaults.all_permission.super');
+        $data['tags'] = Taxonomy::EndUserTags()->get();
+
         if (in_array($role, User::rolesHaving('branches'))) {
             $data['selectedBranches'] = $user->branches($role)->get();
         }
@@ -308,6 +314,8 @@ class UserController extends Controller
         if ( ! empty($request->role)) {
             $user->assignRole($this->getRoleName($request->role));
         }
+        $user->tags()->sync($request->tags);
+
         /*if (is_null($address = Location::where('contactable_id', $user->id)
                                        ->where('contactable_role', User::class)
                                        ->whereNull('alias')
@@ -565,4 +573,8 @@ class UserController extends Controller
         };
     }
 
+    public function exportTaggedUsers($id){
+        $taxonomy = Taxonomy::where('uuid',$id)->firstOrFail();
+        return (new TaggedUsersExport($taxonomy->id))->download($taxonomy->title.'_users.xlsx');
+    }
 }

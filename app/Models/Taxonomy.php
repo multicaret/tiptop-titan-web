@@ -182,6 +182,7 @@ class Taxonomy extends Node implements HasMedia, ShouldHaveTypes, TranslatableCo
     public const TYPE_INGREDIENT_CATEGORY = 12;
     public const TYPE_UNIT = 15;
     public const TYPE_ORDERS_CANCELLATION_REASONS = 16;
+    public const TYPE_END_USER_TAGS = 17;
 
     protected $fillable = [
         'creator_id',
@@ -251,6 +252,11 @@ class Taxonomy extends Node implements HasMedia, ShouldHaveTypes, TranslatableCo
     public function scopePostTags($query)
     {
         return $query->where('type', '=', self::TYPE_TAG);
+    }
+
+    public function scopeEndUserTags($query)
+    {
+        return $query->where('type', '=', self::TYPE_END_USER_TAGS);
     }
 
     /**
@@ -427,6 +433,7 @@ class Taxonomy extends Node implements HasMedia, ShouldHaveTypes, TranslatableCo
             ],
             'content' => [
                 Taxonomy::TYPE_POST_CATEGORY,
+                Taxonomy::TYPE_END_USER_TAGS,
             ],
             'branch' => [
                 Taxonomy::TYPE_MENU_CATEGORY,
@@ -473,6 +480,7 @@ class Taxonomy extends Node implements HasMedia, ShouldHaveTypes, TranslatableCo
             self::TYPE_INGREDIENT_CATEGORY => 'ingredient-category',
             self::TYPE_UNIT => 'unit',
             self::TYPE_ORDERS_CANCELLATION_REASONS => 'orders-cancellation-reasons',
+            self::TYPE_END_USER_TAGS => 'end-user-tags',
         ];
     }
 

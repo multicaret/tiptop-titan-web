@@ -118,7 +118,7 @@ class DatatableController extends AjaxController
     {
         $parentId = ($request->input('parent_id'));
         $correctType = Taxonomy::getCorrectType($request->type);
-        $taxonomies = Taxonomy::orderBy('order_column')
+        $taxonomies = Taxonomy::orderBy('taxonomies.order_column')
                               ->with('parent', 'chain', 'branches', 'branch')
                               ->where('taxonomies.type', $correctType);
         if ($correctType == Taxonomy::TYPE_GROCERY_CATEGORY) {
@@ -136,8 +136,18 @@ class DatatableController extends AjaxController
                                          });
                                      });
 
+        } elseif ($correctType == Taxonomy::TYPE_END_USER_TAGS) {
+            $taxonomies = $taxonomies->selectRaw('taxonomies.id,taxonomies.status,taxonomies.created_at,taxonomies.uuid,count(u.id) as users_count')
+                                     ->leftJoin('taggables as t', function ($join) {
+                                         $join->on('t.taxonomy_id', '=', 'taxonomies.id')->where('t.taggable_type', User::class);;
+                                         $join->leftJoin('users as u', function ($join) {
+                                             $join->on('u.id', '=', 't.taggable_id');
+                                         });
+                                     })->groupBy('taxonomies.id','taxonomies.status','taxonomies.created_at','taxonomies.uuid');
+
         }
 
+      // dd($taxonomies->get());
         return DataTables::of($taxonomies)
                          ->editColumn('action', function ($taxonomy) use ($correctType) {
                              $data = [
@@ -183,6 +193,14 @@ class DatatableController extends AjaxController
                                      ])
                                  ];
 
+
+                             }
+                             if (Taxonomy::getCorrectType(request()->type) == Taxonomy::TYPE_END_USER_TAGS) {
+
+                                 $data['exportTaggedUsersAction'] = route('admin.tagged_users.export', [
+                                     $taxonomy->uuid,
+                                     'type' => request('type')
+                                 ]);
 
                              }
 

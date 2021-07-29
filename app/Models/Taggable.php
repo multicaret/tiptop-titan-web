@@ -34,5 +34,5 @@ use Illuminate\Support\Carbon;
  */
 class Taggable extends Model
 {
-//    protected $table = 'taggable';
+//    protected $table = 'taggables';
 }

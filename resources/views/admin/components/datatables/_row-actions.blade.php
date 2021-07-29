@@ -49,3 +49,9 @@
         &nbsp;<i class="fas fa-exchange-alt"></i>&nbsp;
     </a>
 @endisset
+@isset($exportTaggedUsersAction)
+    <a href="{{ $exportTaggedUsersAction }}"
+       data-toggle="tooltip"
+       title="Export Tagged Users">
+        &nbsp;<i class="fas fa-file-excel"></i>&nbsp;
+@endisset

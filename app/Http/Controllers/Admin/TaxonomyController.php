@@ -91,6 +91,24 @@ class TaxonomyController extends Controller
                 ]
             ]);
         }
+        if ($correctType == Taxonomy::TYPE_END_USER_TAGS) {
+            $columns = array_merge($columns, [
+                [
+                    'data' => 'description',
+                    'name' => 'description',
+                    'title' => 'Description',
+                    'orderable' => false,
+                    'searchable' => false
+                ],
+                [
+                    'data' => 'users_count',
+                    'name' => 'users_count',
+                    'title' => 'Users Count',
+                    'orderable' => false,
+                    'searchable' => false
+                ]
+            ]);
+        }
         /*if ($correctType === Taxonomy::TYPE_GROCERY_CATEGORY) {
             $columns = array_merge($columns, [
                 [
@@ -156,6 +174,81 @@ class TaxonomyController extends Controller
         $data['searchableTags'] = $taxonomy->type === Taxonomy::TYPE_FOOD_CATEGORY ? Taxonomy::searchTags()->get() : [];
 
         return view('admin.taxonomies.form', $data);
+    }
+
+    /**
+     * @param  Request  $request
+     * @return array
+     */
+    private function essentialData(Request $request): array
+    {
+        $typeName = Taxonomy::getCorrectTypeName($request->type, false);
+        $correctType = Taxonomy::getCorrectType($request->type);
+
+        $hasBranch = in_array($correctType, Taxonomy::typesHaving('branch'));
+
+        $menuCategoryData['hasBranch'] = $hasBranch && request()->has('branch_id');
+        $branchExists = ! is_null(Branch::foods()->find(request()->input('branch_id')));
+        if ($menuCategoryData['hasBranch']) {
+            if ($branchExists) {
+                $menuCategoryData['branchId'] = request()->input('branch_id');
+            } else {
+                abort(404);
+            }
+        }
+
+        $roots = collect([]);
+        $hasParent = in_array($correctType, Taxonomy::typesHaving('parent'));
+        if ($hasParent) {
+            $roots = Taxonomy::roots();
+            if ($correctType == Taxonomy::TYPE_GROCERY_CATEGORY) {
+                $roots = $roots->groceryCategories();
+            } elseif ($correctType == Taxonomy::TYPE_FOOD_CATEGORY) {
+                $roots = $roots->foodCategories();
+            }
+
+            $roots = $roots->get();
+        }
+
+        $fontAwesomeIcons = $this->getFontAwesomeIcons();
+
+        if ($hasBranch) {
+            $branches = Branch::with('chain', 'region', 'city')->whereType(Branch::CHANNEL_FOOD_OBJECT)
+                              ->active()
+                              ->get()
+                              ->mapWithKeys(function ($item) {
+                                  $chainTitle = $item['chain']['title'];
+                                  $branchTitle = $item['title'];
+                                  $regionName = '';
+                                  $cityName = '';
+                                  if (isset($item['region'])) {
+                                      $regionName = $item['region']['english_name'];
+                                  }
+                                  if (isset($item['city'])) {
+                                      $cityName = $item['city']['english_name'];
+                                  }
+
+                                  return [$item['id'] => $chainTitle.' - '.$branchTitle.' ('.$regionName.', '.$cityName.')'];
+                              });
+        } else {
+            $branches = [];
+        }
+        $ingredientCategories = Taxonomy::ingredientCategories()->active()->get();
+
+        return compact('typeName', 'correctType', 'roots', 'fontAwesomeIcons', 'branches', 'ingredientCategories',
+            'menuCategoryData');
+    }
+
+    private function getFontAwesomeIcons()
+    {
+        return collect(config('font-awesome-icons.all'))->map(function ($icon) {
+
+            return [
+                'id' => $icon['code'] = $icon['code'].' '.$icon['class'],
+                'title' => $icon['title'] = sprintf('<i class="%s fa-2x fa-fw"></i>&nbsp;%s', $icon['class'],
+                    $icon['title'])
+            ];
+        })->pluck('title', 'id');
     }
 
     /**
@@ -243,6 +336,7 @@ class TaxonomyController extends Controller
      */
     public function edit(Taxonomy $taxonomy, Request $request)
     {
+
         $data = $this->essentialData($request);
         $taxonomy->type = $data['correctType'];
         $data['taxonomy'] = $taxonomy->load('searchableTags');
@@ -366,80 +460,5 @@ class TaxonomyController extends Controller
             'type' => 'Error',
             'text' => 'There was an error'
         ]);
-    }
-
-    private function getFontAwesomeIcons()
-    {
-        return collect(config('font-awesome-icons.all'))->map(function ($icon) {
-
-            return [
-                'id' => $icon['code'] = $icon['code'].' '.$icon['class'],
-                'title' => $icon['title'] = sprintf('<i class="%s fa-2x fa-fw"></i>&nbsp;%s', $icon['class'],
-                    $icon['title'])
-            ];
-        })->pluck('title', 'id');
-    }
-
-    /**
-     * @param  Request  $request
-     * @return array
-     */
-    private function essentialData(Request $request): array
-    {
-        $typeName = Taxonomy::getCorrectTypeName($request->type, false);
-        $correctType = Taxonomy::getCorrectType($request->type);
-
-        $hasBranch = in_array($correctType, Taxonomy::typesHaving('branch'));
-
-        $menuCategoryData['hasBranch'] = $hasBranch && request()->has('branch_id');
-        $branchExists = ! is_null(Branch::foods()->find(request()->input('branch_id')));
-        if ($menuCategoryData['hasBranch']) {
-            if ($branchExists) {
-                $menuCategoryData['branchId'] = request()->input('branch_id');
-            } else {
-                abort(404);
-            }
-        }
-
-        $roots = collect([]);
-        $hasParent = in_array($correctType, Taxonomy::typesHaving('parent'));
-        if ($hasParent) {
-            $roots = Taxonomy::roots();
-            if ($correctType == Taxonomy::TYPE_GROCERY_CATEGORY) {
-                $roots = $roots->groceryCategories();
-            } elseif ($correctType == Taxonomy::TYPE_FOOD_CATEGORY) {
-                $roots = $roots->foodCategories();
-            }
-
-            $roots = $roots->get();
-        }
-
-        $fontAwesomeIcons = $this->getFontAwesomeIcons();
-
-        if ($hasBranch) {
-            $branches = Branch::with('chain', 'region', 'city')->whereType(Branch::CHANNEL_FOOD_OBJECT)
-                              ->active()
-                              ->get()
-                              ->mapWithKeys(function ($item) {
-                                  $chainTitle = $item['chain']['title'];
-                                  $branchTitle = $item['title'];
-                                  $regionName = '';
-                                  $cityName = '';
-                                  if (isset($item['region'])) {
-                                      $regionName = $item['region']['english_name'];
-                                  }
-                                  if (isset($item['city'])) {
-                                      $cityName = $item['city']['english_name'];
-                                  }
-
-                                  return [$item['id'] => $chainTitle.' - '.$branchTitle.' ('.$regionName.', '.$cityName.')'];
-                              });
-        } else {
-            $branches = [];
-        }
-        $ingredientCategories = Taxonomy::ingredientCategories()->active()->get();
-
-        return compact('typeName', 'correctType', 'roots', 'fontAwesomeIcons', 'branches', 'ingredientCategories',
-            'menuCategoryData');
     }
 }

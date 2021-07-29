@@ -62,40 +62,42 @@
 
 
             <div class="row">
-                @foreach(localization()->getSupportedLocales() as $langKey => $locale)
-                    <div class="col-md-4 mt-4">
-                        <div class="card card-outline-inverse">
-                            <h4 class="card-header">{{Str::upper($langKey)}}</h4>
-                            <div class="card-body">
-                                <div class="row p-t-20">
-                                    <div class="col-md-12">
-                                        @component('admin.components.form-group', ['name' => $langKey .'[title]', 'type' => 'text'])
-                                            @slot('label', 'Title')
-                                            @if($langKey === localization()->getCurrentLocale())
-                                                @slot('attributes', ['required'])
-                                            @endif
-                                            @if(!is_null($taxonomy->id))
-                                                @slot('value', optional($taxonomy->translate($langKey))->title)
-                                            @endif
-                                        @endcomponent
-                                    </div>
-                                    @if(in_array($correctType, \App\Models\Taxonomy::typesHaving('content')))
+
+                    @foreach(localization()->getSupportedLocales() as $langKey => $locale)
+                        <div class="col-md-4 mt-4 card-{{$langKey}}">
+                            <div class="card card-outline-inverse">
+                                <h4 class="card-header">{{Str::upper($langKey)}}</h4>
+                                <div class="card-body">
+                                    <div class="row p-t-20">
                                         <div class="col-md-12">
-                                            @component('admin.components.form-group', ['name' => $langKey .'[description]', 'type' => 'textarea'])
-                                                @slot('label', 'Description')
-                                                @slot('attributes', ['rows'=>2])
+                                            @component('admin.components.form-group', ['name' => $langKey .'[title]', 'type' => 'text'])
+                                                @slot('label', 'Title')
+                                                @if($langKey === localization()->getCurrentLocale())
+                                                    @slot('attributes', ['required'])
+                                                @endif
                                                 @if(!is_null($taxonomy->id))
-                                                    @slot('value', optional($taxonomy->translate($langKey))->description)
+                                                    @slot('value', optional($taxonomy->translate($langKey))->title)
                                                 @endif
                                             @endcomponent
                                         </div>
-                                    @endif
+                                        @if(in_array($correctType, \App\Models\Taxonomy::typesHaving('content')))
+                                            <div class="col-md-12">
+                                                @component('admin.components.form-group', ['name' => $langKey .'[description]', 'type' => 'textarea'])
+                                                    @slot('label', 'Description')
+                                                    @slot('attributes', ['rows'=>2])
+                                                    @if(!is_null($taxonomy->id))
+                                                        @slot('value', optional($taxonomy->translate($langKey))->description)
+                                                    @endif
+                                                @endcomponent
+                                            </div>
+                                        @endif
+                                    </div>
                                 </div>
-                            </div>
 
+                            </div>
                         </div>
-                    </div>
-                @endforeach
+                    @endforeach
+
             </div>
         </div>
     </div>
@@ -232,6 +234,19 @@
     <script src="{{ asset('/admin-assets/libs/quill/quill.js') }}"></script>
     <script src="/admin-assets/libs/select2/select2.js"></script>
     <script>
+        @if(\App\Models\Taxonomy::getCorrectType(request()->type) == \App\Models\Taxonomy::TYPE_END_USER_TAGS)
+        $( document ).ready(function() {
+            $('.card-ar , .card-ku').hide();
+            $("#en\\[title\\]").on('change keyup paste', function() {
+                $('#ar\\[title\\] , #ku\\[title\\]').val($(this).val());
+            });
+            $("#en\\[description\\]").on('change keyup paste', function() {
+                $('#ar\\[description\\] , #ku\\[description\\]').val($(this).val());
+            });
+
+        });
+        @endif
+
         $(function () {
             $('.select2-branches').select2({
                 placeholder: 'Select Branches',
@@ -254,6 +269,7 @@
                 placeholder: 'Select search tags',
             });
         });
+
     </script>
 @endpush
 
