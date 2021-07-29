@@ -97,7 +97,7 @@ trait HasStatuses
             case self::STATUS_DRAFT:
                 return 'warning';
             case self::STATUS_ACTIVE:
-                return 'primary';
+                return 'secondary';
             case self::STATUS_INACTIVE:
                 return 'danger';
             default:
