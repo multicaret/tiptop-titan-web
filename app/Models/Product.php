@@ -497,15 +497,20 @@ class Product extends Model implements HasMedia
         return Currency::format($this->price);
     }
 
+    public function getIsDiscountPriceDateValidAttribute()
+    {
+        return ! is_null($this->price_discount_began_at) &&
+            ! is_null($this->price_discount_finished_at) &&
+            now()->gte($this->price_discount_began_at) &&
+            now()->lte($this->price_discount_finished_at);
+    }
+
     public function getDiscountedPriceAttribute()
     {
         $priceDiscounted = $this->price;
         if (
-            ! is_null($this->price_discount_amount) &&
-            ! is_null($this->price_discount_began_at) &&
-            ! is_null($this->price_discount_finished_at) &&
-            now()->gte($this->price_discount_began_at) &&
-            now()->lte($this->price_discount_finished_at)
+//            ! is_null($this->price_discount_amount) &&
+            $this->is_discount_price_date_valid
         ) {
             $this->price_discount_amount += is_null($this->restaurant_price_discount_amount) ? 0 : $this->restaurant_price_discount_amount;
             $priceDiscounted = Controller::getAmountAfterApplyingDiscount($this->price, $this->price_discount_amount,

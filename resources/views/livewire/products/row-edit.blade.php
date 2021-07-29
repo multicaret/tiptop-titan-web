@@ -65,10 +65,15 @@
 
         @if($product->price_discount_amount)
             <hr>
-            <span class="text-muted">Price Before:</span><br>
+            @if(!$product->is_discount_price_date_valid)
+                <span class="text-danger">
+                <i class="fas fa-calendar-alt"></i> Out of date period
+            </span>
+            @endif
+            <span class="text-muted">Before:</span><br>
             <del>{{ $product->price_formatted }}</del>
             <br>
-            <span class="text-muted">Price After:</span><br>
+            <span class="text-muted">After:</span><br>
             @if($product->discounted_price != 0)
                 <b>{{ $product->discounted_price_formatted }}</b>
             @else
