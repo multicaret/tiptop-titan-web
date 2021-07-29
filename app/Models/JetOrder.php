@@ -38,7 +38,7 @@ use Spatie\MediaLibrary\MediaCollections\Models\Media;
  * @property string|null $restaurant_notes
  * @property string|null $private_notes This column is generic, for now it has the 'discount_method_id' for orders with coupons from the old DB
  * @property string|null $client_notes
- * @property int $status
+ * @property int $status 
  *                     0: Cancelled,
  *                     1: Draft,
  *                     22: Assigning driver,
@@ -49,6 +49,7 @@ use Spatie\MediaLibrary\MediaCollections\Models\Media;
  * @property Carbon|null $created_at
  * @property Carbon|null $updated_at
  * @property Carbon|null $deleted_at
+ * @property array|null $agent_notes
  * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\Activity[] $activity
  * @property-read int|null $activity_count
  * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\OrderAgentNote[] $agentNotes
@@ -77,6 +78,7 @@ use Spatie\MediaLibrary\MediaCollections\Models\Media;
  * @method static \Illuminate\Database\Query\Builder|JetOrder onlyTrashed()
  * @method static \Illuminate\Database\Eloquent\Builder|JetOrder query()
  * @method static \Illuminate\Database\Eloquent\Builder|JetOrder waitingCourier()
+ * @method static \Illuminate\Database\Eloquent\Builder|JetOrder whereAgentNotes($value)
  * @method static \Illuminate\Database\Eloquent\Builder|JetOrder whereBranchId($value)
  * @method static \Illuminate\Database\Eloquent\Builder|JetOrder whereCancellationReasonId($value)
  * @method static \Illuminate\Database\Eloquent\Builder|JetOrder whereCancellationReasonNote($value)

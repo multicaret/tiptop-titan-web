@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class AddZohoBooksIdToProductsTable extends Migration
+class AlterDiscountedPriceAmount2IntoProductsTable extends Migration
 {
     /**
      * Run the migrations.
@@ -14,7 +14,8 @@ class AddZohoBooksIdToProductsTable extends Migration
     public function up()
     {
         Schema::table('products', function (Blueprint $table) {
-            $table->string('zoho_books_id')->nullable();
+            $table->double('restaurant_price_discount_amount')->nullable()
+                  ->comment('Restaurant is offering this discount');
         });
     }
 
@@ -26,7 +27,7 @@ class AddZohoBooksIdToProductsTable extends Migration
     public function down()
     {
         Schema::table('products', function (Blueprint $table) {
-            $table->dropColumn('zoho_books_id');
+            $table->dropColumn('restaurant_price_discount_amount');
         });
     }
 }

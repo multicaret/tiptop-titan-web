@@ -30,7 +30,7 @@
             </table>
             <div class="row">
                 @if($categories)
-                    <div class="col-12 text-center">
+                    <div class="col-12 d-flex justify-content-center">
                         {{--                        {{$categorys->links()}}--}}
                     </div>
                 @endif

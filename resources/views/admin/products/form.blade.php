@@ -438,6 +438,15 @@
                                         @endif
                                     @endcomponent
                                 </div>
+                                <div class="col-md-3">
+                                    @component('admin.components.form-group', ['name' => 'restaurant_price_discount_amount', 'type' => 'number'])
+                                        @slot('label', trans('strings.restaurant_discount_amount'))
+                                        @slot('attributes', ['placeholder' => '5000'])
+                                        @if(! is_null($product->id))
+                                            @slot('value', $product->restaurant_price_discount_amount)
+                                        @endif
+                                    @endcomponent
+                                </div>
                                 @if($product->is_grocery)
                                     <div class="col-md-3">
                                         @component('admin.components.form-group', ['name' => 'available_quantity', 'type' => 'number'])

@@ -7,12 +7,14 @@
         @else
             Food Products
         @endif
-        <x-admin.add-copy-buttons
-            :createRoute="route('admin.products.create',[
+        @if(!\App\Models\Product::isGrocery())
+            <x-admin.add-copy-buttons
+                :createRoute="route('admin.products.create',[
             'type'=> request()->type,
             'only-for-chains' => request()->has('only-for-chains') && request()->input('only-for-chains'),
             ])">
-        </x-admin.add-copy-buttons>
+            </x-admin.add-copy-buttons>
+        @endif
     </h4>
 
     <div class="card">

@@ -68,6 +68,7 @@ use Spatie\MediaLibrary\MediaCollections\Models\Media;
  * @property Carbon|null $updated_at
  * @property Carbon|null $deleted_at
  * @property string|null $zoho_books_id
+ * @property float|null $restaurant_price_discount_amount Restaurant is offering this discount
  * @property-read Collection|\App\Models\Barcode[] $barcodes
  * @property-read int|null $barcodes_count
  * @property-read \App\Models\Branch|null $branch
@@ -154,6 +155,7 @@ use Spatie\MediaLibrary\MediaCollections\Models\Media;
  * @method static Builder|Product wherePriceDiscountByPercentage($value)
  * @method static Builder|Product wherePriceDiscountFinishedAt($value)
  * @method static Builder|Product whereRatingCount($value)
+ * @method static Builder|Product whereRestaurantPriceDiscountAmount($value)
  * @method static Builder|Product whereSearchCount($value)
  * @method static Builder|Product whereSku($value)
  * @method static Builder|Product whereStatus($value)
@@ -197,11 +199,7 @@ class Product extends Model implements HasMedia
     public const CHANNEL_FOOD_OBJECT = 2;
 
     protected $with = [
-//        'chain',
-//        'branch',
         'translations',
-//        'categories',
-//        'category'
     ];
 
     protected $fillable = [
@@ -240,10 +238,6 @@ class Product extends Model implements HasMedia
     ];
 
     protected $appends = [
-        'cover_thumbnail',
-        'cover_full',
-        'cover',
-        'gallery',
         'price_formatted',
         'discounted_price',
         'discounted_price_formatted',
@@ -503,15 +497,22 @@ class Product extends Model implements HasMedia
         return Currency::format($this->price);
     }
 
+    public function getIsDiscountPriceDateValidAttribute()
+    {
+        return ! is_null($this->price_discount_began_at) &&
+            ! is_null($this->price_discount_finished_at) &&
+            now()->gte($this->price_discount_began_at) &&
+            now()->lte($this->price_discount_finished_at);
+    }
+
     public function getDiscountedPriceAttribute()
     {
         $priceDiscounted = $this->price;
         if (
-            ! is_null($this->price_discount_began_at) &&
-            ! is_null($this->price_discount_finished_at) &&
-            now()->gte($this->price_discount_began_at) &&
-            now()->lte($this->price_discount_finished_at)
+//            ! is_null($this->price_discount_amount) &&
+            $this->is_discount_price_date_valid
         ) {
+            $this->price_discount_amount += is_null($this->restaurant_price_discount_amount) ? 0 : $this->restaurant_price_discount_amount;
             $priceDiscounted = Controller::getAmountAfterApplyingDiscount($this->price, $this->price_discount_amount,
                 $this->price_discount_by_percentage);
         }

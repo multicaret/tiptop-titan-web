@@ -9,7 +9,7 @@
             @endforeach
         </div>
     </div>
-    <div class="col-12 text-center">
+    <div class="col-12 d-flex justify-content-center">
         {{$notifications->links()}}
     </div>
 </div>

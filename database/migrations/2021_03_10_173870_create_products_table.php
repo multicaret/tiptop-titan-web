@@ -24,7 +24,7 @@ class CreateProductsTable extends Migration
             $table->unsignedBigInteger('category_id')->index();
             $table->unsignedBigInteger('unit_id')->nullable();
             $table->double('price')->nullable();
-            $table->double('price_discount_amount')->nullable();
+            $table->double('price_discount_amount')->nullable()->comment('TipTop is offering this discount');
             $table->boolean('price_discount_by_percentage')->nullable()->comment('true: percentage, false: fixed amount');
             $table->timestamp('price_discount_began_at')->nullable();
             $table->timestamp('price_discount_finished_at')->nullable();

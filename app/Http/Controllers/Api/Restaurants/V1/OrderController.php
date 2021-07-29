@@ -48,7 +48,7 @@ class OrderController extends BaseApiController
             });
             $deliveredOrdersCount = $orders->where(function ($query) {
                 $query->whereDate('created_at', '>=', Carbon::yesterday(), 'or');
-            });
+            })->count();
         } else {
             $deliveredOrdersCount = Order::whereBranchId($restaurant->id)
                                          ->where('status', Order::STATUS_DELIVERED)

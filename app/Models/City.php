@@ -94,10 +94,6 @@ class City extends Model implements HasMedia
     ];
     protected $with = ['translations'];
     protected $translatedAttributes = ['name', 'slug'];
-    protected $appends = [
-        'cover',
-        'gallery',
-    ];
 
     public function country()
     {

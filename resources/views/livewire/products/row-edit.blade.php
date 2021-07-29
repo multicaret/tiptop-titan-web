@@ -6,14 +6,15 @@
         {{$product->id}}
     </td>
     <td>
-        <img src="{{$product->cover}}" width="75px" class="img-fluid-fit-cover">
+        <img src="{{$product->cover}}" width="100%" class="img-fluid-fit-cover">
     </td>
     <td>
         <div class="row">
             @foreach(localization()->getSupportedLocales() as $key => $locale)
-                <div class="form-group col-4 p-0">
-                    <label>Title {{$locale->native()}}</label>
-                    <input type="text" title="price" class="form-control" placeholder="{{$locale->native()}}"
+                <div class="form-group col-12 p-0 mb-1 row">
+                    <label class="m-0 col-2 text-right"
+                           style="line-height: 2.7em;">{{--Title--}} {{strtoupper($key)}}</label>
+                    <input type="text" title="price" class="col-9 form-control" placeholder="{{$locale->native()}}"
                            wire:model.lazy="title{{ucfirst($key)}}">
                 </div>
             @endforeach
@@ -64,10 +65,15 @@
 
         @if($product->price_discount_amount)
             <hr>
-            <span class="text-muted">Price Before:</span><br>
+            @if(!$product->is_discount_price_date_valid)
+                <span class="text-danger">
+                <i class="fas fa-calendar-alt"></i> Out of date period
+            </span>
+            @endif
+            <span class="text-muted">Before:</span><br>
             <del>{{ $product->price_formatted }}</del>
             <br>
-            <span class="text-muted">Price After:</span><br>
+            <span class="text-muted">After:</span><br>
             @if($product->discounted_price != 0)
                 <b>{{ $product->discounted_price_formatted }}</b>
             @else
@@ -118,11 +124,14 @@
     </td>
     <td>
         <div class="form-group">
-            <input type="text" title="price" class="form-control" placeholder="Order column"
+            <label>Ordering</label>
+            <input type="text" title="price" class="form-control" placeholder=""
                    wire:model.lazy="product.order_column">
         </div>
     </td>
-    <td>{{$product->status_name}}</td>
+    <td>
+        <span class="text-{{$product->status_class}}">{{$product->status_name}}</span>
+    </td>
     <td>
         <a target="_blank" class="btn btn-outline-success btn-sm d-block mb-1" href="{{route('admin.products.edit',
                             ['type'=> \App\Models\Product::getCorrectChannelName($product->type),

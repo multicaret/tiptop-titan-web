@@ -15,8 +15,7 @@ class ProductObserver
      */
     public function created(Product $product)
     {
-        if (!empty(optional($product->branch)->zoho_books_id))
-        {
+        if ( ! empty(optional($product->branch)->zoho_books_id)) {
             SyncProductJob::dispatch($product)->delay(now()->addMinutes(5));
         }
 
@@ -64,5 +63,16 @@ class ProductObserver
     public function forceDeleted(Product $product)
     {
         //
+    }
+
+    /**
+     * Handle the Product "force deleted" event.
+     *
+     * @param  \App\Models\Product  $product
+     * @return void
+     */
+    public function saved(Product $product)
+    {
+        cache()->tags('products')->flush();
     }
 }

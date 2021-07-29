@@ -34,6 +34,7 @@ class GroceryCategoryChildResource extends JsonResource
                                         ['products.available_quantity', '>', 0]
                                     ]);
                               })
+                              ->orderByDesc('order_column')
                               ->get();
             });
 

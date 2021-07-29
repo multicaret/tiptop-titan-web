@@ -42,11 +42,6 @@ class ComposerServiceProvider extends ServiceProvider
 
         view()->composer('*', function ($view) {
             $preferences = Preference::getAllPluckValueKey();
-            $enabledCurrencies = cache()->tags('currencies')->rememberForever("{$this->app->getLocale()}.currencies",
-                function () {
-                    return Currency::all();
-                });
-
 
             $authenticatable = auth()->user();
             if ( ! is_null($authenticatable)) {
@@ -59,8 +54,6 @@ class ComposerServiceProvider extends ServiceProvider
                 'auth' => $authenticatable,
                 'bodyClasses' => $this->bodyClasses(),
                 'appPreferences' => $preferences,
-                'languages' => Language::withoutGlobalScope(ActiveScope::class)->get(),
-                'enabledCurrencies' => $enabledCurrencies,
             ]);
         });
 

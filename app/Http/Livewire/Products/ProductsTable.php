@@ -36,7 +36,11 @@ class ProductsTable extends Component
 
     public function retrieveProducts()
     {
-        $products = Product::whereBranchId($this->branchId);
+        $products = Product::with([
+            'media',
+            'categories',
+        ])
+                           ->whereBranchId($this->branchId);
         if ( ! is_null($this->searchByCategoryForFood) && $this->searchByCategoryForFood != 'all') {
             $products = $products->where('category_id', $this->searchByCategoryForFood);
         }
@@ -51,7 +55,7 @@ class ProductsTable extends Component
             $products = $products->latest('id')->get();
         } else {
             $products = $products->latest()
-                                 ->paginate(30);
+                                 ->paginate(20);
         }
 
         return $products;

@@ -45,10 +45,19 @@ class ProductController extends Controller
                 'bSortable' => false,
             ],
             [
+                'data' => 'uuid',
+                'name' => 'uuid',
+                'title' => 'UUID',
+                'orderable' => false,
+                'searchable' => true,
+                'visible' => false,
+            ],
+            [
                 'data' => 'title',
-                'name' => 'title',
-                'title' => trans('strings.title'),
-                'width' => '150',
+                'name' => 'translations.title',
+                'title' => 'Title',
+                'orderable' => false,
+                'searchable' => true
             ],
             [
                 'data' => 'chain',
@@ -229,7 +238,7 @@ class ProductController extends Controller
             return ['id' => $item->id, 'title' => $item->title];
         };
         $data['units'] = Taxonomy::unitCategories()->get()->map($getIdTitle)->all();
-        $data['brands'] = Brand::where('status',Brand::STATUS_ACTIVE)->get();
+        $data['brands'] = Brand::where('status', Brand::STATUS_ACTIVE)->get();
         if (Product::isGrocery()) {
             $data['chains'] = Chain::groceries()->get()->map($getIdTitle)->all();
             $groceryBranches = Branch::groceries();
@@ -321,14 +330,14 @@ class ProductController extends Controller
 
         $brand = json_decode($request->input('brand_id'));
         $brand_id = null;
-        if (!empty($brand) && isset($brand[0]))
-        {
+        if ( ! empty($brand) && isset($brand[0])) {
             $brand_id = $brand[0]->id;
         }
         $product->unit_id = optional(json_decode($request->input('unit_id')))->id;
         $product->brand_id = $brand_id;
         $product->price = $request->input('price');
         $product->price_discount_amount = $request->input('price_discount_amount');
+        $product->restaurant_price_discount_amount = $request->input('restaurant_price_discount_amount');
         $product->available_quantity = $request->input('available_quantity');
         $product->minimum_orderable_quantity = $request->input('minimum_orderable_quantity');
         $product->maximum_orderable_quantity = $request->input('maximum_orderable_quantity');
@@ -366,8 +375,6 @@ class ProductController extends Controller
         }
         $product->push();
         DB::commit();
-
-        cache()->tags('products')->flush();
 
         $this->handleSubmittedSingleMedia('cover', $request, $product);
         $this->handleSubmittedMedia($request, 'gallery', $product, 'gallery');

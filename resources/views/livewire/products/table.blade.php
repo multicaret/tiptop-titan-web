@@ -1,4 +1,13 @@
 <div>
+    @php
+        $loadingId = 'loader-category-';
+        if ($branch->type == \App\Models\Branch::CHANNEL_FOOD_OBJECT) {
+            $loadingId .= $searchByCategoryForFood;
+        } else {
+            $loadingId .= $searchByCategoryForGrocery;
+        }
+    @endphp
+    <x-admin.wire-loading :variable="$searchByCategoryForFood" :id="$loadingId"/>
     <div class="card">
         @if($branch->type == \App\Models\Branch::CHANNEL_FOOD_OBJECT)
             <select wire:model="searchByCategoryForFood" class="form-control">
@@ -22,16 +31,23 @@
                 <tr>
                     <th style="width:10px">#</th>
                     <th class="width-85">Cover</th>
-                    <th>Title</th>
-                    <th class="width-85">Category</th>
+                    <th style="width: 220px;">Title</th>
+                    <th style="width:100px">Category</th>
                     <th class="width-85">Price</th>
-                    <th class="width-85">Price Discount</th>
+                    <th class="width-85">Discount</th>
                     <th class="width-85">Order</th>
                     <th class="width-85">Status</th>
                     <th class="width-85">Actions</th>
                 </tr>
                 </thead>
-                <tbody {{--wire:poll.1s--}}>
+                <tbody {{--wire:poll.1s--}}
+                       @if($branch->type == \App\Models\Branch::CHANNEL_FOOD_OBJECT)
+                       id="tbody-category-{{$searchByCategoryForFood}}"
+                       @else
+                       id="tbody-category-{{$searchByCategoryForGrocery}}"
+                    @endif
+                >
+                {{--                {{dd($products)}}--}}
                 @forelse($products as $product)
                     <livewire:products.product-row-edit :key="'product-row-edit-'.$product->id"
                                                         :categories="$categories"
@@ -43,21 +59,19 @@
                                     <h4>
                                         No items found!
                                     </h4>
-                                    {{--<p>
-                                        <button
-                                            class="btn btn-link btn-outline-primary" --}}{{--wire:click="resetFilters"--}}{{-->
-                                            Reset
-                                            filters?
-                                        </button>
-                                    </p>--}}
                                 </td>
                             </tr>
                 @endforelse
                 </tbody>
             </table>
             @if($branch->is_grocery)
-                <div class="row">
-                    <div class="col-12 text-center">
+                <div class="row"
+                     @if($branch->type == \App\Models\Branch::CHANNEL_FOOD_OBJECT)
+                     id="pagination-wrapper-category-{{$searchByCategoryForFood}}"
+                     @else
+                     id="pagination-wrapper-category-{{$searchByCategoryForGrocery}}"
+                    @endif>
+                    <div class="col-12 d-flex justify-content-center">
                         {{$products->links()}}
                     </div>
                 </div>

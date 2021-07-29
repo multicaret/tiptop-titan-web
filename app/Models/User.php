@@ -294,12 +294,6 @@ class User extends Authenticatable implements HasMedia, MustVerifyEmail
         'name',
     ];
 
-    protected $with = [
-//        'defaultAddress',
-//        'country',
-    ];
-
-
     protected static function boot()
     {
         parent::boot();

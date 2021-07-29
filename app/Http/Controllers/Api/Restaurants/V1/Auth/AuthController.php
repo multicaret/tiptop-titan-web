@@ -3,7 +3,7 @@
 namespace App\Http\Controllers\Api\Restaurants\V1\Auth;
 
 use App\Http\Controllers\Api\BaseApiController;
-use App\Http\Resources\FoodBranchResource;
+use App\Http\Resources\RestaurantApp\RestaurantFoodBranchResource;
 use App\Http\Resources\UserResource;
 use App\Models\Preference;
 use App\Models\User;
@@ -103,7 +103,7 @@ class AuthController extends BaseApiController
 
             if ($user->role_name == User::ROLE_BRANCH_OWNER || $user->role_name == User::ROLE_BRANCH_MANAGER) {
                 if ($user->branches()->count()) {
-                    $respondData['restaurant'] = new FoodBranchResource($user->branches()->first());
+                    $respondData['restaurant'] = new RestaurantFoodBranchResource($user->branches()->first());
                 }
             }
 
