@@ -309,7 +309,7 @@ class HomeController extends BaseApiController
         $hasBeenAuthenticated = ! is_null($user) ? Slide::TARGET_LOGGED_IN : Slide::TARGET_GUEST;
         $slides = Slide::orderBy('order_column')
                        ->with([
-                           'media'
+                           'translations.media'
                        ]);
 
         $slides = $slides
