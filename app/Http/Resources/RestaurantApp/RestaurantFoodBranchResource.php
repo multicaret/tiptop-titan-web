@@ -25,6 +25,12 @@ class RestaurantFoodBranchResource extends JsonResource
             $workingHours['isOpen'] = false;
         }
 
+        if ($this->is_food) {
+            $categories = $this->menuCategories()->orderBy('order_column')->get();
+        } else {
+            $categories = $this->groceryCategories()->orderBy('order_column')->get();
+        }
+
         return [
             'id' => $this->id,
             'title' => $this->title,
@@ -97,7 +103,7 @@ class RestaurantFoodBranchResource extends JsonResource
                 'cover' => $this->chain->cover,
                 'gallery' => $this->chain->gallery,
             ],
-            'categories' => RestaurantCategoryMiniResource::collection($this->menuCategories()->orderBy('order_column')->get()),
+            'categories' => RestaurantCategoryMiniResource::collection($categories),
         ];
     }
 }
