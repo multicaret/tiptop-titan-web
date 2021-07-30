@@ -53,7 +53,7 @@ use Spatie\MediaLibrary\MediaCollections\Models\Collections\MediaCollection;
  * @property int $restaurant_max_delivery_minutes
  * @property int $restaurant_free_delivery_threshold
  * @property int $restaurant_extra_delivery_fee_per_km
- * @property int $management_commission_rate 0 means there is no commission atall
+ * @property int $management_commission_tiptop_rate 0 means there is no commission atall
  * @property bool $is_open_now
  * @property string|null $primary_phone_number
  * @property string|null $secondary_phone_number
@@ -704,7 +704,7 @@ class Branch extends Model implements HasMedia
                 'title' => 'Restaurant extra delivery fee per KM',
                 'type' => null,
             ],
-            'management_commission_rate' => [
+            'management_commission_tiptop_rate' => [
                 'title' => 'Management commission rate',
                 'type' => null,
             ],
