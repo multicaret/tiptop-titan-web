@@ -92,6 +92,11 @@
                     <i class="far fa-chart-bar"></i>&nbsp;Acitivity Logs
                 </a>
             </li>
+            <li class="nav-item">
+                <a class="nav-link" data-toggle="tab" href="#discount-tab">
+                    <i class="far fa-arrow-alt-circle-down"></i> Bulk Discount
+                </a>
+            </li>
         </ul>
         <div class="tab-content">
             <div class="tab-pane fade active show" id="settings-tab">
@@ -251,6 +256,11 @@
             <div class="tab-pane fade" id="activity-logs-tab">
                 <div class="card-body">
                     @include('admin.partials.activity-logs',['object' => $branch])
+                </div>
+            </div>
+            <div class="tab-pane fade" id="discount-tab">
+                <div class="card-body">
+                    @include('admin.branches.partials._discount_panel',['object' => $branch])
                 </div>
             </div>
         </div>

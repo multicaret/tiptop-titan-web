@@ -563,4 +563,25 @@ class BranchController extends Controller
         return ProductsImporter::WORKSHEET_MENU_CATEGORIES;
     }
 
+    public function applyDiscount(Request $request, Branch $branch) {
+
+        $request->validate([
+            'discount_percentage' => 'required|numeric',
+            'price_discount_began_at' => 'required|date',
+            'price_discount_finished_at' => 'required|date|after:price_discount_began_at',
+
+        ]);
+        $branch->products()->whereHas('category',function ($query) use ($request){
+            $query->whereIn('taxonomies.id',$request->menu_categories);
+        })->update([
+            'price_discount_by_percentage' => 1,
+            'price_discount_amount' => $request->discount_percentage,
+            'price_discount_began_at' => $request->price_discount_began_at,
+            'price_discount_finished_at' => $request->price_discount_finished_at,
+        ]);
+
+        return redirect()->back()->with('message',
+            ['type' => 'Success', 'text' => 'Discount applied successfully',]);
+    }
+
 }

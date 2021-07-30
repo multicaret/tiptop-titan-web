@@ -56,6 +56,7 @@ Route::get('branches/{branch}/export-to-excel', 'BranchController@exportToExcel'
 Route::post('branches/{branch}/import-excel-file',
     'BranchController@importFromExcel')->name('branch.import-from-excel');
 Route::post('branches/{branch}/workingHours', 'BranchController@storeWorkingHours')->name('branch.working-hours');
+Route::post('branches/{branch}/apply_discount', 'BranchController@applyDiscount')->name('branch.apply_discount');
 Route::resource('branches', 'BranchController')->except(['show']);
 Route::resource('restaurants', 'RestaurantController')->only(['create', 'store']);
 
