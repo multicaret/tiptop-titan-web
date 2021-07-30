@@ -211,14 +211,14 @@ class Order extends Model
         $tag = Taxonomy::select(['id', 'type'])
                        ->where('type', Taxonomy::TYPE_END_USER_TAGS)
                        ->whereHas('translations', function ($query) {
-                            $query->when($this->type == Order::CHANNEL_FOOD_OBJECT, function ($query) {
-                                $query->where('title', 'Food');
+                           $query->when($this->type == Order::CHANNEL_FOOD_OBJECT, function ($query) {
+                               $query->where('title', 'Food');
 
-                            })->when($this->type == Order::CHANNEL_GROCERY_OBJECT, function ($query) {
-                                $query->where('title', 'Market');
-                            });
+                           })->when($this->type == Order::CHANNEL_GROCERY_OBJECT, function ($query) {
+                               $query->where('title', 'Market');
+                           });
 
-                        })->first();
+                       })->first();
         if ( ! empty($tag)) {
             $this->user->tags()->sync([$tag->id]);
         }

@@ -28,6 +28,7 @@ use Illuminate\Support\Carbon;
  * @property-read int|null $countries_count
  * @property-read bool $is_active
  * @property-read bool $is_inactive
+ * @property-read mixed $status_class
  * @property-read mixed $status_name
  * @method static Builder|Currency active()
  * @method static Builder|Currency draft()

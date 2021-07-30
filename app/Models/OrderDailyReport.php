@@ -135,7 +135,7 @@ class OrderDailyReport extends Model
 
     public static function retrieveValues($channel, $collection, $isSum = false): array
     {
-        $collectionType = $isSum ? "sum" : "avg";
+        $collectionType = $isSum ? 'sum' : 'avg';
         $totalOrderCountColumn = 'orders_count';
         if ($channel == 'grocery') {
             $totalOrderCountColumn = 'grocery_orders_count';

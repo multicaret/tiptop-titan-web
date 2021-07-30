@@ -52,6 +52,7 @@ use Spatie\MediaLibrary\MediaCollections\Models\Media;
  * @property-read bool $is_active
  * @property-read bool $is_inactive
  * @property-read mixed $link
+ * @property-read mixed $status_class
  * @property-read mixed $status_name
  * @property-read MediaCollection|Media[] $media
  * @property-read int|null $media_count

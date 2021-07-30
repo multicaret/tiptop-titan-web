@@ -11,6 +11,7 @@ use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Support\Carbon;
+use Str;
 
 /**
  * App\Models\OldModels\OldUser
@@ -249,7 +250,7 @@ class OldUser extends OldModel
         }*/
 
         if ($tempString === $this->randomUserPin || User::whereUsername($tempString)->count()) {
-            $tempString = \Str::of($this->role_name.'_'.$tempString)->snake()->jsonSerialize();
+            $tempString = Str::of($this->role_name.'_'.$tempString)->snake()->jsonSerialize();
         }
 
         return $tempString;
@@ -257,7 +258,7 @@ class OldUser extends OldModel
 
     private function getSplitName(): array
     {
-        $stringable = \Str::of($this->name);
+        $stringable = Str::of($this->name);
 //        $faker = \Faker\Factory::create();
         if ($stringable->isEmpty()) {
             return [Controller::uuid(), Controller::uuid()];
@@ -287,7 +288,7 @@ class OldUser extends OldModel
         $countyCodeAttempts = ['+90', '+964', '+963', '+null'];
         foreach ($countyCodeAttempts as $tempCountryCode) {
             if ((strpos($phoneNumber, $tempCountryCode) !== false)) {
-                $countyCode = \Str::substr($tempCountryCode, 1);
+                $countyCode = Str::substr($tempCountryCode, 1);
                 break;
             }
         }
@@ -302,7 +303,7 @@ class OldUser extends OldModel
         $countyCodeAttempts = ['+90', '+964', '+963', '+null'];
         foreach ($countyCodeAttempts as $tempCountryCode) {
             if ((strpos($phoneNumber, $tempCountryCode) !== false)) {
-                $countyCode = \Str::substr($tempCountryCode, 1);
+                $countyCode = Str::substr($tempCountryCode, 1);
                 break;
             }
         }
@@ -336,7 +337,7 @@ class OldUser extends OldModel
         }
         $roleNameSnakeCase = self::roleComparing()[$type];
 
-        return \Str::title(str_replace('-', ' ', $roleNameSnakeCase));
+        return Str::title(str_replace('-', ' ', $roleNameSnakeCase));
     }
 
     public function getSettingsAttribute()

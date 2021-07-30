@@ -31,6 +31,7 @@ use Illuminate\Support\Carbon;
  * @property-read \App\Models\Currency|null $currency
  * @property-read bool $is_active
  * @property-read bool $is_inactive
+ * @property-read mixed $status_class
  * @property-read mixed $status_name
  * @property-read \App\Models\Language|null $language
  * @property-read Collection|\App\Models\Location[] $locations
