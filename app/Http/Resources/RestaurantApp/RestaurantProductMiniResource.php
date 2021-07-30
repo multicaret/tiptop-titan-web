@@ -35,6 +35,7 @@ class RestaurantProductMiniResource extends JsonResource
                 'coverSmall' => $this->cover_small,
             ],
             'isActive' => $this->status == Product::STATUS_ACTIVE,
+            'isDraft' => $this->status == Product::STATUS_DRAFT,
         ];
     }
 }
