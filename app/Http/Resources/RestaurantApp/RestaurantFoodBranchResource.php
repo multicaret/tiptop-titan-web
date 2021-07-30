@@ -5,6 +5,7 @@ namespace App\Http\Resources\RestaurantApp;
 use App\Http\Controllers\Controller;
 use App\Models\Branch;
 use App\Models\Currency;
+use App\Models\Taxonomy;
 use App\Models\WorkingHour;
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
@@ -28,7 +29,13 @@ class RestaurantFoodBranchResource extends JsonResource
         if ($this->is_food) {
             $categories = $this->menuCategories()->orderBy('order_column')->get();
         } else {
-            $categories = $this->groceryCategories()->orderBy('order_column')->get();
+            $categories = Taxonomy::active()
+                                  ->with('products')
+                                  ->groceryCategories()
+                                  ->notParents()
+                                  ->orderBy('order_column')
+                                  ->whereHas('products')
+                                  ->get();
         }
 
         return [
