@@ -222,10 +222,17 @@ class CartController extends BaseApiController
         }
 
         if (is_null($cartProduct) && $isAdding) {
+            $product = Product::with('media')
+                              ->find($productId)
+                              ->append([
+                                  'cover',
+                                  'cover_thumbnail',
+                                  'cover_small',
+                              ]);
             $cartProductId = CartProduct::insertGetId([
                 'cart_id' => $cart->id,
                 'product_id' => $productId,
-                'product_object' => Product::find($productId),
+                'product_object' => $product,
                 'quantity' => 0,
                 'options_price' => 0,
                 'total_options_price' => 0,

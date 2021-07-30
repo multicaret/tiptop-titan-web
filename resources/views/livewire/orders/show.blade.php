@@ -112,11 +112,11 @@
                                 {{$order->user->name}}
 
                                 @if($order->user->orders()->count() == 1)
-                                <div class="pl-1 ml-auto bounce d-inline-block" style="font-size:16px;">
-                                    <div class="badge badge-danger d-inline-block">
-                                        New
+                                    <div class="pl-1 ml-auto bounce d-inline-block" style="font-size:16px;">
+                                        <div class="badge badge-danger d-inline-block">
+                                            New
+                                        </div>
                                     </div>
-                                </div>
                                 @endif
                             </a>
                         </div>
@@ -219,72 +219,72 @@
                 </div>
             </div>
 
-                <div class="card mt-3">
-                    <h5 class="card-header font-weight-bold">
-                        <i class="fas fa-motorcycle"></i>&nbsp;
-                                                         Delivery info
-                    </h5>
-                    <div class="card-body pb-0">
-                        <div class="row">
-                            <div class="col-12 pb-3 border-bottom">
-                                <b>Delivery Type</b>
+            <div class="card mt-3">
+                <h5 class="card-header font-weight-bold">
+                    <i class="fas fa-motorcycle"></i>&nbsp;
+                                                     Delivery info
+                </h5>
+                <div class="card-body pb-0">
+                    <div class="row">
+                        <div class="col-12 pb-3 border-bottom">
+                            <b>Delivery Type</b>
 
-                                    <p class="text-muted  pull-right">{{$order->is_delivery_by_tiptop ? 'TipTop' : 'Restaurant'}}</p>
-                            </div>
-                            <div class="col-12 pb-3 border-bottom">
-                                <b>Driver</b>
-                                @if(!empty($order->driver))
-                                    <a target="_blank" class="text-primary pull-right"
-                                       href="{{route('admin.users.edit', ['role' => $order->driver->role_name, 'user' => $order->driver])}}">
-                                        {{$order->driver->name}}
-                                    </a>
-                                @else
-                                    <p class="text-muted  pull-right">Waiting Delivery information</p>
-                                @endif
-                            </div>
-                            <div class="col-12 py-3 border-bottom" style="padding-bottom: 1.3rem !important;">
-                                <b>Phone</b>
-                                @if(!empty($order->driver))
-
-                                    <a class="text-primary pull-right"
-                                       href="tel:{{$order->user->phone_number}}"
-                                       target="_blank">
-                                        {{$order->driver->phone_number}}
-                                    </a>
-                                @endif
-                            </div>
-
-                            @if(!empty($order->driver) && !in_array($order->status,[\App\Models\Order::STATUS_DELIVERED,\App\Models\Order::STATUS_CANCELLED]) && !empty($order->tookanInfo->pickup_tracking_link) && !empty($order->tookanInfo->delivery_tracking_link))
-                                <div class="col-12 py-3 border-bottom">
-                                    <b>Pickup Task ID</b>
-                                    <p class="text-primary pull-right">
-                                        {{$order->tookanInfo->job_pickup_id}}
-                                    </p>
-                                </div>
-                                <div class="col-12 py-3 border-bottom">
-                                    <b>Delivery Task ID</b>
-                                    <p class="text-primary pull-right">
-                                        {{$order->tookanInfo->job_delivery_id}}
-                                    </p>
-                                </div>
-                                <div class="col-12 py-3 border-bottom">
-                                    <b>Pickup Tracking</b>
-                                    <a class="text-primary pull-right" target="_blank"
-                                       href="{{$order->tookanInfo->pickup_tracking_link}}">
-                                        <i class="fas fa-external-link-alt text-warning"></i>
-                                    </a>
-                                </div>
-                                <div class="col-12 py-3 border-bottom">
-                                    <b>Delivery Tracking</b>
-                                    <a class="text-primary pull-right" target="_blank"
-                                       href="{{$order->tookanInfo->delivery_tracking_link}}">
-                                        <i class="fas fa-external-link-alt text-warning"></i>
-                                    </a>
-                                </div>
+                            <p class="text-muted  pull-right">{{$order->is_delivery_by_tiptop ? 'TipTop' : 'Restaurant'}}</p>
+                        </div>
+                        <div class="col-12 pb-3 border-bottom">
+                            <b>Driver</b>
+                            @if(!empty($order->driver))
+                                <a target="_blank" class="text-primary pull-right"
+                                   href="{{route('admin.users.edit', ['role' => $order->driver->role_name, 'user' => $order->driver])}}">
+                                    {{$order->driver->name}}
+                                </a>
+                            @else
+                                <p class="text-muted  pull-right">Waiting Delivery information</p>
                             @endif
                         </div>
+                        <div class="col-12 py-3 border-bottom" style="padding-bottom: 1.3rem !important;">
+                            <b>Phone</b>
+                            @if(!empty($order->driver))
+
+                                <a class="text-primary pull-right"
+                                   href="tel:{{$order->user->phone_number}}"
+                                   target="_blank">
+                                    {{$order->driver->phone_number}}
+                                </a>
+                            @endif
+                        </div>
+
+                        @if(!empty($order->driver) && !in_array($order->status,[\App\Models\Order::STATUS_DELIVERED,\App\Models\Order::STATUS_CANCELLED]) && !empty($order->tookanInfo->pickup_tracking_link) && !empty($order->tookanInfo->delivery_tracking_link))
+                            <div class="col-12 py-3 border-bottom">
+                                <b>Pickup Task ID</b>
+                                <p class="text-primary pull-right">
+                                    {{$order->tookanInfo->job_pickup_id}}
+                                </p>
+                            </div>
+                            <div class="col-12 py-3 border-bottom">
+                                <b>Delivery Task ID</b>
+                                <p class="text-primary pull-right">
+                                    {{$order->tookanInfo->job_delivery_id}}
+                                </p>
+                            </div>
+                            <div class="col-12 py-3 border-bottom">
+                                <b>Pickup Tracking</b>
+                                <a class="text-primary pull-right" target="_blank"
+                                   href="{{$order->tookanInfo->pickup_tracking_link}}">
+                                    <i class="fas fa-external-link-alt text-warning"></i>
+                                </a>
+                            </div>
+                            <div class="col-12 py-3 border-bottom">
+                                <b>Delivery Tracking</b>
+                                <a class="text-primary pull-right" target="_blank"
+                                   href="{{$order->tookanInfo->delivery_tracking_link}}">
+                                    <i class="fas fa-external-link-alt text-warning"></i>
+                                </a>
+                            </div>
+                        @endif
                     </div>
                 </div>
+            </div>
         </div>
     </div>
     <div class="row mt-3">
@@ -316,8 +316,10 @@
                         @foreach($order->cart->cartProducts()->with('cartProductOptions')->get() as $orderProduct)
                             <tr>
                                 <td>
-                                    <img src="{{$orderProduct->product_object['cover']}}"
-                                         alt="Product cover" width="50">
+                                    @if(isset($orderProduct->product_object['cover']))
+                                        <img src="{{$orderProduct->product_object['cover']}}"
+                                             alt="Product cover" width="50">
+                                    @endif
                                 </td>
                                 <td>
                                     <span data-toggle="tooltip" data-placement="top"
