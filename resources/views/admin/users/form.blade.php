@@ -191,22 +191,6 @@
         @if($role == \App\Models\User::ROLE_USER)
             <div class="card card-outline-inverse mb-4">
                 <h4 class="d-flex justify-content-between align-items-center px-4 mt-3">
-                    Tags
-                </h4>
-                <div class="card-body">
-                    @component('admin.components.form-group', ['name' => 'tags[]', 'type' => 'select'])
-                        @slot('label', 'Tags')
-                        @slot('options', $tags->pluck('title', 'id'))
-                        @slot('attributes', [
-                            'multiple',
-                            'class' => 'select2-demo m-b-10 w-100',
-                        ])
-                        @slot('selected',$user->tags)
-                    @endcomponent
-                </div>
-            </div>
-            <div class="card card-outline-inverse mb-4">
-                <h4 class="d-flex justify-content-between align-items-center px-4 mt-3">
                     Addresses
                     <a href="{{ route('admin.users.addresses.create', ['user' => $user]) }}">
                         <button type="button" class="btn btn-primary rounded-pill d-block">
@@ -356,6 +340,23 @@
         </div>
 
         @if($user->role_name == \App\Models\User::ROLE_USER)
+            <div class="card card-outline-inverse mb-4">
+                <h4 class="d-flex justify-content-between align-items-center px-4 mt-3">
+                    Tags
+                </h4>
+                <div class="card-body">
+                    @component('admin.components.form-group', ['name' => 'tags[]', 'type' => 'select'])
+                        @slot('label', 'Tags')
+                        @slot('options', $tags->pluck('title', 'id'))
+                        @slot('attributes', [
+                            'multiple',
+                            'class' => 'select2-demo m-b-10 w-100',
+                        ])
+                        @slot('selected',$user->tags)
+                    @endcomponent
+                </div>
+            </div>
+
             <div class="card card-outline-inverse mb-4">
                 <h4 class="card-header">
                     Extra Details
