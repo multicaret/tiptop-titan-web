@@ -55,10 +55,19 @@ class BranchController extends Controller
                 'width' => '20',
             ],
             [
+                'data' => 'uuid',
+                'name' => 'uuid',
+                'title' => 'UUID',
+                'orderable' => false,
+                'searchable' => true,
+                'visible' => false,
+            ],
+            [
                 'data' => 'title',
                 'name' => 'translations.title',
-                'title' => trans('strings.title'),
-                'width' => '40',
+                'title' => 'Title',
+                'orderable' => false,
+                'searchable' => true
             ],
             [
                 'data' => 'chain',
