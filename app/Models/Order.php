@@ -62,7 +62,7 @@ use Illuminate\Support\Carbon;
  * @property string|null $private_notes This column is generic, for now it has the 'discount_method_id' for orders with coupons from the old DB
  * @property Carbon|null $completed_at
  * @property string|null $customer_notes
- * @property int $status 
+ * @property int $status
  *                     0: Cancelled,
  *                     1: Draft,
  *                     6: Waiting Courier,
@@ -206,6 +206,24 @@ class Order extends Model
         'has_good_order_accuracy_rating' => 'boolean',
     ];
 
+    public function tagEndUser()
+    {
+        $tag = Taxonomy::select(['id', 'type'])
+                       ->where('type', Taxonomy::TYPE_END_USER_TAGS)
+                       ->whereHas('translations', function ($query) {
+                            $query->when($this->type == Order::CHANNEL_FOOD_OBJECT, function ($query) {
+                                $query->where('title', 'Food');
+
+                            })->when($this->type == Order::CHANNEL_GROCERY_OBJECT, function ($query) {
+                                $query->where('title', 'Market');
+                            });
+
+                        })->first();
+        if ( ! empty($tag)) {
+            $this->user->tags()->sync([$tag->id]);
+        }
+    }
+
     private static function getFormattedActivityLogDifferenceItem(
         ?array $activityLogDifferenceItem,
         $columnName,
@@ -224,214 +242,6 @@ class Order extends Model
             default:
                 return $value;
         }
-    }
-
-    public function user(): BelongsTo
-    {
-        return $this->belongsTo(User::class)->withTrashed();
-    }
-
-    public function chain(): BelongsTo
-    {
-        return $this->belongsTo(Chain::class);
-    }
-
-    public function branch(): BelongsTo
-    {
-        return $this->belongsTo(Branch::class);
-    }
-
-
-    public function cart(): BelongsTo
-    {
-        return $this->belongsTo(Cart::class);
-    }
-
-    public function paymentMethod(): BelongsTo
-    {
-        return $this->belongsTo(PaymentMethod::class);
-    }
-
-    public function address(): BelongsTo
-    {
-        return $this->belongsTo(Location::class)->withTrashed();
-    }
-
-    public function coupon(): BelongsTo
-    {
-        return $this->belongsTo(Coupon::class);
-    }
-
-    public function driver(): BelongsTo
-    {
-        return $this->belongsTo(User::class)->withTrashed();
-    }
-
-    public function previousOrder(): BelongsTo
-    {
-        return $this->belongsTo(self::class, 'previous_order_id');
-    }
-
-    public function ratingIssue(): BelongsTo
-    {
-        return $this->belongsTo(Taxonomy::class, 'rating_issue_id');
-    }
-
-
-    public function cancellationReason(): BelongsTo
-    {
-        return $this->belongsTo(Taxonomy::class, 'cancellation_reason_id');
-    }
-
-    public function agentNotes(): HasMany
-    {
-        return $this->hasMany(OrderAgentNote::class, 'order_id')->latest();
-    }
-
-    public function scopeCancelled($query)
-    {
-        return $query->where('status', self::STATUS_CANCELLED);
-    }
-
-    public function scopeDraft($query)
-    {
-        return $query->where('status', self::STATUS_DRAFT);
-    }
-
-    public function scopeNew($query)
-    {
-        return $query->where('status', self::STATUS_NEW);
-    }
-
-    public function scopePreparing($query)
-    {
-        return $query->where('status', self::STATUS_PREPARING);
-    }
-
-    public function scopeWaitingCourier($query)
-    {
-        return $query->where('status', self::STATUS_WAITING_COURIER);
-    }
-
-    public function scopeOnTheWay($query)
-    {
-        return $query->where('status', self::STATUS_ON_THE_WAY);
-    }
-
-    public function scopeAtTheAddress($query)
-    {
-        return $query->where('status', self::STATUS_AT_THE_ADDRESS);
-    }
-
-    public function scopeDelivered($query)
-    {
-        return $query->where('status', self::STATUS_DELIVERED);
-    }
-
-    public function getStatusName()
-    {
-        return trans('strings.order_status_'.$this->status);
-    }
-
-    public function getStatusNameAttribute()
-    {
-        return $this->getStatusName();
-    }
-
-    public function getAllStatuses($statusesToSelectFrom = null)
-    {
-        if (is_null($statusesToSelectFrom)) {
-            $statusesToSelectFrom = [
-//            self::STATUS_DRAFT,
-                self::STATUS_NEW,
-                self::STATUS_PREPARING,
-                self::STATUS_WAITING_COURIER,
-                self::STATUS_ON_THE_WAY,
-                self::STATUS_AT_THE_ADDRESS,
-                self::STATUS_DELIVERED,
-                self::STATUS_CANCELLED,
-            ];
-        }
-        $statuses = [];
-        foreach ($statusesToSelectFrom as $item) {
-            $statuses[] = [
-                'id' => $item,
-                'title' => trans('strings.order_status_'.$item),
-                'isSelected' => $this->status === $item,
-            ];
-        }
-
-        return $statuses;
-    }
-
-    public function getPermittedStatus(): array
-    {
-        switch ($this->status) {
-            case self::STATUS_NEW:
-                return $this->getAllStatuses([
-                    self::STATUS_PREPARING,
-                    self::STATUS_CANCELLED,
-                ]);
-            case self::STATUS_PREPARING:
-                return $this->getAllStatuses([
-                    self::STATUS_WAITING_COURIER,
-                    self::STATUS_ON_THE_WAY,
-                    self::STATUS_CANCELLED,
-                ]);
-            case self::STATUS_WAITING_COURIER:
-                return $this->getAllStatuses([
-                    self::STATUS_ON_THE_WAY,
-                    self::STATUS_DELIVERED,
-                    self::STATUS_CANCELLED,
-                ]);
-            case self::STATUS_ON_THE_WAY:
-                return $this->getAllStatuses([
-                    self::STATUS_AT_THE_ADDRESS,
-                    self::STATUS_DELIVERED,
-                    self::STATUS_CANCELLED,
-                ]);
-            case self::STATUS_AT_THE_ADDRESS:
-                return $this->getAllStatuses([
-                    self::STATUS_DELIVERED,
-                    self::STATUS_CANCELLED,
-                ]);
-            case self::STATUS_DELIVERED:
-                return $this->getAllStatuses([
-                    self::STATUS_CANCELLED,
-                ]);
-            case self::STATUS_CANCELLED:
-                /*if ($this->status != self::STATUS_CANCELLED) {
-                    return $this->getAllStatuses([
-                        $this->status,
-                        self::STATUS_CANCELLED,
-                    ]);
-                } else {*/
-                return $this->getAllStatuses([
-                    self::STATUS_CANCELLED,
-                ]);
-//                }
-            default;
-                return [];
-        }
-    }
-
-    public function getLateCssBgClass(): ?string
-    {
-        if ($this->status == self::STATUS_NEW) {
-            $pastInMinutes = $this->created_at->diffInMinutes();
-            if ($pastInMinutes > 7) {
-                return 'bg-danger-darker text-white';
-            } elseif ($pastInMinutes > 5) {
-                return 'bg-warning-darker';
-            } elseif ($pastInMinutes > 3) {
-                return 'bg-warning-dark';
-            } elseif ($pastInMinutes > 2) {
-                return 'bg-warning';
-            }
-
-        }
-
-        return null;
     }
 
     /**
@@ -533,6 +343,212 @@ class Order extends Model
 
         if (array_key_exists($columnName, $visibleColumns)) {
             return $visibleColumns[$columnName];
+        }
+
+        return null;
+    }
+
+    public function user(): BelongsTo
+    {
+        return $this->belongsTo(User::class)->withTrashed();
+    }
+
+    public function chain(): BelongsTo
+    {
+        return $this->belongsTo(Chain::class);
+    }
+
+    public function branch(): BelongsTo
+    {
+        return $this->belongsTo(Branch::class);
+    }
+
+    public function cart(): BelongsTo
+    {
+        return $this->belongsTo(Cart::class);
+    }
+
+    public function paymentMethod(): BelongsTo
+    {
+        return $this->belongsTo(PaymentMethod::class);
+    }
+
+    public function address(): BelongsTo
+    {
+        return $this->belongsTo(Location::class)->withTrashed();
+    }
+
+    public function coupon(): BelongsTo
+    {
+        return $this->belongsTo(Coupon::class);
+    }
+
+    public function driver(): BelongsTo
+    {
+        return $this->belongsTo(User::class)->withTrashed();
+    }
+
+    public function previousOrder(): BelongsTo
+    {
+        return $this->belongsTo(self::class, 'previous_order_id');
+    }
+
+    public function ratingIssue(): BelongsTo
+    {
+        return $this->belongsTo(Taxonomy::class, 'rating_issue_id');
+    }
+
+    public function cancellationReason(): BelongsTo
+    {
+        return $this->belongsTo(Taxonomy::class, 'cancellation_reason_id');
+    }
+
+    public function agentNotes(): HasMany
+    {
+        return $this->hasMany(OrderAgentNote::class, 'order_id')->latest();
+    }
+
+    public function scopeCancelled($query)
+    {
+        return $query->where('status', self::STATUS_CANCELLED);
+    }
+
+    public function scopeDraft($query)
+    {
+        return $query->where('status', self::STATUS_DRAFT);
+    }
+
+    public function scopeNew($query)
+    {
+        return $query->where('status', self::STATUS_NEW);
+    }
+
+    public function scopePreparing($query)
+    {
+        return $query->where('status', self::STATUS_PREPARING);
+    }
+
+    public function scopeWaitingCourier($query)
+    {
+        return $query->where('status', self::STATUS_WAITING_COURIER);
+    }
+
+    public function scopeOnTheWay($query)
+    {
+        return $query->where('status', self::STATUS_ON_THE_WAY);
+    }
+
+    public function scopeAtTheAddress($query)
+    {
+        return $query->where('status', self::STATUS_AT_THE_ADDRESS);
+    }
+
+    public function scopeDelivered($query)
+    {
+        return $query->where('status', self::STATUS_DELIVERED);
+    }
+
+    public function getStatusNameAttribute()
+    {
+        return $this->getStatusName();
+    }
+
+    public function getStatusName()
+    {
+        return trans('strings.order_status_'.$this->status);
+    }
+
+    public function getPermittedStatus(): array
+    {
+        switch ($this->status) {
+            case self::STATUS_NEW:
+                return $this->getAllStatuses([
+                    self::STATUS_PREPARING,
+                    self::STATUS_CANCELLED,
+                ]);
+            case self::STATUS_PREPARING:
+                return $this->getAllStatuses([
+                    self::STATUS_WAITING_COURIER,
+                    self::STATUS_ON_THE_WAY,
+                    self::STATUS_CANCELLED,
+                ]);
+            case self::STATUS_WAITING_COURIER:
+                return $this->getAllStatuses([
+                    self::STATUS_ON_THE_WAY,
+                    self::STATUS_DELIVERED,
+                    self::STATUS_CANCELLED,
+                ]);
+            case self::STATUS_ON_THE_WAY:
+                return $this->getAllStatuses([
+                    self::STATUS_AT_THE_ADDRESS,
+                    self::STATUS_DELIVERED,
+                    self::STATUS_CANCELLED,
+                ]);
+            case self::STATUS_AT_THE_ADDRESS:
+                return $this->getAllStatuses([
+                    self::STATUS_DELIVERED,
+                    self::STATUS_CANCELLED,
+                ]);
+            case self::STATUS_DELIVERED:
+                return $this->getAllStatuses([
+                    self::STATUS_CANCELLED,
+                ]);
+            case self::STATUS_CANCELLED:
+                /*if ($this->status != self::STATUS_CANCELLED) {
+                    return $this->getAllStatuses([
+                        $this->status,
+                        self::STATUS_CANCELLED,
+                    ]);
+                } else {*/
+                return $this->getAllStatuses([
+                    self::STATUS_CANCELLED,
+                ]);
+//                }
+            default;
+                return [];
+        }
+    }
+
+    public function getAllStatuses($statusesToSelectFrom = null)
+    {
+        if (is_null($statusesToSelectFrom)) {
+            $statusesToSelectFrom = [
+//            self::STATUS_DRAFT,
+                self::STATUS_NEW,
+                self::STATUS_PREPARING,
+                self::STATUS_WAITING_COURIER,
+                self::STATUS_ON_THE_WAY,
+                self::STATUS_AT_THE_ADDRESS,
+                self::STATUS_DELIVERED,
+                self::STATUS_CANCELLED,
+            ];
+        }
+        $statuses = [];
+        foreach ($statusesToSelectFrom as $item) {
+            $statuses[] = [
+                'id' => $item,
+                'title' => trans('strings.order_status_'.$item),
+                'isSelected' => $this->status === $item,
+            ];
+        }
+
+        return $statuses;
+    }
+
+    public function getLateCssBgClass(): ?string
+    {
+        if ($this->status == self::STATUS_NEW) {
+            $pastInMinutes = $this->created_at->diffInMinutes();
+            if ($pastInMinutes > 7) {
+                return 'bg-danger-darker text-white';
+            } elseif ($pastInMinutes > 5) {
+                return 'bg-warning-darker';
+            } elseif ($pastInMinutes > 3) {
+                return 'bg-warning-dark';
+            } elseif ($pastInMinutes > 2) {
+                return 'bg-warning';
+            }
+
         }
 
         return null;
