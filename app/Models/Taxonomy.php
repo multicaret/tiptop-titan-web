@@ -211,6 +211,17 @@ class Taxonomy extends Node implements HasMedia, ShouldHaveTypes, TranslatableCo
     {
         return $query->whereNull('parent_id');
     }
+    /**
+     * Scope a query to only include only parents.
+     *
+     * @param  Builder  $query
+     *
+     * @return Builder
+     */
+    public function scopeNotParents($query)
+    {
+        return $query->whereNotNull('parent_id');
+    }
 
 
     /**

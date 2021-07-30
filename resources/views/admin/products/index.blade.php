@@ -7,7 +7,7 @@
         @else
             Food Products
         @endif
-        @if(!\App\Models\Product::isGrocery())
+        @if(!\App\Models\Product::isGrocery() || request()->has('only-for-chains'))
             <x-admin.add-copy-buttons
                 :createRoute="route('admin.products.create',[
             'type'=> request()->type,
