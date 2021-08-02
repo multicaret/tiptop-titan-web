@@ -5,6 +5,7 @@ namespace App\Console;
 use App\Console\Commands\ExportOrdersToZoho;
 use App\Console\Commands\OrdersReminder;
 use App\Console\Commands\UpdateBranchAvailability;
+use Artisan;
 use Illuminate\Console\Scheduling\Schedule;
 use Illuminate\Foundation\Console\Kernel as ConsoleKernel;
 
@@ -42,6 +43,9 @@ class Kernel extends ConsoleKernel
             $schedule->command('orders:remind --minutes=5 --roles=admin')->everyFiveMinutes();
             $schedule->command('orders:export-to-zoho')->everyTwoHours();
             $schedule->command('orders:check-is-peak')->dailyAt('00:03');
+            $schedule->call(function () {
+                Artisan::call('cache:clear');
+            })->dailyAt('05:00');
 
         }
     }
