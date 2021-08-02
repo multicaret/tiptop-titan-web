@@ -73,6 +73,7 @@ class OrderObserver
                 CreateTask::dispatchSync($order);
             } elseif ($order->status == Order::STATUS_CANCELLED && $order->is_delivery_by_tiptop && ! empty(optional($order->tookanInfo)->job_pickup_id) && $tookan_status) {
                 CancelTask::dispatchSync($order);
+                $order->reStockItems();
             } elseif ($order->status == Order::STATUS_DELIVERED) {
                 $order->tagEndUser();
                 if ( ! Str::contains($order->customer_notes, $this->testNotes)) {

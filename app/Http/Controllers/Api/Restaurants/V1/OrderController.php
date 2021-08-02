@@ -7,6 +7,7 @@ use App\Http\Resources\OrderMiniResource;
 use App\Http\Resources\OrderResource;
 use App\Models\Branch;
 use App\Models\Order;
+use Arr;
 use Carbon\Carbon;
 use DB;
 use Illuminate\Http\Request;
@@ -103,6 +104,14 @@ class OrderController extends BaseApiController
         $validator = validator()->make($request->all(), $rules);
         if ($validator->fails()) {
             return $this->respondValidationFails($validator->errors());
+        }
+
+        if (!in_array($request->status, Arr::pluck($order->getPermittedStatus(),'id'))){
+
+            $this->respond([
+                'success' => false,
+                'message' => 'Invalid Order Status',
+            ]);
         }
 
         $restaurant = Branch::find($restaurant);

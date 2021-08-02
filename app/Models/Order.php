@@ -576,4 +576,13 @@ class Order extends Model
 
         return [$statusesIntervals, $total];
     }
+
+    public function reStockItems() {
+        $this->cart->products->map(function ($item){
+            if ($item->is_storage_tracking_enabled) {
+                $item->available_quantity = $item->available_quantity + $item->pivot->quantity;
+                $item->save();
+            }
+        });
+    }
 }
