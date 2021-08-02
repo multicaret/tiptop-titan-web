@@ -80,14 +80,17 @@ class OrderObserver
                     UpdateDailyReportJob::dispatch($order);
                 }
             }
+
+            $order->recordActivity('updated');
         } elseif ($order->wasChanged('grand_total')) {
             //create job for updating task
             // UpdateTask::dispatchSync($order);
             if ( ! Str::contains($order->customer_notes, $this->testNotes)) {
                 UpdateDailyReportJob::dispatch($order);
             }
+            $order->recordActivity('updated');
+
         }
-        $order->recordActivity('updated');
     }
 
     /**
