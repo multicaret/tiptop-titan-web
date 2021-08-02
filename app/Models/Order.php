@@ -220,7 +220,8 @@ class Order extends Model
 
                        })->first();
         if ( ! empty($tag)) {
-            $this->user->tags()->sync([$tag->id]);
+            if (!$this->user->tags->contains($tag->id))
+                $this->user->tags()->attach([$tag->id]);
         }
     }
 

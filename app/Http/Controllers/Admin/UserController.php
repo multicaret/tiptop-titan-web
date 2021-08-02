@@ -196,7 +196,6 @@ class UserController extends Controller
         $user->approved_at = now();
         $user->save();
 
-        $user->tags()->sync($request->tags);
 
         /*$address = new Location();
         $address->creator_id = $user->id;
@@ -314,7 +313,15 @@ class UserController extends Controller
         if ( ! empty($request->role)) {
             $user->assignRole($this->getRoleName($request->role));
         }
-        $user->tags()->sync($request->tags);
+
+
+
+        if (!empty($request->tags) && is_array($request->tags)){
+            foreach ($request->tags as $tag) {
+                if (!$user->tags->contains($tag))
+                    $user->tags()->attach([$tag]);
+            }
+        }
 
         /*if (is_null($address = Location::where('contactable_id', $user->id)
                                        ->where('contactable_role', User::class)
