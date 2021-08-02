@@ -307,7 +307,10 @@ class HomeController extends BaseApiController
             $slideChannel = Slide::CHANNEL_FOOD_OBJECT;
         }
         $hasBeenAuthenticated = ! is_null($user) ? Slide::TARGET_LOGGED_IN : Slide::TARGET_GUEST;
-        $slides = Slide::orderBy('order_column');
+        $slides = Slide::orderBy('order_column')
+                       ->with([
+                           'translations.media'
+                       ]);
 
         $slides = $slides
             ->where(function ($query) use ($slideChannel) {

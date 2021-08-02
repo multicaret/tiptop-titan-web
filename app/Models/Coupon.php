@@ -43,6 +43,7 @@ use Illuminate\Support\Carbon;
  * @property-read bool $is_food
  * @property-read bool $is_grocery
  * @property-read bool $is_inactive
+ * @property-read mixed $status_class
  * @property-read mixed $status_name
  * @method static Builder|Coupon active()
  * @method static Builder|Coupon draft()

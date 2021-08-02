@@ -58,6 +58,7 @@ class OldWorkingHoursForBranch extends Model
             ],
         ];
         $timeKey = $keysBuilder[$index][$status];
+
         return $this->$timeKey;
     }
 

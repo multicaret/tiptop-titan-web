@@ -28,6 +28,7 @@ use Illuminate\Support\Carbon;
  * @property-read int|null $countries_count
  * @property-read bool $is_active
  * @property-read bool $is_inactive
+ * @property-read mixed $status_class
  * @property-read mixed $status_name
  * @method static Builder|Currency active()
  * @method static Builder|Currency draft()
@@ -85,6 +86,16 @@ class Currency extends Model
         static::addGlobalScope(new ActiveScope);
     }
 
+    public static function retrieve($currencyCode)
+    {
+        return cache()->remember('currency_'.$currencyCode, 60 * 60 * 1,
+            function () use ($currencyCode) {
+                return self::withoutGlobalScope(ActiveScope::class)
+                           ->where('code', $currencyCode)
+                           ->first();
+            });
+    }
+
     /**
      * @param $currencyCode
      *
@@ -92,14 +103,14 @@ class Currency extends Model
      */
     private static function getCurrency($currencyCode)
     {
-        $builder = self::withoutGlobalScope(ActiveScope::class);
         if (is_null($currencyCode)) {
-            $currency = $builder->where('code', config('app.default_currency_code'))->first();
             if (session()->has('currency_code')) {
-                $currency = $builder->where('code', session()->get('currency_code'))->first();
+                $currency = self::retrieve(session()->get('currency_code'));
+            } else {
+                $currency = self::retrieve(config('app.default_currency_code'));
             }
         } else {
-            $currency = $builder->where('code', $currencyCode)->first();
+            $currency = self::retrieve($currencyCode);
         }
 
         return $currency;

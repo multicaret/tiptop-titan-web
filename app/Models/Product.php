@@ -93,10 +93,12 @@ use Spatie\MediaLibrary\MediaCollections\Models\Media;
  * @property-read string $discounted_price_formatted
  * @property-read mixed $gallery
  * @property-read bool $is_active
+ * @property-read mixed $is_discount_price_date_valid
  * @property-read bool $is_food
  * @property-read bool $is_grocery
  * @property-read bool $is_inactive
  * @property-read mixed $price_formatted
+ * @property-read mixed $status_class
  * @property-read mixed $status_name
  * @property-read MediaCollection|Media[] $media
  * @property-read int|null $media_count
@@ -510,7 +512,7 @@ class Product extends Model implements HasMedia
         $priceDiscounted = $this->price;
         if (
 //            ! is_null($this->price_discount_amount) &&
-            $this->is_discount_price_date_valid
+        $this->is_discount_price_date_valid
         ) {
             $this->price_discount_amount += is_null($this->restaurant_price_discount_amount) ? 0 : $this->restaurant_price_discount_amount;
             $priceDiscounted = Controller::getAmountAfterApplyingDiscount($this->price, $this->price_discount_amount,

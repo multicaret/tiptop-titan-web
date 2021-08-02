@@ -9,6 +9,8 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Carbon;
 use Spatie\MediaLibrary\MediaCollections\Models\Collections\MediaCollection;
 use Spatie\MediaLibrary\MediaCollections\Models\Media as MediaAlias;
+use Storage;
+use Str;
 
 
 /**
@@ -108,7 +110,7 @@ class OldMedia extends MediaAlias
     {
         $urlScheme = 'media/%s/%d/resized/%s';
         $extension = $this->getExtensionAttribute();
-        $resizedFileName = \Str::of($this->file_name)->beforeLast('.')->append('-')
+        $resizedFileName = Str::of($this->file_name)->beforeLast('.')->append('-')
                                ->append($conversion.'.'.$extension)->jsonSerialize();
 
         return sprintf($urlScheme, self::getModelTypes()[$this->model_type], $this->id, $resizedFileName);
@@ -117,7 +119,7 @@ class OldMedia extends MediaAlias
 
     public function getImageUrlAttribute(): ?string
     {
-        if ( ! \Storage::disk('old_s3')->exists($this->disk_path)) {
+        if ( ! Storage::disk('old_s3')->exists($this->disk_path)) {
 
             $urlScheme = 'https://'.env('OLD_AWS_BUCKET').'.s3.eu-central-1.amazonaws.com/media/%s/%d/resized/%s';
             $extension = $this->getExtensionAttribute();
@@ -129,13 +131,13 @@ class OldMedia extends MediaAlias
 
 
             $seemsNull = false;
-            if ( ! \Storage::disk('old_s3')->exists($resizedDiskPathAttribute)) {
+            if ( ! Storage::disk('old_s3')->exists($resizedDiskPathAttribute)) {
                 $seemsNull = true;
             }
 
             if ($seemsNull) {
                 $resizedDiskPathAttribute = str_replace('.png', '.jpg', $resizedDiskPathAttribute);
-                if (\Storage::disk('old_s3')->exists($resizedDiskPathAttribute)) {
+                if (Storage::disk('old_s3')->exists($resizedDiskPathAttribute)) {
                     $extension = 'jpg';
                     $seemsNull = false;
                 }
@@ -143,7 +145,7 @@ class OldMedia extends MediaAlias
 
             if ($seemsNull) {
                 $resizedDiskPathAttribute = str_replace('.jpeg', '.jpg', $resizedDiskPathAttribute);
-                if (\Storage::disk('old_s3')->exists($resizedDiskPathAttribute)) {
+                if (Storage::disk('old_s3')->exists($resizedDiskPathAttribute)) {
                     $extension = 'jpg';
                     $seemsNull = false;
                 }
@@ -158,7 +160,7 @@ class OldMedia extends MediaAlias
                 return null;
             }
 
-            return \Str::of($finalUrl)->beforeLast('.')
+            return Str::of($finalUrl)->beforeLast('.')
                        ->append('-')
                        ->append($lastGeneratedConversion)
                        ->append('.'.$extension)

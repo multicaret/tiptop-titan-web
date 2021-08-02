@@ -118,6 +118,7 @@ use Spatie\Permission\Traits\HasRoles;
  * @property-read mixed $name
  * @property-read mixed $role
  * @property-read mixed $role_name
+ * @property-read mixed $status_class
  * @property-read mixed $status_name
  * @property-read mixed $sum_rating_all_types
  * @property-read mixed $sum_rating
@@ -142,6 +143,8 @@ use Spatie\Permission\Traits\HasRoles;
  * @property-read \App\Models\Region|null $region
  * @property-read Collection|Role[] $roles
  * @property-read int|null $roles_count
+ * @property-read Collection|\App\Models\Taxonomy[] $tags
+ * @property-read int|null $tags_count
  * @property-read \App\Models\TookanTeam|null $team
  * @property-read Collection|\App\Models\PersonalAccessToken[] $tokens
  * @property-read int|null $tokens_count

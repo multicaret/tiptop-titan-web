@@ -2,6 +2,7 @@
 
 namespace App\Http\Resources;
 
+use App\Models\Product;
 use App\Models\Taxonomy;
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
@@ -22,7 +23,8 @@ class CategoryMiniResource extends JsonResource
         $products = null;
         $isMenuCategory = $this->type == Taxonomy::TYPE_MENU_CATEGORY;
         if ($isMenuCategory) {
-            $menuProducts = $this->menuProducts();
+            $menuProducts = $this->menuProducts()
+                                 ->where('status', '!=', Product::STATUS_DRAFT);
             $products = ProductMiniResource::collection($menuProducts->orderByDesc('order_column')->get());
         }
 

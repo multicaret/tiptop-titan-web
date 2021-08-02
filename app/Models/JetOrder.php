@@ -38,7 +38,7 @@ use Spatie\MediaLibrary\MediaCollections\Models\Media;
  * @property string|null $restaurant_notes
  * @property string|null $private_notes This column is generic, for now it has the 'discount_method_id' for orders with coupons from the old DB
  * @property string|null $client_notes
- * @property int $status 
+ * @property int $status
  *                     0: Cancelled,
  *                     1: Draft,
  *                     22: Assigning driver,

@@ -139,15 +139,17 @@ class DatatableController extends AjaxController
         } elseif ($correctType == Taxonomy::TYPE_END_USER_TAGS) {
             $taxonomies = $taxonomies->selectRaw('taxonomies.id,taxonomies.status,taxonomies.created_at,taxonomies.uuid,count(u.id) as users_count')
                                      ->leftJoin('taggables as t', function ($join) {
-                                         $join->on('t.taxonomy_id', '=', 'taxonomies.id')->where('t.taggable_type', User::class);;
+                                         $join->on('t.taxonomy_id', '=', 'taxonomies.id')->where('t.taggable_type',
+                                             User::class);;
                                          $join->leftJoin('users as u', function ($join) {
                                              $join->on('u.id', '=', 't.taggable_id');
                                          });
-                                     })->groupBy('taxonomies.id','taxonomies.status','taxonomies.created_at','taxonomies.uuid');
+                                     })->groupBy('taxonomies.id', 'taxonomies.status', 'taxonomies.created_at',
+                    'taxonomies.uuid');
 
         }
 
-      // dd($taxonomies->get());
+        // dd($taxonomies->get());
         return DataTables::of($taxonomies)
                          ->editColumn('action', function ($taxonomy) use ($correctType) {
                              $data = [
@@ -749,7 +751,12 @@ class DatatableController extends AjaxController
 
     public function branches(Request $request)
     {
-        $branches = Branch::whereType(Branch::getCorrectChannel($request->type))->selectRaw('branches.*');
+        $branches = Branch::whereType(Branch::getCorrectChannel($request->type))
+                          ->selectRaw('branches.*')
+                          ->leftJoin('branch_translations', function ($join) {
+                              $join->on('branches.id', '=', 'branch_translations.branch_id');
+                          })
+                          ->groupBy('branches.id');
 
         return DataTables::of($branches)
                          ->editColumn('action', function ($branch) {

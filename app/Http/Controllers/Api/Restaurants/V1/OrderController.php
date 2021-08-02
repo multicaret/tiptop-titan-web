@@ -9,7 +9,6 @@ use App\Models\Branch;
 use App\Models\Order;
 use Arr;
 use Carbon\Carbon;
-use DB;
 use Illuminate\Http\Request;
 
 class OrderController extends BaseApiController
@@ -121,11 +120,8 @@ class OrderController extends BaseApiController
             return $this->respondNotFound();
         }
 
-        DB::beginTransaction();
         $order->status = $request->status;
         $order->save();
-
-        DB::commit();
 
         return $this->respond([
             'success' => true,

@@ -42,6 +42,7 @@ use Illuminate\Support\Carbon;
  * @property-read bool $is_food
  * @property-read bool $is_grocery
  * @property-read bool $is_inactive
+ * @property-read mixed $status_class
  * @property-read mixed $status_name
  * @property-read \App\Models\Region|null $region
  * @property-read \App\Models\SlideTranslation|null $translation

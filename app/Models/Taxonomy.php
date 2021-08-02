@@ -66,6 +66,7 @@ use Spatie\MediaLibrary\MediaCollections\Models\Media;
  * @property-read bool $is_active
  * @property-read bool $is_inactive
  * @property-read mixed $link
+ * @property-read mixed $status_class
  * @property-read mixed $status_name
  * @property-read Taxonomy|null $ingredientCategory
  * @property-read Collection|Taxonomy[] $ingredientsInProductOptions
@@ -96,6 +97,7 @@ use Spatie\MediaLibrary\MediaCollections\Models\Media;
  * @property-read int|null $users_of_skill_count
  * @method static Builder|Taxonomy active()
  * @method static Builder|Taxonomy draft()
+ * @method static Builder|Taxonomy endUserTags()
  * @method static Builder|Taxonomy foodCategories()
  * @method static Builder|Taxonomy groceryCategories()
  * @method static Builder|Taxonomy inactive()
@@ -108,6 +110,7 @@ use Spatie\MediaLibrary\MediaCollections\Models\Media;
  * @method static Builder|Taxonomy newQuery()
  * @method static Builder|Taxonomy notActive()
  * @method static Builder|Taxonomy notDraft()
+ * @method static Builder|Taxonomy notParents()
  * @method static Builder|Taxonomy notTranslatedIn(?string $locale = null)
  * @method static \Illuminate\Database\Query\Builder|Taxonomy onlyTrashed()
  * @method static Builder|Taxonomy orWhereTranslation(string $translationField, $value, ?string $locale = null)
@@ -211,6 +214,7 @@ class Taxonomy extends Node implements HasMedia, ShouldHaveTypes, TranslatableCo
     {
         return $query->whereNull('parent_id');
     }
+
     /**
      * Scope a query to only include only parents.
      *
@@ -421,8 +425,9 @@ class Taxonomy extends Node implements HasMedia, ShouldHaveTypes, TranslatableCo
 
     public function parent()
     {
-        return $this->belongsTo(Taxonomy::class,'parent_id');
+        return $this->belongsTo(Taxonomy::class, 'parent_id');
     }
+
     public static function typesHaving($index): array
     {
         $typeVariations = [
