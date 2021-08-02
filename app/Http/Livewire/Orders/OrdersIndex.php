@@ -15,6 +15,7 @@ class OrdersIndex extends Component
     public $canceledOrders = 0;
     public $onTheWayOrders = 0;
     public $waitingForCourierOrders = 0;
+    public $preparingOrders = 0;
 
     public function render()
     {
@@ -25,6 +26,7 @@ class OrdersIndex extends Component
         $this->canceledOrders = Order::whereDate('created_at',today())->where('status',Order::STATUS_CANCELLED)->count();
         $this->onTheWayOrders = Order::whereDate('created_at',today())->where('status',Order::STATUS_ON_THE_WAY)->count();
         $this->waitingForCourierOrders = Order::whereDate('created_at',today())->where('status',Order::STATUS_WAITING_COURIER)->count();
+        $this->preparingOrders = Order::whereDate('created_at',today())->where('status',Order::STATUS_PREPARING)->count();
         return view('livewire.orders.index');
     }
 }

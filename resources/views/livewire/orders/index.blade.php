@@ -46,8 +46,30 @@
                         </div>
                     </div>
                 </div>
+                <div class="col-2">
+                    <div class="card">
+                        <div class="card-body shadow px-4 py-3 rounded-lg">
+                            <h4 class="card-title text-secondary">
+                                Preparing
+                                {{--<span wire:loading wire:target="foodNewOrdersCount">
+                                      <i class="fas fa-sync fa-spin"></i>
+                                </span>--}}
+                            </h4>
+                            <div class="card-text">
+                                <div class="d-flex align-items-center">
+                                    <i class="fas fa-concierge-bell fa-2x text-primary"></i>
+                                    <div class="media-body ml-4 text-secondary align-self-center">
+                                        <h3 class="m-0" {{--wire:poll.1m--}}>
+                                            {{$preparingOrders}}
+                                        </h3>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
 
-                <div class="col-3">
+                <div class="col-2">
                     <div class="card">
                         <div class="card-body shadow px-4 py-3 rounded-lg">
                             <h4 class="card-title text-secondary">
@@ -72,7 +94,7 @@
                     </div>
                 </div>
 
-                <div class="col-3">
+                <div class="col-2">
                     <div class="card">
                         <div class="card-body shadow px-4 py-3 rounded-lg">
                             <h4 class="card-title text-secondary">
@@ -91,7 +113,7 @@
                         </div>
                     </div>
                 </div>
-                <div class="col-3">
+                <div class="col-2">
                     <div class="card">
                         <div class="card-body shadow px-4 py-3 rounded-lg">
                             <h4 class="card-title text-secondary">
