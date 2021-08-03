@@ -54,7 +54,7 @@ class CouponController extends BaseApiController
             return $this->respondValidationFails($validator->errors());
         }
 
-        $coupon = Coupon::where('redeem_code', $code)->first();
+        $coupon = Coupon::active()->where('redeem_code', $code)->first();
         if (is_null($coupon)) {
             return $this->respondWithMessage("There is no such coupon code($code)");
         }
