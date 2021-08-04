@@ -14,7 +14,7 @@ class AddZohoWarehouseIdInBranchesTable extends Migration
     public function up()
     {
         Schema::table('branches', function (Blueprint $table) {
-            $table->unsignedInteger('zoho_warehouse_id')->after('status')->nullable();
+            $table->string('zoho_warehouse_id')->after('status')->nullable();
 
         });
     }
