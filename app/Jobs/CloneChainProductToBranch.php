@@ -67,6 +67,7 @@ class CloneChainProductToBranch implements ShouldQueue
             $product->price_discount_by_percentage = $this->originalProduct->price_discount_by_percentage;
             $product->price_discount_amount = $this->originalProduct->price_discount_amount;
             $product->category_id = $this->originalProduct->category_id;
+            $product->sku = $this->originalProduct->sku;
             $product->save();
 
             foreach (localization()->getSupportedLocales() as $key => $value) {
