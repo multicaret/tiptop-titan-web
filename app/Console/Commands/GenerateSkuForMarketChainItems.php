@@ -2,18 +2,17 @@
 
 namespace App\Console\Commands;
 
-use App\Models\Order;
-use App\Models\User;
+use App\Models\Product;
 use Illuminate\Console\Command;
 
-class AddFoodOrGroceryTagForUsers extends Command
+class GenerateSkuForMarketChainItems extends Command
 {
     /**
      * The name and signature of the console command.
      *
      * @var string
      */
-    protected $signature = 'end-users:add-tag';
+    protected $signature = 'products:generate-sku';
 
     /**
      * The console command description.
@@ -39,8 +38,10 @@ class AddFoodOrGroceryTagForUsers extends Command
      */
     public function handle()
     {
-        foreach (Order::where('status',Order::STATUS_DELIVERED)->cursor() as $order){
-            $order->tagEndUser();
+        foreach (Product::where('type',Product::CHANNEL_GROCERY_OBJECT)->whereNull('branch_id')->whereNotNull('chain_id')->cursor() as $product) {
+            $sku = $product->generateSkuString();
+            $product->sku = $sku;
+            $product->save();
         }
         return 0;
     }

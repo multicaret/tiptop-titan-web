@@ -314,14 +314,8 @@ class UserController extends Controller
             $user->assignRole($this->getRoleName($request->role));
         }
 
-
-
-        if (!empty($request->tags) && is_array($request->tags)){
-            foreach ($request->tags as $tag) {
-                if (!$user->tags->contains($tag))
-                    $user->tags()->attach([$tag]);
-            }
-        }
+        if ($user->role_name == User::ROLE_USER)
+            $user->tags()->sync($request->tags);
 
         /*if (is_null($address = Location::where('contactable_id', $user->id)
                                        ->where('contactable_role', User::class)

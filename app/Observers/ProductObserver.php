@@ -7,6 +7,19 @@ use App\Models\Product;
 
 class ProductObserver
 {
+
+    /**
+     * Handle the Order "created" event.
+     *
+     * @param  Product  $product
+     * @return void
+     */
+    public function creating(Product $product)
+    {
+        if ($product->type == Product::CHANNEL_GROCERY_OBJECT) {
+            $product->sku = 'TT'.(int) (mt_rand(0, 99).substr(time(), 5));
+        }
+    }
     /**
      * Handle the Product "created" event.
      *
@@ -15,9 +28,13 @@ class ProductObserver
      */
     public function created(Product $product)
     {
-        if ( ! empty(optional($product->branch)->zoho_books_id)) {
+        if ($product->type == Product::CHANNEL_FOOD_OBJECT && !empty(optional($product->branch)->zoho_books_id)) {
             SyncProductJob::dispatch($product)->delay(now()->addMinutes(5));
         }
+        if ($product->type == Product::CHANNEL_GROCERY_OBJECT && empty($product->branch_id) && !empty($product->chain_id)) {
+            SyncProductJob::dispatch($product)->delay(now()->addMinutes(5));
+        }
+
 
     }
 

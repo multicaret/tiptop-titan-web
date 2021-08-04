@@ -353,6 +353,22 @@ class TookanClient
 
     }
 
+    public function cancelJetTask(JetOrder $order)
+    {
+        if (empty(optional($order->tookanInfo)->job_pickup_id) || empty(optional($order->tookanInfo)->job_delivery_id)) {
+            return false;
+        }
+
+        $cancelPickupOrderData = $this->prepareCancelPickupJetOrderData($order);
+
+        $this->apiRequest('POST', 'delete_task', $cancelPickupOrderData);
+
+        $cancelDeliveryOrderData = $this->prepareCancelDeliveryJetOrderData($order);
+
+        return $this->apiRequest('POST', 'delete_task', $cancelDeliveryOrderData);
+
+    }
+
     public function prepareCancelPickupOrderData(Order $order)
     {
         return [
@@ -360,7 +376,21 @@ class TookanClient
         ];
     }
 
+    public function prepareCancelPickupJetOrderData(JetOrder $order)
+    {
+        return [
+            'job_id' => $order->tookanInfo->job_pickup_id
+        ];
+    }
+
     public function prepareCancelDeliveryOrderData(Order $order)
+    {
+        return [
+            'job_id' => $order->tookanInfo->job_delivery_id
+        ];
+    }
+
+    public function prepareCancelDeliveryJetOrderData(JetOrder $order)
     {
         return [
             'job_id' => $order->tookanInfo->job_delivery_id

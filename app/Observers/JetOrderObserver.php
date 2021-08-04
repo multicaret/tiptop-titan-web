@@ -86,6 +86,11 @@ class JetOrderObserver
 
                 }
             }
+            else if ($order->status == JetOrder::STATUS_CANCELLED){
+                if (! empty(optional($order->tookanInfo)->job_pickup_id)) {
+                    CancelTask::dispatchSync($order);
+                }
+            }
         }
         $order->recordActivity('updated');
     }
