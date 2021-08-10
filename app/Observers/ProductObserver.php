@@ -73,6 +73,6 @@ class ProductObserver
      */
     public function saved(Product $product)
     {
-        cache()->tags('products')->flush();
+        cache()->tags('products', 'taxonomies', 'api-home')->flush();
     }
 }
