@@ -42,7 +42,7 @@ class ZohoBooksProducts extends ZohoBooksClient
             'status' => 'Active',
             'unit' => 'item',
             'product_type' => $this->product->type == Product::CHANNEL_GROCERY_OBJECT ? 'goods' : 'service',
-            'sku' => $this->product->id,
+            'sku' => $this->product->type == Product::CHANNEL_GROCERY_OBJECT ? Product::where('id',$this->product->cloned_from_product_id)->firstOrFail()->sku : $this->product->id,
             'purchase_account_id' => $purchase_account_id,
             'account_id' => $account_id,
             'inventory_account_id' => $items_inventory_account_id,

@@ -3,6 +3,7 @@
 namespace App\Observers;
 
 use App\Integrations\TookanClient;
+use App\Jobs\Tookan\CancelJetTask;
 use App\Jobs\Tookan\CancelTask;
 use App\Jobs\Tookan\CreateTask;
 use App\Jobs\UpdateDailyReportJob;
@@ -76,7 +77,7 @@ class OrderObserver
                     $order->reStockItems();
                 }
                 if ($order->is_delivery_by_tiptop && ! empty(optional($order->tookanInfo)->job_pickup_id) && $tookan_status) {
-                    CancelTask::dispatchSync($order);
+                    CancelJetTask::dispatchSync($order);
                 }
             } elseif ($order->status == Order::STATUS_DELIVERED) {
                 $order->tagEndUser();
